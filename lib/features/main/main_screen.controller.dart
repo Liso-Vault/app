@@ -31,6 +31,8 @@ class MainScreenController extends GetxController
   // TODO: Biometric
 
   void load() async {
+    // AppManager.reset();
+
     change(null, status: RxStatus.loading());
 
     // show welcome screen if not authenticated
@@ -55,39 +57,4 @@ class MainScreenController extends GetxController
   }
 
   void add() => Get.toNamed(Routes.seed, parameters: {'mode': 'add'});
-
-  // TODO: remove crypter and this function
-  // void aes() async {
-  //   const mnemonic =
-  //       'measure raccoon fox tide infant broken process salute umbrella dinner hybrid pretty';
-  //   final seedHex = bip39.mnemonicToSeedHex(mnemonic);
-  //   // use first 32 bytes of mnemonic seed hex as secret key
-  //   final secreyKeyString = seedHex.substring(0, 32);
-
-  //   // Secure Storage
-  //   const storage = FlutterSecureStorage();
-  //   const storageKey = 'seeds';
-
-  //   final crypter = LisoCrypter();
-  //   await crypter.initSecretyKey(utf8.encode(secreyKeyString));
-
-  //   console.info('\n\nLiso Crypter');
-  //   final encrypted = await crypter.encrypt('testing'.codeUnits);
-  //   console.info('Encrypted: ${String.fromCharCodes(encrypted.cipherText)}');
-
-  //   console.warning('json: ${encrypted.toJsonEncoded()}');
-
-  //   await storage.write(
-  //     key: storageKey,
-  //     value: encrypted.toJsonEncoded(),
-  //   );
-
-  //   final value = await storage.read(key: storageKey);
-  //   console.info('storage ($storageKey) value: $value');
-
-  //   final secretBox = SecretBoxExtension.fromJson(jsonDecode(value!));
-  //   final decrypted = await crypter.decrypt(secretBox);
-
-  //   console.info('Decrypted: ${String.fromCharCodes(decrypted)}');
-  // }
 }

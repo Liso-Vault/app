@@ -13,23 +13,16 @@ class SettingsScreen extends GetView<SettingsScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final _content = ListView(
+    final content = ListView(
       padding: const EdgeInsets.all(20),
       shrinkWrap: true,
       children: [
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.userSecret),
-          trailing: const Icon(LineIcons.download),
-          title: const Text('Dump Master Seed'),
-          onTap: controller.dump,
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.file),
+          leading: const Icon(LineIcons.alternateShield),
           trailing: const Icon(LineIcons.upload),
-          title: const Text('Export Master Seed'),
-          onTap: controller.export,
+          title: const Text('Export'),
+          onTap: () => Get.toNamed(Routes.export),
         ),
         const Divider(),
         ListTile(
@@ -61,7 +54,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
 
     return Scaffold(
       appBar: AppBar(title: const Text('Settings')),
-      body: _content,
+      body: content,
     );
   }
 }

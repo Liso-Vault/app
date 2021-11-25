@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import 'create_password_screen.controller.dart';
 
@@ -16,8 +17,10 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        const Icon(LineIcons.alternateShield, size: 100),
+        const SizedBox(height: 20),
         const Text(
-          'Your Password',
+          'Vault Password',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
@@ -74,7 +77,10 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           child: Center(
             child: Container(
               constraints: Styles.containerConstraints,
-              child: content,
+              child: controller.obx(
+                (_) => content,
+                onLoading: const BusyIndicator(),
+              ),
             ),
           ),
         ),

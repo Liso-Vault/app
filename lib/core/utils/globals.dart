@@ -1,5 +1,4 @@
 // COMPANY
-
 const kName = 'Liso';
 const kDescription = 'We build the future of Apps';
 const kEmail = 'support@nemorystudios.dev';
@@ -22,12 +21,9 @@ const kSaveStoryUrl =
 const kShoutBoxUrl =
     'https://play.google.com/store/apps/details?id=com.stackwares.android.shoutbox';
 
-// PERSISTED ENCRYPTION KEY
-const kEncryptionKey = 'encryption key';
-const kMnemonicSeedPhrase = 'mnemonic seed phrase';
-const kPassword = 'password';
+// APP
+const kVaultFileName = 'master_wallet.json';
 
 // CRYPTO
 List<int>? encryptionKey;
-
 const kAad = 'liso';

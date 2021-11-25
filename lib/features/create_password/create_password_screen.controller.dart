@@ -1,13 +1,18 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/app/routes.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:web3dart/web3dart.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
   @override
@@ -16,7 +21,8 @@ class CreatePasswordScreenBinding extends Bindings {
   }
 }
 
-class CreatePasswordScreenController extends GetxController with ConsoleMixin {
+class CreatePasswordScreenController extends GetxController
+    with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
@@ -26,13 +32,23 @@ class CreatePasswordScreenController extends GetxController with ConsoleMixin {
   // GETTERS
 
   // INIT
+  @override
+  void onInit() {
+    change(null, status: RxStatus.success());
+    super.onInit();
+  }
 
   // FUNCTIONS
 
   void confirm() async {
+    if (status == RxStatus.loading()) return console.error('still busy');
+    change(null, status: RxStatus.loading());
+
     // TODO: improve password validation
 
     if (passwordController.text != passwordConfirmController.text) {
+      change(null, status: RxStatus.success());
+
       UIUtils.showSnackBar(
         title: 'Passwords do not match',
         message: 'Re-enter your passwords',
@@ -43,10 +59,25 @@ class CreatePasswordScreenController extends GetxController with ConsoleMixin {
       return console.error('Passwords do not match');
     }
 
-    const storage = FlutterSecureStorage();
-    final encodedPassword = base64.encode(utf8.encode(passwordController.text));
-    storage.write(key: kPassword, value: encodedPassword);
+    final mnemonic = bip39.generateMnemonic(strength: 256);
+    console.warning('mnemonic: $mnemonic');
+    final seedHex = bip39.mnemonicToSeedHex(mnemonic);
 
-    Get.back();
+    final wallet = Wallet.createNew(
+      EthPrivateKey.fromHex(seedHex),
+      passwordController.text,
+      Random.secure(),
+    );
+
+    final directory = await getApplicationSupportDirectory();
+    final file = File('${directory.path}/$kVaultFileName');
+    await file.writeAsString(wallet.toJson());
+    console.info('written: ${file.path}');
+    console.info(await file.readAsString());
+
+    encryptionKey = utf8.encode(seedHex.substring(0, 32));
+
+    change(null, status: RxStatus.success());
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

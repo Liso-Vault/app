@@ -16,15 +16,14 @@ dependencies:
   # CRYTPO
   web3dart: ^2.3.3
   bip39: ^1.0.6
-  dart_bip32_bip44: ^0.2.0
-  cryptography: ^2.0.5
+  hex: ^0.2.0
 
   # IO
   hive: 2.0.4
   hive_flutter: 1.1.0
   get_storage: 2.0.3 # persistence
-  flutter_secure_storage: ^5.0.2 # encryption for hive
   path_provider: 2.0.6
+  file_picker: ^4.2.4 # exporting + importing
 
   # UI
   line_icons: ^2.0.1

@@ -1,9 +1,9 @@
-import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'controllers/persistence.controller.dart';
 import 'hive/hive.manager.dart';
@@ -12,29 +12,27 @@ class AppManager {
   static final console = Console(name: 'AppManager');
 
   static Future<void> init() async {
-    // load saved encryption key
-    const storage = FlutterSecureStorage();
-    final encryptionKeyString = await storage.read(key: kEncryptionKey);
-    encryptionKey = base64.decode(encryptionKeyString!);
-    // decrypt hive box
     final cipher = HiveAesCipher(encryptionKey!);
     HiveManager.seeds = await Hive.openBox('seeds', encryptionCipher: cipher);
     console.warning('seeds: ${HiveManager.seeds!.length}');
   }
 
   static Future<bool> authenticated() async {
-    const storage = FlutterSecureStorage();
-    return await storage.read(key: kEncryptionKey) != null;
+    final directory = await getApplicationSupportDirectory();
+    final file = File('${directory.path}/$kVaultFileName');
+    return await file.exists();
   }
 
   static void reset() async {
     encryptionKey = null;
 
-    // hives
-    Hive.deleteFromDisk();
+    // wallet file
+    final directory = await getApplicationSupportDirectory();
+    final file = File('${directory.path}/$kVaultFileName');
+    if (await file.exists()) await file.delete();
 
-    // secure storage
-    await const FlutterSecureStorage().deleteAll();
+    // hives
+    Hive.deleteBoxFromDisk('seeds');
 
     // persistence
     await PersistenceController.to.box.erase();

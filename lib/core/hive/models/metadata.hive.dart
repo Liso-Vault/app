@@ -26,15 +26,15 @@ class HiveMetadata extends HiveObject {
   factory HiveMetadata.fromJson(Map<String, dynamic> json) => HiveMetadata(
         device: HiveDevice.fromJson(json["device"]),
         app: HiveApp.fromJson(json["app"]),
-        createdTime: json["createdTime"],
-        updatedTime: json["updatedTime"],
+        createdTime: DateTime.parse(json["createdTime"]),
+        updatedTime: DateTime.parse(json["updatedTime"]),
       );
 
   Map<String, dynamic> toJson() => {
         "device": device.toJson(),
         "app": app.toJson(),
-        "createdTime": createdTime,
-        "updatedTime": updatedTime,
+        "createdTime": createdTime.toIso8601String(),
+        "updatedTime": updatedTime.toIso8601String(),
       };
 
   Future<HiveMetadata> getUpdated() async {

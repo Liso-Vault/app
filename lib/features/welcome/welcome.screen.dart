@@ -51,7 +51,7 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
                     TextButton.icon(
                       label: const Text('Create'),
                       icon: const Icon(LineIcons.plus),
-                      onPressed: controller.create,
+                      onPressed: () => Get.toNamed(Routes.createPassword),
                     ),
                     const SizedBox(height: 15),
                     TextButton.icon(
