@@ -1,0 +1,61 @@
+name: liso
+description: Liso
+publish_to: "none"
+version: 0.1.0+1
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # STATE MANAGEMENT
+  get: 4.3.8
+
+  # CRYTPO
+  web3dart: ^2.3.3
+  bip39: ^1.0.6
+  dart_bip32_bip44: ^0.2.0
+  cryptography: ^2.0.5
+
+  # IO
+  hive: 2.0.4
+  hive_flutter: 1.1.0
+  get_storage: 2.0.3 # persistence
+  flutter_secure_storage: ^5.0.2 # encryption for hive
+  path_provider: 2.0.6
+
+  # UI
+  line_icons: ^2.0.1
+  flex_color_scheme: 4.1.1 # themes
+  desktop_window: ^0.4.0 # set desktop window size
+  flutter_svg: 0.23.0+1 # generated avatars
+  simple_animations: 4.0.1
+  bubble_tab_indicator: 0.1.6
+
+  # TOOLS
+  logger: ^1.1.0
+  url_launcher: 6.0.15
+  supercharged: 2.1.1
+  flutter_linkify: 5.0.2
+  fk_user_agent: 2.0.1
+
+  # INFO
+  device_info_plus: 3.1.1
+  package_info_plus: ^1.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^1.0.0
+  hive_generator: 1.1.1
+  build_runner: ^2.1.5
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
+    - assets/images/
