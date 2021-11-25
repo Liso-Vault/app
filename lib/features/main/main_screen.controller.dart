@@ -31,7 +31,7 @@ class MainScreenController extends GetxController
   // TODO: Biometric
 
   void load() async {
-    // AppManager.reset();
+    // await AppManager.reset();
 
     change(null, status: RxStatus.loading());
 
@@ -44,8 +44,6 @@ class MainScreenController extends GetxController
         await Get.toNamed(Routes.unlock);
       }
     }
-
-    await AppManager.init();
 
     data.value = HiveManager.seeds!.values.toList();
 

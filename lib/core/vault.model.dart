@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:web3dart/credentials.dart';
 

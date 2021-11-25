@@ -7,6 +7,8 @@ import 'package:liso/features/export/export.screen.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
+import 'package:liso/features/import/unlock/unlock.screen.dart';
+import 'package:liso/features/import/unlock/unlock_screen.controller.dart';
 import 'package:liso/features/reset/reset.screen.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/seed/seed.screen.dart';
@@ -60,6 +62,12 @@ class AppPages {
       name: Routes.seed,
       page: () => const SeedScreen(),
       binding: SeedScreenBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.unlockImported,
+      page: () => const UnlockImportedScreen(),
+      binding: UnlockImportedScreenBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(

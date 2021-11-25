@@ -10,6 +10,7 @@ abstract class Routes {
   static const reset = '/reset';
   static const unlock = '/unlock';
   static const export = '/export';
+  static const unlockImported = '/unlock_imported';
   static const createPassword = '/create_password';
 
   static const settings = '/settings';

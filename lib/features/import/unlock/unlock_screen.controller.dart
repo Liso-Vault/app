@@ -7,21 +7,22 @@ import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/app.manager.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/core/vault.model.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:web3dart/credentials.dart';
 
-class UnlockScreenBinding extends Bindings {
+class UnlockImportedScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => UnlockScreenController());
+    Get.lazyPut(() => UnlockImportedScreenController());
   }
 }
 
-class UnlockScreenController extends GetxController
+class UnlockImportedScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
@@ -46,32 +47,24 @@ class UnlockScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final vaultFilePath =
-        '${(await getApplicationSupportDirectory()).path}/$kVaultFileName';
-    final file = File(vaultFilePath);
+    final importedVaultFilePath = Get.parameters['file_path'];
+    final file = File(importedVaultFilePath!);
 
-    Wallet? wallet;
+    Vault? vault;
 
     try {
-      wallet = Wallet.fromJson(
-        await file.readAsString(),
+      vault = Vault.fromJson(
+        jsonDecode(await file.readAsString()), // TODO: catch for errors
         passwordController.text,
       );
 
-      console.info('wallet: ${wallet.toJson()}');
+      console.info('vault: ${vault.toJson()}');
     } catch (e) {
-      console.error('wallet failed: ${e.toString()}');
+      console.error('vault failed: ${e.toString()}');
       change(null, status: RxStatus.success());
 
       passwordController.clear();
       canProceed.value = false;
-      attemptsLeft.value--;
-
-      if (attemptsLeft() <= 0) {
-        AppManager.reset();
-        Get.offNamedUntil(Routes.main, (route) => false);
-        return;
-      }
 
       UIUtils.showSnackBar(
         title: 'Incorrect password',
@@ -84,10 +77,21 @@ class UnlockScreenController extends GetxController
     }
 
     // the encryption key from master's private key
-    final seedHex = HEX.encode(wallet.privateKey.privateKey);
+    final seedHex = HEX.encode(vault.master!.privateKey.privateKey);
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
     await AppManager.init();
+
+    // write imported master wallet to disk
+    final localVaultFilePath =
+        '${(await getApplicationSupportDirectory()).path}/$kVaultFileName';
+    await File(localVaultFilePath).writeAsString(vault.master!.toJson());
+
+    // Convert Wallet objects to Hive objects
+    for (var i = 0; i < vault.seeds.length; i++) {
+      final e = vault.seeds.elementAt(i);
+      HiveManager.seeds!.add(e.seed!);
+    }
 
     change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);

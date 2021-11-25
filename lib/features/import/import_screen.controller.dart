@@ -69,7 +69,7 @@ class ImportScreenController extends GetxController with ConsoleMixin {
     final file = File(result.files.single.path!);
 
     Get.toNamed(
-      Routes.unlock,
+      Routes.unlockImported,
       parameters: {'file_path': file.path},
     );
   }

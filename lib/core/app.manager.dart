@@ -23,7 +23,7 @@ class AppManager {
     return await file.exists();
   }
 
-  static void reset() async {
+  static Future<void> reset() async {
     encryptionKey = null;
 
     // wallet file

@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/app.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -76,6 +77,8 @@ class CreatePasswordScreenController extends GetxController
     console.info(await file.readAsString());
 
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
+
+    await AppManager.init();
 
     change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);
