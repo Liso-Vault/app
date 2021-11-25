@@ -2,11 +2,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/app/routes.dart';
 
 import 'settings_screen.controller.dart';
 
-class SettingsScreen extends GetView<SettingsScreenController> {
+class SettingsScreen extends GetView<SettingsScreenController>
+    with ConsoleMixin {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
@@ -15,7 +17,20 @@ class SettingsScreen extends GetView<SettingsScreenController> {
       padding: const EdgeInsets.all(20),
       shrinkWrap: true,
       children: [
-        // TODO: dump mnemonic feature
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.userSecret),
+          trailing: const Icon(LineIcons.download),
+          title: const Text('Dump Master Seed'),
+          onTap: controller.dump,
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.file),
+          trailing: const Icon(LineIcons.upload),
+          title: const Text('Export Master Seed'),
+          onTap: controller.export,
+        ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.lock),
@@ -30,14 +45,16 @@ class SettingsScreen extends GetView<SettingsScreenController> {
           title: const Text('Reset'),
           onTap: () => Get.toNamed(Routes.reset),
         ),
-        // if (kDebugMode) ...[
-        //   const Divider(),
-        //   ListTile(
-        //     title: const Text('Playground'),
-        //     leading: const Icon(LineIcons.play),
-        //     onTap: () => Get.offAndToNamed(Routes.playground),
-        //   ),
-        // ],
+        if (kDebugMode) ...[
+          const Divider(),
+          ListTile(
+            title: const Text('Test'),
+            leading: const Icon(LineIcons.play),
+            onTap: () async {
+              //
+            },
+          ),
+        ],
         const Divider(),
       ],
     );

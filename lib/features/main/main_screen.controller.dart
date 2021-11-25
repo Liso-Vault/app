@@ -28,13 +28,9 @@ class MainScreenController extends GetxController
 
   // TODO: Export Master Seed as Wallet JSON
   // TODO: Import Wallet JSON as Master Seed
-  // TODO: Storage Keys: seeds = list of encrypted seeds
-  // TODO: Storage Keys: metadata = createdTime, updatedTime, app (name,version), device
   // TODO: Biometric
 
   void load() async {
-    // AppManager.reset();
-
     change(null, status: RxStatus.loading());
 
     // show welcome screen if not authenticated

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -35,8 +37,9 @@ class UnlockScreenController extends GetxController with ConsoleMixin {
   void unlock() async {
     const storage = FlutterSecureStorage();
     final savedPassword = await storage.read(key: kPassword);
+    final decodedPassword = utf8.decode(base64.decode(savedPassword!));
 
-    if (passwordController.text != savedPassword) {
+    if (passwordController.text != decodedPassword) {
       attemptsLeft.value--;
       passwordController.clear();
       canProceed.value = false;

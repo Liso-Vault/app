@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
@@ -42,7 +44,8 @@ class CreatePasswordScreenController extends GetxController with ConsoleMixin {
     }
 
     const storage = FlutterSecureStorage();
-    storage.write(key: kPassword, value: passwordController.text);
+    final encodedPassword = base64.encode(utf8.encode(passwordController.text));
+    storage.write(key: kPassword, value: encodedPassword);
 
     Get.back();
   }
