@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/app.manager.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/vault.model.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -50,10 +50,10 @@ class UnlockImportedScreenController extends GetxController
     final importedVaultFilePath = Get.parameters['file_path'];
     final file = File(importedVaultFilePath!);
 
-    Vault? vault;
+    LisoVault? vault;
 
     try {
-      vault = Vault.fromJson(
+      vault = LisoVault.fromJson(
         jsonDecode(await file.readAsString()), // TODO: catch for errors
         passwordController.text,
       );
@@ -80,7 +80,7 @@ class UnlockImportedScreenController extends GetxController
     final seedHex = HEX.encode(vault.master!.privateKey.privateKey);
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
-    await AppManager.init();
+    await LisoManager.init();
 
     // write imported master wallet to disk
     final localVaultFilePath =

@@ -25,7 +25,7 @@ class ImportScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void importPhrase() async {
-    // final seed = passphraseCard.obtainSeed();
+    // final seed = passphraseCard.obtainMnemonicPhrase();
 
     // if (seed == null) {
     //   UIUtils.showSnackBar(

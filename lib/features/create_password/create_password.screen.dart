@@ -66,21 +66,18 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       ],
     );
 
-    return WillPopScope(
-      onWillPop: () => Future.value(false),
-      child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Create Password'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Center(
-            child: Container(
-              constraints: Styles.containerConstraints,
-              child: controller.obx(
-                (_) => content,
-                onLoading: const BusyIndicator(),
-              ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Create Password'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Center(
+          child: Container(
+            constraints: Styles.containerConstraints,
+            child: controller.obx(
+              (_) => content,
+              onLoading: const BusyIndicator(),
             ),
           ),
         ),

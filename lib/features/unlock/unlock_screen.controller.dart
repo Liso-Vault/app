@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/app.manager.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -68,7 +68,7 @@ class UnlockScreenController extends GetxController
       attemptsLeft.value--;
 
       if (attemptsLeft() <= 0) {
-        AppManager.reset();
+        LisoManager.reset();
         Get.offNamedUntil(Routes.main, (route) => false);
         return;
       }
@@ -87,7 +87,7 @@ class UnlockScreenController extends GetxController
     final seedHex = HEX.encode(wallet.privateKey.privateKey);
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
-    await AppManager.init();
+    await LisoManager.init();
 
     change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);

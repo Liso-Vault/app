@@ -9,6 +9,8 @@ import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
 import 'package:liso/features/import/unlock/unlock.screen.dart';
 import 'package:liso/features/import/unlock/unlock_screen.controller.dart';
+import 'package:liso/features/mnemonic/mnemonic.screen.dart';
+import 'package:liso/features/mnemonic/mnemonic_screen.controller.dart';
 import 'package:liso/features/reset/reset.screen.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/seed/seed.screen.dart';
@@ -80,6 +82,12 @@ class AppPages {
       name: Routes.export,
       page: () => const ExportScreen(),
       binding: ExportScreenBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: Routes.mnemonic,
+      page: () => const MnemonicScreen(),
+      binding: MnemonicScreenBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(

@@ -17,7 +17,7 @@ class PassphraseCard extends GetWidget<PassphraseCardController>
     this.phrase = '',
   }) : super(key: key);
 
-  String? obtainSeed() {
+  String? obtainMnemonicPhrase() {
     final seed = controller.seedController.text;
     return bip39.validateMnemonic(seed) ? seed : null;
   }

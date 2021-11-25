@@ -15,6 +15,45 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
+    final content = Container(
+      constraints: Styles.containerConstraints,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(Images.logo, width: 100),
+          const SizedBox(height: 20),
+          const Text(
+            kName,
+            style: TextStyle(fontSize: 40),
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            kDescription,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 50),
+          TextButton.icon(
+            label: const Text('Create'),
+            icon: const Icon(LineIcons.plus),
+            onPressed: () => Get.toNamed(Routes.createPassword),
+          ),
+          const SizedBox(height: 15),
+          TextButton.icon(
+            label: const Text('Import'),
+            icon: const Icon(LineIcons.download),
+            onPressed: () => Get.toNamed(Routes.import),
+          ),
+          const SizedBox(height: 15),
+          TextButton.icon(
+            label: const Text('Test'),
+            icon: const Icon(LineIcons.download),
+            onPressed: () => Get.toNamed(Routes.mnemonic),
+          ),
+        ],
+      ),
+    );
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(20),
@@ -29,40 +68,7 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
                 ),
               ),
             ),
-            Center(
-              child: Container(
-                constraints: Styles.containerConstraints,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(Images.logo, width: 100),
-                    const SizedBox(height: 20),
-                    const Text(
-                      kName,
-                      style: TextStyle(fontSize: 40),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      kDescription,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    const SizedBox(height: 50),
-                    TextButton.icon(
-                      label: const Text('Create'),
-                      icon: const Icon(LineIcons.plus),
-                      onPressed: () => Get.toNamed(Routes.createPassword),
-                    ),
-                    const SizedBox(height: 15),
-                    TextButton.icon(
-                      label: const Text('Import'),
-                      icon: const Icon(LineIcons.download),
-                      onPressed: () => Get.toNamed(Routes.import),
-                    ),
-                  ],
-                ),
-              ),
-            )
+            Center(child: content)
           ],
         ),
       ),

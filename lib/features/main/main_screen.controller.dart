@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
-import 'package:liso/core/app.manager.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
@@ -31,12 +31,12 @@ class MainScreenController extends GetxController
   // TODO: Biometric
 
   void load() async {
-    // await AppManager.reset();
+    // await LisoManager.reset();
 
     change(null, status: RxStatus.loading());
 
     // show welcome screen if not authenticated
-    if (!(await AppManager.authenticated())) {
+    if (!(await LisoManager.authenticated())) {
       await Get.toNamed(Routes.welcome);
       await Get.toNamed(Routes.createPassword);
     } else {

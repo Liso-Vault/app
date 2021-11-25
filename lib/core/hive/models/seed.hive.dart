@@ -7,7 +7,7 @@ part 'seed.hive.g.dart';
 @HiveType(typeId: 0)
 class HiveSeed extends HiveObject {
   @HiveField(0)
-  String seed;
+  String mnemonic;
   @HiveField(1)
   String address;
   @HiveField(2)
@@ -20,7 +20,7 @@ class HiveSeed extends HiveObject {
   HiveMetadata metadata;
 
   HiveSeed({
-    required this.seed,
+    required this.mnemonic,
     required this.address,
     required this.description,
     required this.ledger,
@@ -29,7 +29,7 @@ class HiveSeed extends HiveObject {
   });
 
   factory HiveSeed.fromJson(Map<String, dynamic> json) => HiveSeed(
-        seed: json["seed"],
+        mnemonic: json["mnemonic"],
         address: json["address"],
         description: json["description"],
         ledger: json["ledger"],
@@ -38,7 +38,7 @@ class HiveSeed extends HiveObject {
       );
 
   Map<String, dynamic> toJson() => {
-        "seed": seed,
+        "mnemonic": mnemonic,
         "address": address,
         "description": description,
         "ledger": ledger,

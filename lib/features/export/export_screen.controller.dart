@@ -7,13 +7,13 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/app.manager.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/vault.model.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:web3dart/web3dart.dart';
@@ -81,7 +81,7 @@ class ExportScreenController extends GetxController
       canProceed.value = false;
 
       if (attemptsLeft() <= 0) {
-        AppManager.reset();
+        LisoManager.reset();
         Get.offNamedUntil(Routes.main, (route) => false);
         return;
       }
@@ -112,7 +112,7 @@ class ExportScreenController extends GetxController
 
     for (var i = 0; i < HiveManager.seeds!.values.length; i++) {
       final e = HiveManager.seeds!.values.elementAt(i);
-      final seedHex = bip39.mnemonicToSeedHex(e.seed);
+      final seedHex = bip39.mnemonicToSeedHex(e.mnemonic);
 
       final wallet = Wallet.createNew(
         EthPrivateKey.fromHex(seedHex),
@@ -126,8 +126,8 @@ class ExportScreenController extends GetxController
       ));
     }
 
-    // Construct Vault object
-    final vault = Vault(
+    // Construct LisoVault object
+    final vault = LisoVault(
       master: master,
       seeds: seeds,
     );

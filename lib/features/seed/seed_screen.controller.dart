@@ -76,7 +76,7 @@ class SeedScreenController extends GetxController
 
       passphraseCard = PassphraseCard(
         mode: PassphraseMode.none,
-        phrase: object!.seed,
+        phrase: object!.mnemonic,
       );
 
       addressController.text = object!.address;
@@ -112,7 +112,7 @@ class SeedScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
 
     final newSeed = HiveSeed(
-      seed: passphraseCard!.obtainSeed()!,
+      mnemonic: passphraseCard!.obtainMnemonicPhrase()!,
       address: addressController.text,
       description: descriptionController.text,
       ledger: selectedLedger.value,
@@ -131,7 +131,7 @@ class SeedScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (object == null) return;
 
-    object!.seed = passphraseCard!.obtainSeed()!;
+    object!.mnemonic = passphraseCard!.obtainMnemonicPhrase()!;
     object!.address = addressController.text;
     object!.description = descriptionController.text;
     object!.origin = selectedOrigin.value;

@@ -17,7 +17,7 @@ class HiveSeedAdapter extends TypeAdapter<HiveSeed> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveSeed(
-      seed: fields[0] as String,
+      mnemonic: fields[0] as String,
       address: fields[1] as String,
       description: fields[2] as String,
       ledger: fields[3] as String,
@@ -31,7 +31,7 @@ class HiveSeedAdapter extends TypeAdapter<HiveSeed> {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.seed)
+      ..write(obj.mnemonic)
       ..writeByte(1)
       ..write(obj.address)
       ..writeByte(2)

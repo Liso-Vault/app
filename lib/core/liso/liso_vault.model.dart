@@ -1,15 +1,14 @@
-import 'dart:convert';
-
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:web3dart/credentials.dart';
 
-class Vault {
+class LisoVault {
   final Wallet? master;
   final List<VaultSeed> seeds;
 
-  Vault({this.master, this.seeds = const []});
+  LisoVault({this.master, this.seeds = const []});
 
-  factory Vault.fromJson(Map<String, dynamic> json, String password) => Vault(
+  factory LisoVault.fromJson(Map<String, dynamic> json, String password) =>
+      LisoVault(
         master: Wallet.fromJson(json["master"], password),
         seeds: List<VaultSeed>.from(
           json["seeds"].map((x) => VaultSeed.fromJson(x, password)),

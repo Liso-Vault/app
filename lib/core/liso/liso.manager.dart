@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:hive/hive.dart';
+import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'controllers/persistence.controller.dart';
-import 'hive/hive.manager.dart';
-
-class AppManager {
-  static final console = Console(name: 'AppManager');
+class LisoManager {
+  static final console = Console(name: 'LisoManager');
 
   static Future<void> init() async {
     final cipher = HiveAesCipher(encryptionKey!);
