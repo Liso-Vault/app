@@ -5,7 +5,6 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
-import 'package:wc_form_validators/wc_form_validators.dart';
 
 import 'unlock_screen.controller.dart';
 
@@ -49,8 +48,6 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           textInputAction: TextInputAction.next,
           onChanged: controller.onChanged,
           onFieldSubmitted: (text) => controller.unlock(),
-          validator: (text) => Utils.validatePassword(text!),
-          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: Styles.inputDecoration.copyWith(
             hintText: 'Vault Password',
           ),

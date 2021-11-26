@@ -12,9 +12,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Import Wallet'),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(
@@ -31,18 +29,18 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 ),
                 const SizedBox(height: 15),
                 const Text(
-                  "Enter your 24 word seed or import your vault file",
+                  "Import your updated vault file",
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey),
                 ),
-                const SizedBox(height: 30),
-                controller.passphraseCard,
-                const SizedBox(height: 10),
-                TextButton.icon(
-                  onPressed: controller.importPhrase,
-                  label: const Text('Continue'),
-                  icon: const Icon(LineIcons.arrowRight),
-                ),
+                // const SizedBox(height: 30),
+                // controller.passphraseCard,
+                // const SizedBox(height: 10),
+                // TextButton.icon(
+                //   onPressed: controller.importPhrase,
+                //   label: const Text('Continue'),
+                //   icon: const Icon(LineIcons.arrowRight),
+                // ),
                 const Divider(height: 20),
                 TextButton.icon(
                   onPressed: controller.importFile,

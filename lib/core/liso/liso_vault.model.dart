@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:liso/core/hive/models/seed.hive.dart';
+import 'package:liso/core/liso/crypter.extensions.dart';
+import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:web3dart/credentials.dart';
 
 class LisoVault {
@@ -15,10 +19,23 @@ class LisoVault {
         ),
       );
 
-  Map<String, dynamic> toJson() => {
-        "master": master?.toJson(),
-        "seeds": List<dynamic>.from(seeds.map((x) => x.toJson())),
-      };
+  Future<Map<String, dynamic>> toJsonEncrypted() async {
+    final _seeds = List<dynamic>.from(
+      seeds.map((x) => x.toJson()),
+    );
+
+    final encryptedSeeds = await LisoCrypter().encrypt(
+      utf8.encode(jsonEncode(_seeds)),
+    );
+
+    return {
+      "master": master?.toJson(),
+      "seeds": encryptedSeeds.toJson(),
+    };
+  }
+
+  Future<String> toJsonStringEncrypted() async =>
+      jsonEncode(await toJsonEncrypted());
 }
 
 class VaultSeed {

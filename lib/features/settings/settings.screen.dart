@@ -19,36 +19,33 @@ class SettingsScreen extends GetView<SettingsScreenController>
       children: [
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.alternateShield),
-          trailing: const Icon(LineIcons.upload),
-          title: const Text('Export'),
+          leading: const Icon(LineIcons.upload),
+          trailing: const Icon(LineIcons.angleRight),
+          title: const Text('Export Vault'),
           onTap: () => Get.toNamed(Routes.export),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Lock'),
+          title: const Text('Lock Vault'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.syncIcon),
           trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Reset'),
+          title: const Text('Reset Vault'),
           onTap: () => Get.toNamed(Routes.reset),
         ),
-        if (kDebugMode) ...[
-          const Divider(),
-          ListTile(
-            title: const Text('Test'),
-            leading: const Icon(LineIcons.play),
-            onTap: () async {
-              //
-            },
-          ),
-        ],
         const Divider(),
+        // ListTile(
+        //   leading: const Icon(LineIcons.alternateShield),
+        //   trailing: const Icon(LineIcons.angleRight),
+        //   title: const Text('Change Password'),
+        //   onTap: () => Get.toNamed(Routes.export),
+        // ),
+        // const Divider(),
       ],
     );
 

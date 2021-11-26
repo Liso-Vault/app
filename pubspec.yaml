@@ -17,6 +17,7 @@ dependencies:
   web3dart: ^2.3.3
   bip39: ^1.0.6
   hex: ^0.2.0
+  cryptography: ^2.0.5
 
   # IO
   hive: 2.0.4

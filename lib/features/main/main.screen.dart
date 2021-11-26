@@ -49,7 +49,6 @@ class MainScreen extends GetView<MainScreenController> {
         child: TextButton.icon(
           label: const Text('Add your first seed'),
           icon: const Icon(LineIcons.plus),
-          style: Styles.outlinedButtonStyle,
           onPressed: controller.add,
         ),
       ),

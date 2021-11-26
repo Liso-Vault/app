@@ -21,14 +21,8 @@ class Styles {
     shape: roundedBorder,
   );
 
-  static final outlinedButtonStyle = OutlinedButton.styleFrom(
-    textStyle: const TextStyle(fontWeight: FontWeight.bold),
-    shape: roundedBorder,
-  );
-
-  static final outlinedButtonStyleNegative = OutlinedButton.styleFrom(
+  static final textButtonStyleNegative = OutlinedButton.styleFrom(
     primary: Colors.red,
-    textStyle: const TextStyle(fontWeight: FontWeight.bold),
     shape: roundedBorder,
   );
 

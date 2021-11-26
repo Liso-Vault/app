@@ -37,12 +37,14 @@ class HiveSeed extends HiveObject {
         metadata: HiveMetadata.fromJson(json["metadata"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "mnemonic": mnemonic,
-        "address": address,
-        "description": description,
-        "ledger": ledger,
-        "origin": origin,
-        "metadata": metadata.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "mnemonic": mnemonic,
+      "address": address,
+      "description": description,
+      "ledger": ledger,
+      "origin": origin,
+      "metadata": metadata.toJson(),
+    };
+  }
 }

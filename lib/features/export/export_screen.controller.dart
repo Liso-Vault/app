@@ -10,6 +10,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -108,10 +109,7 @@ class ExportScreenController extends GetxController
     console.info('export path: $exportPath');
 
     // Convert seeds to Wallet objects
-    final List<VaultSeed> seeds = [];
-
-    for (var i = 0; i < HiveManager.seeds!.values.length; i++) {
-      final e = HiveManager.seeds!.values.elementAt(i);
+    final seeds = HiveManager.seeds!.values.map<VaultSeed>((e) {
       final seedHex = bip39.mnemonicToSeedHex(e.mnemonic);
 
       final wallet = Wallet.createNew(
@@ -120,19 +118,12 @@ class ExportScreenController extends GetxController
         Random.secure(),
       );
 
-      seeds.add(VaultSeed(
-        seed: e,
-        wallet: wallet,
-      ));
-    }
+      return VaultSeed(seed: e, wallet: wallet);
+    }).toList();
 
     // Construct LisoVault object
-    final vault = LisoVault(
-      master: master,
-      seeds: seeds,
-    );
-
-    final vaultJsonString = jsonEncode(vault.toJson());
+    final vault = LisoVault(master: master, seeds: seeds);
+    final vaultJsonString = await vault.toJsonStringEncrypted();
 
     final walletAddress = master.privateKey.address.hexEip55;
     final exportFileName =
@@ -145,6 +136,7 @@ class ExportScreenController extends GetxController
       console.info('wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
 
+      // TODO: Convert to notification
       UIUtils.showSnackBar(
         title: 'Export Failed',
         message: e.toString(),
@@ -154,6 +146,8 @@ class ExportScreenController extends GetxController
 
       return;
     }
+
+    // TODO: Send notification
 
     console.info('exported: ${exportFile.path}');
     change(null, status: RxStatus.success());

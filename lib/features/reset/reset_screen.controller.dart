@@ -11,7 +11,8 @@ class ResetScreenBinding extends Bindings {
   }
 }
 
-class ResetScreenController extends GetxController with ConsoleMixin {
+class ResetScreenController extends GetxController
+    with StateMixin, ConsoleMixin {
   static ResetScreenController get to => Get.find();
 
   // VARIABLES
@@ -24,8 +25,16 @@ class ResetScreenController extends GetxController with ConsoleMixin {
 
   // FUNCTIONS
 
-  void reset() {
-    LisoManager.reset();
+  @override
+  void onInit() {
+    change(null, status: RxStatus.success());
+    super.onInit();
+  }
+
+  void reset() async {
+    change(null, status: RxStatus.loading());
+    await LisoManager.reset();
+    change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

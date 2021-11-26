@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import 'create_password_screen.controller.dart';
@@ -35,6 +36,8 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           textInputAction: TextInputAction.next,
+          validator: (text) => Utils.validatePassword(text!),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: Styles.inputDecoration.copyWith(
             hintText: 'Password',
           ),
@@ -47,6 +50,8 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           obscureText: true,
           textInputAction: TextInputAction.send,
           onFieldSubmitted: (text) => controller.confirm,
+          validator: (text) => Utils.validatePassword(text!),
+          autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: Styles.inputDecoration.copyWith(
             hintText: 'Confirm Password',
           ),
@@ -67,9 +72,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Create Password'),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(

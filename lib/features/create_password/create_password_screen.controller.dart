@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -74,6 +75,9 @@ class CreatePasswordScreenController extends GetxController
     console.info(await file.readAsString());
 
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
+    // initialize crypter with encryption key
+    final crypter = LisoCrypter();
+    await crypter.initSecretyKey(encryptionKey!);
 
     await LisoManager.init();
 
