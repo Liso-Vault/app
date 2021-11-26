@@ -24,29 +24,41 @@ class SeedScreen extends GetView<SeedScreenController> {
             title,
             style: const TextStyle(fontSize: 30),
           ),
-          const SizedBox(height: 35),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Expanded(child: controller.passphraseCard!),
-              IconButton(
-                icon: const Icon(LineIcons.verticalEllipsis),
-                onPressed: controller.showSeedOptions,
-              )
-            ],
+          const SizedBox(height: 15),
+          const Text(
+            'Make sure you are alone in a safe room',
+            style: TextStyle(color: Colors.grey),
           ),
+          const SizedBox(height: 35),
+          // Row(
+          //   mainAxisSize: MainAxisSize.min,
+          //   children: [
+          //     Expanded(child: controller.passphraseCard!),
+          //     IconButton(
+          //       icon: const Icon(LineIcons.verticalEllipsis),
+          //       onPressed: controller.showSeedOptions,
+          //     )
+          //   ],
+          // ),
+          controller.passphraseCard!,
           const SizedBox(height: 20),
-          TextField(
+          TextFormField(
             controller: controller.addressController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            maxLines: 2,
+            validator: (text) => text!.isEmpty ? 'Address is required' : null,
             decoration: Styles.inputDecoration.copyWith(
               labelText: 'Address',
             ),
           ),
           const SizedBox(height: 20),
-          TextField(
+          TextFormField(
             controller: controller.descriptionController,
             minLines: 1,
             maxLines: 4,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (text) =>
+                text!.isEmpty ? 'Description is required' : null,
             decoration: Styles.inputDecoration.copyWith(
               labelText: 'Description',
             ),
@@ -72,11 +84,6 @@ class SeedScreen extends GetView<SeedScreenController> {
                 labelText: 'Distributed Ledger Technology',
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 20),
           if (mode == 'update') ...[
@@ -110,6 +117,12 @@ class SeedScreen extends GetView<SeedScreenController> {
               style: Styles.elevatedButtonStyle,
             )
           ],
+          const SizedBox(height: 20),
+          const Text(
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            style: TextStyle(color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
           const SizedBox(height: 30),
         ],
       ),

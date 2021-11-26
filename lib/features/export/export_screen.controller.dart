@@ -134,8 +134,6 @@ class ExportScreenController extends GetxController
 
     final vaultJsonString = jsonEncode(vault.toJson());
 
-    console.info('vault json: $vaultJsonString');
-
     final walletAddress = master.privateKey.address.hexEip55;
     final exportFileName =
         'liso_vault_${walletAddress}_${DateTime.now().millisecondsSinceEpoch}.json';

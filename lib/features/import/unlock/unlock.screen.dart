@@ -40,14 +40,14 @@ class UnlockImportedScreen extends GetView<UnlockImportedScreenController>
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 30),
-        TextField(
+        TextFormField(
           controller: controller.passwordController,
           textAlign: TextAlign.center,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           textInputAction: TextInputAction.next,
           onChanged: controller.onChanged,
-          onSubmitted: (text) => controller.unlock(),
+          onFieldSubmitted: (text) => controller.unlock(),
           decoration: Styles.inputDecoration.copyWith(
             hintText: 'Vault Password',
           ),

@@ -21,7 +21,11 @@ class MainScreen extends GetView<MainScreenController> {
 
       return ListItemAnimation(
         child: ListTile(
-          title: Text(object.address),
+          title: Text(
+            object.address,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
           subtitle: Text(object.description),
           onTap: () => Get.toNamed(Routes.seed, parameters: {
             'mode': 'update',

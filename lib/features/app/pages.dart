@@ -43,64 +43,55 @@ class AppPages {
       transition: Transition.fadeIn,
     ),
     GetPage(
-      name: Routes.createPassword,
-      page: () => const CreatePasswordScreen(),
-      binding: CreatePasswordScreenBinding(),
-      transition: Transition.fadeIn,
-    ),
-    GetPage(
       name: Routes.unlock,
       page: () => const UnlockScreen(),
       binding: UnlockScreenBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(
+      name: Routes.createPassword,
+      page: () => const CreatePasswordScreen(),
+      binding: CreatePasswordScreenBinding(),
+    ),
+    GetPage(
       name: Routes.reset,
       page: () => const ResetScreen(),
       binding: ResetScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.seed,
       page: () => const SeedScreen(),
       binding: SeedScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.unlockImported,
       page: () => const UnlockImportedScreen(),
       binding: UnlockImportedScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.import,
       page: () => const ImportScreen(),
       binding: ImportScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.export,
       page: () => const ExportScreen(),
       binding: ExportScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.mnemonic,
       page: () => const MnemonicScreen(),
       binding: MnemonicScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.settings,
       page: () => const SettingsScreen(),
       binding: SettingsScreenBinding(),
-      transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.about,
       page: () => const AboutScreen(),
       binding: AboutScreenBinding(),
-      transition: Transition.fadeIn,
     ),
   ];
 }

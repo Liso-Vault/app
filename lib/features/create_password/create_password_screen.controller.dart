@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -13,7 +12,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:web3dart/web3dart.dart';
+import 'package:web3dart/credentials.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
   @override
@@ -60,11 +59,10 @@ class CreatePasswordScreenController extends GetxController
       return console.error('Passwords do not match');
     }
 
-    final mnemonic = bip39.generateMnemonic(strength: 256);
-    final seedHex = bip39.mnemonicToSeedHex(mnemonic);
+    final seedHex = Get.parameters['seedHex'];
 
     final wallet = Wallet.createNew(
-      EthPrivateKey.fromHex(seedHex),
+      EthPrivateKey.fromHex(seedHex!),
       passwordController.text,
       Random.secure(),
     );
@@ -80,6 +78,7 @@ class CreatePasswordScreenController extends GetxController
     await LisoManager.init();
 
     change(null, status: RxStatus.success());
-    Get.toNamed(Routes.mnemonic, parameters: {'mnemonic': mnemonic});
+
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

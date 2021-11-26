@@ -57,8 +57,6 @@ class UnlockScreenController extends GetxController
         await file.readAsString(),
         passwordController.text,
       );
-
-      console.info('wallet: ${wallet.toJson()}');
     } catch (e) {
       console.error('wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());

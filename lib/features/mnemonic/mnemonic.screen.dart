@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 
 import 'mnemonic_screen.controller.dart';
@@ -14,8 +13,6 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final mnemonic = Get.parameters['mnemonic'];
-
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -30,15 +27,17 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         ),
         const SizedBox(height: 15),
         const Text(
-          "This is the secure and auto-generated 24 words mnemonic seed phrase.",
+          "Please carefully write down your seed and export it to a safe location",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 15),
-        Text(
-          mnemonic!,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 25),
+        Obx(
+          () => Text(
+            controller.mnemonic.value,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
+          ),
         ),
         const SizedBox(height: 20),
         const Divider(),
@@ -78,7 +77,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         child: Center(
           child: Container(
             constraints: Styles.containerConstraints,
-            child: content,
+            child: SingleChildScrollView(child: content),
           ),
         ),
       ),

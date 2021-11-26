@@ -23,6 +23,7 @@ dependencies:
   hive_flutter: 1.1.0
   get_storage: 2.0.3 # persistence
   path_provider: 2.0.6
+  path: ^1.8.0
   file_picker: ^4.2.4 # exporting + importing
 
   # UI
@@ -39,6 +40,7 @@ dependencies:
   supercharged: 2.1.1
   flutter_linkify: 5.0.2
   fk_user_agent: 2.0.1
+  wc_form_validators: ^1.0.0
 
   # INFO
   device_info_plus: 3.1.1

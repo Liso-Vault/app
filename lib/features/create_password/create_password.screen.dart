@@ -29,7 +29,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 30),
-        TextField(
+        TextFormField(
           controller: controller.passwordController,
           textAlign: TextAlign.center,
           keyboardType: TextInputType.visiblePassword,
@@ -40,13 +40,13 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           ),
         ),
         const SizedBox(height: 10),
-        TextField(
+        TextFormField(
           controller: controller.passwordConfirmController,
           textAlign: TextAlign.center,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           textInputAction: TextInputAction.send,
-          onSubmitted: (text) => controller.confirm,
+          onFieldSubmitted: (text) => controller.confirm,
           decoration: Styles.inputDecoration.copyWith(
             hintText: 'Confirm Password',
           ),
@@ -76,7 +76,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           child: Container(
             constraints: Styles.containerConstraints,
             child: controller.obx(
-              (_) => content,
+              (_) => SingleChildScrollView(child: content),
               onLoading: const BusyIndicator(),
             ),
           ),

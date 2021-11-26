@@ -12,7 +12,14 @@ class LisoManager {
 
   static Future<void> init() async {
     final cipher = HiveAesCipher(encryptionKey!);
-    HiveManager.seeds = await Hive.openBox('seeds', encryptionCipher: cipher);
+
+    try {
+      HiveManager.seeds = await Hive.openBox('seeds', encryptionCipher: cipher);
+    } on HiveError {
+      console.error('HiveError');
+      await HiveManager.fixCorruptedBox();
+    }
+
     console.warning('seeds: ${HiveManager.seeds!.length}');
   }
 

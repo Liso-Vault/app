@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/get.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:liso/core/utils/console.dart';
 
@@ -12,9 +12,7 @@ enum PassphraseMode {
 
 class PassphraseCardController extends GetxController with ConsoleMixin {
   // VARIABLES
-  final seedController = TextEditingController();
-
-  String seed24 = '', seed12 = '';
+  final mnemonicController = TextEditingController();
 
   // PROPERTIES
 
@@ -25,13 +23,10 @@ class PassphraseCardController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void init({final mode = PassphraseMode.create, String phrase = ''}) {
-    seedController.text = phrase;
+    mnemonicController.text = phrase;
 
     if (mode == PassphraseMode.create) {
-      // generate seed
-      generateSeed();
-      // show generated seed
-      strengthIndexChanged(0);
+      generateSeed(strength: 256);
     } else if (mode == PassphraseMode.confirm) {
       //
     } else if (mode == PassphraseMode.import) {
@@ -41,28 +36,12 @@ class PassphraseCardController extends GetxController with ConsoleMixin {
     }
   }
 
-  void strengthIndexChanged(int index) {
-    if (index == 0) {
-      seedController.text = seed24;
-    } else {
-      seedController.text = seed12;
-    }
+  void generateSeed({required int strength}) {
+    mnemonicController.text = bip39.generateMnemonic(strength: strength);
   }
 
-  void generateSeed() {
-    seed24 = bip39.generateMnemonic(strength: 256);
-  }
-
-  void generate12Seed() {
-    seedController.text = bip39.generateMnemonic(strength: 128);
-  }
-
-  void generate24Seed() {
-    seedController.text = bip39.generateMnemonic(strength: 256);
-  }
-
-  String? validateSeed(String seedPhrase) {
-    if (seedPhrase.isEmpty || !bip39.validateMnemonic(seedPhrase)) {
+  String? validateSeed(String mnemonic) {
+    if (mnemonic.isEmpty || !bip39.validateMnemonic(mnemonic)) {
       return 'Invalid seed phrase';
     } else {
       return null;

@@ -30,7 +30,7 @@ class App extends StatelessWidget {
       transitionDuration: 200.milliseconds,
       // THEMING
       darkTheme: FlexColorScheme.dark(
-        scheme: FlexScheme.blue,
+        scheme: FlexScheme.green,
       ).toTheme, // dark
       themeMode: ThemeMode.dark,
       // UNKNOWN ROUTE FALLBACK SCREEN

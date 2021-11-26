@@ -1,6 +1,7 @@
 // COMPANY
 const kName = 'Liso';
-const kDescription = 'We build the future of Apps';
+const kDescription =
+    'Open source AES 256 military-grade encrypted digital vault for your mnemonic seeds';
 const kEmail = 'support@nemorystudios.dev';
 const kGooglePlayUrl =
     'https://play.google.com/store/apps/dev?id=7470073434502409036';

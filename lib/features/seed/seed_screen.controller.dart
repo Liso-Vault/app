@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/metadata.hive.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/selector.sheet.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/passphrase_card/passphrase.card.dart';
@@ -72,7 +74,7 @@ class SeedScreenController extends GetxController
       passphraseCard = const PassphraseCard(mode: PassphraseMode.none);
     } else if (mode == 'update') {
       final index = int.parse(Get.parameters['index'].toString());
-      object = HiveManager.seeds?.getAt(index);
+      object = HiveManager.seeds!.getAt(index);
 
       passphraseCard = PassphraseCard(
         mode: PassphraseMode.none,
@@ -97,19 +99,30 @@ class SeedScreenController extends GetxController
         SelectorItem(
           title: 'Generate 12 words',
           leading: const Icon(Icons.refresh),
-          onSelected: passphraseCard!.controller.generate12Seed,
+          onSelected: () =>
+              passphraseCard!.controller.generateSeed(strength: 128),
         ),
         SelectorItem(
           title: 'Generate 24 words',
           leading: const Icon(Icons.refresh),
-          onSelected: passphraseCard!.controller.generate24Seed,
+          onSelected: () =>
+              passphraseCard!.controller.generateSeed(strength: 256),
         ),
       ],
     ).show();
   }
 
   void add() async {
-    if (!formKey.currentState!.validate()) return;
+    if (!formKey.currentState!.validate()) {
+      UIUtils.showSnackBar(
+        title: 'Invalid mnemonic phrase',
+        message: 'Please check your mnemonic seed phrase',
+        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+        seconds: 4,
+      );
+
+      return;
+    }
 
     final newSeed = HiveSeed(
       mnemonic: passphraseCard!.obtainMnemonicPhrase()!,
@@ -119,6 +132,22 @@ class SeedScreenController extends GetxController
       origin: selectedOrigin.value,
       metadata: await HiveMetadata.get(),
     );
+
+    final exists = HiveManager.seeds!.values
+        .where((e) =>
+            e.address == newSeed.address || e.mnemonic == newSeed.mnemonic)
+        .isNotEmpty;
+
+    if (exists) {
+      UIUtils.showSnackBar(
+        title: 'Already exists',
+        message: 'Either the address or mnemonic phrase already exists',
+        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+        seconds: 4,
+      );
+
+      return;
+    }
 
     await HiveManager.seeds!.add(newSeed);
     MainScreenController.to.load();
