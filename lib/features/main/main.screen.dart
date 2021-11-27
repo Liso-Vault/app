@@ -59,7 +59,7 @@ class MainScreen extends GetView<MainScreenController> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text(kName)),
+      appBar: AppBar(title: const Text(kAppName)),
       drawer: const ZDrawer(),
       floatingActionButton: floatingButton,
       body: content,

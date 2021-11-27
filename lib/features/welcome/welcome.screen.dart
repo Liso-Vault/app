@@ -23,12 +23,12 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           Image.asset(Images.logo, width: 100),
           const SizedBox(height: 20),
           const Text(
-            kName,
+            kAppName,
             style: TextStyle(fontSize: 40),
           ),
           const SizedBox(height: 10),
           const Text(
-            kDescription,
+            kAppDescription,
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),

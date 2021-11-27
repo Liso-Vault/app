@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -25,6 +26,7 @@ class CreatePasswordScreenBinding extends Bindings {
 class CreatePasswordScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
+  final formKey = GlobalKey<FormState>();
   final passwordController = TextEditingController();
   final passwordConfirmController = TextEditingController();
 
@@ -42,6 +44,8 @@ class CreatePasswordScreenController extends GetxController
   // FUNCTIONS
 
   void confirm() async {
+    if (!formKey.currentState!.validate()) return;
+
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 

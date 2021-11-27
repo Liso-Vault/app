@@ -1,16 +1,20 @@
 // COMPANY
-const kName = 'Liso';
-const kDescription =
+const kAppName = 'Liso';
+const kAppDescription =
     'A free + open source + cross-platform + military-grade encrypted offline digital vault for all your precious mnemonic seed phrases.';
-const kEmail = 'support@nemorystudios.dev';
+const kAppWebsiteUrl = 'https://liso-vault.github.io';
+const kAppGithubUrl = 'https://github.com/Liso-Vault/app';
+const kAppTwitterUrl = 'https://twitter.com/nemoryoliver';
+const kAppFacebookUrl = 'https://facebook.com/nemoryoliver';
+const kAppInstagramUrl = 'https://instagram.com/nemoryoliver';
+const kAppEmail = 'nemoryoliver@gmail.com'; // TODO: setup custom email
+
+const kDeveloperName = 'Oliver Martinez';
+const kDeveloperTwitterHandle = '@nemoryoliver';
+const kDeveloperTwitterUrl = 'https://twitter.com/nemoryoliver';
 const kGooglePlayUrl =
     'https://play.google.com/store/apps/dev?id=7470073434502409036';
 const kAppStoreUrl = 'https://apps.apple.com/developer/id1506846217';
-
-// SOCIAL
-const kTwitterUrl = 'https://twitter.com/nemory';
-const kFacebookUrl = 'https://facebook.com/nemorystudios';
-const kInstagramUrl = 'https://instagram.com/nemorystudios';
 
 // APPS
 const kBluerUrl =

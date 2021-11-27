@@ -106,7 +106,8 @@ class ExportScreenController extends GetxController
 
       UIUtils.showSnackBar(
         title: 'Incorrect password',
-        message: '${attemptsLeft.value} attempts left until your $kName resets',
+        message:
+            '${attemptsLeft.value} attempts left until your $kAppName resets',
         icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
         seconds: 4,
       );

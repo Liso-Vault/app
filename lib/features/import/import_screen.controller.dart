@@ -44,23 +44,14 @@ class ImportScreenController extends GetxController
   // FUNCTIONS
 
   void continuePressed() async {
+    if (!formKey.currentState!.validate()) return;
+
     final masterSeedPhrase = passphraseCard.obtainMnemonicPhrase();
-
-    if (masterSeedPhrase == null || filePathController.text.isEmpty) {
-      UIUtils.showSnackBar(
-        title: 'Complete required fields',
-        message: 'Please fill the required fields',
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-        seconds: 4,
-      );
-
-      return;
-    }
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final masterSeedHex = bip39.mnemonicToSeedHex(masterSeedPhrase);
+    final masterSeedHex = bip39.mnemonicToSeedHex(masterSeedPhrase!);
     final masterPassword = masterSeedHex.substring(0, 32);
 
     final file = File(filePathController.text);

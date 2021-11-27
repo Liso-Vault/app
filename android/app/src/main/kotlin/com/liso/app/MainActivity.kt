@@ -1,4 +1,4 @@
-package com.example.liso
+package com.liso.app
 
 import io.flutter.embedding.android.FlutterActivity
 

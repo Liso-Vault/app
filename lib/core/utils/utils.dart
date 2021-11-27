@@ -9,7 +9,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class Utils {
   // TODO: improve password validation
-  static String validatePassword(String text) {
+  static String? validatePassword(String text) {
     const min = 8;
     const max = 30;
 
@@ -20,7 +20,7 @@ class Utils {
     } else if (text.length > max) {
       return "That's a lot of a password";
     } else {
-      return '';
+      return null;
     }
   }
 
