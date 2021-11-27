@@ -33,10 +33,13 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         ),
         const SizedBox(height: 15),
         Obx(
-          () => Text(
-            controller.mnemonic.value,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
+          () => GestureDetector(
+            onLongPress: controller.options,
+            child: Text(
+              controller.mnemonic.value,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
+            ),
           ),
         ),
         const SizedBox(height: 20),

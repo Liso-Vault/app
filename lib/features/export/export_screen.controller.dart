@@ -10,7 +10,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -66,10 +65,11 @@ class ExportScreenController extends GetxController
     final directory = await getApplicationSupportDirectory();
     final walletFile = File('${directory.path}/$kVaultFileName');
 
-    Wallet? master;
+    // this is just to unlock the local master wallet
+    Wallet? masterWallet;
 
     try {
-      master = Wallet.fromJson(
+      masterWallet = Wallet.fromJson(
         await walletFile.readAsString(),
         passwordController.text,
       );
@@ -114,18 +114,25 @@ class ExportScreenController extends GetxController
 
       final wallet = Wallet.createNew(
         EthPrivateKey.fromHex(seedHex),
-        passwordController.text,
+        utf8.decode(encryptionKey!), // 32 byte master seed hex as the password
         Random.secure(),
       );
 
       return VaultSeed(seed: e, wallet: wallet);
     }).toList();
 
+    final exportMasterWallet = Wallet.createNew(
+      masterWallet.privateKey,
+      utf8.decode(encryptionKey!), // 32 byte master seed hex as the password
+      Random.secure(),
+    );
+
     // Construct LisoVault object
-    final vault = LisoVault(master: master, seeds: seeds);
+    final vault = LisoVault(master: exportMasterWallet, seeds: seeds);
     final vaultJsonString = await vault.toJsonStringEncrypted();
 
-    final walletAddress = master.privateKey.address.hexEip55;
+    final walletAddress = masterWallet.privateKey.address.hexEip55;
+    // TODO: improve vault file name format
     final exportFileName =
         'liso_vault_${walletAddress}_${DateTime.now().millisecondsSinceEpoch}.json';
     final exportFile = File('$exportPath/$exportFileName');

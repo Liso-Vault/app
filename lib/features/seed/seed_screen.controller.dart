@@ -98,13 +98,13 @@ class SeedScreenController extends GetxController
       items: [
         SelectorItem(
           title: 'Generate 12 words',
-          leading: const Icon(Icons.refresh),
+          leading: const Icon(LineIcons.syncIcon),
           onSelected: () =>
               passphraseCard!.controller.generateSeed(strength: 128),
         ),
         SelectorItem(
           title: 'Generate 24 words',
-          leading: const Icon(Icons.refresh),
+          leading: const Icon(LineIcons.syncIcon),
           onSelected: () =>
               passphraseCard!.controller.generateSeed(strength: 256),
         ),

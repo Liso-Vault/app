@@ -85,7 +85,7 @@ class UnlockImportedScreenController extends GetxController
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
     // initialize crypter with encryption key
     final crypter = LisoCrypter();
-    await crypter.initSecretyKey(encryptionKey!);
+    await crypter.initSecretKey(encryptionKey!);
     // init Liso Manager
     await LisoManager.init();
 

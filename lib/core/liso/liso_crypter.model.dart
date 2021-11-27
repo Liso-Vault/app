@@ -21,7 +21,7 @@ class LisoCrypter with ConsoleMixin {
   // VARIABLES
   SecretKey? secretKey;
 
-  Future<void> initSecretyKey(List<int> bytes) async {
+  Future<void> initSecretKey(List<int> bytes) async {
     secretKey = await algorithm.newSecretKeyFromBytes(bytes);
   }
 

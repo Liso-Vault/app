@@ -60,6 +60,7 @@ class CreatePasswordScreenController extends GetxController
       return console.error('Passwords do not match');
     }
 
+    // write a local master wallet
     final seedHex = Get.parameters['seedHex'];
 
     final wallet = Wallet.createNew(
@@ -77,8 +78,7 @@ class CreatePasswordScreenController extends GetxController
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
     // initialize crypter with encryption key
     final crypter = LisoCrypter();
-    await crypter.initSecretyKey(encryptionKey!);
-
+    crypter.initSecretKey(encryptionKey!);
     await LisoManager.init();
 
     change(null, status: RxStatus.success());

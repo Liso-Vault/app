@@ -8,8 +8,9 @@ import 'package:web3dart/credentials.dart';
 class LisoVault {
   final Wallet? master;
   final List<VaultSeed> seeds;
+  final int version;
 
-  LisoVault({this.master, this.seeds = const []});
+  LisoVault({this.master, this.seeds = const [], this.version = 1});
 
   factory LisoVault.fromJson(Map<String, dynamic> json, String password) =>
       LisoVault(
@@ -17,6 +18,7 @@ class LisoVault {
         seeds: List<VaultSeed>.from(
           json["seeds"].map((x) => VaultSeed.fromJson(x, password)),
         ),
+        version: json["version"],
       );
 
   Future<Map<String, dynamic>> toJsonEncrypted() async {
@@ -31,6 +33,7 @@ class LisoVault {
     return {
       "master": master?.toJson(),
       "seeds": encryptedSeeds.toJson(),
+      "version": version,
     };
   }
 
