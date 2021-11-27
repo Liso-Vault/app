@@ -19,14 +19,20 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         const Icon(LineIcons.alternateShield, size: 100),
         const SizedBox(height: 20),
         const Text(
-          'Export Vault',
+          'Export Vault File',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
         const Text(
-          "You'll be prompted to save a $kVaultFileName file. Please store it safely in an offline location.",
+          "You'll be prompted to save a ${kVaultFileNamePrefix}_xxx.json file. Please store it safely in an offline location.",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          "This will overwrite your previous exported vault file",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
         ),
         const SizedBox(height: 30),
         TextFormField(
@@ -60,16 +66,14 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Export'),
-      ),
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(
           child: Container(
             constraints: Styles.containerConstraints,
             child: controller.obx(
-              (_) => content,
+              (_) => SingleChildScrollView(child: content),
               onLoading: const BusyIndicator(),
             ),
           ),

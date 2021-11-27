@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import 'unlock_screen.controller.dart';
@@ -13,30 +12,18 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final importMode = Get.parameters['file_path'] != null;
-
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(
-          importMode ? LineIcons.alternateShield : LineIcons.lock,
-          size: 100,
-        ),
+        const Icon(LineIcons.lock, size: 100),
         const SizedBox(height: 20),
-        Text(
-          importMode ? 'Unlock Vault' : 'Welcome Back',
-          style: const TextStyle(fontSize: 20),
+        const Text(
+          'Unlock Liso Vault',
+          style: TextStyle(fontSize: 20),
         ),
-        if (importMode) ...[
-          const SizedBox(height: 15),
-          Text(
-            Get.parameters['file_path']!,
-            textAlign: TextAlign.center,
-          ),
-        ],
         const SizedBox(height: 15),
         const Text(
-          'Enter the password to access the vault',
+          'Enter the password to decrypt the vault',
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 30),
@@ -60,22 +47,19 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             onPressed: controller.canProceed() ? controller.unlock : null,
           ),
         ),
-        if (!importMode) ...[
-          const SizedBox(height: 10),
-          Obx(
-            () => Text(
-              '${controller.attemptsLeft()} attempts left',
-              style: const TextStyle(color: Colors.grey),
-            ),
+        const SizedBox(height: 10),
+        Obx(
+          () => Text(
+            '${controller.attemptsLeft()} attempts left',
+            style: const TextStyle(color: Colors.grey),
           ),
-        ]
+        ),
       ],
     );
 
     return WillPopScope(
-      onWillPop: () => Future.value(importMode),
+      onWillPop: () => Future.value(false),
       child: Scaffold(
-        appBar: importMode ? AppBar(title: const Text('Unlock Vault')) : null,
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Center(

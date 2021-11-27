@@ -16,6 +16,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:web3dart/web3dart.dart';
 
 class ExportScreenBinding extends Bindings {
@@ -48,9 +49,25 @@ class ExportScreenController extends GetxController
   void onChanged(String text) => canProceed.value = text.isNotEmpty;
 
   void unlock() async {
+    if (GetPlatform.isMobile) {
+      final storagePermissionGranted =
+          await Permission.storage.request().isGranted;
+
+      if (!storagePermissionGranted) {
+        UIUtils.showSnackBar(
+          title: 'Storage Permission Denied',
+          message: "Please allow storage permission to enable exporting",
+          icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+          seconds: 4,
+        );
+
+        return;
+      }
+    }
+
     if (HiveManager.seeds!.values.isEmpty) {
       UIUtils.showSnackBar(
-        title: 'Export Failed',
+        title: 'Nothing to export',
         message: "There's nothing to export. Please add your seeds first.",
         icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
         seconds: 4,
@@ -63,7 +80,7 @@ class ExportScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     final directory = await getApplicationSupportDirectory();
-    final walletFile = File('${directory.path}/$kVaultFileName');
+    final walletFile = File('${directory.path}/$kLocalMasterWalletFileName');
 
     // this is just to unlock the local master wallet
     Wallet? masterWallet;
@@ -133,8 +150,7 @@ class ExportScreenController extends GetxController
 
     final walletAddress = masterWallet.privateKey.address.hexEip55;
     // TODO: improve vault file name format
-    final exportFileName =
-        'liso_vault_${walletAddress}_${DateTime.now().millisecondsSinceEpoch}.json';
+    final exportFileName = '${kVaultFileNamePrefix}_$walletAddress.json';
     final exportFile = File('$exportPath/$exportFileName');
 
     try {

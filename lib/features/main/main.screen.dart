@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/animations/animations.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';

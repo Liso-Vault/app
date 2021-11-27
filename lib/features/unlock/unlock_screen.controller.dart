@@ -7,6 +7,7 @@ import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -47,7 +48,7 @@ class UnlockScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     final vaultFilePath =
-        '${(await getApplicationSupportDirectory()).path}/$kVaultFileName';
+        '${(await getApplicationSupportDirectory()).path}/$kLocalMasterWalletFileName';
     final file = File(vaultFilePath);
 
     Wallet? wallet;
@@ -85,6 +86,9 @@ class UnlockScreenController extends GetxController
     final seedHex = HEX.encode(wallet.privateKey.privateKey);
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
+    final crypter = LisoCrypter();
+    await crypter.initSecretKey(encryptionKey!);
+    // init Liso Manager
     await LisoManager.init();
 
     change(null, status: RxStatus.success());

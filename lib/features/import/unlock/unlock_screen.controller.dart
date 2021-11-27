@@ -91,7 +91,7 @@ class UnlockImportedScreenController extends GetxController
 
     // write imported master wallet to disk
     final localVaultFilePath =
-        '${(await getApplicationSupportDirectory()).path}/$kVaultFileName';
+        '${(await getApplicationSupportDirectory()).path}/$kLocalMasterWalletFileName';
     await File(localVaultFilePath).writeAsString(masterWallet.toJson());
 
     // Convert Wallet objects to Hive objects

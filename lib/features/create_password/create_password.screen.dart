@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -26,7 +25,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
         ),
         const SizedBox(height: 15),
         const Text(
-          'This will be the password to unlock $kName',
+          'This will be the password to unlock the vault',
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 30),

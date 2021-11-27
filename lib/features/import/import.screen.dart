@@ -18,7 +18,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
         const Icon(LineIcons.alternateShield, size: 100),
         const SizedBox(height: 20),
         const Text(
-          'Import Vault',
+          'Import Vault File',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
@@ -67,7 +67,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           child: Container(
             constraints: Styles.containerConstraints,
             child: controller.obx(
-              (_) => content,
+              (_) => SingleChildScrollView(child: content),
               onLoading: const BusyIndicator(),
             ),
           ),

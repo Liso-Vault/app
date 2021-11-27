@@ -1,7 +1,7 @@
 // COMPANY
 const kName = 'Liso';
 const kDescription =
-    'Open source AES 256 military-grade encrypted digital vault for your mnemonic seeds';
+    'A free + open source + cross-platform + military-grade encrypted offline digital vault for all your precious mnemonic seed phrases.';
 const kEmail = 'support@nemorystudios.dev';
 const kGooglePlayUrl =
     'https://play.google.com/store/apps/dev?id=7470073434502409036';
@@ -23,7 +23,8 @@ const kShoutBoxUrl =
     'https://play.google.com/store/apps/details?id=com.stackwares.android.shoutbox';
 
 // APP
-const kVaultFileName = 'master_wallet.json';
+const kLocalMasterWalletFileName = 'master_wallet.json';
+const kVaultFileNamePrefix = 'liso_vault';
 
 // CRYPTO
 List<int>? encryptionKey;

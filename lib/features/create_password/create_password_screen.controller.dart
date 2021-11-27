@@ -70,7 +70,7 @@ class CreatePasswordScreenController extends GetxController
     );
 
     final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$kVaultFileName');
+    final file = File('${directory.path}/$kLocalMasterWalletFileName');
     await file.writeAsString(wallet.toJson());
     console.info('written: ${file.path}');
     console.info(await file.readAsString());
@@ -78,7 +78,8 @@ class CreatePasswordScreenController extends GetxController
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
     // initialize crypter with encryption key
     final crypter = LisoCrypter();
-    crypter.initSecretKey(encryptionKey!);
+    await crypter.initSecretKey(encryptionKey!);
+    // init Liso Manager
     await LisoManager.init();
 
     change(null, status: RxStatus.success());

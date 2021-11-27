@@ -94,6 +94,7 @@ class ImportScreenController extends GetxController
     // // initialize crypter with encryption key
     final crypter = LisoCrypter();
     await crypter.initSecretKey(encryptionKey!);
+    // init Liso Manager
     await LisoManager.init();
 
     // Convert Wallet objects to Hive objects

@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
-import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
 class ResetScreen extends GetView<ResetScreenController> {

@@ -25,7 +25,7 @@ class LisoManager {
 
   static Future<bool> authenticated() async {
     final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$kVaultFileName');
+    final file = File('${directory.path}/$kLocalMasterWalletFileName');
     return await file.exists();
   }
 
@@ -34,7 +34,7 @@ class LisoManager {
 
     // wallet file
     final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$kVaultFileName');
+    final file = File('${directory.path}/$kLocalMasterWalletFileName');
     if (await file.exists()) await file.delete();
 
     // hives
