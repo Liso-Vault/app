@@ -1,3 +1,4 @@
+import 'package:blur/blur.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +14,15 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
 
   @override
   Widget build(BuildContext context) {
+    final mnemonicPhrase = GestureDetector(
+      onLongPress: controller.options,
+      child: Text(
+        controller.mnemonic.value,
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
+      ),
+    );
+
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -33,13 +43,29 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         ),
         const SizedBox(height: 15),
         Obx(
-          () => GestureDetector(
-            onLongPress: controller.options,
-            child: Text(
-              controller.mnemonic.value,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
-            ),
+          () => IndexedStack(
+            index: controller.passphraseIndexedStack(),
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10),
+                    child: Blur(
+                      blur: 5.0,
+                      blurColor: Colors.grey.shade900,
+                      child: mnemonicPhrase,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(LineIcons.eye),
+                    onPressed: () =>
+                        controller.passphraseIndexedStack.value = 1,
+                  ),
+                ],
+              ),
+              mnemonicPhrase,
+            ],
           ),
         ),
         const SizedBox(height: 20),

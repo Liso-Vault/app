@@ -1,7 +1,7 @@
 // COMPANY
 const kAppName = 'Liso';
 const kAppDescription =
-    'A free + open source + cross-platform + military-grade encrypted offline digital vault for all your precious mnemonic seed phrases.';
+    'A free + open source + cross-platform + military-grade encrypted offline digital vault for all your precious mnemonic seed phrases';
 const kAppWebsiteUrl = 'https://liso-vault.github.io';
 const kAppGithubUrl = 'https://github.com/Liso-Vault/app';
 const kAppTwitterUrl = 'https://twitter.com/nemoryoliver';

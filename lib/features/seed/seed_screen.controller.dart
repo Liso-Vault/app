@@ -7,6 +7,7 @@ import 'package:liso/core/hive/models/metadata.hive.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/selector.sheet.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/passphrase_card/passphrase.card.dart';
@@ -18,7 +19,10 @@ const originItems = [
   'Exodus',
   'MyEtherWallet',
   'BitGo',
-  'Math Wallet'
+  'Math Wallet',
+  'Syrius',
+  'Cano',
+  'Other',
 ];
 
 const ledgerItems = [
@@ -27,6 +31,8 @@ const ledgerItems = [
   'Directed Acyclic Graph',
   'Holochain',
   'Tempo',
+  'Zenon Network',
+  'Other',
 ];
 
 class SeedScreenBinding extends Bindings {
@@ -50,17 +56,41 @@ class SeedScreenController extends GetxController
 
   final originDropdownItems = originItems
       .map(
-        (e) => DropdownMenuItem(child: Text(e), value: e),
+        (e) => DropdownMenuItem(
+          child: Row(
+            children: [
+              Image.asset(
+                Utils.originImageParser(e),
+                width: 15,
+              ),
+              const SizedBox(width: 10),
+              Text(e),
+            ],
+          ),
+          value: e,
+        ),
       )
       .toList();
 
   final ledgerDropdownItems = ledgerItems
       .map(
-        (e) => DropdownMenuItem(child: Text(e), value: e),
+        (e) => DropdownMenuItem(
+          child: Row(
+            children: [
+              const Icon(LineIcons.connectDevelop, size: 15),
+              const SizedBox(width: 10),
+              Text(e),
+            ],
+          ),
+          value: e,
+        ),
       )
       .toList();
 
   // PROPERTIES
+  final passphraseIndexedStack =
+      (Get.parameters['mode'] == 'update' ? 0 : 1).obs;
+  final blurred = true.obs;
   final selectedOrigin = originItems.first.obs;
   final selectedLedger = ledgerItems.first.obs;
 
@@ -100,13 +130,13 @@ class SeedScreenController extends GetxController
           title: 'Generate 12 words',
           leading: const Icon(LineIcons.syncIcon),
           onSelected: () =>
-              passphraseCard!.controller.generateSeed(strength: 128),
+              PassphraseCardController.to.generateSeed(strength: 128),
         ),
         SelectorItem(
           title: 'Generate 24 words',
           leading: const Icon(LineIcons.syncIcon),
           onSelected: () =>
-              passphraseCard!.controller.generateSeed(strength: 256),
+              PassphraseCardController.to.generateSeed(strength: 256),
         ),
       ],
     ).show();

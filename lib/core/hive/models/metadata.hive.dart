@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:liso/core/utils/utils.dart';
 
 import 'app.hive.dart';
 import 'device.hive.dart';
@@ -15,6 +16,11 @@ class HiveMetadata extends HiveObject {
   DateTime createdTime;
   @HiveField(3)
   DateTime updatedTime;
+
+  // TODO: format time
+
+  // GETTERS
+  String get updatedTimeAgo => Utils.timeAgo(updatedTime);
 
   HiveMetadata({
     required this.device,
@@ -39,8 +45,8 @@ class HiveMetadata extends HiveObject {
 
   Future<HiveMetadata> getUpdated() async {
     return HiveMetadata(
-      app: app,
-      device: device,
+      app: await HiveApp.get(),
+      device: await HiveDevice.get(),
       createdTime: createdTime,
       updatedTime: DateTime.now().toUtc(),
     );

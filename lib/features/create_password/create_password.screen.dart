@@ -31,30 +31,34 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 30),
-          TextFormField(
-            controller: controller.passwordController,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: true,
-            textInputAction: TextInputAction.next,
-            validator: (text) => Utils.validatePassword(text!),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            decoration: Styles.inputDecoration.copyWith(
-              hintText: 'Password',
+          Obx(
+            () => TextFormField(
+              controller: controller.passwordController,
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: controller.obscure(),
+              textInputAction: TextInputAction.next,
+              validator: (text) => Utils.validatePassword(text!),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: Styles.inputDecoration.copyWith(
+                hintText: 'Password',
+              ),
             ),
           ),
           const SizedBox(height: 10),
-          TextFormField(
-            controller: controller.passwordConfirmController,
-            textAlign: TextAlign.center,
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: true,
-            textInputAction: TextInputAction.send,
-            onFieldSubmitted: (text) => controller.confirm,
-            validator: (text) => Utils.validatePassword(text!),
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            decoration: Styles.inputDecoration.copyWith(
-              hintText: 'Confirm Password',
+          Obx(
+            () => TextFormField(
+              controller: controller.passwordConfirmController,
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: controller.obscure(),
+              textInputAction: TextInputAction.send,
+              onFieldSubmitted: (text) => controller.confirm,
+              validator: (text) => Utils.validatePassword(text!),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              decoration: Styles.inputDecoration.copyWith(
+                hintText: 'Confirm Password',
+              ),
             ),
           ),
           const SizedBox(height: 20),
@@ -64,11 +68,22 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 20),
-          TextButton.icon(
-            onPressed: controller.confirm,
-            label: const Text('Confirm'),
-            icon: const Icon(LineIcons.check),
-          ),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton.icon(
+                onPressed: controller.confirm,
+                label: const Text('Confirm'),
+                icon: const Icon(LineIcons.check),
+              ),
+              const SizedBox(width: 10),
+              TextButton.icon(
+                onPressed: controller.generate,
+                label: const Text('Generate'),
+                icon: const Icon(LineIcons.flask),
+              ),
+            ],
+          )
         ],
       ),
     );

@@ -11,6 +11,8 @@ enum PassphraseMode {
 }
 
 class PassphraseCardController extends GetxController with ConsoleMixin {
+  static PassphraseCardController get to => Get.find();
+
   // VARIABLES
   final mnemonicController = TextEditingController();
 

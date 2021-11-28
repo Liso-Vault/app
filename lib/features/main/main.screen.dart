@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/animations/animations.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
+import 'package:liso/resources/resources.dart';
 
 import 'drawer/drawer.widget.dart';
 import 'main_screen.controller.dart';
@@ -18,18 +20,60 @@ class MainScreen extends GetView<MainScreenController> {
     Widget itemBuilder(context, index) {
       final object = controller.data[index];
 
+      final title = Text(
+        object.address,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+
+      final subTitle = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            object.description,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Image.asset(
+                Utils.originImageParser(object.origin),
+                width: 15,
+              ),
+              const SizedBox(width: 5),
+              Text(
+                object.origin,
+                style: const TextStyle(fontSize: 10),
+              ),
+              const SizedBox(width: 10),
+              const Icon(LineIcons.connectDevelop, size: 15),
+              const SizedBox(width: 5),
+              Text(
+                object.ledger,
+                style: const TextStyle(fontSize: 10),
+              ),
+              const SizedBox(width: 10),
+              const Icon(LineIcons.clock, size: 15),
+              const SizedBox(width: 5),
+              Text(
+                object.metadata.updatedTimeAgo,
+                style: const TextStyle(fontSize: 10),
+              ),
+            ],
+          )
+        ],
+      );
+
       return ListItemAnimation(
         child: ListTile(
-          title: Text(
-            object.address,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
-          subtitle: Text(object.description),
+          title: title,
+          subtitle: subTitle,
           onTap: () => Get.toNamed(Routes.seed, parameters: {
             'mode': 'update',
             'index': index.toString(),
           }),
+          onLongPress: () => controller.onLongPress(object),
         ),
       );
     }
@@ -40,6 +84,7 @@ class MainScreen extends GetView<MainScreenController> {
         itemCount: controller.data.length,
         itemBuilder: itemBuilder,
         separatorBuilder: (context, index) => const Divider(),
+        padding: const EdgeInsets.only(bottom: 50),
       ),
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
@@ -59,7 +104,19 @@ class MainScreen extends GetView<MainScreenController> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text(kAppName)),
+      appBar: AppBar(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset(Images.logo, height: 17),
+            const SizedBox(width: 10),
+            const Text(
+              kAppName,
+              style: TextStyle(fontSize: 20),
+            )
+          ],
+        ),
+      ),
       drawer: const ZDrawer(),
       floatingActionButton: floatingButton,
       body: content,

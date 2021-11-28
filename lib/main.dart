@@ -2,6 +2,7 @@ import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 
 import 'core/controllers/global.controller.dart';
 import 'core/controllers/persistence.controller.dart';
@@ -16,6 +17,8 @@ void main() async {
   await HiveManager.init();
   // init GetStorage
   await GetStorage.init();
+  // init NotificationManager
+  NotificationsManager.init();
 
   // Initialize Top Controllers
   Get.put(PersistenceController());

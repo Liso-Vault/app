@@ -12,6 +12,7 @@ import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:web3dart/credentials.dart';
@@ -31,6 +32,7 @@ class CreatePasswordScreenController extends GetxController
   final passwordConfirmController = TextEditingController();
 
   // PROPERTIES
+  final obscure = true.obs;
 
   // GETTERS
 
@@ -42,6 +44,13 @@ class CreatePasswordScreenController extends GetxController
   }
 
   // FUNCTIONS
+
+  void generate() {
+    final _password = Utils.generatePassword();
+    passwordController.text = _password;
+    passwordConfirmController.text = _password;
+    obscure.value = false;
+  }
 
   void confirm() async {
     if (!formKey.currentState!.validate()) return;

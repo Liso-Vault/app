@@ -15,7 +15,6 @@ class AboutScreen extends GetView<AboutScreenController> {
   Widget build(BuildContext context) {
     final _content = ListView(
       shrinkWrap: true,
-      padding: const EdgeInsets.all(20),
       children: [
         const SizedBox(height: 20),
         Image.asset(Images.logo, height: 50),
@@ -23,13 +22,16 @@ class AboutScreen extends GetView<AboutScreenController> {
         const Text(
           kAppName,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 17),
+          style: TextStyle(fontSize: 30),
         ),
         const SizedBox(height: 10),
-        const Text(
-          kAppDescription,
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 25),
+          child: Text(
+            kAppDescription,
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.grey),
+          ),
         ),
         const SizedBox(height: 30),
         ListTile(
@@ -70,6 +72,15 @@ class AboutScreen extends GetView<AboutScreenController> {
           title: const Text('Liso Facebook'),
           subtitle: const Text('@liso_vault'),
           onTap: () => launch(kAppFacebookUrl),
+        ),
+        ListTile(
+          leading: const Icon(LineIcons.download),
+          trailing: const Icon(LineIcons.alternateExternalLink),
+          title: const Text('Check for updates'),
+          subtitle: Obx(() => Text(controller.appVersion)),
+          onTap: () {
+            // TODO: check for updates
+          },
         ),
         const SizedBox(height: 20),
         TextButton.icon(

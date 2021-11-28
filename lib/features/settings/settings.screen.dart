@@ -14,7 +14,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
   @override
   Widget build(BuildContext context) {
     final content = ListView(
-      padding: const EdgeInsets.all(20),
       shrinkWrap: true,
       children: [
         const Divider(),

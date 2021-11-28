@@ -1,6 +1,7 @@
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -20,6 +21,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   final mnemonic = ''.obs;
   final chkBackedUpSeed = false.obs;
   final chkWrittenSeed = false.obs;
+  final passphraseIndexedStack = 0.obs;
 
   // GETTERS
   bool get canProceed => chkBackedUpSeed() && chkWrittenSeed();
@@ -43,8 +45,9 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
       title: 'Mnemonic Options',
       items: [
         SelectorItem(
-          title: 'Copy with caution',
-          leading: const Icon(Icons.refresh),
+          title: 'Copy Mnemonic Phrase',
+          subTitle: 'Copy at your own risk',
+          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
           onSelected: () => Utils.copyToClipboard(mnemonic.value),
         ),
       ],

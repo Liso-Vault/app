@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/resources/resources.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class Utils {
@@ -61,5 +62,39 @@ class Utils {
     final _locale =
         (Get.locale?.languageCode ?? 'en_US') + (short ? "_short" : "");
     return timeago.format(dateTime, locale: _locale).replaceFirst("~", "");
+  }
+
+  static String originImageParser(String origin) {
+    String imagePath = OriginImages.other;
+
+    switch (origin) {
+      case 'Metamask':
+        imagePath = OriginImages.metamask;
+        break;
+      case 'TrustWallet':
+        imagePath = OriginImages.trustWallet;
+        break;
+      case 'Exodus':
+        imagePath = OriginImages.exodus;
+        break;
+      case 'MyEtherWallet':
+        imagePath = OriginImages.myetherwallet;
+        break;
+      case 'BitGo':
+        imagePath = OriginImages.bitgo;
+        break;
+      case 'Math Wallet':
+        imagePath = OriginImages.mathWallet;
+        break;
+      case 'Cano':
+        imagePath = OriginImages.cano;
+        break;
+      case 'Syrius':
+        imagePath = OriginImages.syrius;
+        break;
+      default:
+    }
+
+    return imagePath;
   }
 }

@@ -5,8 +5,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/passphrase_card/passphrase_card.controller.dart';
 
-class PassphraseCard extends GetWidget<PassphraseCardController>
-    with ConsoleMixin {
+class PassphraseCard extends StatelessWidget with ConsoleMixin {
   final PassphraseMode mode;
   final String phrase;
 
@@ -17,39 +16,25 @@ class PassphraseCard extends GetWidget<PassphraseCardController>
   }) : super(key: key);
 
   String? obtainMnemonicPhrase() {
-    final seed = controller.mnemonicController.text;
+    final seed = PassphraseCardController.to.mnemonicController.text;
     return bip39.validateMnemonic(seed) ? seed : null;
   }
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PassphraseCardController());
+
     controller.init(mode: mode, phrase: phrase);
 
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Expanded(
-          child: TextFormField(
-            controller: controller.mnemonicController,
-            minLines: 2,
-            maxLines: 5,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            validator: (text) => controller.validateSeed(text!),
-            decoration: Styles.inputDecoration.copyWith(
-              labelText: 'Mnemonic Seed Phrase',
-            ),
-          ),
-        ),
-        // const SizedBox(width: 10),
-        // Obx(
-        //   () => IconButton(
-        //     onPressed: controller.obscured.toggle,
-        //     icon: Icon(
-        //       controller.obscured() ? LineIcons.eyeSlash : LineIcons.eye,
-        //     ),
-        //   ),
-        // ),
-      ],
+    return TextFormField(
+      controller: controller.mnemonicController,
+      minLines: 1,
+      maxLines: 5,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (text) => controller.validateSeed(text!),
+      decoration: Styles.inputDecoration.copyWith(
+        labelText: 'Mnemonic Seed Phrase',
+      ),
     );
   }
 }

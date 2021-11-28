@@ -1,3 +1,4 @@
+import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_view.dart';
@@ -30,25 +31,43 @@ class SeedScreen extends GetView<SeedScreenController> {
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 35),
-          // Row(
-          //   mainAxisSize: MainAxisSize.min,
-          //   children: [
-          //     Expanded(child: controller.passphraseCard!),
-          //     IconButton(
-          //       icon: const Icon(LineIcons.verticalEllipsis),
-          //       onPressed: controller.showSeedOptions,
-          //     )
-          //   ],
-          // ),
-          controller.passphraseCard!,
+          Obx(
+            () => IndexedStack(
+              index: controller.passphraseIndexedStack(),
+              children: [
+                Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Blur(
+                        blur: 2.5,
+                        blurColor: Colors.grey.shade900,
+                        child: controller.passphraseCard!,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(LineIcons.eye),
+                      onPressed: () =>
+                          controller.passphraseIndexedStack.value = 1,
+                    ),
+                  ],
+                ),
+                controller.passphraseCard!,
+              ],
+            ),
+          ),
           const SizedBox(height: 20),
           TextFormField(
             controller: controller.addressController,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            minLines: 1,
             maxLines: 2,
+            maxLength: 60,
             validator: (text) => text!.isEmpty ? 'Address is required' : null,
             decoration: Styles.inputDecoration.copyWith(
               labelText: 'Address',
+              counterText: '',
             ),
           ),
           const SizedBox(height: 20),
@@ -56,11 +75,13 @@ class SeedScreen extends GetView<SeedScreenController> {
             controller: controller.descriptionController,
             minLines: 1,
             maxLines: 4,
+            maxLength: 300,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (text) =>
                 text!.isEmpty ? 'Description is required' : null,
             decoration: Styles.inputDecoration.copyWith(
               labelText: 'Description',
+              counterText: '',
             ),
           ),
           const SizedBox(height: 20),
@@ -117,12 +138,14 @@ class SeedScreen extends GetView<SeedScreenController> {
               style: Styles.elevatedButtonStyle,
             )
           ],
-          const SizedBox(height: 20),
-          const Text(
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            style: TextStyle(color: Colors.grey),
-            textAlign: TextAlign.center,
-          ),
+          if (mode == 'update') ...[
+            const SizedBox(height: 20),
+            Text(
+              'Last updated ${controller.object!.metadata.updatedTime}',
+              style: const TextStyle(color: Colors.grey),
+              textAlign: TextAlign.center,
+            ),
+          ],
           const SizedBox(height: 30),
         ],
       ),
