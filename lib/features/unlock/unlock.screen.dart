@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
+import 'package:liso/resources/resources.dart';
 
 import 'unlock_screen.controller.dart';
 
@@ -15,11 +16,11 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.lock, size: 100),
+        Image.asset(Images.logo, width: 100),
         const SizedBox(height: 20),
         const Text(
           'Unlock Vault',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 15),
         const Text(

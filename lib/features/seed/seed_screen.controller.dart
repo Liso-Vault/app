@@ -183,7 +183,7 @@ class SeedScreenController extends GetxController
       return;
     }
 
-    await HiveManager.seeds!.add(newSeed);
+    await HiveManager.seeds!.putAt(0, newSeed);
 
     NotificationsManager.notify(
       title: 'Seed has been added',
