@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:liso/core/hive/models/seed.hive.dart';
-import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:web3dart/credentials.dart';
@@ -45,19 +44,6 @@ class Isolates {
     }).toList();
   }
 
-  static Future<String> lisoVaultToJsonEncrypted(
-      Map<String, dynamic> params) async {
-    final _encryptionKey = params['encryptionKey'] as List<int>;
-    final vaultJson = jsonDecode(params['vault']);
-
-    final crypter = LisoCrypter();
-    await crypter.initSecretKey(_encryptionKey);
-
-    final vault = LisoVault.fromJson(vaultJson, utf8.decode(_encryptionKey));
-
-    return vault.toJsonStringEncrypted();
-  }
-
   static Future<void> writeStringToFile(Map<String, String> params) async {
     final filePath = params['file_path'] as String;
     final contents = params['contents'] as String;
@@ -72,5 +58,15 @@ class Isolates {
 
   static String iJsonEncode(dynamic params) {
     return jsonEncode(params);
+  }
+
+  static dynamic iJsonDecode(String params) {
+    return jsonDecode(params);
+  }
+
+  static List<dynamic> fromJsonToList(List<dynamic> seeds) {
+    return List<dynamic>.from(
+      seeds.map((x) => x.toJson()),
+    );
   }
 }

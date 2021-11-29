@@ -1,11 +1,14 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:liso/core/liso/crypter.extensions.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
+import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/isolates.dart';
 import 'package:web3dart/credentials.dart';
 
-class LisoVault {
+class LisoVault with ConsoleMixin {
   final Wallet? master;
   final List<VaultSeed> seeds;
   final int version;
@@ -28,12 +31,10 @@ class LisoVault {
       };
 
   Future<Map<String, dynamic>> toJsonEncrypted() async {
-    final _seeds = List<dynamic>.from(
-      seeds.map((x) => x.toJson()),
-    );
+    final _seeds = await compute(Isolates.fromJsonToList, seeds);
 
     final encryptedSeeds = await LisoCrypter().encrypt(
-      utf8.encode(jsonEncode(_seeds)),
+      utf8.encode(await compute(Isolates.iJsonEncode, _seeds)),
     );
 
     return {

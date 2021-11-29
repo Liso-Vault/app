@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,6 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/isolates.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 
 class UnlockScreenBinding extends Bindings {

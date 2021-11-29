@@ -28,7 +28,10 @@ class BusyIndicator extends StatelessWidget {
             ),
             if (message.isNotEmpty) ...[
               const SizedBox(height: 25),
-              Text(message)
+              Text(
+                message,
+                style: const TextStyle(color: Colors.grey),
+              )
             ]
           ],
         ),

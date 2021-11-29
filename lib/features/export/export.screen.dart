@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
@@ -74,7 +73,11 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
             constraints: Styles.containerConstraints,
             child: controller.obx(
               (_) => SingleChildScrollView(child: content),
-              onLoading: const BusyIndicator(),
+              onLoading: Obx(
+                () => BusyIndicator(
+                  message: controller.busyMessage.value,
+                ),
+              ),
             ),
           ),
         ),

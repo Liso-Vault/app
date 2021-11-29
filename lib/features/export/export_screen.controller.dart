@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:file_picker/file_picker.dart';
@@ -36,6 +35,7 @@ class ExportScreenController extends GetxController
   // PROPERTIES
   final attemptsLeft = PersistenceController.to.maxUnlockAttempts.val.obs;
   final canProceed = false.obs;
+  final busyMessage = ''.obs;
 
   // GETTERS
 
@@ -69,6 +69,7 @@ class ExportScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
+    busyMessage.value = 'verifying...';
 
     final masterWalletFilePath =
         '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
@@ -106,6 +107,7 @@ class ExportScreenController extends GetxController
       return console.error('incorrect password');
     }
 
+    busyMessage.value = 'choose export path';
     // choose directory and export file
     String? exportPath = await FilePicker.platform.getDirectoryPath();
 
@@ -116,6 +118,7 @@ class ExportScreenController extends GetxController
     }
 
     console.info('export path: $exportPath');
+    busyMessage.value = 'creating vault...';
 
     final exportMasterWallet = Wallet.createNew(
       unlockedMasterWallet!.privateKey,
@@ -131,24 +134,23 @@ class ExportScreenController extends GetxController
     if (vaultSeeds.isEmpty) return console.error('empty vault seeds');
 
     // Construct LisoVault object
-    final vault = LisoVault(master: exportMasterWallet, seeds: vaultSeeds);
-
-    final vaultJsonString = await compute(
-      Isolates.lisoVaultToJsonEncrypted,
-      {
-        'encryptionKey': encryptionKey,
-        'vault': jsonEncode(vault.toJson()),
-      },
+    final vault = LisoVault(
+      master: exportMasterWallet,
+      seeds: vaultSeeds,
     );
 
     final walletAddress = unlockedMasterWallet.privateKey.address.hexEip55;
     final exportFileName = '$walletAddress.liso';
     final exportFilePath = '$exportPath/$exportFileName';
 
+    busyMessage.value = 'encrypting vault...';
+    final contents = await vault.toJsonStringEncrypted();
+    busyMessage.value = 'exporting vault...';
+
     try {
       await compute(Isolates.writeStringToFile, {
         'file_path': exportFilePath,
-        'contents': vaultJsonString,
+        'contents': contents,
       });
     } catch (e) {
       console.info('wallet failed: ${e.toString()}');
@@ -170,6 +172,7 @@ class ExportScreenController extends GetxController
     );
 
     console.info('exported: $exportFilePath');
+    busyMessage.value = '';
     change(null, status: RxStatus.success());
     Get.back();
   }

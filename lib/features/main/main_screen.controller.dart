@@ -85,11 +85,14 @@ class MainScreenController extends GetxController
 
   void initAppLifeCycleEvents() {
     // auto-lock after app is inactive
-    SystemChannels.lifecycle.setMessageHandler((msg) {
+    SystemChannels.lifecycle.setMessageHandler((msg) async {
       if (msg == AppLifecycleState.resumed.toString()) {
-        if (encryptionKey == null) Get.toNamed(Routes.unlock);
+        if (await LisoManager.authenticated() && encryptionKey == null) {
+          Get.toNamed(Routes.unlock);
+        }
       } else if (msg == AppLifecycleState.inactive.toString()) {
-        encryptionKey = null;
+        // lock after 1 minute of inactivity
+        Future.delayed(1.minutes).then((value) => encryptionKey = null);
       }
 
       return Future.value(msg);

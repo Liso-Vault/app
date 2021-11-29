@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
@@ -15,6 +16,7 @@ import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/isolates.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/passphrase_card/passphrase.card.dart';
@@ -59,7 +61,8 @@ class ImportScreenController extends GetxController
     final masterPassword = masterSeedHex.substring(0, 32);
 
     final file = File(filePathController.text);
-    final vaultJson = jsonDecode(await file.readAsString());
+    final vaultJson =
+        await compute(Isolates.iJsonDecode, await file.readAsString());
 
     try {
       masterWallet = Wallet.fromJson(
