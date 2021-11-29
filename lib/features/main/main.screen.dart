@@ -66,14 +66,18 @@ class MainScreen extends GetView<MainScreenController> {
       );
 
       return ListItemAnimation(
-        child: ListTile(
-          title: title,
-          subtitle: subTitle,
-          onTap: () => Get.toNamed(Routes.seed, parameters: {
-            'mode': 'update',
-            'index': index.toString(),
-          }),
-          onLongPress: () => controller.onLongPress(object),
+        child: GestureDetector(
+          child: ListTile(
+            title: title,
+            subtitle: subTitle,
+            onTap: () => Get.toNamed(Routes.seed, parameters: {
+              'mode': 'update',
+              'index': index.toString(),
+            }),
+            onLongPress: () => controller.onLongPress(object),
+          ),
+          // on mouse right click
+          onSecondaryTap: () => controller.onLongPress(object),
         ),
       );
     }

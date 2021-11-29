@@ -32,9 +32,6 @@ void main() async {
 
 void _setupWindowSize() async {
   if (!GetPlatform.isDesktop || GetPlatform.isWeb) return;
-
-  // const size = Size(950, 1400); // desktop size
-  const size = Size(400, 900); // phone size
-  await DesktopWindow.setWindowSize(size);
-  await DesktopWindow.setMinWindowSize(size);
+  await DesktopWindow.setWindowSize(const Size(700, 850));
+  await DesktopWindow.setMinWindowSize(const Size(400, 850));
 }

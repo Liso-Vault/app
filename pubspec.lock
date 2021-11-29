@@ -288,13 +288,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  fk_user_agent:
-    dependency: "direct main"
-    description:
-      name: fk_user_agent
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.1"
   flex_color_scheme:
     dependency: "direct main"
     description:

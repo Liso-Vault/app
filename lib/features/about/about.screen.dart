@@ -1,14 +1,16 @@
+import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/styles.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'about_screen.controller.dart';
 
-class AboutScreen extends GetView<AboutScreenController> {
+class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
   const AboutScreen({Key? key}) : super(key: key);
 
   @override
@@ -88,6 +90,17 @@ class AboutScreen extends GetView<AboutScreenController> {
           subtitle: Obx(() => Text(controller.appVersion)),
           onTap: () => launch(kAppGithubReleasesUrl),
         ),
+        if (kDebugMode) ...[
+          ListTile(
+            leading: const Icon(LineIcons.bug),
+            trailing: const Icon(LineIcons.alternateExternalLink),
+            title: const Text('Test'),
+            onTap: () async {
+              final size = await DesktopWindow.getWindowSize();
+              console.info('size: $size');
+            },
+          ),
+        ],
         const SizedBox(height: 20),
         TextButton.icon(
           icon: const Icon(LineIcons.twitter),
@@ -105,10 +118,7 @@ class AboutScreen extends GetView<AboutScreenController> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('About')),
-      body: Container(
-        constraints: Styles.containerConstraints,
-        child: _content,
-      ),
+      body: _content,
     );
   }
 }

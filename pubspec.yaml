@@ -42,7 +42,6 @@ dependencies:
   url_launcher: 6.0.15
   supercharged: 2.1.1
   flutter_linkify: 5.0.2
-  fk_user_agent: 2.0.1
   timeago: 3.1.0
   permission_handler: 8.3.0
   flutter_local_notifications: ^9.1.4

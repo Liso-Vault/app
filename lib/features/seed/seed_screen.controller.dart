@@ -144,16 +144,7 @@ class SeedScreenController extends GetxController
   }
 
   void add() async {
-    if (!formKey.currentState!.validate()) {
-      UIUtils.showSnackBar(
-        title: 'Invalid mnemonic phrase',
-        message: 'Please check your mnemonic seed phrase',
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-        seconds: 4,
-      );
-
-      return;
-    }
+    if (!formKey.currentState!.validate()) return;
 
     final mnemonic = passphraseCard?.obtainMnemonicPhrase();
     if (mnemonic == null) return console.error('invalid mnemonic');
