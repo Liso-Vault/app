@@ -1,14 +1,25 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/features/app/routes.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/features/app/routes.dart';
 
 class ZDrawer extends StatelessWidget {
   const ZDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // final address = masterWallet!.privateKey.address.hexEip55;
+
+    // final header = DrawerHeader(
+    //   child: Center(
+    //     child: InkWell(
+    //       onTap: () => Utils.copyToClipboard(address),
+    //       child: Text(address),
+    //     ),
+    //   ),
+    // );
+
     final items = [
       // header,
       const SizedBox(height: 50),

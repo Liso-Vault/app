@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/app/routes.dart';
 
@@ -35,6 +36,12 @@ class ResetScreenController extends GetxController
     change(null, status: RxStatus.loading());
     await LisoManager.reset();
     change(null, status: RxStatus.success());
+
+    NotificationsManager.notify(
+      title: 'Successfully Reset Vault',
+      body: 'Your local vault file has successfully been deleted',
+    );
+
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

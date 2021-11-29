@@ -27,8 +27,9 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           ),
           const SizedBox(height: 15),
           const Text(
-            'This will be the password to unlock the vault',
+            'This will be the password to encrypt and access the local vault file',
             style: TextStyle(color: Colors.grey),
+            textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
           Obx(
@@ -75,6 +76,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
                 onPressed: controller.confirm,
                 label: const Text('Confirm'),
                 icon: const Icon(LineIcons.check),
+                style: Styles.elevatedButtonStyle,
               ),
               const SizedBox(width: 10),
               TextButton.icon(

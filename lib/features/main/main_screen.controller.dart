@@ -30,11 +30,6 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
-
-  // TODO: Export Master Seed as Wallet JSON
-  // TODO: Import Wallet JSON as Master Seed
-  // TODO: Biometric
-
   void load() async {
     // await LisoManager.reset();
 

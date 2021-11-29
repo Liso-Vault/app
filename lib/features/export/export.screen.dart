@@ -24,15 +24,15 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         ),
         const SizedBox(height: 15),
         const Text(
-          "You'll be prompted to save a ${kVaultFileNamePrefix}_xxx.json file. Please store it safely in an offline location.",
+          "You'll be prompted to save a (xxx.liso) file. Please store it safely in an offline location",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 15),
         const Text(
-          "This will overwrite your previous exported vault file",
+          "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic),
+          style: TextStyle(color: Colors.white),
         ),
         const SizedBox(height: 30),
         TextFormField(

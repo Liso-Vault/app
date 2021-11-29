@@ -2,19 +2,19 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
+import 'package:liso/core/liso/liso_paths.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:web3dart/credentials.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
@@ -76,15 +76,14 @@ class CreatePasswordScreenController extends GetxController
     // write a local master wallet
     final seedHex = Get.parameters['seedHex'];
 
-    final wallet = Wallet.createNew(
+    masterWallet = Wallet.createNew(
       EthPrivateKey.fromHex(seedHex!),
       passwordController.text,
       Random.secure(),
     );
 
-    final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$kLocalMasterWalletFileName');
-    await file.writeAsString(wallet.toJson());
+    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
+    await file.writeAsString(masterWallet!.toJson());
     console.info('written: ${file.path}');
     console.info(await file.readAsString());
 
@@ -96,6 +95,11 @@ class CreatePasswordScreenController extends GetxController
     await LisoManager.init();
 
     change(null, status: RxStatus.success());
+
+    NotificationsManager.notify(
+      title: 'Welcome to $kAppName',
+      body: kAppDescription,
+    );
 
     Get.offNamedUntil(Routes.main, (route) => false);
   }

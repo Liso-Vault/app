@@ -25,7 +25,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           ),
           const SizedBox(height: 15),
           const Text(
-            "Import your vault file and enter your master seed phrase to decrypt it",
+            "Import your (xxx.liso) vault file and enter your master seed phrase to decrypt it",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),

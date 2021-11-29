@@ -12,6 +12,7 @@ import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:liso/core/liso/crypter.extensions.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -46,18 +47,19 @@ class ImportScreenController extends GetxController
   void continuePressed() async {
     if (!formKey.currentState!.validate()) return;
 
-    final masterSeedPhrase = passphraseCard.obtainMnemonicPhrase();
+    final mnemonic = passphraseCard.obtainMnemonicPhrase();
+    if (mnemonic == null) return console.error('invalid mnemonic');
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final masterSeedHex = bip39.mnemonicToSeedHex(masterSeedPhrase!);
+    final masterSeedHex = bip39.mnemonicToSeedHex(mnemonic);
+    // TODO: what if we could use entropy as the 32 bytes encryption key instead
+    // final masterEntropy = bip39.mnemonicToEntropy(masterSeedPhrase);
     final masterPassword = masterSeedHex.substring(0, 32);
 
     final file = File(filePathController.text);
     final vaultJson = jsonDecode(await file.readAsString());
-
-    Wallet? masterWallet;
 
     try {
       masterWallet = Wallet.fromJson(
@@ -65,7 +67,7 @@ class ImportScreenController extends GetxController
         masterPassword,
       );
 
-      console.info('master wallet: ${masterWallet.toJson()}');
+      console.info('master wallet: ${masterWallet!.toJson()}');
     } catch (e) {
       console.error('master wallet: ${e.toString()}');
       change(null, status: RxStatus.success());
@@ -104,6 +106,11 @@ class ImportScreenController extends GetxController
 
     change(null, status: RxStatus.success());
 
+    NotificationsManager.notify(
+      title: 'Successfully Imported Vault File',
+      body: filePathController.text,
+    );
+
     Get.toNamed(Routes.createPassword, parameters: {'seedHex': masterSeedHex});
   }
 
@@ -112,8 +119,7 @@ class ImportScreenController extends GetxController
 
     try {
       result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['json'],
+        type: FileType.any,
       );
     } catch (e) {
       console.error('FilePicker error: $e');

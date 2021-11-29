@@ -7,10 +7,10 @@ import 'package:liso/features/export/export.screen.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
-import 'package:liso/features/import/unlock/unlock.screen.dart';
-import 'package:liso/features/import/unlock/unlock_screen.controller.dart';
 import 'package:liso/features/mnemonic/mnemonic.screen.dart';
 import 'package:liso/features/mnemonic/mnemonic_screen.controller.dart';
+import 'package:liso/features/mnemonic/confirm/confirm_mnemonic.screen.dart';
+import 'package:liso/features/mnemonic/confirm/confirm_mnemonic_screen.controller.dart';
 import 'package:liso/features/reset/reset.screen.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/seed/seed.screen.dart';
@@ -64,11 +64,6 @@ class AppPages {
       binding: SeedScreenBinding(),
     ),
     GetPage(
-      name: Routes.unlockImported,
-      page: () => const UnlockImportedScreen(),
-      binding: UnlockImportedScreenBinding(),
-    ),
-    GetPage(
       name: Routes.import,
       page: () => const ImportScreen(),
       binding: ImportScreenBinding(),
@@ -82,6 +77,11 @@ class AppPages {
       name: Routes.mnemonic,
       page: () => const MnemonicScreen(),
       binding: MnemonicScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.confirmMnemonic,
+      page: () => const ConfirmMnemonicScreen(),
+      binding: ConfirmMnemonicScreenBinding(),
     ),
     GetPage(
       name: Routes.settings,

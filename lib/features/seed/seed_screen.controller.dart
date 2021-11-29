@@ -5,6 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/metadata.hive.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -154,8 +155,11 @@ class SeedScreenController extends GetxController
       return;
     }
 
+    final mnemonic = passphraseCard?.obtainMnemonicPhrase();
+    if (mnemonic == null) return console.error('invalid mnemonic');
+
     final newSeed = HiveSeed(
-      mnemonic: passphraseCard!.obtainMnemonicPhrase()!,
+      mnemonic: mnemonic,
       address: addressController.text,
       description: descriptionController.text,
       ledger: selectedLedger.value,
@@ -180,6 +184,13 @@ class SeedScreenController extends GetxController
     }
 
     await HiveManager.seeds!.add(newSeed);
+
+    NotificationsManager.notify(
+      title: 'Seed has been added',
+      body:
+          "${newSeed.address}\nDon't forget to regularly backing up your vault file to keep everything updated and in sync",
+    );
+
     MainScreenController.to.load();
     Get.back();
 
@@ -190,7 +201,10 @@ class SeedScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (object == null) return;
 
-    object!.mnemonic = passphraseCard!.obtainMnemonicPhrase()!;
+    final mnemonic = passphraseCard?.obtainMnemonicPhrase();
+    if (mnemonic == null) return console.error('invalid mnemonic');
+
+    object!.mnemonic = mnemonic;
     object!.address = addressController.text;
     object!.description = descriptionController.text;
     object!.origin = selectedOrigin.value;
@@ -198,18 +212,49 @@ class SeedScreenController extends GetxController
     object!.metadata = await object!.metadata.getUpdated();
     await object?.save();
 
+    NotificationsManager.notify(
+      title: 'Seed has been updated',
+      body: object!.address,
+    );
+
     MainScreenController.to.load();
     Get.back();
 
     console.info('success');
   }
 
-  void delete() async {
-    await object?.delete();
-    MainScreenController.to.load();
-    Get.back();
+  void delete() {
+    void _proceed() async {
+      await object?.delete();
 
-    console.info('success');
+      NotificationsManager.notify(
+        title: 'Seed has been deleted',
+        body: object!.address,
+      );
+
+      MainScreenController.to.load();
+      Get.back();
+
+      console.info('success');
+    }
+
+    SelectorSheet(
+      title: 'Delete Seed',
+      subTitle: 'Are you sure you want to delete this seed?',
+      items: [
+        SelectorItem(
+          title: 'Delete',
+          subTitle: 'This can only be undone with a backup vault file',
+          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+          onSelected: _proceed,
+        ),
+        SelectorItem(
+          title: 'Cancel',
+          leading: const Icon(LineIcons.timesCircle),
+          onSelected: Get.back,
+        ),
+      ],
+    ).show();
   }
 
   void changedOriginItem(String? item) {

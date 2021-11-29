@@ -36,8 +36,10 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
-    final seedHex = bip39.mnemonicToSeedHex(mnemonic.value);
-    Get.toNamed(Routes.createPassword, parameters: {'seedHex': seedHex});
+    Get.toNamed(
+      Routes.confirmMnemonic,
+      parameters: {'mnemonic': mnemonic.value},
+    );
   }
 
   void options() {

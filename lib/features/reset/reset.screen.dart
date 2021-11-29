@@ -21,11 +21,17 @@ class ResetScreen extends GetView<ResetScreenController> {
         ),
         const SizedBox(height: 20),
         const Text(
-          'All your data will be erased permanently. Make sure you have a backup of your vault before you proceed. Proceed with caution',
+          'Your local vault file be erased permanently',
           style: TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
+        const Text(
+          "Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.white),
+        ),
+        const SizedBox(height: 30),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [

@@ -5,7 +5,8 @@ import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:path_provider/path_provider.dart';
+
+import 'liso_paths.dart';
 
 class LisoManager {
   static final console = Console(name: 'LisoManager');
@@ -24,17 +25,16 @@ class LisoManager {
   }
 
   static Future<bool> authenticated() async {
-    final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$kLocalMasterWalletFileName');
+    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
     return await file.exists();
   }
 
   static Future<void> reset() async {
     encryptionKey = null;
+    masterWallet = null;
 
     // wallet file
-    final directory = await getApplicationSupportDirectory();
-    final file = File('${directory.path}/$kLocalMasterWalletFileName');
+    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
     if (await file.exists()) await file.delete();
 
     // hives

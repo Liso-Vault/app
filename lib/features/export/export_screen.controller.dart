@@ -10,12 +10,13 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/liso/liso_vault.model.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -65,29 +66,17 @@ class ExportScreenController extends GetxController
       }
     }
 
-    if (HiveManager.seeds!.values.isEmpty) {
-      UIUtils.showSnackBar(
-        title: 'Nothing to export',
-        message: "There's nothing to export. Please add your seeds first.",
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-        seconds: 4,
-      );
-
-      return;
-    }
-
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final directory = await getApplicationSupportDirectory();
-    final walletFile = File('${directory.path}/$kLocalMasterWalletFileName');
+    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
 
     // this is just to unlock the local master wallet
     Wallet? masterWallet;
 
     try {
       masterWallet = Wallet.fromJson(
-        await walletFile.readAsString(),
+        await file.readAsString(),
         passwordController.text,
       );
     } catch (e) {
@@ -151,7 +140,7 @@ class ExportScreenController extends GetxController
 
     final walletAddress = masterWallet.privateKey.address.hexEip55;
     // TODO: improve vault file name format
-    final exportFileName = '${kVaultFileNamePrefix}_$walletAddress.json';
+    final exportFileName = '$walletAddress.liso';
     final exportFile = File('$exportPath/$exportFileName');
 
     try {
@@ -160,7 +149,6 @@ class ExportScreenController extends GetxController
       console.info('wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
 
-      // TODO: Convert to notification
       UIUtils.showSnackBar(
         title: 'Export Failed',
         message: e.toString(),
@@ -171,7 +159,10 @@ class ExportScreenController extends GetxController
       return;
     }
 
-    // TODO: Send notification
+    NotificationsManager.notify(
+      title: 'Successfully Exported Vault',
+      body: exportFile.path,
+    );
 
     console.info('exported: ${exportFile.path}');
     change(null, status: RxStatus.success());

@@ -6,6 +6,7 @@ abstract class Routes {
   static const create = '/create';
   static const createPassword = '/create_password';
   static const mnemonic = '/mnemonic';
+  static const confirmMnemonic = '/verify_mnemonic';
   static const import = '/import';
   static const unlockImported = '/unlock_imported';
 

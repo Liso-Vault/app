@@ -119,7 +119,7 @@ class SeedScreen extends GetView<SeedScreenController> {
                     style: Styles.elevatedButtonStyle,
                   ),
                 ),
-                const SizedBox(width: 20),
+                const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: controller.delete,

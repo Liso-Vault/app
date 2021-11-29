@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/utils.dart';
 
 class Styles {
   static final roundedBorder = RoundedRectangleBorder(
@@ -11,14 +10,14 @@ class Styles {
   );
 
   static final elevatedButtonStyle = ElevatedButton.styleFrom(
-    padding: EdgeInsets.symmetric(vertical: GetPlatform.isDesktop ? 15 : 10),
     shape: roundedBorder,
+    textStyle: const TextStyle(fontWeight: FontWeight.bold),
   );
 
   static final elevatedButtonStyleNegative = ElevatedButton.styleFrom(
     primary: Colors.red,
-    padding: EdgeInsets.symmetric(vertical: GetPlatform.isDesktop ? 15 : 10),
     shape: roundedBorder,
+    textStyle: const TextStyle(fontWeight: FontWeight.bold),
   );
 
   static final textButtonStyleNegative = OutlinedButton.styleFrom(

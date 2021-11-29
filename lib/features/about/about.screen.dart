@@ -73,14 +73,20 @@ class AboutScreen extends GetView<AboutScreenController> {
           subtitle: const Text('@liso_vault'),
           onTap: () => launch(kAppFacebookUrl),
         ),
+        // ListTile(
+        //   leading: const Icon(LineIcons.envelope),
+        //   trailing: const Icon(LineIcons.alternateExternalLink),
+        //   title: const Text('Liso Email'),
+        //   subtitle: const Text(kAppEmail),
+        //   onTap: () =>
+        //       launch('mailto:liso.vault@gmail.com?subject=Liso%20Inquiry'),
+        // ),
         ListTile(
           leading: const Icon(LineIcons.download),
           trailing: const Icon(LineIcons.alternateExternalLink),
           title: const Text('Check for updates'),
           subtitle: Obx(() => Text(controller.appVersion)),
-          onTap: () {
-            // TODO: check for updates
-          },
+          onTap: () => launch(kAppGithubReleasesUrl),
         ),
         const SizedBox(height: 20),
         TextButton.icon(

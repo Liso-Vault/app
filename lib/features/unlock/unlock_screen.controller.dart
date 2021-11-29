@@ -8,12 +8,12 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:web3dart/credentials.dart';
 
 class UnlockScreenBinding extends Bindings {
@@ -48,14 +48,12 @@ class UnlockScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final vaultFilePath =
-        '${(await getApplicationSupportDirectory()).path}/$kLocalMasterWalletFileName';
-    final file = File(vaultFilePath);
-
-    Wallet? wallet;
+    final masterWalletFilePath =
+        '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
+    final file = File(masterWalletFilePath);
 
     try {
-      wallet = Wallet.fromJson(
+      masterWallet = Wallet.fromJson(
         await file.readAsString(),
         passwordController.text,
       );
@@ -84,7 +82,7 @@ class UnlockScreenController extends GetxController
     }
 
     // the encryption key from master's private key
-    final seedHex = HEX.encode(wallet.privateKey.privateKey);
+    final seedHex = HEX.encode(masterWallet!.privateKey.privateKey);
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
     final crypter = LisoCrypter();

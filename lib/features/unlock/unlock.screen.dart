@@ -18,13 +18,14 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
         const Icon(LineIcons.lock, size: 100),
         const SizedBox(height: 20),
         const Text(
-          'Unlock Liso Vault',
+          'Unlock Vault',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
         const Text(
-          'Enter the password to decrypt the vault',
+          'Enter the password to decrypt and access the local vault file',
           style: TextStyle(color: Colors.grey),
+          textAlign: TextAlign.center,
         ),
         const SizedBox(height: 30),
         TextFormField(

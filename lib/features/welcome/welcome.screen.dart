@@ -33,10 +33,11 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 20),
-          TextButton.icon(
+          ElevatedButton.icon(
             label: const Text('Create'),
             icon: const Icon(LineIcons.plus),
             onPressed: () => Get.toNamed(Routes.mnemonic),
+            style: Styles.elevatedButtonStyle,
           ),
           const SizedBox(height: 10),
           TextButton.icon(

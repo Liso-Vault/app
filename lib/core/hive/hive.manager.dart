@@ -1,13 +1,14 @@
 import 'dart:io';
 
+import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/app.hive.dart';
 import 'package:liso/core/hive/models/device.hive.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 
 import 'models/metadata.hive.dart';
 
@@ -22,8 +23,10 @@ class HiveManager {
   // INIT
   static Future<void> init() async {
     // PATH
-    final dir = await getApplicationDocumentsDirectory();
-    Hive.init("${dir.path}/hive/");
+    if (!GetPlatform.isWeb) {
+      Hive.init(LisoPaths.hive!.path);
+    }
+
     // REGISTER ADAPTERS
     Hive.registerAdapter(HiveSeedAdapter());
     Hive.registerAdapter(HiveMetadataAdapter());
@@ -34,12 +37,12 @@ class HiveManager {
   }
 
   static Future<void> fixCorruptedBox() async {
-    final dir = await getApplicationDocumentsDirectory();
+    if (GetPlatform.isWeb) return;
 
     // We get the corrupted box file.
     final boxPath = path.join(
-      dir.path,
-      "${dir.path}/hive/",
+      LisoPaths.main!.path,
+      LisoPaths.hive!.path,
       'seeds.hive',
     );
 
