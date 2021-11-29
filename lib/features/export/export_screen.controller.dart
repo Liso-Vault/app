@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:bip39/bip39.dart' as bip39;
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -15,6 +15,7 @@ import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/isolates.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -69,16 +70,17 @@ class ExportScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
+    final masterWalletFilePath =
+        '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
 
     // this is just to unlock the local master wallet
-    Wallet? masterWallet;
+    Wallet? unlockedMasterWallet;
 
     try {
-      masterWallet = Wallet.fromJson(
-        await file.readAsString(),
-        passwordController.text,
-      );
+      unlockedMasterWallet = await compute(Isolates.loadWallet, {
+        'file_path': masterWalletFilePath,
+        'password': passwordController.text,
+      });
     } catch (e) {
       change(null, status: RxStatus.success());
       console.info('wallet failed: ${e.toString()}');
@@ -115,36 +117,39 @@ class ExportScreenController extends GetxController
 
     console.info('export path: $exportPath');
 
-    // Convert seeds to Wallet objects
-    final seeds = HiveManager.seeds!.values.map<VaultSeed>((e) {
-      final seedHex = bip39.mnemonicToSeedHex(e.mnemonic);
-
-      final wallet = Wallet.createNew(
-        EthPrivateKey.fromHex(seedHex),
-        utf8.decode(encryptionKey!), // 32 byte master seed hex as the password
-        Random.secure(),
-      );
-
-      return VaultSeed(seed: e, wallet: wallet);
-    }).toList();
-
     final exportMasterWallet = Wallet.createNew(
-      masterWallet.privateKey,
+      unlockedMasterWallet!.privateKey,
       utf8.decode(encryptionKey!), // 32 byte master seed hex as the password
       Random.secure(),
     );
 
-    // Construct LisoVault object
-    final vault = LisoVault(master: exportMasterWallet, seeds: seeds);
-    final vaultJsonString = await vault.toJsonStringEncrypted();
+    final vaultSeeds = await compute(Isolates.seedsToWallets, {
+      'encryptionKey': encryptionKey,
+      'seeds': jsonEncode(HiveManager.seeds!.values.toList()),
+    });
 
-    final walletAddress = masterWallet.privateKey.address.hexEip55;
-    // TODO: improve vault file name format
+    if (vaultSeeds.isEmpty) return console.error('empty vault seeds');
+
+    // Construct LisoVault object
+    final vault = LisoVault(master: exportMasterWallet, seeds: vaultSeeds);
+
+    final vaultJsonString = await compute(
+      Isolates.lisoVaultToJsonEncrypted,
+      {
+        'encryptionKey': encryptionKey,
+        'vault': jsonEncode(vault.toJson()),
+      },
+    );
+
+    final walletAddress = unlockedMasterWallet.privateKey.address.hexEip55;
     final exportFileName = '$walletAddress.liso';
-    final exportFile = File('$exportPath/$exportFileName');
+    final exportFilePath = '$exportPath/$exportFileName';
 
     try {
-      await exportFile.writeAsString(vaultJsonString);
+      await compute(Isolates.writeStringToFile, {
+        'file_path': exportFilePath,
+        'contents': vaultJsonString,
+      });
     } catch (e) {
       console.info('wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
@@ -161,10 +166,10 @@ class ExportScreenController extends GetxController
 
     NotificationsManager.notify(
       title: 'Successfully Exported Vault',
-      body: exportFile.path,
+      body: exportFilePath,
     );
 
-    console.info('exported: ${exportFile.path}');
+    console.info('exported: $exportFilePath');
     change(null, status: RxStatus.success());
     Get.back();
   }

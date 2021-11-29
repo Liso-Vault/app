@@ -19,8 +19,8 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
         Image.asset(Images.logo, width: 100),
         const SizedBox(height: 20),
         const Text(
-          'Unlock Vault',
-          style: TextStyle(fontSize: 25),
+          'Liso',
+          style: TextStyle(fontSize: 40),
         ),
         const SizedBox(height: 15),
         const Text(
@@ -41,7 +41,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             hintText: 'Vault Password',
           ),
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 10),
         Obx(
           () => TextButton.icon(
             label: const Text('Unlock'),

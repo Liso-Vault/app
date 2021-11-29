@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
@@ -25,14 +26,13 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() {
+    initAppLifeCycleEvents();
     load();
     super.onInit();
   }
 
   // FUNCTIONS
   void load() async {
-    // await LisoManager.reset();
-
     change(null, status: RxStatus.loading());
 
     // show welcome screen if not authenticated
@@ -81,5 +81,18 @@ class MainScreenController extends GetxController
         ),
       ],
     ).show();
+  }
+
+  void initAppLifeCycleEvents() {
+    // auto-lock after app is inactive
+    SystemChannels.lifecycle.setMessageHandler((msg) {
+      if (msg == AppLifecycleState.resumed.toString()) {
+        if (encryptionKey == null) Get.toNamed(Routes.unlock);
+      } else if (msg == AppLifecycleState.inactive.toString()) {
+        encryptionKey = null;
+      }
+
+      return Future.value(msg);
+    });
   }
 }

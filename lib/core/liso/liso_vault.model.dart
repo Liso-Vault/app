@@ -21,6 +21,12 @@ class LisoVault {
         version: json["version"],
       );
 
+  Map<String, dynamic> toJson() => {
+        "master": master?.toJson(),
+        "seeds": seeds,
+        "version": version,
+      };
+
   Future<Map<String, dynamic>> toJsonEncrypted() async {
     final _seeds = List<dynamic>.from(
       seeds.map((x) => x.toJson()),

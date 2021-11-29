@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
@@ -9,12 +10,12 @@ import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/isolates.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:web3dart/credentials.dart';
 
 class UnlockScreenBinding extends Bindings {
   @override
@@ -50,13 +51,12 @@ class UnlockScreenController extends GetxController
 
     final masterWalletFilePath =
         '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
-    final file = File(masterWalletFilePath);
 
     try {
-      masterWallet = Wallet.fromJson(
-        await file.readAsString(),
-        passwordController.text,
-      );
+      masterWallet = await compute(Isolates.loadWallet, {
+        'file_path': masterWalletFilePath,
+        'password': passwordController.text,
+      });
     } catch (e) {
       console.error('wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
