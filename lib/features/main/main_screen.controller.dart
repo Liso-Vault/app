@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:liso/core/liso/liso.manager.dart';
@@ -17,6 +20,7 @@ class MainScreenController extends GetxController
   static MainScreenController get to => Get.find();
 
   // VARIABLES
+  Timer? timer;
 
   // PROPERTIES
   final data = <HiveSeed>[].obs;
@@ -29,6 +33,12 @@ class MainScreenController extends GetxController
     initAppLifeCycleEvents();
     load();
     super.onInit();
+  }
+
+  @override
+  void onClose() {
+    timer?.cancel();
+    super.onClose();
   }
 
   // FUNCTIONS
@@ -86,13 +96,24 @@ class MainScreenController extends GetxController
   void initAppLifeCycleEvents() {
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
+      console.warning(msg!);
+
       if (msg == AppLifecycleState.resumed.toString()) {
+        timer?.cancel();
+
         if (await LisoManager.authenticated() && encryptionKey == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
-        // lock after 1 minute of inactivity
-        Future.delayed(1.minutes).then((value) => encryptionKey = null);
+        // lock after <duration> of inactivity
+        if (timeLockEnabled) {
+          final timeLock =
+              PersistenceController.to.timeLockDuration.val.seconds;
+          timer = Timer.periodic(timeLock, (timer) {
+            encryptionKey = null;
+            timer.cancel();
+          });
+        }
       }
 
       return Future.value(msg);

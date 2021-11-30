@@ -109,6 +109,7 @@ class MainScreen extends GetView<MainScreenController> {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [

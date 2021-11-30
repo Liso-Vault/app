@@ -44,16 +44,19 @@ class Isolates {
     }).toList();
   }
 
-  static Future<void> writeStringToFile(Map<String, String> params) async {
+  // TODO: use either
+  static Future<String> writeStringToFile(Map<String, String> params) async {
     final filePath = params['file_path'] as String;
     final contents = params['contents'] as String;
 
     try {
       await File(filePath).writeAsString(contents);
     } catch (e) {
-      console.info('wallet failed: ${e.toString()}');
-      return;
+      console.error('write to file failed 1: ${e.toString()}');
+      return e.toString();
     }
+
+    return '';
   }
 
   static String iJsonEncode(dynamic params) {

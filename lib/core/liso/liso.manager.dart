@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
+import 'package:get/utils.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
@@ -15,7 +17,10 @@ class LisoManager {
     final cipher = HiveAesCipher(encryptionKey!);
 
     try {
-      HiveManager.seeds = await Hive.openBox('seeds', encryptionCipher: cipher);
+      HiveManager.seeds = await Hive.openBox(
+        kHiveBoxSeeds,
+        encryptionCipher: cipher,
+      );
     } on HiveError {
       console.error('HiveError');
       await HiveManager.fixCorruptedBox();
@@ -33,15 +38,24 @@ class LisoManager {
     encryptionKey = null;
     masterWallet = null;
 
-    // wallet file
+    // master wallet file
     final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
-    if (await file.exists()) await file.delete();
+
+    if (await file.exists()) {
+      await file.delete();
+      console.info('deleted: ${file.path}');
+    }
 
     // hives
-    Hive.deleteBoxFromDisk('seeds');
+    Hive.deleteFromDisk();
 
     // persistence
     await PersistenceController.to.box.erase();
+
+    // delete FilePicker caches
+    if (GetPlatform.isMobile) {
+      await FilePicker.platform.clearTemporaryFiles();
+    }
 
     console.info('successfully reset!');
   }

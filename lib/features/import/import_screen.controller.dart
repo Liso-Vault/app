@@ -118,6 +118,9 @@ class ImportScreenController extends GetxController
   }
 
   void importFile() async {
+    if (status == RxStatus.loading()) return console.error('still busy');
+    change(null, status: RxStatus.loading());
+
     FilePickerResult? result;
 
     try {
@@ -128,6 +131,8 @@ class ImportScreenController extends GetxController
       console.error('FilePicker error: $e');
       return;
     }
+
+    change(null, status: RxStatus.success());
 
     if (result == null || result.files.isEmpty) {
       console.warning("canceled file picker");

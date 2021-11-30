@@ -53,12 +53,12 @@ class ExportScreenController extends GetxController
   void unlock() async {
     if (GetPlatform.isMobile) {
       final storagePermissionGranted =
-          await Permission.storage.request().isGranted;
+          await Permission.manageExternalStorage.request().isGranted;
 
       if (!storagePermissionGranted) {
         UIUtils.showSnackBar(
           title: 'Storage Permission Denied',
-          message: "Please allow storage permission to enable exporting",
+          message: "Please allow manage storage permission to enable exporting",
           icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
           seconds: 4,
         );
@@ -69,7 +69,7 @@ class ExportScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
-    busyMessage.value = 'verifying...';
+    busyMessage.value = 'Verifying...';
 
     final masterWalletFilePath =
         '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
@@ -84,7 +84,7 @@ class ExportScreenController extends GetxController
       });
     } catch (e) {
       change(null, status: RxStatus.success());
-      console.info('wallet failed: ${e.toString()}');
+      console.error('load wallet failed: ${e.toString()}');
 
       attemptsLeft.value--;
       passwordController.clear();
@@ -107,9 +107,15 @@ class ExportScreenController extends GetxController
       return console.error('incorrect password');
     }
 
-    busyMessage.value = 'choose export path';
+    busyMessage.value = 'Choose export path...';
+
+    timeLockEnabled = false; // temporarily disable
     // choose directory and export file
-    String? exportPath = await FilePicker.platform.getDirectoryPath();
+    String? exportPath = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Choose Export Path',
+    );
+
+    timeLockEnabled = true; // re-enable
 
     // user cancelled picker
     if (exportPath == null) {
@@ -118,7 +124,7 @@ class ExportScreenController extends GetxController
     }
 
     console.info('export path: $exportPath');
-    busyMessage.value = 'creating vault...';
+    busyMessage.value = 'Creating...';
 
     final exportMasterWallet = Wallet.createNew(
       unlockedMasterWallet!.privateKey,
@@ -143,17 +149,30 @@ class ExportScreenController extends GetxController
     final exportFileName = '$walletAddress.liso';
     final exportFilePath = '$exportPath/$exportFileName';
 
-    busyMessage.value = 'encrypting vault...';
+    busyMessage.value = 'Encrypting...';
     final contents = await vault.toJsonStringEncrypted();
-    busyMessage.value = 'exporting vault...';
+    busyMessage.value = 'Exporting...';
 
     try {
-      await compute(Isolates.writeStringToFile, {
+      final error = await compute(Isolates.writeStringToFile, {
         'file_path': exportFilePath,
         'contents': contents,
       });
+
+      if (error.isNotEmpty) {
+        change(null, status: RxStatus.success());
+
+        UIUtils.showSnackBar(
+          title: 'Export Failed',
+          message: error,
+          icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+          seconds: 4,
+        );
+
+        return;
+      }
     } catch (e) {
-      console.info('wallet failed: ${e.toString()}');
+      console.error('write to file failed 2: ${e.toString()}');
       change(null, status: RxStatus.success());
 
       UIUtils.showSnackBar(

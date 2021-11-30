@@ -53,7 +53,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               textAlign: TextAlign.center,
               keyboardType: TextInputType.visiblePassword,
               obscureText: controller.obscure(),
-              textInputAction: TextInputAction.send,
+              textInputAction: TextInputAction.done,
               onFieldSubmitted: (text) => controller.confirm,
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,

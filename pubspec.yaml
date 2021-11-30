@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.2.2+4
+version: 0.2.3+6
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -11,7 +11,7 @@ dependencies:
     sdk: flutter
 
   # STATE MANAGEMENT
-  get: 4.3.8
+  get: 4.5.1
 
   # CRYTPO
   web3dart: ^2.3.3
@@ -25,7 +25,7 @@ dependencies:
   get_storage: 2.0.3 # persistence
   path_provider: 2.0.7
   path: ^1.8.0
-  file_picker: ^4.2.5 # exporting + importing
+  file_picker: ^4.2.6 # exporting + importing
 
   # UI
   line_icons: ^2.0.1
@@ -39,12 +39,13 @@ dependencies:
 
   # TOOLS
   logger: ^1.1.0
-  url_launcher: 6.0.15
+  url_launcher: 6.0.16
   supercharged: 2.1.1
   flutter_linkify: 5.0.2
   timeago: 3.1.0
   permission_handler: 8.3.0
   flutter_local_notifications: ^9.1.4
+  either_option: 2.0.1-dev.1
 
   # INFO
   device_info_plus: 3.1.1

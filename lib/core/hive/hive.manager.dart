@@ -59,7 +59,7 @@ class HiveManager {
     await boxFile.writeAsBytes(correctedContent.toList());
     // We retry to open the box
     await Hive.openBox<Object>(
-      'seeds',
+      kHiveBoxSeeds,
       encryptionCipher: HiveAesCipher(encryptionKey!),
     );
   }

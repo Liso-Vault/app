@@ -16,25 +16,25 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(Images.logo, width: 100),
+        Image.asset(Images.logo, width: 70),
         const SizedBox(height: 20),
         const Text(
           'Liso',
-          style: TextStyle(fontSize: 40),
+          style: TextStyle(fontSize: 30),
         ),
         const SizedBox(height: 15),
         const Text(
-          'Enter the password to decrypt and access the local vault file',
+          'Enter the password to decrypt\nand access the local vault file',
           style: TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 15),
         TextFormField(
           controller: controller.passwordController,
           textAlign: TextAlign.center,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
-          textInputAction: TextInputAction.next,
+          textInputAction: TextInputAction.go,
           onChanged: controller.onChanged,
           onFieldSubmitted: (text) => controller.unlock(),
           decoration: Styles.inputDecoration.copyWith(
@@ -53,7 +53,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
         Obx(
           () => Text(
             '${controller.attemptsLeft()} attempts left',
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey, fontSize: 10),
           ),
         ),
       ],

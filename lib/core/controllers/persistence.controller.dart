@@ -20,6 +20,7 @@ class PersistenceController extends GetxController with ConsoleMixin {
   final appLock = false.val('app lock');
   final appLockCode = ''.val('app lock code');
   final maxUnlockAttempts = 5.val('max unlock attempts');
+  final timeLockDuration = 30.val('time lock duration'); // in seconds
   // NOTIFICATION
   final notificationId = 0.val('notification id');
 

@@ -33,13 +33,13 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white),
         ),
-        const SizedBox(height: 30),
+        const SizedBox(height: 15),
         TextFormField(
           controller: controller.passwordController,
           textAlign: TextAlign.center,
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
-          textInputAction: TextInputAction.next,
+          textInputAction: TextInputAction.go,
           onChanged: controller.onChanged,
           onFieldSubmitted: (text) => controller.unlock(),
           decoration: Styles.inputDecoration.copyWith(
@@ -58,7 +58,7 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         Obx(
           () => Text(
             '${controller.attemptsLeft()} attempts left',
-            style: const TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey, fontSize: 10),
           ),
         ),
       ],

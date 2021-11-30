@@ -20,11 +20,11 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(Images.logo, width: 100),
+          Image.asset(Images.logo, width: 70),
           const SizedBox(height: 20),
           const Text(
             kAppName,
-            style: TextStyle(fontSize: 40),
+            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           const Text(
@@ -32,6 +32,7 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
+          const Divider(),
           const SizedBox(height: 20),
           ElevatedButton.icon(
             label: const Text('Create'),

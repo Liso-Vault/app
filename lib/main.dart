@@ -1,4 +1,5 @@
 import 'package:desktop_window/desktop_window.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -12,6 +13,8 @@ import 'features/app/app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // improve performance
+  GestureBinding.instance?.resamplingEnabled = true;
   // setup window size for desktop
   _setupWindowSize();
   // init Liso paths

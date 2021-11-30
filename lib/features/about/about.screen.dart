@@ -36,6 +36,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           ),
         ),
         const SizedBox(height: 30),
+        const Divider(),
         ListTile(
           leading: Image.asset(
             Images.logo,
@@ -101,6 +102,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             },
           ),
         ],
+        const Divider(),
         const SizedBox(height: 20),
         TextButton.icon(
           icon: const Icon(LineIcons.twitter),
