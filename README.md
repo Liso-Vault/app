@@ -13,5 +13,6 @@ A free + open source + cross-platform + military-grade encrypted offline digital
 - Change local vault password
 - Keyboard/Gesture shortcut to quickly Lock
 - Enter password before reset
+- Filter / Search
 - License File
 - Liso Token to support development? hmmmp...
