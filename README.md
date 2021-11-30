@@ -1,6 +1,6 @@
 # liso
 
-A free + open source + cross-platform + military-grade encrypted offline digital vault for all your precious mnemonic seed phrases.
+A free + open source + cross-platform + military-grade + air gapped + lightweight + encrypted digital vault designed specifically for storing mnemonic seed phrases.
 
 ## Roadmap
 - Improve password validation
