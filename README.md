@@ -12,5 +12,6 @@ A free + open source + cross-platform + military-grade encrypted offline digital
 - Export individual seed as wallet.json
 - Change local vault password
 - Keyboard/Gesture shortcut to quickly Lock
+- Enter password before reset
 - License File
 - Liso Token to support development? hmmmp...
