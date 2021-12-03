@@ -29,8 +29,6 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
-          const SizedBox(height: 30),
-          controller.passphraseCard,
           const SizedBox(height: 20),
           Row(
             children: [
@@ -51,6 +49,8 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               ),
             ],
           ),
+          const SizedBox(height: 30),
+          controller.passphraseCard,
           const SizedBox(height: 20),
           TextButton.icon(
             onPressed: controller.continuePressed,

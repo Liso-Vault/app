@@ -30,6 +30,7 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
       controller: controller.mnemonicController,
       minLines: 1,
       maxLines: 5,
+      textInputAction: TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (text) => controller.validateSeed(text!),
       decoration: Styles.inputDecoration.copyWith(

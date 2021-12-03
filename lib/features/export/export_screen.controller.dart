@@ -51,7 +51,7 @@ class ExportScreenController extends GetxController
   void onChanged(String text) => canProceed.value = text.isNotEmpty;
 
   void unlock() async {
-    if (GetPlatform.isMobile) {
+    if (GetPlatform.isAndroid) {
       final storagePermissionGranted =
           await Permission.manageExternalStorage.request().isGranted;
 

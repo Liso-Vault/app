@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/animations/animations.dart';
+import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -12,7 +13,7 @@ import 'package:liso/resources/resources.dart';
 import 'drawer/drawer.widget.dart';
 import 'main_screen.controller.dart';
 
-class MainScreen extends GetView<MainScreenController> {
+class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
   const MainScreen({Key? key}) : super(key: key);
 
   @override

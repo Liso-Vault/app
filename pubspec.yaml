@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.2.3+6
+version: 0.2.3+7
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -18,6 +18,10 @@ dependencies:
   bip39: ^1.0.6
   hex: ^0.2.0
   cryptography: ^2.0.5
+
+  # GOOGLE
+  google_sign_in: ^5.2.1
+  googleapis: ^7.0.0
 
   # IO
   hive: 2.0.4
