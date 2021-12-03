@@ -30,6 +30,7 @@ class Styles {
     errorBorder: outlineBorder,
     focusedBorder: outlineBorder,
     focusedErrorBorder: outlineBorder,
+    isDense: true,
   );
 
   static const containerConstraints = BoxConstraints(maxWidth: 500);

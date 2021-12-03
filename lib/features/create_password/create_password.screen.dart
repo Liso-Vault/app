@@ -90,16 +90,19 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: Container(
-            constraints: Styles.containerConstraints,
-            child: controller.obx(
-              (_) => SingleChildScrollView(child: content),
-              onLoading: const BusyIndicator(),
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: Scaffold(
+        // appBar: AppBar(),
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Center(
+            child: Container(
+              constraints: Styles.containerConstraints,
+              child: controller.obx(
+                (_) => SingleChildScrollView(child: content),
+                onLoading: const BusyIndicator(),
+              ),
             ),
           ),
         ),

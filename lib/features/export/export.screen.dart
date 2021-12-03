@@ -23,7 +23,7 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         ),
         const SizedBox(height: 15),
         const Text(
-          "You'll be prompted to save a (xxx.liso) file. Please store it safely in an offline location",
+          "You'll be prompted to save a (xxx.liso) file. Please store it offline or in a secure digital cloud storage",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
