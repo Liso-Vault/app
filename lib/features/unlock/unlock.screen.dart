@@ -16,11 +16,11 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(Images.logo, width: 70),
+        Image.asset(Images.logo, width: 100),
         const SizedBox(height: 20),
         const Text(
           'Liso',
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 15),
         const Text(

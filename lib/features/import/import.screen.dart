@@ -49,7 +49,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               ),
             ],
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 20),
           controller.passphraseCard,
           const SizedBox(height: 20),
           TextButton.icon(

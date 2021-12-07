@@ -108,21 +108,23 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       onPressed: controller.add,
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image.asset(Images.logo, height: 17),
-            const SizedBox(width: 10),
-            const Text(
-              kAppName,
-              style: TextStyle(fontSize: 20),
-            )
-          ],
-        ),
+    final appBar = AppBar(
+      centerTitle: false,
+      title: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(Images.logo, height: 17),
+          const SizedBox(width: 10),
+          const Text(
+            kAppName,
+            style: TextStyle(fontSize: 20),
+          )
+        ],
       ),
+    );
+
+    return Scaffold(
+      appBar: appBar,
       drawer: const ZDrawer(),
       floatingActionButton: floatingButton,
       body: content,

@@ -24,7 +24,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
         const Text(
           kAppName,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 30),
+          style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 10),
         const Padding(

@@ -17,8 +17,8 @@ const kDeveloperName = 'Oliver Martinez';
 const kDeveloperTwitterHandle = '@nemoryoliver';
 const kDeveloperTwitterUrl = 'https://twitter.com/nemoryoliver';
 const kGooglePlayUrl =
-    'https://play.google.com/store/apps/dev?id=7470073434502409036';
-const kAppStoreUrl = 'https://apps.apple.com/developer/id1506846217';
+    'https://play.google.com/store/apps/dev?id=5549027472499911842';
+const kAppStoreUrl = ''; // TODO: app store url
 
 // APP
 const kHiveBoxSeeds = 'seeds';

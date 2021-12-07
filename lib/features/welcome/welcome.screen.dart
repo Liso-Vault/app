@@ -24,7 +24,7 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           const SizedBox(height: 20),
           const Text(
             kAppName,
-            style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
           const Text(

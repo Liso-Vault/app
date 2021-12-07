@@ -53,7 +53,7 @@ class ExportScreenController extends GetxController
   void unlock() async {
     if (GetPlatform.isAndroid) {
       final storagePermissionGranted =
-          await Permission.manageExternalStorage.request().isGranted;
+          await Permission.storage.request().isGranted;
 
       if (!storagePermissionGranted) {
         UIUtils.showSnackBar(
