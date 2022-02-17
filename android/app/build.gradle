@@ -25,6 +25,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+// Plugins
+apply plugin: 'com.google.gms.google-services' // Firebase
+apply plugin: 'com.google.firebase.crashlytics' // Crashlytics
+
 def keystoreProperties = new Properties()
 def keystorePropertiesFile = rootProject.file('key.properties')
 if (keystorePropertiesFile.exists()) {
@@ -49,8 +53,9 @@ android {
 
     defaultConfig {
         applicationId "com.liso.app"
-        minSdkVersion 18
+        minSdkVersion 19
         targetSdkVersion 30
+        multiDexEnabled true // Firebase
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
@@ -80,4 +85,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.android.support:multidex:1.0.3' // Firebase
 }

@@ -33,6 +33,11 @@ class ZDrawer extends StatelessWidget {
         leading: const Icon(LineIcons.infoCircle),
         onTap: () => Get.offAndToNamed(Routes.about),
       ),
+      ListTile(
+        title: const Text('Google Drive'),
+        leading: const Icon(LineIcons.googleDrive),
+        onTap: () => Get.offAndToNamed(Routes.signIn),
+      ),
     ];
 
     final darkTheme = FlexColorScheme.dark(

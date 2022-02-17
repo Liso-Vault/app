@@ -66,20 +66,34 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
         ],
       );
 
-      return ListItemAnimation(
-        child: GestureDetector(
-          child: ListTile(
-            title: title,
-            subtitle: subTitle,
-            onTap: () => Get.toNamed(Routes.seed, parameters: {
-              'mode': 'update',
-              'index': index.toString(),
-            }),
-            onLongPress: () => controller.onLongPress(object),
-          ),
-          // on mouse right click
-          onSecondaryTap: () => controller.onLongPress(object),
+      // return ListItemAnimation(
+      //   child: GestureDetector(
+      //     child: ListTile(
+      //       title: title,
+      //       subtitle: subTitle,
+      //       onTap: () => Get.toNamed(Routes.seed, parameters: {
+      //         'mode': 'update',
+      //         'index': index.toString(),
+      //       }),
+      //       onLongPress: () => controller.onLongPress(object),
+      //     ),
+      //     // on mouse right click
+      //     onSecondaryTap: () => controller.onLongPress(object),
+      //   ),
+      // );
+
+      return GestureDetector(
+        child: ListTile(
+          title: title,
+          subtitle: subTitle,
+          onTap: () => Get.toNamed(Routes.seed, parameters: {
+            'mode': 'update',
+            'index': index.toString(),
+          }),
+          onLongPress: () => controller.onLongPress(object),
         ),
+        // on mouse right click
+        onSecondaryTap: () => controller.onLongPress(object),
       );
     }
 

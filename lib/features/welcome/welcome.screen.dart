@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -20,7 +19,7 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(Images.logo, width: 70),
+          Image.asset(Images.logo, width: 100),
           const SizedBox(height: 20),
           const Text(
             kAppName,
@@ -45,6 +44,12 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             label: const Text('Import'),
             icon: const Icon(LineIcons.download),
             onPressed: () => Get.toNamed(Routes.import),
+          ),
+          const SizedBox(height: 10),
+          TextButton.icon(
+            label: const Text('Sign In'),
+            icon: const Icon(LineIcons.sign),
+            onPressed: () => Get.toNamed(Routes.signIn),
           ),
         ],
       ),

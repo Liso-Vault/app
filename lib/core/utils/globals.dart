@@ -4,27 +4,33 @@ import 'package:web3dart/credentials.dart';
 
 const kAppName = 'Liso';
 const kAppDescription =
-    'A free + open source + cross-platform + military-grade + air gapped + lightweight + encrypted digital vault designed specifically for storing mnemonic seed phrases.';
-const kAppWebsiteUrl = 'https://liso-vault.github.io';
-const kAppGithubUrl = 'https://github.com/Liso-Vault/app';
-const kAppGithubReleasesUrl = 'https://github.com/Liso-Vault/app/releases';
+    'Military-grade encrypted digital vault specifically designed for securely storing mnemonic seed phrases';
+const kAppWebsiteUrl = 'https://liso-vault.github.io'; // TODO: custom domain
+// const kAppGithubUrl = 'https://github.com/Liso-Vault/app';
+// const kAppGithubReleasesUrl = 'https://github.com/Liso-Vault/app/releases';
 const kAppTwitterUrl = 'https://twitter.com/liso_vault';
-const kAppFacebookUrl = 'https://facebook.com/liso_vault';
-const kAppInstagramUrl = 'https://instagram.com/liso_vault';
-const kAppEmail = 'liso.vault@gmail.com';
+// const kAppFacebookUrl = 'https://facebook.com/liso_vault';
+// const kAppInstagramUrl = 'https://instagram.com/liso_vault';
+const kAppEmail = 'liso.vault@gmail.com'; // TODO: custom domain email
 
-const kDeveloperName = 'Oliver Martinez';
-const kDeveloperTwitterHandle = '@nemoryoliver';
-const kDeveloperTwitterUrl = 'https://twitter.com/nemoryoliver';
+const kDeveloperName = 'Stackwares';
+const kDeveloperTwitterHandle = '@stackwares';
+const kDeveloperTwitterUrl = 'https://twitter.com/stackwares';
+
 const kGooglePlayUrl =
-    'https://play.google.com/store/apps/dev?id=5549027472499911842';
+    'https://play.google.com/store/apps/details?id=com.liso.app';
 const kAppStoreUrl = ''; // TODO: app store url
 
-// APP
+const kAppPrivacyUrl =
+    'https://liso-vault.github.io/privacy'; // TODO: privacy url
+const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
+
 const kHiveBoxSeeds = 'seeds';
 const kLocalMasterWalletFileName = 'master_wallet.liso';
-List<int>? encryptionKey;
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
+
+// VARS
+List<int>? encryptionKey;
 Wallet? masterWallet;
 bool timeLockEnabled = true;

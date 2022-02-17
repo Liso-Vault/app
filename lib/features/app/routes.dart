@@ -3,6 +3,7 @@ abstract class Routes {
 
   // SCREENS
   static const welcome = '/welcome';
+  static const signIn = '/sign_in';
   static const create = '/create';
   static const createPassword = '/create_password';
   static const mnemonic = '/mnemonic';

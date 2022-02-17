@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "848138515356",
+    "project_id": "liso-vault",
+    "storage_bucket": "liso-vault.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848138515356:android:bad2bc3ff2fea8b23b0e59",
+        "android_client_info": {
+          "package_name": "com.liso.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848138515356-mbctvo4tkq9c5kf294a537eiofimreno.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.liso.app",
+            "certificate_hash": "8fb5a8a7cc5ac5465c86250c707b0aa5b6ec2926"
+          }
+        },
+        {
+          "client_id": "848138515356-k88baaso1gqotrautv0le4ijpeo91bqm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOGMpJpwM6jS2wvtFjWRhU0pwCCIU2dfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848138515356-k88baaso1gqotrautv0le4ijpeo91bqm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
