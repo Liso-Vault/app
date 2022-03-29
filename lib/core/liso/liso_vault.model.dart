@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
 import 'package:liso/core/liso/crypter.extensions.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
@@ -11,9 +12,15 @@ import 'package:web3dart/credentials.dart';
 class LisoVault with ConsoleMixin {
   final Wallet? master;
   final List<VaultSeed> seeds;
+  final List<HiveVaultItem> items;
   final int version;
 
-  LisoVault({this.master, this.seeds = const [], this.version = 1});
+  LisoVault({
+    this.master,
+    this.seeds = const [],
+    this.items = const [],
+    this.version = 1,
+  });
 
   factory LisoVault.fromJson(Map<String, dynamic> json, String password) =>
       LisoVault(
@@ -21,12 +28,16 @@ class LisoVault with ConsoleMixin {
         seeds: List<VaultSeed>.from(
           json["seeds"].map((x) => VaultSeed.fromJson(x, password)),
         ),
+        items: List<HiveVaultItem>.from(
+          json["items"].map((x) => HiveVaultItem.fromJson(x)),
+        ),
         version: json["version"],
       );
 
   Map<String, dynamic> toJson() => {
         "master": master?.toJson(),
-        "seeds": seeds,
+        "seeds": List<dynamic>.from(seeds.map((x) => x.toJson())),
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "version": version,
       };
 
@@ -37,9 +48,12 @@ class LisoVault with ConsoleMixin {
       utf8.encode(await compute(Isolates.iJsonEncode, _seeds)),
     );
 
+    // TODO: encrypt items
+
     return {
       "master": master?.toJson(),
       "seeds": encryptedSeeds.toJson(),
+      // "items": encryptedItems.toJson(),
       "version": version,
     };
   }

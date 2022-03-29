@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
-import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/google/auth_client.dart';
@@ -96,7 +94,8 @@ class SignInScreenController extends GetxController
 
     final list = await driveApi.files.list(
       spaces: 'appDataFolder',
-      // $fields: 'files(id, createdDate)',
+      $fields:
+          'files(kind,id,name,mimeType,createdTime,modifiedTime,headRevisionId)',
     );
 
     list.files?.forEach((e) async {
@@ -111,7 +110,8 @@ class SignInScreenController extends GetxController
     if (driveApi == null) return;
 
     // Master wallet address
-    final address = masterWallet!.privateKey.address.hexEip55;
+    // final address = masterWallet!.privateKey.address.hexEip55;
+    const address = 'New-0xE4EE69beaD8EF3E765AE6E15cD2Cf9a44E84EF26';
 
     // // Vault contents
     // final vaultSeeds = await compute(Isolates.seedsToWallets, {
@@ -129,7 +129,10 @@ class SignInScreenController extends GetxController
     // final contents = await vault.toJsonStringEncrypted();
     const contents = 'testing contents';
 
-    final files = await driveApi.files.list(spaces: 'appDataFolder');
+    final files = await driveApi.files.list(
+      spaces: 'appDataFolder',
+    );
+
     final cloudLisoFiles = files.files?.where((e) => e.name == '$address.liso');
 
     // Existing liso file in the cloud

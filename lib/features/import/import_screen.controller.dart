@@ -6,7 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/seed.hive.dart';
@@ -61,8 +60,11 @@ class ImportScreenController extends GetxController
     final masterPassword = masterSeedHex.substring(0, 32);
 
     final file = File(filePathController.text);
-    final vaultJson =
-        await compute(Isolates.iJsonDecode, await file.readAsString());
+
+    final vaultJson = await compute(
+      Isolates.iJsonDecode,
+      await file.readAsString(),
+    );
 
     try {
       masterWallet = Wallet.fromJson(
@@ -105,8 +107,8 @@ class ImportScreenController extends GetxController
       seedsJson.map((x) => HiveSeed.fromJson(x['seed'])),
     );
 
+    // populate local hive database
     await HiveManager.seeds!.addAll(seeds);
-
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(

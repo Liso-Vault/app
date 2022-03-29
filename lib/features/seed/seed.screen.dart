@@ -1,7 +1,6 @@
 import 'package:blur/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_view.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/styles.dart';
 

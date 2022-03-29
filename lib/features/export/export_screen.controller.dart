@@ -126,12 +126,14 @@ class ExportScreenController extends GetxController
     console.info('export path: $exportPath');
     busyMessage.value = 'Creating...';
 
+    // construct the master wallet
     final exportMasterWallet = Wallet.createNew(
       unlockedMasterWallet!.privateKey,
       utf8.decode(encryptionKey!), // 32 byte master seed hex as the password
       Random.secure(),
     );
 
+    // hive seeds to VaultSeed object
     final vaultSeeds = await compute(Isolates.seedsToWallets, {
       'encryptionKey': encryptionKey,
       'seeds': jsonEncode(HiveManager.seeds!.values.toList()),
@@ -153,6 +155,7 @@ class ExportScreenController extends GetxController
     final contents = await vault.toJsonStringEncrypted();
     busyMessage.value = 'Exporting...';
 
+    // write to file
     try {
       final error = await compute(Isolates.writeStringToFile, {
         'file_path': exportFilePath,
@@ -172,7 +175,7 @@ class ExportScreenController extends GetxController
         return;
       }
     } catch (e) {
-      console.error('write to file failed 2: ${e.toString()}');
+      console.error('write to file failed: ${e.toString()}');
       change(null, status: RxStatus.success());
 
       UIUtils.showSnackBar(

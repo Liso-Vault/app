@@ -14,3 +14,4 @@ keytool -list -v \
 
 // upgrade to PKCS12
 keytool -importkeystore -srckeystore "/Volumes/FusionDrive - Data/Users/nemoryoliver/Desktop/Stackwares/Development/Android/key.keystore" -destkeystore "/Volumes/FusionDrive - Data/Users/nemoryoliver/Desktop/Stackwares/Development/Android/key.keystore" -deststoretype pkcs12
+

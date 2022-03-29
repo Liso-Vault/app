@@ -14,17 +14,10 @@ class LisoManager {
   static final console = Console(name: 'LisoManager');
 
   static Future<void> init() async {
-    final cipher = HiveAesCipher(encryptionKey!);
-
-    try {
-      HiveManager.seeds = await Hive.openBox(
-        kHiveBoxSeeds,
-        encryptionCipher: cipher,
-      );
-    } on HiveError {
-      console.error('HiveError');
-      await HiveManager.fixCorruptedBox();
-    }
+    HiveManager.seeds = await Hive.openBox(
+      kHiveBoxSeeds,
+      encryptionCipher: HiveAesCipher(encryptionKey!),
+    );
 
     console.warning('seeds: ${HiveManager.seeds!.length}');
   }
@@ -57,6 +50,6 @@ class LisoManager {
       await FilePicker.platform.clearTemporaryFiles();
     }
 
-    console.info('successfully reset!');
+    console.info('reset!');
   }
 }

@@ -1,4 +1,6 @@
 PODS:
+  - desktop_webview_auth (0.0.1):
+    - FlutterMacOS
   - desktop_window (0.0.1):
     - FlutterMacOS
   - device_info_plus_macos (0.0.1):
@@ -16,19 +18,19 @@ PODS:
   - Firebase/Crashlytics (8.11.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 8.11.0)
-  - firebase_analytics (9.1.0):
+  - firebase_analytics (9.1.2):
     - Firebase/Analytics (= 8.11.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_auth (3.3.6):
+  - firebase_auth (3.3.11):
     - Firebase/Auth (~> 8.11.0)
     - Firebase/CoreOnly (~> 8.11.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (1.12.0):
+  - firebase_core (1.13.1):
     - Firebase/CoreOnly (~> 8.11.0)
     - FlutterMacOS
-  - firebase_crashlytics (2.5.1):
+  - firebase_crashlytics (2.5.3):
     - Firebase/CoreOnly (~> 8.11.0)
     - Firebase/Crashlytics (~> 8.11.0)
     - firebase_core
@@ -138,6 +140,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - desktop_webview_auth (from `Flutter/ephemeral/.symlinks/plugins/desktop_webview_auth/macos`)
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
   - device_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos`)
   - firebase_analytics (from `Flutter/ephemeral/.symlinks/plugins/firebase_analytics/macos`)
@@ -167,6 +170,8 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  desktop_webview_auth:
+    :path: Flutter/ephemeral/.symlinks/plugins/desktop_webview_auth/macos
   desktop_window:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_window/macos
   device_info_plus_macos:
@@ -191,13 +196,14 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
+  desktop_webview_auth: 9bba53a29c9bc6a4ff621fd0ebfbb18856c4dada
   desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
   device_info_plus_macos: 1ad388a1ef433505c4038e7dd9605aadd1e2e9c7
   Firebase: 44dd9724c84df18b486639e874f31436eaa9a20c
-  firebase_analytics: 5419b304597c8f0b3bf603d5f21731188ddaaa44
-  firebase_auth: e05536375aac6f6394e59877eafaff2465da2b90
-  firebase_core: 76a7538b389ae1231102dbbdd4f3772eec9abbf8
-  firebase_crashlytics: 43d2c0c0999c16be5fe3d67bc5e49f9ab8b40626
+  firebase_analytics: fc6267f19d21b2fc95e5446bbeec303c2e709eb9
+  firebase_auth: 09509665526e4e137aa4e79e5117155fc4560998
+  firebase_core: 11d0b4e9fa6120706c015fbfe5f4b409758dae5d
+  firebase_crashlytics: abe33970ebd5d174256000050d5e479e2539e935
   FirebaseAnalytics: 4e4b13031034e6561ed3bd1d47b6fdabbd6487c6
   FirebaseAuth: d96d73aba85d192d7a7aa0b86dd6d7f8ec170b4b
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
@@ -218,4 +224,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: c7161fcf45d4fd9025dc0f48a76d6e64e52f8176
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3

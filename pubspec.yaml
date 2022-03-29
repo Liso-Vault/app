@@ -11,66 +11,68 @@ dependencies:
     sdk: flutter
 
   # STATE MANAGEMENT
-  get: 4.6.1
+  get: ^4.6.1
 
   # CRYTPO
-  web3dart: ^2.3.3
+  web3dart: ^2.3.5
   bip39: ^1.0.6
   hex: ^0.2.0
   cryptography: ^2.0.5
 
   # FIREBASE
-  firebase_core: ^1.12.0
-  firebase_auth: ^3.3.6
-  firebase_analytics: ^9.1.0
-  firebase_crashlytics: ^2.5.1
-  firebase_performance: ^0.8.0+5
+  firebase_core: ^1.13.1
+  firebase_auth: ^3.3.11
+  firebase_analytics: ^9.1.2
+  firebase_crashlytics: ^2.5.3
+  firebase_performance: ^0.8.0+7
 
   # GOOGLE
-  google_sign_in: ^5.2.3
-  googleapis: ^7.0.0
-  
+  google_sign_in: ^5.2.4
+  googleapis: ^8.1.0
+
+  # WORKAROUND
+  desktop_webview_auth: ^0.0.6 # MacOS Google Sign In
 
   # IO
-  hive: 2.0.5
-  hive_flutter: 1.1.0
-  get_storage: 2.0.3 # persistence
-  path_provider: 2.0.8
+  hive: ^2.1.0
+  hive_flutter: ^1.1.0
+  get_storage: ^2.0.3 # persistence
+  path_provider: ^2.0.9
   path: ^1.8.1
-  file_picker: ^4.3.3 # exporting + importing
+  file_picker: ^4.5.1 # exporting + importing
 
   # UI
   line_icons: ^2.0.1
-  flex_color_scheme: 4.2.0 # themes
+  flex_color_scheme: ^4.2.0 # themes
   desktop_window: ^0.4.0 # set desktop window size
-  flutter_svg: 1.0.3
-  simple_animations: 4.0.1
-  bubble_tab_indicator: 0.1.6
-  blur: ^3.0.0
+  flutter_svg: ^1.0.3
+  simple_animations: ^4.0.1
+  bubble_tab_indicator: ^0.1.6
+  blur: ^3.1.0
   flutter_json_viewer: ^1.0.1 #json viewer
 
   # TOOLS
   logger: ^1.1.0
-  url_launcher: 6.0.18
-  supercharged: 2.1.1
-  flutter_linkify: 5.0.2
-  timeago: 3.2.2
-  permission_handler: 8.3.0
-  flutter_local_notifications: ^9.2.0
+  url_launcher: ^6.0.20
+  supercharged: ^2.1.1
+  flutter_linkify: ^5.0.2
+  timeago: ^3.2.2
+  permission_handler: ^9.2.0
+  flutter_local_notifications: ^9.4.0
   either_option: 2.0.1-dev.1
 
   # INFO
-  device_info_plus: 3.2.1
-  package_info_plus: ^1.3.0
+  device_info_plus: ^3.2.2
+  package_info_plus: ^1.4.0
 
 dev_dependencies:
   # flutter_test:
   #   sdk: flutter
 
-  flutter_lints: ^1.0.0
-  hive_generator: 1.1.2
-  build_runner: ^2.1.7
-  flutter_native_splash: ^2.0.2
+  flutter_lints: ^1.0.4
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.8
+  flutter_native_splash: ^2.1.1
 
 flutter:
   uses-material-design: true

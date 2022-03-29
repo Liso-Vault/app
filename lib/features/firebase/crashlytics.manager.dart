@@ -14,7 +14,7 @@ class CrashlyticsManager {
   // INIT
   static void init() {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      kReleaseMode,
+      kReleaseMode, // TODO: let user decide
     );
 
     // CAPTURE FLUTTER ERRORS
