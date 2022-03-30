@@ -4,7 +4,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 part 'app.hive.g.dart';
 
 @HiveType(typeId: 11)
-class HiveApp extends HiveObject {
+class HiveMetadataApp extends HiveObject {
   @HiveField(0)
   String appName;
   @HiveField(1)
@@ -14,14 +14,15 @@ class HiveApp extends HiveObject {
   @HiveField(3)
   String buildNumber;
 
-  HiveApp({
+  HiveMetadataApp({
     required this.appName,
     required this.packageName,
     required this.version,
     required this.buildNumber,
   });
 
-  factory HiveApp.fromJson(Map<String, dynamic> json) => HiveApp(
+  factory HiveMetadataApp.fromJson(Map<String, dynamic> json) =>
+      HiveMetadataApp(
         appName: json["appName"],
         packageName: json["packageName"],
         version: json["version"],
@@ -35,10 +36,10 @@ class HiveApp extends HiveObject {
         "buildNumber": buildNumber,
       };
 
-  static Future<HiveApp> get() async {
+  static Future<HiveMetadataApp> get() async {
     final packageInfo = await PackageInfo.fromPlatform();
 
-    return HiveApp(
+    return HiveMetadataApp(
       appName: packageInfo.appName,
       packageName: packageInfo.packageName,
       version: packageInfo.version,

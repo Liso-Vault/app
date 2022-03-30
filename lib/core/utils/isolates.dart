@@ -1,10 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
-
-import 'package:bip39/bip39.dart' as bip39;
-import 'package:liso/core/hive/models/seed.hive.dart';
-import 'package:liso/core/liso/liso_vault.model.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:web3dart/credentials.dart';
 
@@ -21,28 +16,30 @@ class Isolates {
     );
   }
 
-  static Future<List<VaultSeed>> seedsToWallets(
-      Map<String, dynamic> params) async {
-    final _encryptionKey = params['encryptionKey'] as List<int>;
-    final seedsJson = jsonDecode(params['seeds']);
+  // static Future<List<VaultSeed>> seedsToWallets(
+  //     Map<String, dynamic> params) async {
+  //   final _encryptionKey = params['encryptionKey'] as List<int>;
+  //   final seedsJson = jsonDecode(params['seeds']);
 
-    final seeds = List<HiveSeed>.from(
-      seedsJson.map((x) => HiveSeed.fromJson(x)),
-    );
+  //   final seeds = List<HiveLisoItem>.from(
+  //     seedsJson.map((x) => HiveLisoItem.fromJson(x)),
+  //   );
 
-    // Convert seeds to Wallet objects
-    return seeds.map<VaultSeed>((e) {
-      final seedHex = bip39.mnemonicToSeedHex(e.mnemonic);
+  //   // Convert seeds to Wallet objects
+  //   return seeds.map<VaultSeed>((e) {
+  //     final seedHex = bip39.mnemonicToSeedHex(e.mnemonic);
 
-      final wallet = Wallet.createNew(
-        EthPrivateKey.fromHex(seedHex),
-        utf8.decode(_encryptionKey), // 32 byte master seed hex as the password
-        Random.secure(),
-      );
+  //     final wallet = Wallet.createNew(
+  //       EthPrivateKey.fromHex(seedHex),
+  //       utf8.decode(_encryptionKey), // 32 byte master seed hex as the password
+  //       Random.secure(),
+  //     );
 
-      return VaultSeed(seed: e, wallet: wallet);
-    }).toList();
-  }
+  //     return VaultSeed(seed: e, wallet: wallet);
+  //   }).toList();
+
+  //   return [];
+  // }
 
   // TODO: use either
   static Future<String> writeStringToFile(Map<String, String> params) async {

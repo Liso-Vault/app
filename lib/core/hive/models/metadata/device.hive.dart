@@ -5,7 +5,7 @@ import 'package:hive/hive.dart';
 part 'device.hive.g.dart';
 
 @HiveType(typeId: 12)
-class HiveDevice extends HiveObject {
+class HiveMetadataDevice extends HiveObject {
   @HiveField(0)
   String id;
   @HiveField(1)
@@ -17,7 +17,7 @@ class HiveDevice extends HiveObject {
   @HiveField(4)
   String osVersion;
 
-  HiveDevice({
+  HiveMetadataDevice({
     this.id = '',
     this.model = '',
     this.unit = '',
@@ -25,7 +25,8 @@ class HiveDevice extends HiveObject {
     this.osVersion = '',
   });
 
-  factory HiveDevice.fromJson(Map<String, dynamic> json) => HiveDevice(
+  factory HiveMetadataDevice.fromJson(Map<String, dynamic> json) =>
+      HiveMetadataDevice(
         id: json["id"],
         model: json["model"],
         unit: json["unit"],
@@ -41,7 +42,7 @@ class HiveDevice extends HiveObject {
         "osVersion": osVersion,
       };
 
-  static Future<HiveDevice> get() async {
+  static Future<HiveMetadataDevice> get() async {
     String _platformName() {
       if (GetPlatform.isAndroid) {
         return "android";
@@ -60,7 +61,7 @@ class HiveDevice extends HiveObject {
       }
     }
 
-    final device = HiveDevice(platform: _platformName());
+    final device = HiveMetadataDevice(platform: _platformName());
     final deviceInfo = DeviceInfoPlugin();
 
     if (GetPlatform.isIOS) {

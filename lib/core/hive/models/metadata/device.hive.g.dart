@@ -1,41 +1,44 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'metadata.hive.dart';
+part of 'device.hive.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveMetadataAdapter extends TypeAdapter<HiveMetadata> {
+class HiveMetadataDeviceAdapter extends TypeAdapter<HiveMetadataDevice> {
   @override
-  final int typeId = 10;
+  final int typeId = 12;
 
   @override
-  HiveMetadata read(BinaryReader reader) {
+  HiveMetadataDevice read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveMetadata(
-      device: fields[0] as HiveDevice,
-      app: fields[1] as HiveApp,
-      createdTime: fields[2] as DateTime,
-      updatedTime: fields[3] as DateTime,
+    return HiveMetadataDevice(
+      id: fields[0] as String,
+      model: fields[1] as String,
+      unit: fields[2] as String,
+      platform: fields[3] as String,
+      osVersion: fields[4] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HiveMetadata obj) {
+  void write(BinaryWriter writer, HiveMetadataDevice obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
-      ..write(obj.device)
+      ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.app)
+      ..write(obj.model)
       ..writeByte(2)
-      ..write(obj.createdTime)
+      ..write(obj.unit)
       ..writeByte(3)
-      ..write(obj.updatedTime);
+      ..write(obj.platform)
+      ..writeByte(4)
+      ..write(obj.osVersion);
   }
 
   @override
@@ -44,7 +47,7 @@ class HiveMetadataAdapter extends TypeAdapter<HiveMetadata> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveMetadataAdapter &&
+      other is HiveMetadataDeviceAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

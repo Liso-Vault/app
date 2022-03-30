@@ -46,7 +46,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           trailing: const Icon(LineIcons.angleRight),
           title: const Text('Export Vault'),
           onTap: () => Get.toNamed(Routes.export),
-          enabled: HiveManager.seeds!.isNotEmpty,
+          enabled: HiveManager.items!.isNotEmpty,
         ),
         const Divider(),
         ListTile(

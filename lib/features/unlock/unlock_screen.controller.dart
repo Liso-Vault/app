@@ -37,6 +37,7 @@ class UnlockScreenController extends GetxController
   @override
   void onInit() {
     change(null, status: RxStatus.success());
+    unlock(); // TODO: temporary
     super.onInit();
   }
 
@@ -49,6 +50,9 @@ class UnlockScreenController extends GetxController
 
     final masterWalletFilePath =
         '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
+
+    // TODO: temporary
+    passwordController.text = 'oliver12';
 
     try {
       masterWallet = await compute(Isolates.loadWallet, {

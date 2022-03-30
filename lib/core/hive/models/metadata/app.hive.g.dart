@@ -6,17 +6,17 @@ part of 'app.hive.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveAppAdapter extends TypeAdapter<HiveApp> {
+class HiveMetadataAppAdapter extends TypeAdapter<HiveMetadataApp> {
   @override
   final int typeId = 11;
 
   @override
-  HiveApp read(BinaryReader reader) {
+  HiveMetadataApp read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveApp(
+    return HiveMetadataApp(
       appName: fields[0] as String,
       packageName: fields[1] as String,
       version: fields[2] as String,
@@ -25,7 +25,7 @@ class HiveAppAdapter extends TypeAdapter<HiveApp> {
   }
 
   @override
-  void write(BinaryWriter writer, HiveApp obj) {
+  void write(BinaryWriter writer, HiveMetadataApp obj) {
     writer
       ..writeByte(4)
       ..writeByte(0)
@@ -44,7 +44,7 @@ class HiveAppAdapter extends TypeAdapter<HiveApp> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveAppAdapter &&
+      other is HiveMetadataAppAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

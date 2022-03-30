@@ -1,257 +1,258 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/hive/models/metadata.hive.dart';
-import 'package:liso/core/hive/models/seed.hive.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/utils/utils.dart';
-import 'package:liso/features/general/selector.sheet.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/passphrase_card/passphrase.card.dart';
-import 'package:liso/features/passphrase_card/passphrase_card.controller.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:line_icons/line_icons.dart';
+// import 'package:liso/core/hive/hive.manager.dart';
+// import 'package:liso/core/hive/models/item.hive.dart';
+// import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 
-const originItems = [
-  'Metamask',
-  'TrustWallet',
-  'Exodus',
-  'MyEtherWallet',
-  'BitGo',
-  'Math Wallet',
-  'Syrius',
-  'Cano',
-  'Other',
-];
+// import 'package:liso/core/notifications/notifications.manager.dart';
+// import 'package:liso/core/utils/console.dart';
+// import 'package:liso/core/utils/ui_utils.dart';
+// import 'package:liso/core/utils/utils.dart';
+// import 'package:liso/features/general/selector.sheet.dart';
+// import 'package:liso/features/main/main_screen.controller.dart';
+// import 'package:liso/features/passphrase_card/passphrase.card.dart';
+// import 'package:liso/features/passphrase_card/passphrase_card.controller.dart';
 
-const ledgerItems = [
-  'Blockchain',
-  'Hashgraph',
-  'Directed Acyclic Graph',
-  'Holochain',
-  'Tempo',
-  'Zenon Network',
-  'Other',
-];
+// const originItems = [
+//   'Metamask',
+//   'TrustWallet',
+//   'Exodus',
+//   'MyEtherWallet',
+//   'BitGo',
+//   'Math Wallet',
+//   'Syrius',
+//   'Cano',
+//   'Other',
+// ];
 
-class SeedScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => SeedScreenController());
-  }
-}
+// const ledgerItems = [
+//   'Blockchain',
+//   'Hashgraph',
+//   'Directed Acyclic Graph',
+//   'Holochain',
+//   'Tempo',
+//   'Zenon Network',
+//   'Other',
+// ];
 
-class SeedScreenController extends GetxController
-    with ConsoleMixin, StateMixin {
-  // VARIABLES
-  HiveSeed? object;
+// class SeedScreenBinding extends Bindings {
+//   @override
+//   void dependencies() {
+//     Get.lazyPut(() => SeedScreenController());
+//   }
+// }
 
-  final formKey = GlobalKey<FormState>();
-  final mode = Get.parameters['mode'] as String;
+// class SeedScreenController extends GetxController
+//     with ConsoleMixin, StateMixin {
+//   // VARIABLES
+//   HiveLisoItem? object;
 
-  PassphraseCard? passphraseCard;
-  final addressController = TextEditingController();
-  final descriptionController = TextEditingController();
+//   final formKey = GlobalKey<FormState>();
+//   final mode = Get.parameters['mode'] as String;
 
-  final originDropdownItems = originItems
-      .map(
-        (e) => DropdownMenuItem(
-          child: Row(
-            children: [
-              Image.asset(
-                Utils.originImageParser(e),
-                width: 15,
-              ),
-              const SizedBox(width: 10),
-              Text(e),
-            ],
-          ),
-          value: e,
-        ),
-      )
-      .toList();
+//   PassphraseCard? passphraseCard;
+//   final addressController = TextEditingController();
+//   final descriptionController = TextEditingController();
 
-  final ledgerDropdownItems = ledgerItems
-      .map(
-        (e) => DropdownMenuItem(
-          child: Row(
-            children: [
-              const Icon(LineIcons.connectDevelop, size: 15),
-              const SizedBox(width: 10),
-              Text(e),
-            ],
-          ),
-          value: e,
-        ),
-      )
-      .toList();
+//   final originDropdownItems = originItems
+//       .map(
+//         (e) => DropdownMenuItem(
+//           child: Row(
+//             children: [
+//               Image.asset(
+//                 Utils.originImageParser(e),
+//                 width: 15,
+//               ),
+//               const SizedBox(width: 10),
+//               Text(e),
+//             ],
+//           ),
+//           value: e,
+//         ),
+//       )
+//       .toList();
 
-  // PROPERTIES
-  final passphraseIndexedStack =
-      (Get.parameters['mode'] == 'update' ? 0 : 1).obs;
-  final blurred = true.obs;
-  final selectedOrigin = originItems.first.obs;
-  final selectedLedger = ledgerItems.first.obs;
+//   final ledgerDropdownItems = ledgerItems
+//       .map(
+//         (e) => DropdownMenuItem(
+//           child: Row(
+//             children: [
+//               const Icon(LineIcons.connectDevelop, size: 15),
+//               const SizedBox(width: 10),
+//               Text(e),
+//             ],
+//           ),
+//           value: e,
+//         ),
+//       )
+//       .toList();
 
-  // GETTERS
+//   // PROPERTIES
+//   final passphraseIndexedStack =
+//       (Get.parameters['mode'] == 'update' ? 0 : 1).obs;
+//   final blurred = true.obs;
+//   final selectedOrigin = originItems.first.obs;
+//   final selectedLedger = ledgerItems.first.obs;
 
-  // INIT
+//   // GETTERS
 
-  @override
-  void onInit() {
-    if (mode == 'add') {
-      passphraseCard = const PassphraseCard(mode: PassphraseMode.none);
-    } else if (mode == 'update') {
-      final index = int.parse(Get.parameters['index'].toString());
-      object = HiveManager.seeds!.getAt(index);
+//   // INIT
 
-      passphraseCard = PassphraseCard(
-        mode: PassphraseMode.none,
-        phrase: object!.mnemonic,
-      );
+//   @override
+//   void onInit() {
+//     // if (mode == 'add') {
+//     //   passphraseCard = const PassphraseCard(mode: PassphraseMode.none);
+//     // } else if (mode == 'update') {
+//     //   final index = int.parse(Get.parameters['index'].toString());
+//     //   object = HiveManager.items!.getAt(index);
 
-      addressController.text = object!.address;
-      descriptionController.text = object!.description;
-      selectedOrigin.value = object!.origin;
-      selectedLedger.value = object!.ledger;
-    }
+//     //   passphraseCard = PassphraseCard(
+//     //     mode: PassphraseMode.none,
+//     //     phrase: object!.mnemonic,
+//     //   );
 
-    super.onInit();
-  }
+//     //   addressController.text = object!.address;
+//     //   descriptionController.text = object!.description;
+//     //   selectedOrigin.value = object!.origin;
+//     //   selectedLedger.value = object!.ledger;
+//     // }
 
-  // FUNCTIONS
+//     super.onInit();
+//   }
 
-  void showSeedOptions() {
-    SelectorSheet(
-      title: 'Seed Options',
-      items: [
-        SelectorItem(
-          title: 'Generate 12 words',
-          leading: const Icon(LineIcons.syncIcon),
-          onSelected: () =>
-              PassphraseCardController.to.generateSeed(strength: 128),
-        ),
-        SelectorItem(
-          title: 'Generate 24 words',
-          leading: const Icon(LineIcons.syncIcon),
-          onSelected: () =>
-              PassphraseCardController.to.generateSeed(strength: 256),
-        ),
-      ],
-    ).show();
-  }
+//   // FUNCTIONS
 
-  void add() async {
-    if (!formKey.currentState!.validate()) return;
+//   void showSeedOptions() {
+//     SelectorSheet(
+//       title: 'Seed Options',
+//       items: [
+//         SelectorItem(
+//           title: 'Generate 12 words',
+//           leading: const Icon(LineIcons.syncIcon),
+//           onSelected: () =>
+//               PassphraseCardController.to.generateSeed(strength: 128),
+//         ),
+//         SelectorItem(
+//           title: 'Generate 24 words',
+//           leading: const Icon(LineIcons.syncIcon),
+//           onSelected: () =>
+//               PassphraseCardController.to.generateSeed(strength: 256),
+//         ),
+//       ],
+//     ).show();
+//   }
 
-    final mnemonic = passphraseCard?.obtainMnemonicPhrase();
-    if (mnemonic == null) return console.error('invalid mnemonic');
+//   void add() async {
+//     // if (!formKey.currentState!.validate()) return;
 
-    final newSeed = HiveSeed(
-      mnemonic: mnemonic,
-      address: addressController.text,
-      description: descriptionController.text,
-      ledger: selectedLedger.value,
-      origin: selectedOrigin.value,
-      metadata: await HiveMetadata.get(),
-    );
+//     // final mnemonic = passphraseCard?.obtainMnemonicPhrase();
+//     // if (mnemonic == null) return console.error('invalid mnemonic');
 
-    final exists = HiveManager.seeds!.values
-        .where((e) =>
-            e.address == newSeed.address || e.mnemonic == newSeed.mnemonic)
-        .isNotEmpty;
+//     // final newSeed = HiveSeed(
+//     //   mnemonic: mnemonic,
+//     //   address: addressController.text,
+//     //   description: descriptionController.text,
+//     //   ledger: selectedLedger.value,
+//     //   origin: selectedOrigin.value,
+//     //   metadata: await HiveMetadata.get(),
+//     // );
 
-    if (exists) {
-      UIUtils.showSnackBar(
-        title: 'Already exists',
-        message: 'Either the address or mnemonic phrase already exists',
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-        seconds: 4,
-      );
+//     // final exists = HiveManager.seeds!.values
+//     //     .where((e) =>
+//     //         e.address == newSeed.address || e.mnemonic == newSeed.mnemonic)
+//     //     .isNotEmpty;
 
-      return;
-    }
+//     // if (exists) {
+//     //   UIUtils.showSnackBar(
+//     //     title: 'Already exists',
+//     //     message: 'Either the address or mnemonic phrase already exists',
+//     //     icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+//     //     seconds: 4,
+//     //   );
 
-    await HiveManager.seeds!.putAt(0, newSeed);
+//     //   return;
+//     // }
 
-    NotificationsManager.notify(
-      title: 'Seed has been added',
-      body:
-          "${newSeed.address}\nDon't forget to regularly backing up your vault file to keep everything updated and in sync",
-    );
+//     // await HiveManager.seeds!.putAt(0, newSeed);
 
-    MainScreenController.to.load();
-    Get.back();
+//     // NotificationsManager.notify(
+//     //   title: 'Seed has been added',
+//     //   body:
+//     //       "${newSeed.address}\nDon't forget to regularly backing up your vault file to keep everything updated and in sync",
+//     // );
 
-    console.info('success');
-  }
+//     // MainScreenController.to.load();
+//     // Get.back();
 
-  void edit() async {
-    if (!formKey.currentState!.validate()) return;
-    if (object == null) return;
+//     // console.info('success');
+//   }
 
-    final mnemonic = passphraseCard?.obtainMnemonicPhrase();
-    if (mnemonic == null) return console.error('invalid mnemonic');
+//   void edit() async {
+//     // if (!formKey.currentState!.validate()) return;
+//     // if (object == null) return;
 
-    object!.mnemonic = mnemonic;
-    object!.address = addressController.text;
-    object!.description = descriptionController.text;
-    object!.origin = selectedOrigin.value;
-    object!.ledger = selectedLedger.value;
-    object!.metadata = await object!.metadata.getUpdated();
-    await object?.save();
+//     // final mnemonic = passphraseCard?.obtainMnemonicPhrase();
+//     // if (mnemonic == null) return console.error('invalid mnemonic');
 
-    NotificationsManager.notify(
-      title: 'Seed has been updated',
-      body: object!.address,
-    );
+//     // object!.mnemonic = mnemonic;
+//     // object!.address = addressController.text;
+//     // object!.description = descriptionController.text;
+//     // object!.origin = selectedOrigin.value;
+//     // object!.ledger = selectedLedger.value;
+//     // object!.metadata = await object!.metadata.getUpdated();
+//     // await object?.save();
 
-    MainScreenController.to.load();
-    Get.back();
+//     // NotificationsManager.notify(
+//     //   title: 'Seed has been updated',
+//     //   body: object!.address,
+//     // );
 
-    console.info('success');
-  }
+//     // MainScreenController.to.load();
+//     // Get.back();
 
-  void delete() {
-    void _proceed() async {
-      await object?.delete();
+//     // console.info('success');
+//   }
 
-      NotificationsManager.notify(
-        title: 'Seed has been deleted',
-        body: object!.address,
-      );
+//   void delete() {
+//     // void _proceed() async {
+//     //   await object?.delete();
 
-      MainScreenController.to.load();
-      Get.back();
+//     //   NotificationsManager.notify(
+//     //     title: 'Seed has been deleted',
+//     //     body: object!.address,
+//     //   );
 
-      console.info('success');
-    }
+//     //   MainScreenController.to.load();
+//     //   Get.back();
 
-    SelectorSheet(
-      title: 'Delete Seed',
-      subTitle: 'Are you sure you want to delete this seed?',
-      items: [
-        SelectorItem(
-          title: 'Delete',
-          subTitle: 'This can only be undone with a backup vault file',
-          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          onSelected: _proceed,
-        ),
-        SelectorItem(
-          title: 'Cancel',
-          leading: const Icon(LineIcons.timesCircle),
-          onSelected: Get.back,
-        ),
-      ],
-    ).show();
-  }
+//     //   console.info('success');
+//     // }
 
-  void changedOriginItem(String? item) {
-    selectedOrigin.value = item!;
-  }
+//     // SelectorSheet(
+//     //   title: 'Delete Seed',
+//     //   subTitle: 'Are you sure you want to delete this seed?',
+//     //   items: [
+//     //     SelectorItem(
+//     //       title: 'Delete',
+//     //       subTitle: 'This can only be undone with a backup vault file',
+//     //       leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+//     //       onSelected: _proceed,
+//     //     ),
+//     //     SelectorItem(
+//     //       title: 'Cancel',
+//     //       leading: const Icon(LineIcons.timesCircle),
+//     //       onSelected: Get.back,
+//     //     ),
+//     //   ],
+//     // ).show();
+//   }
 
-  void changedLedgerItem(String? item) {
-    selectedLedger.value = item!;
-  }
-}
+//   void changedOriginItem(String? item) {
+//     selectedOrigin.value = item!;
+//   }
+
+//   void changedLedgerItem(String? item) {
+//     selectedLedger.value = item!;
+//   }
+// }

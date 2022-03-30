@@ -3,17 +3,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/hive/models/seed.hive.dart';
+import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/selector.sheet.dart';
-import 'package:liso/features/json_viewer/json_viewer.screen.dart';
 
 class MainScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -23,7 +20,7 @@ class MainScreenController extends GetxController
   Timer? timer;
 
   // PROPERTIES
-  final data = <HiveSeed>[].obs;
+  final data = <HiveLisoItem>[].obs;
 
   // GETTERS
 
@@ -42,6 +39,7 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
+  // TODO: use hive watch feature instead
   void load() async {
     change(null, status: RxStatus.loading());
 
@@ -55,42 +53,66 @@ class MainScreenController extends GetxController
       }
     }
 
-    data.value = HiveManager.seeds!.values.toList();
-
-    if (data.isEmpty) {
-      change(null, status: RxStatus.empty());
-    } else {
-      change(null, status: RxStatus.success());
-    }
+    // TODO: use sorting
+    data.value = HiveManager.items!.values.toList();
+    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 
-  void add() => Get.toNamed(Routes.seed, parameters: {'mode': 'add'});
+  // void add() => Get.toNamed(Routes.seed, parameters: {'mode': 'add'});
 
-  void onLongPress(HiveSeed object) {
+  void add() {
+    // filter necessary tags
+    final templates = LisoReservedTags.values.where(
+      (e) =>
+          e != LisoReservedTags.favorite &&
+          e != LisoReservedTags.archived &&
+          e != LisoReservedTags.deleted,
+    );
+
     SelectorSheet(
-      items: [
-        SelectorItem(
-          title: 'Copy Address',
-          subTitle: object.address,
-          leading: const Icon(LineIcons.copy),
-          onSelected: () => Utils.copyToClipboard(object.address),
-        ),
-        SelectorItem(
-          title: 'Copy Mnemonic Phrase',
-          subTitle: 'Copy at your own risk',
-          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          onSelected: () => Utils.copyToClipboard(object.mnemonic),
-        ),
-        SelectorItem(
-          title: 'Details',
-          subTitle: 'In JSON format',
-          leading: const Icon(LineIcons.laptopCode),
-          onSelected: () {
-            Get.to(() => JSONViewerScreen(data: object.toJson()));
-          },
-        ),
-      ],
+      items: templates
+          .map((e) => e.name)
+          .map((e) => SelectorItem(
+                title: e.tr,
+                // TODO: use a constant variable for path
+                leading: Image.asset(
+                  'assets/images/tags/$e.png',
+                  height: 20,
+                ),
+                onSelected: () => Get.toNamed(
+                  Routes.item,
+                  parameters: {'mode': 'add', 'template': e},
+                ),
+              ))
+          .toList(),
     ).show();
+  }
+
+  void onLongPress(HiveLisoItem object) {
+    // SelectorSheet(
+    //   items: [
+    //     SelectorItem(
+    //       title: 'Copy Address',
+    //       subTitle: object.address,
+    //       leading: const Icon(LineIcons.copy),
+    //       onSelected: () => Utils.copyToClipboard(object.address),
+    //     ),
+    //     SelectorItem(
+    //       title: 'Copy Mnemonic Phrase',
+    //       subTitle: 'Copy at your own risk',
+    //       leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+    //       onSelected: () => Utils.copyToClipboard(object.mnemonic),
+    //     ),
+    //     SelectorItem(
+    //       title: 'Details',
+    //       subTitle: 'In JSON format',
+    //       leading: const Icon(LineIcons.laptopCode),
+    //       onSelected: () {
+    //         Get.to(() => JSONViewerScreen(data: object.toJson()));
+    //       },
+    //     ),
+    //   ],
+    // ).show();
   }
 
   void initAppLifeCycleEvents() {

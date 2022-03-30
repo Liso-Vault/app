@@ -14,12 +14,15 @@ class LisoManager {
   static final console = Console(name: 'LisoManager');
 
   static Future<void> init() async {
-    HiveManager.seeds = await Hive.openBox(
-      kHiveBoxSeeds,
+    HiveManager.tags = await Hive.openBox(kHiveBoxTags);
+
+    HiveManager.items = await Hive.openBox(
+      kHiveBoxItems,
       encryptionCipher: HiveAesCipher(encryptionKey!),
     );
 
-    console.warning('seeds: ${HiveManager.seeds!.length}');
+    console.warning(
+        'items: ${HiveManager.items!.length}, tags: ${HiveManager.tags!.length}');
   }
 
   static Future<bool> authenticated() async {

@@ -9,16 +9,14 @@ import 'package:liso/features/google/sign_in.screen.dart';
 import 'package:liso/features/google/sign_in_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
-import 'package:liso/features/mnemonic/mnemonic.screen.dart';
-import 'package:liso/features/mnemonic/mnemonic_screen.controller.dart';
-import 'package:liso/features/mnemonic/confirm/confirm_mnemonic.screen.dart';
-import 'package:liso/features/mnemonic/confirm/confirm_mnemonic_screen.controller.dart';
-import 'package:liso/features/reset/reset.screen.dart';
-import 'package:liso/features/reset/reset_screen.controller.dart';
-import 'package:liso/features/seed/seed.screen.dart';
-import 'package:liso/features/seed/seed_screen.controller.dart';
 import 'package:liso/features/main/main.screen.dart';
 import 'package:liso/features/main/main_screen.binding.dart';
+import 'package:liso/features/mnemonic/confirm/confirm_mnemonic.screen.dart';
+import 'package:liso/features/mnemonic/confirm/confirm_mnemonic_screen.controller.dart';
+import 'package:liso/features/mnemonic/mnemonic.screen.dart';
+import 'package:liso/features/mnemonic/mnemonic_screen.controller.dart';
+import 'package:liso/features/reset/reset.screen.dart';
+import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
@@ -26,6 +24,8 @@ import 'package:liso/features/unlock/unlock_screen.controller.dart';
 import 'package:liso/features/welcome/welcome.screen.dart';
 import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
+import '../item/item.screen.dart';
+import '../item/item_screen.controller.dart';
 import 'routes.dart';
 
 class AppPages {
@@ -67,9 +67,9 @@ class AppPages {
       binding: ResetScreenBinding(),
     ),
     GetPage(
-      name: Routes.seed,
-      page: () => const SeedScreen(),
-      binding: SeedScreenBinding(),
+      name: Routes.item,
+      page: () => const ItemScreen(),
+      binding: ItemScreenBinding(),
     ),
     GetPage(
       name: Routes.import,

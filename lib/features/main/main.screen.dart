@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
@@ -20,50 +19,50 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final object = controller.data[index];
 
-      final title = Text(
-        object.address,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      );
+      // final title = Text(
+      //   object.address,
+      //   maxLines: 1,
+      //   overflow: TextOverflow.ellipsis,
+      // );
 
-      final subTitle = Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            object.description,
-            maxLines: 3,
-            overflow: TextOverflow.ellipsis,
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              Image.asset(
-                Utils.originImageParser(object.origin),
-                width: 15,
-              ),
-              const SizedBox(width: 5),
-              Text(
-                object.origin,
-                style: const TextStyle(fontSize: 10),
-              ),
-              const SizedBox(width: 10),
-              const Icon(LineIcons.connectDevelop, size: 15),
-              const SizedBox(width: 5),
-              Text(
-                object.ledger,
-                style: const TextStyle(fontSize: 10),
-              ),
-              const SizedBox(width: 10),
-              const Icon(LineIcons.clock, size: 15),
-              const SizedBox(width: 5),
-              Text(
-                object.metadata.updatedTimeAgo,
-                style: const TextStyle(fontSize: 10),
-              ),
-            ],
-          )
-        ],
-      );
+      // final subTitle = Column(
+      //   crossAxisAlignment: CrossAxisAlignment.start,
+      //   children: [
+      //     Text(
+      //       object.description,
+      //       maxLines: 3,
+      //       overflow: TextOverflow.ellipsis,
+      //     ),
+      //     const SizedBox(height: 10),
+      //     Row(
+      //       children: [
+      //         Image.asset(
+      //           Utils.originImageParser(object.origin),
+      //           width: 15,
+      //         ),
+      //         const SizedBox(width: 5),
+      //         Text(
+      //           object.origin,
+      //           style: const TextStyle(fontSize: 10),
+      //         ),
+      //         const SizedBox(width: 10),
+      //         const Icon(LineIcons.connectDevelop, size: 15),
+      //         const SizedBox(width: 5),
+      //         Text(
+      //           object.ledger,
+      //           style: const TextStyle(fontSize: 10),
+      //         ),
+      //         const SizedBox(width: 10),
+      //         const Icon(LineIcons.clock, size: 15),
+      //         const SizedBox(width: 5),
+      //         Text(
+      //           object.metadata.updatedTimeAgo,
+      //           style: const TextStyle(fontSize: 10),
+      //         ),
+      //       ],
+      //     )
+      //   ],
+      // );
 
       // return ListItemAnimation(
       //   child: GestureDetector(
@@ -81,12 +80,26 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       //   ),
       // );
 
+      final title = Text(
+        object.title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+
+      final subTitle = Text(
+        object.subTitle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+
       return GestureDetector(
         child: ListTile(
+          leading: const Icon(Icons.ac_unit_rounded),
           title: title,
           subtitle: subTitle,
-          onTap: () => Get.toNamed(Routes.seed, parameters: {
+          onTap: () => Get.toNamed(Routes.item, parameters: {
             'mode': 'update',
+            'template': object.tags.first,
             'index': index.toString(),
           }),
           onLongPress: () => controller.onLongPress(object),
@@ -109,7 +122,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
         iconData: LineIcons.seedling,
         message: 'empty',
         child: TextButton.icon(
-          label: const Text('Add your first seed'),
+          label: const Text('Add your first item'),
           icon: const Icon(LineIcons.plus),
           onPressed: controller.add,
         ),

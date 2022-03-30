@@ -25,7 +25,9 @@ const kAppPrivacyUrl =
     'https://liso-vault.github.io/privacy'; // TODO: privacy url
 const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
 
-const kHiveBoxSeeds = 'seeds';
+const kHiveBoxItems = 'items';
+const kHiveBoxTags = 'tags';
+
 const kLocalMasterWalletFileName = 'master_wallet.liso';
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
@@ -34,3 +36,32 @@ const kRootDirectory = 'Liso';
 List<int>? encryptionKey;
 Wallet? masterWallet;
 bool timeLockEnabled = true;
+
+// Reserved Tags
+
+enum LisoReservedTags {
+  cryptoWallet,
+  login,
+  password,
+  identity,
+  note,
+  cashCard,
+  bankAccount,
+  medicalRecord,
+  passport,
+  server,
+  softwareLicense,
+  apiCredential,
+  database,
+  driversLicense,
+  email,
+  membership,
+  outdoorLicense,
+  rewardsProgram,
+  socialSecurity,
+  wirelessRouter,
+  encryption,
+  favorite,
+  archived,
+  deleted,
+}

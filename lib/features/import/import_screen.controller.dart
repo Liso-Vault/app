@@ -8,7 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/hive/models/seed.hive.dart';
+import 'package:liso/core/hive/models/item.hive.dart';
+
 import 'package:liso/core/liso/crypter.extensions.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/liso/liso_crypter.model.dart';
@@ -103,12 +104,12 @@ class ImportScreenController extends GetxController
     final decryptedSeeds = await LisoCrypter().decrypt(encryptedSeedsSecretBox);
     final seedsJson = jsonDecode(utf8.decode(decryptedSeeds));
 
-    final seeds = List<HiveSeed>.from(
-      seedsJson.map((x) => HiveSeed.fromJson(x['seed'])),
+    final items = List<HiveLisoItem>.from(
+      seedsJson.map((x) => HiveLisoItem.fromJson(x['seed'])),
     );
 
     // populate local hive database
-    await HiveManager.seeds!.addAll(seeds);
+    await HiveManager.items!.addAll(items);
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(

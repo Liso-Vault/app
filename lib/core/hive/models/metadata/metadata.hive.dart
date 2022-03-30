@@ -9,9 +9,9 @@ part 'metadata.hive.g.dart';
 @HiveType(typeId: 10)
 class HiveMetadata extends HiveObject {
   @HiveField(0)
-  HiveDevice device;
+  HiveMetadataDevice device;
   @HiveField(1)
-  HiveApp app;
+  HiveMetadataApp app;
   @HiveField(2)
   DateTime createdTime;
   @HiveField(3)
@@ -30,8 +30,8 @@ class HiveMetadata extends HiveObject {
   });
 
   factory HiveMetadata.fromJson(Map<String, dynamic> json) => HiveMetadata(
-        device: HiveDevice.fromJson(json["device"]),
-        app: HiveApp.fromJson(json["app"]),
+        device: HiveMetadataDevice.fromJson(json["device"]),
+        app: HiveMetadataApp.fromJson(json["app"]),
         createdTime: DateTime.parse(json["createdTime"]),
         updatedTime: DateTime.parse(json["updatedTime"]),
       );
@@ -45,8 +45,8 @@ class HiveMetadata extends HiveObject {
 
   Future<HiveMetadata> getUpdated() async {
     return HiveMetadata(
-      app: await HiveApp.get(),
-      device: await HiveDevice.get(),
+      app: await HiveMetadataApp.get(),
+      device: await HiveMetadataDevice.get(),
       createdTime: createdTime,
       updatedTime: DateTime.now().toUtc(),
     );
@@ -54,8 +54,8 @@ class HiveMetadata extends HiveObject {
 
   static Future<HiveMetadata> get() async {
     return HiveMetadata(
-      app: await HiveApp.get(),
-      device: await HiveDevice.get(),
+      app: await HiveMetadataApp.get(),
+      device: await HiveMetadataDevice.get(),
       createdTime: DateTime.now().toUtc(),
       updatedTime: DateTime.now().toUtc(),
     );
