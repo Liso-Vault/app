@@ -9,7 +9,6 @@ import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
 import '../general/selector.sheet.dart';
-import '../main/main_screen.controller.dart';
 
 class ItemScreenBinding extends Bindings {
   @override
@@ -43,8 +42,8 @@ class ItemScreenController extends GetxController
     if (mode == 'add') {
       await _loadTemplate();
     } else if (mode == 'update') {
-      final index = int.parse(Get.parameters['index'].toString());
-      item = HiveManager.items!.getAt(index);
+      final hiveKey = Get.parameters['hiveKey'].toString();
+      item = HiveManager.items!.get(int.parse(hiveKey));
       titleController.text = item!.title;
       tagsController.text = item!.tags.join(',');
     }
@@ -78,8 +77,6 @@ class ItemScreenController extends GetxController
     );
 
     await HiveManager.items!.add(newItem);
-
-    MainScreenController.to.load();
     Get.back();
   }
 
@@ -94,15 +91,12 @@ class ItemScreenController extends GetxController
     item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
 
-    MainScreenController.to.load();
     Get.back();
   }
 
   void delete() {
     void _proceed() async {
       await item?.delete();
-
-      MainScreenController.to.load();
       Get.back();
     }
 

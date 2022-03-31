@@ -30,8 +30,26 @@ class MainScreenController extends GetxController
   void onInit() {
     _initAppLifeCycleEvents();
     _setDisplayMode();
-    load();
+    _load();
+
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    HiveManager.items?.watch().listen((event) {
+      // console.warning(
+      //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
+      // );
+
+      // if (event.deleted) {
+      //   data.removeWhere((e) => e.key == event.key);
+      // }
+
+      _load();
+    });
+
+    super.onReady();
   }
 
   @override
@@ -41,8 +59,7 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
-  // TODO: use hive watch feature instead
-  void load() async {
+  void _load() async {
     change(null, status: RxStatus.loading());
 
     // show welcome screen if not authenticated
@@ -55,8 +72,14 @@ class MainScreenController extends GetxController
       }
     }
 
-    // TODO: use sorting
-    data.value = HiveManager.items!.values.toList();
+    final items = HiveManager.items!.values.toList();
+    // sort from latest to oldest
+    items.sort(
+      (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
+    );
+
+    data.value = items;
+
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 
@@ -64,11 +87,14 @@ class MainScreenController extends GetxController
 
   void add() {
     // filter necessary tags
+    final excludedTags = [
+      LisoReservedTags.favorite,
+      LisoReservedTags.archived,
+      LisoReservedTags.deleted,
+    ];
+
     final templates = LisoReservedTags.values.where(
-      (e) =>
-          e != LisoReservedTags.favorite &&
-          e != LisoReservedTags.archived &&
-          e != LisoReservedTags.deleted,
+      (e) => !excludedTags.contains(e),
     );
 
     SelectorSheet(

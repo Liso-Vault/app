@@ -93,7 +93,7 @@ class ItemScreen extends GetView<ItemScreenController> {
         const SizedBox(height: 20),
         // TODO: better datetime format
         Text(
-          'Last updated ${controller.item!.metadata.updatedTime}', // TODO: better DateTime format
+          'Last updated ${controller.item?.metadata.updatedTime}', // TODO: better DateTime format
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

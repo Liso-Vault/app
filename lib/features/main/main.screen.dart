@@ -8,6 +8,7 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/hive/hive.manager.dart';
 import 'drawer/drawer.widget.dart';
 import 'main_screen.controller.dart';
 
@@ -100,7 +101,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           onTap: () => Get.toNamed(Routes.item, parameters: {
             'mode': 'update',
             'template': object.tags.first,
-            'index': index.toString(),
+            'hiveKey': object.key.toString(),
           }),
           onLongPress: () => controller.onLongPress(object),
         ),
@@ -110,12 +111,14 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
     }
 
     final content = controller.obx(
-      (_) => ListView.separated(
-        shrinkWrap: true,
-        itemCount: controller.data.length,
-        itemBuilder: itemBuilder,
-        separatorBuilder: (context, index) => const Divider(),
-        padding: const EdgeInsets.only(bottom: 50),
+      (_) => Obx(
+        () => ListView.separated(
+          shrinkWrap: true,
+          itemCount: controller.data.length,
+          itemBuilder: itemBuilder,
+          separatorBuilder: (context, index) => const Divider(),
+          padding: const EdgeInsets.only(bottom: 50),
+        ),
       ),
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
