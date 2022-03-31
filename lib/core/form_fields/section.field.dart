@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-class SectionFieldParser {
-  static Widget parse(HiveLisoField field) {
+class SectionFormField extends StatelessWidget {
+  final HiveLisoField field;
+  const SectionFormField(this.field, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Text(

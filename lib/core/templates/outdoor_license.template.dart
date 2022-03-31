@@ -11,7 +11,8 @@ final templateOutdoorLicenseFields = [
   ),
   HiveLisoField(
     reserved: true,
-    type: LisoFieldType.divider.name,
+    type: LisoFieldType.section.name,
+    data: {'value': 'Others'},
   ),
   HiveLisoField(
     reserved: true,

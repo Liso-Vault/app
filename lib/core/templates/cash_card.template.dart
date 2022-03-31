@@ -3,15 +3,16 @@ import '../hive/models/field.hive.dart';
 final templateCashCardFields = [
   HiveLisoField(
     reserved: true,
-    type: LisoFieldType.textField.name,
+    type: LisoFieldType.pin.name,
     data: {
       'value': '',
-      'label': 'Title',
+      'label': 'PIN Code',
     },
   ),
   HiveLisoField(
     reserved: true,
-    type: LisoFieldType.divider.name,
+    type: LisoFieldType.section.name,
+    data: {'value': 'Others'},
   ),
   HiveLisoField(
     reserved: true,

@@ -57,7 +57,7 @@ class ItemScreen extends GetView<ItemScreenController> {
           const Divider(),
           // TAGS
           TextFormField(
-            initialValue: template,
+            controller: controller.tagsController,
             decoration: Styles.inputDecoration.copyWith(
               labelText: 'Tags',
             ),
@@ -98,7 +98,7 @@ class ItemScreen extends GetView<ItemScreenController> {
             const SizedBox(height: 20),
             // TODO: better datetime format
             Text(
-              'Last updated ${controller.object!.metadata.updatedTime}',
+              'Last updated ${controller.item!.metadata.updatedTime}',
               style: const TextStyle(color: Colors.grey),
               textAlign: TextAlign.center,
             ),

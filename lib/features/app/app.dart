@@ -26,8 +26,7 @@ class App extends StatelessWidget {
       initialRoute: Routes.main,
       initialBinding: MainScreenBinding(),
       getPages: AppPages.routes,
-      defaultTransition: Transition.native,
-      transitionDuration: 200.milliseconds,
+      defaultTransition: Transition.rightToLeftWithFade,
       // THEMING
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.green,

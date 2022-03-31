@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
@@ -27,7 +28,8 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    initAppLifeCycleEvents();
+    _initAppLifeCycleEvents();
+    _setDisplayMode();
     load();
     super.onInit();
   }
@@ -115,7 +117,7 @@ class MainScreenController extends GetxController
     // ).show();
   }
 
-  void initAppLifeCycleEvents() {
+  void _initAppLifeCycleEvents() {
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
       console.warning(msg!);
@@ -140,5 +142,26 @@ class MainScreenController extends GetxController
 
       return Future.value(msg);
     });
+  }
+
+  // support higher refresh rate
+  void _setDisplayMode() async {
+    if (!GetPlatform.isAndroid) return;
+
+    try {
+      final mode = await FlutterDisplayMode.active;
+      console.warning('active mode: $mode');
+
+      final modes = await FlutterDisplayMode.supported;
+
+      for (DisplayMode e in modes) {
+        console.info('display modes: $e');
+      }
+
+      await FlutterDisplayMode.setPreferredMode(modes.last);
+      console.info('set mode: ${modes.last}');
+    } on PlatformException catch (e) {
+      console.error('display mode error: $e');
+    }
   }
 }

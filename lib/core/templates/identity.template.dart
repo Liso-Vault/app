@@ -47,7 +47,27 @@ final templateIdentityFields = [
   ),
   HiveLisoField(
     reserved: true,
-    type: LisoFieldType.divider.name,
+    type: LisoFieldType.section.name,
+    data: {'value': 'Address'},
+  ),
+  HiveLisoField(
+    reserved: true,
+    type: LisoFieldType.address.name,
+    data: {
+      'value': {
+        'street1': '',
+        'street2': '',
+        'city': '',
+        'state': '',
+        'zip': '',
+        'country': '',
+      },
+    },
+  ),
+  HiveLisoField(
+    reserved: true,
+    type: LisoFieldType.section.name,
+    data: {'value': 'Others'},
   ),
   HiveLisoField(
     reserved: true,

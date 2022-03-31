@@ -32,6 +32,7 @@ dependencies:
 
   # WORKAROUND
   desktop_webview_auth: ^0.0.6 # MacOS Google Sign In
+  flutter_displaymode: ^0.3.2 # allow higher refresh rates
 
   # IO
   hive: ^2.1.0
