@@ -14,7 +14,7 @@ class HiveManager {
 
   // VARIABLES
   static Box<HiveLisoItem>? items;
-  static Box? tags;
+  static Box? tags, archived, deleted, favorites;
 
   // GETTERS
 

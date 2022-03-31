@@ -23,75 +23,75 @@ import '../utils/globals.dart';
 class TemplateParser {
   static List<HiveLisoField> parse(String template) {
     // CRYPTO WALLET
-    if (template == LisoReservedTags.cryptoWallet.name) {
+    if (template == LisoItemType.cryptoWallet.name) {
       return templateCryptoWalletFields;
     }
     // LOGIN
-    else if (template == LisoReservedTags.login.name) {
+    else if (template == LisoItemType.login.name) {
       return templateLoginFields;
     }
     // PASSWORD
-    else if (template == LisoReservedTags.password.name) {
+    else if (template == LisoItemType.password.name) {
       return templatePasswordFields;
     }
     // IDENTITY
-    else if (template == LisoReservedTags.identity.name) {
+    else if (template == LisoItemType.identity.name) {
       return templateIdentityFields;
     }
     // NOTE
-    else if (template == LisoReservedTags.note.name) {
+    else if (template == LisoItemType.note.name) {
       return templateNoteFields;
     }
     // CASH CARD
-    else if (template == LisoReservedTags.cashCard.name) {
+    else if (template == LisoItemType.cashCard.name) {
       return templateCashCardFields;
     }
     // BANK ACCOUNT
-    else if (template == LisoReservedTags.bankAccount.name) {
+    else if (template == LisoItemType.bankAccount.name) {
       return templateBankAccountFields;
     }
     // MEDICAL RECORDS
-    else if (template == LisoReservedTags.medicalRecord.name) {
+    else if (template == LisoItemType.medicalRecord.name) {
       return templateMedicalRecordFields;
     }
     // PASSPORT
-    else if (template == LisoReservedTags.passport.name) {
+    else if (template == LisoItemType.passport.name) {
       return templatePassportFields;
     }
     // SERVER
-    else if (template == LisoReservedTags.server.name) {
+    else if (template == LisoItemType.server.name) {
       return templateServerFields;
     }
     // SOFTWARE LICENSE
-    else if (template == LisoReservedTags.softwareLicense.name) {
+    else if (template == LisoItemType.softwareLicense.name) {
       return templateSoftwareLicenseFields;
     }
     // EMAIL
-    else if (template == LisoReservedTags.email.name) {
+    else if (template == LisoItemType.email.name) {
       return templateEmailFields;
     }
     // MEMBERSHIP
-    else if (template == LisoReservedTags.membership.name) {
+    else if (template == LisoItemType.membership.name) {
       return templateMembershipFields;
     }
     // OUTDOOR LICENSE
-    else if (template == LisoReservedTags.outdoorLicense.name) {
+    else if (template == LisoItemType.outdoorLicense.name) {
       return templateOutdoorLicenseFields;
     }
     // REWARDS PROGRAM
-    else if (template == LisoReservedTags.rewardsProgram.name) {
+    else if (template == LisoItemType.rewardsProgram.name) {
       return templateRewardsProgramFields;
     }
     // SOCIAL SECURITY
-    else if (template == LisoReservedTags.socialSecurity.name) {
+    else if (template == LisoItemType.socialSecurity.name) {
       return templateSocialSecurityFields;
     }
     // WIRELESS ROUTER
-    else if (template == LisoReservedTags.wirelessRouter.name) {
+    else if (template == LisoItemType.wirelessRouter.name) {
       return templateWirelessRouterFields;
     }
     // ENCRYPTION
-    else if (template == LisoReservedTags.encryption.name) {
+    else if (template == LisoItemType.encryption.name) {
       return templateEncryptionFields;
     }
 

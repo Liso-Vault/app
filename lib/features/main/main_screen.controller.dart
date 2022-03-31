@@ -86,19 +86,8 @@ class MainScreenController extends GetxController
   // void add() => Get.toNamed(Routes.seed, parameters: {'mode': 'add'});
 
   void add() {
-    // filter necessary tags
-    final excludedTags = [
-      LisoReservedTags.favorite,
-      LisoReservedTags.archived,
-      LisoReservedTags.deleted,
-    ];
-
-    final templates = LisoReservedTags.values.where(
-      (e) => !excludedTags.contains(e),
-    );
-
     SelectorSheet(
-      items: templates
+      items: LisoItemType.values
           .map((e) => e.name)
           .map((e) => SelectorItem(
                 title: e.tr,
@@ -109,7 +98,7 @@ class MainScreenController extends GetxController
                 ),
                 onSelected: () => Get.toNamed(
                   Routes.item,
-                  parameters: {'mode': 'add', 'template': e},
+                  parameters: {'mode': 'add', 'type': e},
                 ),
               ))
           .toList(),

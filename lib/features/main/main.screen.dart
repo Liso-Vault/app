@@ -100,7 +100,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           subtitle: subTitle,
           onTap: () => Get.toNamed(Routes.item, parameters: {
             'mode': 'update',
-            'template': object.tags.first,
+            'type': object.type,
             'hiveKey': object.key.toString(),
           }),
           onLongPress: () => controller.onLongPress(object),

@@ -12,11 +12,11 @@ class ItemScreen extends GetView<ItemScreenController> {
   @override
   Widget build(BuildContext context) {
     final mode = Get.parameters['mode'].toString();
-    final template = Get.parameters['template'].toString();
+    final type = Get.parameters['type'].toString();
 
     final items = [
       Text(
-        template.tr,
+        type.tr,
         style: const TextStyle(fontSize: 30),
       ),
       const SizedBox(height: 15),

@@ -27,6 +27,9 @@ const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
 
 const kHiveBoxItems = 'items';
 const kHiveBoxTags = 'tags';
+const kHiveBoxArchived = 'archived';
+const kHiveBoxDeleted = 'deleted';
+const kHiveBoxFavorites = 'favorites';
 
 const kLocalMasterWalletFileName = 'master_wallet.liso';
 const kAad = 'liso';
@@ -39,7 +42,7 @@ bool timeLockEnabled = true;
 
 // Reserved Tags
 
-enum LisoReservedTags {
+enum LisoItemType {
   cryptoWallet,
   login,
   password,
@@ -61,7 +64,4 @@ enum LisoReservedTags {
   socialSecurity,
   wirelessRouter,
   encryption,
-  favorite,
-  archived,
-  deleted,
 }

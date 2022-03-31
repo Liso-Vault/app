@@ -17,27 +17,30 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveLisoItem(
-      icon: fields[0] as String,
-      title: fields[1] as String,
-      fields: (fields[2] as List).cast<HiveLisoField>(),
-      tags: (fields[3] as List).cast<String>(),
-      metadata: fields[4] as HiveMetadata,
+      type: fields[0] as String,
+      icon: fields[1] as Uint8List,
+      title: fields[2] as String,
+      fields: (fields[3] as List).cast<HiveLisoField>(),
+      tags: (fields[4] as List).cast<String>(),
+      metadata: fields[5] as HiveMetadata,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveLisoItem obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.icon)
+      ..write(obj.type)
       ..writeByte(1)
-      ..write(obj.title)
+      ..write(obj.icon)
       ..writeByte(2)
-      ..write(obj.fields)
+      ..write(obj.title)
       ..writeByte(3)
-      ..write(obj.tags)
+      ..write(obj.fields)
       ..writeByte(4)
+      ..write(obj.tags)
+      ..writeByte(5)
       ..write(obj.metadata);
   }
 

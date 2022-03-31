@@ -3,7 +3,7 @@ final en = {
   "language_string": "English",
   "language": "Language",
   // TAGS
-  // TODO: use LisoReservedTags enum
+  // TODO: use LisoItemType enum
   "cryptoWallet": "Crypto Wallet",
   "login": "Login",
   "password": "Password",

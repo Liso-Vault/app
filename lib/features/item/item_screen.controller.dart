@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -24,7 +26,7 @@ class ItemScreenController extends GetxController
 
   final formKey = GlobalKey<FormState>();
   final mode = Get.parameters['mode'] as String;
-  final template = Get.parameters['template'] as String;
+  final type = Get.parameters['type'] as String;
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
 
@@ -57,10 +59,11 @@ class ItemScreenController extends GetxController
 
   Future<void> _loadTemplate() async {
     item = HiveLisoItem(
-      icon: '',
+      type: type,
+      icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
       title: '',
-      fields: TemplateParser.parse(template),
-      tags: [template],
+      fields: TemplateParser.parse(type),
+      tags: [],
       metadata: await HiveMetadata.get(),
     );
   }
@@ -69,7 +72,8 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
 
     final newItem = HiveLisoItem(
-      icon: '', // TODO: update icon
+      type: type,
+      icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
       title: titleController.text,
       tags: tagsController.text.split(','),
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
