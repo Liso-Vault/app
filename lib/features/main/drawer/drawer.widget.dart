@@ -2,27 +2,124 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
-class ZDrawer extends StatelessWidget {
+class ZDrawer extends StatelessWidget with ConsoleMixin {
   const ZDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // final address = masterWallet!.privateKey.address.hexEip55;
 
-    // final header = DrawerHeader(
-    //   child: Center(
-    //     child: InkWell(
-    //       onTap: () => Utils.copyToClipboard(address),
-    //       child: Text(address),
-    //     ),
-    //   ),
-    // );
+    final header = DrawerHeader(
+      child: Center(
+        child: InkWell(
+          child: const Text('Some text here'),
+          onTap: () {
+            //
+          },
+        ),
+      ),
+    );
+
+    // CATEGORIES
+    // distinctly filter only used categories
+    final Set<String> categoriesSet = {};
+
+    HiveManager.items!.values
+        .where((e) => categoriesSet.add(e.category))
+        .toList();
+
+    // TAGS
+    // distinctly filter tags
+    final tags = HiveManager.items!.values
+        .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
+        .toSet();
+
+    final Set<String> tagsSet = {};
+
+    if (tags.isNotEmpty) {
+      tagsSet.addAll(tags.reduce((a, b) => a + b).toSet());
+    }
 
     final items = [
-      // header,
-      const SizedBox(height: 50),
+      header,
+      ListTile(
+        title: Text('allItems'.tr),
+        leading: Image.asset(
+          'assets/images/categories/allItems.png',
+          height: 20,
+        ),
+        onTap: () {
+          filterCategory = null;
+          MainScreenController.to.reload();
+          Get.back();
+        },
+      ),
+      ListTile(
+        title: Text('favorites'.tr),
+        leading: Image.asset(
+          'assets/images/categories/favorites.png',
+          height: 20,
+        ),
+        onTap: () {
+          filterFavorites = true;
+          MainScreenController.to.reload();
+          Get.back();
+        },
+      ),
+      ExpansionTile(
+        title: Text('categories'.tr),
+        initiallyExpanded: true,
+        children: [
+          ...categoriesSet
+              .map(
+                (e) => ListTile(
+                  title: Text(e.tr),
+                  leading: Image.asset(
+                    'assets/images/categories/$e.png',
+                    height: 20,
+                  ),
+                  onTap: () {
+                    filterCategory = e == 'allItems'
+                        ? null
+                        : LisoItemCategory.values.byName(e);
+                    MainScreenController.to.reload();
+                    Get.back();
+                  },
+                ),
+              )
+              .toList(),
+        ],
+      ),
+      ExpansionTile(
+        title: Text('tags'.tr),
+        initiallyExpanded: true,
+        children: [
+          ...tagsSet
+              .map(
+                (e) => ListTile(
+                  title: Text(e.tr),
+                  leading: Image.asset(
+                    'assets/images/categories/tag.png',
+                    height: 20,
+                  ),
+                  onTap: () {
+                    // categoryFilter = e == 'allItems'
+                    //     ? null
+                    //     : LisoItemCategory.values.byName(e);
+                    // MainScreenController.to.reload();
+                    // Get.back();
+                  },
+                ),
+              )
+              .toList(),
+        ],
+      ),
       ListTile(
         title: const Text('Settings'),
         leading: const Icon(LineIcons.cog),
@@ -33,11 +130,6 @@ class ZDrawer extends StatelessWidget {
         leading: const Icon(LineIcons.infoCircle),
         onTap: () => Get.offAndToNamed(Routes.about),
       ),
-      ListTile(
-        title: const Text('Google Drive'),
-        leading: const Icon(LineIcons.googleDrive),
-        onTap: () => Get.offAndToNamed(Routes.signIn),
-      ),
     ];
 
     final darkTheme = FlexColorScheme.dark(
@@ -47,10 +139,12 @@ class ZDrawer extends StatelessWidget {
     return Theme(
       data: darkTheme,
       child: Drawer(
-        child: ListView.separated(
+        child: ListView.builder(
+          // workaround for https://github.com/flutter/flutter/issues/93862
+          primary: false,
           shrinkWrap: true,
           itemBuilder: (context, index) => items[index],
-          separatorBuilder: (context, index) => const SizedBox(height: 15),
+          // separatorBuilder: (context, index) => const SizedBox(height: 1),
           itemCount: items.length,
         ),
       ),

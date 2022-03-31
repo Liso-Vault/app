@@ -8,7 +8,6 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/resources/resources.dart';
 
-import '../../core/hive/hive.manager.dart';
 import 'drawer/drawer.widget.dart';
 import 'main_screen.controller.dart';
 
@@ -94,19 +93,19 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       );
 
       return GestureDetector(
+        // on mouse right click
+        onSecondaryTap: () => controller.onLongPress(object),
         child: ListTile(
           leading: const Icon(Icons.ac_unit_rounded),
           title: title,
           subtitle: subTitle,
+          onLongPress: () => controller.onLongPress(object),
           onTap: () => Get.toNamed(Routes.item, parameters: {
             'mode': 'update',
-            'type': object.type,
+            'category': object.category,
             'hiveKey': object.key.toString(),
           }),
-          onLongPress: () => controller.onLongPress(object),
         ),
-        // on mouse right click
-        onSecondaryTap: () => controller.onLongPress(object),
       );
     }
 

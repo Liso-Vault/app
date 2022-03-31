@@ -40,9 +40,12 @@ List<int>? encryptionKey;
 Wallet? masterWallet;
 bool timeLockEnabled = true;
 
+LisoItemCategory? filterCategory;
+bool filterFavorites = false;
+
 // Reserved Tags
 
-enum LisoItemType {
+enum LisoItemCategory {
   cryptoWallet,
   login,
   password,

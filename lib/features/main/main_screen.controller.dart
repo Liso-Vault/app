@@ -59,6 +59,8 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
+  void reload() => _load();
+
   void _load() async {
     change(null, status: RxStatus.loading());
 
@@ -72,7 +74,18 @@ class MainScreenController extends GetxController
       }
     }
 
-    final items = HiveManager.items!.values.toList();
+    var items = HiveManager.items!.values.toList();
+
+    // FILTER BY CATEGORY
+    if (filterCategory != null) {
+      items = items.where((e) => e.category == filterCategory!.name).toList();
+    }
+
+    // FILTER FAVORITES
+    if (filterFavorites) {
+      items = items.where((e) => e.favorite).toList();
+    }
+
     // sort from latest to oldest
     items.sort(
       (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
@@ -87,18 +100,18 @@ class MainScreenController extends GetxController
 
   void add() {
     SelectorSheet(
-      items: LisoItemType.values
+      items: LisoItemCategory.values
           .map((e) => e.name)
           .map((e) => SelectorItem(
                 title: e.tr,
                 // TODO: use a constant variable for path
                 leading: Image.asset(
-                  'assets/images/tags/$e.png',
+                  'assets/images/categories/$e.png',
                   height: 20,
                 ),
                 onSelected: () => Get.toNamed(
                   Routes.item,
-                  parameters: {'mode': 'add', 'type': e},
+                  parameters: {'mode': 'add', 'category': e},
                 ),
               ))
           .toList(),

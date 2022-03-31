@@ -56,6 +56,13 @@ class SettingsScreen extends GetView<SettingsScreenController>
           onTap: () => Get.toNamed(Routes.reset),
         ),
         const Divider(),
+        ListTile(
+          title: const Text('Google Drive'),
+          leading: const Icon(LineIcons.googleDrive),
+          trailing: const Icon(LineIcons.angleRight),
+          onTap: () => Get.offAndToNamed(Routes.signIn),
+        ),
+        const Divider(),
         // ListTile(
         //   leading: const Icon(LineIcons.alternateShield),
         //   trailing: const Icon(LineIcons.angleRight),

@@ -81,6 +81,6 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/images/tags/
+    - assets/images/categories/
     - assets/images/origins/
     

@@ -12,7 +12,7 @@ part 'item.hive.g.dart';
 @HiveType(typeId: 1)
 class HiveLisoItem extends HiveObject {
   @HiveField(0)
-  String type;
+  String category;
   @HiveField(1)
   Uint8List icon;
   @HiveField(2)
@@ -20,34 +20,39 @@ class HiveLisoItem extends HiveObject {
   @HiveField(3)
   List<HiveLisoField> fields;
   @HiveField(4)
-  List<String> tags;
+  bool favorite;
   @HiveField(5)
+  List<String> tags;
+  @HiveField(6)
   HiveMetadata metadata;
 
   HiveLisoItem({
-    required this.type,
+    required this.category,
     required this.icon,
     required this.title,
     required this.fields,
-    required this.tags,
+    this.favorite = false,
+    this.tags = const [],
     required this.metadata,
   });
 
   factory HiveLisoItem.fromJson(Map<String, dynamic> json) => HiveLisoItem(
-        type: json["type"],
+        category: json["category"],
         icon: json["icon"],
         title: json["title"],
         fields: json["fields"],
+        favorite: json["favorite"],
         tags: json["tags"],
         metadata: HiveMetadata.fromJson(json["metadata"]),
       );
 
   Map<String, dynamic> toJson() {
     return {
-      "type": type,
+      "category": category,
       "icon": icon,
       "title": title,
       "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
+      "favorite": favorite,
       "tags": tags,
       "metadata": metadata.toJson(),
     };
@@ -56,12 +61,18 @@ class HiveLisoItem extends HiveObject {
   List<Widget> get widgets => fields.map((e) => e.widget).toList();
 
   String get subTitle {
-    final _type = LisoItemType.values.byName(type);
+    final _category = LisoItemCategory.values.byName(category);
 
-    if (_type == LisoItemType.cryptoWallet) {
-      return 'Crypto Sub';
+    String value;
+
+    switch (_category) {
+      case LisoItemCategory.cryptoWallet:
+        value = 'Crypto Sub';
+        break;
+      default:
+        value = '';
     }
 
-    return 'Sub Title Placeholder';
+    return value;
   }
 }

@@ -3,7 +3,7 @@ final en = {
   "language_string": "English",
   "language": "Language",
   // TAGS
-  // TODO: use LisoItemType enum
+  // TODO: use LisoItemCategory enum
   "cryptoWallet": "Crypto Wallet",
   "login": "Login",
   "password": "Password",
@@ -25,8 +25,12 @@ final en = {
   "socialSecurity": "Social Security",
   "wirelessRouter": "Wireless Router",
   "encryption": "Encryption",
-  "favorite": "Favorite",
+  //
+  "categories": "Categories",
+  "allItems": "All Items",
+  "tags": "Tags",
+  "favorites": "Favorites",
   "archived": "Archived",
-  "deleted": "Recently Deleted",
+  "recentlyDeleted": "Recently Deleted",
   //
 };

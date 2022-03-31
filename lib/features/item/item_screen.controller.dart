@@ -26,7 +26,7 @@ class ItemScreenController extends GetxController
 
   final formKey = GlobalKey<FormState>();
   final mode = Get.parameters['mode'] as String;
-  final type = Get.parameters['type'] as String;
+  final category = Get.parameters['category'] as String;
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
 
@@ -59,10 +59,10 @@ class ItemScreenController extends GetxController
 
   Future<void> _loadTemplate() async {
     item = HiveLisoItem(
-      type: type,
+      category: category,
       icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
       title: '',
-      fields: TemplateParser.parse(type),
+      fields: TemplateParser.parse(category),
       tags: [],
       metadata: await HiveMetadata.get(),
     );
@@ -72,7 +72,7 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
 
     final newItem = HiveLisoItem(
-      type: type,
+      category: category,
       icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
       title: titleController.text,
       tags: tagsController.text.split(','),
