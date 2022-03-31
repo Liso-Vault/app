@@ -14,97 +14,99 @@ class ItemScreen extends GetView<ItemScreenController> {
     final mode = Get.parameters['mode'].toString();
     final template = Get.parameters['template'].toString();
 
-    final form = Form(
-      key: controller.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+    final items = [
+      Text(
+        template.tr,
+        style: const TextStyle(fontSize: 30),
+      ),
+      const SizedBox(height: 15),
+      const Text(
+        'Make sure you are alone in a safe room',
+        style: TextStyle(color: Colors.grey),
+      ),
+      const SizedBox(height: 15),
+      Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            template.tr,
-            style: const TextStyle(fontSize: 30),
+          // ICON
+          IconButton(
+            icon: const Icon(Icons.photo, size: 30),
+            onPressed: () {},
           ),
-          const SizedBox(height: 15),
-          const Text(
-            'Make sure you are alone in a safe room',
-            style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 15),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // ICON
-              IconButton(
-                icon: const Icon(Icons.photo, size: 30),
-                onPressed: () {},
+          const SizedBox(width: 10),
+          // TITLE
+          Expanded(
+            child: TextFormField(
+              controller: controller.titleController,
+              decoration: Styles.inputDecoration.copyWith(
+                labelText: 'Title',
               ),
-              const SizedBox(width: 10),
-              // TITLE
-              Expanded(
-                child: TextFormField(
-                  controller: controller.titleController,
-                  decoration: Styles.inputDecoration.copyWith(
-                    labelText: 'Title',
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const Divider(),
-          // -------- RENDER FIELDS AS WIDGETS -------- //
-          Obx(() => Column(children: [...controller.widgets])),
-          // -------- RENDER FIELDS AS WIDGETS -------- //
-          const Divider(),
-          // TAGS
-          TextFormField(
-            controller: controller.tagsController,
-            decoration: Styles.inputDecoration.copyWith(
-              labelText: 'Tags',
             ),
           ),
-          const SizedBox(height: 20),
-          if (mode == 'update') ...[
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: controller.edit,
-                    label: const Text('Update'),
-                    icon: const Icon(LineIcons.check),
-                    style: Styles.elevatedButtonStyle,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: controller.delete,
-                    label: const Text('Delete'),
-                    icon: const Icon(LineIcons.trash),
-                    style: Styles.elevatedButtonStyleNegative,
-                  ),
-                )
-              ],
+        ],
+      ),
+      const Divider(),
+      // -------- RENDER FIELDS AS WIDGETS -------- //
+      Obx(() => Column(children: [...controller.widgets])),
+      // -------- RENDER FIELDS AS WIDGETS -------- //
+      const Divider(),
+      // TAGS
+      TextFormField(
+        controller: controller.tagsController,
+        decoration: Styles.inputDecoration.copyWith(
+          labelText: 'Tags',
+        ),
+      ),
+      const SizedBox(height: 20),
+      if (mode == 'update') ...[
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: controller.edit,
+                label: const Text('Update'),
+                icon: const Icon(LineIcons.check),
+                style: Styles.elevatedButtonStyle,
+              ),
             ),
-          ] else if (mode == 'add') ...[
-            ElevatedButton.icon(
-              onPressed: controller.add,
-              label: const Text('Add'),
-              icon: const Icon(LineIcons.plus),
-              style: Styles.elevatedButtonStyle,
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: controller.delete,
+                label: const Text('Delete'),
+                icon: const Icon(LineIcons.trash),
+                style: Styles.elevatedButtonStyleNegative,
+              ),
             )
           ],
-          if (mode == 'update') ...[
-            const SizedBox(height: 20),
-            // TODO: better datetime format
-            Text(
-              'Last updated ${controller.item!.metadata.updatedTime}',
-              style: const TextStyle(color: Colors.grey),
-              textAlign: TextAlign.center,
-            ),
-          ],
-          const SizedBox(height: 30),
-        ],
+        ),
+      ] else if (mode == 'add') ...[
+        ElevatedButton.icon(
+          onPressed: controller.add,
+          label: const Text('Add'),
+          icon: const Icon(LineIcons.plus),
+          style: Styles.elevatedButtonStyle,
+        )
+      ],
+      if (mode == 'update') ...[
+        const SizedBox(height: 20),
+        // TODO: better datetime format
+        Text(
+          'Last updated ${controller.item!.metadata.updatedTime}', // TODO: better DateTime format
+          style: const TextStyle(color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+      ],
+      const SizedBox(height: 30),
+    ];
+
+    final form = Form(
+      key: controller.formKey,
+      child: ListView.builder(
+        itemCount: items.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) => items[index],
       ),
     );
 
@@ -115,9 +117,7 @@ class ItemScreen extends GetView<ItemScreenController> {
           alignment: Alignment.topCenter,
           child: Container(
             constraints: Styles.containerConstraints,
-            child: SingleChildScrollView(
-              child: form,
-            ),
+            child: form,
           ),
         ),
       ),
