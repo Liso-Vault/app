@@ -20,7 +20,6 @@ class HiveMetadata extends HiveObject {
   // TODO: format time
 
   // GETTERS
-  String get updatedTimeAgo => Utils.timeAgo(updatedTime);
 
   HiveMetadata({
     required this.device,

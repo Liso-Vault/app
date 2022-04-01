@@ -37,7 +37,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
             overflow: TextOverflow.ellipsis,
           ),
           trailing: Text(
-            item.metadata.updatedTimeAgo,
+            item.updatedTimeAgo,
             style: const TextStyle(
               fontSize: 10,
               color: Colors.grey,

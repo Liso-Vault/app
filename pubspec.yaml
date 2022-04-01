@@ -61,6 +61,7 @@ dependencies:
   permission_handler: ^9.2.0
   flutter_local_notifications: ^9.4.0
   either_option: 2.0.1-dev.1
+  intl: ^0.17.0
 
   # INFO
   device_info_plus: ^3.2.2
