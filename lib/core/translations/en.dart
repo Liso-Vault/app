@@ -32,5 +32,6 @@ final en = {
   "favorites": "Favorites",
   "archived": "Archived",
   "recentlyDeleted": "Recently Deleted",
+  "app": "App",
   //
 };

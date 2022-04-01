@@ -56,22 +56,27 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
         onTap: () {
           filterFavorites = false;
           filterCategory = null;
+          filterTag = '';
           MainScreenController.to.reload();
           Get.back();
         },
       ),
-      CheckboxListTile(
+      SwitchListTile(
         title: Text('favorites'.tr),
         value: filterFavorites,
         secondary: const Icon(LineIcons.heart),
         onChanged: (bool? value) {
           filterFavorites = value!;
+          filterTag = '';
           MainScreenController.to.reload();
           Get.back();
         },
       ),
       ExpansionTile(
-        title: Text('categories'.tr),
+        title: Text(
+          'categories'.tr.toUpperCase(),
+          style: const TextStyle(fontSize: 13),
+        ),
         initiallyExpanded: true,
         children: [
           ...categoriesSet
@@ -95,7 +100,10 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
         ],
       ),
       ExpansionTile(
-        title: Text('tags'.tr),
+        title: Text(
+          'tags'.tr.toUpperCase(),
+          style: const TextStyle(fontSize: 13),
+        ),
         initiallyExpanded: true,
         children: [
           ...tagsSet
@@ -104,26 +112,33 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
                   title: Text(e.tr),
                   leading: const Icon(LineIcons.tag),
                   onTap: () {
-                    // categoryFilter = e == 'allItems'
-                    //     ? null
-                    //     : LisoItemCategory.values.byName(e);
-                    // MainScreenController.to.reload();
-                    // Get.back();
+                    filterTag = e;
+                    MainScreenController.to.reload();
+                    Get.back();
                   },
                 ),
               )
               .toList(),
         ],
       ),
-      ListTile(
-        title: const Text('Settings'),
-        leading: const Icon(LineIcons.cog),
-        onTap: () => Get.offAndToNamed(Routes.settings),
-      ),
-      ListTile(
-        title: const Text('About'),
-        leading: const Icon(LineIcons.infoCircle),
-        onTap: () => Get.offAndToNamed(Routes.about),
+      ExpansionTile(
+        title: Text(
+          'app'.tr.toUpperCase(),
+          style: const TextStyle(fontSize: 13),
+        ),
+        initiallyExpanded: true,
+        children: [
+          ListTile(
+            title: const Text('Settings'),
+            leading: const Icon(LineIcons.cog),
+            onTap: () => Get.offAndToNamed(Routes.settings),
+          ),
+          ListTile(
+            title: const Text('About'),
+            leading: const Icon(LineIcons.infoCircle),
+            onTap: () => Get.offAndToNamed(Routes.about),
+          ),
+        ],
       ),
     ];
 

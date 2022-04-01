@@ -80,14 +80,19 @@ class MainScreenController extends GetxController
 
     var items = HiveManager.items!.values.toList();
 
+    // FILTER FAVORITES
+    if (filterFavorites) {
+      items = items.where((e) => e.favorite).toList();
+    }
+
     // FILTER BY CATEGORY
     if (filterCategory != null) {
       items = items.where((e) => e.category == filterCategory!.name).toList();
     }
 
-    // FILTER FAVORITES
-    if (filterFavorites) {
-      items = items.where((e) => e.favorite).toList();
+    // FILTER TAG
+    if (filterTag.isNotEmpty) {
+      items = items.where((e) => e.tags.contains(filterTag)).toList();
     }
 
     // sort from latest to oldest

@@ -42,6 +42,7 @@ bool timeLockEnabled = true;
 
 LisoItemCategory? filterCategory;
 bool filterFavorites = false;
+String filterTag = '';
 
 // TODO: sort orders
 enum SortOrder {
