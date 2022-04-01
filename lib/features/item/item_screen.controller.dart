@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/form_fields/form_field.util.dart';
+import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
 
@@ -34,6 +34,7 @@ class ItemScreenController extends GetxController
   final widgets = <Widget>[].obs;
 
   // PROPERTIES
+  final favorite = false.obs;
 
   // GETTERS
 
@@ -48,6 +49,7 @@ class ItemScreenController extends GetxController
       item = HiveManager.items!.get(int.parse(hiveKey));
       titleController.text = item!.title;
       tagsController.text = item!.tags.join(',');
+      favorite.value = item!.favorite;
     }
 
     widgets.value = item!.widgets;

@@ -2,6 +2,7 @@ import '../hive/models/field.hive.dart';
 
 final templatePassportFields = [
   HiveLisoField(
+    identifier: 'type',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -14,6 +15,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'issuing_country',
     reserved: true,
     type: LisoFieldType.country.name,
     data: {
@@ -26,6 +28,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'number',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -38,6 +41,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'full_name',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -50,6 +54,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'gender',
     reserved: true,
     type: LisoFieldType.gender.name,
     data: {
@@ -62,6 +67,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'nationality',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -74,6 +80,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'issuing_authority',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -86,6 +93,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'date_of_birth',
     reserved: true,
     type: LisoFieldType.date.name,
     data: {
@@ -98,6 +106,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'issued_on',
     reserved: true,
     type: LisoFieldType.date.name,
     data: {
@@ -110,6 +119,7 @@ final templatePassportFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'expiry_date',
     reserved: true,
     type: LisoFieldType.date.name,
     data: {
@@ -119,13 +129,10 @@ final templatePassportFields = [
   ),
   HiveLisoField(
     reserved: true,
-    type: LisoFieldType.spacer.name,
-  ),
-  HiveLisoField(
-    reserved: true,
     type: LisoFieldType.divider.name,
   ),
   HiveLisoField(
+    identifier: 'note',
     type: LisoFieldType.textArea.name,
     reserved: true,
     data: {

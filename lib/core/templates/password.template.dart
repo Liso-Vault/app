@@ -2,6 +2,7 @@ import '../hive/models/field.hive.dart';
 
 final templatePasswordFields = [
   HiveLisoField(
+    identifier: 'password',
     reserved: true,
     type: LisoFieldType.password.name,
     data: {
@@ -14,6 +15,7 @@ final templatePasswordFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'website',
     reserved: true,
     type: LisoFieldType.url.name,
     data: {
@@ -28,6 +30,7 @@ final templatePasswordFields = [
     data: {'value': 'Others'},
   ),
   HiveLisoField(
+    identifier: 'note',
     reserved: true,
     type: LisoFieldType.textArea.name,
     data: {

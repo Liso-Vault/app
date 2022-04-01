@@ -1,6 +1,9 @@
+import 'package:liso/core/templates/api_credential.template.dart';
 import 'package:liso/core/templates/bank_account.template.dart';
 import 'package:liso/core/templates/cash_card.template.dart';
 import 'package:liso/core/templates/crypto_wallet.template.dart';
+import 'package:liso/core/templates/database.template.dart';
+import 'package:liso/core/templates/drivers_license.template.dart';
 import 'package:liso/core/templates/email.template.dart';
 import 'package:liso/core/templates/encryption.template.dart';
 import 'package:liso/core/templates/identity.template.dart';
@@ -65,6 +68,18 @@ class TemplateParser {
     // SOFTWARE LICENSE
     else if (template == LisoItemCategory.softwareLicense.name) {
       return templateSoftwareLicenseFields;
+    }
+    // API CREDENTIAL
+    else if (template == LisoItemCategory.apiCredential.name) {
+      return templateAPICredentialFields;
+    }
+    // DATABASE
+    else if (template == LisoItemCategory.database.name) {
+      return templateDatabaseFields;
+    }
+    // DRIVER'S LICENSE
+    else if (template == LisoItemCategory.driversLicense.name) {
+      return templateDriversLicenseFields;
     }
     // EMAIL
     else if (template == LisoItemCategory.email.name) {

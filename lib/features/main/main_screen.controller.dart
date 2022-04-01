@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
@@ -12,6 +13,9 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/selector.sheet.dart';
+
+import '../../core/utils/utils.dart';
+import '../json_viewer/json_viewer.screen.dart';
 
 class MainScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -104,10 +108,8 @@ class MainScreenController extends GetxController
           .map((e) => e.name)
           .map((e) => SelectorItem(
                 title: e.tr,
-                // TODO: use a constant variable for path
-                leading: Image.asset(
-                  'assets/images/categories/$e.png',
-                  height: 20,
+                leading: Utils.categoryIcon(
+                  LisoItemCategory.values.byName(e),
                 ),
                 onSelected: () => Get.toNamed(
                   Routes.item,
@@ -118,31 +120,43 @@ class MainScreenController extends GetxController
     ).show();
   }
 
-  void onLongPress(HiveLisoItem object) {
-    // SelectorSheet(
-    //   items: [
-    //     SelectorItem(
-    //       title: 'Copy Address',
-    //       subTitle: object.address,
-    //       leading: const Icon(LineIcons.copy),
-    //       onSelected: () => Utils.copyToClipboard(object.address),
-    //     ),
-    //     SelectorItem(
-    //       title: 'Copy Mnemonic Phrase',
-    //       subTitle: 'Copy at your own risk',
-    //       leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-    //       onSelected: () => Utils.copyToClipboard(object.mnemonic),
-    //     ),
-    //     SelectorItem(
-    //       title: 'Details',
-    //       subTitle: 'In JSON format',
-    //       leading: const Icon(LineIcons.laptopCode),
-    //       onSelected: () {
-    //         Get.to(() => JSONViewerScreen(data: object.toJson()));
-    //       },
-    //     ),
-    //   ],
-    // ).show();
+  void onLongPress(HiveLisoItem item) {
+    SelectorSheet(
+      items: [
+        SelectorItem(
+          title: item.favorite ? 'Remove from Favorites' : 'Add to Favorites',
+          leading: Icon(item.favorite ? LineIcons.heartAlt : LineIcons.heart),
+          onSelected: () {
+            item.favorite = !item.favorite;
+            item.save();
+          },
+        ),
+        SelectorItem(
+          title: 'Archive',
+          leading: const Icon(LineIcons.archive),
+          onSelected: () {
+            item.delete();
+            // TODO: move to archived box
+          },
+        ),
+        SelectorItem(
+          title: 'Delete',
+          leading: const Icon(LineIcons.trash),
+          onSelected: () {
+            item.delete();
+            // TODO: move to deleted box
+          },
+        ),
+        SelectorItem(
+          title: 'Details',
+          subTitle: 'In JSON format',
+          leading: const Icon(LineIcons.laptopCode),
+          onSelected: () {
+            Get.to(() => JSONViewerScreen(data: item.toJson()));
+          },
+        ),
+      ],
+    ).show();
   }
 
   void _initAppLifeCycleEvents() {

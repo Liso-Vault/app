@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -8,6 +9,7 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/utils/utils.dart';
 import 'drawer/drawer.widget.dart';
 import 'main_screen.controller.dart';
 
@@ -17,93 +19,35 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     Widget itemBuilder(context, index) {
-      final object = controller.data[index];
-
-      // final title = Text(
-      //   object.address,
-      //   maxLines: 1,
-      //   overflow: TextOverflow.ellipsis,
-      // );
-
-      // final subTitle = Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: [
-      //     Text(
-      //       object.description,
-      //       maxLines: 3,
-      //       overflow: TextOverflow.ellipsis,
-      //     ),
-      //     const SizedBox(height: 10),
-      //     Row(
-      //       children: [
-      //         Image.asset(
-      //           Utils.originImageParser(object.origin),
-      //           width: 15,
-      //         ),
-      //         const SizedBox(width: 5),
-      //         Text(
-      //           object.origin,
-      //           style: const TextStyle(fontSize: 10),
-      //         ),
-      //         const SizedBox(width: 10),
-      //         const Icon(LineIcons.connectDevelop, size: 15),
-      //         const SizedBox(width: 5),
-      //         Text(
-      //           object.ledger,
-      //           style: const TextStyle(fontSize: 10),
-      //         ),
-      //         const SizedBox(width: 10),
-      //         const Icon(LineIcons.clock, size: 15),
-      //         const SizedBox(width: 5),
-      //         Text(
-      //           object.metadata.updatedTimeAgo,
-      //           style: const TextStyle(fontSize: 10),
-      //         ),
-      //       ],
-      //     )
-      //   ],
-      // );
-
-      // return ListItemAnimation(
-      //   child: GestureDetector(
-      //     child: ListTile(
-      //       title: title,
-      //       subtitle: subTitle,
-      //       onTap: () => Get.toNamed(Routes.seed, parameters: {
-      //         'mode': 'update',
-      //         'index': index.toString(),
-      //       }),
-      //       onLongPress: () => controller.onLongPress(object),
-      //     ),
-      //     // on mouse right click
-      //     onSecondaryTap: () => controller.onLongPress(object),
-      //   ),
-      // );
-
-      final title = Text(
-        object.title,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      );
-
-      final subTitle = Text(
-        object.subTitle,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      );
+      final item = controller.data[index];
 
       return GestureDetector(
         // on mouse right click
-        onSecondaryTap: () => controller.onLongPress(object),
+        onSecondaryTap: () => controller.onLongPress(item),
         child: ListTile(
-          leading: const Icon(Icons.ac_unit_rounded),
-          title: title,
-          subtitle: subTitle,
-          onLongPress: () => controller.onLongPress(object),
+          leading: Utils.categoryIcon(
+            LisoItemCategory.values.byName(item.category),
+          ),
+          title: Text(
+            item.title,
+            overflow: TextOverflow.ellipsis,
+          ),
+          subtitle: Text(
+            item.subTitle,
+            overflow: TextOverflow.ellipsis,
+          ),
+          trailing: Text(
+            item.metadata.updatedTimeAgo,
+            style: const TextStyle(
+              fontSize: 10,
+              color: Colors.grey,
+            ),
+          ),
+          onLongPress: () => controller.onLongPress(item),
           onTap: () => Get.toNamed(Routes.item, parameters: {
             'mode': 'update',
-            'category': object.category,
-            'hiveKey': object.key.toString(),
+            'category': item.category,
+            'hiveKey': item.key.toString(),
           }),
         ),
       );
@@ -115,7 +59,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           shrinkWrap: true,
           itemCount: controller.data.length,
           itemBuilder: itemBuilder,
-          separatorBuilder: (context, index) => const Divider(),
+          separatorBuilder: (context, index) => const Divider(height: 0),
           padding: const EdgeInsets.only(bottom: 50),
         ),
       ),
@@ -149,6 +93,14 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           )
         ],
       ),
+      actions: [
+        IconButton(
+          icon: const Icon(LineIcons.sort),
+          onPressed: () {
+            //
+          },
+        )
+      ],
     );
 
     return Scaffold(

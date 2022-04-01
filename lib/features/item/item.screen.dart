@@ -15,16 +15,16 @@ class ItemScreen extends GetView<ItemScreenController> {
     final category = Get.parameters['category'].toString();
 
     final items = [
-      Text(
-        category.tr,
-        style: const TextStyle(fontSize: 30),
-      ),
-      const SizedBox(height: 15),
-      const Text(
-        'Make sure you are alone in a safe room',
-        style: TextStyle(color: Colors.grey),
-      ),
-      const SizedBox(height: 15),
+      // Text(
+      //   category.tr,
+      //   style: const TextStyle(fontSize: 30),
+      // ),
+      // const SizedBox(height: 15),
+      // const Text(
+      //   'Make sure you are alone in a safe room',
+      //   style: TextStyle(color: Colors.grey),
+      // ),
+      // const SizedBox(height: 15),
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -124,11 +124,30 @@ class ItemScreen extends GetView<ItemScreenController> {
       onLoading: const BusyIndicator(),
     );
 
+    final actions = [
+      IconButton(
+        icon: Obx(
+          () => Icon(
+            controller.favorite.value ? LineIcons.heartAlt : LineIcons.heart,
+          ),
+        ),
+        onPressed: () {
+          controller.favorite.toggle();
+          // update item
+          controller.item!.favorite = controller.favorite.value;
+          controller.item!.save();
+        },
+      )
+    ];
+
+    final appBar = AppBar(
+      title: Text(category.tr),
+      centerTitle: false,
+      actions: actions,
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(GetUtils.capitalizeFirst(mode)!),
-        centerTitle: false,
-      ),
+      appBar: appBar,
       body: content,
     );
   }

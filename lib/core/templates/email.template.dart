@@ -2,11 +2,12 @@ import '../hive/models/field.hive.dart';
 
 final templateEmailFields = [
   HiveLisoField(
+    identifier: 'email',
     reserved: true,
-    type: LisoFieldType.textField.name,
+    type: LisoFieldType.email.name,
     data: {
       'value': '',
-      'label': 'Title',
+      'label': 'Email',
     },
   ),
   HiveLisoField(
@@ -15,6 +16,7 @@ final templateEmailFields = [
     data: {'value': 'Others'},
   ),
   HiveLisoField(
+    identifier: 'note',
     reserved: true,
     type: LisoFieldType.textArea.name,
     data: {

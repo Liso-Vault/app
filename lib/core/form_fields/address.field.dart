@@ -55,22 +55,26 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
         TextFormField(
           controller: street1Controller,
           keyboardType: TextInputType.streetAddress,
+          textCapitalization: TextCapitalization.words,
           decoration: Styles.inputDecoration.copyWith(labelText: 'Street 1'),
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: street2Controller,
           keyboardType: TextInputType.streetAddress,
+          textCapitalization: TextCapitalization.words,
           decoration: Styles.inputDecoration.copyWith(labelText: 'Street 2'),
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: cityController,
+          textCapitalization: TextCapitalization.words,
           decoration: Styles.inputDecoration.copyWith(labelText: 'City'),
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: stateController,
+          textCapitalization: TextCapitalization.words,
           decoration:
               Styles.inputDecoration.copyWith(labelText: 'State / Province'),
         ),

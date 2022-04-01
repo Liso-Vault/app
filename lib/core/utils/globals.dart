@@ -43,7 +43,10 @@ bool timeLockEnabled = true;
 LisoItemCategory? filterCategory;
 bool filterFavorites = false;
 
-// Reserved Tags
+// TODO: sort orders
+enum SortOrder {
+  test,
+}
 
 enum LisoItemCategory {
   cryptoWallet,

@@ -2,6 +2,7 @@ import '../hive/models/field.hive.dart';
 
 final templateCashCardFields = [
   HiveLisoField(
+    identifier: 'pin',
     reserved: true,
     type: LisoFieldType.pin.name,
     data: {
@@ -15,6 +16,7 @@ final templateCashCardFields = [
     data: {'value': 'Others'},
   ),
   HiveLisoField(
+    identifier: 'note',
     reserved: true,
     type: LisoFieldType.textArea.name,
     data: {

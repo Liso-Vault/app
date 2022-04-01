@@ -8,6 +8,8 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'globals.dart';
+
 class Utils {
   // TODO: improve password validation
   static String? validatePassword(String text) {
@@ -96,5 +98,103 @@ class Utils {
     }
 
     return imagePath;
+  }
+
+  static Icon categoryIcon(LisoItemCategory category, {Color? color}) {
+    Color _color = Get.theme.primaryColor;
+    IconData? _iconData;
+
+    switch (category) {
+      case LisoItemCategory.cryptoWallet:
+        _iconData = LineIcons.wallet;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.login:
+        _iconData = LineIcons.desktop;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.password:
+        _iconData = LineIcons.fingerprint;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.identity:
+        _iconData = LineIcons.identificationBadge;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.note:
+        _iconData = LineIcons.stickyNote;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.cashCard:
+        _iconData = LineIcons.creditCard;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.bankAccount:
+        _iconData = LineIcons.landmark;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.medicalRecord:
+        _iconData = LineIcons.medicalFile;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.passport:
+        _iconData = LineIcons.passport;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.server:
+        _iconData = LineIcons.server;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.softwareLicense:
+        _iconData = LineIcons.laptopCode;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.apiCredential:
+        _iconData = LineIcons.memory;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.database:
+        _iconData = LineIcons.database;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.driversLicense:
+        _iconData = LineIcons.car;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.email:
+        _iconData = LineIcons.envelope;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.membership:
+        _iconData = LineIcons.identificationCard;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.outdoorLicense:
+        _iconData = LineIcons.running;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.rewardsProgram:
+        _iconData = LineIcons.award;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.socialSecurity:
+        _iconData = LineIcons.moneyBill;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.wirelessRouter:
+        _iconData = LineIcons.wifi;
+        // _color = Colors.green;
+        break;
+      case LisoItemCategory.encryption:
+        _iconData = LineIcons.key;
+        // _color = Colors.green;
+        break;
+      default:
+        throw 'item category: $category not found while obtaining icon';
+    }
+
+    _color = color ?? _color;
+
+    return Icon(_iconData, color: _color);
   }
 }

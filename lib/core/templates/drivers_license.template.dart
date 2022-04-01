@@ -1,6 +1,6 @@
 import '../hive/models/field.hive.dart';
 
-final templateEncryptionFields = [
+final templateDriversLicenseFields = [
   HiveLisoField(
     reserved: true,
     type: LisoFieldType.section.name,

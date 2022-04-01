@@ -8,6 +8,8 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
+import '../../../core/utils/utils.dart';
+
 class ZDrawer extends StatelessWidget with ConsoleMixin {
   const ZDrawer({Key? key}) : super(key: key);
 
@@ -50,24 +52,20 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
       header,
       ListTile(
         title: Text('allItems'.tr),
-        leading: Image.asset(
-          'assets/images/categories/allItems.png',
-          height: 20,
-        ),
+        leading: const Icon(LineIcons.list),
         onTap: () {
+          filterFavorites = false;
           filterCategory = null;
           MainScreenController.to.reload();
           Get.back();
         },
       ),
-      ListTile(
+      CheckboxListTile(
         title: Text('favorites'.tr),
-        leading: Image.asset(
-          'assets/images/categories/favorites.png',
-          height: 20,
-        ),
-        onTap: () {
-          filterFavorites = true;
+        value: filterFavorites,
+        secondary: const Icon(LineIcons.heart),
+        onChanged: (bool? value) {
+          filterFavorites = value!;
           MainScreenController.to.reload();
           Get.back();
         },
@@ -80,9 +78,9 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
               .map(
                 (e) => ListTile(
                   title: Text(e.tr),
-                  leading: Image.asset(
-                    'assets/images/categories/$e.png',
-                    height: 20,
+                  leading: Utils.categoryIcon(
+                    LisoItemCategory.values.byName(e),
+                    color: Colors.white,
                   ),
                   onTap: () {
                     filterCategory = e == 'allItems'
@@ -104,10 +102,7 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
               .map(
                 (e) => ListTile(
                   title: Text(e.tr),
-                  leading: Image.asset(
-                    'assets/images/categories/tag.png',
-                    height: 20,
-                  ),
+                  leading: const Icon(LineIcons.tag),
                   onTap: () {
                     // categoryFilter = e == 'allItems'
                     //     ? null

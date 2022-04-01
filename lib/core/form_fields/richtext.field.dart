@@ -20,6 +20,7 @@ class RichTextFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       maxLines: 5,
+      textCapitalization: TextCapitalization.sentences,
       decoration: Styles.inputDecoration.copyWith(
         labelText: field.data['label'],
         hintText: field.data['hint'],

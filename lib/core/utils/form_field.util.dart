@@ -2,16 +2,17 @@ import 'package:flutter/widgets.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/form_fields/phone.field.dart';
 import 'package:liso/core/form_fields/pin.field.dart';
+import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
 import 'package:liso/core/form_fields/url.field.dart';
 
+import '../form_fields/email.field.dart';
 import '../hive/models/field.hive.dart';
 import '../hive/models/item.hive.dart';
-import 'address.field.dart';
-import 'country.field.dart';
-import 'email.field.dart';
-import 'gender.field.dart';
+import '../form_fields/address.field.dart';
+import '../form_fields/country.field.dart';
+import '../form_fields/gender.field.dart';
 
 class FormFieldUtils {
   static List<HiveLisoField> obtainFields(
@@ -34,6 +35,9 @@ class FormFieldUtils {
           break;
         case LisoFieldType.textArea:
           formField = _widget as TextAreaFormField;
+          break;
+        case LisoFieldType.richText:
+          formField = _widget as RichTextFormField;
           break;
         case LisoFieldType.password:
           formField = _widget as PasswordFormField;

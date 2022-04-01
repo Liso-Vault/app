@@ -8,19 +8,23 @@ part 'field.hive.g.dart';
 @HiveType(typeId: 2)
 class HiveLisoField extends HiveObject {
   @HiveField(0)
-  final String type; // type of field to parse
+  final String identifier; // identifier
   @HiveField(1)
-  final bool reserved; // if the user can remove the field or not
+  final String type; // type of field to parse
   @HiveField(2)
+  final bool reserved; // if the user can remove the field or not
+  @HiveField(3)
   Map<String, dynamic> data; // map that holds the value and/or parameters
 
   HiveLisoField({
+    this.identifier = '',
     required this.type,
     this.reserved = false,
     this.data = const {},
   });
 
   factory HiveLisoField.fromJson(Map<String, dynamic> json) => HiveLisoField(
+        identifier: json["identifier"],
         type: json["type"],
         reserved: json["reserved"],
         data: json["data"],
@@ -28,6 +32,7 @@ class HiveLisoField extends HiveObject {
 
   Map<String, dynamic> toJson() {
     return {
+      "identifier": identifier,
       "type": type,
       "reserved": reserved,
       "data": data,

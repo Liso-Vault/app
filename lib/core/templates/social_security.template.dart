@@ -2,6 +2,7 @@ import '../hive/models/field.hive.dart';
 
 final templateSocialSecurityFields = [
   HiveLisoField(
+    identifier: 'name',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -10,6 +11,7 @@ final templateSocialSecurityFields = [
     },
   ),
   HiveLisoField(
+    identifier: 'number',
     reserved: true,
     type: LisoFieldType.spacer.name,
   ),
@@ -27,6 +29,7 @@ final templateSocialSecurityFields = [
     data: {'value': 'Others'},
   ),
   HiveLisoField(
+    identifier: 'note',
     reserved: true,
     type: LisoFieldType.textArea.name,
     data: {

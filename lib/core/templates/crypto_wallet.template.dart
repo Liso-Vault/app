@@ -2,6 +2,7 @@ import '../hive/models/field.hive.dart';
 
 final templateCryptoWalletFields = [
   HiveLisoField(
+    identifier: 'seed',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -14,6 +15,7 @@ final templateCryptoWalletFields = [
     type: LisoFieldType.spacer.name,
   ),
   HiveLisoField(
+    identifier: 'address',
     reserved: true,
     type: LisoFieldType.textField.name,
     data: {
@@ -27,6 +29,7 @@ final templateCryptoWalletFields = [
     data: {'value': 'Others'},
   ),
   HiveLisoField(
+    identifier: 'note',
     reserved: true,
     type: LisoFieldType.textArea.name,
     data: {

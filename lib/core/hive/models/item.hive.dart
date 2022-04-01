@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hive/hive.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import 'field.hive.dart';
@@ -63,16 +65,77 @@ class HiveLisoItem extends HiveObject {
   String get subTitle {
     final _category = LisoItemCategory.values.byName(category);
 
-    String value;
+    String _identifier = '';
 
     switch (_category) {
       case LisoItemCategory.cryptoWallet:
-        value = 'Crypto Sub';
+        _identifier = 'address';
+        break;
+      case LisoItemCategory.login:
+        _identifier = 'website';
+        break;
+      case LisoItemCategory.password:
+        _identifier = 'website';
+        break;
+      case LisoItemCategory.identity:
+        _identifier = 'first_name';
+        break;
+      case LisoItemCategory.note:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.cashCard:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.bankAccount:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.medicalRecord:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.passport:
+        _identifier = 'full_name';
+        break;
+      case LisoItemCategory.server:
+        _identifier = 'url';
+        break;
+      case LisoItemCategory.softwareLicense:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.apiCredential:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.database:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.driversLicense:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.email:
+        _identifier = 'email';
+        break;
+      case LisoItemCategory.membership:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.outdoorLicense:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.rewardsProgram:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.socialSecurity:
+        _identifier = 'name';
+        break;
+      case LisoItemCategory.wirelessRouter:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.encryption:
+        _identifier = 'note';
         break;
       default:
-        value = '';
+        throw 'item identifier: $_identifier not found while obtaining sub title';
     }
 
-    return value;
+    final _field = fields.firstWhere((e) => e.identifier == _identifier);
+    return _field.data['value'];
   }
 }
