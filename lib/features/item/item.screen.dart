@@ -57,8 +57,17 @@ class ItemScreen extends GetView<ItemScreenController> {
           labelText: 'Tags',
         ),
       ),
-      const SizedBox(height: 20),
       if (mode == 'update') ...[
+        const SizedBox(height: 10),
+        ObxValue(
+          (RxBool data) => SwitchListTile(
+            title: Text('favorite'.tr),
+            value: data.value,
+            onChanged: data,
+          ),
+          controller.favorite,
+        ),
+        const SizedBox(height: 10),
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
@@ -82,6 +91,7 @@ class ItemScreen extends GetView<ItemScreenController> {
           ],
         ),
       ] else if (mode == 'add') ...[
+        const SizedBox(height: 10),
         ElevatedButton.icon(
           onPressed: controller.add,
           label: const Text('Add'),
@@ -124,26 +134,9 @@ class ItemScreen extends GetView<ItemScreenController> {
       onLoading: const BusyIndicator(),
     );
 
-    final actions = [
-      IconButton(
-        icon: Obx(
-          () => Icon(
-            controller.favorite.value ? LineIcons.heartAlt : LineIcons.heart,
-          ),
-        ),
-        onPressed: () {
-          controller.favorite.toggle();
-          // update item
-          controller.item!.favorite = controller.favorite.value;
-          controller.item!.save();
-        },
-      )
-    ];
-
     final appBar = AppBar(
       title: Text(category.tr),
       centerTitle: false,
-      actions: actions,
     );
 
     return Scaffold(

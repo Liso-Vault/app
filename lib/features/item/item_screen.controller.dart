@@ -90,10 +90,11 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (item == null) return;
 
-    // item!.icon = ''; // TODO: update icon
+    item!.icon = Uint8List.fromList(''.codeUnits); // TODO: update icon
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tagsController.text.split(',');
+    item!.favorite = favorite.value;
     item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
 

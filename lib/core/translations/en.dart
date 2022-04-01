@@ -30,6 +30,7 @@ final en = {
   "allItems": "All Items",
   "tags": "Tags",
   "favorites": "Favorites",
+  "favorite": "Favorite",
   "archived": "Archived",
   "recentlyDeleted": "Recently Deleted",
   "app": "App",

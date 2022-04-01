@@ -154,7 +154,6 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
           primary: false,
           shrinkWrap: true,
           itemBuilder: (context, index) => items[index],
-          // separatorBuilder: (context, index) => const SizedBox(height: 1),
           itemCount: items.length,
         ),
       ),
