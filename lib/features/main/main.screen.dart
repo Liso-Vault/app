@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
-import 'package:liso/features/general/custom_chip.widget.dart';
+import 'package:liso/features/main/item.tile.dart';
 import 'package:liso/resources/resources.dart';
 
-import '../../core/utils/utils.dart';
+import '../search/search.delegate.dart';
 import 'drawer/drawer.widget.dart';
 import 'main_screen.controller.dart';
 
@@ -19,76 +17,6 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    Widget itemBuilder(context, index) {
-      final item = controller.data[index];
-
-      return GestureDetector(
-        // on mouse right click
-        onSecondaryTap: () => controller.contextMenu(item),
-        child: ListTile(
-          leading: Utils.categoryIcon(
-            LisoItemCategory.values.byName(item.category),
-          ),
-          title: Text(
-            item.title,
-            overflow: TextOverflow.ellipsis,
-          ),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                item.subTitle,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const SizedBox(height: 5),
-              Row(
-                children: [
-                  if (item.favorite) ...[
-                    const Icon(
-                      LineIcons.heartAlt,
-                      color: Colors.red,
-                      size: 15,
-                    ),
-                    const SizedBox(width: 5),
-                  ],
-                  if (item.tags.isNotEmpty) ...[
-                    ...item.tags
-                        .map(
-                          (e) => CustomChip(
-                            label: Text(
-                              e,
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          ),
-                        )
-                        .toList(),
-                    const SizedBox(width: 5),
-                  ],
-                  Text(
-                    item.updatedTimeAgo,
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.grey,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-          trailing: IconButton(
-            onPressed: () => controller.contextMenu(item),
-            icon: const Icon(LineIcons.verticalEllipsis),
-          ),
-          onLongPress: () => controller.contextMenu(item),
-          onTap: () => Get.toNamed(Routes.item, parameters: {
-            'mode': 'update',
-            'category': item.category,
-            'hiveKey': item.key.toString(),
-          }),
-        ),
-      );
-    }
-
     final content = controller.obx(
       (_) => Obx(
         () => ListView.separated(
@@ -131,11 +59,20 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       ),
       actions: [
         IconButton(
+          icon: const Icon(LineIcons.search),
+          onPressed: () {
+            showSearch(
+              context: context,
+              delegate: ItemsSearchDelegate(),
+            );
+          },
+        ),
+        IconButton(
           icon: const Icon(LineIcons.sort),
           onPressed: () {
             // TODO: sorting
           },
-        )
+        ),
       ],
     );
 
@@ -145,5 +82,10 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       floatingActionButton: floatingButton,
       body: content,
     );
+  }
+
+  Widget itemBuilder(context, index) {
+    final item = controller.data[index];
+    return ItemTile(item);
   }
 }

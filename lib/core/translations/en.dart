@@ -40,5 +40,6 @@ final en = {
   "move_to_archive": "Move to archive",
   "app": "App",
   "details": "Details",
+  "search_by_title": "Search by title",
   //
 };

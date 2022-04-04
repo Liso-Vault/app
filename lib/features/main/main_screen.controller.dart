@@ -157,63 +157,6 @@ class MainScreenController extends GetxController
     ).show();
   }
 
-  void contextMenu(HiveLisoItem item) {
-    final isArchived = drawerController.boxFilter == HiveBoxFilter.archived;
-    final isTrash = drawerController.boxFilter == HiveBoxFilter.trash;
-
-    SelectorSheet(
-      items: [
-        SelectorItem(
-          title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-          leading: Icon(
-            item.favorite ? LineIcons.heartAlt : LineIcons.heart,
-            color: item.favorite ? Colors.red : Get.theme.iconTheme.color,
-          ),
-          onSelected: () {
-            item.favorite = !item.favorite;
-            item.save();
-          },
-        ),
-        if (!isArchived) ...[
-          SelectorItem(
-            title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
-            leading: const Icon(LineIcons.archive),
-            onSelected: () async {
-              item.delete();
-              await HiveManager.archived!.add(item);
-            },
-          ),
-        ],
-        if (!isTrash) ...[
-          SelectorItem(
-            title: isArchived ? 'move_to_trash'.tr : 'trash'.tr,
-            leading: const Icon(LineIcons.trash),
-            onSelected: () async {
-              item.delete();
-              await HiveManager.trash!.add(item);
-            },
-          ),
-        ],
-        if (isTrash || isArchived) ...[
-          SelectorItem(
-            title: 'restore'.tr,
-            leading: const Icon(LineIcons.trashRestore),
-            onSelected: () async {
-              item.delete();
-              await HiveManager.items!.add(item);
-            },
-          ),
-        ],
-        SelectorItem(
-          title: 'details'.tr,
-          subTitle: 'In JSON format',
-          leading: const Icon(LineIcons.code),
-          onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
-        ),
-      ],
-    ).show();
-  }
-
   void _initAppLifeCycleEvents() {
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {

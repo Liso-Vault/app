@@ -80,6 +80,23 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
             subtitle: Text(tag.toString()),
           );
         },
+        optionsViewBuilder: (context, onSelected, options) {
+          return Material(
+            child: ListView.separated(
+              itemCount: options.length,
+              separatorBuilder: (context, index) => const Divider(height: 0),
+              itemBuilder: (context, index) {
+                final tag = options.elementAt(index);
+
+                return ListTile(
+                  key: ObjectKey(tag),
+                  title: Text(tag),
+                  onTap: () => onSelected(tag),
+                );
+              },
+            ),
+          );
+        },
       ),
       if (mode == 'update') ...[
         const SizedBox(height: 10),
