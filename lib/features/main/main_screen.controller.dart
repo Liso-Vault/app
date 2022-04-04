@@ -250,74 +250,82 @@ class MainScreenController extends GetxController
   }
 
   void showSortSheet() {
+    final sortName = sortOrder.value.name;
+    final ascending = sortName.contains('Ascending');
+    final icon = Icon(
+        ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending);
+
     SelectorSheet(
       items: [
         SelectorItem(
           title: 'title'.tr,
-          leading: const Icon(LineIcons.sortAlphabeticalDown),
+          leading: const Icon(LineIcons.font),
+          trailing: sortName.contains('title') ? icon : null,
           onSelected: () {
-            if (sortOrder.value == LisoItemSortOrder.titleAscending) {
-              sortOrder.value = LisoItemSortOrder.titleDescending;
-            } else if (sortOrder.value == LisoItemSortOrder.titleDescending) {
-              sortOrder.value = LisoItemSortOrder.titleAscending;
+            if (!sortName.contains('title')) {
+              sortOrder.value = LisoItemSortOrder.titleDescending; // default
             } else {
-              sortOrder.value = LisoItemSortOrder.titleDescending;
+              sortOrder.value = ascending
+                  ? LisoItemSortOrder.titleDescending
+                  : LisoItemSortOrder.titleAscending;
             }
           },
         ),
         SelectorItem(
           title: 'category'.tr,
           leading: const Icon(LineIcons.sitemap),
+          trailing: sortName.contains('category') ? icon : null,
           onSelected: () {
-            if (sortOrder.value == LisoItemSortOrder.categoryAscending) {
-              sortOrder.value = LisoItemSortOrder.categoryDescending;
-            } else if (sortOrder.value ==
-                LisoItemSortOrder.categoryDescending) {
-              sortOrder.value = LisoItemSortOrder.categoryAscending;
+            if (!sortName.contains('category')) {
+              sortOrder.value = LisoItemSortOrder.categoryDescending; // default
             } else {
-              sortOrder.value = LisoItemSortOrder.categoryDescending;
+              sortOrder.value = ascending
+                  ? LisoItemSortOrder.categoryDescending
+                  : LisoItemSortOrder.categoryAscending;
             }
           },
         ),
         SelectorItem(
           title: 'date_modified'.tr,
           leading: const Icon(LineIcons.calendar),
+          trailing: sortName.contains('dateModified') ? icon : null,
           onSelected: () {
-            if (sortOrder.value == LisoItemSortOrder.dateModifiedAscending) {
-              sortOrder.value = LisoItemSortOrder.dateModifiedDescending;
-            } else if (sortOrder.value ==
-                LisoItemSortOrder.dateModifiedDescending) {
-              sortOrder.value = LisoItemSortOrder.dateModifiedAscending;
+            if (!sortName.contains('dateModified')) {
+              sortOrder.value =
+                  LisoItemSortOrder.dateModifiedDescending; // default
             } else {
-              sortOrder.value = LisoItemSortOrder.dateModifiedDescending;
+              sortOrder.value = ascending
+                  ? LisoItemSortOrder.dateModifiedDescending
+                  : LisoItemSortOrder.dateModifiedAscending;
             }
           },
         ),
         SelectorItem(
           title: 'date_created'.tr,
           leading: const Icon(LineIcons.calendarAlt),
+          trailing: sortName.contains('dateCreated') ? icon : null,
           onSelected: () {
-            if (sortOrder.value == LisoItemSortOrder.dateCreatedAscending) {
-              sortOrder.value = LisoItemSortOrder.dateCreatedDescending;
-            } else if (sortOrder.value ==
-                LisoItemSortOrder.dateCreatedDescending) {
-              sortOrder.value = LisoItemSortOrder.dateCreatedAscending;
+            if (!sortName.contains('dateCreated')) {
+              sortOrder.value =
+                  LisoItemSortOrder.dateCreatedDescending; // default
             } else {
-              sortOrder.value = LisoItemSortOrder.dateCreatedDescending;
+              sortOrder.value = ascending
+                  ? LisoItemSortOrder.dateCreatedDescending
+                  : LisoItemSortOrder.dateCreatedAscending;
             }
           },
         ),
         SelectorItem(
           title: 'favorite'.tr,
           leading: const Icon(LineIcons.heart),
+          trailing: sortName.contains('favorite') ? icon : null,
           onSelected: () {
-            if (sortOrder.value == LisoItemSortOrder.favoriteAscending) {
-              sortOrder.value = LisoItemSortOrder.favoriteDescending;
-            } else if (sortOrder.value ==
-                LisoItemSortOrder.favoriteDescending) {
-              sortOrder.value = LisoItemSortOrder.favoriteAscending;
+            if (!sortName.contains('favorite')) {
+              sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
             } else {
-              sortOrder.value = LisoItemSortOrder.favoriteDescending;
+              sortOrder.value = ascending
+                  ? LisoItemSortOrder.favoriteDescending
+                  : LisoItemSortOrder.favoriteAscending;
             }
           },
         ),

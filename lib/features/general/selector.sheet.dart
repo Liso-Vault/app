@@ -73,6 +73,10 @@ class SelectorSheet extends StatelessWidget with ConsoleMixin {
 
       Widget? _content;
 
+      final _trailing = activeId != null && data.id == activeId
+          ? const Icon(Icons.check_circle)
+          : null;
+
       if (direction == Axis.vertical) {
         _content = ListTile(
           title: Text(data.title,
@@ -82,9 +86,7 @@ class SelectorSheet extends StatelessWidget with ConsoleMixin {
               ? Text(data.subTitle!, style: const TextStyle(color: Colors.grey))
               : null,
           leading: data.leading,
-          trailing: activeId != null && data.id == activeId
-              ? const Icon(Icons.check_circle)
-              : null,
+          trailing: data.trailing ?? _trailing,
           onTap: _onTap,
         );
       } else if (direction == Axis.horizontal) {
@@ -174,6 +176,7 @@ class SelectorItem {
   final String title;
   final String? subTitle;
   final Widget? leading;
+  final Widget? trailing;
   final dynamic id;
   final dynamic data;
   final Function? onSelected;
@@ -182,6 +185,7 @@ class SelectorItem {
     required this.title,
     this.subTitle,
     this.leading,
+    this.trailing,
     this.id,
     this.data,
     this.onSelected,
