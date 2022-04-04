@@ -51,6 +51,7 @@ class ItemScreenController extends GetxController
       item = HiveManager.items!.get(int.parse(hiveKey));
       titleController.text = item!.title;
       favorite.value = item!.favorite;
+      tags = item!.tags;
     }
 
     widgets.value = item!.widgets;

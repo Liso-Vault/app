@@ -40,6 +40,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           Expanded(
             child: TextFormField(
               controller: controller.titleController,
+              textCapitalization: TextCapitalization.words,
               decoration: Styles.inputDecoration.copyWith(
                 labelText: 'Title',
               ),
@@ -56,7 +57,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ChipsInput<String>(
         controller: controller.tagsController,
         maxChips: 5,
-        initialValue: controller.item!.tags,
+        initialValue: controller.tags,
         textCapitalization: TextCapitalization.words,
         decoration: Styles.inputDecoration.copyWith(
           labelText: 'tags'.tr,

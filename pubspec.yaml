@@ -52,6 +52,7 @@ dependencies:
   blur: ^3.1.0
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0
+  flutter_swipe_action_cell: ^2.2.0
 
   # TOOLS
   logger: ^1.1.0
