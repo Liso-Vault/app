@@ -16,6 +16,15 @@ import 'package:liso/features/general/selector.sheet.dart';
 
 import '../../core/utils/utils.dart';
 import '../json_viewer/json_viewer.screen.dart';
+import 'drawer/drawer_widget.controller.dart';
+
+class MainScreenBinding extends Bindings {
+  @override
+  void dependencies() {
+    Get.lazyPut(() => MainScreenController());
+    Get.lazyPut(() => DrawerWidgetController());
+  }
+}
 
 class MainScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -23,6 +32,7 @@ class MainScreenController extends GetxController
 
   // VARIABLES
   Timer? timer;
+  final drawerController = Get.find<DrawerWidgetController>();
 
   // PROPERTIES
   final data = <HiveLisoItem>[].obs;
@@ -41,17 +51,17 @@ class MainScreenController extends GetxController
 
   @override
   void onReady() {
-    HiveManager.items?.watch().listen((event) {
-      // console.warning(
-      //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
-      // );
+    // console.warning(
+    //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
+    // );
 
-      // if (event.deleted) {
-      //   data.removeWhere((e) => e.key == event.key);
-      // }
+    // if (event.deleted) {
+    //   data.removeWhere((e) => e.key == event.key);
+    // }
 
-      _load();
-    });
+    HiveManager.items?.watch().listen((_) => _load());
+    HiveManager.archived?.watch().listen((_) => _load());
+    HiveManager.trash?.watch().listen((_) => _load());
 
     super.onReady();
   }
@@ -63,6 +73,15 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
+  void _removeAllTags() async {
+    for (var e in HiveManager.items!.values) {
+      e.tags = [];
+      await e.save();
+    }
+
+    reload();
+  }
+
   void reload() => _load();
 
   void _load() async {
@@ -78,21 +97,36 @@ class MainScreenController extends GetxController
       }
     }
 
-    var items = HiveManager.items!.values.toList();
+    // FILTER
+
+    List<HiveLisoItem> items = [];
+
+    // FILTER BY BOX
+    if (drawerController.boxFilter == HiveBoxFilter.all) {
+      items = HiveManager.items!.values.toList();
+    } else if (drawerController.boxFilter == HiveBoxFilter.archived) {
+      items = HiveManager.archived!.values.toList();
+    } else if (drawerController.boxFilter == HiveBoxFilter.trash) {
+      items = HiveManager.trash!.values.toList();
+    }
 
     // FILTER FAVORITES
-    if (filterFavorites) {
+    if (drawerController.filterFavorites.value) {
       items = items.where((e) => e.favorite).toList();
     }
 
     // FILTER BY CATEGORY
-    if (filterCategory != null) {
-      items = items.where((e) => e.category == filterCategory!.name).toList();
+    if (drawerController.filterCategory != null) {
+      items = items
+          .where((e) => e.category == drawerController.filterCategory!.name)
+          .toList();
     }
 
-    // FILTER TAG
-    if (filterTag.isNotEmpty) {
-      items = items.where((e) => e.tags.contains(filterTag)).toList();
+    // FILTER BY TAG
+    if (drawerController.filterTag.isNotEmpty) {
+      items = items
+          .where((e) => e.tags.contains(drawerController.filterTag))
+          .toList();
     }
 
     // sort from latest to oldest
@@ -105,9 +139,7 @@ class MainScreenController extends GetxController
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 
-  // void add() => Get.toNamed(Routes.seed, parameters: {'mode': 'add'});
-
-  void add() {
+  void add() async {
     SelectorSheet(
       items: LisoItemCategory.values
           .map((e) => e.name)
@@ -125,40 +157,58 @@ class MainScreenController extends GetxController
     ).show();
   }
 
-  void onLongPress(HiveLisoItem item) {
+  void contextMenu(HiveLisoItem item) {
+    final isArchived = drawerController.boxFilter == HiveBoxFilter.archived;
+    final isTrash = drawerController.boxFilter == HiveBoxFilter.trash;
+
     SelectorSheet(
       items: [
         SelectorItem(
-          title: item.favorite ? 'Remove from Favorites' : 'Add to Favorites',
-          leading: Icon(item.favorite ? LineIcons.heartAlt : LineIcons.heart),
+          title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
+          leading: Icon(
+            item.favorite ? LineIcons.heartAlt : LineIcons.heart,
+            color: item.favorite ? Colors.red : Get.theme.iconTheme.color,
+          ),
           onSelected: () {
             item.favorite = !item.favorite;
             item.save();
           },
         ),
+        if (!isArchived) ...[
+          SelectorItem(
+            title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
+            leading: const Icon(LineIcons.archive),
+            onSelected: () async {
+              item.delete();
+              await HiveManager.archived!.add(item);
+            },
+          ),
+        ],
+        if (!isTrash) ...[
+          SelectorItem(
+            title: isArchived ? 'move_to_trash'.tr : 'trash'.tr,
+            leading: const Icon(LineIcons.trash),
+            onSelected: () async {
+              item.delete();
+              await HiveManager.trash!.add(item);
+            },
+          ),
+        ],
+        if (isTrash || isArchived) ...[
+          SelectorItem(
+            title: 'restore'.tr,
+            leading: const Icon(LineIcons.trashRestore),
+            onSelected: () async {
+              item.delete();
+              await HiveManager.items!.add(item);
+            },
+          ),
+        ],
         SelectorItem(
-          title: 'Archive',
-          leading: const Icon(LineIcons.archive),
-          onSelected: () {
-            item.delete();
-            // TODO: move to archived box
-          },
-        ),
-        SelectorItem(
-          title: 'Delete',
-          leading: const Icon(LineIcons.trash),
-          onSelected: () {
-            item.delete();
-            // TODO: move to deleted box
-          },
-        ),
-        SelectorItem(
-          title: 'Details',
+          title: 'details'.tr,
           subTitle: 'In JSON format',
-          leading: const Icon(LineIcons.laptopCode),
-          onSelected: () {
-            Get.to(() => JSONViewerScreen(data: item.toJson()));
-          },
+          leading: const Icon(LineIcons.code),
+          onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
         ),
       ],
     ).show();
@@ -198,7 +248,6 @@ class MainScreenController extends GetxController
     try {
       final mode = await FlutterDisplayMode.active;
       console.warning('active mode: $mode');
-
       final modes = await FlutterDisplayMode.supported;
 
       for (DisplayMode e in modes) {

@@ -13,8 +13,7 @@ class HiveManager {
   static final console = Console(name: 'HiveManager');
 
   // VARIABLES
-  static Box<HiveLisoItem>? items, archived, deleted;
-  static Box<String>? tags;
+  static Box<HiveLisoItem>? items, archived, trash;
   static Box? favorites; // holds hive keys
 
   // GETTERS

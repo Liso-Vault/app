@@ -14,9 +14,8 @@ class LisoManager {
   static final console = Console(name: 'LisoManager');
 
   static Future<void> init() async {
-    HiveManager.tags = await Hive.openBox(kHiveBoxTags);
     HiveManager.archived = await Hive.openBox(kHiveBoxArchived);
-    HiveManager.deleted = await Hive.openBox(kHiveBoxDeleted);
+    HiveManager.trash = await Hive.openBox(kHiveBoxTrash);
     HiveManager.favorites = await Hive.openBox(kHiveBoxFavorites);
 
     HiveManager.items = await Hive.openBox(
@@ -24,8 +23,7 @@ class LisoManager {
       encryptionCipher: HiveAesCipher(encryptionKey!),
     );
 
-    console.warning(
-        'items: ${HiveManager.items!.length}, tags: ${HiveManager.tags!.length}');
+    console.warning('items: ${HiveManager.items!.length}');
   }
 
   static Future<bool> authenticated() async {

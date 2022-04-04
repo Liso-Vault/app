@@ -2,15 +2,14 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../../core/utils/utils.dart';
 
-class ZDrawer extends StatelessWidget with ConsoleMixin {
+class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
   const ZDrawer({Key? key}) : super(key: key);
 
   @override
@@ -20,7 +19,7 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
     final header = DrawerHeader(
       child: Center(
         child: InkWell(
-          child: const Text('Some text here'),
+          child: const Text('HEADER HERE'),
           onTap: () {
             //
           },
@@ -28,100 +27,83 @@ class ZDrawer extends StatelessWidget with ConsoleMixin {
       ),
     );
 
-    // CATEGORIES
-    // distinctly filter only used categories
-    final Set<String> categoriesSet = {};
-
-    HiveManager.items!.values
-        .where((e) => categoriesSet.add(e.category))
-        .toList();
-
-    // TAGS
-    // distinctly filter tags
-    final tags = HiveManager.items!.values
-        .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
-        .toSet();
-
-    final Set<String> tagsSet = {};
-
-    if (tags.isNotEmpty) {
-      tagsSet.addAll(tags.reduce((a, b) => a + b).toSet());
-    }
-
     final items = [
       header,
       ListTile(
-        title: Text('allItems'.tr),
+        title: Text('all_Items'.tr),
         leading: const Icon(LineIcons.list),
-        onTap: () {
-          filterFavorites = false;
-          filterCategory = null;
-          filterTag = '';
-          MainScreenController.to.reload();
-          Get.back();
-        },
+        onTap: controller.filterAllItems,
+        selected: controller.boxFilter == HiveBoxFilter.all,
       ),
-      SwitchListTile(
-        title: Text('favorites'.tr),
-        value: filterFavorites,
-        secondary: const Icon(LineIcons.heart),
-        onChanged: (bool? value) {
-          filterFavorites = value!;
-          filterTag = '';
-          MainScreenController.to.reload();
-          Get.back();
-        },
+      ObxValue(
+        (RxBool data) => SwitchListTile(
+          title: Text('favorites'.tr),
+          value: data.value,
+          secondary: const Icon(LineIcons.heart),
+          onChanged: controller.filterFavoritesSwitch,
+        ),
+        controller.filterFavorites,
+      ),
+      ListTile(
+        title: Text('archived'.tr),
+        leading: const Icon(LineIcons.archive),
+        onTap: controller.filterArchived,
+        selected: controller.boxFilter == HiveBoxFilter.archived,
+      ),
+      ListTile(
+        title: Text('trash'.tr),
+        leading: const Icon(LineIcons.trash),
+        onTap: controller.filterTrash,
+        selected: controller.boxFilter == HiveBoxFilter.trash,
       ),
       ExpansionTile(
+        initiallyExpanded: controller.categoriesExpanded,
         title: Text(
           'categories'.tr.toUpperCase(),
           style: const TextStyle(fontSize: 13),
         ),
-        initiallyExpanded: true,
         children: [
-          ...categoriesSet
-              .map(
-                (e) => ListTile(
-                  title: Text(e.tr),
-                  leading: Utils.categoryIcon(
-                    LisoItemCategory.values.byName(e),
-                    color: Colors.white,
-                  ),
-                  onTap: () {
-                    filterCategory = e == 'allItems'
-                        ? null
-                        : LisoItemCategory.values.byName(e);
-                    MainScreenController.to.reload();
-                    Get.back();
-                  },
+          ...controller.categories.map(
+            (e) {
+              final _category = LisoItemCategory.values.byName(e);
+
+              return ListTile(
+                title: Text(e.tr),
+                leading: Utils.categoryIcon(
+                  _category,
+                  color: Colors.white,
                 ),
-              )
-              .toList(),
+                onTap: () => controller.filterByCategory(e),
+                selected: _category == controller.filterCategory,
+              );
+            },
+          ).toList(),
         ],
+        onExpansionChanged: (expanded) =>
+            controller.categoriesExpanded = expanded,
       ),
       ExpansionTile(
+        initiallyExpanded: controller.tagsExpanded,
         title: Text(
           'tags'.tr.toUpperCase(),
           style: const TextStyle(fontSize: 13),
         ),
-        initiallyExpanded: true,
         children: [
-          ...tagsSet
+          ...controller.tags
               .map(
                 (e) => ListTile(
-                  title: Text(e.tr),
+                  title: Text(e),
                   leading: const Icon(LineIcons.tag),
-                  onTap: () {
-                    filterTag = e;
-                    MainScreenController.to.reload();
-                    Get.back();
-                  },
+                  onTap: () => controller.filterByTag(e),
+                  selected: e == controller.filterTag,
                 ),
               )
               .toList(),
         ],
+        onExpansionChanged: (expanded) => controller.tagsExpanded = expanded,
       ),
       ExpansionTile(
+        maintainState: true,
         title: Text(
           'app'.tr.toUpperCase(),
           style: const TextStyle(fontSize: 13),

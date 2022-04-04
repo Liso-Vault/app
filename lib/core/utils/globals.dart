@@ -28,7 +28,7 @@ const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
 const kHiveBoxItems = 'items';
 const kHiveBoxTags = 'tags';
 const kHiveBoxArchived = 'archived';
-const kHiveBoxDeleted = 'deleted';
+const kHiveBoxTrash = 'trash';
 const kHiveBoxFavorites = 'favorites';
 
 const kLocalMasterWalletFileName = 'master_wallet.liso';
@@ -39,10 +39,6 @@ const kRootDirectory = 'Liso';
 List<int>? encryptionKey;
 Wallet? masterWallet;
 bool timeLockEnabled = true;
-
-LisoItemCategory? filterCategory;
-bool filterFavorites = false;
-String filterTag = '';
 
 // TODO: sort orders
 enum SortOrder {

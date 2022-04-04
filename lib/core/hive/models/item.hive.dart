@@ -2,10 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../utils/utils.dart';
@@ -68,7 +66,8 @@ class HiveLisoItem extends HiveObject {
   String get updatedDateTimeFormatted =>
       DateFormat.yMMMMd().add_jm().format(metadata.updatedTime);
 
-  String get updatedTimeAgo => Utils.timeAgo(metadata.updatedTime);
+  String get updatedTimeAgo =>
+      Utils.timeAgo(metadata.updatedTime, short: false);
 
   String get subTitle {
     final _category = LisoItemCategory.values.byName(category);

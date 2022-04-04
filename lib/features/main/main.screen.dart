@@ -7,6 +7,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
+import 'package:liso/features/general/custom_chip.widget.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/utils/utils.dart';
@@ -23,7 +24,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
 
       return GestureDetector(
         // on mouse right click
-        onSecondaryTap: () => controller.onLongPress(item),
+        onSecondaryTap: () => controller.contextMenu(item),
         child: ListTile(
           leading: Utils.categoryIcon(
             LisoItemCategory.values.byName(item.category),
@@ -32,18 +33,53 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
             item.title,
             overflow: TextOverflow.ellipsis,
           ),
-          subtitle: Text(
-            item.subTitle,
-            overflow: TextOverflow.ellipsis,
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                item.subTitle,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  if (item.favorite) ...[
+                    const Icon(
+                      LineIcons.heartAlt,
+                      color: Colors.red,
+                      size: 15,
+                    ),
+                    const SizedBox(width: 5),
+                  ],
+                  if (item.tags.isNotEmpty) ...[
+                    ...item.tags
+                        .map(
+                          (e) => CustomChip(
+                            label: Text(
+                              e,
+                              style: const TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                    const SizedBox(width: 5),
+                  ],
+                  Text(
+                    item.updatedTimeAgo,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              )
+            ],
           ),
-          trailing: Text(
-            item.updatedTimeAgo,
-            style: const TextStyle(
-              fontSize: 10,
-              color: Colors.grey,
-            ),
+          trailing: IconButton(
+            onPressed: () => controller.contextMenu(item),
+            icon: const Icon(LineIcons.verticalEllipsis),
           ),
-          onLongPress: () => controller.onLongPress(item),
+          onLongPress: () => controller.contextMenu(item),
           onTap: () => Get.toNamed(Routes.item, parameters: {
             'mode': 'update',
             'category': item.category,
@@ -97,7 +133,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
         IconButton(
           icon: const Icon(LineIcons.sort),
           onPressed: () {
-            //
+            // TODO: sorting
           },
         )
       ],

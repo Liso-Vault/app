@@ -1,12 +1,13 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/unknown.screen.dart';
-import 'package:liso/features/main/main_screen.binding.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+
+import '../main/main_screen.controller.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);

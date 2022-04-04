@@ -30,6 +30,8 @@ class ItemScreenController extends GetxController
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
 
+  List<String> tags = [];
+
   // parse fields to actual widgets
   final widgets = <Widget>[].obs;
 
@@ -48,7 +50,6 @@ class ItemScreenController extends GetxController
       final hiveKey = Get.parameters['hiveKey'].toString();
       item = HiveManager.items!.get(int.parse(hiveKey));
       titleController.text = item!.title;
-      tagsController.text = item!.tags.join(',');
       favorite.value = item!.favorite;
     }
 
@@ -77,7 +78,7 @@ class ItemScreenController extends GetxController
       category: category,
       icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
       title: titleController.text,
-      tags: tagsController.text.split(','),
+      tags: tags,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       metadata: await HiveMetadata.get(),
     );
@@ -93,7 +94,7 @@ class ItemScreenController extends GetxController
     item!.icon = Uint8List.fromList(''.codeUnits); // TODO: update icon
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
-    item!.tags = tagsController.text.split(',');
+    item!.tags = tags;
     item!.favorite = favorite.value;
     item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
@@ -101,7 +102,7 @@ class ItemScreenController extends GetxController
     Get.back();
   }
 
-  void delete() {
+  void trash() {
     void _proceed() async {
       await item?.delete();
       Get.back();
@@ -110,7 +111,7 @@ class ItemScreenController extends GetxController
     SelectorSheet(
       items: [
         SelectorItem(
-          title: 'Delete',
+          title: 'Move to trash',
           leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
           onSelected: _proceed,
         ),
@@ -121,5 +122,28 @@ class ItemScreenController extends GetxController
         ),
       ],
     ).show();
+  }
+
+  List<String> querySuggestions(String query) {
+    if (query.isEmpty) return [];
+
+    final _usedTags = HiveManager.items!.values
+        .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
+        .toSet();
+
+    // include query as a suggested tag
+    final Set<String> _tags = {query};
+
+    if (_usedTags.isNotEmpty) {
+      _tags.addAll(_usedTags.reduce((a, b) => a + b).toSet());
+    }
+
+    final filteredTags = _tags.where((e) => e.contains(query));
+    return filteredTags.toList();
+  }
+
+  void querySubmitted() {
+    // TODO: add tag when submitted
+    // tags.add(tagsController.text);
   }
 }

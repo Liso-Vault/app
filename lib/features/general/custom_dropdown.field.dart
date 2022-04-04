@@ -1,8 +1,8 @@
 // ignore: must_be_immutable
 import 'package:flutter/material.dart';
 
-import '../hive/models/field.hive.dart';
-import '../utils/styles.dart';
+import '../../core/hive/models/field.hive.dart';
+import '../../core/utils/styles.dart';
 
 // ignore: must_be_immutable
 class CustomDropDownFormField extends StatelessWidget {

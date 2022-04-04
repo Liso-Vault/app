@@ -1,12 +1,15 @@
+import 'package:chips_input/chips_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 
+import '../../core/hive/hive.manager.dart';
 import '../general/busy_indicator.widget.dart';
 import 'item_screen.controller.dart';
 
-class ItemScreen extends GetView<ItemScreenController> {
+class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
   const ItemScreen({Key? key}) : super(key: key);
 
   @override
@@ -51,11 +54,32 @@ class ItemScreen extends GetView<ItemScreenController> {
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
       // TAGS
-      TextFormField(
+      ChipsInput<String>(
         controller: controller.tagsController,
+        maxChips: 5,
+        initialValue: controller.item!.tags,
+        textCapitalization: TextCapitalization.words,
         decoration: Styles.inputDecoration.copyWith(
-          labelText: 'Tags',
+          labelText: 'tags'.tr,
         ),
+        findSuggestions: controller.querySuggestions,
+        onChanged: (data) => controller.tags = data,
+        onEditingComplete: controller.querySubmitted,
+        chipBuilder: (context, state, tag) {
+          return InputChip(
+            key: ObjectKey(tag),
+            label: Text(tag),
+            onDeleted: () => state.deleteChip(tag),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          );
+        },
+        suggestionBuilder: (context, tag) {
+          return ListTile(
+            key: ObjectKey(tag),
+            title: Text(tag.toString()),
+            subtitle: Text(tag.toString()),
+          );
+        },
       ),
       if (mode == 'update') ...[
         const SizedBox(height: 10),
@@ -82,8 +106,8 @@ class ItemScreen extends GetView<ItemScreenController> {
             const SizedBox(width: 10),
             Expanded(
               child: ElevatedButton.icon(
-                onPressed: controller.delete,
-                label: const Text('Delete'),
+                onPressed: controller.trash,
+                label: const Text('Move to trash'),
                 icon: const Icon(LineIcons.trash),
                 style: Styles.elevatedButtonStyleNegative,
               ),

@@ -27,12 +27,18 @@ final en = {
   "encryption": "Encryption",
   //
   "categories": "Categories",
-  "allItems": "All Items",
+  "all_Items": "All Items",
   "tags": "Tags",
   "favorites": "Favorites",
   "favorite": "Favorite",
+  "unfavorite": "Unfavorite",
   "archived": "Archived",
-  "recentlyDeleted": "Recently Deleted",
+  "archive": "Archive",
+  "trash": "Trash",
+  "restore": "Restore",
+  "move_to_trash": "Move to trash",
+  "move_to_archive": "Move to archive",
   "app": "App",
+  "details": "Details",
   //
 };

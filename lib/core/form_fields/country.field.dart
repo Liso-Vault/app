@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:liso/core/data/countries.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-import '../custom_widgets/custom_dropdown.field.dart';
+import '../../features/general/custom_dropdown.field.dart';
 
 // ignore: must_be_immutable
 class CountryFormField extends StatelessWidget {

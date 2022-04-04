@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:liso/core/utils/utils.dart';
 
 import 'app.hive.dart';
 import 'device.hive.dart';

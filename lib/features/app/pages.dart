@@ -10,7 +10,6 @@ import 'package:liso/features/google/sign_in_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
 import 'package:liso/features/main/main.screen.dart';
-import 'package:liso/features/main/main_screen.binding.dart';
 import 'package:liso/features/mnemonic/confirm/confirm_mnemonic.screen.dart';
 import 'package:liso/features/mnemonic/confirm/confirm_mnemonic_screen.controller.dart';
 import 'package:liso/features/mnemonic/mnemonic.screen.dart';
@@ -26,6 +25,7 @@ import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
+import '../main/main_screen.controller.dart';
 import 'routes.dart';
 
 class AppPages {
