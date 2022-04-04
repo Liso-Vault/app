@@ -20,11 +20,11 @@ dependencies:
   cryptography: ^2.0.5
 
   # FIREBASE
-  firebase_core: ^1.13.1
-  firebase_auth: ^3.3.11
-  firebase_analytics: ^9.1.2
-  firebase_crashlytics: ^2.5.3
-  firebase_performance: ^0.8.0+7
+  firebase_core: 1.13.1
+  firebase_auth: 3.3.11
+  firebase_analytics: 9.1.2
+  firebase_crashlytics: 2.5.3
+  firebase_performance: 0.8.0+7
 
   # GOOGLE
   google_sign_in: ^5.2.4
@@ -32,7 +32,7 @@ dependencies:
 
   # WORKAROUND
   desktop_webview_auth: ^0.0.6 # MacOS Google Sign In
-  flutter_displaymode: ^0.3.2 # allow higher refresh rates
+  flutter_displaymode: ^0.4.0 # allow higher refresh rates
 
   # IO
   hive: ^2.1.0
