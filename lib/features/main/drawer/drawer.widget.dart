@@ -30,14 +30,14 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
     final items = [
       header,
       ListTile(
-        title: Text('all_Items'.tr),
+        title: Text('all_Items'.tr + controller.itemsCount),
         leading: const Icon(LineIcons.list),
         onTap: controller.filterAllItems,
         selected: controller.boxFilter == HiveBoxFilter.all,
       ),
       ObxValue(
         (RxBool data) => SwitchListTile(
-          title: Text('favorites'.tr),
+          title: Text('favorites'.tr + controller.favoriteCount),
           value: data.value,
           secondary: const Icon(LineIcons.heart),
           onChanged: controller.filterFavoritesSwitch,
@@ -45,13 +45,13 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         controller.filterFavorites,
       ),
       ListTile(
-        title: Text('archived'.tr),
+        title: Text('archived'.tr + controller.archivedCount),
         leading: const Icon(LineIcons.archive),
         onTap: controller.filterArchived,
         selected: controller.boxFilter == HiveBoxFilter.archived,
       ),
       ListTile(
-        title: Text('trash'.tr),
+        title: Text('trash'.tr + controller.trashCount),
         leading: const Icon(LineIcons.trash),
         onTap: controller.filterTrash,
         selected: controller.boxFilter == HiveBoxFilter.trash,

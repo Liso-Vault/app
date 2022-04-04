@@ -16,7 +16,6 @@ class LisoManager {
   static Future<void> init() async {
     HiveManager.archived = await Hive.openBox(kHiveBoxArchived);
     HiveManager.trash = await Hive.openBox(kHiveBoxTrash);
-    HiveManager.favorites = await Hive.openBox(kHiveBoxFavorites);
 
     HiveManager.items = await Hive.openBox(
       kHiveBoxItems,
