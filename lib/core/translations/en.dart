@@ -26,6 +26,7 @@ final en = {
   "wirelessRouter": "Wireless Router",
   "encryption": "Encryption",
   //
+  "category": "Category",
   "categories": "Categories",
   "all_Items": "All Items",
   "tags": "Tags",
@@ -40,6 +41,10 @@ final en = {
   "move_to_archive": "Move to archive",
   "app": "App",
   "details": "Details",
+  "title": "Title",
   "search_by_title": "Search by title",
+  "date_modified": "Date Modified",
+  "date_created": "Date Created",
+
   //
 };

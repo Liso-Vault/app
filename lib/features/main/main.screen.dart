@@ -68,10 +68,32 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           },
         ),
         IconButton(
-          icon: const Icon(LineIcons.sort),
-          onPressed: () {
-            // TODO: sorting
-          },
+          icon: Obx(
+            () {
+              var iconData = LineIcons.sort;
+
+              switch (controller.sortOrder.value) {
+                case LisoItemSortOrder.titleAscending:
+                case LisoItemSortOrder.categoryAscending:
+                case LisoItemSortOrder.dateModifiedAscending:
+                case LisoItemSortOrder.dateCreatedAscending:
+                case LisoItemSortOrder.favoriteAscending:
+                  iconData = LineIcons.sortUpAscending;
+                  break;
+
+                case LisoItemSortOrder.titleDescending:
+                case LisoItemSortOrder.categoryDescending:
+                case LisoItemSortOrder.dateModifiedDescending:
+                case LisoItemSortOrder.dateCreatedDescending:
+                case LisoItemSortOrder.favoriteDescending:
+                  iconData = LineIcons.sortDownDescending;
+                  break;
+              }
+
+              return Icon(iconData);
+            },
+          ),
+          onPressed: controller.showSortSheet,
         ),
       ],
     );

@@ -5,7 +5,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 
-import '../../core/hive/hive.manager.dart';
 import '../general/busy_indicator.widget.dart';
 import 'item_screen.controller.dart';
 

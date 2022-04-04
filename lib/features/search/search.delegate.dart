@@ -35,11 +35,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
 
   Widget process() {
     if (query.isEmpty) {
-      return const Center(
-        child: Text(
-          "Search items by title.",
-        ),
-      );
+      return const Center(child: Text("Search items by title."));
     }
 
     final items = HiveManager.items!.values

@@ -40,9 +40,17 @@ List<int>? encryptionKey;
 Wallet? masterWallet;
 bool timeLockEnabled = true;
 
-// TODO: sort orders
-enum SortOrder {
-  test,
+enum LisoItemSortOrder {
+  titleAscending,
+  titleDescending,
+  categoryAscending,
+  categoryDescending,
+  dateModifiedAscending,
+  dateModifiedDescending,
+  dateCreatedAscending,
+  dateCreatedDescending,
+  favoriteAscending,
+  favoriteDescending,
 }
 
 enum LisoItemCategory {

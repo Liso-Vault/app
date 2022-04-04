@@ -2,15 +2,19 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
+import 'console.dart';
 import 'globals.dart';
 
 class Utils {
+  static final console = Console(name: 'Utils');
+
   // TODO: improve password validation
   static String? validatePassword(String text) {
     const min = 8;
@@ -64,6 +68,26 @@ class Utils {
     final _locale =
         (Get.locale?.languageCode ?? 'en_US') + (short ? "_short" : "");
     return timeago.format(dateTime, locale: _locale).replaceFirst("~", "");
+  }
+
+  // support higher refresh rate
+  static void setDisplayMode() async {
+    if (!GetPlatform.isAndroid) return;
+
+    try {
+      final mode = await FlutterDisplayMode.active;
+      console.warning('active mode: $mode');
+      final modes = await FlutterDisplayMode.supported;
+
+      for (DisplayMode e in modes) {
+        console.info('display modes: $e');
+      }
+
+      await FlutterDisplayMode.setPreferredMode(modes.last);
+      console.info('set mode: ${modes.last}');
+    } on PlatformException catch (e) {
+      console.error('display mode error: $e');
+    }
   }
 
   static String originImageParser(String origin) {

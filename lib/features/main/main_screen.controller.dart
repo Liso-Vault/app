@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
@@ -15,7 +14,6 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/selector.sheet.dart';
 
 import '../../core/utils/utils.dart';
-import '../json_viewer/json_viewer.screen.dart';
 import 'drawer/drawer_widget.controller.dart';
 
 class MainScreenBinding extends Bindings {
@@ -32,6 +30,7 @@ class MainScreenController extends GetxController
 
   // VARIABLES
   Timer? timer;
+  final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerWidgetController>();
 
   // PROPERTIES
@@ -43,27 +42,11 @@ class MainScreenController extends GetxController
   @override
   void onInit() {
     _initAppLifeCycleEvents();
-    _setDisplayMode();
-    _load();
+    Utils.setDisplayMode();
+    _listen();
+    _initRouter();
 
     super.onInit();
-  }
-
-  @override
-  void onReady() {
-    // console.warning(
-    //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
-    // );
-
-    // if (event.deleted) {
-    //   data.removeWhere((e) => e.key == event.key);
-    // }
-
-    HiveManager.items?.watch().listen((_) => _load());
-    HiveManager.archived?.watch().listen((_) => _load());
-    HiveManager.trash?.watch().listen((_) => _load());
-
-    super.onReady();
   }
 
   @override
@@ -73,20 +56,8 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
-  void _removeAllTags() async {
-    for (var e in HiveManager.items!.values) {
-      e.tags = [];
-      await e.save();
-    }
-
-    reload();
-  }
-
-  void reload() => _load();
-
-  void _load() async {
-    change(null, status: RxStatus.loading());
-
+  // TODO: use getx router implementation
+  void _initRouter() async {
     // show welcome screen if not authenticated
     if (!(await LisoManager.authenticated())) {
       await Get.toNamed(Routes.welcome);
@@ -97,7 +68,31 @@ class MainScreenController extends GetxController
       }
     }
 
-    // FILTER
+    _load();
+  }
+
+  void _listen() {
+    // console.warning(
+    //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
+    // );
+
+    // if (event.deleted) {
+    //   data.removeWhere((e) => e.key == event.key);
+    // }
+
+    // watch hive box changes
+    HiveManager.items?.watch().listen((_) => _load());
+    HiveManager.archived?.watch().listen((_) => _load());
+    HiveManager.trash?.watch().listen((_) => _load());
+
+    // listen for sort order changes
+    sortOrder.listen((order) => _load());
+  }
+
+  void reload() => _load();
+
+  void _load() async {
+    change(null, status: RxStatus.loading());
 
     List<HiveLisoItem> items = [];
 
@@ -129,13 +124,83 @@ class MainScreenController extends GetxController
           .toList();
     }
 
-    // sort from latest to oldest
-    items.sort(
-      (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
-    );
+    // --- SORT BY TITLE ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.titleDescending) {
+      items.sort(
+        (a, b) => b.title.compareTo(a.title),
+      );
+    }
 
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.titleAscending) {
+      items.sort(
+        (a, b) => a.title.compareTo(b.title),
+      );
+    }
+
+    // --- SORT BY TITLE ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.categoryDescending) {
+      items.sort(
+        (a, b) => b.category.compareTo(a.category),
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.categoryAscending) {
+      items.sort(
+        (a, b) => a.category.compareTo(b.category),
+      );
+    }
+
+    // --- SORT BY DATE MODIFIED ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.dateModifiedDescending) {
+      items.sort(
+        (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.dateModifiedAscending) {
+      items.sort(
+        (a, b) => a.metadata.updatedTime.compareTo(b.metadata.updatedTime),
+      );
+    }
+
+    // --- SORT BY DATE CREATED ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.dateCreatedDescending) {
+      items.sort(
+        (a, b) => b.metadata.createdTime.compareTo(a.metadata.createdTime),
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.dateCreatedAscending) {
+      items.sort(
+        (a, b) => a.metadata.createdTime.compareTo(b.metadata.createdTime),
+      );
+    }
+
+    // --- SORT BY FAVORITE ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.favoriteDescending) {
+      items.sort(
+        (a, b) => b.favorite ? 1 : -1,
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.favoriteAscending) {
+      items.sort(
+        (a, b) => a.favorite ? 1 : -1,
+      );
+    }
+
+    // load items
     data.value = items;
-
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 
@@ -184,23 +249,79 @@ class MainScreenController extends GetxController
     });
   }
 
-  // support higher refresh rate
-  void _setDisplayMode() async {
-    if (!GetPlatform.isAndroid) return;
-
-    try {
-      final mode = await FlutterDisplayMode.active;
-      console.warning('active mode: $mode');
-      final modes = await FlutterDisplayMode.supported;
-
-      for (DisplayMode e in modes) {
-        console.info('display modes: $e');
-      }
-
-      await FlutterDisplayMode.setPreferredMode(modes.last);
-      console.info('set mode: ${modes.last}');
-    } on PlatformException catch (e) {
-      console.error('display mode error: $e');
-    }
+  void showSortSheet() {
+    SelectorSheet(
+      items: [
+        SelectorItem(
+          title: 'title'.tr,
+          leading: const Icon(LineIcons.sortAlphabeticalDown),
+          onSelected: () {
+            if (sortOrder.value == LisoItemSortOrder.titleAscending) {
+              sortOrder.value = LisoItemSortOrder.titleDescending;
+            } else if (sortOrder.value == LisoItemSortOrder.titleDescending) {
+              sortOrder.value = LisoItemSortOrder.titleAscending;
+            } else {
+              sortOrder.value = LisoItemSortOrder.titleDescending;
+            }
+          },
+        ),
+        SelectorItem(
+          title: 'category'.tr,
+          leading: const Icon(LineIcons.sitemap),
+          onSelected: () {
+            if (sortOrder.value == LisoItemSortOrder.categoryAscending) {
+              sortOrder.value = LisoItemSortOrder.categoryDescending;
+            } else if (sortOrder.value ==
+                LisoItemSortOrder.categoryDescending) {
+              sortOrder.value = LisoItemSortOrder.categoryAscending;
+            } else {
+              sortOrder.value = LisoItemSortOrder.categoryDescending;
+            }
+          },
+        ),
+        SelectorItem(
+          title: 'date_modified'.tr,
+          leading: const Icon(LineIcons.calendar),
+          onSelected: () {
+            if (sortOrder.value == LisoItemSortOrder.dateModifiedAscending) {
+              sortOrder.value = LisoItemSortOrder.dateModifiedDescending;
+            } else if (sortOrder.value ==
+                LisoItemSortOrder.dateModifiedDescending) {
+              sortOrder.value = LisoItemSortOrder.dateModifiedAscending;
+            } else {
+              sortOrder.value = LisoItemSortOrder.dateModifiedDescending;
+            }
+          },
+        ),
+        SelectorItem(
+          title: 'date_created'.tr,
+          leading: const Icon(LineIcons.calendarAlt),
+          onSelected: () {
+            if (sortOrder.value == LisoItemSortOrder.dateCreatedAscending) {
+              sortOrder.value = LisoItemSortOrder.dateCreatedDescending;
+            } else if (sortOrder.value ==
+                LisoItemSortOrder.dateCreatedDescending) {
+              sortOrder.value = LisoItemSortOrder.dateCreatedAscending;
+            } else {
+              sortOrder.value = LisoItemSortOrder.dateCreatedDescending;
+            }
+          },
+        ),
+        SelectorItem(
+          title: 'favorite'.tr,
+          leading: const Icon(LineIcons.heart),
+          onSelected: () {
+            if (sortOrder.value == LisoItemSortOrder.favoriteAscending) {
+              sortOrder.value = LisoItemSortOrder.favoriteDescending;
+            } else if (sortOrder.value ==
+                LisoItemSortOrder.favoriteDescending) {
+              sortOrder.value = LisoItemSortOrder.favoriteAscending;
+            } else {
+              sortOrder.value = LisoItemSortOrder.favoriteDescending;
+            }
+          },
+        ),
+      ],
+    ).show();
   }
 }
