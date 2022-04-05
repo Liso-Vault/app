@@ -46,10 +46,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
 
     return ListView.builder(
       itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return ItemTile(item, searchMode: true);
-      },
+      itemBuilder: (context, index) => ItemTile(items[index], searchMode: true),
     );
   }
 }

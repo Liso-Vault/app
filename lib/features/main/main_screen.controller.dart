@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/liso/liso.manager.dart';
@@ -21,6 +22,9 @@ class MainScreenBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => MainScreenController());
     Get.lazyPut(() => DrawerWidgetController());
+
+    // GET WIDGETS
+    Get.create(() => PasswordFormFieldController());
   }
 }
 

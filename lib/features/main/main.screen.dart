@@ -30,9 +30,9 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
         iconData: LineIcons.seedling,
-        message: 'empty',
+        message: 'no_items'.tr,
         child: TextButton.icon(
-          label: const Text('Add your first item'),
+          label: Text('add_item'.tr),
           icon: const Icon(LineIcons.plus),
           onPressed: controller.add,
         ),
@@ -82,8 +82,5 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
     );
   }
 
-  Widget itemBuilder(context, index) {
-    final item = controller.data[index];
-    return ItemTile(item);
-  }
+  Widget itemBuilder(context, index) => ItemTile(controller.data[index]);
 }

@@ -14,12 +14,15 @@ class HiveLisoField extends HiveObject {
   @HiveField(2)
   final bool reserved; // if the user can remove the field or not
   @HiveField(3)
+  final bool required;
+  @HiveField(4)
   Map<String, dynamic> data; // map that holds the value and/or parameters
 
   HiveLisoField({
     this.identifier = '',
     required this.type,
     this.reserved = false,
+    this.required = false,
     this.data = const {},
   });
 
@@ -27,6 +30,7 @@ class HiveLisoField extends HiveObject {
         identifier: json["identifier"],
         type: json["type"],
         reserved: json["reserved"],
+        required: json["required"],
         data: json["data"],
       );
 
@@ -35,6 +39,7 @@ class HiveLisoField extends HiveObject {
       "identifier": identifier,
       "type": type,
       "reserved": reserved,
+      "required": required,
       "data": data,
     };
   }

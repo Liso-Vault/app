@@ -14,9 +14,9 @@ class CustomDialog extends StatelessWidget {
   final bool permanent;
 
   const CustomDialog(
-    Key? key,
     this.title,
     this.message, {
+    Key? key,
     this.image,
     this.child,
     this.button,

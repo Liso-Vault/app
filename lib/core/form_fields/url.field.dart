@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/utils.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../utils/styles.dart';
@@ -19,6 +20,8 @@ class URLFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.url,
+      validator: (data) =>
+          data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
       decoration: Styles.inputDecoration.copyWith(
         labelText: field.data['label'],
         hintText: field.data['hint'],

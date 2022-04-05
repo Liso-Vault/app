@@ -102,11 +102,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     final subTitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          item.subTitle,
-          overflow: TextOverflow.ellipsis,
-        ),
-        const SizedBox(height: 5),
+        if (item.subTitle.isNotEmpty) ...[
+          Text(
+            item.subTitle,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 5),
+        ],
         Row(
           children: [
             if (item.favorite) ...[
@@ -149,10 +151,18 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             icon: const Icon(LineIcons.verticalEllipsis),
           );
 
+    final leading = item.icon.isNotEmpty
+        ? Image.memory(
+            item.icon,
+            width: 35,
+            alignment: Alignment.centerLeft,
+          )
+        : Utils.categoryIcon(
+            LisoItemCategory.values.byName(item.category),
+          );
+
     final tile = ListTile(
-      leading: Utils.categoryIcon(
-        LisoItemCategory.values.byName(item.category),
-      ),
+      leading: leading,
       title: title,
       subtitle: subTitle,
       trailing: trailing,

@@ -20,14 +20,15 @@ class HiveLisoFieldAdapter extends TypeAdapter<HiveLisoField> {
       identifier: fields[0] as String,
       type: fields[1] as String,
       reserved: fields[2] as bool,
-      data: (fields[3] as Map).cast<String, dynamic>(),
+      required: fields[3] as bool,
+      data: (fields[4] as Map).cast<String, dynamic>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveLisoField obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.identifier)
       ..writeByte(1)
@@ -35,6 +36,8 @@ class HiveLisoFieldAdapter extends TypeAdapter<HiveLisoField> {
       ..writeByte(2)
       ..write(obj.reserved)
       ..writeByte(3)
+      ..write(obj.required)
+      ..writeByte(4)
       ..write(obj.data);
   }
 

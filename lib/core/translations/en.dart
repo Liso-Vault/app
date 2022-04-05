@@ -45,6 +45,10 @@ final en = {
   "search_by_title": "Search by title",
   "date_modified": "Date Modified",
   "date_created": "Date Created",
-
-  //
+  "required": "Required",
+  "too_short": "Too short",
+  "no_items": "No items",
+  "add_item": "Add Item",
+  "remove": "Remove",
+  "change": "Change",
 };

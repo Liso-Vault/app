@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
+import '../utils/globals.dart';
 import '../utils/styles.dart';
 
 // ignore: must_be_immutable
@@ -19,6 +20,7 @@ class PINFormField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       keyboardType: TextInputType.number,
+      inputFormatters: [inputFormatterRestrictSpaces],
       decoration: Styles.inputDecoration.copyWith(
         labelText: field.data['label'],
         hintText: field.data['hint'],

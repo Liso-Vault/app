@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -10,6 +12,7 @@ import 'package:liso/core/utils/console.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
+import '../general/custom_dialog.widget.dart';
 import '../general/selector.sheet.dart';
 
 class ItemScreenBinding extends Bindings {
@@ -34,6 +37,7 @@ class ItemScreenController extends GetxController
 
   // parse fields to actual widgets
   final widgets = <Widget>[].obs;
+  final icon = Uint8List(0).obs;
 
   // PROPERTIES
   final favorite = false.obs;
@@ -49,6 +53,7 @@ class ItemScreenController extends GetxController
     } else if (mode == 'update') {
       final hiveKey = Get.parameters['hiveKey'].toString();
       item = HiveManager.items!.get(int.parse(hiveKey));
+      icon.value = item!.icon;
       titleController.text = item!.title;
       favorite.value = item!.favorite;
       tags = item!.tags;
@@ -64,7 +69,7 @@ class ItemScreenController extends GetxController
   Future<void> _loadTemplate() async {
     item = HiveLisoItem(
       category: category,
-      icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
+      icon: Uint8List(0),
       title: '',
       fields: TemplateParser.parse(category),
       tags: [],
@@ -77,7 +82,7 @@ class ItemScreenController extends GetxController
 
     final newItem = HiveLisoItem(
       category: category,
-      icon: Uint8List.fromList(''.codeUnits), // TODO: update icon
+      icon: icon.value,
       title: titleController.text,
       tags: tags,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
@@ -92,7 +97,7 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (item == null) return;
 
-    item!.icon = Uint8List.fromList(''.codeUnits); // TODO: update icon
+    item!.icon = icon.value;
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tags;
@@ -146,5 +151,66 @@ class ItemScreenController extends GetxController
   void querySubmitted() {
     // TODO: add tag when submitted
     // tags.add(tagsController.text);
+  }
+
+  void changeIcon() async {
+    SelectorSheet(
+      title: 'Item Icon',
+      items: [
+        SelectorItem(
+          title: 'change'.tr,
+          leading: const Icon(LineIcons.image),
+          onSelected: _pickIcon,
+        ),
+        SelectorItem(
+          title: 'remove'.tr,
+          leading: const Icon(LineIcons.trash),
+          onSelected: () => icon.value = Uint8List(0),
+        ),
+      ],
+    ).show();
+  }
+
+  void _pickIcon() async {
+    FilePickerResult? result;
+
+    try {
+      result = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowedExtensions: ['png', 'jpg'],
+      );
+    } catch (e) {
+      return console.error('FilePicker error: $e');
+    }
+
+    if (result == null || result.files.isEmpty) {
+      return console.warning("canceled FilePicker");
+    }
+
+    final image = result.files.single;
+
+    final file = File(image.path!);
+    if (!await file.exists()) return console.warning("doesn't exist");
+
+    // 500kb
+    if (await file.length() > 500000) {
+      Get.generalDialog(
+        pageBuilder: (_, __, ___) => AlertDialog(
+          title: const Text('Image Too Large'),
+          content: const Text(
+              'Please choose an image with size not larger than 500kb'),
+          actions: [
+            TextButton(
+              child: const Text('Okay'),
+              onPressed: Get.back,
+            ),
+          ],
+        ),
+      );
+
+      return console.warning("too large");
+    }
+
+    icon.value = await file.readAsBytes();
   }
 }

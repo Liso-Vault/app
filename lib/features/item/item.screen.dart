@@ -15,6 +15,63 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
   Widget build(BuildContext context) {
     final mode = Get.parameters['mode'].toString();
     final category = Get.parameters['category'].toString();
+    final chipsKey = GlobalKey<ChipsInputState>();
+
+    final tagsInput = ChipsInput<String>(
+      key: chipsKey,
+      controller: controller.tagsController,
+      maxChips: 5,
+      initialValue: controller.tags,
+      textCapitalization: TextCapitalization.words,
+      decoration: Styles.inputDecoration.copyWith(
+        labelText: 'tags'.tr,
+      ),
+      findSuggestions: controller.querySuggestions,
+      onChanged: (data) => controller.tags = data,
+      // onEditingComplete: controller.querySubmitted,
+      // onEditingComplete: () async {
+      //   console.info('completed: ${controller.tagsController.text}');
+      //   // chipsKey.currentState!.addChip(controller.tagsController.text);
+      //   final options = await chipsKey.currentState!.widget.findSuggestions(
+      //       controller.tagsController.text.replaceAll(" ", ""));
+
+      //   console.info('first: ${options.first}');
+      //   chipsKey.currentState!.addChip(options.first);
+      //   console.info('completed: ${controller.tagsController.text}');
+      // },
+      chipBuilder: (context, state, tag) {
+        return InputChip(
+          key: ObjectKey(tag),
+          label: Text(tag),
+          onDeleted: () => state.deleteChip(tag),
+          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        );
+      },
+      suggestionBuilder: (context, tag) {
+        return ListTile(
+          key: ObjectKey(tag),
+          title: Text(tag.toString()),
+          subtitle: Text(tag.toString()),
+        );
+      },
+      optionsViewBuilder: (context, onSelected, options) {
+        return Material(
+          child: ListView.separated(
+            itemCount: options.length,
+            separatorBuilder: (context, index) => const Divider(height: 0),
+            itemBuilder: (context, index) {
+              final tag = options.elementAt(index);
+
+              return ListTile(
+                key: ObjectKey(tag),
+                title: Text(tag),
+                onTap: () => onSelected(tag),
+              );
+            },
+          ),
+        );
+      },
+    );
 
     final items = [
       // Text(
@@ -31,9 +88,13 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         mainAxisSize: MainAxisSize.min,
         children: [
           // ICON
-          IconButton(
-            icon: const Icon(Icons.photo, size: 30),
-            onPressed: () {},
+          Obx(
+            () => IconButton(
+              icon: controller.icon.value.isEmpty
+                  ? const Icon(Icons.photo, size: 30)
+                  : Image.memory(controller.icon.value),
+              onPressed: controller.changeIcon,
+            ),
           ),
           const SizedBox(width: 10),
           // TITLE
@@ -41,8 +102,9 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
             child: TextFormField(
               controller: controller.titleController,
               textCapitalization: TextCapitalization.words,
+              validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
               decoration: Styles.inputDecoration.copyWith(
-                labelText: 'Title',
+                labelText: 'Title *',
               ),
             ),
           ),
@@ -54,50 +116,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
       // TAGS
-      ChipsInput<String>(
-        controller: controller.tagsController,
-        maxChips: 5,
-        initialValue: controller.tags,
-        textCapitalization: TextCapitalization.words,
-        decoration: Styles.inputDecoration.copyWith(
-          labelText: 'tags'.tr,
-        ),
-        findSuggestions: controller.querySuggestions,
-        onChanged: (data) => controller.tags = data,
-        onEditingComplete: controller.querySubmitted,
-        chipBuilder: (context, state, tag) {
-          return InputChip(
-            key: ObjectKey(tag),
-            label: Text(tag),
-            onDeleted: () => state.deleteChip(tag),
-            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          );
-        },
-        suggestionBuilder: (context, tag) {
-          return ListTile(
-            key: ObjectKey(tag),
-            title: Text(tag.toString()),
-            subtitle: Text(tag.toString()),
-          );
-        },
-        optionsViewBuilder: (context, onSelected, options) {
-          return Material(
-            child: ListView.separated(
-              itemCount: options.length,
-              separatorBuilder: (context, index) => const Divider(height: 0),
-              itemBuilder: (context, index) {
-                final tag = options.elementAt(index);
-
-                return ListTile(
-                  key: ObjectKey(tag),
-                  title: Text(tag),
-                  onTap: () => onSelected(tag),
-                );
-              },
-            ),
-          );
-        },
-      ),
+      tagsInput,
       if (mode == 'update') ...[
         const SizedBox(height: 10),
         ObxValue(

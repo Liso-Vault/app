@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/form_fields/country.field.dart';
+import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/utils/console.dart';
 
 import '../utils/styles.dart';
@@ -43,10 +43,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
       HiveLisoField(
         reserved: true,
         type: LisoFieldType.country.name,
-        data: {
-          'value': value['country'],
-          'label': 'Country',
-        },
+        data: {'value': value['country'], 'label': 'Country'},
       ),
     );
 
@@ -56,7 +53,9 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
           controller: street1Controller,
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
-          decoration: Styles.inputDecoration.copyWith(labelText: 'Street 1'),
+          decoration: Styles.inputDecoration.copyWith(
+            labelText: 'Street 1',
+          ),
         ),
         const SizedBox(height: 10),
         TextFormField(
@@ -75,8 +74,9 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
         TextFormField(
           controller: stateController,
           textCapitalization: TextCapitalization.words,
-          decoration:
-              Styles.inputDecoration.copyWith(labelText: 'State / Province'),
+          decoration: Styles.inputDecoration.copyWith(
+            labelText: 'State / Province',
+          ),
         ),
         const SizedBox(height: 10),
         TextFormField(

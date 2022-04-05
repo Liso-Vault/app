@@ -1,5 +1,6 @@
 // COMPANY
 
+import 'package:flutter/services.dart';
 import 'package:web3dart/credentials.dart';
 
 const kAppName = 'Liso';
@@ -34,6 +35,9 @@ const kHiveBoxFavorites = 'favorites';
 const kLocalMasterWalletFileName = 'master_wallet.liso';
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
+
+final inputFormatterRestrictSpaces =
+    FilteringTextInputFormatter.deny(RegExp(r'\s'));
 
 // VARS
 List<int>? encryptionKey;
