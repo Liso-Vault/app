@@ -8,16 +8,16 @@ class TextFieldForm extends StatelessWidget {
   final HiveLisoField field;
   TextFieldForm(this.field, {Key? key}) : super(key: key);
 
-  TextEditingController? controller;
+  TextEditingController? _fieldController;
 
-  String get value => controller!.text;
+  String get value => _fieldController!.text;
 
   @override
   Widget build(BuildContext context) {
-    controller = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data['value']);
 
     return TextFormField(
-      controller: controller,
+      controller: _fieldController,
       textCapitalization: TextCapitalization.sentences,
       decoration: Styles.inputDecoration.copyWith(
         labelText: field.data['label'],

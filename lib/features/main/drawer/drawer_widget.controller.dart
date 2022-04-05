@@ -109,6 +109,7 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     // if already selected, deselect
     if (_category == filterCategory) _category = null;
     filterCategory = _category;
+    filterTag = '';
     reload();
   }
 

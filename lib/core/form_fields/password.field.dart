@@ -10,34 +10,41 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
   final HiveLisoField field;
   PasswordFormField(this.field, {Key? key}) : super(key: key);
 
-  TextEditingController? fieldController;
+  TextEditingController? _fieldController;
 
-  String get value => fieldController!.text;
+  String get value => _fieldController!.text;
 
   @override
   Widget build(BuildContext context) {
-    fieldController = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data['value']);
 
-    return Obx(
-      () => TextFormField(
-        controller: fieldController,
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: controller.obscureText.value,
-        decoration: Styles.inputDecoration.copyWith(
-          labelText: field.data['label'],
-          hintText: field.data['hint'],
-          suffixIcon: IconButton(
-            icon: Icon(
-              controller.obscureText.value ? LineIcons.eye : LineIcons.eyeSlash,
+    return Column(
+      children: [
+        Obx(
+          () => TextFormField(
+            controller: _fieldController,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: controller.obscureText.value,
+            decoration: Styles.inputDecoration.copyWith(
+              labelText: field.data['label'],
+              hintText: field.data['hint'],
+              suffixIcon: IconButton(
+                onPressed: controller.obscureText.toggle,
+                icon: Icon(
+                  controller.obscureText.value
+                      ? LineIcons.eye
+                      : LineIcons.eyeSlash,
+                ),
+              ),
             ),
-            onPressed: controller.obscureText.toggle,
           ),
+          // TODO: validator widget here
         ),
-      ),
+      ],
     );
   }
 }
 
 class PasswordFormFieldController extends GetxController {
-  final obscureText = false.obs;
+  final obscureText = true.obs;
 }

@@ -15,6 +15,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
   Widget build(BuildContext context) {
     final mnemonicPhrase = GestureDetector(
       onLongPress: controller.options,
+      onSecondaryTap: controller.options, // mouse right click
       child: Text(
         controller.mnemonic.value,
         textAlign: TextAlign.center,

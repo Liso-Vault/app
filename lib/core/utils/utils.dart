@@ -33,19 +33,19 @@ class Utils {
 
   static String generatePassword({
     bool letter = true,
-    bool isNumber = true,
-    bool isSpecial = true,
+    bool number = true,
+    bool special = true,
     int length = 15,
   }) {
-    const letterLowerCase = "abcdefghijklmnopqrstuvwxyz";
-    const letterUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const number = '0123456789';
-    const special = '@#%^*>\$@?/[]=+';
+    const lettersLowerCase = "abcdefghijklmnopqrstuvwxyz";
+    const lettersUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const numbers = '0123456789';
+    const specials = '@#%^*>\$@?/[]=+';
 
     String chars = "";
-    if (letter) chars += ' $letterLowerCase $letterUpperCase ';
-    if (isNumber) chars += ' $number ';
-    if (isSpecial) chars += ' $special ';
+    if (letter) chars += ' $lettersLowerCase $lettersUpperCase ';
+    if (number) chars += ' $numbers ';
+    if (special) chars += ' $specials ';
 
     return List.generate(length, (index) {
       final indexRandom = Random.secure().nextInt(chars.length);

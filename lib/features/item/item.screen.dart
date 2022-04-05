@@ -111,7 +111,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           ),
         ],
       ),
-      const Divider(),
+      const SizedBox(height: 10),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       Obx(() => Column(children: [...controller.widgets])),
       // -------- RENDER FIELDS AS WIDGETS -------- //
@@ -132,7 +132,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         controller.favorite,
       ),
       if (mode == 'update') ...[
-        const SizedBox(height: 20),
+        const Divider(),
         // TODO: better datetime format
         Text(
           'Last updated ${controller.item?.updatedDateTimeFormatted}', // TODO: better DateTime format

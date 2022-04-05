@@ -5,8 +5,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/passphrase_card/passphrase.card.dart';
-import 'package:liso/features/passphrase_card/passphrase_card.controller.dart';
 
 class ConfirmMnemonicScreenBinding extends Bindings {
   @override
@@ -17,7 +15,9 @@ class ConfirmMnemonicScreenBinding extends Bindings {
 
 class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
   // VARIABLES
-  final passphraseCard = const PassphraseCard(mode: PassphraseMode.confirm);
+  final seedController = TextEditingController();
+
+  // final passphraseCard = const PassphraseCard(mode: PassphraseMode.confirm);
 
   // PROPERTIES
 
@@ -28,10 +28,9 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
-    final mnemonic = passphraseCard.obtainMnemonicPhrase();
-    if (mnemonic == null) return console.error('invalid mnemonic');
+    if (seedController.text.isEmpty) return console.error('invalid mnemonic');
 
-    if (mnemonic != Get.parameters['mnemonic']) {
+    if (seedController.text != Get.parameters['mnemonic']) {
       UIUtils.showSnackBar(
         title: 'Incorrect Mnemonic Phrase',
         message: "Please re-enter your backed up mnemonic seed phrase",
@@ -42,7 +41,7 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
       return;
     }
 
-    final seedHex = bip39.mnemonicToSeedHex(mnemonic);
+    final seedHex = bip39.mnemonicToSeedHex(seedController.text);
     Get.toNamed(Routes.createPassword, parameters: {'seedHex': seedHex});
   }
 }

@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
+import '../../features/general/passphrase.card.dart';
+
+// ignore: must_be_immutable
 class MnemonicFormField extends StatelessWidget {
   final HiveLisoField field;
-  const MnemonicFormField(this.field, {Key? key}) : super(key: key);
+  MnemonicFormField(this.field, {Key? key}) : super(key: key);
+
+  // VARIABLES
+  final _fieldController = TextEditingController();
+
+  // GETTERS
+  String get value => _fieldController.text;
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Unimplemented Field');
+    return PassphraseCard(
+      controller: _fieldController,
+      mode: PassphraseMode.none,
+      initialValue: field.data['value'],
+      required: false,
+    );
   }
 }

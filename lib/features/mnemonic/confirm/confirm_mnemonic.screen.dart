@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/features/general/passphrase.card.dart';
 
 import 'confirm_mnemonic_screen.controller.dart';
 
@@ -31,7 +32,7 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
           style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(height: 20),
-        controller.passphraseCard,
+        PassphraseCard(controller: controller.seedController),
         const SizedBox(height: 20),
         TextButton.icon(
           onPressed: controller.continuePressed,

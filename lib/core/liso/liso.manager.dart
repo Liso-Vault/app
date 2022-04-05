@@ -4,26 +4,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/utils.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
-import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 import 'liso_paths.dart';
 
 class LisoManager {
   static final console = Console(name: 'LisoManager');
-
-  static Future<void> init() async {
-    HiveManager.archived = await Hive.openBox(kHiveBoxArchived);
-    HiveManager.trash = await Hive.openBox(kHiveBoxTrash);
-
-    HiveManager.items = await Hive.openBox(
-      kHiveBoxItems,
-      encryptionCipher: HiveAesCipher(encryptionKey!),
-    );
-
-    console.warning('items: ${HiveManager.items!.length}');
-  }
 
   static Future<bool> authenticated() async {
     final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
@@ -42,8 +30,10 @@ class LisoManager {
       console.info('deleted: ${file.path}');
     }
 
-    // hives
-    Hive.deleteFromDisk();
+    // cancel hive boxes' stream subscriptions
+    MainScreenController.to.unwatchBoxes();
+    // delete hive boxes
+    await Hive.deleteFromDisk();
 
     // persistence
     await PersistenceController.to.box.erase();

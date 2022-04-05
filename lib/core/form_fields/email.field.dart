@@ -10,19 +10,20 @@ class EmailFormField extends StatelessWidget {
   final HiveLisoField field;
   EmailFormField(this.field, {Key? key}) : super(key: key);
 
-  TextEditingController? controller;
+  TextEditingController? _fieldController;
 
-  String get value => controller!.text;
+  String get value => _fieldController!.text;
 
   @override
   Widget build(BuildContext context) {
-    controller = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data['value']);
 
     return TextFormField(
-      controller: controller,
+      controller: _fieldController,
       keyboardType: TextInputType.emailAddress,
       validator: (data) =>
           data!.isEmpty || GetUtils.isEmail(data) ? null : 'Invalid Email',
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [inputFormatterRestrictSpaces],
       decoration: Styles.inputDecoration.copyWith(
         labelText: field.data['label'],

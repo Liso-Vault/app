@@ -54,7 +54,7 @@ class HiveLisoItem extends HiveObject {
       "category": category,
       "icon": icon,
       "title": title,
-      "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
+      "fields": List<HiveLisoField>.from(fields.map((x) => x.toJson())),
       "favorite": favorite,
       "tags": tags,
       "metadata": metadata.toJson(),

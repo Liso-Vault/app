@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
+import 'package:liso/core/utils/console.dart';
 
 import '../utils/styles.dart';
 
 // ignore: must_be_immutable
-class TextAreaFormField extends StatelessWidget {
+class TextAreaFormField extends StatelessWidget with ConsoleMixin {
   final HiveLisoField field;
   TextAreaFormField(this.field, {Key? key}) : super(key: key);
 
-  TextEditingController? controller;
+  TextEditingController? _fieldController;
 
-  String get value => controller!.text;
+  String get value => _fieldController!.text;
 
   @override
   Widget build(BuildContext context) {
-    controller = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data['value']);
 
     return TextFormField(
-      controller: controller,
+      controller: _fieldController,
       minLines: 3,
       maxLines: 5,
       textCapitalization: TextCapitalization.sentences,

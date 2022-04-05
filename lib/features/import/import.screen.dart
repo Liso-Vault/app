@@ -4,6 +4,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
+import 'package:liso/features/general/passphrase.card.dart';
 
 import 'import_screen.controller.dart';
 
@@ -50,7 +51,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             ],
           ),
           const SizedBox(height: 20),
-          controller.passphraseCard,
+          PassphraseCard(controller: controller.seedController),
           const SizedBox(height: 20),
           TextButton.icon(
             onPressed: controller.continuePressed,

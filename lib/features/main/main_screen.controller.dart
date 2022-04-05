@@ -39,6 +39,9 @@ class MainScreenController extends GetxController
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerWidgetController>();
   ItemsSearchDelegate? searchDelegate;
+  StreamSubscription? itemsSubscription,
+      archivedSubscription,
+      trashSubscription;
 
   // PROPERTIES
   final data = <HiveLisoItem>[].obs;
@@ -47,13 +50,21 @@ class MainScreenController extends GetxController
 
   // INIT
   @override
-  void onInit() {
+  void onInit() async {
     _initAppLifeCycleEvents();
     Utils.setDisplayMode();
-    _listen();
     _initRouter();
-
+    console.info('onInit');
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    // listen for sort order changes
+    sortOrder.listen((order) => _load());
+    _watchBoxes();
+    console.info('onReady');
+    super.onReady();
   }
 
   @override
@@ -75,10 +86,11 @@ class MainScreenController extends GetxController
       }
     }
 
+    console.info('_initRouter');
     _load();
   }
 
-  void _listen() {
+  void _watchBoxes() {
     // console.warning(
     //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
     // );
@@ -88,12 +100,19 @@ class MainScreenController extends GetxController
     // }
 
     // watch hive box changes
-    HiveManager.items?.watch().listen((_) => _load());
-    HiveManager.archived?.watch().listen((_) => _load());
-    HiveManager.trash?.watch().listen((_) => _load());
+    if (HiveManager.items != null && !HiveManager.items!.isOpen) {
+      return console.error('hive boxes are not open');
+    }
 
-    // listen for sort order changes
-    sortOrder.listen((order) => _load());
+    itemsSubscription = HiveManager.items?.watch().listen((_) => _load());
+    archivedSubscription = HiveManager.archived?.watch().listen((_) => _load());
+    trashSubscription = HiveManager.trash?.watch().listen((_) => _load());
+  }
+
+  void unwatchBoxes() {
+    itemsSubscription?.cancel();
+    archivedSubscription?.cancel();
+    trashSubscription?.cancel();
   }
 
   void reload() => _load();

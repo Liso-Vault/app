@@ -41,6 +41,7 @@ dependencies:
   path_provider: ^2.0.9
   path: ^1.8.1
   file_picker: ^4.5.1 # exporting + importing
+  archive: ^3.3.0 # zipping hive boxes
 
   # UI
   line_icons: ^2.0.1

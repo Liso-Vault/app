@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:liso/core/form_fields/mnemonic.field.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/form_fields/phone.field.dart';
 import 'package:liso/core/form_fields/pin.field.dart';
@@ -6,6 +7,7 @@ import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
 import 'package:liso/core/form_fields/url.field.dart';
+import 'package:liso/core/utils/console.dart';
 
 import '../form_fields/email.field.dart';
 import '../hive/models/field.hive.dart';
@@ -19,7 +21,7 @@ class FormFieldUtils {
     HiveLisoItem item, {
     required List<Widget> widgets,
   }) {
-    // final console = Console(name: 'FormFieldUtils');
+    final console = Console(name: 'FormFieldUtils');
     final List<HiveLisoField> _newFields = [];
 
     for (var i = 0; i < item.fields.length; i++) {
@@ -62,6 +64,10 @@ class FormFieldUtils {
           break;
         case LisoFieldType.address:
           formField = _widget as AddressFormField;
+          break;
+        case LisoFieldType.mnemonicSeed:
+          formField = _widget as MnemonicFormField;
+          console.info('seed: ${formField.value}');
           break;
         default:
       }

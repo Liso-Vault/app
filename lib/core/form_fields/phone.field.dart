@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../utils/globals.dart';
@@ -9,18 +10,20 @@ class PhoneFormField extends StatelessWidget {
   final HiveLisoField field;
   PhoneFormField(this.field, {Key? key}) : super(key: key);
 
-  TextEditingController? controller;
+  TextEditingController? _fieldController;
 
-  String get value => controller!.text;
+  String get value => _fieldController!.text;
 
   @override
   Widget build(BuildContext context) {
-    controller = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data['value']);
 
     return TextFormField(
-      controller: controller,
+      controller: _fieldController,
       keyboardType: TextInputType.phone,
       inputFormatters: [inputFormatterRestrictSpaces],
+      validator: (data) =>
+          GetUtils.isPhoneNumber(data!) ? null : 'Invalid phone number',
       decoration: Styles.inputDecoration.copyWith(
         labelText: field.data['label'],
         hintText: field.data['hint'],

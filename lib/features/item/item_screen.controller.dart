@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
+import 'package:liso/core/templates/note.template.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -52,12 +53,7 @@ class ItemScreenController extends GetxController
     if (mode == 'add') {
       await _loadTemplate();
     } else if (mode == 'update') {
-      final hiveKey = Get.parameters['hiveKey'].toString();
-      item = HiveManager.items!.get(int.parse(hiveKey));
-      icon.value = item!.icon;
-      titleController.text = item!.title;
-      favorite.value = item!.favorite;
-      tags = item!.tags;
+      _populateItem();
     }
 
     widgets.value = item!.widgets;
@@ -67,15 +63,28 @@ class ItemScreenController extends GetxController
 
   // FUNCTIONS
 
+  void _populateItem() {
+    final hiveKey = Get.parameters['hiveKey'].toString();
+    item = HiveManager.items!.get(int.parse(hiveKey));
+    icon.value = item!.icon;
+    titleController.text = item!.title;
+    favorite.value = item!.favorite;
+    tags = item!.tags;
+
+    console.info('update data: ${item!.fields.first.data}');
+  }
+
   Future<void> _loadTemplate() async {
     favorite.value = mode == 'add' &&
         Get.find<DrawerWidgetController>().filterFavorites.value;
+
+    final _fields = TemplateParser.parse(category);
 
     item = HiveLisoItem(
       category: category,
       icon: Uint8List(0),
       title: '',
-      fields: TemplateParser.parse(category),
+      fields: _fields,
       tags: [],
       metadata: await HiveMetadata.get(),
       favorite: favorite.value,
@@ -85,12 +94,14 @@ class ItemScreenController extends GetxController
   void add() async {
     if (!formKey.currentState!.validate()) return;
 
+    final _fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
+
     final newItem = HiveLisoItem(
       category: category,
       icon: icon.value,
       title: titleController.text,
       tags: tags,
-      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      fields: _fields,
       metadata: await HiveMetadata.get(),
       favorite: favorite.value,
     );
@@ -184,11 +195,13 @@ class ItemScreenController extends GetxController
           leading: const Icon(LineIcons.image),
           onSelected: _pickIcon,
         ),
-        SelectorItem(
-          title: 'remove'.tr,
-          leading: const Icon(LineIcons.trash),
-          onSelected: () => icon.value = Uint8List(0),
-        ),
+        if (icon.value.isNotEmpty) ...[
+          SelectorItem(
+            title: 'remove'.tr,
+            leading: const Icon(LineIcons.trash),
+            onSelected: () => icon.value = Uint8List(0),
+          ),
+        ]
       ],
     ).show();
   }

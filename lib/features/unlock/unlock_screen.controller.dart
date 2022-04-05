@@ -15,6 +15,8 @@ import 'package:liso/core/utils/isolates.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
+import '../../core/hive/hive.manager.dart';
+
 class UnlockScreenBinding extends Bindings {
   @override
   void dependencies() {
@@ -87,8 +89,8 @@ class UnlockScreenController extends GetxController
 
     final crypter = LisoCrypter();
     await crypter.initSecretKey(encryptionKey!);
-    // init Liso Manager
-    await LisoManager.init();
+    // open Hive Boxes
+    await HiveManager.openBoxes();
 
     change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);
