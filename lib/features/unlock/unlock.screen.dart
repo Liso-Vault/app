@@ -66,7 +66,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           padding: const EdgeInsets.all(15),
           child: Center(
             child: Container(
-              constraints: Styles.containerConstraints,
+              constraints: const BoxConstraints(maxWidth: 300),
               child: controller.obx(
                 (_) => content,
                 onLoading: const BusyIndicator(),

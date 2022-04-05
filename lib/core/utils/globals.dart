@@ -36,6 +36,8 @@ const kLocalMasterWalletFileName = 'master_wallet.liso';
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
 
+const kMaxIconSize = 500000;
+
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
 

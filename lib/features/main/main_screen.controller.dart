@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
@@ -15,6 +16,7 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/selector.sheet.dart';
 
 import '../../core/utils/utils.dart';
+import '../search/search.delegate.dart';
 import 'drawer/drawer_widget.controller.dart';
 
 class MainScreenBinding extends Bindings {
@@ -36,6 +38,7 @@ class MainScreenController extends GetxController
   Timer? timer;
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerWidgetController>();
+  ItemsSearchDelegate? searchDelegate;
 
   // PROPERTIES
   final data = <HiveLisoItem>[].obs;
@@ -101,11 +104,11 @@ class MainScreenController extends GetxController
     List<HiveLisoItem> items = [];
 
     // FILTER BY BOX
-    if (drawerController.boxFilter == HiveBoxFilter.all) {
+    if (drawerController.boxFilter.value == HiveBoxFilter.all) {
       items = HiveManager.items!.values.toList();
-    } else if (drawerController.boxFilter == HiveBoxFilter.archived) {
+    } else if (drawerController.boxFilter.value == HiveBoxFilter.archived) {
       items = HiveManager.archived!.values.toList();
-    } else if (drawerController.boxFilter == HiveBoxFilter.trash) {
+    } else if (drawerController.boxFilter.value == HiveBoxFilter.trash) {
       items = HiveManager.trash!.values.toList();
     }
 
@@ -209,6 +212,16 @@ class MainScreenController extends GetxController
   }
 
   void add() async {
+    if (drawerController.filterCategory != null) {
+      return Get.toNamed(
+        Routes.item,
+        parameters: {
+          'mode': 'add',
+          'category': drawerController.filterCategory!.name
+        },
+      );
+    }
+
     SelectorSheet(
       items: LisoItemCategory.values
           .map((e) => e.name)
@@ -321,7 +334,7 @@ class MainScreenController extends GetxController
         ),
         SelectorItem(
           title: 'favorite'.tr,
-          leading: const Icon(LineIcons.heart),
+          leading: const FaIcon(FontAwesomeIcons.heart),
           trailing: sortName.contains('favorite') ? icon : null,
           onSelected: () {
             if (!sortName.contains('favorite')) {

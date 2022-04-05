@@ -49,4 +49,10 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
       itemBuilder: (context, index) => ItemTile(items[index], searchMode: true),
     );
   }
+
+  void reload(BuildContext context) {
+    process();
+    showResults(context);
+    showSuggestions(context);
+  }
 }

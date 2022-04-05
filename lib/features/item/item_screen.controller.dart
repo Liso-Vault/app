@@ -5,14 +5,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/form_field.util.dart';
+import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
-import '../general/custom_dialog.widget.dart';
 import '../general/selector.sheet.dart';
 
 class ItemScreenBinding extends Bindings {
@@ -67,6 +68,9 @@ class ItemScreenController extends GetxController
   // FUNCTIONS
 
   Future<void> _loadTemplate() async {
+    favorite.value = mode == 'add' &&
+        Get.find<DrawerWidgetController>().filterFavorites.value;
+
     item = HiveLisoItem(
       category: category,
       icon: Uint8List(0),
@@ -74,6 +78,7 @@ class ItemScreenController extends GetxController
       fields: TemplateParser.parse(category),
       tags: [],
       metadata: await HiveMetadata.get(),
+      favorite: favorite.value,
     );
   }
 
@@ -87,6 +92,7 @@ class ItemScreenController extends GetxController
       tags: tags,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       metadata: await HiveMetadata.get(),
+      favorite: favorite.value,
     );
 
     await HiveManager.items!.add(newItem);
@@ -153,6 +159,22 @@ class ItemScreenController extends GetxController
     // tags.add(tagsController.text);
   }
 
+  void menu() {
+    SelectorSheet(
+      title: 'Options',
+      items: [
+        // TODO: options per category
+        // launch website, copy email, copy password, copy seed
+        // export seed as wallet.json
+        SelectorItem(
+          title: 'copy'.tr,
+          leading: const Icon(LineIcons.image),
+          onSelected: _pickIcon,
+        ),
+      ],
+    ).show();
+  }
+
   void changeIcon() async {
     SelectorSheet(
       title: 'Item Icon',
@@ -175,10 +197,7 @@ class ItemScreenController extends GetxController
     FilePickerResult? result;
 
     try {
-      result = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowedExtensions: ['png', 'jpg'],
-      );
+      result = await FilePicker.platform.pickFiles(type: FileType.image);
     } catch (e) {
       return console.error('FilePicker error: $e');
     }
@@ -192,13 +211,12 @@ class ItemScreenController extends GetxController
     final file = File(image.path!);
     if (!await file.exists()) return console.warning("doesn't exist");
 
-    // 500kb
-    if (await file.length() > 500000) {
-      Get.generalDialog(
+    if (await file.length() > kMaxIconSize) {
+      return Get.generalDialog(
         pageBuilder: (_, __, ___) => AlertDialog(
           title: const Text('Image Too Large'),
           content: const Text(
-              'Please choose an image with size not larger than 500kb'),
+              'Please choose an image with size not larger than ${kMaxIconSize / 1000}kb'),
           actions: [
             TextButton(
               child: const Text('Okay'),
@@ -207,8 +225,6 @@ class ItemScreenController extends GetxController
           ],
         ),
       );
-
-      return console.warning("too large");
     }
 
     icon.value = await file.readAsBytes();

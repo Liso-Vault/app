@@ -1,10 +1,12 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/general/custom_chip.widget.dart';
 import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../../core/utils/utils.dart';
@@ -30,31 +32,54 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
     final items = [
       header,
       ListTile(
-        title: Text('all_Items'.tr + controller.itemsCount),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('all_Items'.tr),
+            CustomChip(label: Text(controller.itemsCount)),
+          ],
+        ),
         leading: const Icon(LineIcons.list),
         onTap: controller.filterAllItems,
-        selected: controller.boxFilter == HiveBoxFilter.all,
+        selected: controller.boxFilter.value == HiveBoxFilter.all,
       ),
-      ObxValue(
-        (RxBool data) => SwitchListTile(
-          title: Text('favorites'.tr + controller.favoriteCount),
-          value: data.value,
-          secondary: const Icon(LineIcons.heart),
-          onChanged: controller.filterFavoritesSwitch,
+      ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('favorites'.tr),
+            CustomChip(label: Text(controller.favoriteCount)),
+          ],
         ),
-        controller.filterFavorites,
+        leading: controller.filterFavorites.value
+            ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
+            : const FaIcon(FontAwesomeIcons.heart),
+        onTap: controller.filterFavoriteItems,
+        selected: controller.filterFavorites.value,
       ),
       ListTile(
-        title: Text('archived'.tr + controller.archivedCount),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('archived'.tr),
+            CustomChip(label: Text(controller.archivedCount)),
+          ],
+        ),
         leading: const Icon(LineIcons.archive),
-        onTap: controller.filterArchived,
-        selected: controller.boxFilter == HiveBoxFilter.archived,
+        onTap: controller.filterArchivedItems,
+        selected: controller.boxFilter.value == HiveBoxFilter.archived,
       ),
       ListTile(
-        title: Text('trash'.tr + controller.trashCount),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('trash'.tr),
+            CustomChip(label: Text(controller.trashCount)),
+          ],
+        ),
         leading: const Icon(LineIcons.trash),
-        onTap: controller.filterTrash,
-        selected: controller.boxFilter == HiveBoxFilter.trash,
+        onTap: controller.filterTrashItems,
+        selected: controller.boxFilter.value == HiveBoxFilter.trash,
       ),
       ExpansionTile(
         initiallyExpanded: controller.categoriesExpanded,

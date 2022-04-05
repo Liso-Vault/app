@@ -44,6 +44,7 @@ dependencies:
 
   # UI
   line_icons: ^2.0.1
+  font_awesome_flutter: ^10.1.0
   flex_color_scheme: ^4.2.0 # themes
   desktop_window: ^0.4.0 # set desktop window size
   flutter_svg: ^1.0.3

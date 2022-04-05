@@ -20,6 +20,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
 
     final content = ListView(
       shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const Divider(),
         ListTile(

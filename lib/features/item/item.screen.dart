@@ -1,5 +1,6 @@
 import 'package:chips_input/chips_input.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
@@ -117,48 +118,19 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       const SizedBox(height: 10),
       // TAGS
       tagsInput,
-      if (mode == 'update') ...[
-        const SizedBox(height: 10),
-        ObxValue(
-          (RxBool data) => SwitchListTile(
-            title: Text('favorite'.tr),
-            value: data.value,
-            onChanged: data,
-          ),
-          controller.favorite,
+      const SizedBox(height: 10),
+      ObxValue(
+        (RxBool data) => SwitchListTile(
+          title: Text('favorite'.tr),
+          value: data.value,
+          onChanged: data,
+          activeColor: Colors.pink,
+          secondary: data.value
+              ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
+              : const FaIcon(FontAwesomeIcons.heart),
         ),
-        const SizedBox(height: 10),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: controller.edit,
-                label: const Text('Update'),
-                icon: const Icon(LineIcons.check),
-                style: Styles.elevatedButtonStyle,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: controller.trash,
-                label: const Text('Move to trash'),
-                icon: const Icon(LineIcons.trash),
-                style: Styles.elevatedButtonStyleNegative,
-              ),
-            )
-          ],
-        ),
-      ] else if (mode == 'add') ...[
-        const SizedBox(height: 10),
-        ElevatedButton.icon(
-          onPressed: controller.add,
-          label: const Text('Add'),
-          icon: const Icon(LineIcons.plus),
-          style: Styles.elevatedButtonStyle,
-        )
-      ],
+        controller.favorite,
+      ),
       if (mode == 'update') ...[
         const SizedBox(height: 20),
         // TODO: better datetime format
@@ -177,6 +149,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         itemCount: items.length,
         shrinkWrap: true,
         itemBuilder: (context, index) => items[index],
+        padding: const EdgeInsets.all(10),
       ),
     );
 
@@ -197,6 +170,19 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
     final appBar = AppBar(
       title: Text(category.tr),
       centerTitle: false,
+      actions: [
+        IconButton(
+          onPressed: mode == 'update' ? controller.edit : controller.add,
+          icon: const Icon(LineIcons.check),
+        ),
+        if (mode == 'update') ...[
+          IconButton(
+            icon: const Icon(LineIcons.verticalEllipsis),
+            onPressed: controller.menu,
+          ),
+        ],
+        const SizedBox(width: 10),
+      ],
     );
 
     return Scaffold(

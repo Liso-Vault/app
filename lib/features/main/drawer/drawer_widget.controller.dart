@@ -18,13 +18,12 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   // VARIABLES
   // maintain expansion tile expanded state
   bool categoriesExpanded = true, tagsExpanded = true;
-
-  HiveBoxFilter boxFilter = HiveBoxFilter.all;
   LisoItemCategory? filterCategory;
   String filterTag = '';
 
   // PROPERTIES
   final filterFavorites = false.obs;
+  final boxFilter = HiveBoxFilter.all.obs;
 
   // GETTERS
 
@@ -55,44 +54,53 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   }
 
   String get itemsCount =>
-      HiveManager.items!.isEmpty ? '' : ' (${HiveManager.items!.length})';
+      HiveManager.items!.isEmpty ? '' : HiveManager.items!.length.toString();
 
   String get favoriteCount => HiveManager.items!.isEmpty
       ? ''
-      : ' (${HiveManager.items!.values.where((e) => e.favorite).length})';
+      : HiveManager.items!.values.where((e) => e.favorite).length.toString();
 
-  String get archivedCount =>
-      HiveManager.archived!.isEmpty ? '' : ' (${HiveManager.archived!.length})';
+  String get archivedCount => HiveManager.archived!.isEmpty
+      ? ''
+      : HiveManager.archived!.length.toString();
 
   String get trashCount =>
-      HiveManager.trash!.isEmpty ? '' : ' (${HiveManager.trash!.length})';
+      HiveManager.trash!.isEmpty ? '' : HiveManager.trash!.length.toString();
 
   // FUNCTIONS
 
-  void filterFavoritesSwitch(bool? value) async {
-    filterFavorites.value = value!;
+  // void filterFavoritesSwitch(bool? value) async {
+  //   filterFavorites.value = value!;
+  //   filterTag = '';
+  //   MainScreenController.to.reload();
+  //   // delay until switch animation is finished
+  //   await Future.delayed(300.milliseconds);
+  //   Get.back();
+  // }
+
+  void filterFavoriteItems() async {
+    filterFavorites.toggle();
     filterTag = '';
     MainScreenController.to.reload();
-    // delay until switch animation is finished
-    await Future.delayed(300.milliseconds);
     Get.back();
   }
 
   void filterAllItems() {
     _clearFilters();
-    boxFilter = HiveBoxFilter.all;
+    filterFavorites.value = false;
+    boxFilter.value = HiveBoxFilter.all;
     reload();
   }
 
-  void filterArchived() {
+  void filterArchivedItems() {
     _clearFilters();
-    boxFilter = HiveBoxFilter.archived;
+    boxFilter.value = HiveBoxFilter.archived;
     reload();
   }
 
-  void filterTrash() {
+  void filterTrashItems() {
     _clearFilters();
-    boxFilter = HiveBoxFilter.trash;
+    boxFilter.value = HiveBoxFilter.trash;
     reload();
   }
 

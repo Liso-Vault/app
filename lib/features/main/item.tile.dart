@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/utils/globals.dart';
@@ -27,38 +29,50 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final drawerController = Get.find<DrawerWidgetController>();
+    final mainController = Get.find<MainScreenController>();
 
-    final isArchived = drawerController.boxFilter == HiveBoxFilter.archived;
-    final isTrash = drawerController.boxFilter == HiveBoxFilter.trash;
+    final isArchived =
+        drawerController.boxFilter.value == HiveBoxFilter.archived;
+    final isTrash = drawerController.boxFilter.value == HiveBoxFilter.trash;
+
+    void _reloadSearchDelegate() {
+      mainController.searchDelegate?.reload(context);
+    }
 
     void _favorite() {
       item.favorite = !item.favorite;
       item.save();
+      _reloadSearchDelegate();
     }
 
     void _archive() async {
       item.delete();
       await HiveManager.archived!.add(item);
+      _reloadSearchDelegate();
     }
 
     void _trash() async {
       item.delete();
       await HiveManager.trash!.add(item);
+      _reloadSearchDelegate();
     }
 
     void _restore() async {
       item.delete();
       await HiveManager.items!.add(item);
+      _reloadSearchDelegate();
     }
 
-    void contextMenu() {
+    void menu() {
       SelectorSheet(
         items: [
           SelectorItem(
             title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-            leading: Icon(
-              item.favorite ? LineIcons.heartAlt : LineIcons.heart,
-              color: item.favorite ? Colors.red : Get.theme.iconTheme.color,
+            leading: FaIcon(
+              item.favorite
+                  ? FontAwesomeIcons.solidHeart
+                  : FontAwesomeIcons.heart,
+              color: item.favorite ? Colors.pink : Get.theme.iconTheme.color,
             ),
             onSelected: _favorite,
           ),
@@ -112,10 +126,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         Row(
           children: [
             if (item.favorite) ...[
-              const Icon(
-                LineIcons.heartAlt,
-                color: Colors.red,
-                size: 15,
+              const FaIcon(
+                FontAwesomeIcons.solidHeart,
+                color: Colors.pink,
+                size: 10,
               ),
               const SizedBox(width: 5),
             ],
@@ -144,12 +158,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    final trailing = searchMode || GetPlatform.isMobile
-        ? null
-        : IconButton(
-            onPressed: contextMenu,
-            icon: const Icon(LineIcons.verticalEllipsis),
-          );
+    final trailing = IconButton(
+      onPressed: menu,
+      icon: const Icon(LineIcons.verticalEllipsis),
+    );
 
     final leading = item.icon.isNotEmpty
         ? Image.memory(
@@ -166,7 +178,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       title: title,
       subtitle: subTitle,
       trailing: trailing,
-      onLongPress: searchMode || !GetPlatform.isMobile ? null : contextMenu,
+      onLongPress: menu,
       onTap: () => Get.toNamed(Routes.item, parameters: {
         'mode': 'update',
         'category': item.category,
@@ -183,7 +195,9 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           color: Colors.pink,
           widthSpace: 100,
           performsFirstActionWithFullSwipe: true,
-          icon: Icon(item.favorite ? LineIcons.heartAlt : LineIcons.heart),
+          icon: FaIcon(item.favorite
+              ? FontAwesomeIcons.solidHeart
+              : FontAwesomeIcons.heart),
           style: const TextStyle(fontSize: 15),
           onTap: (CompletionHandler handler) async {
             await handler(false);
@@ -233,9 +247,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     );
 
     return GestureDetector(
-      onSecondaryTap: searchMode ? null : contextMenu, // mouse right click
-      // TODO: production
-      // child: GetPlatform.isMobile && !searchMode ? swipeAction : tile,
+      onSecondaryTap: menu, // mouse right click
       child: swipeAction,
     );
   }

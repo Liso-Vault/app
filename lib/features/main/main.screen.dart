@@ -10,6 +10,7 @@ import 'package:liso/resources/resources.dart';
 
 import '../search/search.delegate.dart';
 import 'drawer/drawer.widget.dart';
+import 'drawer/drawer_widget.controller.dart';
 import 'main_screen.controller.dart';
 
 class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
@@ -17,6 +18,8 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
+    final drawerController = Get.find<DrawerWidgetController>();
+
     final content = controller.obx(
       (_) => Obx(
         () => ListView.separated(
@@ -31,17 +34,14 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       onEmpty: CenteredPlaceholder(
         iconData: LineIcons.seedling,
         message: 'no_items'.tr,
-        child: TextButton.icon(
-          label: Text('add_item'.tr),
-          icon: const Icon(LineIcons.plus),
-          onPressed: controller.add,
-        ),
+        child: drawerController.boxFilter.value == HiveBoxFilter.all
+            ? TextButton.icon(
+                label: Text('add_item'.tr),
+                icon: const Icon(LineIcons.plus),
+                onPressed: controller.add,
+              )
+            : null,
       ),
-    );
-
-    final floatingButton = FloatingActionButton(
-      child: const Icon(LineIcons.plus),
-      onPressed: controller.add,
     );
 
     final appBar = AppBar(
@@ -60,11 +60,15 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       actions: [
         IconButton(
           icon: const Icon(LineIcons.search),
-          onPressed: () {
-            showSearch(
+          onPressed: () async {
+            controller.searchDelegate = ItemsSearchDelegate();
+
+            await showSearch(
               context: context,
-              delegate: ItemsSearchDelegate(),
+              delegate: controller.searchDelegate!,
             );
+
+            controller.searchDelegate = null;
           },
         ),
         IconButton(
@@ -77,7 +81,14 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
     return Scaffold(
       appBar: appBar,
       drawer: const ZDrawer(),
-      floatingActionButton: floatingButton,
+      floatingActionButton: Obx(
+        () => drawerController.boxFilter.value == HiveBoxFilter.all
+            ? FloatingActionButton(
+                child: const Icon(LineIcons.plus),
+                onPressed: controller.add,
+              )
+            : const SizedBox.shrink(),
+      ),
       body: content,
     );
   }

@@ -17,6 +17,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
   Widget build(BuildContext context) {
     final _content = ListView(
       shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const SizedBox(height: 20),
         Image.asset(Images.logo, height: 50),
