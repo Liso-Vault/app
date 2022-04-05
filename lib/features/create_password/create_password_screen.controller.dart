@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
@@ -87,9 +86,6 @@ class CreatePasswordScreenController extends GetxController
     console.info(await file.readAsString());
 
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
-    // initialize crypter with encryption key
-    final crypter = LisoCrypter();
-    await crypter.initSecretKey(encryptionKey!);
     // open Hive Boxes
     await HiveManager.openBoxes();
 

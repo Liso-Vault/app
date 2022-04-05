@@ -7,7 +7,6 @@ import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/liso/liso_crypter.model.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -87,8 +86,6 @@ class UnlockScreenController extends GetxController
     final seedHex = HEX.encode(masterWallet!.privateKey.privateKey);
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
-    final crypter = LisoCrypter();
-    await crypter.initSecretKey(encryptionKey!);
     // open Hive Boxes
     await HiveManager.openBoxes();
 

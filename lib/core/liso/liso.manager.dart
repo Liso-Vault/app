@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:get/utils.dart';
-import 'package:hive/hive.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
+import '../hive/hive.manager.dart';
 import 'liso_paths.dart';
 
 class LisoManager {
@@ -32,8 +32,8 @@ class LisoManager {
 
     // cancel hive boxes' stream subscriptions
     MainScreenController.to.unwatchBoxes();
-    // delete hive boxes
-    await Hive.deleteFromDisk();
+    // reset hive
+    await HiveManager.reset();
 
     // persistence
     await PersistenceController.to.box.erase();

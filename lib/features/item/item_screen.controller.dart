@@ -6,10 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/templates/note.template.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../core/hive/hive.manager.dart';
@@ -225,18 +225,9 @@ class ItemScreenController extends GetxController
     if (!await file.exists()) return console.warning("doesn't exist");
 
     if (await file.length() > kMaxIconSize) {
-      return Get.generalDialog(
-        pageBuilder: (_, __, ___) => AlertDialog(
-          title: const Text('Image Too Large'),
-          content: const Text(
-              'Please choose an image with size not larger than ${kMaxIconSize / 1000}kb'),
-          actions: [
-            TextButton(
-              child: const Text('Okay'),
-              onPressed: Get.back,
-            ),
-          ],
-        ),
+      return UIUtils.showSimpleDialog(
+        'Image Too Large',
+        'Please choose an image with size not larger than ${kMaxIconSize / 1000}kb',
       );
     }
 

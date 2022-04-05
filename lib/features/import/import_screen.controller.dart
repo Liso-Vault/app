@@ -5,13 +5,15 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/liso/liso_crypter.model.dart';
+import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/app/routes.dart';
+import 'package:path/path.dart';
+
+import '../../core/notifications/notifications.manager.dart';
+import '../../core/utils/ui_utils.dart';
+import '../app/routes.dart';
 
 class ImportScreenBinding extends Bindings {
   @override
@@ -36,32 +38,86 @@ class ImportScreenController extends GetxController
 
   // FUNCTIONS
 
-  void continuePressed() async {
+  Archive _getArchive() {
+    final inputStream = InputFileStream(filePathController.text);
+    return ZipDecoder().decodeBuffer(inputStream);
+  }
+
+  Future<void> _extractMainArchive() async {
+    final mainArchive = _getArchive();
+
+    for (var file in mainArchive.files) {
+      if (!file.isFile) continue;
+      final path = join(LisoPaths.hive!.path, basename(file.name));
+      final outputStream = OutputFileStream(path);
+      file.writeContent(outputStream);
+      await outputStream.close();
+    }
+  }
+
+  Future<void> _extractTempItemsBox(ArchiveFile file) async {
+    final outputStream =
+        OutputFileStream(join(LisoPaths.temp!.path, basename(file.name)));
+    file.writeContent(outputStream);
+    await outputStream.close();
+  }
+
+  Future<void> continuePressed() async {
     if (!formKey.currentState!.validate()) return;
     if (seedController.text.isEmpty) return console.error('invalid mnemonic');
     if (status == RxStatus.loading()) return console.error('still busy');
 
     change(null, status: RxStatus.loading());
 
-    final masterSeedHex = bip39.mnemonicToSeedHex(seedController.text);
-    // TODO: what if we could use entropy as the 32 bytes encryption key instead
-    // final masterEntropy = bip39.mnemonicToEntropy(seedController.text);
-    // console.warning('Entropy: $masterEntropy, Length: ${masterEntropy.length}');
-    final masterPassword = masterSeedHex.substring(0, 32);
+    // METHOD 1
+    final tempArchive = _getArchive();
+    // check if archive contains files
+    if (tempArchive.files.isEmpty) {
+      UIUtils.showSimpleDialog(
+        'Invalid Vault File',
+        'The vault file you imported contains no files',
+      );
 
-    // the encryption key from master's private key
-    encryptionKey = utf8.encode(masterPassword);
-    // initialize crypter with encryption key
-    final crypter = LisoCrypter();
-    await crypter.initSecretKey(encryptionKey!);
+      return change(null, status: RxStatus.success());
+    }
 
-    // // WORKS ONLY FOR ZIP
-    // await extractFileToDisk(filePathController.text, LisoPaths.main!.path);
+    console.info('temp archive files: ${tempArchive.files.length}');
+    // filter items.hive file
+    final itemBoxFiles = tempArchive.files
+        .where((e) => e.isFile && e.name.contains('items.hive'));
+    // if items.hive is not found
+    if (itemBoxFiles.isEmpty) {
+      UIUtils.showSimpleDialog(
+        'Invalid Vault',
+        'The vault you imported contains no items',
+      );
 
-    // WORKS FOR .LISO
-    final inputStream = InputFileStream(filePathController.text);
-    final archive = ZipDecoder().decodeBuffer(inputStream);
-    extractArchiveToDisk(archive, LisoPaths.main!.path);
+      return change(null, status: RxStatus.success());
+    }
+
+    // temporarily extract items box file
+    await _extractTempItemsBox(itemBoxFiles.first);
+
+    // check if encryption key is correct
+    final seedHex = bip39.mnemonicToSeedHex(seedController.text);
+    final tempEncryptionKey = utf8.encode(seedHex.substring(0, 32));
+    final correctKey =
+        await HiveManager.isEncryptionKeyCorrect(tempEncryptionKey);
+
+    if (!correctKey) {
+      UIUtils.showSimpleDialog(
+        'Incorrect Seed Phrase',
+        'Please enter the corresponding mnemonic seed phrase used to secure your vault.',
+      );
+
+      return change(null, status: RxStatus.success());
+    }
+
+    // set the correct encryption key
+    encryptionKey = tempEncryptionKey;
+
+    // extract all hive boxes
+    await _extractMainArchive();
 
     change(null, status: RxStatus.success());
 
@@ -70,7 +126,7 @@ class ImportScreenController extends GetxController
       body: filePathController.text,
     );
 
-    Get.toNamed(Routes.createPassword, parameters: {'seedHex': masterSeedHex});
+    Get.toNamed(Routes.createPassword, parameters: {'seedHex': seedHex});
   }
 
   void importFile() async {

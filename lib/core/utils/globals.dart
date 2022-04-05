@@ -5,7 +5,7 @@ import 'package:web3dart/credentials.dart';
 
 const kAppName = 'Liso';
 const kAppDescription =
-    'Military-grade encrypted digital vault specifically designed for securely storing mnemonic seed phrases';
+    'Military-grade encrypted digital vault\nspecifically designed for securely storing sensitive informations';
 const kAppWebsiteUrl = 'https://liso-vault.github.io'; // TODO: custom domain
 // const kAppGithubUrl = 'https://github.com/Liso-Vault/app';
 // const kAppGithubReleasesUrl = 'https://github.com/Liso-Vault/app/releases';
