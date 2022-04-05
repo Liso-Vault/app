@@ -55,11 +55,9 @@ class ExportScreenController extends GetxController
           await Permission.storage.request().isGranted;
 
       if (!storagePermissionGranted) {
-        UIUtils.showSnackBar(
-          title: 'Storage Permission Denied',
-          message: "Please allow manage storage permission to enable exporting",
-          icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          seconds: 4,
+        UIUtils.showSimpleDialog(
+          'Storage Permission Denied',
+          "Please allow manage storage permission to enable exporting",
         );
 
         return;
@@ -95,12 +93,9 @@ class ExportScreenController extends GetxController
         return;
       }
 
-      UIUtils.showSnackBar(
-        title: 'Incorrect password',
-        message:
-            '${attemptsLeft.value} attempts left until your $kAppName resets',
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-        seconds: 4,
+      UIUtils.showSimpleDialog(
+        'Incorrect Vault Password',
+        '${attemptsLeft.value} attempts left until the vault resets',
       );
 
       return console.error('incorrect password');
@@ -118,8 +113,7 @@ class ExportScreenController extends GetxController
 
     // user cancelled picker
     if (exportPath == null) {
-      change(null, status: RxStatus.success());
-      return;
+      return change(null, status: RxStatus.success());
     }
 
     console.info('export path: $exportPath');
@@ -130,9 +124,15 @@ class ExportScreenController extends GetxController
     final exportFilePath = '$exportPath/$exportFileName';
 
     final encoder = ZipFileEncoder();
-    encoder.create(exportFilePath);
-    encoder.addDirectory(Directory(LisoPaths.hive!.path));
-    encoder.close();
+
+    try {
+      encoder.create(exportFilePath);
+      await encoder.addDirectory(Directory(LisoPaths.hive!.path));
+      encoder.close();
+    } catch (e) {
+      UIUtils.showSimpleDialog('File System Error', e.toString());
+      return change(null, status: RxStatus.success());
+    }
 
     NotificationsManager.notify(
       title: 'Successfully Exported Vault',
