@@ -9,7 +9,9 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:path/path.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../core/liso/liso.manager.dart';
@@ -17,6 +19,7 @@ import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/isolates.dart';
+import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 
 class ExportScreenBinding extends Bindings {
@@ -101,32 +104,16 @@ class ExportScreenController extends GetxController
       return console.error('incorrect password');
     }
 
-    busyMessage.value = 'Choose export path...';
-
-    timeLockEnabled = false; // temporarily disable
-    // choose directory and export file
-    String? exportPath = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Choose Export Path',
-    );
-
-    timeLockEnabled = true; // re-enable
-
-    // user cancelled picker
-    if (exportPath == null) {
-      return change(null, status: RxStatus.success());
-    }
-
-    console.info('export path: $exportPath');
-    busyMessage.value = 'Exporting...';
+    busyMessage.value = 'Archiving...';
 
     final walletAddress = unlockedMasterWallet!.privateKey.address.hexEip55;
-    final exportFileName = '$walletAddress.liso';
-    final exportFilePath = '$exportPath/$exportFileName';
+    final archiveFileName = '$walletAddress.liso';
 
     final encoder = ZipFileEncoder();
+    final archiveFilePath = join(LisoPaths.temp!.path, archiveFileName);
 
     try {
-      encoder.create(exportFilePath);
+      encoder.create(archiveFilePath);
       await encoder.addDirectory(Directory(LisoPaths.hive!.path));
       encoder.close();
     } catch (e) {
@@ -134,12 +121,43 @@ class ExportScreenController extends GetxController
       return change(null, status: RxStatus.success());
     }
 
-    NotificationsManager.notify(
-      title: 'Successfully Exported Vault',
-      body: exportFilePath,
+    if (GetPlatform.isMobile) {
+      await Share.shareFiles(
+        [archiveFilePath],
+        subject: archiveFileName,
+        text: 'Liso Vault',
+      );
+
+      return change(null, status: RxStatus.success());
+    }
+
+    busyMessage.value = 'Choose export path...';
+
+    timeLockEnabled = false; // temporarily disable
+    // choose directory and export file
+    final exportPath = await FilePicker.platform
+        .getDirectoryPath(dialogTitle: 'Choose Export Path');
+    timeLockEnabled = true; // re-enable
+    // user cancelled picker
+    if (exportPath == null) {
+      return change(null, status: RxStatus.success());
+    }
+
+    console.info('export path: $exportPath');
+    busyMessage.value = 'Exporting to: $exportPath';
+    await Future.delayed(1.seconds); // just for style
+
+    final exportedFile = await Utils.moveFile(
+      File(archiveFilePath),
+      join(exportPath, archiveFileName),
     );
 
-    console.info('exported: $exportFilePath');
+    NotificationsManager.notify(
+      title: 'Successfully Exported Vault',
+      body: exportedFile.path,
+    );
+
+    console.info('exported to: ${exportedFile.path}');
     busyMessage.value = '';
     change(null, status: RxStatus.success());
     Get.back();

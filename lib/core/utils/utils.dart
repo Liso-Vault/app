@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -28,6 +29,18 @@ class Utils {
       return "That's a lot of a password";
     } else {
       return null;
+    }
+  }
+
+  static Future<File> moveFile(File file, String path) async {
+    try {
+      // prefer using rename as it is probably faster
+      return await file.rename(path);
+    } on FileSystemException catch (e) {
+      // if rename fails, copy the source file and then delete it
+      final newFile = await file.copy(path);
+      await file.delete();
+      return newFile;
     }
   }
 
