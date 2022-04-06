@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web3dart/credentials.dart';
 
+// CONST
 const kAppName = 'Liso';
 const kAppDescription =
     'Military-grade encrypted digital vault\nspecifically designed for securely storing sensitive informations';
@@ -39,6 +40,7 @@ const kBiometricPasswordKey = 'biometric_password';
 const kMaxIconSize = 500000;
 
 const kAppColor = Color(0xff02f297);
+const kAppColorDarker = Color(0xFF00915A);
 
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
@@ -48,6 +50,7 @@ List<int>? encryptionKey;
 Wallet? masterWallet;
 bool timeLockEnabled = true;
 
+// ENUMS
 enum LisoItemSortOrder {
   titleAscending,
   titleDescending,

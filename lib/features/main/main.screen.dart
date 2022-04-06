@@ -27,7 +27,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           itemCount: controller.data.length,
           itemBuilder: itemBuilder,
           separatorBuilder: (context, index) => const Divider(height: 0),
-          padding: const EdgeInsets.only(bottom: 50),
+          padding: const EdgeInsets.all(15),
         ),
       ),
       onLoading: const BusyIndicator(),

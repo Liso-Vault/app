@@ -1,4 +1,3 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
@@ -96,8 +95,6 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         selected: controller.boxFilter() == HiveBoxFilter.trash,
       ),
       ExpansionTile(
-        textColor: kAppColor,
-        iconColor: kAppColor,
         initiallyExpanded: controller.categoriesExpanded,
         title: Text(
           'categories'.tr.toUpperCase(),
@@ -110,10 +107,7 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
 
               return ListTile(
                 title: Text(e.tr),
-                leading: Utils.categoryIcon(
-                  _category,
-                  color: Colors.white,
-                ),
+                leading: Utils.categoryIcon(_category),
                 onTap: () => controller.filterByCategory(e),
                 selected: _category == controller.filterCategory,
               );
@@ -124,8 +118,6 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
             controller.categoriesExpanded = expanded,
       ),
       ExpansionTile(
-        textColor: kAppColor,
-        iconColor: kAppColor,
         initiallyExpanded: controller.tagsExpanded,
         title: Text(
           'tags'.tr.toUpperCase(),
@@ -146,8 +138,6 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         onExpansionChanged: (expanded) => controller.tagsExpanded = expanded,
       ),
       ExpansionTile(
-        textColor: kAppColor,
-        iconColor: kAppColor,
         maintainState: true,
         title: Text(
           'app'.tr.toUpperCase(),
@@ -169,20 +159,13 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
       ),
     ];
 
-    final darkTheme = FlexColorScheme.dark(
-      scheme: FlexScheme.jungle,
-    ).toTheme.copyWith(canvasColor: Colors.grey.shade900);
-
-    return Theme(
-      data: darkTheme,
-      child: Drawer(
-        child: ListView.builder(
-          // workaround for https://github.com/flutter/flutter/issues/93862
-          primary: false,
-          shrinkWrap: true,
-          itemBuilder: (context, index) => items[index],
-          itemCount: items.length,
-        ),
+    return Drawer(
+      child: ListView.builder(
+        // workaround for https://github.com/flutter/flutter/issues/93862
+        primary: false,
+        shrinkWrap: true,
+        itemBuilder: (context, index) => items[index],
+        itemCount: items.length,
       ),
     );
   }

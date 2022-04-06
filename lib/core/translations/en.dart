@@ -75,5 +75,10 @@ final en = {
   "sign_in": "Sign In",
   "about": "About",
   "settings": "Settings",
-  "attempts_left": "attempts left"
+  "attempts_left": "attempts left",
+  "theme": "Theme",
+  "dark": "Dark",
+  "light": "Light",
+  "system": "System",
+  "change_theme": "Change Theme",
 };

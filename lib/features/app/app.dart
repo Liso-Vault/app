@@ -30,13 +30,20 @@ class App extends StatelessWidget {
       getPages: AppPages.routes,
       defaultTransition: Transition.rightToLeft,
       transitionDuration: 250.milliseconds,
-      // THEMING
+      // THEME MODE
+      themeMode: ThemeMode.values.byName(persistence.theme.val),
+      // DARK THEME
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColor),
-        scaffoldBackground: const Color(0xFF161616),
+        // scaffoldBackground: const Color(0xFF161616),
       ).toTheme,
-      themeMode: ThemeMode.dark,
+      // LIGHT THEME
+      theme: FlexColorScheme.light(
+        scheme: FlexScheme.green,
+        colors: FlexSchemeColor.from(primary: kAppColorDarker),
+        appBarBackground: Colors.grey.shade100,
+      ).toTheme,
       // UNKNOWN ROUTE FALLBACK SCREEN
       unknownRoute: GetPage(
         name: Routes.unknown,

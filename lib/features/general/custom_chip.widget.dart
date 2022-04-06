@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomChip extends StatelessWidget {
   final Text label;
-  final Color color;
+  final Color? color;
   final EdgeInsets padding;
 
   const CustomChip({
     Key? key,
     required this.label,
-    this.color = const Color(0xFF414141), // grey.shade800
+    this.color,
     this.padding = const EdgeInsets.symmetric(
       vertical: 1,
       horizontal: 6,
@@ -23,7 +24,12 @@ class CustomChip extends StatelessWidget {
       padding: const EdgeInsets.only(right: 5),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10),
-        child: Container(child: label, color: color, padding: padding),
+        child: Container(
+          child: label,
+          color: color ??
+              (Get.isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200),
+          padding: padding,
+        ),
       ),
     );
   }

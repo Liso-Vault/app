@@ -29,6 +29,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           leading: Image.asset(
             Images.logo,
             height: 25,
+            color: Colors.grey,
           ),
           trailing: const Icon(LineIcons.copy),
           title: const Text('Liso Address'),
@@ -37,7 +38,15 @@ class SettingsScreen extends GetView<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.lock, color: kAppColor),
+          leading: const Icon(LineIcons.adjust),
+          trailing: const Icon(LineIcons.angleRight),
+          title: Text('theme'.tr),
+          subtitle: Obx(() => Text(controller.theme().tr)),
+          onTap: controller.selectTheme,
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.angleRight),
           title: Text('lock_vault'.tr),
           onTap: () => Get.offAndToNamed(Routes.unlock),
@@ -52,7 +61,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
         // ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.upload, color: kAppColor),
+          leading: const Icon(LineIcons.upload),
           trailing: const Icon(LineIcons.angleRight),
           title: Text('export_vault'.tr),
           onTap: () => Get.toNamed(Routes.export),
@@ -60,14 +69,14 @@ class SettingsScreen extends GetView<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.syncIcon, color: kAppColor),
+          leading: const Icon(LineIcons.syncIcon),
           trailing: const Icon(LineIcons.angleRight),
           title: Text('reset_vault'.tr),
           onTap: () => Get.toNamed(Routes.reset),
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.fileUpload, color: kAppColor),
+          leading: const Icon(LineIcons.fileUpload),
           trailing: const Icon(LineIcons.angleRight),
           title: Text('export_wallet'.tr),
           onTap: controller.exportWallet,
@@ -76,7 +85,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
         if (kDebugMode) ...[
           ListTile(
             title: const Text('Google Drive'),
-            leading: const Icon(LineIcons.googleDrive, color: kAppColor),
+            leading: const Icon(LineIcons.googleDrive),
             trailing: const Icon(LineIcons.angleRight),
             onTap: () => Get.offAndToNamed(Routes.signIn),
           ),

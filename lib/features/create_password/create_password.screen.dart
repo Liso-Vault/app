@@ -21,11 +21,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LineIcon(
-            LineIcons.alternateShield,
-            size: 100,
-            color: kAppColor,
-          ),
+          LineIcon(LineIcons.alternateShield, size: 100, color: kAppColor),
           const SizedBox(height: 20),
           Text(
             'vault_password'.tr,

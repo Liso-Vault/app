@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/translations/data.dart';
@@ -15,7 +16,7 @@ class PersistenceController extends GetxController with ConsoleMixin {
   final fontName = 'Roboto'.val('font name');
   final fontScaleFactor = 1.0.val('font scale factor');
   // THEME
-  final darkMode = true.val('dark mode');
+  final theme = ThemeMode.system.name.val('theme');
   // APP LOCK
   final appLock = false.val('app lock');
   final appLockCode = ''.val('app lock code');

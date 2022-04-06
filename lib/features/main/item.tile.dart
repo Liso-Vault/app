@@ -108,7 +108,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
               item.favorite
                   ? FontAwesomeIcons.solidHeart
                   : FontAwesomeIcons.heart,
-              color: item.favorite ? Colors.pink : Get.theme.iconTheme.color,
+              color: item.favorite ? Colors.pink : null,
             ),
             onSelected: _favorite,
           ),
@@ -118,7 +118,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
               item.protected
                   ? FontAwesomeIcons.shield
                   : FontAwesomeIcons.shieldHalved,
-              color: item.protected ? kAppColor : Get.theme.iconTheme.color,
+              color: item.protected ? kAppColor : null,
             ),
             onSelected: _protect,
           ),
@@ -181,11 +181,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
               const SizedBox(width: 5),
             ],
             if (item.protected) ...[
-              const FaIcon(
-                FontAwesomeIcons.shield,
-                color: kAppColor,
-                size: 10,
-              ),
+              const FaIcon(FontAwesomeIcons.shield, color: kAppColor, size: 10),
               const SizedBox(width: 5),
             ],
             if (item.tags.isNotEmpty) ...[

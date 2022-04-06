@@ -6,6 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/resources/resources.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'about_screen.controller.dart';
@@ -85,6 +86,26 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           onTap: () =>
               launch('mailto:liso.vault@gmail.com?subject=Liso%20Support'),
         ),
+        ListTile(
+          leading: const Icon(LineIcons.laptopCode),
+          title: const Text('Licenses'),
+          onTap: () async {
+            final packageInfo = await PackageInfo.fromPlatform();
+
+            showLicensePage(
+              context: context,
+              applicationIcon: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: Image.asset(Images.logo, height: 50),
+              ),
+              applicationName: packageInfo.appName,
+              applicationVersion:
+                  '${packageInfo.version}+${packageInfo.buildNumber}',
+              applicationLegalese:
+                  'Copyright © ${DateTime.now().year} $kDeveloperName\nAll rights reserved.',
+            );
+          },
+        ),
         // ListTile(
         //   leading: const Icon(LineIcons.download),
         //   trailing: const Icon(LineIcons.alternateExternalLink),
@@ -95,8 +116,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
         if (kDebugMode) ...[
           ListTile(
             leading: const Icon(LineIcons.bug),
-            trailing: const Icon(LineIcons.alternateExternalLink),
-            title: const Text('Test'),
+            title: const Text('Window Size'),
             onTap: () async {
               final size = await DesktopWindow.getWindowSize();
               console.info('size: $size');

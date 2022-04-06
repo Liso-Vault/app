@@ -163,19 +163,16 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         itemCount: items.length,
         shrinkWrap: true,
         itemBuilder: (context, index) => items[index],
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(15),
       ),
     );
 
     final content = controller.obx(
-      (_) => Padding(
-        padding: const EdgeInsets.all(15),
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            constraints: Styles.containerConstraints,
-            child: form,
-          ),
+      (_) => Align(
+        alignment: Alignment.topCenter,
+        child: Container(
+          constraints: Styles.containerConstraints,
+          child: form,
         ),
       ),
       onLoading: const BusyIndicator(),

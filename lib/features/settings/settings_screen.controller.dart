@@ -1,7 +1,10 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
@@ -11,6 +14,7 @@ import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../general/selector.sheet.dart';
 
 class SettingsScreenBinding extends Bindings {
   @override
@@ -25,6 +29,7 @@ class SettingsScreenController extends GetxController
 
   // PROPERTIES
   final busyMessage = ''.obs;
+  final theme = PersistenceController.to.theme.val.obs;
 
   // GETTERS
 
@@ -36,6 +41,38 @@ class SettingsScreenController extends GetxController
   }
 
   // FUNCTIONS
+
+  void selectTheme() {
+    SelectorSheet(
+      title: 'change_theme'.tr,
+      activeId: PersistenceController.to.theme.val,
+      items: [
+        SelectorItem(
+          id: ThemeMode.system.name,
+          title: ThemeMode.system.name.tr,
+          leading: const Icon(LineIcons.microchip),
+          onSelected: () => changeTheme(ThemeMode.system),
+        ),
+        SelectorItem(
+          id: ThemeMode.dark.name,
+          title: ThemeMode.dark.name.tr,
+          leading: const Icon(LineIcons.moon),
+          onSelected: () => changeTheme(ThemeMode.dark),
+        ),
+        SelectorItem(
+          id: ThemeMode.light.name,
+          title: ThemeMode.light.name.tr,
+          leading: const Icon(LineIcons.sun),
+          onSelected: () => changeTheme(ThemeMode.light),
+        ),
+      ],
+    ).show();
+  }
+
+  void changeTheme(ThemeMode mode) {
+    PersistenceController.to.theme.val = mode.name;
+    Get.changeThemeMode(mode);
+  }
 
   void exportWallet() async {
     // prompt password from unlock screen
