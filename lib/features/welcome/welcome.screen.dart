@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -45,12 +46,14 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             icon: const Icon(LineIcons.download),
             onPressed: () => Get.toNamed(Routes.import),
           ),
-          const SizedBox(height: 10),
-          TextButton.icon(
-            label: Text('sign_in'.tr),
-            icon: const Icon(LineIcons.sign),
-            onPressed: () => Get.toNamed(Routes.signIn),
-          ),
+          if (kDebugMode) ...[
+            const SizedBox(height: 10),
+            TextButton.icon(
+              label: Text('sign_in'.tr),
+              icon: const Icon(LineIcons.sign),
+              onPressed: () => Get.toNamed(Routes.signIn),
+            ),
+          ]
         ],
       ),
     );

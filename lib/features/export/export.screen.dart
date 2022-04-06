@@ -34,26 +34,11 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.white),
         ),
-        const SizedBox(height: 15),
-        TextFormField(
-          controller: controller.passwordController,
-          textAlign: TextAlign.center,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          textInputAction: TextInputAction.go,
-          onChanged: controller.onChanged,
-          onFieldSubmitted: (text) => controller.unlock(),
-          decoration: Styles.inputDecoration.copyWith(
-            hintText: 'vault_password'.tr,
-          ),
-        ),
         const SizedBox(height: 20),
-        Obx(
-          () => TextButton.icon(
-            label: Text('export'.tr),
-            icon: const Icon(LineIcons.upload),
-            onPressed: controller.canProceed() ? controller.unlock : null,
-          ),
+        TextButton.icon(
+          label: Text('export'.tr),
+          icon: const Icon(LineIcons.upload),
+          onPressed: controller.unlock,
         ),
         const SizedBox(height: 10),
         Obx(

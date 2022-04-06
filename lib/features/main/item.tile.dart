@@ -45,7 +45,18 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       _reloadSearchDelegate();
     }
 
-    void _protect() {
+    void _protect() async {
+      if (item.protected) {
+        // if trying to unprotect, prompt password
+        final unlocked = await Get.toNamed(
+              Routes.unlock,
+              parameters: {'mode': 'password_prompt'},
+            ) ??
+            false;
+
+        if (!unlocked) return;
+      }
+
       item.protected = !item.protected;
       item.save();
       _reloadSearchDelegate();
@@ -58,6 +69,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     }
 
     void _trash() async {
+      // TODO: prompt to delete with selector sheet
       item.delete();
       await HiveManager.trash!.add(item);
       _reloadSearchDelegate();
@@ -106,7 +118,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
               item.protected
                   ? FontAwesomeIcons.shield
                   : FontAwesomeIcons.shieldHalved,
-              color: item.protected ? Colors.green : Get.theme.iconTheme.color,
+              color: item.protected ? kAppColor : Get.theme.iconTheme.color,
             ),
             onSelected: _protect,
           ),
@@ -171,7 +183,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             if (item.protected) ...[
               const FaIcon(
                 FontAwesomeIcons.shield,
-                color: Colors.green,
+                color: kAppColor,
                 size: 10,
               ),
               const SizedBox(width: 5),
@@ -246,7 +258,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         if (isTrash || isArchived) ...[
           SwipeAction(
             title: 'restore'.tr,
-            color: Colors.green,
+            color: kAppColor,
             icon: const Icon(LineIcons.trashRestore),
             style: const TextStyle(fontSize: 15),
             onTap: (CompletionHandler handler) async {

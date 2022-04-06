@@ -31,13 +31,13 @@ const kHiveBoxItems = 'items';
 const kHiveBoxArchived = 'archived';
 const kHiveBoxTrash = 'trash';
 
-const kLocalMasterWalletFileName = 'master_wallet.liso';
+const kLocalMasterWalletFileName = 'liso_wallet.json';
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
 
 const kMaxIconSize = 500000;
 
-const kAppColor = Colors.green;
+const kAppColor = Color(0xff02f297);
 
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));

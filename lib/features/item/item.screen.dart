@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 
 import '../general/busy_indicator.widget.dart';
@@ -136,9 +137,9 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           title: Text('protected'.tr),
           value: data.value,
           onChanged: data,
-          activeColor: Colors.green,
+          activeColor: kAppColor,
           secondary: data.value
-              ? const FaIcon(FontAwesomeIcons.shield, color: Colors.green)
+              ? const FaIcon(FontAwesomeIcons.shield, color: kAppColor)
               : const FaIcon(FontAwesomeIcons.shieldHalved),
         ),
         controller.protected,

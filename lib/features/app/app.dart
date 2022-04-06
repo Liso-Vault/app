@@ -7,6 +7,7 @@ import 'package:liso/features/app/pages.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/unknown.screen.dart';
 
+import '../../core/utils/globals.dart';
 import '../main/main_screen.controller.dart';
 
 class App extends StatelessWidget {
@@ -32,7 +33,9 @@ class App extends StatelessWidget {
       // THEMING
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.green,
-      ).toTheme, // dark
+        colors: FlexSchemeColor.from(primary: kAppColor),
+        scaffoldBackground: const Color(0xFF161616),
+      ).toTheme,
       themeMode: ThemeMode.dark,
       // UNKNOWN ROUTE FALLBACK SCREEN
       unknownRoute: GetPage(

@@ -66,7 +66,7 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           ],
         ),
         leading: controller.filterProtected.value
-            ? const FaIcon(FontAwesomeIcons.shield, color: Colors.green)
+            ? const FaIcon(FontAwesomeIcons.shield, color: kAppColor)
             : const FaIcon(FontAwesomeIcons.shieldHalved),
         onTap: controller.filterProtectedItems,
         selected: controller.filterProtected.value,
@@ -96,6 +96,8 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         selected: controller.boxFilter.value == HiveBoxFilter.trash,
       ),
       ExpansionTile(
+        textColor: kAppColor,
+        iconColor: kAppColor,
         initiallyExpanded: controller.categoriesExpanded,
         title: Text(
           'categories'.tr.toUpperCase(),
@@ -122,6 +124,8 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
             controller.categoriesExpanded = expanded,
       ),
       ExpansionTile(
+        textColor: kAppColor,
+        iconColor: kAppColor,
         initiallyExpanded: controller.tagsExpanded,
         title: Text(
           'tags'.tr.toUpperCase(),
@@ -142,6 +146,8 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         onExpansionChanged: (expanded) => controller.tagsExpanded = expanded,
       ),
       ExpansionTile(
+        textColor: kAppColor,
+        iconColor: kAppColor,
         maintainState: true,
         title: Text(
           'app'.tr.toUpperCase(),

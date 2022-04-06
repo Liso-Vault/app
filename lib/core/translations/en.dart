@@ -60,6 +60,7 @@ final en = {
   "reset_vault": "Reset Vault",
   "export_vault": "Export Vault",
   "lock_vault": "Lock Vault",
+  "export_wallet": "Export Wallet",
   "confirm": "Confirm",
   "generate": "Generate",
   "proceed": "Proceed",
