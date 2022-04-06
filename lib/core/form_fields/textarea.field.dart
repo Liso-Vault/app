@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/utils/console.dart';
 
-import '../utils/styles.dart';
-
 // ignore: must_be_immutable
 class TextAreaFormField extends StatelessWidget with ConsoleMixin {
   final HiveLisoField field;
@@ -22,7 +20,7 @@ class TextAreaFormField extends StatelessWidget with ConsoleMixin {
       minLines: 3,
       maxLines: 5,
       textCapitalization: TextCapitalization.sentences,
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],
       ),

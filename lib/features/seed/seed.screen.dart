@@ -64,7 +64,7 @@
 //             maxLines: 2,
 //             maxLength: 60,
 //             validator: (text) => text!.isEmpty ? 'Address is required' : null,
-//             decoration: Styles.inputDecoration.copyWith(
+//             decoration: InputDecoration(
 //               labelText: 'Address',
 //               counterText: '',
 //             ),
@@ -78,7 +78,7 @@
 //             autovalidateMode: AutovalidateMode.onUserInteraction,
 //             validator: (text) =>
 //                 text!.isEmpty ? 'Description is required' : null,
-//             decoration: Styles.inputDecoration.copyWith(
+//             decoration: InputDecoration(
 //               labelText: 'Description',
 //               counterText: '',
 //             ),
@@ -89,7 +89,7 @@
 //               value: controller.selectedOrigin.value,
 //               onChanged: controller.changedOriginItem,
 //               items: controller.originDropdownItems,
-//               decoration: Styles.inputDecoration.copyWith(
+//               decoration: InputDecoration(
 //                 labelText: 'Origin',
 //               ),
 //             ),
@@ -100,7 +100,7 @@
 //               value: controller.selectedLedger.value,
 //               onChanged: controller.changedLedgerItem,
 //               items: controller.ledgerDropdownItems,
-//               decoration: Styles.inputDecoration.copyWith(
+//               decoration: InputDecoration(
 //                 labelText: 'Distributed Ledger Technology',
 //               ),
 //             ),

@@ -1,8 +1,8 @@
 import 'package:biometric_storage/biometric_storage.dart';
+import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:local_auth/local_auth.dart';
-import 'package:supercharged/supercharged.dart';
 
 import 'console.dart';
 
@@ -12,6 +12,7 @@ class BiometricUtils {
   static bool ready = false;
 
   static Future<void> init() async {
+    if (!GetPlatform.isMobile) return;
     // biometrucs
     final localAuth = LocalAuthentication();
     final supported = await localAuth.canCheckBiometrics;
@@ -19,28 +20,11 @@ class BiometricUtils {
   }
 
   static Future<String?> getPassword() async {
-    // only for mobile devices
-    if (!BiometricUtils.ready) {
-      console.info('biometrics not applicable');
-      return null;
-    }
-
-    await Future.delayed(250.milliseconds);
-    // TODO: do we still need this
-    final response = await BiometricStorage().canAuthenticate();
-    if (response != CanAuthenticateResponse.success) {
-      console.warning('biometric authentication not supported');
-      return null;
-    }
-
-    final passwordStorage = await BiometricStorage().getStorage(
-      kBiometricPasswordKey,
-    );
-
     String? biometricPassword;
 
     try {
-      biometricPassword = await passwordStorage.read();
+      final storage = await getStorage();
+      biometricPassword = await storage.read();
     } catch (e) {
       console.error('biometric storage error: $e');
       return null;
@@ -53,5 +37,51 @@ class BiometricUtils {
 
     console.info('biometric password: $biometricPassword');
     return biometricPassword;
+  }
+
+  static Future<BiometricStorageFile> getStorage(
+      {String title = 'Unlock $kAppName'}) async {
+    const preSubTitle = 'securely store and access your wallet password via';
+
+    // TODO: localize
+    final applePrompt = IosPromptInfo(
+      accessTitle: '$preSubTitle KeyChain',
+      saveTitle: title,
+    );
+
+    // TODO: localize
+    final androidPrompt = AndroidPromptInfo(
+      title: title,
+      subtitle: kLocalMasterWalletFileName,
+      description: '${GetUtils.capitalizeFirst(preSubTitle)} KeyStore',
+    );
+
+    final passwordStorage = await BiometricStorage().getStorage(
+      kBiometricPasswordKey,
+      promptInfo: PromptInfo(
+        macOsPromptInfo: applePrompt,
+        iosPromptInfo: applePrompt,
+        androidPromptInfo: androidPrompt,
+      ),
+    );
+
+    return passwordStorage;
+  }
+
+  static Future<bool> canAuthenticate() async {
+    // only for mobile devices
+    if (!BiometricUtils.ready) {
+      console.info('biometrics not applicable');
+      return false;
+    }
+
+    final response = await BiometricStorage().canAuthenticate();
+
+    if (response != CanAuthenticateResponse.success) {
+      console.warning('biometric authentication not supported');
+      return false;
+    }
+
+    return true;
   }
 }

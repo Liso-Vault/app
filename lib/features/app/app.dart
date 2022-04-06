@@ -17,6 +17,15 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final PersistenceController persistence = Get.find();
 
+    const subThemes = FlexSubThemesData(
+      thinBorderWidth: 0.1,
+      thickBorderWidth: 0.5,
+      fabUseShape: false,
+    );
+
+    const density = VisualDensity.compact;
+    const useSubThemes = true;
+
     // MATERIAL APP
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
@@ -36,13 +45,18 @@ class App extends StatelessWidget {
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColor),
-        // scaffoldBackground: const Color(0xFF161616),
+        useSubThemes: useSubThemes,
+        visualDensity: density,
+        subThemesData: subThemes,
       ).toTheme,
       // LIGHT THEME
       theme: FlexColorScheme.light(
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColorDarker),
         appBarBackground: Colors.grey.shade100,
+        useSubThemes: useSubThemes,
+        visualDensity: density,
+        subThemesData: subThemes,
       ).toTheme,
       // UNKNOWN ROUTE FALLBACK SCREEN
       unknownRoute: GetPage(

@@ -4,7 +4,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 
 import '../general/busy_indicator.widget.dart';
@@ -25,7 +24,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       maxChips: 5,
       initialValue: controller.tags,
       textCapitalization: TextCapitalization.words,
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: 'tags'.tr,
       ),
       findSuggestions: controller.querySuggestions,
@@ -106,7 +105,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
               controller: controller.titleController,
               textCapitalization: TextCapitalization.words,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
-              decoration: Styles.inputDecoration.copyWith(
+              decoration: InputDecoration(
                 labelText: 'title'.tr + ' *',
               ),
             ),
@@ -128,7 +127,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           onChanged: data,
           activeColor: Colors.pink,
           secondary: data()
-              ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
+              ? const FaIcon(FontAwesomeIcons.solidHeart)
               : const FaIcon(FontAwesomeIcons.heart),
         ),
         controller.favorite,
@@ -138,9 +137,8 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           title: Text('protected'.tr),
           value: data(),
           onChanged: data,
-          activeColor: kAppColor,
           secondary: data()
-              ? const FaIcon(FontAwesomeIcons.shield, color: kAppColor)
+              ? const FaIcon(FontAwesomeIcons.shield)
               : const FaIcon(FontAwesomeIcons.shieldHalved),
         ),
         controller.protected,

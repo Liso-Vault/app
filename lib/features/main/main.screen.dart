@@ -44,6 +44,17 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       ),
     );
 
+    void searchPressed() async {
+      controller.searchDelegate = ItemsSearchDelegate();
+
+      await showSearch(
+        context: context,
+        delegate: controller.searchDelegate!,
+      );
+
+      controller.searchDelegate = null;
+    }
+
     final appBar = AppBar(
       centerTitle: false,
       title: Row(
@@ -60,16 +71,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       actions: [
         IconButton(
           icon: const Icon(LineIcons.search),
-          onPressed: () async {
-            controller.searchDelegate = ItemsSearchDelegate();
-
-            await showSearch(
-              context: context,
-              delegate: controller.searchDelegate!,
-            );
-
-            controller.searchDelegate = null;
-          },
+          onPressed: searchPressed,
         ),
         IconButton(
           icon: const Icon(LineIcons.sort),

@@ -3,8 +3,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-import '../utils/styles.dart';
-
 // ignore: must_be_immutable
 class PasswordFormField extends GetWidget<PasswordFormFieldController> {
   final HiveLisoField field;
@@ -25,7 +23,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
             controller: _fieldController,
             keyboardType: TextInputType.visiblePassword,
             obscureText: controller.obscureText.value,
-            decoration: Styles.inputDecoration.copyWith(
+            decoration: InputDecoration(
               labelText: field.data['label'],
               hintText: field.data['hint'],
               suffixIcon: IconButton(

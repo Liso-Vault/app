@@ -36,6 +36,7 @@ const kLocalMasterWalletFileName = 'liso_wallet.json';
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
 const kBiometricPasswordKey = 'biometric_password';
+const kVaultExtension = 'liso';
 
 const kMaxIconSize = 500000;
 

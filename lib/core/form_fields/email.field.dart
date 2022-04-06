@@ -3,7 +3,6 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../utils/globals.dart';
-import '../utils/styles.dart';
 
 // ignore: must_be_immutable
 class EmailFormField extends StatelessWidget {
@@ -25,7 +24,7 @@ class EmailFormField extends StatelessWidget {
           data!.isEmpty || GetUtils.isEmail(data) ? null : 'Invalid Email',
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [inputFormatterRestrictSpaces],
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],
       ),

@@ -52,12 +52,12 @@ class UnlockScreenController extends GetxController
   // FUNCTIONS
   void onChanged(String text) => canProceed.value = text.isNotEmpty;
 
-  // TODO: create a biometric manager
   // biometric storage
   void biometricAuthentication() async {
+    if (!await BiometricUtils.canAuthenticate()) return;
     final biometricPassword = await BiometricUtils.getPassword();
     if (biometricPassword == null) return;
-    // set the password and unlock
+    // set the password then programmatically unlock
     passwordController.text = biometricPassword;
     await Future.delayed(100.milliseconds);
     unlock();

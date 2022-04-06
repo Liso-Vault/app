@@ -15,6 +15,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/selector.sheet.dart';
 
+import '../../core/form_fields/pin.field.dart';
 import '../../core/utils/utils.dart';
 import '../search/search.delegate.dart';
 import 'drawer/drawer_widget.controller.dart';
@@ -27,6 +28,7 @@ class MainScreenBinding extends Bindings {
 
     // GET WIDGETS
     Get.create(() => PasswordFormFieldController());
+    Get.create(() => PINFormFieldController());
   }
 }
 
@@ -308,8 +310,10 @@ class MainScreenController extends GetxController
   void showSortSheet() {
     final sortName = sortOrder.value.name;
     final ascending = sortName.contains('Ascending');
+
     final icon = Icon(
-        ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending);
+      ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
+    );
 
     SelectorSheet(
       items: [

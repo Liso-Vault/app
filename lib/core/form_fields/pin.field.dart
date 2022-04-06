@@ -4,7 +4,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../utils/globals.dart';
-import '../utils/styles.dart';
 
 // ignore: must_be_immutable
 class PINFormField extends GetWidget<PINFormFieldController> {
@@ -23,18 +22,20 @@ class PINFormField extends GetWidget<PINFormFieldController> {
       () => TextFormField(
         controller: _fieldController,
         keyboardType: TextInputType.number,
-        obscureText: true,
+        obscureText: controller.obscureText(),
         inputFormatters: [inputFormatterRestrictSpaces],
         validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
             ? null
             : 'Not a numeric PIN',
-        decoration: Styles.inputDecoration.copyWith(
+        decoration: InputDecoration(
           labelText: field.data['label'],
           hintText: field.data['hint'],
           suffixIcon: IconButton(
             onPressed: controller.obscureText.toggle,
-            icon: Icon(
-              controller.obscureText.value ? LineIcons.eye : LineIcons.eyeSlash,
+            icon: Obx(
+              () => Icon(
+                controller.obscureText() ? LineIcons.eye : LineIcons.eyeSlash,
+              ),
             ),
           ),
         ),

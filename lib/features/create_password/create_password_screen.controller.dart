@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:biometric_storage/biometric_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -15,6 +15,9 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:web3dart/credentials.dart';
+
+import '../../core/utils/biometric.util.dart';
+import '../../core/utils/extensions.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
   @override
@@ -64,6 +67,7 @@ class CreatePasswordScreenController extends GetxController
     if (passwordController.text != passwordConfirmController.text) {
       change(null, status: RxStatus.success());
 
+      // TODO: localize
       UIUtils.showSnackBar(
         title: 'Passwords do not match',
         message: 'Re-enter your passwords',
@@ -83,18 +87,25 @@ class CreatePasswordScreenController extends GetxController
       Random.secure(),
     );
 
-    // save password to biometric storage
-    final passwordStorage = await BiometricStorage().getStorage(
-      kBiometricPasswordKey,
-    );
+    // save wallet address to persistence
+    PersistenceController.to.address.val = masterWallet!.address;
 
-    passwordStorage.write(passwordController.text);
-    console.info('password storage: ${await passwordStorage.read()}');
+    // save password to biometric storage
+    final storage = await BiometricUtils.getStorage(
+      title: "Secure Wallet Password",
+    ); // TODO: localize
+
+    try {
+      await storage.write(passwordController.text);
+    } catch (e) {
+      change(null, status: RxStatus.success());
+      return console.error('biometric error: $e');
+    }
 
     // write wallet json to file
     final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
     await file.writeAsString(masterWallet!.toJson());
-    console.info('written: ${file.path}');
+    console.info('wallet written: ${file.path}');
 
     // set global encryption key
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
@@ -103,7 +114,7 @@ class CreatePasswordScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(
-      title: 'Welcome to $kAppName',
+      title: 'Welcome to $kAppName', // TODO: localize
       body: kAppDescription,
     );
 

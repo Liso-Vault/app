@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 
 import '../../core/hive/models/field.hive.dart';
-import '../../core/utils/styles.dart';
 
 // ignore: must_be_immutable
 class CustomDropDownFormField extends StatelessWidget {
@@ -27,7 +26,7 @@ class CustomDropDownFormField extends StatelessWidget {
       value: field.data['value'],
       items: items,
       onChanged: (_value) => value = _value,
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
       ),
     );

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/utils.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-import '../utils/styles.dart';
-
 // ignore: must_be_immutable
 class URLFormField extends StatelessWidget {
   final HiveLisoField field;
@@ -23,7 +21,7 @@ class URLFormField extends StatelessWidget {
       validator: (data) =>
           data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],
       ),

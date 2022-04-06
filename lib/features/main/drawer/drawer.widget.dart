@@ -15,8 +15,6 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    // final address = masterWallet!.privateKey.address.hexEip55;
-
     final header = DrawerHeader(
       child: Center(
         child: InkWell(
@@ -65,7 +63,7 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           ],
         ),
         leading: controller.filterProtected()
-            ? const FaIcon(FontAwesomeIcons.shield, color: kAppColor)
+            ? const FaIcon(FontAwesomeIcons.shield)
             : const FaIcon(FontAwesomeIcons.shieldHalved),
         onTap: controller.filterProtectedItems,
         selected: controller.filterProtected(),

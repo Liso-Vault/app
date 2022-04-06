@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-import '../utils/styles.dart';
-
 // TODO: use flutter_quill package
 // ignore: must_be_immutable
 class RichTextFormField extends StatelessWidget {
@@ -21,7 +19,7 @@ class RichTextFormField extends StatelessWidget {
       controller: _fieldController,
       maxLines: 5,
       textCapitalization: TextCapitalization.sentences,
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],
       ),

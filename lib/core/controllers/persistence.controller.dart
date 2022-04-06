@@ -12,18 +12,15 @@ class PersistenceController extends GetxController with ConsoleMixin {
 
   // GENERAL
   final localeCode = 'en'.val('locale code');
-  // FONT
-  final fontName = 'Roboto'.val('font name');
-  final fontScaleFactor = 1.0.val('font scale factor');
   // THEME
   final theme = ThemeMode.system.name.val('theme');
-  // APP LOCK
-  final appLock = false.val('app lock');
-  final appLockCode = ''.val('app lock code');
+  // SECURITY
   final maxUnlockAttempts = 5.val('max unlock attempts');
   final timeLockDuration = 30.val('time lock duration'); // in seconds
   // NOTIFICATION
   final notificationId = 0.val('notification id');
+  // WALLET
+  final address = ''.val('wallet_address');
 
   // GETTERS
 

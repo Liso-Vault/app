@@ -9,6 +9,7 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/utils/extensions.dart';
 import '../general/busy_indicator.widget.dart';
 import 'settings_screen.controller.dart';
 
@@ -18,8 +19,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final address = masterWallet!.privateKey.address.hexEip55;
-
     final content = ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -33,8 +32,8 @@ class SettingsScreen extends GetView<SettingsScreenController>
           ),
           trailing: const Icon(LineIcons.copy),
           title: const Text('Liso Address'),
-          subtitle: Text(address),
-          onTap: () => Utils.copyToClipboard(address),
+          subtitle: Text(masterWallet!.address),
+          onTap: () => Utils.copyToClipboard(masterWallet!.address),
         ),
         const Divider(),
         ListTile(
@@ -48,7 +47,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
         ListTile(
           leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.angleRight),
-          title: Text('lock_vault'.tr),
+          title: Text('lock'.tr + ' $kAppName'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
         // TODO: import vault from settings
@@ -61,23 +60,23 @@ class SettingsScreen extends GetView<SettingsScreenController>
         // ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.upload),
-          trailing: const Icon(LineIcons.angleRight),
+          leading: const Icon(LineIcons.syncIcon),
+          trailing: const Icon(LineIcons.exclamationTriangle),
+          title: Text('reset'.tr + ' $kAppName'),
+          onTap: () => Get.toNamed(Routes.reset),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.box),
+          trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_vault'.tr),
           onTap: () => Get.toNamed(Routes.export),
           enabled: HiveManager.items!.isNotEmpty,
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.syncIcon),
-          trailing: const Icon(LineIcons.angleRight),
-          title: Text('reset_vault'.tr),
-          onTap: () => Get.toNamed(Routes.reset),
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.fileUpload),
-          trailing: const Icon(LineIcons.angleRight),
+          leading: const Icon(LineIcons.wallet),
+          trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_wallet'.tr),
           onTap: controller.exportWallet,
         ),

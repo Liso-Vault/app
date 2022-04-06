@@ -56,6 +56,7 @@ final en = {
   "protect": "Protect",
   "unprotect": "Unprotect",
   "vault_password": "Vault Password",
+  "wallet_password": "Wallet Password",
   "confirm_password": "Confirm Password",
   "reset_vault": "Reset Vault",
   "export_vault": "Export Vault",

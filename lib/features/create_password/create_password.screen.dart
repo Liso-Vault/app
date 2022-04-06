@@ -24,12 +24,12 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           LineIcon(LineIcons.alternateShield, size: 100, color: kAppColor),
           const SizedBox(height: 20),
           Text(
-            'vault_password'.tr,
+            'wallet_password'.tr,
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 15),
           const Text(
-            'This will be the password to encrypt and access the local vault file',
+            "This will be the password to encrypt and decrypt the local $kLocalMasterWalletFileName file which also secures the (xxx.$kVaultExtension) vault with it's private key",
             style: TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
@@ -44,7 +44,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               textInputAction: TextInputAction.next,
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: Styles.inputDecoration.copyWith(
+              decoration: InputDecoration(
                 hintText: 'password'.tr,
                 suffixIcon: IconButton(
                   onPressed: controller.obscurePassword.toggle,
@@ -68,7 +68,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               onFieldSubmitted: (text) => controller.confirm,
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              decoration: Styles.inputDecoration.copyWith(
+              decoration: InputDecoration(
                 hintText: 'confirm_password'.tr,
                 suffixIcon: IconButton(
                   onPressed: controller.obscureConfirmPassword.toggle,
@@ -95,7 +95,6 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
                 onPressed: controller.confirm,
                 label: Text('confirm'.tr),
                 icon: const Icon(LineIcons.check),
-                style: Styles.elevatedButtonStyle,
               ),
               const SizedBox(width: 10),
               TextButton.icon(

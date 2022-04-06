@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-import '../utils/styles.dart';
-
 // ignore: must_be_immutable
 class TextFieldForm extends StatelessWidget {
   final HiveLisoField field;
@@ -19,7 +17,7 @@ class TextFieldForm extends StatelessWidget {
     return TextFormField(
       controller: _fieldController,
       textCapitalization: TextCapitalization.sentences,
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],
       ),

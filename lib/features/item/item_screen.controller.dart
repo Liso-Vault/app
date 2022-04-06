@@ -177,7 +177,6 @@ class ItemScreenController extends GetxController
 
   void menu() {
     SelectorSheet(
-      title: 'Options',
       items: [
         // TODO: options per category
         // launch website, copy email, copy password, copy seed
@@ -193,7 +192,6 @@ class ItemScreenController extends GetxController
 
   void changeIcon() async {
     SelectorSheet(
-      title: 'Item Icon',
       items: [
         SelectorItem(
           title: 'change'.tr,

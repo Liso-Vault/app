@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/resources/resources.dart';
 
@@ -21,14 +20,14 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
         Image.asset(Images.logo, width: 100),
         const SizedBox(height: 20),
         const Text(
-          'Liso',
+          kAppName,
           style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 15),
         Text(
           controller.passwordMode
-              ? 'Enter your vault password to proceed'
-              : 'Enter the password to decrypt\nand access the local vault file',
+              ? 'Enter your wallet password to proceed'
+              : 'Enter the wallet password to unlock $kAppName',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
@@ -42,8 +41,8 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           textInputAction: TextInputAction.go,
           onChanged: controller.onChanged,
           onFieldSubmitted: (text) => controller.unlock(),
-          decoration: Styles.inputDecoration.copyWith(
-            hintText: 'vault_password'.tr,
+          decoration: InputDecoration(
+            hintText: 'password'.tr,
           ),
         ),
         const SizedBox(height: 10),
@@ -61,10 +60,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             if (BiometricUtils.ready) ...[
               const SizedBox(width: 15),
               IconButton(
-                icon: const Icon(
-                  LineIcons.fingerprint,
-                  color: kAppColor,
-                ),
+                icon: const Icon(LineIcons.fingerprint),
                 onPressed: controller.biometricAuthentication,
               ),
             ]

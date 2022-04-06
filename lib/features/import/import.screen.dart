@@ -27,7 +27,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           ),
           const SizedBox(height: 15),
           const Text(
-            "Import your (xxx.liso) vault file and enter your master seed phrase to decrypt it",
+            "Import your (xxx.$kVaultExtension) vault file and enter your master seed phrase to decrypt it",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
@@ -40,9 +40,9 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                   validator: (text) =>
                       text!.isEmpty ? 'Import your vault file' : null,
                   autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: Styles.inputDecoration.copyWith(
-                    hintText: 'Path to your vault file',
-                  ),
+                  // decoration: InputDecoration(
+                  //   hintText: 'Path to your vault file',
+                  // ),
                 ),
               ),
               IconButton(

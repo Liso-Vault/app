@@ -25,7 +25,7 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
         ),
         const SizedBox(height: 15),
         const Text(
-          "Re-enter your backed up mnemonic seed phrase",
+          "Re-enter your backed up master mnemonic seed phrase",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),

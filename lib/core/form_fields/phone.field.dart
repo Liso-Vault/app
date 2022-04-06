@@ -3,7 +3,6 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../utils/globals.dart';
-import '../utils/styles.dart';
 
 // ignore: must_be_immutable
 class PhoneFormField extends StatelessWidget {
@@ -24,7 +23,7 @@ class PhoneFormField extends StatelessWidget {
       inputFormatters: [inputFormatterRestrictSpaces],
       validator: (data) =>
           GetUtils.isPhoneNumber(data!) ? null : 'Invalid phone number',
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],
       ),

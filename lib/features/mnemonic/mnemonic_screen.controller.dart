@@ -44,7 +44,6 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
 
   void options() {
     SelectorSheet(
-      title: 'Mnemonic Options',
       items: [
         SelectorItem(
           title: 'Copy Mnemonic Phrase',

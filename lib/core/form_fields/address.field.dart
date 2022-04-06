@@ -3,8 +3,6 @@ import 'package:liso/core/form_fields/country.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/utils/console.dart';
 
-import '../utils/styles.dart';
-
 // ignore: must_be_immutable
 class AddressFormField extends StatelessWidget with ConsoleMixin {
   final HiveLisoField field;
@@ -53,7 +51,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
           controller: _street1Controller,
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
-          decoration: Styles.inputDecoration.copyWith(
+          decoration: const InputDecoration(
             labelText: 'Street 1',
           ),
         ),
@@ -62,19 +60,19 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
           controller: _street2Controller,
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
-          decoration: Styles.inputDecoration.copyWith(labelText: 'Street 2'),
+          decoration: const InputDecoration(labelText: 'Street 2'),
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: _cityController,
           textCapitalization: TextCapitalization.words,
-          decoration: Styles.inputDecoration.copyWith(labelText: 'City'),
+          decoration: const InputDecoration(labelText: 'City'),
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: _stateController,
           textCapitalization: TextCapitalization.words,
-          decoration: Styles.inputDecoration.copyWith(
+          decoration: const InputDecoration(
             labelText: 'State / Province',
           ),
         ),
@@ -82,7 +80,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
         TextFormField(
           controller: _zipController,
           keyboardType: TextInputType.number,
-          decoration: Styles.inputDecoration.copyWith(labelText: 'Zip Code'),
+          decoration: const InputDecoration(labelText: 'Zip Code'),
         ),
         const SizedBox(height: 10),
         _countryFormField!,

@@ -26,8 +26,7 @@ class CustomChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         child: Container(
           child: label,
-          color: color ??
-              (Get.isDarkMode ? Colors.grey.shade800 : Colors.grey.shade200),
+          color: color ?? Get.theme.chipTheme.backgroundColor,
           padding: padding,
         ),
       ),

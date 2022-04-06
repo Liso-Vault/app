@@ -8,6 +8,8 @@ import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/google/auth_client.dart';
 
+import '../../core/utils/globals.dart';
+
 class SignInScreenBinding extends Bindings {
   @override
   void dependencies() {
@@ -148,7 +150,7 @@ class SignInScreenController extends GetxController
 
     // New liso file
     var newLisoFile = drive.File();
-    newLisoFile.name = '$address.liso';
+    newLisoFile.name = '$address.$kVaultExtension';
 
     if (existingLisoFile == null) {
       // set the location to the appDataFolder

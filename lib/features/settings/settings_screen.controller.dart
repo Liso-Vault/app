@@ -44,7 +44,6 @@ class SettingsScreenController extends GetxController
 
   void selectTheme() {
     SelectorSheet(
-      title: 'change_theme'.tr,
       activeId: PersistenceController.to.theme.val,
       items: [
         SelectorItem(

@@ -1,4 +1,6 @@
 // DISTINCT LIST
+import 'package:web3dart/web3dart.dart';
+
 extension IterableExtension<T> on Iterable<T> {
   Iterable<T> distinctBy(Object Function(T e) getCompareValue) {
     var result = <T>[];
@@ -11,4 +13,8 @@ extension IterableExtension<T> on Iterable<T> {
 
     return result;
   }
+}
+
+extension WalletExtension on Wallet {
+  String get address => privateKey.address.hexEip55;
 }

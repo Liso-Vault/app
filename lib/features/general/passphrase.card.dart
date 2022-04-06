@@ -1,7 +1,6 @@
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/styles.dart';
 
 class PassphraseCard extends StatelessWidget with ConsoleMixin {
   final PassphraseMode mode;
@@ -31,7 +30,7 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
       textInputAction: TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (text) => _validateSeed(text!),
-      decoration: Styles.inputDecoration.copyWith(
+      decoration: const InputDecoration(
         labelText: 'Mnemonic Seed Phrase',
       ),
     );

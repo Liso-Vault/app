@@ -15,34 +15,24 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
 
   @override
   Widget build(BuildContext context) {
+    final phrases = Wrap(
+      spacing: 5,
+      runSpacing: 10,
+      alignment: WrapAlignment.center,
+      children: controller.mnemonic.value
+          .split(' ')
+          .map(
+            (e) => CustomChip(
+              label: Text(e, style: const TextStyle(fontSize: 18)),
+            ),
+          )
+          .toList(),
+    );
+
     final mnemonicPhrase = GestureDetector(
       onLongPress: controller.options,
-      onSecondaryTap: controller.options, // mouse right click
-      // child: Text(
-      //   controller.mnemonic.value,
-      //   textAlign: TextAlign.center,
-      //   style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
-      // ),
-      child: Wrap(
-        spacing: 5,
-        runSpacing: 10,
-        alignment: WrapAlignment.center,
-        children: controller.mnemonic.value
-            .split(' ')
-            .map(
-              (e) => CustomChip(
-                color: const Color(0xFF00915A),
-                label: Text(
-                  e,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            )
-            .toList(),
-      ),
+      onSecondaryTap: controller.options,
+      child: phrases,
     );
 
     final content = Column(

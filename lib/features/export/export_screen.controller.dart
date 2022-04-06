@@ -14,6 +14,7 @@ import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
+import '../../core/utils/extensions.dart';
 import '../app/routes.dart';
 
 class ExportScreenBinding extends Bindings {
@@ -71,8 +72,7 @@ class ExportScreenController extends GetxController
     change(null, status: RxStatus.loading());
     busyMessage.value = 'Exporting...';
 
-    final walletAddress = masterWallet!.privateKey.address.hexEip55;
-    final archiveFileName = '$walletAddress.liso';
+    final archiveFileName = '${masterWallet!.address}.$kVaultExtension';
 
     final encoder = ZipFileEncoder();
     final archiveFilePath = join(LisoPaths.temp!.path, archiveFileName);
