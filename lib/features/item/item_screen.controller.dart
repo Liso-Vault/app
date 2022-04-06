@@ -101,13 +101,13 @@ class ItemScreenController extends GetxController
 
     final newItem = HiveLisoItem(
       category: category,
-      icon: icon.value,
+      icon: icon(),
       title: titleController.text,
       tags: tags,
       fields: _fields,
       metadata: await HiveMetadata.get(),
-      favorite: favorite.value,
-      protected: protected.value,
+      favorite: favorite(),
+      protected: protected(),
     );
 
     await HiveManager.items!.add(newItem);
@@ -118,12 +118,12 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (item == null) return;
 
-    item!.icon = icon.value;
+    item!.icon = icon();
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tags;
-    item!.favorite = favorite.value;
-    item!.protected = protected.value;
+    item!.favorite = favorite();
+    item!.protected = protected();
     item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
 

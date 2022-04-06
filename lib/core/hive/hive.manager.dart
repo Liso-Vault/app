@@ -4,7 +4,6 @@ import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:path/path.dart';
 
 import '../utils/globals.dart';
 import 'models/field.hive.dart';

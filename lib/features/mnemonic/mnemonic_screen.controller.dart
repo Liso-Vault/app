@@ -38,7 +38,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   void continuePressed() async {
     Get.toNamed(
       Routes.confirmMnemonic,
-      parameters: {'mnemonic': mnemonic.value},
+      parameters: {'mnemonic': mnemonic()},
     );
   }
 
@@ -50,7 +50,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
           title: 'Copy Mnemonic Phrase',
           subTitle: 'Copy at your own risk',
           leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          onSelected: () => Utils.copyToClipboard(mnemonic.value),
+          onSelected: () => Utils.copyToClipboard(mnemonic()),
         ),
       ],
     ).show();

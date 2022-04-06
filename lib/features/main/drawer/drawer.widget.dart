@@ -41,7 +41,7 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         ),
         leading: const Icon(LineIcons.list),
         onTap: controller.filterAllItems,
-        selected: controller.boxFilter.value == HiveBoxFilter.all,
+        selected: controller.boxFilter() == HiveBoxFilter.all,
       ),
       ListTile(
         title: Row(
@@ -51,11 +51,11 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
             CustomChip(label: Text(controller.favoriteCount)),
           ],
         ),
-        leading: controller.filterFavorites.value
+        leading: controller.filterFavorites()
             ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
             : const FaIcon(FontAwesomeIcons.heart),
         onTap: controller.filterFavoriteItems,
-        selected: controller.filterFavorites.value,
+        selected: controller.filterFavorites(),
       ),
       ListTile(
         title: Row(
@@ -65,11 +65,11 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
             CustomChip(label: Text(controller.protectedCount)),
           ],
         ),
-        leading: controller.filterProtected.value
+        leading: controller.filterProtected()
             ? const FaIcon(FontAwesomeIcons.shield, color: kAppColor)
             : const FaIcon(FontAwesomeIcons.shieldHalved),
         onTap: controller.filterProtectedItems,
-        selected: controller.filterProtected.value,
+        selected: controller.filterProtected(),
       ),
       ListTile(
         title: Row(
@@ -81,7 +81,7 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         ),
         leading: const Icon(LineIcons.archive),
         onTap: controller.filterArchivedItems,
-        selected: controller.boxFilter.value == HiveBoxFilter.archived,
+        selected: controller.boxFilter() == HiveBoxFilter.archived,
       ),
       ListTile(
         title: Row(
@@ -93,7 +93,7 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         ),
         leading: const Icon(LineIcons.trash),
         onTap: controller.filterTrashItems,
-        selected: controller.boxFilter.value == HiveBoxFilter.trash,
+        selected: controller.boxFilter() == HiveBoxFilter.trash,
       ),
       ExpansionTile(
         textColor: kAppColor,

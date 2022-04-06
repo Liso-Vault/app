@@ -32,5 +32,5 @@
   <!-- STORAGE -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <!-- SECURITY -->
-  <!-- <uses-permission android:name="android.permission.USE_FINGERPRINT" /> -->
+  <uses-permission android:name="android.permission.USE_FINGERPRINT" />
 </manifest>

@@ -1,4 +1,6 @@
 PODS:
+  - biometric_storage (0.0.1):
+    - FlutterMacOS
   - desktop_webview_auth (0.0.1):
     - FlutterMacOS
   - desktop_window (0.0.1):
@@ -142,6 +144,7 @@ PODS:
     - FlutterMacOS
 
 DEPENDENCIES:
+  - biometric_storage (from `Flutter/ephemeral/.symlinks/plugins/biometric_storage/macos`)
   - desktop_webview_auth (from `Flutter/ephemeral/.symlinks/plugins/desktop_webview_auth/macos`)
   - desktop_window (from `Flutter/ephemeral/.symlinks/plugins/desktop_window/macos`)
   - device_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/device_info_plus_macos/macos`)
@@ -173,6 +176,8 @@ SPEC REPOS:
     - PromisesObjC
 
 EXTERNAL SOURCES:
+  biometric_storage:
+    :path: Flutter/ephemeral/.symlinks/plugins/biometric_storage/macos
   desktop_webview_auth:
     :path: Flutter/ephemeral/.symlinks/plugins/desktop_webview_auth/macos
   desktop_window:
@@ -201,6 +206,7 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos
 
 SPEC CHECKSUMS:
+  biometric_storage: 43caa6e7ef00e8e19c074216e7e1786dacda9e76
   desktop_webview_auth: 9bba53a29c9bc6a4ff621fd0ebfbb18856c4dada
   desktop_window: fb7c4f12c1129f947ac482296b6f14059d57a3c3
   device_info_plus_macos: 1ad388a1ef433505c4038e7dd9605aadd1e2e9c7

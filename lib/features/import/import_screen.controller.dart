@@ -123,7 +123,7 @@ class ImportScreenController extends GetxController
 
     NotificationsManager.notify(
       title: 'Successfully Imported Vault File',
-      body: filePathController.text,
+      body: basename(filePathController.text),
     );
 
     Get.toNamed(Routes.createPassword, parameters: {'seedHex': seedHex});

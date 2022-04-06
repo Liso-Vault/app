@@ -15,6 +15,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
 import '../../core/hive/hive.manager.dart';
+import '../../core/utils/biometric.util.dart';
 
 class UnlockScreenBinding extends Bindings {
   @override
@@ -42,8 +43,25 @@ class UnlockScreenController extends GetxController
     super.onInit();
   }
 
+  @override
+  void onReady() async {
+    biometricAuthentication();
+    super.onReady();
+  }
+
   // FUNCTIONS
   void onChanged(String text) => canProceed.value = text.isNotEmpty;
+
+  // TODO: create a biometric manager
+  // biometric storage
+  void biometricAuthentication() async {
+    final biometricPassword = await BiometricUtils.getPassword();
+    if (biometricPassword == null) return;
+    // set the password and unlock
+    passwordController.text = biometricPassword;
+    await Future.delayed(100.milliseconds);
+    unlock();
+  }
 
   void unlock() async {
     if (status == RxStatus.loading()) return console.error('still busy');
@@ -84,9 +102,7 @@ class UnlockScreenController extends GetxController
       return;
     }
 
-    if (passwordMode) {
-      return Get.back(result: true);
-    }
+    if (passwordMode) return Get.back(result: true);
 
     if (!passwordMode) {
       // the encryption key from master's private key

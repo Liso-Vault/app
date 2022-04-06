@@ -112,14 +112,14 @@ class ExportScreenController extends GetxController
     busyMessage.value = 'Exporting to: $exportPath';
     await Future.delayed(1.seconds); // just for style
 
-    final exportedFile = await Utils.moveFile(
+    await Utils.moveFile(
       File(archiveFilePath),
       join(exportPath, archiveFileName),
     );
 
     NotificationsManager.notify(
       title: 'Successfully Exported Vault',
-      body: exportedFile.path,
+      body: archiveFileName,
     );
 
     _done();

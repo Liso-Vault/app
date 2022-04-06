@@ -40,15 +40,24 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           const SizedBox(height: 30),
           Obx(
             () => TextFormField(
+              autofocus: true,
               controller: controller.passwordController,
               textAlign: TextAlign.center,
               keyboardType: TextInputType.visiblePassword,
-              obscureText: controller.obscure(),
+              obscureText: controller.obscurePassword(),
               textInputAction: TextInputAction.next,
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: Styles.inputDecoration.copyWith(
                 hintText: 'password'.tr,
+                suffixIcon: IconButton(
+                  onPressed: controller.obscurePassword.toggle,
+                  icon: Icon(
+                    controller.obscurePassword()
+                        ? LineIcons.eye
+                        : LineIcons.eyeSlash,
+                  ),
+                ),
               ),
             ),
           ),
@@ -58,13 +67,21 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               controller: controller.passwordConfirmController,
               textAlign: TextAlign.center,
               keyboardType: TextInputType.visiblePassword,
-              obscureText: controller.obscure(),
+              obscureText: controller.obscureConfirmPassword(),
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (text) => controller.confirm,
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: Styles.inputDecoration.copyWith(
                 hintText: 'confirm_password'.tr,
+                suffixIcon: IconButton(
+                  onPressed: controller.obscureConfirmPassword.toggle,
+                  icon: Icon(
+                    controller.obscureConfirmPassword()
+                        ? LineIcons.eye
+                        : LineIcons.eyeSlash,
+                  ),
+                ),
               ),
             ),
           ),

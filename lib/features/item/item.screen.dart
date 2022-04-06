@@ -92,9 +92,9 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           // ICON
           Obx(
             () => IconButton(
-              icon: controller.icon.value.isEmpty
+              icon: controller.icon().isEmpty
                   ? const Icon(Icons.photo, size: 30)
-                  : Image.memory(controller.icon.value),
+                  : Image.memory(controller.icon()),
               onPressed: controller.changeIcon,
             ),
           ),
@@ -102,6 +102,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           // TITLE
           Expanded(
             child: TextFormField(
+              autofocus: mode == 'add',
               controller: controller.titleController,
               textCapitalization: TextCapitalization.words,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
@@ -123,10 +124,10 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ObxValue(
         (RxBool data) => SwitchListTile(
           title: Text('favorite'.tr),
-          value: data.value,
+          value: data(),
           onChanged: data,
           activeColor: Colors.pink,
-          secondary: data.value
+          secondary: data()
               ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
               : const FaIcon(FontAwesomeIcons.heart),
         ),
@@ -135,10 +136,10 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ObxValue(
         (RxBool data) => SwitchListTile(
           title: Text('protected'.tr),
-          value: data.value,
+          value: data(),
           onChanged: data,
           activeColor: kAppColor,
-          secondary: data.value
+          secondary: data()
               ? const FaIcon(FontAwesomeIcons.shield, color: kAppColor)
               : const FaIcon(FontAwesomeIcons.shieldHalved),
         ),

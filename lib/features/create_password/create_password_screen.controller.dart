@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:biometric_storage/biometric_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -30,7 +31,8 @@ class CreatePasswordScreenController extends GetxController
   final passwordConfirmController = TextEditingController();
 
   // PROPERTIES
-  final obscure = true.obs;
+  final obscurePassword = true.obs;
+  final obscureConfirmPassword = true.obs;
 
   // GETTERS
 
@@ -47,7 +49,8 @@ class CreatePasswordScreenController extends GetxController
     final _password = Utils.generatePassword();
     passwordController.text = _password;
     passwordConfirmController.text = _password;
-    obscure.value = false;
+    obscurePassword.value = false;
+    obscureConfirmPassword.value = false;
   }
 
   void confirm() async {
@@ -80,15 +83,23 @@ class CreatePasswordScreenController extends GetxController
       Random.secure(),
     );
 
+    // save password to biometric storage
+    final passwordStorage = await BiometricStorage().getStorage(
+      kBiometricPasswordKey,
+    );
+
+    passwordStorage.write(passwordController.text);
+    console.info('password storage: ${await passwordStorage.read()}');
+
+    // write wallet json to file
     final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
     await file.writeAsString(masterWallet!.toJson());
     console.info('written: ${file.path}');
-    console.info(await file.readAsString());
 
+    // set global encryption key
     encryptionKey = utf8.encode(seedHex.substring(0, 32));
     // open Hive Boxes
     await HiveManager.openBoxes();
-
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(

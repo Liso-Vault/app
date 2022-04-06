@@ -31,8 +31,14 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
             .split(' ')
             .map(
               (e) => CustomChip(
-                color: Colors.green.shade800,
-                label: Text(e, style: const TextStyle(fontSize: 18)),
+                color: const Color(0xFF00915A),
+                label: Text(
+                  e,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                  ),
+                ),
               ),
             )
             .toList(),
@@ -87,7 +93,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
           (RxBool data) => CheckboxListTile(
             title: const Text(
                 "I have backed up my seed in a safe location"), //    <-- label
-            value: data.value,
+            value: data(),
             onChanged: data,
           ),
           controller.chkBackedUpSeed,
@@ -95,7 +101,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         ObxValue(
           (RxBool data) => CheckboxListTile(
             title: const Text("I have written down my seed"), //    <-- label
-            value: data.value,
+            value: data(),
             onChanged: data,
           ),
           controller.chkWrittenSeed,

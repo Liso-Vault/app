@@ -79,14 +79,14 @@ class SettingsScreenController extends GetxController
     busyMessage.value = 'Exporting to: $exportPath';
     await Future.delayed(1.seconds); // just for style
 
-    final exportedFile = await Utils.moveFile(
+    await Utils.moveFile(
       file,
       join(exportPath, kLocalMasterWalletFileName),
     );
 
     NotificationsManager.notify(
       title: 'Successfully Exported Wallet',
-      body: exportedFile.path,
+      body: kLocalMasterWalletFileName,
     );
 
     Get.back();

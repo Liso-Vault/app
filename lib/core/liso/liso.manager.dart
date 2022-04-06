@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:biometric_storage/biometric_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/utils.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
@@ -19,10 +20,18 @@ class LisoManager {
   }
 
   static Future<void> reset() async {
+    // delete biometric storage
+    final passwordStorage = await BiometricStorage().getStorage(
+      kBiometricPasswordKey,
+    );
+
+    await passwordStorage.delete();
+
+    // nullify global variables
     encryptionKey = null;
     masterWallet = null;
 
-    // master wallet file
+    // delete liso wallet file
     final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
 
     if (await file.exists()) {
