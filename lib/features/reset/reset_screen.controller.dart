@@ -32,6 +32,14 @@ class ResetScreenController extends GetxController
   }
 
   void reset() async {
+    final unlocked = await Get.toNamed(
+          Routes.unlock,
+          parameters: {'mode': 'password_prompt'},
+        ) ??
+        false;
+
+    if (!unlocked) return;
+
     change(null, status: RxStatus.loading());
     await LisoManager.reset();
     change(null, status: RxStatus.success());

@@ -38,14 +38,14 @@ class SettingsScreen extends GetView<SettingsScreenController>
         ListTile(
           leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Lock Vault'),
+          title: Text('lock_vault'.tr),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.upload),
           trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Export Vault'),
+          title: Text('export_vault'.tr),
           onTap: () => Get.toNamed(Routes.export),
           enabled: HiveManager.items!.isNotEmpty,
         ),
@@ -53,7 +53,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
         ListTile(
           leading: const Icon(LineIcons.syncIcon),
           trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Reset Vault'),
+          title: Text('reset_vault'.tr),
           onTap: () => Get.toNamed(Routes.reset),
         ),
         const Divider(),
@@ -75,7 +75,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
+      appBar: AppBar(title: Text('settings'.tr)),
       body: content,
     );
   }

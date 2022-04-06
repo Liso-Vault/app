@@ -23,6 +23,7 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
 
   // PROPERTIES
   final filterFavorites = false.obs;
+  final filterProtected = false.obs;
   final boxFilter = HiveBoxFilter.all.obs;
 
   // GETTERS
@@ -60,6 +61,10 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
       ? ''
       : HiveManager.items!.values.where((e) => e.favorite).length.toString();
 
+  String get protectedCount => HiveManager.items!.isEmpty
+      ? ''
+      : HiveManager.items!.values.where((e) => e.protected).length.toString();
+
   String get archivedCount => HiveManager.archived!.isEmpty
       ? ''
       : HiveManager.archived!.length.toString();
@@ -69,17 +74,17 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
 
   // FUNCTIONS
 
-  // void filterFavoritesSwitch(bool? value) async {
-  //   filterFavorites.value = value!;
-  //   filterTag = '';
-  //   MainScreenController.to.reload();
-  //   // delay until switch animation is finished
-  //   await Future.delayed(300.milliseconds);
-  //   Get.back();
-  // }
-
   void filterFavoriteItems() async {
     filterFavorites.toggle();
+    filterProtected.value = false;
+    filterTag = '';
+    MainScreenController.to.reload();
+    Get.back();
+  }
+
+  void filterProtectedItems() async {
+    filterProtected.toggle();
+    filterFavorites.value = false;
     filterTag = '';
     MainScreenController.to.reload();
     Get.back();
@@ -88,6 +93,7 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   void filterAllItems() {
     _clearFilters();
     filterFavorites.value = false;
+    filterProtected.value = false;
     boxFilter.value = HiveBoxFilter.all;
     reload();
   }

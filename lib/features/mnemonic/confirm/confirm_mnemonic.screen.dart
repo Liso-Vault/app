@@ -5,6 +5,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/passphrase.card.dart';
 
+import '../../../core/utils/globals.dart';
 import 'confirm_mnemonic_screen.controller.dart';
 
 class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
@@ -16,13 +17,10 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          LineIcons.alternateShield,
-          size: 100,
-        ),
+        const Icon(LineIcons.doubleCheck, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
-          'Confirm Mnemonic Phrase',
+          'Confirm Seed Phrase',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
@@ -36,7 +34,7 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
         const SizedBox(height: 20),
         TextButton.icon(
           onPressed: controller.continuePressed,
-          label: const Text('Continue'),
+          label: Text('continue'.tr),
           icon: const Icon(LineIcons.arrowRight),
         ),
       ],

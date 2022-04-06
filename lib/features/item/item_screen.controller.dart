@@ -43,6 +43,7 @@ class ItemScreenController extends GetxController
 
   // PROPERTIES
   final favorite = false.obs;
+  final protected = false.obs;
 
   // GETTERS
 
@@ -69,14 +70,15 @@ class ItemScreenController extends GetxController
     icon.value = item!.icon;
     titleController.text = item!.title;
     favorite.value = item!.favorite;
+    protected.value = item!.protected;
     tags = item!.tags;
 
     console.info('update data: ${item!.fields.first.data}');
   }
 
   Future<void> _loadTemplate() async {
-    favorite.value = mode == 'add' &&
-        Get.find<DrawerWidgetController>().filterFavorites.value;
+    favorite.value = Get.find<DrawerWidgetController>().filterFavorites.value;
+    protected.value = Get.find<DrawerWidgetController>().filterProtected.value;
 
     final _fields = TemplateParser.parse(category);
 
@@ -88,6 +90,7 @@ class ItemScreenController extends GetxController
       tags: [],
       metadata: await HiveMetadata.get(),
       favorite: favorite.value,
+      protected: protected.value,
     );
   }
 
@@ -104,6 +107,7 @@ class ItemScreenController extends GetxController
       fields: _fields,
       metadata: await HiveMetadata.get(),
       favorite: favorite.value,
+      protected: protected.value,
     );
 
     await HiveManager.items!.add(newItem);
@@ -119,6 +123,7 @@ class ItemScreenController extends GetxController
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tags;
     item!.favorite = favorite.value;
+    item!.protected = protected.value;
     item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
 

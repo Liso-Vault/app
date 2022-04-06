@@ -6,6 +6,7 @@ import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
 
+import '../../core/utils/globals.dart';
 import 'import_screen.controller.dart';
 
 class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
@@ -18,7 +19,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(LineIcons.alternateShield, size: 100),
+          const Icon(LineIcons.fileImport, size: 100, color: kAppColor),
           const SizedBox(height: 20),
           const Text(
             'Import Vault File',
@@ -55,7 +56,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           const SizedBox(height: 20),
           TextButton.icon(
             onPressed: controller.continuePressed,
-            label: const Text('Continue'),
+            label: Text('continue'.tr),
             icon: const Icon(LineIcons.arrowRight),
           ),
         ],

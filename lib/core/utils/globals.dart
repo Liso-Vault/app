@@ -1,5 +1,6 @@
 // COMPANY
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web3dart/credentials.dart';
 
@@ -36,6 +37,8 @@ const kRootDirectory = 'Liso';
 
 const kMaxIconSize = 500000;
 
+const kAppColor = Colors.green;
+
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
 
@@ -55,6 +58,8 @@ enum LisoItemSortOrder {
   dateCreatedDescending,
   favoriteAscending,
   favoriteDescending,
+  protectedAscending,
+  protectedDescending,
 }
 
 enum LisoItemCategory {

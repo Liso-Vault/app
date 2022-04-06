@@ -25,8 +25,10 @@ class HiveLisoItem extends HiveObject {
   @HiveField(4)
   bool favorite;
   @HiveField(5)
-  List<String> tags;
+  bool protected;
   @HiveField(6)
+  List<String> tags;
+  @HiveField(7)
   HiveMetadata metadata;
 
   HiveLisoItem({
@@ -35,6 +37,7 @@ class HiveLisoItem extends HiveObject {
     required this.title,
     required this.fields,
     this.favorite = false,
+    this.protected = false,
     this.tags = const [],
     required this.metadata,
   });
@@ -45,6 +48,7 @@ class HiveLisoItem extends HiveObject {
         title: json["title"],
         fields: json["fields"],
         favorite: json["favorite"],
+        protected: json["protected"],
         tags: json["tags"],
         metadata: HiveMetadata.fromJson(json["metadata"]),
       );
@@ -54,8 +58,9 @@ class HiveLisoItem extends HiveObject {
       "category": category,
       "icon": icon,
       "title": title,
-      "fields": List<HiveLisoField>.from(fields.map((x) => x.toJson())),
+      "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
       "favorite": favorite,
+      "protected": protected,
       "tags": tags,
       "metadata": metadata.toJson(),
     };

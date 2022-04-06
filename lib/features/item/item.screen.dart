@@ -105,7 +105,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
               textCapitalization: TextCapitalization.words,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
               decoration: Styles.inputDecoration.copyWith(
-                labelText: 'Title *',
+                labelText: 'title'.tr + ' *',
               ),
             ),
           ),
@@ -130,6 +130,18 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
               : const FaIcon(FontAwesomeIcons.heart),
         ),
         controller.favorite,
+      ),
+      ObxValue(
+        (RxBool data) => SwitchListTile(
+          title: Text('protected'.tr),
+          value: data.value,
+          onChanged: data,
+          activeColor: Colors.green,
+          secondary: data.value
+              ? const FaIcon(FontAwesomeIcons.shield, color: Colors.green)
+              : const FaIcon(FontAwesomeIcons.shieldHalved),
+        ),
+        controller.protected,
       ),
       if (mode == 'update') ...[
         const Divider(),

@@ -13,11 +13,11 @@ class ResetScreen extends GetView<ResetScreenController> {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.exclamationTriangle, size: 100),
+        const Icon(LineIcons.exclamationTriangle, size: 100, color: Colors.red),
         const SizedBox(height: 20),
-        const Text(
-          'Reset Vault',
-          style: TextStyle(fontSize: 20),
+        Text(
+          'reset_vault'.tr,
+          style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 20),
         const Text(
@@ -37,13 +37,13 @@ class ResetScreen extends GetView<ResetScreenController> {
           children: [
             TextButton.icon(
               onPressed: Get.back,
-              label: const Text('Cancel'),
+              label: Text('cancel'.tr),
               icon: const Icon(LineIcons.times),
             ),
             const SizedBox(width: 20),
             TextButton.icon(
               onPressed: controller.reset,
-              label: const Text('Reset'),
+              label: Text('reset'.tr),
               icon: const Icon(LineIcons.syncIcon),
               style: Styles.textButtonStyleNegative,
             ),

@@ -128,7 +128,7 @@ class ExportScreenController extends GetxController
         text: 'Liso Vault',
       );
 
-      return change(null, status: RxStatus.success());
+      return _done();
     }
 
     busyMessage.value = 'Choose export path...';
@@ -157,7 +157,10 @@ class ExportScreenController extends GetxController
       body: exportedFile.path,
     );
 
-    console.info('exported to: ${exportedFile.path}');
+    _done();
+  }
+
+  void _done() {
     busyMessage.value = '';
     change(null, status: RxStatus.success());
     Get.back();

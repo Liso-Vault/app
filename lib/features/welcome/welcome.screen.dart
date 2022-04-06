@@ -34,20 +34,20 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           const Divider(),
           const SizedBox(height: 20),
           ElevatedButton.icon(
-            label: const Text('Create'),
+            label: Text('create'.tr),
             icon: const Icon(LineIcons.plus),
             onPressed: () => Get.toNamed(Routes.mnemonic),
             style: Styles.elevatedButtonStyle,
           ),
           const SizedBox(height: 10),
           TextButton.icon(
-            label: const Text('Import'),
+            label: Text('import'.tr),
             icon: const Icon(LineIcons.download),
             onPressed: () => Get.toNamed(Routes.import),
           ),
           const SizedBox(height: 10),
           TextButton.icon(
-            label: const Text('Sign In'),
+            label: Text('sign_in'.tr),
             icon: const Icon(LineIcons.sign),
             onPressed: () => Get.toNamed(Routes.signIn),
           ),

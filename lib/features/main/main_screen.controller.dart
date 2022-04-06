@@ -136,6 +136,11 @@ class MainScreenController extends GetxController
       items = items.where((e) => e.favorite).toList();
     }
 
+    // FILTER PROTECTED
+    if (drawerController.filterProtected.value) {
+      items = items.where((e) => e.protected).toList();
+    }
+
     // FILTER BY CATEGORY
     if (drawerController.filterCategory != null) {
       items = items
@@ -222,6 +227,21 @@ class MainScreenController extends GetxController
     if (sortOrder.value == LisoItemSortOrder.favoriteAscending) {
       items.sort(
         (a, b) => a.favorite ? 1 : -1,
+      );
+    }
+
+    // --- SORT BY PROTECTED ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.protectedDescending) {
+      items.sort(
+        (a, b) => b.protected ? 1 : -1,
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.protectedAscending) {
+      items.sort(
+        (a, b) => a.protected ? 1 : -1,
       );
     }
 
@@ -362,6 +382,21 @@ class MainScreenController extends GetxController
               sortOrder.value = ascending
                   ? LisoItemSortOrder.favoriteDescending
                   : LisoItemSortOrder.favoriteAscending;
+            }
+          },
+        ),
+        SelectorItem(
+          title: 'protected'.tr,
+          leading: const Icon(LineIcons.alternateShield),
+          trailing: sortName.contains('protected') ? icon : null,
+          onSelected: () {
+            if (!sortName.contains('protected')) {
+              sortOrder.value =
+                  LisoItemSortOrder.protectedDescending; // default
+            } else {
+              sortOrder.value = ascending
+                  ? LisoItemSortOrder.protectedDescending
+                  : LisoItemSortOrder.protectedAscending;
             }
           },
         ),

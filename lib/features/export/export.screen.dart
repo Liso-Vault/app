@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
@@ -15,7 +16,7 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.alternateShield, size: 100),
+        const Icon(LineIcons.fileExport, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
           'Export Vault File',
@@ -43,13 +44,13 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
           onChanged: controller.onChanged,
           onFieldSubmitted: (text) => controller.unlock(),
           decoration: Styles.inputDecoration.copyWith(
-            hintText: 'Vault Password',
+            hintText: 'vault_password'.tr,
           ),
         ),
         const SizedBox(height: 20),
         Obx(
           () => TextButton.icon(
-            label: const Text('Export'),
+            label: Text('export'.tr),
             icon: const Icon(LineIcons.upload),
             onPressed: controller.canProceed() ? controller.unlock : null,
           ),
@@ -57,7 +58,7 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         const SizedBox(height: 10),
         Obx(
           () => Text(
-            '${controller.attemptsLeft()} attempts left',
+            '${controller.attemptsLeft()} ' + 'attempts_left'.tr,
             style: const TextStyle(color: Colors.grey, fontSize: 10),
           ),
         ),

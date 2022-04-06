@@ -23,9 +23,11 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 15),
-        const Text(
-          'Enter the password to decrypt\nand access the local vault file',
-          style: TextStyle(color: Colors.grey),
+        Text(
+          controller.passwordMode
+              ? 'Enter your vault password to proceed'
+              : 'Enter the password to decrypt\nand access the local vault file',
+          style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 15),
@@ -38,30 +40,33 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           onChanged: controller.onChanged,
           onFieldSubmitted: (text) => controller.unlock(),
           decoration: Styles.inputDecoration.copyWith(
-            hintText: 'Vault Password',
+            hintText: 'vault_password'.tr,
           ),
         ),
         const SizedBox(height: 10),
         Obx(
           () => TextButton.icon(
-            label: const Text('Unlock'),
+            label: Text(controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
             icon: const Icon(LineIcons.lockOpen),
             onPressed: controller.canProceed() ? controller.unlock : null,
           ),
         ),
-        const SizedBox(height: 10),
-        Obx(
-          () => Text(
-            '${controller.attemptsLeft()} attempts left',
-            style: const TextStyle(color: Colors.grey, fontSize: 10),
+        if (!controller.passwordMode) ...[
+          const SizedBox(height: 10),
+          Obx(
+            () => Text(
+              '${controller.attemptsLeft()} ' + 'attempts_left'.tr,
+              style: const TextStyle(color: Colors.grey, fontSize: 10),
+            ),
           ),
-        ),
+        ]
       ],
     );
 
     return WillPopScope(
-      onWillPop: () => Future.value(false),
+      onWillPop: () => Future.value(controller.passwordMode),
       child: Scaffold(
+        appBar: controller.passwordMode ? AppBar() : null,
         body: Padding(
           padding: const EdgeInsets.all(15),
           child: Center(

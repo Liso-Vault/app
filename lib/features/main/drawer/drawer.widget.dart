@@ -61,6 +61,20 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text('protected'.tr),
+            CustomChip(label: Text(controller.protectedCount)),
+          ],
+        ),
+        leading: controller.filterProtected.value
+            ? const FaIcon(FontAwesomeIcons.shield, color: Colors.green)
+            : const FaIcon(FontAwesomeIcons.shieldHalved),
+        onTap: controller.filterProtectedItems,
+        selected: controller.filterProtected.value,
+      ),
+      ListTile(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             Text('archived'.tr),
             CustomChip(label: Text(controller.archivedCount)),
           ],
@@ -136,12 +150,12 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         initiallyExpanded: true,
         children: [
           ListTile(
-            title: const Text('Settings'),
+            title: Text('settings'.tr),
             leading: const Icon(LineIcons.cog),
             onTap: () => Get.offAndToNamed(Routes.settings),
           ),
           ListTile(
-            title: const Text('About'),
+            title: Text('about'.tr),
             leading: const Icon(LineIcons.infoCircle),
             onTap: () => Get.offAndToNamed(Routes.about),
           ),

@@ -27,6 +27,7 @@ class UnlockScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
+  final passwordMode = Get.parameters['mode'] == 'password_prompt';
 
   // PROPERTIES
   final attemptsLeft = PersistenceController.to.maxUnlockAttempts.val.obs;
@@ -38,8 +39,6 @@ class UnlockScreenController extends GetxController
   @override
   void onInit() {
     change(null, status: RxStatus.success());
-    // passwordController.text = 'oliver12';
-    // unlock(); // TODO: temporary
     super.onInit();
   }
 
@@ -64,12 +63,15 @@ class UnlockScreenController extends GetxController
 
       passwordController.clear();
       canProceed.value = false;
-      attemptsLeft.value--;
 
-      if (attemptsLeft() <= 0) {
-        await LisoManager.reset();
-        Get.offNamedUntil(Routes.main, (route) => false);
-        return;
+      if (!passwordMode) {
+        attemptsLeft.value--;
+
+        if (attemptsLeft() <= 0) {
+          await LisoManager.reset();
+          Get.offNamedUntil(Routes.main, (route) => false);
+          return;
+        }
       }
 
       UIUtils.showSnackBar(
@@ -82,14 +84,20 @@ class UnlockScreenController extends GetxController
       return;
     }
 
-    // the encryption key from master's private key
-    final seedHex = HEX.encode(masterWallet!.privateKey.privateKey);
-    encryptionKey = utf8.encode(seedHex.substring(0, 32));
+    if (passwordMode) {
+      return Get.back(result: true);
+    }
 
-    // open Hive Boxes
-    await HiveManager.openBoxes();
+    if (!passwordMode) {
+      // the encryption key from master's private key
+      final seedHex = HEX.encode(masterWallet!.privateKey.privateKey);
+      encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
-    change(null, status: RxStatus.success());
-    Get.offNamedUntil(Routes.main, (route) => false);
+      // open Hive Boxes
+      await HiveManager.openBoxes();
+
+      change(null, status: RxStatus.success());
+      Get.offNamedUntil(Routes.main, (route) => false);
+    }
   }
 }

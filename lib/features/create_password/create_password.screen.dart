@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
+import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';
 
 class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
@@ -19,11 +21,15 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(LineIcons.alternateShield, size: 100),
+          LineIcon(
+            LineIcons.alternateShield,
+            size: 100,
+            color: kAppColor,
+          ),
           const SizedBox(height: 20),
-          const Text(
-            'Vault Password',
-            style: TextStyle(fontSize: 20),
+          Text(
+            'vault_password'.tr,
+            style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 15),
           const Text(
@@ -42,7 +48,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: Styles.inputDecoration.copyWith(
-                hintText: 'Password',
+                hintText: 'password'.tr,
               ),
             ),
           ),
@@ -58,7 +64,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: Styles.inputDecoration.copyWith(
-                hintText: 'Confirm Password',
+                hintText: 'confirm_password'.tr,
               ),
             ),
           ),
@@ -74,14 +80,14 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             children: [
               ElevatedButton.icon(
                 onPressed: controller.confirm,
-                label: const Text('Confirm'),
+                label: Text('confirm'.tr),
                 icon: const Icon(LineIcons.check),
                 style: Styles.elevatedButtonStyle,
               ),
               const SizedBox(width: 10),
               TextButton.icon(
                 onPressed: controller.generate,
-                label: const Text('Generate'),
+                label: Text('generate'.tr),
                 icon: const Icon(LineIcons.flask),
               ),
             ],

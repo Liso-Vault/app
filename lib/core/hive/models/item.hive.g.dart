@@ -22,15 +22,16 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       title: fields[2] as String,
       fields: (fields[3] as List).cast<HiveLisoField>(),
       favorite: fields[4] as bool,
-      tags: (fields[5] as List).cast<String>(),
-      metadata: fields[6] as HiveMetadata,
+      protected: fields[5] as bool,
+      tags: (fields[6] as List).cast<String>(),
+      metadata: fields[7] as HiveMetadata,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveLisoItem obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.category)
       ..writeByte(1)
@@ -42,8 +43,10 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       ..writeByte(4)
       ..write(obj.favorite)
       ..writeByte(5)
-      ..write(obj.tags)
+      ..write(obj.protected)
       ..writeByte(6)
+      ..write(obj.tags)
+      ..writeByte(7)
       ..write(obj.metadata);
   }
 

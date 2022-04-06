@@ -45,6 +45,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       _reloadSearchDelegate();
     }
 
+    void _protect() {
+      item.protected = !item.protected;
+      item.save();
+      _reloadSearchDelegate();
+    }
+
     void _archive() async {
       item.delete();
       await HiveManager.archived!.add(item);
@@ -63,6 +69,24 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       _reloadSearchDelegate();
     }
 
+    void _open() async {
+      if (item.protected) {
+        final unlocked = await Get.toNamed(
+              Routes.unlock,
+              parameters: {'mode': 'password_prompt'},
+            ) ??
+            false;
+
+        if (!unlocked) return;
+      }
+
+      Get.toNamed(Routes.item, parameters: {
+        'mode': 'update',
+        'category': item.category,
+        'hiveKey': item.key.toString(),
+      });
+    }
+
     void menu() {
       SelectorSheet(
         items: [
@@ -75,6 +99,16 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
               color: item.favorite ? Colors.pink : Get.theme.iconTheme.color,
             ),
             onSelected: _favorite,
+          ),
+          SelectorItem(
+            title: item.protected ? 'unprotect'.tr : 'protect'.tr,
+            leading: FaIcon(
+              item.protected
+                  ? FontAwesomeIcons.shield
+                  : FontAwesomeIcons.shieldHalved,
+              color: item.protected ? Colors.green : Get.theme.iconTheme.color,
+            ),
+            onSelected: _protect,
           ),
           if (!isArchived) ...[
             SelectorItem(
@@ -123,12 +157,21 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           ),
           const SizedBox(height: 5),
         ],
-        Row(
+        Wrap(
+          runSpacing: 5,
           children: [
             if (item.favorite) ...[
               const FaIcon(
                 FontAwesomeIcons.solidHeart,
                 color: Colors.pink,
+                size: 10,
+              ),
+              const SizedBox(width: 5),
+            ],
+            if (item.protected) ...[
+              const FaIcon(
+                FontAwesomeIcons.shield,
+                color: Colors.green,
                 size: 10,
               ),
               const SizedBox(width: 5),
@@ -179,11 +222,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       subtitle: subTitle,
       trailing: trailing,
       onLongPress: menu,
-      onTap: () => Get.toNamed(Routes.item, parameters: {
-        'mode': 'update',
-        'category': item.category,
-        'hiveKey': item.key.toString(),
-      }),
+      onTap: _open,
     );
 
     final swipeAction = SwipeActionCell(

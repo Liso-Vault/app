@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/features/general/custom_chip.widget.dart';
 
+import '../../core/utils/globals.dart';
 import 'mnemonic_screen.controller.dart';
 
 class MnemonicScreen extends GetView<MnemonicScreenController>
@@ -16,20 +18,31 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
     final mnemonicPhrase = GestureDetector(
       onLongPress: controller.options,
       onSecondaryTap: controller.options, // mouse right click
-      child: Text(
-        controller.mnemonic.value,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
+      // child: Text(
+      //   controller.mnemonic.value,
+      //   textAlign: TextAlign.center,
+      //   style: TextStyle(fontSize: GetPlatform.isMobile ? 20 : 25),
+      // ),
+      child: Wrap(
+        spacing: 5,
+        runSpacing: 10,
+        alignment: WrapAlignment.center,
+        children: controller.mnemonic.value
+            .split(' ')
+            .map(
+              (e) => CustomChip(
+                color: Colors.green.shade800,
+                label: Text(e, style: const TextStyle(fontSize: 18)),
+              ),
+            )
+            .toList(),
       ),
     );
 
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(
-          LineIcons.alternateShield,
-          size: 100,
-        ),
+        const Icon(LineIcons.key, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
           'Master Seed Phrase',
@@ -92,7 +105,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
           () => TextButton.icon(
             onPressed:
                 controller.canProceed ? controller.continuePressed : null,
-            label: const Text('Continue'),
+            label: Text('continue'.tr),
             icon: const Icon(LineIcons.arrowRight),
           ),
         ),

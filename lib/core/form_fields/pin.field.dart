@@ -21,6 +21,7 @@ class PINFormField extends StatelessWidget {
     return TextFormField(
       controller: _fieldController,
       keyboardType: TextInputType.number,
+      obscureText: true,
       inputFormatters: [inputFormatterRestrictSpaces],
       validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
           ? null
