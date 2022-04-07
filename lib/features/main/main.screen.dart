@@ -13,13 +13,22 @@ import 'drawer/drawer.widget.dart';
 import 'drawer/drawer_widget.controller.dart';
 import 'main_screen.controller.dart';
 
-class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
-  const MainScreen({Key? key}) : super(key: key);
+// ignore: use_key_in_widget_constructors
+class MainScreen extends GetResponsiveView<MainScreenController>
+    with ConsoleMixin {
+  MainScreen({Key? key})
+      : super(
+          key: key,
+          settings: const ResponsiveScreenSettings(
+            desktopChangePoint: 800,
+            tabletChangePoint: 600,
+          ),
+        );
 
   Widget itemBuilder(context, index) => ItemTile(controller.data[index]);
 
   @override
-  Widget build(BuildContext context) {
+  Widget? builder() {
     final drawerController = Get.find<DrawerWidgetController>();
 
     final content = controller.obx(
@@ -50,7 +59,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       controller.searchDelegate = ItemsSearchDelegate();
 
       await showSearch(
-        context: context,
+        context: Get.context!,
         delegate: controller.searchDelegate!,
       );
 
@@ -87,43 +96,12 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       onPressed: controller.add,
     );
 
-    return SplitView(
-      drawer: const DrawerMenu(),
-      content: content,
-      appBar: appBar,
-      floatingActionButton: floatingActionButton,
-    );
-  }
-}
-
-class SplitView extends StatelessWidget {
-  final Widget drawer;
-  final Widget content;
-  final AppBar appBar;
-  final FloatingActionButton floatingActionButton;
-
-  const SplitView({
-    Key? key,
-    // menu and content are now configurable
-    required this.drawer,
-    required this.content,
-    required this.appBar,
-    required this.floatingActionButton,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    const breakpoint = 600.0;
-    const drawerWidth = 240.0;
-    final screenWidth = MediaQuery.of(context).size.width;
-
-    if (screenWidth >= breakpoint) {
-      // widescreen: menu on the left, content on the right
+    if (screen.screenType == ScreenType.Desktop) {
       return Row(
         children: [
-          SizedBox(
-            width: drawerWidth,
-            child: drawer,
+          const SizedBox(
+            width: 240,
+            child: DrawerMenu(),
           ),
           Container(width: 0.5, color: Colors.black),
           Expanded(
@@ -141,12 +119,11 @@ class SplitView extends StatelessWidget {
         ],
       );
     } else {
-      // narrow screen: show content, menu inside drawer
       return Scaffold(
         appBar: appBar,
         body: content,
         floatingActionButton: floatingActionButton,
-        drawer: SizedBox(width: drawerWidth, child: drawer),
+        drawer: const DrawerMenu(),
       );
     }
   }

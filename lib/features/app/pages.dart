@@ -34,7 +34,7 @@ class AppPages {
   static final routes = [
     GetPage(
       name: Routes.main,
-      page: () => const MainScreen(),
+      page: () => MainScreen(),
       binding: MainScreenBinding(),
       transition: Transition.fadeIn,
     ),
