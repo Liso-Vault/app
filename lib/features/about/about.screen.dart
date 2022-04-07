@@ -1,18 +1,16 @@
-import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../core/utils/utils.dart';
 import 'about_screen.controller.dart';
 
-class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
+class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
   const AboutScreen({Key? key}) : super(key: key);
 
   @override
@@ -126,7 +124,16 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
     );
 
     return Scaffold(
-      appBar: AppBar(title: const Text('About')),
+      appBar: AppBar(
+        title: const Text('About'),
+        // X icon for desktop instead of back for mobile
+        leading: MainScreenController.to.expandableDrawer
+            ? null
+            : IconButton(
+                onPressed: Get.back,
+                icon: const Icon(LineIcons.times),
+              ),
+      ),
       body: _content,
     );
   }

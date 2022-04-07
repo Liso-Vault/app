@@ -10,6 +10,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/hive/hive.manager.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
@@ -32,6 +33,8 @@ class SettingsScreenController extends GetxController
   final theme = PersistenceController.to.theme.val.obs;
 
   // GETTERS
+  bool get canExportVault =>
+      HiveManager.items != null && HiveManager.items!.isNotEmpty;
 
   // INIT
   @override

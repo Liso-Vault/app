@@ -33,6 +33,7 @@ class UnlockScreenController extends GetxController
   // PROPERTIES
   final attemptsLeft = PersistenceController.to.maxUnlockAttempts.val.obs;
   final canProceed = false.obs;
+  final obscurePassword = true.obs;
 
   // GETTERS
 

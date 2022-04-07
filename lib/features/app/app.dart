@@ -38,7 +38,7 @@ class App extends StatelessWidget {
       initialBinding: MainScreenBinding(),
       getPages: AppPages.routes,
       defaultTransition: Transition.rightToLeft,
-      transitionDuration: 250.milliseconds,
+      transitionDuration: 200.milliseconds,
       // THEME MODE
       themeMode: ThemeMode.values.byName(persistence.theme.val),
       // DARK THEME

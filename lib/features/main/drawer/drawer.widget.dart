@@ -6,6 +6,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../../core/utils/utils.dart';
 
@@ -169,12 +170,26 @@ class DrawerMenu extends GetView<DrawerWidgetController> with ConsoleMixin {
           ListTile(
             title: Text('settings'.tr),
             leading: const Icon(LineIcons.cog),
-            onTap: () => Get.offAndToNamed(Routes.settings),
+            onTap: () {
+              if (MainScreenController.to.expandableDrawer) {
+                Get.offAndToNamed(Routes.settings);
+              } else {
+                // Get.toNamed(Routes.settings);
+                Utils.adaptiveRouteOpen(name: Routes.settings);
+              }
+            },
           ),
           ListTile(
             title: Text('about'.tr),
             leading: const Icon(LineIcons.infoCircle),
-            onTap: () => Get.offAndToNamed(Routes.about),
+            onTap: () {
+              if (MainScreenController.to.expandableDrawer) {
+                Get.offAndToNamed(Routes.about);
+              } else {
+                // Get.toNamed(Routes.about);
+                Utils.adaptiveRouteOpen(name: Routes.about);
+              }
+            },
           ),
         ],
       ),

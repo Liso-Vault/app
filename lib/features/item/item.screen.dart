@@ -4,12 +4,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/styles.dart';
 
 import '../general/busy_indicator.widget.dart';
+import '../main/main_screen.controller.dart';
 import 'item_screen.controller.dart';
 
-class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
+class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
   const ItemScreen({Key? key}) : super(key: key);
 
   @override
@@ -174,7 +174,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       (_) => Align(
         alignment: Alignment.topCenter,
         child: Container(
-          constraints: Styles.containerConstraints,
+          // constraints: Styles.containerConstraints,
           child: form,
         ),
       ),
@@ -183,6 +183,13 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
 
     final appBar = AppBar(
       title: Text(category.tr),
+      // X icon for desktop instead of back for mobile
+      leading: MainScreenController.to.expandableDrawer
+          ? null
+          : IconButton(
+              onPressed: Get.back,
+              icon: const Icon(LineIcons.times),
+            ),
       centerTitle: false,
       actions: [
         IconButton(

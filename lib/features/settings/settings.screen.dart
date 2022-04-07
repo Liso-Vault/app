@@ -1,8 +1,8 @@
+import 'package:desktop_window/desktop_window.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -11,9 +11,10 @@ import 'package:liso/resources/resources.dart';
 
 import '../../core/utils/extensions.dart';
 import '../general/busy_indicator.widget.dart';
+import '../main/main_screen.controller.dart';
 import 'settings_screen.controller.dart';
 
-class SettingsScreen extends GetView<SettingsScreenController>
+class SettingsScreen extends GetWidget<SettingsScreenController>
     with ConsoleMixin {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -32,7 +33,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           ),
           trailing: const Icon(LineIcons.copy),
           title: const Text('Liso Address'),
-          subtitle: Text(masterWallet!.address),
+          subtitle: Text(masterWallet?.address ?? ''),
           onTap: () => Utils.copyToClipboard(masterWallet!.address),
         ),
         const Divider(),
@@ -64,7 +65,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_vault'.tr),
           onTap: () => Get.toNamed(Routes.export),
-          enabled: HiveManager.items!.isNotEmpty,
+          enabled: controller.canExportVault,
         ),
         const Divider(),
         ListTile(
@@ -98,11 +99,30 @@ class SettingsScreen extends GetView<SettingsScreenController>
         //   onTap: () => Get.toNamed(Routes.export),
         // ),
         // const Divider(),
+        if (kDebugMode) ...[
+          ListTile(
+            leading: const Icon(LineIcons.bug),
+            title: const Text('Window Size'),
+            onTap: () async {
+              final size = await DesktopWindow.getWindowSize();
+              console.info('size: $size');
+            },
+          ),
+        ],
       ],
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text('settings'.tr)),
+      appBar: AppBar(
+        title: Text('settings'.tr),
+        // X icon for desktop instead of back for mobile
+        leading: MainScreenController.to.expandableDrawer
+            ? null
+            : IconButton(
+                onPressed: Get.back,
+                icon: const Icon(LineIcons.times),
+              ),
+      ),
       body: controller.obx(
         (_) => content,
         onLoading: Obx(

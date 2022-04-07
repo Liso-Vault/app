@@ -70,6 +70,8 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
 
   int get trashCount => HiveManager.trash?.length ?? 0;
 
+  // INIT
+
   // FUNCTIONS
 
   void filterFavoriteItems() async {

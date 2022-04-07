@@ -32,17 +32,27 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 15),
-        TextFormField(
-          autofocus: true,
-          controller: controller.passwordController,
-          textAlign: TextAlign.center,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
-          textInputAction: TextInputAction.go,
-          onChanged: controller.onChanged,
-          onFieldSubmitted: (text) => controller.unlock(),
-          decoration: InputDecoration(
-            hintText: 'password'.tr,
+        Obx(
+          () => TextFormField(
+            autofocus: true,
+            controller: controller.passwordController,
+            textAlign: TextAlign.center,
+            keyboardType: TextInputType.visiblePassword,
+            obscureText: controller.obscurePassword(),
+            textInputAction: TextInputAction.go,
+            onChanged: controller.onChanged,
+            onFieldSubmitted: (text) => controller.unlock(),
+            decoration: InputDecoration(
+              hintText: 'password'.tr,
+              suffixIcon: IconButton(
+                onPressed: controller.obscurePassword.toggle,
+                icon: Icon(
+                  controller.obscurePassword()
+                      ? LineIcons.eye
+                      : LineIcons.eyeSlash,
+                ),
+              ),
+            ),
           ),
         ),
         const SizedBox(height: 10),

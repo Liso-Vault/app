@@ -21,7 +21,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           key: key,
           settings: const ResponsiveScreenSettings(
             desktopChangePoint: 800,
-            tabletChangePoint: 600,
           ),
         );
 
@@ -96,30 +95,33 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       onPressed: controller.add,
     );
 
+    const drawerWidth = 240.0;
+
     if (screen.screenType == ScreenType.Desktop) {
       return Row(
         children: [
-          const SizedBox(
-            width: 240,
-            child: DrawerMenu(),
-          ),
+          const SizedBox(width: drawerWidth, child: DrawerMenu()),
           Container(width: 0.5, color: Colors.black),
           Expanded(
             child: Scaffold(
+              key: controller.scaffoldKey,
               appBar: appBar,
+              body: content,
               floatingActionButton: Obx(
                 () => DrawerWidgetController.to.boxFilter.value ==
                         HiveBoxFilter.all
                     ? floatingActionButton
                     : const SizedBox.shrink(),
               ),
-              body: content,
             ),
           ),
         ],
       );
-    } else {
+    }
+    // 1 SECTION FOR PHONE DEVICES
+    else {
       return Scaffold(
+        key: controller.scaffoldKey,
         appBar: appBar,
         body: content,
         floatingActionButton: floatingActionButton,

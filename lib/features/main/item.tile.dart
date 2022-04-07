@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/item/item.screen.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../core/hive/hive.manager.dart';
@@ -20,7 +21,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   final HiveLisoItem item;
   final bool searchMode;
 
-  const ItemTile(
+  ItemTile(
     this.item, {
     Key? key,
     this.searchMode = false,
@@ -82,6 +83,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     }
 
     void _open() async {
+      // show lock screen if item is protected
       if (item.protected) {
         final unlocked = await Get.toNamed(
               Routes.unlock,
@@ -92,11 +94,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         if (!unlocked) return;
       }
 
-      Get.toNamed(Routes.item, parameters: {
+      // route parameters
+      final parameters = {
         'mode': 'update',
         'category': item.category,
         'hiveKey': item.key.toString(),
-      });
+      };
+
+      Utils.adaptiveRouteOpen(
+        name: Routes.item,
+        parameters: parameters,
+      );
     }
 
     void menu() {

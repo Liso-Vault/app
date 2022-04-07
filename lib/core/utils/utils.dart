@@ -7,6 +7,8 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/app/pages.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -210,5 +212,29 @@ class Utils {
     }
 
     return Icon(_iconData, color: color);
+  }
+
+  static Future<dynamic>? adaptiveRouteOpen({
+    required String name,
+    Map<String, String> parameters = const {},
+  }) {
+    // Regular navigation for mobile
+    if (MainScreenController.to.expandableDrawer) {
+      return Get.toNamed(name, parameters: parameters);
+    }
+
+    // Open page as dialog for desktop
+    Get.parameters = parameters; // manually pass parameters
+
+    return Get.dialog(
+      Dialog(
+        child: SizedBox(
+          width: 600,
+          height: 1200,
+          child: AppPages.routes.firstWhere((e) => e.name == name).page(),
+        ),
+      ),
+      routeSettings: RouteSettings(name: name),
+    );
   }
 }
