@@ -57,11 +57,11 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
                 onPressed: controller.canProceed() ? controller.unlock : null,
               ),
             ),
-            if (BiometricUtils.ready) ...[
+            if (BiometricUtils.supported) ...[
               const SizedBox(width: 15),
               IconButton(
                 icon: const Icon(LineIcons.fingerprint),
-                onPressed: controller.biometricAuthentication,
+                onPressed: controller.authenticateBiometrics,
               ),
             ]
           ],

@@ -15,6 +15,7 @@ const kAppTwitterUrl = 'https://twitter.com/liso_vault';
 // const kAppFacebookUrl = 'https://facebook.com/liso_vault';
 // const kAppInstagramUrl = 'https://instagram.com/liso_vault';
 const kAppEmail = 'liso.vault@gmail.com'; // TODO: custom domain email
+const kAppSupportUrl = 'https://matrix.org'; // TODO: link to matrix server
 
 const kDeveloperName = 'Stackwares';
 const kDeveloperTwitterHandle = '@stackwares';

@@ -60,13 +60,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
         // ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.syncIcon),
-          trailing: const Icon(LineIcons.exclamationTriangle),
-          title: Text('reset'.tr + ' $kAppName'),
-          onTap: () => Get.toNamed(Routes.reset),
-        ),
-        const Divider(),
-        ListTile(
           leading: const Icon(LineIcons.box),
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_vault'.tr),
@@ -79,6 +72,13 @@ class SettingsScreen extends GetView<SettingsScreenController>
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_wallet'.tr),
           onTap: controller.exportWallet,
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.syncIcon),
+          trailing: const Icon(LineIcons.exclamationTriangle),
+          title: Text('reset'.tr + ' $kAppName'),
+          onTap: () => Get.toNamed(Routes.reset),
         ),
         const Divider(),
         if (kDebugMode) ...[

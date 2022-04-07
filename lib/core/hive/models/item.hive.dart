@@ -71,6 +71,9 @@ class HiveLisoItem extends HiveObject {
   String get updatedDateTimeFormatted =>
       DateFormat.yMMMMd().add_jm().format(metadata.updatedTime);
 
+  String get createdDateTimeFormatted =>
+      DateFormat.yMMMMd().add_jm().format(metadata.createdTime);
+
   String get updatedTimeAgo =>
       Utils.timeAgo(metadata.updatedTime, short: false);
 

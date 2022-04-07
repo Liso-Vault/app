@@ -34,10 +34,13 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           ),
           const Divider(),
           const SizedBox(height: 20),
-          ElevatedButton.icon(
-            label: Text('create'.tr),
-            icon: const Icon(LineIcons.plus),
-            onPressed: () => Get.toNamed(Routes.mnemonic),
+          SizedBox(
+            width: 200,
+            child: ElevatedButton.icon(
+              label: Text('create_vault'.tr),
+              icon: const Icon(LineIcons.plus),
+              onPressed: () => Get.toNamed(Routes.mnemonic),
+            ),
           ),
           const SizedBox(height: 10),
           TextButton.icon(
@@ -45,14 +48,14 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             icon: const Icon(LineIcons.download),
             onPressed: () => Get.toNamed(Routes.import),
           ),
-          if (kDebugMode) ...[
-            const SizedBox(height: 10),
-            TextButton.icon(
-              label: Text('sign_in'.tr),
-              icon: const Icon(LineIcons.sign),
-              onPressed: () => Get.toNamed(Routes.signIn),
-            ),
-          ]
+          // if (kDebugMode) ...[
+          //   const SizedBox(height: 10),
+          //   TextButton.icon(
+          //     label: Text('sign_in'.tr),
+          //     icon: const Icon(LineIcons.sign),
+          //     onPressed: () => Get.toNamed(Routes.signIn),
+          //   ),
+          // ]
         ],
       ),
     );

@@ -16,6 +16,8 @@ import 'main_screen.controller.dart';
 class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
   const MainScreen({Key? key}) : super(key: key);
 
+  Widget itemBuilder(context, index) => ItemTile(controller.data[index]);
+
   @override
   Widget build(BuildContext context) {
     final drawerController = Get.find<DrawerWidgetController>();
@@ -27,7 +29,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
           itemCount: controller.data.length,
           itemBuilder: itemBuilder,
           separatorBuilder: (context, index) => const Divider(height: 0),
-          padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
         ),
       ),
       onLoading: const BusyIndicator(),
@@ -80,7 +82,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       ],
     );
 
-    return Scaffold(
+    final scaffold = Scaffold(
       appBar: appBar,
       drawer: const ZDrawer(),
       floatingActionButton: Obx(
@@ -93,7 +95,7 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       ),
       body: content,
     );
-  }
 
-  Widget itemBuilder(context, index) => ItemTile(controller.data[index]);
+    return scaffold;
+  }
 }

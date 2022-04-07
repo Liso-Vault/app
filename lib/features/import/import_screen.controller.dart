@@ -38,15 +38,30 @@ class ImportScreenController extends GetxController
 
   // FUNCTIONS
 
-  Archive _getArchive() {
-    final inputStream = InputFileStream(filePathController.text);
+  Archive? _getArchive() {
+    InputFileStream? inputStream;
+
+    try {
+      inputStream = InputFileStream(filePathController.text);
+    } catch (e) {
+      UIUtils.showSimpleDialog(
+        'Error Importing Vault',
+        e.toString(),
+      );
+
+      change(null, status: RxStatus.success());
+      console.error('error importing archive: $e');
+      return null;
+    }
+
     return ZipDecoder().decodeBuffer(inputStream);
   }
 
   Future<void> _extractMainArchive() async {
-    final mainArchive = _getArchive();
+    final archive = _getArchive();
+    if (archive == null) return;
 
-    for (var file in mainArchive.files) {
+    for (var file in archive.files) {
       if (!file.isFile) continue;
       final path = join(LisoPaths.hive!.path, basename(file.name));
       final outputStream = OutputFileStream(path);
@@ -63,6 +78,8 @@ class ImportScreenController extends GetxController
   }
 
   Future<void> continuePressed() async {
+    // TODO: ask for read permission to prevent error
+
     if (!formKey.currentState!.validate()) return;
     if (seedController.text.isEmpty) return console.error('invalid mnemonic');
     if (status == RxStatus.loading()) return console.error('still busy');
@@ -70,9 +87,11 @@ class ImportScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     // METHOD 1
-    final tempArchive = _getArchive();
+    final archive = _getArchive();
+    if (archive == null) return;
+
     // check if archive contains files
-    if (tempArchive.files.isEmpty) {
+    if (archive.files.isEmpty) {
       UIUtils.showSimpleDialog(
         'Invalid Vault File',
         'The vault file you imported contains no files',
@@ -81,10 +100,10 @@ class ImportScreenController extends GetxController
       return change(null, status: RxStatus.success());
     }
 
-    console.info('temp archive files: ${tempArchive.files.length}');
+    console.info('temp archive files: ${archive.files.length}');
     // filter items.hive file
-    final itemBoxFiles = tempArchive.files
-        .where((e) => e.isFile && e.name.contains('items.hive'));
+    final itemBoxFiles =
+        archive.files.where((e) => e.isFile && e.name.contains('items.hive'));
     // if items.hive is not found
     if (itemBoxFiles.isEmpty) {
       UIUtils.showSimpleDialog(

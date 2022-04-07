@@ -145,9 +145,14 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ),
       if (mode == 'update') ...[
         const Divider(),
-        // TODO: better datetime format
         Text(
-          'Last updated ${controller.item?.updatedDateTimeFormatted}', // TODO: better DateTime format
+          'Last modified ${controller.item?.updatedDateTimeFormatted}',
+          style: const TextStyle(color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 5),
+        Text(
+          'Created ${controller.item?.createdDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

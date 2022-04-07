@@ -9,6 +9,7 @@ import 'package:liso/resources/resources.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/utils/utils.dart';
 import 'about_screen.controller.dart';
 
 class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
@@ -89,22 +90,12 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
         ListTile(
           leading: const Icon(LineIcons.laptopCode),
           title: const Text('Licenses'),
-          onTap: () async {
-            final packageInfo = await PackageInfo.fromPlatform();
-
-            showLicensePage(
-              context: context,
-              applicationIcon: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                child: Image.asset(Images.logo, height: 50),
-              ),
-              applicationName: packageInfo.appName,
-              applicationVersion:
-                  '${packageInfo.version}+${packageInfo.buildNumber}',
-              applicationLegalese:
-                  'Copyright © ${DateTime.now().year} $kDeveloperName\nAll rights reserved.',
-            );
-          },
+          onTap: () => controller.showLicenses(context),
+        ),
+        ListTile(
+          leading: const Icon(LineIcons.questionCircle),
+          title: const Text('Help & Support'),
+          onTap: () => launch(kAppSupportUrl),
         ),
         // ListTile(
         //   leading: const Icon(LineIcons.download),
@@ -113,16 +104,16 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
         //   subtitle: Obx(() => Text(controller.appVersion)),
         //   onTap: () => launch(kAppGithubReleasesUrl),
         // ),
-        if (kDebugMode) ...[
-          ListTile(
-            leading: const Icon(LineIcons.bug),
-            title: const Text('Window Size'),
-            onTap: () async {
-              final size = await DesktopWindow.getWindowSize();
-              console.info('size: $size');
-            },
-          ),
-        ],
+        // if (kDebugMode) ...[
+        //   ListTile(
+        //     leading: const Icon(LineIcons.bug),
+        //     title: const Text('Window Size'),
+        //     onTap: () async {
+        //       final size = await DesktopWindow.getWindowSize();
+        //       console.info('size: $size');
+        //     },
+        //   ),
+        // ],
         const Divider(),
         const SizedBox(height: 20),
         TextButton.icon(

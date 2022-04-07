@@ -1,6 +1,5 @@
 import 'package:biometric_storage/biometric_storage.dart';
-import 'package:get/get_utils/src/get_utils/get_utils.dart';
-import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:local_auth/local_auth.dart';
 
@@ -8,15 +7,12 @@ import 'console.dart';
 
 class BiometricUtils {
   static final console = Console(name: 'BiometricUtils');
-
-  static bool ready = false;
+  static bool supported = false;
 
   static Future<void> init() async {
-    if (!GetPlatform.isMobile) return;
-    // biometrucs
-    final localAuth = LocalAuthentication();
-    final supported = await localAuth.canCheckBiometrics;
-    ready = GetPlatform.isMobile && supported;
+    if (!GetPlatform.isMobile) return; // fingerprint for mobile only
+    supported = await LocalAuthentication().canCheckBiometrics;
+    console.info('init');
   }
 
   static Future<String?> getPassword() async {
@@ -69,8 +65,7 @@ class BiometricUtils {
   }
 
   static Future<bool> canAuthenticate() async {
-    // only for mobile devices
-    if (!BiometricUtils.ready) {
+    if (!supported) {
       console.info('biometrics not applicable');
       return false;
     }

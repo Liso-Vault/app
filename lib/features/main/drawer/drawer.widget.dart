@@ -5,7 +5,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/general/custom_chip.widget.dart';
 import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../../core/utils/utils.dart';
@@ -33,7 +32,9 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('all_Items'.tr),
-            CustomChip(label: Text(controller.itemsCount)),
+            if (controller.itemsCount > 0) ...[
+              Chip(label: Text(controller.itemsCount.toString())),
+            ]
           ],
         ),
         leading: const Icon(LineIcons.list),
@@ -45,7 +46,9 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('favorites'.tr),
-            CustomChip(label: Text(controller.favoriteCount)),
+            if (controller.favoriteCount > 0) ...[
+              Chip(label: Text(controller.favoriteCount.toString())),
+            ]
           ],
         ),
         leading: controller.filterFavorites()
@@ -59,7 +62,9 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('protected'.tr),
-            CustomChip(label: Text(controller.protectedCount)),
+            if (controller.protectedCount > 0) ...[
+              Chip(label: Text(controller.protectedCount.toString())),
+            ]
           ],
         ),
         leading: controller.filterProtected()
@@ -73,7 +78,9 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('archived'.tr),
-            CustomChip(label: Text(controller.archivedCount)),
+            if (controller.archivedCount > 0) ...[
+              Chip(label: Text(controller.archivedCount.toString())),
+            ]
           ],
         ),
         leading: const Icon(LineIcons.archive),
@@ -85,7 +92,9 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('trash'.tr),
-            CustomChip(label: Text(controller.trashCount)),
+            if (controller.trashCount > 0) ...[
+              Chip(label: Text(controller.trashCount.toString())),
+            ]
           ],
         ),
         leading: const Icon(LineIcons.trash),

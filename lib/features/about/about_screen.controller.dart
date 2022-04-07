@@ -1,5 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+
+import '../../core/utils/globals.dart';
+import '../../resources/resources.dart';
 
 class AboutScreenBinding extends Bindings {
   @override
@@ -26,4 +30,20 @@ class AboutScreenController extends GetxController {
   }
 
   // FUNCTIONS
+
+  void showLicenses(BuildContext context) async {
+    final packageInfo = await PackageInfo.fromPlatform();
+
+    showLicensePage(
+      context: context,
+      applicationIcon: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15),
+        child: Image.asset(Images.logo, height: 50),
+      ),
+      applicationName: packageInfo.appName,
+      applicationVersion: '${packageInfo.version}+${packageInfo.buildNumber}',
+      applicationLegalese:
+          'Copyright © ${DateTime.now().year} $kDeveloperName\nAll rights reserved.',
+    );
+  }
 }

@@ -54,23 +54,17 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     return _tags;
   }
 
-  String get itemsCount =>
-      HiveManager.items!.isEmpty ? '' : HiveManager.items!.length.toString();
+  int get itemsCount => HiveManager.items!.length;
 
-  String get favoriteCount => HiveManager.items!.isEmpty
-      ? ''
-      : HiveManager.items!.values.where((e) => e.favorite).length.toString();
+  int get favoriteCount =>
+      HiveManager.items!.values.where((e) => e.favorite).length;
 
-  String get protectedCount => HiveManager.items!.isEmpty
-      ? ''
-      : HiveManager.items!.values.where((e) => e.protected).length.toString();
+  int get protectedCount =>
+      HiveManager.items!.values.where((e) => e.protected).length;
 
-  String get archivedCount => HiveManager.archived!.isEmpty
-      ? ''
-      : HiveManager.archived!.length.toString();
+  int get archivedCount => HiveManager.archived!.length;
 
-  String get trashCount =>
-      HiveManager.trash!.isEmpty ? '' : HiveManager.trash!.length.toString();
+  int get trashCount => HiveManager.trash!.length;
 
   // FUNCTIONS
 

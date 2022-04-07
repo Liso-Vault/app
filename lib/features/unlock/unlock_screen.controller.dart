@@ -45,7 +45,7 @@ class UnlockScreenController extends GetxController
 
   @override
   void onReady() async {
-    biometricAuthentication();
+    authenticateBiometrics();
     super.onReady();
   }
 
@@ -53,12 +53,14 @@ class UnlockScreenController extends GetxController
   void onChanged(String text) => canProceed.value = text.isNotEmpty;
 
   // biometric storage
-  void biometricAuthentication() async {
+  void authenticateBiometrics() async {
+    if (!GetPlatform.isMobile) return; // mobile only
     if (!await BiometricUtils.canAuthenticate()) return;
     final biometricPassword = await BiometricUtils.getPassword();
     if (biometricPassword == null) return;
     // set the password then programmatically unlock
     passwordController.text = biometricPassword;
+    // delay to show that password has been inserted
     await Future.delayed(100.milliseconds);
     unlock();
   }
