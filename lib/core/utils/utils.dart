@@ -205,7 +205,8 @@ class Utils {
         _iconData = LineIcons.key;
         break;
       default:
-        throw 'item category: $category not found while obtaining icon';
+        _iconData = LineIcons.exclamationCircle; // not found
+        break;
     }
 
     return Icon(_iconData, color: color);

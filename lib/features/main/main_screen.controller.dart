@@ -144,16 +144,16 @@ class MainScreenController extends GetxController
     }
 
     // FILTER BY CATEGORY
-    if (drawerController.filterCategory != null) {
+    if (drawerController.filterCategory() != LisoItemCategory.none) {
       items = items
-          .where((e) => e.category == drawerController.filterCategory!.name)
+          .where((e) => e.category == drawerController.filterCategory().name)
           .toList();
     }
 
     // FILTER BY TAG
     if (drawerController.filterTag.isNotEmpty) {
       items = items
-          .where((e) => e.tags.contains(drawerController.filterTag))
+          .where((e) => e.tags.contains(drawerController.filterTag()))
           .toList();
     }
 
@@ -253,12 +253,12 @@ class MainScreenController extends GetxController
   }
 
   void add() async {
-    if (drawerController.filterCategory != null) {
+    if (drawerController.filterCategory() != LisoItemCategory.none) {
       return Get.toNamed(
         Routes.item,
         parameters: {
           'mode': 'add',
-          'category': drawerController.filterCategory!.name
+          'category': drawerController.filterCategory().name
         },
       );
     }

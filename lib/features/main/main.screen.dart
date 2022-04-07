@@ -82,20 +82,72 @@ class MainScreen extends GetView<MainScreenController> with ConsoleMixin {
       ],
     );
 
-    final scaffold = Scaffold(
-      appBar: appBar,
-      drawer: const ZDrawer(),
-      floatingActionButton: Obx(
-        () => drawerController.boxFilter.value == HiveBoxFilter.all
-            ? FloatingActionButton(
-                child: const Icon(LineIcons.plus),
-                onPressed: controller.add,
-              )
-            : const SizedBox.shrink(),
-      ),
-      body: content,
+    final floatingActionButton = FloatingActionButton(
+      child: const Icon(LineIcons.plus),
+      onPressed: controller.add,
     );
 
-    return scaffold;
+    return SplitView(
+      drawer: const DrawerMenu(),
+      content: content,
+      appBar: appBar,
+      floatingActionButton: floatingActionButton,
+    );
+  }
+}
+
+class SplitView extends StatelessWidget {
+  final Widget drawer;
+  final Widget content;
+  final AppBar appBar;
+  final FloatingActionButton floatingActionButton;
+
+  const SplitView({
+    Key? key,
+    // menu and content are now configurable
+    required this.drawer,
+    required this.content,
+    required this.appBar,
+    required this.floatingActionButton,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    const breakpoint = 600.0;
+    const drawerWidth = 240.0;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    if (screenWidth >= breakpoint) {
+      // widescreen: menu on the left, content on the right
+      return Row(
+        children: [
+          SizedBox(
+            width: drawerWidth,
+            child: drawer,
+          ),
+          Container(width: 0.5, color: Colors.black),
+          Expanded(
+            child: Scaffold(
+              appBar: appBar,
+              floatingActionButton: Obx(
+                () => DrawerWidgetController.to.boxFilter.value ==
+                        HiveBoxFilter.all
+                    ? floatingActionButton
+                    : const SizedBox.shrink(),
+              ),
+              body: content,
+            ),
+          ),
+        ],
+      );
+    } else {
+      // narrow screen: show content, menu inside drawer
+      return Scaffold(
+        appBar: appBar,
+        body: content,
+        floatingActionButton: floatingActionButton,
+        drawer: SizedBox(width: drawerWidth, child: drawer),
+      );
+    }
   }
 }

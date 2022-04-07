@@ -90,4 +90,5 @@ enum LisoItemCategory {
   socialSecurity,
   wirelessRouter,
   encryption,
+  none,
 }

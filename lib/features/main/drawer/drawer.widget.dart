@@ -9,8 +9,8 @@ import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../../core/utils/utils.dart';
 
-class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
-  const ZDrawer({Key? key}) : super(key: key);
+class DrawerMenu extends GetView<DrawerWidgetController> with ConsoleMixin {
+  const DrawerMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,79 +27,89 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
 
     final items = [
       header,
-      ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('all_Items'.tr),
-            if (controller.itemsCount > 0) ...[
-              Chip(label: Text(controller.itemsCount.toString())),
-            ]
-          ],
+      Obx(
+        () => ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('all_Items'.tr),
+              if (controller.itemsCount > 0) ...[
+                Chip(label: Text(controller.itemsCount.toString())),
+              ]
+            ],
+          ),
+          leading: const Icon(LineIcons.list),
+          onTap: controller.filterAllItems,
+          selected: controller.boxFilter() == HiveBoxFilter.all,
         ),
-        leading: const Icon(LineIcons.list),
-        onTap: controller.filterAllItems,
-        selected: controller.boxFilter() == HiveBoxFilter.all,
       ),
-      ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('favorites'.tr),
-            if (controller.favoriteCount > 0) ...[
-              Chip(label: Text(controller.favoriteCount.toString())),
-            ]
-          ],
+      Obx(
+        () => ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('favorites'.tr),
+              if (controller.favoriteCount > 0) ...[
+                Chip(label: Text(controller.favoriteCount.toString())),
+              ]
+            ],
+          ),
+          leading: controller.filterFavorites()
+              ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
+              : const FaIcon(FontAwesomeIcons.heart),
+          onTap: controller.filterFavoriteItems,
+          selected: controller.filterFavorites(),
         ),
-        leading: controller.filterFavorites()
-            ? const FaIcon(FontAwesomeIcons.solidHeart, color: Colors.pink)
-            : const FaIcon(FontAwesomeIcons.heart),
-        onTap: controller.filterFavoriteItems,
-        selected: controller.filterFavorites(),
       ),
-      ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('protected'.tr),
-            if (controller.protectedCount > 0) ...[
-              Chip(label: Text(controller.protectedCount.toString())),
-            ]
-          ],
+      Obx(
+        () => ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('protected'.tr),
+              if (controller.protectedCount > 0) ...[
+                Chip(label: Text(controller.protectedCount.toString())),
+              ]
+            ],
+          ),
+          leading: controller.filterProtected()
+              ? const FaIcon(FontAwesomeIcons.shield)
+              : const FaIcon(FontAwesomeIcons.shieldHalved),
+          onTap: controller.filterProtectedItems,
+          selected: controller.filterProtected(),
         ),
-        leading: controller.filterProtected()
-            ? const FaIcon(FontAwesomeIcons.shield)
-            : const FaIcon(FontAwesomeIcons.shieldHalved),
-        onTap: controller.filterProtectedItems,
-        selected: controller.filterProtected(),
       ),
-      ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('archived'.tr),
-            if (controller.archivedCount > 0) ...[
-              Chip(label: Text(controller.archivedCount.toString())),
-            ]
-          ],
+      Obx(
+        () => ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('archived'.tr),
+              if (controller.archivedCount > 0) ...[
+                Chip(label: Text(controller.archivedCount.toString())),
+              ]
+            ],
+          ),
+          leading: const Icon(LineIcons.archive),
+          onTap: controller.filterArchivedItems,
+          selected: controller.boxFilter() == HiveBoxFilter.archived,
         ),
-        leading: const Icon(LineIcons.archive),
-        onTap: controller.filterArchivedItems,
-        selected: controller.boxFilter() == HiveBoxFilter.archived,
       ),
-      ListTile(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('trash'.tr),
-            if (controller.trashCount > 0) ...[
-              Chip(label: Text(controller.trashCount.toString())),
-            ]
-          ],
+      Obx(
+        () => ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text('trash'.tr),
+              if (controller.trashCount > 0) ...[
+                Chip(label: Text(controller.trashCount.toString())),
+              ]
+            ],
+          ),
+          leading: const Icon(LineIcons.trash),
+          onTap: controller.filterTrashItems,
+          selected: controller.boxFilter() == HiveBoxFilter.trash,
         ),
-        leading: const Icon(LineIcons.trash),
-        onTap: controller.filterTrashItems,
-        selected: controller.boxFilter() == HiveBoxFilter.trash,
       ),
       ExpansionTile(
         initiallyExpanded: controller.categoriesExpanded,
@@ -112,11 +122,13 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
             (e) {
               final _category = LisoItemCategory.values.byName(e);
 
-              return ListTile(
-                title: Text(e.tr),
-                leading: Utils.categoryIcon(_category),
-                onTap: () => controller.filterByCategory(e),
-                selected: _category == controller.filterCategory,
+              return Obx(
+                () => ListTile(
+                  title: Text(e.tr),
+                  leading: Utils.categoryIcon(_category),
+                  onTap: () => controller.filterByCategory(e),
+                  selected: _category == controller.filterCategory.value,
+                ),
               );
             },
           ).toList(),
@@ -133,11 +145,13 @@ class ZDrawer extends GetView<DrawerWidgetController> with ConsoleMixin {
         children: [
           ...controller.tags
               .map(
-                (e) => ListTile(
-                  title: Text(e),
-                  leading: const Icon(LineIcons.tag),
-                  onTap: () => controller.filterByTag(e),
-                  selected: e == controller.filterTag,
+                (e) => Obx(
+                  () => ListTile(
+                    title: Text(e),
+                    leading: const Icon(LineIcons.tag),
+                    onTap: () => controller.filterByTag(e),
+                    selected: e == controller.filterTag(),
+                  ),
                 ),
               )
               .toList(),

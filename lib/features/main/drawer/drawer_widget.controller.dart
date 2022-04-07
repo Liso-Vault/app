@@ -18,18 +18,20 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   // VARIABLES
   // maintain expansion tile expanded state
   bool categoriesExpanded = true, tagsExpanded = true;
-  LisoItemCategory? filterCategory;
-  String filterTag = '';
 
   // PROPERTIES
+  final boxFilter = HiveBoxFilter.all.obs;
   final filterFavorites = false.obs;
   final filterProtected = false.obs;
-  final boxFilter = HiveBoxFilter.all.obs;
+  final filterCategory = LisoItemCategory.none.obs;
+  final filterTag = ''.obs;
 
   // GETTERS
 
   // Obtain used categories distinctly
   Set<String> get categories {
+    if (HiveManager.items == null) return {};
+
     final Set<String> _categories = {};
 
     for (var e in HiveManager.items!.values) {
@@ -41,6 +43,8 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
 
   // Obtain used tags distinctly
   Set<String> get tags {
+    if (HiveManager.items == null) return {};
+
     final _usedTags = HiveManager.items!.values
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
@@ -54,24 +58,24 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     return _tags;
   }
 
-  int get itemsCount => HiveManager.items!.length;
+  int get itemsCount => HiveManager.items?.length ?? 0;
 
   int get favoriteCount =>
-      HiveManager.items!.values.where((e) => e.favorite).length;
+      HiveManager.items?.values.where((e) => e.favorite).length ?? 0;
 
   int get protectedCount =>
-      HiveManager.items!.values.where((e) => e.protected).length;
+      HiveManager.items?.values.where((e) => e.protected).length ?? 0;
 
-  int get archivedCount => HiveManager.archived!.length;
+  int get archivedCount => HiveManager.archived?.length ?? 0;
 
-  int get trashCount => HiveManager.trash!.length;
+  int get trashCount => HiveManager.trash?.length ?? 0;
 
   // FUNCTIONS
 
   void filterFavoriteItems() async {
     filterFavorites.toggle();
     filterProtected.value = false;
-    filterTag = '';
+    filterTag.value = '';
     MainScreenController.to.reload();
     Get.back();
   }
@@ -79,7 +83,7 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   void filterProtectedItems() async {
     filterProtected.toggle();
     filterFavorites.value = false;
-    filterTag = '';
+    filterTag.value = '';
     MainScreenController.to.reload();
     Get.back();
   }
@@ -105,24 +109,24 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   }
 
   void filterByCategory(String category) {
-    LisoItemCategory? _category = LisoItemCategory.values.byName(category);
+    final _category = LisoItemCategory.values.byName(category);
     // if already selected, deselect
-    if (_category == filterCategory) _category = null;
-    filterCategory = _category;
-    filterTag = '';
+    filterCategory.value =
+        _category == filterCategory.value ? LisoItemCategory.none : _category;
+    filterTag.value = '';
     reload();
   }
 
   void filterByTag(String tag) {
     // if already selected, deselect
-    if (tag == filterTag) tag = '';
-    filterTag = tag;
+    if (tag == filterTag.value) tag = '';
+    filterTag.value = tag;
     reload();
   }
 
   void _clearFilters() {
-    filterCategory = null;
-    filterTag = '';
+    filterCategory.value = LisoItemCategory.none;
+    filterTag.value = '';
   }
 
   void reload() {
