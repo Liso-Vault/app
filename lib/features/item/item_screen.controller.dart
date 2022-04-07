@@ -10,11 +10,11 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
+import '../drawer/drawer_widget.controller.dart';
 import '../general/selector.sheet.dart';
 
 class ItemScreenBinding extends Bindings {
@@ -77,8 +77,10 @@ class ItemScreenController extends GetxController
   }
 
   Future<void> _loadTemplate() async {
-    favorite.value = Get.find<DrawerWidgetController>().filterFavorites.value;
-    protected.value = Get.find<DrawerWidgetController>().filterProtected.value;
+    final drawerController = Get.find<DrawerWidgetController>();
+
+    favorite.value = drawerController.filterFavorites.value;
+    protected.value = drawerController.filterProtected.value;
 
     final _fields = TemplateParser.parse(category);
 

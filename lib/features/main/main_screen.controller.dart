@@ -15,14 +15,13 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/selector.sheet.dart';
-import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
 import '../../core/form_fields/pin.field.dart';
 import '../../core/utils/utils.dart';
+import '../drawer/drawer_widget.controller.dart';
 import '../item/item_screen.controller.dart';
 import '../search/search.delegate.dart';
-import 'drawer/drawer_widget.controller.dart';
 
 class MainScreenBinding extends Bindings {
   @override
@@ -30,12 +29,11 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => MainScreenController());
     Get.lazyPut(() => DrawerWidgetController());
 
-    // GET WIDGETS
+    // WIDGETS
     Get.create(() => PasswordFormFieldController());
     Get.create(() => PINFormFieldController());
-    //
+    // SCREENS
     Get.create(() => ItemScreenController());
-    //
     Get.create(() => SettingsScreenController());
     Get.create(() => AboutScreenController());
   }
@@ -50,6 +48,7 @@ class MainScreenController extends GetxController
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerWidgetController>();
+
   ItemsSearchDelegate? searchDelegate;
   StreamSubscription? itemsSubscription,
       archivedSubscription,

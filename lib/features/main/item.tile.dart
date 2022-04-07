@@ -5,17 +5,16 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/item/item.screen.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/selector.sheet.dart';
 import '../json_viewer/json_viewer.screen.dart';
-import 'drawer/drawer_widget.controller.dart';
 
 class ItemTile extends StatelessWidget with ConsoleMixin {
   final HiveLisoItem item;

@@ -3,7 +3,7 @@ import 'package:liso/core/utils/console.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
-import '../main_screen.controller.dart';
+import '../main/main_screen.controller.dart';
 
 enum HiveBoxFilter {
   all,
@@ -16,7 +16,7 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
   static DrawerWidgetController get to => Get.find();
 
   // VARIABLES
-  // maintain expansion tile expanded state
+  // maintain expansion tile state
   bool categoriesExpanded = true, tagsExpanded = true;
 
   // PROPERTIES
@@ -131,8 +131,15 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     filterTag.value = '';
   }
 
-  void reload() {
-    MainScreenController.to.reload();
+  void reload() async {
+    final mainScreenController = Get.find<MainScreenController>();
+
+    // delay for better Mobile UX
+    if (mainScreenController.expandableDrawer) {
+      await Future.delayed(500.milliseconds);
+    }
+
+    mainScreenController.reload();
     Get.back();
   }
 }

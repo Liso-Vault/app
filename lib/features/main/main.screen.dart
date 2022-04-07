@@ -8,9 +8,9 @@ import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/main/item.tile.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../drawer/drawer.widget.dart';
+import '../drawer/drawer_widget.controller.dart';
 import '../search/search.delegate.dart';
-import 'drawer/drawer.widget.dart';
-import 'drawer/drawer_widget.controller.dart';
 import 'main_screen.controller.dart';
 
 // ignore: use_key_in_widget_constructors

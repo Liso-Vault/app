@@ -5,10 +5,10 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/main/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../../core/utils/utils.dart';
+import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends GetView<DrawerWidgetController> with ConsoleMixin {
   const DrawerMenu({Key? key}) : super(key: key);
