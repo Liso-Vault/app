@@ -328,7 +328,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'title'.tr,
           leading: const Icon(LineIcons.font),
-          // trailing: sortName.contains('title') ? icon : null,
+          trailing: sortName.contains('title') ? icon : null,
           function: () {
             if (!sortName.contains('title')) {
               sortOrder.value = LisoItemSortOrder.titleDescending; // default
@@ -342,7 +342,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'category'.tr,
           leading: const Icon(LineIcons.sitemap),
-          // trailing: sortName.contains('category') ? icon : null,
+          trailing: sortName.contains('category') ? icon : null,
           function: () {
             if (!sortName.contains('category')) {
               sortOrder.value = LisoItemSortOrder.categoryDescending; // default
@@ -356,7 +356,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'date_modified'.tr,
           leading: const Icon(LineIcons.calendar),
-          // trailing: sortName.contains('dateModified') ? icon : null,
+          trailing: sortName.contains('dateModified') ? icon : null,
           function: () {
             if (!sortName.contains('dateModified')) {
               sortOrder.value =
@@ -371,7 +371,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'date_created'.tr,
           leading: const Icon(LineIcons.calendarAlt),
-          // trailing: sortName.contains('dateCreated') ? icon : null,
+          trailing: sortName.contains('dateCreated') ? icon : null,
           function: () {
             if (!sortName.contains('dateCreated')) {
               sortOrder.value =
@@ -386,7 +386,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'favorite'.tr,
           leading: const FaIcon(FontAwesomeIcons.heart),
-          // trailing: sortName.contains('favorite') ? icon : null,
+          trailing: sortName.contains('favorite') ? icon : null,
           function: () {
             if (!sortName.contains('favorite')) {
               sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
@@ -400,7 +400,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'protected'.tr,
           leading: const Icon(LineIcons.alternateShield),
-          // trailing: sortName.contains('protected') ? icon : null,
+          trailing: sortName.contains('protected') ? icon : null,
           function: () {
             if (!sortName.contains('protected')) {
               sortOrder.value =

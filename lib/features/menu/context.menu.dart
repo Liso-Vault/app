@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 
 import '../../core/animations/animations.dart';
 import '../../core/utils/console.dart';
@@ -48,6 +49,10 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
                   e.leading!,
                   const SizedBox(width: 15),
                   Text(e.title),
+                  if (e.trailing != null) ...[
+                    const Spacer(),
+                    e.trailing!,
+                  ]
                 ],
               ),
             ),
@@ -64,6 +69,7 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
       final tile = ListTile(
         title: Text(item.title),
         leading: item.leading,
+        trailing: item.trailing,
         selected: item == initialItem,
         onTap: () {
           Get.back();
