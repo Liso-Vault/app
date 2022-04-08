@@ -160,27 +160,6 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       const SizedBox(height: 30),
     ];
 
-    final form = Form(
-      key: controller.formKey,
-      child: ListView.builder(
-        itemCount: items.length,
-        shrinkWrap: true,
-        itemBuilder: (context, index) => items[index],
-        padding: const EdgeInsets.all(15),
-      ),
-    );
-
-    final content = controller.obx(
-      (_) => Align(
-        alignment: Alignment.topCenter,
-        child: Container(
-          // constraints: Styles.containerConstraints,
-          child: form,
-        ),
-      ),
-      onLoading: const BusyIndicator(),
-    );
-
     final appBar = AppBar(
       title: Text(category.tr),
       // X icon for desktop instead of back for mobile
@@ -206,9 +185,31 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       ],
     );
 
-    return Scaffold(
+    final form = Form(
+      key: controller.formKey,
+      child: ListView.builder(
+        itemCount: items.length,
+        shrinkWrap: true,
+        itemBuilder: (context, index) => items[index],
+        padding: const EdgeInsets.all(15),
+      ),
+    );
+
+    final content = controller.obx(
+      (_) => form,
+      onLoading: const BusyIndicator(),
+    );
+
+    final scaffold = Scaffold(
       appBar: appBar,
       body: content,
     );
+
+    return GetPlatform.isMobile
+        ? scaffold
+        : MouseRegion(
+            onHover: (event) => controller.lastMousePosition = event.position,
+            child: scaffold,
+          );
   }
 }

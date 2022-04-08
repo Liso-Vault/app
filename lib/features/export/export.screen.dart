@@ -6,6 +6,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
+import '../main/main_screen.controller.dart';
 import 'export_screen.controller.dart';
 
 class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
@@ -51,7 +52,14 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
     );
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        leading: MainScreenController.to.expandableDrawer
+            ? null
+            : IconButton(
+                onPressed: Get.back,
+                icon: const Icon(LineIcons.times),
+              ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(

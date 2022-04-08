@@ -16,10 +16,13 @@ const kAppTwitterUrl = 'https://twitter.com/liso_vault';
 // const kAppInstagramUrl = 'https://instagram.com/liso_vault';
 const kAppEmail = 'liso.vault@gmail.com'; // TODO: custom domain email
 const kAppSupportUrl = 'https://matrix.org'; // TODO: link to matrix server
+const kAppRoadmapUrl = 'https://liso-vault.github.io';
+const kAppShareText = kAppDescription + ' | Learn more: $kAppWebsiteUrl';
 
 const kDeveloperName = 'Stackwares';
-const kDeveloperTwitterHandle = '@stackwares';
+const kDeveloperTwitterHandle = '@Stackwares';
 const kDeveloperTwitterUrl = 'https://twitter.com/stackwares';
+const kDeveloperWebsite = 'https://stackwares.com';
 
 const kGooglePlayUrl =
     'https://play.google.com/store/apps/details?id=com.liso.app';
@@ -29,6 +32,7 @@ const kAppPrivacyUrl =
     'https://liso-vault.github.io/privacy'; // TODO: privacy url
 const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
 
+// BOXES
 const kHiveBoxItems = 'items';
 const kHiveBoxArchived = 'archived';
 const kHiveBoxTrash = 'trash';
@@ -38,11 +42,12 @@ const kAad = 'liso';
 const kRootDirectory = 'Liso';
 const kBiometricPasswordKey = 'biometric_password';
 const kVaultExtension = 'liso';
-
 const kMaxIconSize = 500000;
+const kMinWindowSize = Size(400, 850);
 
+// COLORS
 const kAppColor = Color(0xff02f297);
-const kAppColorDarker = Color(0xFF00915A);
+const kAppColorDarker = Color(0xFF00BC74);
 
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));

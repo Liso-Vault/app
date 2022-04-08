@@ -12,6 +12,8 @@ class PersistenceController extends GetxController with ConsoleMixin {
 
   // GENERAL
   final localeCode = 'en'.val('locale code');
+  // WINDOW SIZE
+  final windowSize = const Size(1200, 800).obs;
   // THEME
   final theme = ThemeMode.system.name.val('theme');
   // SECURITY

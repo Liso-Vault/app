@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/main/item.tile.dart';
+import 'package:liso/features/item/item.tile.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
   @override
@@ -44,10 +45,18 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
 
     console.info('search result: ${items.length}');
 
-    return ListView.builder(
+    final listView = ListView.builder(
       itemCount: items.length,
       itemBuilder: (context, index) => ItemTile(items[index], searchMode: true),
     );
+
+    return GetPlatform.isMobile
+        ? listView
+        : MouseRegion(
+            child: listView,
+            onHover: (event) =>
+                MainScreenController.to.lastMousePosition = event.position,
+          );
   }
 
   void reload(BuildContext context) {

@@ -13,8 +13,9 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_chip.widget.dart';
-import '../general/selector.sheet.dart';
 import '../json_viewer/json_viewer.screen.dart';
+import '../menu/context.menu.dart';
+import '../menu/menu.item.dart';
 
 class ItemTile extends StatelessWidget with ConsoleMixin {
   final HiveLisoItem item;
@@ -26,144 +27,141 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     this.searchMode = false,
   }) : super(key: key);
 
+  void _reloadSearchDelegate() {
+    MainScreenController.to.searchDelegate?.reload(Get.context!);
+  }
+
+  void _favorite() {
+    item.favorite = !item.favorite;
+    item.save();
+    _reloadSearchDelegate();
+  }
+
+  void _protect() async {
+    if (item.protected) {
+      // if trying to unprotect, prompt password
+      final unlocked = await Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'password_prompt'},
+          ) ??
+          false;
+
+      if (!unlocked) return;
+    }
+
+    item.protected = !item.protected;
+    item.save();
+    _reloadSearchDelegate();
+  }
+
+  void _archive() async {
+    item.delete();
+    await HiveManager.archived!.add(item);
+    _reloadSearchDelegate();
+  }
+
+  void _trash() async {
+    // TODO: prompt to delete with selector sheet
+    item.delete();
+    await HiveManager.trash!.add(item);
+    _reloadSearchDelegate();
+  }
+
+  void _restore() async {
+    item.delete();
+    await HiveManager.items!.add(item);
+    _reloadSearchDelegate();
+  }
+
+  void _open() async {
+    // show lock screen if item is protected
+    if (item.protected) {
+      final unlocked = await Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'password_prompt'},
+          ) ??
+          false;
+
+      if (!unlocked) return;
+    }
+
+    // route parameters
+    final parameters = {
+      'mode': 'update',
+      'category': item.category,
+      'hiveKey': item.key.toString(),
+    };
+
+    Utils.adaptiveRouteOpen(
+      name: Routes.item,
+      parameters: parameters,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final drawerController = Get.find<DrawerWidgetController>();
-    final mainController = Get.find<MainScreenController>();
 
     final isArchived =
         drawerController.boxFilter.value == HiveBoxFilter.archived;
     final isTrash = drawerController.boxFilter.value == HiveBoxFilter.trash;
 
-    void _reloadSearchDelegate() {
-      mainController.searchDelegate?.reload(context);
-    }
+    final menuItems = [
+      ContextMenuItem(
+        title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
+        leading: FaIcon(
+          item.favorite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
+          color: item.favorite ? Colors.pink : null,
+        ),
+        function: _favorite,
+      ),
+      ContextMenuItem(
+        title: item.protected ? 'unprotect'.tr : 'protect'.tr,
+        leading: FaIcon(
+          item.protected
+              ? FontAwesomeIcons.shield
+              : FontAwesomeIcons.shieldHalved,
+          color: item.protected ? kAppColor : null,
+        ),
+        function: _protect,
+      ),
+      if (!isArchived) ...[
+        ContextMenuItem(
+          title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
+          leading: const Icon(LineIcons.archive),
+          function: _archive,
+        ),
+      ],
+      if (!isTrash) ...[
+        ContextMenuItem(
+          title: isArchived ? 'move_to_trash'.tr : 'trash'.tr,
+          leading: const Icon(LineIcons.trash),
+          function: _trash,
+        ),
+      ],
+      if (isTrash || isArchived) ...[
+        ContextMenuItem(
+          title: 'restore'.tr,
+          leading: const Icon(LineIcons.trashRestore),
+          function: _restore,
+        ),
+      ],
+      ContextMenuItem(
+        title: 'details'.tr,
+        leading: const Icon(LineIcons.code),
+        function: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
+      ),
+    ];
 
-    void _favorite() {
-      item.favorite = !item.favorite;
-      item.save();
-      _reloadSearchDelegate();
-    }
-
-    void _protect() async {
-      if (item.protected) {
-        // if trying to unprotect, prompt password
-        final unlocked = await Get.toNamed(
-              Routes.unlock,
-              parameters: {'mode': 'password_prompt'},
-            ) ??
-            false;
-
-        if (!unlocked) return;
-      }
-
-      item.protected = !item.protected;
-      item.save();
-      _reloadSearchDelegate();
-    }
-
-    void _archive() async {
-      item.delete();
-      await HiveManager.archived!.add(item);
-      _reloadSearchDelegate();
-    }
-
-    void _trash() async {
-      // TODO: prompt to delete with selector sheet
-      item.delete();
-      await HiveManager.trash!.add(item);
-      _reloadSearchDelegate();
-    }
-
-    void _restore() async {
-      item.delete();
-      await HiveManager.items!.add(item);
-      _reloadSearchDelegate();
-    }
-
-    void _open() async {
-      // show lock screen if item is protected
-      if (item.protected) {
-        final unlocked = await Get.toNamed(
-              Routes.unlock,
-              parameters: {'mode': 'password_prompt'},
-            ) ??
-            false;
-
-        if (!unlocked) return;
-      }
-
-      // route parameters
-      final parameters = {
-        'mode': 'update',
-        'category': item.category,
-        'hiveKey': item.key.toString(),
-      };
-
-      Utils.adaptiveRouteOpen(
-        name: Routes.item,
-        parameters: parameters,
-      );
-    }
-
-    void menu() {
-      SelectorSheet(
-        items: [
-          SelectorItem(
-            title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-            leading: FaIcon(
-              item.favorite
-                  ? FontAwesomeIcons.solidHeart
-                  : FontAwesomeIcons.heart,
-              color: item.favorite ? Colors.pink : null,
-            ),
-            onSelected: _favorite,
-          ),
-          SelectorItem(
-            title: item.protected ? 'unprotect'.tr : 'protect'.tr,
-            leading: FaIcon(
-              item.protected
-                  ? FontAwesomeIcons.shield
-                  : FontAwesomeIcons.shieldHalved,
-              color: item.protected ? kAppColor : null,
-            ),
-            onSelected: _protect,
-          ),
-          if (!isArchived) ...[
-            SelectorItem(
-              title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
-              leading: const Icon(LineIcons.archive),
-              onSelected: _archive,
-            ),
-          ],
-          if (!isTrash) ...[
-            SelectorItem(
-              title: isArchived ? 'move_to_trash'.tr : 'trash'.tr,
-              leading: const Icon(LineIcons.trash),
-              onSelected: _trash,
-            ),
-          ],
-          if (isTrash || isArchived) ...[
-            SelectorItem(
-              title: 'restore'.tr,
-              leading: const Icon(LineIcons.trashRestore),
-              onSelected: _restore,
-            ),
-          ],
-          SelectorItem(
-            title: 'details'.tr,
-            subTitle: 'In JSON format',
-            leading: const Icon(LineIcons.code),
-            onSelected: () =>
-                Get.to(() => JSONViewerScreen(data: item.toJson())),
-          ),
-        ],
-      ).show();
-    }
+    void _menu() => ContextMenu(
+          items: menuItems,
+          position: MainScreenController.to.lastMousePosition,
+        ).show();
 
     final title = Text(
       item.title,
       overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
 
     final subTitle = Column(
@@ -173,6 +171,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           Text(
             item.subTitle,
             overflow: TextOverflow.ellipsis,
+            maxLines: 1,
           ),
           const SizedBox(height: 5),
         ],
@@ -216,11 +215,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    final trailing = IconButton(
-      onPressed: menu,
-      icon: const Icon(LineIcons.verticalEllipsis),
-    );
-
     final leading = item.icon.isNotEmpty
         ? Image.memory(
             item.icon,
@@ -235,8 +229,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       leading: leading,
       title: title,
       subtitle: subTitle,
-      trailing: trailing,
-      onLongPress: menu,
+      trailing: IconButton(
+        onPressed: _menu,
+        icon: const Icon(LineIcons.verticalEllipsis),
+      ),
+      onLongPress: _menu,
       onTap: _open,
     );
 
@@ -301,7 +298,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     );
 
     return GestureDetector(
-      onSecondaryTap: menu, // mouse right click
+      onSecondaryTap: _menu, // mouse right click
       child: swipeAction,
     );
   }

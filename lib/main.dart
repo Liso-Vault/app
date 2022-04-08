@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:liso/core/utils/globals.dart';
 
 import 'core/controllers/global.controller.dart';
 import 'core/controllers/persistence.controller.dart';
@@ -25,8 +26,6 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     // improve performance
     GestureBinding.instance?.resamplingEnabled = true;
-    // setup window size for desktop
-    _setupWindowSize();
     // init Liso paths
     await LisoPaths.init();
     // init Hive
@@ -43,6 +42,9 @@ void main() async {
     // Initialize Top Controllers
     Get.put(PersistenceController());
     Get.put(GlobalController());
+    // setup window size for desktop
+    _setupWindowSize();
+
     // run main app
     runApp(const App());
   }, (Object exception, StackTrace stackTrace) {
@@ -59,6 +61,6 @@ void main() async {
 
 void _setupWindowSize() async {
   if (!GetPlatform.isDesktop || GetPlatform.isWeb) return;
-  await DesktopWindow.setWindowSize(const Size(1500, 1200));
-  await DesktopWindow.setMinWindowSize(const Size(400, 850));
+  await DesktopWindow.setWindowSize(PersistenceController.to.windowSize());
+  await DesktopWindow.setMinWindowSize(kMinWindowSize);
 }

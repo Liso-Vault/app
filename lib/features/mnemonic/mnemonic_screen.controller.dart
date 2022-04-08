@@ -5,7 +5,9 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/general/selector.sheet.dart';
+
+import '../menu/context.menu.dart';
+import '../menu/menu.item.dart';
 
 class MnemonicScreenBinding extends Bindings {
   @override
@@ -15,7 +17,8 @@ class MnemonicScreenBinding extends Bindings {
 }
 
 class MnemonicScreenController extends GetxController with ConsoleMixin {
-  // VARIABLES
+  // VARIABLES'
+  Offset? lastMousePosition;
 
   // PROPERTIES
   final mnemonic = ''.obs;
@@ -43,13 +46,13 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   }
 
   void options() {
-    SelectorSheet(
+    ContextMenu(
+      position: lastMousePosition,
       items: [
-        SelectorItem(
+        ContextMenuItem(
           title: 'Copy Mnemonic Phrase',
-          subTitle: 'Copy at your own risk',
           leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          onSelected: () => Utils.copyToClipboard(mnemonic()),
+          function: () => Utils.copyToClipboard(mnemonic()),
         ),
       ],
     ).show();

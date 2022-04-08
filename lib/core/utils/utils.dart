@@ -225,15 +225,18 @@ class Utils {
 
     // Open page as dialog for desktop
     Get.parameters = parameters; // manually pass parameters
+    final page = AppPages.routes.firstWhere((e) => e.name == name).page();
+
+    final dialog = Dialog(
+      child: SizedBox(
+        width: 600,
+        height: 900,
+        child: page,
+      ),
+    );
 
     return Get.dialog(
-      Dialog(
-        child: SizedBox(
-          width: 600,
-          height: 1200,
-          child: AppPages.routes.firstWhere((e) => e.name == name).page(),
-        ),
-      ),
+      dialog,
       routeSettings: RouteSettings(name: name),
     );
   }

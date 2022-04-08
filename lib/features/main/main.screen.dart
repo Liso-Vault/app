@@ -5,7 +5,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
-import 'package:liso/features/main/item.tile.dart';
+import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../drawer/drawer.widget.dart';
@@ -24,46 +24,57 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
         );
 
-  Widget itemBuilder(context, index) => ItemTile(controller.data[index]);
+  Widget itemBuilder(context, index) => ItemTile(
+        controller.data[index],
+        key: GlobalKey(),
+      );
+
+  void searchPressed() async {
+    controller.searchDelegate = ItemsSearchDelegate();
+
+    await showSearch(
+      context: Get.context!,
+      delegate: controller.searchDelegate!,
+    );
+
+    controller.searchDelegate = null;
+  }
 
   @override
   Widget? builder() {
-    final drawerController = Get.find<DrawerWidgetController>();
+    final listView = Obx(
+      () => ListView.separated(
+        shrinkWrap: true,
+        itemCount: controller.data.length,
+        itemBuilder: itemBuilder,
+        separatorBuilder: (context, index) => const Divider(height: 0),
+        padding: const EdgeInsets.symmetric(vertical: 15),
+      ),
+    );
 
     final content = controller.obx(
-      (_) => Obx(
-        () => ListView.separated(
-          shrinkWrap: true,
-          itemCount: controller.data.length,
-          itemBuilder: itemBuilder,
-          separatorBuilder: (context, index) => const Divider(height: 0),
-          padding: const EdgeInsets.symmetric(vertical: 15),
-        ),
-      ),
+      (_) => GetPlatform.isMobile
+          ? listView
+          : MouseRegion(
+              child: listView,
+              onHover: (event) => controller.lastMousePosition = event.position,
+            ),
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
         iconData: LineIcons.seedling,
         message: 'no_items'.tr,
-        child: drawerController.boxFilter.value == HiveBoxFilter.all
+        child: DrawerWidgetController.to.boxFilter.value == HiveBoxFilter.all
             ? TextButton.icon(
-                label: Text('add_item'.tr),
                 icon: const Icon(LineIcons.plus),
-                onPressed: controller.add,
+                label: Text(
+                  'add_item'.tr,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                onPressed: controller.menu,
               )
             : null,
       ),
     );
-
-    void searchPressed() async {
-      controller.searchDelegate = ItemsSearchDelegate();
-
-      await showSearch(
-        context: Get.context!,
-        delegate: controller.searchDelegate!,
-      );
-
-      controller.searchDelegate = null;
-    }
 
     final appBar = AppBar(
       centerTitle: false,
@@ -90,9 +101,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ],
     );
 
+    // custom floating action button
     final floatingActionButton = FloatingActionButton(
       child: const Icon(LineIcons.plus),
-      onPressed: controller.add,
+      onPressed: controller.menu,
     );
 
     const drawerWidth = 240.0;

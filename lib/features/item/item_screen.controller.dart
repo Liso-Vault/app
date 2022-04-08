@@ -10,12 +10,14 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/menu/context.menu.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../general/selector.sheet.dart';
+import '../menu/menu.item.dart';
 
 class ItemScreenBinding extends Bindings {
   @override
@@ -28,8 +30,10 @@ class ItemScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   // VARIABLES
   HiveLisoItem? item;
+  Offset? lastMousePosition;
 
   final formKey = GlobalKey<FormState>();
+  final menuKey = GlobalKey<FormState>();
   final mode = Get.parameters['mode'] as String;
   final category = Get.parameters['category'] as String;
   final titleController = TextEditingController();
@@ -46,9 +50,48 @@ class ItemScreenController extends GetxController
   final protected = false.obs;
 
   // GETTERS
+  // MENU ITEMS
+  List<ContextMenuItem> get menuItems {
+    return [
+      ContextMenuItem(
+        title: 'copy'.tr,
+        leading: const Icon(LineIcons.copy),
+        function: () {
+          console.info('copy');
+        },
+      ),
+      // MenuItem(
+      //   title: 'trash'.tr,
+      //   leading: const Icon(LineIcons.copy),
+      //   function: () {
+      //     console.info('trash');
+      //   },
+      // ),
+      // MenuItem(
+      //   title: 'archive'.tr,
+      //   leading: const Icon(LineIcons.copy),
+      //   function: () {
+      //     console.info('archive');
+      //   },
+      // ),
+      // MenuItem(
+      //   title: 'restore'.tr,
+      //   leading: const Icon(LineIcons.copy),
+      //   function: () {
+      //     console.info('restore');
+      //   },
+      // ),
+      // MenuItem(
+      //   title: 'favorite'.tr,
+      //   leading: const Icon(LineIcons.copy),
+      //   function: () {
+      //     console.info('favorite');
+      //   },
+      // ),
+    ];
+  }
 
   // INIT
-
   @override
   void onInit() async {
     if (mode == 'add') {
@@ -63,7 +106,6 @@ class ItemScreenController extends GetxController
   }
 
   // FUNCTIONS
-
   void _populateItem() {
     final hiveKey = Get.parameters['hiveKey'].toString();
     item = HiveManager.items!.get(int.parse(hiveKey));
@@ -132,27 +174,28 @@ class ItemScreenController extends GetxController
     Get.back();
   }
 
-  void trash() {
-    void _proceed() async {
-      await item?.delete();
-      Get.back();
-    }
+  // void trash() {
+  //   void _proceed() async {
+  //     await item?.delete();
+  //     Get.back();
+  //   }
 
-    SelectorSheet(
-      items: [
-        SelectorItem(
-          title: 'Move to trash',
-          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          onSelected: _proceed,
-        ),
-        SelectorItem(
-          title: 'Cancel',
-          leading: const Icon(LineIcons.timesCircle),
-          onSelected: Get.back,
-        ),
-      ],
-    ).show();
-  }
+  //   ContextMenu(
+  //     position: lastMousePosition,
+  //     items: [
+  //       ContextMenuItem(
+  //         title: 'Move to trash',
+  //         leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+  //         function: _proceed,
+  //       ),
+  //       ContextMenuItem(
+  //         title: 'Cancel',
+  //         leading: const Icon(LineIcons.timesCircle),
+  //         function: Get.back,
+  //       ),
+  //     ],
+  //   ).show();
+  // }
 
   List<String> querySuggestions(String query) {
     if (query.isEmpty) return [];
@@ -177,34 +220,20 @@ class ItemScreenController extends GetxController
     // tags.add(tagsController.text);
   }
 
-  void menu() {
-    SelectorSheet(
-      items: [
-        // TODO: options per category
-        // launch website, copy email, copy password, copy seed
-        // export seed as wallet.json
-        SelectorItem(
-          title: 'copy'.tr,
-          leading: const Icon(LineIcons.image),
-          onSelected: _pickIcon,
-        ),
-      ],
-    ).show();
-  }
-
   void changeIcon() async {
-    SelectorSheet(
+    ContextMenu(
+      position: lastMousePosition,
       items: [
-        SelectorItem(
+        ContextMenuItem(
           title: 'change'.tr,
           leading: const Icon(LineIcons.image),
-          onSelected: _pickIcon,
+          function: _pickIcon,
         ),
         if (icon.value.isNotEmpty) ...[
-          SelectorItem(
+          ContextMenuItem(
             title: 'remove'.tr,
             leading: const Icon(LineIcons.trash),
-            onSelected: () => icon.value = Uint8List(0),
+            function: () => icon.value = Uint8List(0),
           ),
         ]
       ],
@@ -238,4 +267,9 @@ class ItemScreenController extends GetxController
 
     icon.value = await file.readAsBytes();
   }
+
+  void menu() => ContextMenu(
+        items: menuItems,
+        position: lastMousePosition,
+      ).show();
 }

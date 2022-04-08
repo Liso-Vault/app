@@ -15,18 +15,21 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final phrases = Wrap(
-      spacing: 5,
-      runSpacing: 10,
-      alignment: WrapAlignment.center,
-      children: controller.mnemonic.value
-          .split(' ')
-          .map(
-            (e) => CustomChip(
-              label: Text(e, style: const TextStyle(fontSize: 18)),
-            ),
-          )
-          .toList(),
+    final phrases = MouseRegion(
+      onHover: (event) => controller.lastMousePosition = event.position,
+      child: Wrap(
+        spacing: 5,
+        runSpacing: 10,
+        alignment: WrapAlignment.center,
+        children: controller.mnemonic.value
+            .split(' ')
+            .map(
+              (e) => CustomChip(
+                label: Text(e, style: const TextStyle(fontSize: 18)),
+              ),
+            )
+            .toList(),
+      ),
     );
 
     final mnemonicPhrase = GestureDetector(

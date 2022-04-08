@@ -14,13 +14,16 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/general/selector.sheet.dart';
+import 'package:liso/features/export/export_screen.controller.dart';
+import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
 import '../../core/form_fields/pin.field.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../item/item_screen.controller.dart';
+import '../menu/context.menu.dart';
+import '../menu/menu.item.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenBinding extends Bindings {
@@ -36,6 +39,8 @@ class MainScreenBinding extends Bindings {
     Get.create(() => ItemScreenController());
     Get.create(() => SettingsScreenController());
     Get.create(() => AboutScreenController());
+    Get.create(() => ExportScreenController());
+    Get.create(() => ResetScreenController());
   }
 }
 
@@ -46,8 +51,28 @@ class MainScreenController extends GetxController
   // VARIABLES
   Timer? timer;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  // var fabKey = RectGetter.createGlobalKey();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerWidgetController>();
+  Offset? lastMousePosition;
+
+  // Categories to MenuItems
+  final menuItems = LisoItemCategory.values
+      .where((e) => e.name != 'none')
+      .toList()
+      .map(
+        (e) => ContextMenuItem(
+          title: e.name.tr,
+          leading: Utils.categoryIcon(
+            LisoItemCategory.values.byName(e.name),
+          ),
+          function: () => Utils.adaptiveRouteOpen(
+            name: Routes.item,
+            parameters: {'mode': 'add', 'category': e.name},
+          ),
+        ),
+      )
+      .toList();
 
   ItemsSearchDelegate? searchDelegate;
   StreamSubscription? itemsSubscription,
@@ -262,34 +287,6 @@ class MainScreenController extends GetxController
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 
-  void add() async {
-    if (drawerController.filterCategory() != LisoItemCategory.none) {
-      return Get.toNamed(
-        Routes.item,
-        parameters: {
-          'mode': 'add',
-          'category': drawerController.filterCategory().name
-        },
-      );
-    }
-
-    SelectorSheet(
-      items: LisoItemCategory.values
-          .map((e) => e.name)
-          .map((e) => SelectorItem(
-                title: e.tr,
-                leading: Utils.categoryIcon(
-                  LisoItemCategory.values.byName(e),
-                ),
-                onSelected: () => Get.toNamed(
-                  Routes.item,
-                  parameters: {'mode': 'add', 'category': e},
-                ),
-              ))
-          .toList(),
-    ).show();
-  }
-
   void _initAppLifeCycleEvents() {
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
@@ -325,13 +322,14 @@ class MainScreenController extends GetxController
       ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
     );
 
-    SelectorSheet(
+    ContextMenu(
+      position: lastMousePosition,
       items: [
-        SelectorItem(
+        ContextMenuItem(
           title: 'title'.tr,
           leading: const Icon(LineIcons.font),
-          trailing: sortName.contains('title') ? icon : null,
-          onSelected: () {
+          // trailing: sortName.contains('title') ? icon : null,
+          function: () {
             if (!sortName.contains('title')) {
               sortOrder.value = LisoItemSortOrder.titleDescending; // default
             } else {
@@ -341,11 +339,11 @@ class MainScreenController extends GetxController
             }
           },
         ),
-        SelectorItem(
+        ContextMenuItem(
           title: 'category'.tr,
           leading: const Icon(LineIcons.sitemap),
-          trailing: sortName.contains('category') ? icon : null,
-          onSelected: () {
+          // trailing: sortName.contains('category') ? icon : null,
+          function: () {
             if (!sortName.contains('category')) {
               sortOrder.value = LisoItemSortOrder.categoryDescending; // default
             } else {
@@ -355,11 +353,11 @@ class MainScreenController extends GetxController
             }
           },
         ),
-        SelectorItem(
+        ContextMenuItem(
           title: 'date_modified'.tr,
           leading: const Icon(LineIcons.calendar),
-          trailing: sortName.contains('dateModified') ? icon : null,
-          onSelected: () {
+          // trailing: sortName.contains('dateModified') ? icon : null,
+          function: () {
             if (!sortName.contains('dateModified')) {
               sortOrder.value =
                   LisoItemSortOrder.dateModifiedDescending; // default
@@ -370,11 +368,11 @@ class MainScreenController extends GetxController
             }
           },
         ),
-        SelectorItem(
+        ContextMenuItem(
           title: 'date_created'.tr,
           leading: const Icon(LineIcons.calendarAlt),
-          trailing: sortName.contains('dateCreated') ? icon : null,
-          onSelected: () {
+          // trailing: sortName.contains('dateCreated') ? icon : null,
+          function: () {
             if (!sortName.contains('dateCreated')) {
               sortOrder.value =
                   LisoItemSortOrder.dateCreatedDescending; // default
@@ -385,11 +383,11 @@ class MainScreenController extends GetxController
             }
           },
         ),
-        SelectorItem(
+        ContextMenuItem(
           title: 'favorite'.tr,
           leading: const FaIcon(FontAwesomeIcons.heart),
-          trailing: sortName.contains('favorite') ? icon : null,
-          onSelected: () {
+          // trailing: sortName.contains('favorite') ? icon : null,
+          function: () {
             if (!sortName.contains('favorite')) {
               sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
             } else {
@@ -399,11 +397,11 @@ class MainScreenController extends GetxController
             }
           },
         ),
-        SelectorItem(
+        ContextMenuItem(
           title: 'protected'.tr,
           leading: const Icon(LineIcons.alternateShield),
-          trailing: sortName.contains('protected') ? icon : null,
-          onSelected: () {
+          // trailing: sortName.contains('protected') ? icon : null,
+          function: () {
             if (!sortName.contains('protected')) {
               sortOrder.value =
                   LisoItemSortOrder.protectedDescending; // default
@@ -417,4 +415,9 @@ class MainScreenController extends GetxController
       ],
     ).show();
   }
+
+  void menu() => ContextMenu(
+        position: lastMousePosition,
+        items: menuItems,
+      ).show();
 }

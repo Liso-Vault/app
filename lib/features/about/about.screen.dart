@@ -5,6 +5,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/resources/resources.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'about_screen.controller.dart';
@@ -27,6 +28,12 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 10),
+        Text(
+          controller.appVersion,
+          textAlign: TextAlign.center,
+          style: const TextStyle(fontSize: 10),
+        ),
+        const SizedBox(height: 10),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 25),
           child: Text(
@@ -35,6 +42,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
             style: TextStyle(color: Colors.grey),
           ),
         ),
+
         const SizedBox(height: 30),
         const Divider(),
         ListTile(
@@ -55,6 +63,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   subtitle: const Text(kAppGithubUrl),
         //   onTap: () => launch(kAppGithubUrl),
         // ),
+        const Divider(),
         ListTile(
           leading: const Icon(LineIcons.twitter),
           trailing: const Icon(LineIcons.alternateExternalLink),
@@ -76,6 +85,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   subtitle: const Text('@liso_vault'),
         //   onTap: () => launch(kAppFacebookUrl),
         // ),
+        const Divider(),
         ListTile(
           leading: const Icon(LineIcons.envelope),
           trailing: const Icon(LineIcons.alternateExternalLink),
@@ -84,14 +94,31 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           onTap: () =>
               launch('mailto:liso.vault@gmail.com?subject=Liso%20Support'),
         ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.gift),
+          title: const Text('Invite a friend'),
+          onTap: () => Share.share(
+            kAppShareText,
+            subject: kAppName,
+          ),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.list),
+          title: const Text('Roadmap'),
+          onTap: () => launch(kAppRoadmapUrl),
+        ),
+        const Divider(),
         ListTile(
           leading: const Icon(LineIcons.laptopCode),
           title: const Text('Licenses'),
           onTap: () => controller.showLicenses(context),
         ),
+        const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.questionCircle),
-          title: const Text('Help & Support'),
+          leading: const Icon(LineIcons.users),
+          title: const Text('Community & Help'),
           onTap: () => launch(kAppSupportUrl),
         ),
         // ListTile(
@@ -112,6 +139,12 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   ),
         // ],
         const Divider(),
+        const SizedBox(height: 20),
+        TextButton.icon(
+          icon: const Icon(LineIcons.link),
+          label: const Text(kDeveloperWebsite),
+          onPressed: () => launch(kDeveloperWebsite),
+        ),
         const SizedBox(height: 20),
         TextButton.icon(
           icon: const Icon(LineIcons.twitter),

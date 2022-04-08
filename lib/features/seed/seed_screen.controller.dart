@@ -124,16 +124,16 @@
 //   // FUNCTIONS
 
 //   void showSeedOptions() {
-//     SelectorSheet(
+//     ContextMenu(
 //       title: 'Seed Options',
 //       items: [
-//         SelectorItem(
+//         MenuItem(
 //           title: 'Generate 12 words',
 //           leading: const Icon(LineIcons.syncIcon),
 //           onSelected: () =>
 //               PassphraseCardController.to.generateSeed(strength: 128),
 //         ),
-//         SelectorItem(
+//         MenuItem(
 //           title: 'Generate 24 words',
 //           leading: const Icon(LineIcons.syncIcon),
 //           onSelected: () =>
@@ -229,17 +229,17 @@
 //     //   console.info('success');
 //     // }
 
-//     // SelectorSheet(
+//     // ContextMenu(
 //     //   title: 'Delete Seed',
 //     //   subTitle: 'Are you sure you want to delete this seed?',
 //     //   items: [
-//     //     SelectorItem(
+//     //     MenuItem(
 //     //       title: 'Delete',
 //     //       subTitle: 'This can only be undone with a backup vault file',
 //     //       leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
 //     //       onSelected: _proceed,
 //     //     ),
-//     //     SelectorItem(
+//     //     MenuItem(
 //     //       title: 'Cancel',
 //     //       leading: const Icon(LineIcons.timesCircle),
 //     //       onSelected: Get.back,

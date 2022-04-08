@@ -20,7 +20,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final content = ListView(
+    final listView = ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
@@ -51,20 +51,23 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           title: Text('lock'.tr + ' $kAppName'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
-        // TODO: import vault from settings
+        // TODO: Change Password is same as Import Vault
+        // Remind user to backup first, then reset,
         // const Divider(),
         // ListTile(
         //   leading: const Icon(LineIcons.download),
         //   trailing: const Icon(LineIcons.angleRight),
         //   title: Text('import_vault'.tr),
-        //   onTap: () => Get.toNamed(Routes.import),
+        //   // TODO: reset vault before importing
+        //   // TODO: show warning that it will reset before importing
+        //   // onTap: () => Get.toNamed(Routes.import),
         // ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.box),
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_vault'.tr),
-          onTap: () => Get.toNamed(Routes.export),
+          onTap: () => Utils.adaptiveRouteOpen(name: Routes.export),
           enabled: controller.canExportVault,
         ),
         const Divider(),
@@ -76,33 +79,29 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.syncIcon),
+          leading: const Icon(LineIcons.alternateShield),
+          trailing: const Icon(LineIcons.infoCircle),
+          title: const Text('Change Password'),
+          onTap: controller.changePassword,
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.trashRestore),
           trailing: const Icon(LineIcons.exclamationTriangle),
           title: Text('reset'.tr + ' $kAppName'),
-          onTap: () => Get.toNamed(Routes.reset),
+          onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),
         const Divider(),
         if (kDebugMode) ...[
           ListTile(
             title: const Text('Google Drive'),
             leading: const Icon(LineIcons.googleDrive),
-            trailing: const Icon(LineIcons.angleRight),
             onTap: () => Get.offAndToNamed(Routes.signIn),
           ),
           const Divider(),
-        ],
-        // TODO: change vault password
-        // ListTile(
-        //   leading: const Icon(LineIcons.alternateShield),
-        //   trailing: const Icon(LineIcons.angleRight),
-        //   title: const Text('Change Password'),
-        //   onTap: () => Get.toNamed(Routes.export),
-        // ),
-        // const Divider(),
-        if (kDebugMode) ...[
           ListTile(
-            leading: const Icon(LineIcons.bug),
             title: const Text('Window Size'),
+            leading: const Icon(LineIcons.bug),
             onTap: () async {
               final size = await DesktopWindow.getWindowSize();
               console.info('size: $size');
@@ -111,6 +110,13 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ],
       ],
     );
+
+    final content = GetPlatform.isMobile
+        ? listView
+        : MouseRegion(
+            child: listView,
+            onHover: (event) => controller.lastMousePosition = event.position,
+          );
 
     return Scaffold(
       appBar: AppBar(

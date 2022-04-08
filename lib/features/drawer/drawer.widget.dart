@@ -18,7 +18,7 @@ class DrawerMenu extends GetView<DrawerWidgetController> with ConsoleMixin {
     final header = DrawerHeader(
       child: Center(
         child: InkWell(
-          child: const Text('HEADER HERE'),
+          child: const Text('WALLET SECTION'),
           onTap: () {
             //
           },
