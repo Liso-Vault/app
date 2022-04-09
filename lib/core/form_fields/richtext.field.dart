@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_quill/flutter_quill.dart';
-import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/utils/console.dart';
 
@@ -47,10 +46,11 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
       children: [
         QuillToolbar.basic(
           controller: _fieldController!,
+          multiRowsDisplay: false,
         ),
         const Divider(),
         SizedBox(
-          height: GetPlatform.isDesktop ? 500 : 300,
+          height: 300,
           child: QuillEditor.basic(
             controller: _fieldController!,
             readOnly: false, // true for view only mode

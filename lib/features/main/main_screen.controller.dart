@@ -15,7 +15,6 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
-import 'package:liso/features/json_viewer/json_viewer.screen.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
@@ -286,6 +285,11 @@ class MainScreenController extends GetxController
     // load items
     data.value = items;
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+
+    // update search state
+    searchDelegate?.reload(Get.context!);
+    // update drawer state
+    drawerController.reload();
   }
 
   void _initAppLifeCycleEvents() {

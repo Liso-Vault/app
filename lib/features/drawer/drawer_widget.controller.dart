@@ -95,19 +95,19 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     boxFilter.value = HiveBoxFilter.all;
-    reload();
+    _reloadMain();
   }
 
   void filterArchivedItems() {
     _clearFilters();
     boxFilter.value = HiveBoxFilter.archived;
-    reload();
+    _reloadMain();
   }
 
   void filterTrashItems() {
     _clearFilters();
     boxFilter.value = HiveBoxFilter.trash;
-    reload();
+    _reloadMain();
   }
 
   void filterByCategory(String category) {
@@ -116,14 +116,14 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     filterCategory.value =
         _category == filterCategory.value ? LisoItemCategory.none : _category;
     filterTag.value = '';
-    reload();
+    _reloadMain();
   }
 
   void filterByTag(String tag) {
     // if already selected, deselect
     if (tag == filterTag.value) tag = '';
     filterTag.value = tag;
-    reload();
+    _reloadMain();
   }
 
   void _clearFilters() {
@@ -131,7 +131,7 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
     filterTag.value = '';
   }
 
-  void reload() async {
+  void _reloadMain() async {
     final mainScreenController = Get.find<MainScreenController>();
 
     // delay for better Mobile UX
@@ -141,5 +141,10 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
 
     mainScreenController.reload();
     Get.back();
+  }
+
+  void reload() {
+    refresh();
+    console.info('reload');
   }
 }

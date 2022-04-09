@@ -246,6 +246,19 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
     final _field = fields.firstWhere((e) => e.identifier == _identifier);
     // convert Map keys to human readable format
     _identifier = GetUtils.capitalize(_identifier.replaceAll('_', ' '))!;
-    return {_identifier: _field.data['value']};
+
+    String _value = _field.data['value'];
+
+    // decode rich text back to plain text
+    if (categoryObject == LisoItemCategory.note) {
+      try {
+        _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+      } catch (e) {
+        console.error('error decoding rich text: $e');
+        _value = 'failed to decode';
+      }
+    }
+
+    return {_identifier: _value};
   }
 }

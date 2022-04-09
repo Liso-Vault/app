@@ -27,14 +27,9 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     this.searchMode = false,
   }) : super(key: key);
 
-  void _reloadSearchDelegate() {
-    MainScreenController.to.searchDelegate?.reload(Get.context!);
-  }
-
   void _favorite() {
     item.favorite = !item.favorite;
     item.save();
-    _reloadSearchDelegate();
   }
 
   // void _protect() async {
@@ -47,20 +42,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   void _archive() async {
     item.delete();
     await HiveManager.archived!.add(item);
-    _reloadSearchDelegate();
   }
 
   void _trash() async {
     // TODO: prompt to delete with selector sheet
     item.delete();
     await HiveManager.trash!.add(item);
-    _reloadSearchDelegate();
   }
 
   void _restore() async {
     item.delete();
     await HiveManager.items!.add(item);
-    _reloadSearchDelegate();
   }
 
   void _open() async {

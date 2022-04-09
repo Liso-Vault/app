@@ -183,10 +183,10 @@ class DrawerMenu extends GetView<DrawerWidgetController> with ConsoleMixin {
             title: Text('about'.tr),
             leading: const Icon(LineIcons.infoCircle),
             onTap: () {
+              // TODO: support offAndToNamed in adaptiveRouteOpen
               if (MainScreenController.to.expandableDrawer) {
                 Get.offAndToNamed(Routes.about);
               } else {
-                // Get.toNamed(Routes.about);
                 Utils.adaptiveRouteOpen(name: Routes.about);
               }
             },
