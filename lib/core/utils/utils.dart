@@ -226,11 +226,12 @@ class Utils {
     // Open page as dialog for desktop
     Get.parameters = parameters; // manually pass parameters
     final page = AppPages.routes.firstWhere((e) => e.name == name).page();
+    final isNote = parameters['category'] == LisoItemCategory.note.name;
 
     final dialog = Dialog(
       child: SizedBox(
-        width: 600,
-        height: 900,
+        width: isNote ? 800 : 600,
+        height: isNote ? 1100 : 900,
         child: page,
       ),
     );

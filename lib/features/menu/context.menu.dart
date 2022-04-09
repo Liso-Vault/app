@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
 
 import '../../core/animations/animations.dart';
 import '../../core/utils/console.dart';
@@ -18,15 +17,15 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
     required this.position,
   }) : super(key: key);
 
-  Future<void> show() async {
-    if (GetPlatform.isMobile) {
-      return await Get.bottomSheet(
-        this,
-        isScrollControlled: false,
-        backgroundColor: Get.theme.scaffoldBackgroundColor,
-      );
-    }
+  Future<void> _showMobile() async {
+    return await Get.bottomSheet(
+      this,
+      isScrollControlled: false,
+      backgroundColor: Get.theme.scaffoldBackgroundColor,
+    );
+  }
 
+  Future<void> _showDesktop() async {
     if (position == null) return console.error('null position');
 
     final rect = RelativeRect.fromLTRB(
@@ -36,9 +35,10 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
       position!.dy,
     );
 
-    showMenu(
+    await showMenu(
       context: Get.context!,
       position: rect,
+      initialValue: initialItem,
       items: items
           .map(
             (e) => PopupMenuItem<ContextMenuItem>(
@@ -59,6 +59,11 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
           )
           .toList(),
     );
+  }
+
+  Future<void> show() async {
+    if (GetPlatform.isMobile) return _showMobile();
+    _showDesktop();
   }
 
   @override

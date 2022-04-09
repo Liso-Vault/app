@@ -39,7 +39,7 @@ class ResetScreen extends GetView<ResetScreenController> {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            TextButton.icon(
+            ElevatedButton.icon(
               onPressed: Get.back,
               label: Text('cancel'.tr),
               icon: const Icon(LineIcons.times),
@@ -48,7 +48,8 @@ class ResetScreen extends GetView<ResetScreenController> {
             TextButton.icon(
               onPressed: controller.reset,
               label: Text('reset'.tr),
-              icon: const Icon(LineIcons.syncIcon),
+              icon: const Icon(LineIcons.trash),
+              style: TextButton.styleFrom(primary: Colors.red),
             ),
           ],
         )

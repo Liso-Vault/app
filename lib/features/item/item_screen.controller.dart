@@ -16,6 +16,7 @@ import 'package:liso/features/menu/context.menu.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
+import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.item.dart';
 
@@ -54,40 +55,23 @@ class ItemScreenController extends GetxController
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: 'copy'.tr,
+        title: 'copy'.tr + ' ${item!.significant.keys.first}',
         leading: const Icon(LineIcons.copy),
-        function: () {
-          console.info('copy');
-        },
+        function: () => Utils.copyToClipboard(item!.significant.values.first),
       ),
-      // MenuItem(
-      //   title: 'trash'.tr,
-      //   leading: const Icon(LineIcons.copy),
-      //   function: () {
-      //     console.info('trash');
-      //   },
-      // ),
-      // MenuItem(
-      //   title: 'archive'.tr,
-      //   leading: const Icon(LineIcons.copy),
-      //   function: () {
-      //     console.info('archive');
-      //   },
-      // ),
-      // MenuItem(
-      //   title: 'restore'.tr,
-      //   leading: const Icon(LineIcons.copy),
-      //   function: () {
-      //     console.info('restore');
-      //   },
-      // ),
-      // MenuItem(
-      //   title: 'favorite'.tr,
-      //   leading: const Icon(LineIcons.copy),
-      //   function: () {
-      //     console.info('favorite');
-      //   },
-      // ),
+      if (item!.categoryObject == LisoItemCategory.cryptoWallet) ...[
+        // TODO: export wallet and generate qr code
+        ContextMenuItem(
+          title: 'export_wallet'.tr,
+          leading: const Icon(LineIcons.fileExport),
+          function: () {},
+        ),
+        ContextMenuItem(
+          title: 'QR Code',
+          leading: const Icon(LineIcons.qrcode),
+          function: () {},
+        ),
+      ]
     ];
   }
 
@@ -114,8 +98,6 @@ class ItemScreenController extends GetxController
     favorite.value = item!.favorite;
     protected.value = item!.protected;
     tags = item!.tags;
-
-    console.info('update data: ${item!.fields.first.data}');
   }
 
   Future<void> _loadTemplate() async {
@@ -173,29 +155,6 @@ class ItemScreenController extends GetxController
 
     Get.back();
   }
-
-  // void trash() {
-  //   void _proceed() async {
-  //     await item?.delete();
-  //     Get.back();
-  //   }
-
-  //   ContextMenu(
-  //     position: lastMousePosition,
-  //     items: [
-  //       ContextMenuItem(
-  //         title: 'Move to trash',
-  //         leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-  //         function: _proceed,
-  //       ),
-  //       ContextMenuItem(
-  //         title: 'Cancel',
-  //         leading: const Icon(LineIcons.timesCircle),
-  //         function: Get.back,
-  //       ),
-  //     ],
-  //   ).show();
-  // }
 
   List<String> querySuggestions(String query) {
     if (query.isEmpty) return [];

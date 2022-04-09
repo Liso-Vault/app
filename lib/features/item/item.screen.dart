@@ -161,6 +161,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
     ];
 
     final appBar = AppBar(
+      centerTitle: false,
       title: Text(category.tr),
       // X icon for desktop instead of back for mobile
       leading: MainScreenController.to.expandableDrawer
@@ -169,7 +170,6 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
               onPressed: Get.back,
               icon: const Icon(LineIcons.times),
             ),
-      centerTitle: false,
       actions: [
         IconButton(
           onPressed: mode == 'update' ? controller.edit : controller.add,

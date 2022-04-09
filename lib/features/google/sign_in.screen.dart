@@ -68,6 +68,7 @@ class SignInScreen extends GetView<SignInScreenController> with ConsoleMixin {
     );
 
     final appBar = AppBar(
+      centerTitle: false,
       title: const Text(
         'Sign In', // TODO: localize
         style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),

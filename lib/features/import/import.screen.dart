@@ -64,7 +64,9 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
     );
 
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        centerTitle: false,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(

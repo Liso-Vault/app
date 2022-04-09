@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../utils/utils.dart';
@@ -13,7 +17,7 @@ import 'metadata/metadata.hive.dart';
 part 'item.hive.g.dart';
 
 @HiveType(typeId: 1)
-class HiveLisoItem extends HiveObject {
+class HiveLisoItem extends HiveObject with ConsoleMixin {
   @HiveField(0)
   String category;
   @HiveField(1)
@@ -77,12 +81,13 @@ class HiveLisoItem extends HiveObject {
   String get updatedTimeAgo =>
       Utils.timeAgo(metadata.updatedTime, short: false);
 
-  String get subTitle {
-    final _category = LisoItemCategory.values.byName(category);
+  LisoItemCategory get categoryObject =>
+      LisoItemCategory.values.byName(category);
 
+  String get subTitle {
     String _identifier = '';
 
-    switch (_category) {
+    switch (categoryObject) {
       case LisoItemCategory.cryptoWallet:
         _identifier = 'address';
         break;
@@ -151,6 +156,96 @@ class HiveLisoItem extends HiveObject {
     }
 
     final _field = fields.firstWhere((e) => e.identifier == _identifier);
-    return _field.data['value'];
+    String _value = _field.data['value'];
+
+    // decode rich text back to plain text
+    if (categoryObject == LisoItemCategory.note) {
+      try {
+        _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+      } catch (e) {
+        console.error('error decoding rich text: $e');
+        _value = 'failed to decode';
+      }
+    }
+
+    return _value;
+  }
+
+  // TODO: bind corresponding significant data
+  Map<String, String> get significant {
+    String _identifier = '';
+
+    switch (categoryObject) {
+      case LisoItemCategory.cryptoWallet:
+        _identifier = 'address';
+        break;
+      case LisoItemCategory.login:
+        _identifier = 'website';
+        break;
+      case LisoItemCategory.password:
+        _identifier = 'website';
+        break;
+      case LisoItemCategory.identity:
+        _identifier = 'first_name';
+        break;
+      case LisoItemCategory.note:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.cashCard:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.bankAccount:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.medicalRecord:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.passport:
+        _identifier = 'full_name';
+        break;
+      case LisoItemCategory.server:
+        _identifier = 'url';
+        break;
+      case LisoItemCategory.softwareLicense:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.apiCredential:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.database:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.driversLicense:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.email:
+        _identifier = 'email';
+        break;
+      case LisoItemCategory.membership:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.outdoorLicense:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.rewardsProgram:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.socialSecurity:
+        _identifier = 'name';
+        break;
+      case LisoItemCategory.wirelessRouter:
+        _identifier = 'note';
+        break;
+      case LisoItemCategory.encryption:
+        _identifier = 'note';
+        break;
+      default:
+        throw 'item identifier: $_identifier not found while obtaining sub title';
+    }
+
+    final _field = fields.firstWhere((e) => e.identifier == _identifier);
+    // convert Map keys to human readable format
+    _identifier = GetUtils.capitalize(_identifier.replaceAll('_', ' '))!;
+    return {_identifier: _field.data['value']};
   }
 }

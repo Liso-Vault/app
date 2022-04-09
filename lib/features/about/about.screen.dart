@@ -98,6 +98,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         ListTile(
           leading: const Icon(LineIcons.gift),
           title: const Text('Invite a friend'),
+          trailing: const Icon(LineIcons.share),
           onTap: () => Share.share(
             kAppShareText,
             subject: kAppName,
@@ -108,18 +109,14 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           leading: const Icon(LineIcons.list),
           title: const Text('Roadmap'),
           onTap: () => launch(kAppRoadmapUrl),
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.laptopCode),
-          title: const Text('Licenses'),
-          onTap: () => controller.showLicenses(context),
+          trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.users),
           title: const Text('Community & Help'),
           onTap: () => launch(kAppSupportUrl),
+          trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         // ListTile(
         //   leading: const Icon(LineIcons.download),
@@ -139,18 +136,20 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   ),
         // ],
         const Divider(),
-        const SizedBox(height: 20),
-        TextButton.icon(
-          icon: const Icon(LineIcons.link),
-          label: const Text(kDeveloperWebsite),
-          onPressed: () => launch(kDeveloperWebsite),
+        ListTile(
+          leading: const Icon(LineIcons.code),
+          title: const Text(kDeveloperName),
+          subtitle: const Text('Developer'),
+          onTap: () => launch(kDeveloperWebsite),
+          trailing: const Icon(LineIcons.alternateExternalLink),
         ),
-        const SizedBox(height: 20),
-        TextButton.icon(
-          icon: const Icon(LineIcons.twitter),
-          label: const Text(kDeveloperTwitterHandle),
-          onPressed: () => launch(kDeveloperTwitterUrl),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.laptopCode),
+          title: const Text('Licenses'),
+          onTap: () => controller.showLicenses(context),
         ),
+        const Divider(),
         const SizedBox(height: 50),
       ],
     );
@@ -158,6 +157,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
     return Scaffold(
       appBar: AppBar(
         title: const Text('About'),
+        centerTitle: false,
         // X icon for desktop instead of back for mobile
         leading: MainScreenController.to.expandableDrawer
             ? null

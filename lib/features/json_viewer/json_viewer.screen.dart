@@ -9,7 +9,10 @@ class JSONViewerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('JSON Viewer')),
+      appBar: AppBar(
+        title: const Text('JSON Viewer'),
+        centerTitle: false,
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(15),

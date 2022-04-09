@@ -121,6 +121,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
     return Scaffold(
       appBar: AppBar(
         title: Text('settings'.tr),
+        centerTitle: false,
         // X icon for desktop instead of back for mobile
         leading: MainScreenController.to.expandableDrawer
             ? null

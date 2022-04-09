@@ -15,6 +15,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
+import 'package:liso/features/json_viewer/json_viewer.screen.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
@@ -322,97 +323,103 @@ class MainScreenController extends GetxController
       ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
     );
 
+    final sortItems = [
+      ContextMenuItem(
+        title: 'title'.tr,
+        leading: const Icon(LineIcons.font),
+        trailing: sortName.contains('title') ? icon : null,
+        function: () {
+          if (!sortName.contains('title')) {
+            sortOrder.value = LisoItemSortOrder.titleDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.titleDescending
+                : LisoItemSortOrder.titleAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'category'.tr,
+        leading: const Icon(LineIcons.sitemap),
+        trailing: sortName.contains('category') ? icon : null,
+        function: () {
+          if (!sortName.contains('category')) {
+            sortOrder.value = LisoItemSortOrder.categoryDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.categoryDescending
+                : LisoItemSortOrder.categoryAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'date_modified'.tr,
+        leading: const Icon(LineIcons.calendar),
+        trailing: sortName.contains('dateModified') ? icon : null,
+        function: () {
+          if (!sortName.contains('dateModified')) {
+            sortOrder.value =
+                LisoItemSortOrder.dateModifiedDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.dateModifiedDescending
+                : LisoItemSortOrder.dateModifiedAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'date_created'.tr,
+        leading: const Icon(LineIcons.calendarAlt),
+        trailing: sortName.contains('dateCreated') ? icon : null,
+        function: () {
+          if (!sortName.contains('dateCreated')) {
+            sortOrder.value =
+                LisoItemSortOrder.dateCreatedDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.dateCreatedDescending
+                : LisoItemSortOrder.dateCreatedAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'favorite'.tr,
+        leading: const FaIcon(FontAwesomeIcons.heart),
+        trailing: sortName.contains('favorite') ? icon : null,
+        function: () {
+          if (!sortName.contains('favorite')) {
+            sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.favoriteDescending
+                : LisoItemSortOrder.favoriteAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'protected'.tr,
+        leading: const Icon(LineIcons.alternateShield),
+        trailing: sortName.contains('protected') ? icon : null,
+        function: () {
+          if (!sortName.contains('protected')) {
+            sortOrder.value = LisoItemSortOrder.protectedDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.protectedDescending
+                : LisoItemSortOrder.protectedAscending;
+          }
+        },
+      ),
+    ];
+
     ContextMenu(
+      initialItem: sortItems.firstWhere(
+        (e) => sortName
+            .toLowerCase()
+            .contains(e.title.toLowerCase().replaceAll(' ', '')),
+      ),
       position: lastMousePosition,
-      items: [
-        ContextMenuItem(
-          title: 'title'.tr,
-          leading: const Icon(LineIcons.font),
-          trailing: sortName.contains('title') ? icon : null,
-          function: () {
-            if (!sortName.contains('title')) {
-              sortOrder.value = LisoItemSortOrder.titleDescending; // default
-            } else {
-              sortOrder.value = ascending
-                  ? LisoItemSortOrder.titleDescending
-                  : LisoItemSortOrder.titleAscending;
-            }
-          },
-        ),
-        ContextMenuItem(
-          title: 'category'.tr,
-          leading: const Icon(LineIcons.sitemap),
-          trailing: sortName.contains('category') ? icon : null,
-          function: () {
-            if (!sortName.contains('category')) {
-              sortOrder.value = LisoItemSortOrder.categoryDescending; // default
-            } else {
-              sortOrder.value = ascending
-                  ? LisoItemSortOrder.categoryDescending
-                  : LisoItemSortOrder.categoryAscending;
-            }
-          },
-        ),
-        ContextMenuItem(
-          title: 'date_modified'.tr,
-          leading: const Icon(LineIcons.calendar),
-          trailing: sortName.contains('dateModified') ? icon : null,
-          function: () {
-            if (!sortName.contains('dateModified')) {
-              sortOrder.value =
-                  LisoItemSortOrder.dateModifiedDescending; // default
-            } else {
-              sortOrder.value = ascending
-                  ? LisoItemSortOrder.dateModifiedDescending
-                  : LisoItemSortOrder.dateModifiedAscending;
-            }
-          },
-        ),
-        ContextMenuItem(
-          title: 'date_created'.tr,
-          leading: const Icon(LineIcons.calendarAlt),
-          trailing: sortName.contains('dateCreated') ? icon : null,
-          function: () {
-            if (!sortName.contains('dateCreated')) {
-              sortOrder.value =
-                  LisoItemSortOrder.dateCreatedDescending; // default
-            } else {
-              sortOrder.value = ascending
-                  ? LisoItemSortOrder.dateCreatedDescending
-                  : LisoItemSortOrder.dateCreatedAscending;
-            }
-          },
-        ),
-        ContextMenuItem(
-          title: 'favorite'.tr,
-          leading: const FaIcon(FontAwesomeIcons.heart),
-          trailing: sortName.contains('favorite') ? icon : null,
-          function: () {
-            if (!sortName.contains('favorite')) {
-              sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
-            } else {
-              sortOrder.value = ascending
-                  ? LisoItemSortOrder.favoriteDescending
-                  : LisoItemSortOrder.favoriteAscending;
-            }
-          },
-        ),
-        ContextMenuItem(
-          title: 'protected'.tr,
-          leading: const Icon(LineIcons.alternateShield),
-          trailing: sortName.contains('protected') ? icon : null,
-          function: () {
-            if (!sortName.contains('protected')) {
-              sortOrder.value =
-                  LisoItemSortOrder.protectedDescending; // default
-            } else {
-              sortOrder.value = ascending
-                  ? LisoItemSortOrder.protectedDescending
-                  : LisoItemSortOrder.protectedAscending;
-            }
-          },
-        ),
-      ],
+      items: sortItems,
     ).show();
   }
 

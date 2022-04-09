@@ -37,22 +37,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     _reloadSearchDelegate();
   }
 
-  void _protect() async {
-    if (item.protected) {
-      // if trying to unprotect, prompt password
-      final unlocked = await Get.toNamed(
-            Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
-          ) ??
-          false;
-
-      if (!unlocked) return;
-    }
-
-    item.protected = !item.protected;
-    item.save();
-    _reloadSearchDelegate();
-  }
+  // void _protect() async {
+  //   if (item.protected && !(await _unlock())) return;
+  //   item.protected = !item.protected;
+  //   item.save();
+  //   _reloadSearchDelegate();
+  // }
 
   void _archive() async {
     item.delete();
@@ -74,16 +64,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }
 
   void _open() async {
-    // show lock screen if item is protected
-    if (item.protected) {
-      final unlocked = await Get.toNamed(
-            Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
-          ) ??
-          false;
-
-      if (!unlocked) return;
-    }
+    if (item.protected && !(await _unlock())) return;
 
     // route parameters
     final parameters = {
@@ -96,6 +77,19 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       name: Routes.item,
       parameters: parameters,
     );
+  }
+
+  // show lock screen if item is protected
+  Future<bool> _unlock() async {
+    final unlocked = await Get.toNamed(
+          Routes.unlock,
+          parameters: {'mode': 'password_prompt'},
+        ) ??
+        false;
+
+    if (!unlocked) console.warning('failed to unlock');
+
+    return unlocked;
   }
 
   @override
@@ -115,16 +109,16 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         ),
         function: _favorite,
       ),
-      ContextMenuItem(
-        title: item.protected ? 'unprotect'.tr : 'protect'.tr,
-        leading: FaIcon(
-          item.protected
-              ? FontAwesomeIcons.shield
-              : FontAwesomeIcons.shieldHalved,
-          color: item.protected ? kAppColor : null,
-        ),
-        function: _protect,
-      ),
+      // ContextMenuItem(
+      //   title: item.protected ? 'unprotect'.tr : 'protect'.tr,
+      //   leading: FaIcon(
+      //     item.protected
+      //         ? FontAwesomeIcons.shield
+      //         : FontAwesomeIcons.shieldHalved,
+      //     color: item.protected ? kAppColor : null,
+      //   ),
+      //   function: _protect,
+      // ),
       if (!isArchived) ...[
         ContextMenuItem(
           title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
@@ -149,6 +143,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ContextMenuItem(
         title: 'details'.tr,
         leading: const Icon(LineIcons.code),
+        // TODO: adaptive route for json viewer screen
         function: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
       ),
     ];

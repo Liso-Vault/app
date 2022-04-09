@@ -1,28 +1,63 @@
-import 'package:flutter/material.dart';
-import 'package:liso/core/hive/models/field.hive.dart';
+import 'dart:convert';
 
-// TODO: use flutter_quill package
+import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:liso/core/hive/models/field.hive.dart';
+import 'package:liso/core/utils/console.dart';
+
 // ignore: must_be_immutable
-class RichTextFormField extends StatelessWidget {
+class RichTextFormField extends StatelessWidget with ConsoleMixin {
   final HiveLisoField field;
   RichTextFormField(this.field, {Key? key}) : super(key: key);
 
-  TextEditingController? _fieldController;
+  QuillController? _fieldController;
 
-  String get value => _fieldController!.text;
+  String get value {
+    try {
+      return jsonEncode(_fieldController!.document.toDelta().toJson());
+    } catch (e) {
+      console.error('message');
+      return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data['value']);
+    if (field.data['value'].isEmpty) {
+      _fieldController = QuillController.basic();
+    } else {
+      dynamic json;
 
-    return TextFormField(
-      controller: _fieldController,
-      maxLines: 5,
-      textCapitalization: TextCapitalization.sentences,
-      decoration: InputDecoration(
-        labelText: field.data['label'],
-        hintText: field.data['hint'],
-      ),
+      try {
+        json = jsonDecode(field.data['value']);
+
+        _fieldController = QuillController(
+          document: Document.fromJson(json),
+          selection: const TextSelection.collapsed(offset: 0),
+        );
+      } catch (e) {
+        console.error('json error: $e');
+        _fieldController = QuillController.basic();
+      }
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        QuillToolbar.basic(
+          controller: _fieldController!,
+        ),
+        const Divider(),
+        SizedBox(
+          height: GetPlatform.isDesktop ? 500 : 300,
+          child: QuillEditor.basic(
+            controller: _fieldController!,
+            readOnly: false, // true for view only mode
+          ),
+        ),
+        const Divider(),
+      ],
     );
   }
 }
