@@ -63,7 +63,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       onEmpty: CenteredPlaceholder(
         iconData: LineIcons.seedling,
         message: 'no_items'.tr,
-        child: DrawerWidgetController.to.boxFilter.value == HiveBoxFilter.all
+        child: DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
             ? TextButton.icon(
                 icon: const Icon(LineIcons.plus),
                 label: Text(
@@ -120,10 +120,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               appBar: appBar,
               body: content,
               floatingActionButton: Obx(
-                () => DrawerWidgetController.to.boxFilter.value ==
-                        HiveBoxFilter.all
-                    ? floatingActionButton
-                    : const SizedBox.shrink(),
+                () =>
+                    DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
+                        ? floatingActionButton
+                        : const SizedBox.shrink(),
               ),
             ),
           ),

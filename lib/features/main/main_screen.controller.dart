@@ -30,7 +30,7 @@ class MainScreenBinding extends Bindings {
   @override
   void dependencies() {
     Get.lazyPut(() => MainScreenController());
-    Get.lazyPut(() => DrawerWidgetController());
+    Get.lazyPut(() => DrawerMenuController());
 
     // WIDGETS
     Get.create(() => PasswordFormFieldController());
@@ -53,7 +53,7 @@ class MainScreenController extends GetxController
   var scaffoldKey = GlobalKey<ScaffoldState>();
   // var fabKey = RectGetter.createGlobalKey();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
-  final drawerController = Get.find<DrawerWidgetController>();
+  final drawerController = Get.find<DrawerMenuController>();
   Offset? lastMousePosition;
 
   // Categories to MenuItems
@@ -286,10 +286,10 @@ class MainScreenController extends GetxController
     data.value = items;
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
 
-    // update search state
+    // reload SearchDelegate to reflect
     searchDelegate?.reload(Get.context!);
     // update drawer state
-    drawerController.reload();
+    drawerController.refresh();
   }
 
   void _initAppLifeCycleEvents() {

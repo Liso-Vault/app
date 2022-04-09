@@ -11,9 +11,9 @@ enum HiveBoxFilter {
   trash,
 }
 
-class DrawerWidgetController extends GetxController with ConsoleMixin {
+class DrawerMenuController extends GetxController with ConsoleMixin {
   // CONSTRUCTOR
-  static DrawerWidgetController get to => Get.find();
+  static DrawerMenuController get to => Get.find();
 
   // VARIABLES
   // maintain expansion tile state
@@ -141,10 +141,5 @@ class DrawerWidgetController extends GetxController with ConsoleMixin {
 
     mainScreenController.reload();
     Get.back();
-  }
-
-  void reload() {
-    refresh();
-    console.info('reload');
   }
 }

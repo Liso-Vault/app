@@ -86,7 +86,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final drawerController = Get.find<DrawerWidgetController>();
+    final drawerController = Get.find<DrawerMenuController>();
 
     final isArchived =
         drawerController.boxFilter.value == HiveBoxFilter.archived;

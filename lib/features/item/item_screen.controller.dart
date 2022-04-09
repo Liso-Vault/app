@@ -100,7 +100,7 @@ class ItemScreenController extends GetxController
   }
 
   Future<void> _loadTemplate() async {
-    final drawerController = Get.find<DrawerWidgetController>();
+    final drawerController = Get.find<DrawerMenuController>();
 
     favorite.value = drawerController.filterFavorites.value;
     protected.value = drawerController.filterProtected.value;
