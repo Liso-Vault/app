@@ -9,7 +9,7 @@ import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/services/authentication.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
@@ -22,7 +22,6 @@ import '../../core/form_fields/pin.field.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../item/item_screen.controller.dart';
-import '../menu/context.menu.dart';
 import '../menu/menu.item.dart';
 import '../search/search.delegate.dart';
 
@@ -31,7 +30,6 @@ class MainScreenBinding extends Bindings {
   void dependencies() {
     Get.lazyPut(() => MainScreenController());
     Get.lazyPut(() => DrawerMenuController());
-
     // WIDGETS
     Get.create(() => PasswordFormFieldController());
     Get.create(() => PINFormFieldController());
@@ -51,28 +49,30 @@ class MainScreenController extends GetxController
   // VARIABLES
   Timer? timer;
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  // var fabKey = RectGetter.createGlobalKey();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerMenuController>();
-  Offset? lastMousePosition;
 
-  // Categories to MenuItems
-  final menuItems = LisoItemCategory.values
-      .where((e) => e.name != 'none')
-      .toList()
-      .map(
-        (e) => ContextMenuItem(
-          title: e.name.tr,
-          leading: Utils.categoryIcon(
-            LisoItemCategory.values.byName(e.name),
+  List<ContextMenuItem> get menuItemsCategory {
+    return LisoItemCategory.values
+        .where((e) => e.name != 'none')
+        .toList()
+        .map(
+          (e) => ContextMenuItem(
+            title: e.name.tr,
+            leading: Utils.categoryIcon(
+              LisoItemCategory.values.byName(e.name),
+            ),
+            onSelected: () {
+              console.warning('context tapped');
+              Utils.adaptiveRouteOpen(
+                name: Routes.item,
+                parameters: {'mode': 'add', 'category': e.name},
+              );
+            },
           ),
-          function: () => Utils.adaptiveRouteOpen(
-            name: Routes.item,
-            parameters: {'mode': 'add', 'category': e.name},
-          ),
-        ),
-      )
-      .toList();
+        )
+        .toList();
+  }
 
   ItemsSearchDelegate? searchDelegate;
   StreamSubscription? itemsSubscription,
@@ -85,12 +85,110 @@ class MainScreenController extends GetxController
   // GETTERS
   bool get expandableDrawer => scaffoldKey.currentState!.hasDrawer;
 
+  List<ContextMenuItem> get menuItemsSort {
+    final sortName = sortOrder.value.name;
+    final ascending = sortName.contains('Ascending');
+
+    final icon = Icon(
+      ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
+    );
+
+    return [
+      ContextMenuItem(
+        title: 'title'.tr,
+        leading: const Icon(LineIcons.font),
+        trailing: sortName.contains('title') ? icon : null,
+        onSelected: () {
+          if (!sortName.contains('title')) {
+            sortOrder.value = LisoItemSortOrder.titleDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.titleDescending
+                : LisoItemSortOrder.titleAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'category'.tr,
+        leading: const Icon(LineIcons.sitemap),
+        trailing: sortName.contains('category') ? icon : null,
+        onSelected: () {
+          if (!sortName.contains('category')) {
+            sortOrder.value = LisoItemSortOrder.categoryDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.categoryDescending
+                : LisoItemSortOrder.categoryAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'date_modified'.tr,
+        leading: const Icon(LineIcons.calendar),
+        trailing: sortName.contains('dateModified') ? icon : null,
+        onSelected: () {
+          if (!sortName.contains('dateModified')) {
+            sortOrder.value =
+                LisoItemSortOrder.dateModifiedDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.dateModifiedDescending
+                : LisoItemSortOrder.dateModifiedAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'date_created'.tr,
+        leading: const Icon(LineIcons.calendarAlt),
+        trailing: sortName.contains('dateCreated') ? icon : null,
+        onSelected: () {
+          if (!sortName.contains('dateCreated')) {
+            sortOrder.value =
+                LisoItemSortOrder.dateCreatedDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.dateCreatedDescending
+                : LisoItemSortOrder.dateCreatedAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'favorite'.tr,
+        leading: const FaIcon(FontAwesomeIcons.heart),
+        trailing: sortName.contains('favorite') ? icon : null,
+        onSelected: () {
+          if (!sortName.contains('favorite')) {
+            sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.favoriteDescending
+                : LisoItemSortOrder.favoriteAscending;
+          }
+        },
+      ),
+      ContextMenuItem(
+        title: 'protected'.tr,
+        leading: const Icon(LineIcons.alternateShield),
+        trailing: sortName.contains('protected') ? icon : null,
+        onSelected: () {
+          if (!sortName.contains('protected')) {
+            sortOrder.value = LisoItemSortOrder.protectedDescending; // default
+          } else {
+            sortOrder.value = ascending
+                ? LisoItemSortOrder.protectedDescending
+                : LisoItemSortOrder.protectedAscending;
+          }
+        },
+      ),
+    ];
+  }
+
   // INIT
   @override
   void onInit() async {
     _initAppLifeCycleEvents();
     Utils.setDisplayMode();
-    _initRouter();
+    _load();
     console.info('onInit');
     super.onInit();
   }
@@ -111,21 +209,6 @@ class MainScreenController extends GetxController
   }
 
   // FUNCTIONS
-  // TODO: use getx router implementation
-  void _initRouter() async {
-    // show welcome screen if not authenticated
-    if (!(await LisoManager.authenticated())) {
-      await Get.toNamed(Routes.welcome);
-      await Get.toNamed(Routes.createPassword);
-    } else {
-      if (encryptionKey == null) {
-        await Get.toNamed(Routes.unlock);
-      }
-    }
-
-    console.info('_initRouter');
-    _load();
-  }
 
   void _watchBoxes() {
     // console.warning(
@@ -195,31 +278,23 @@ class MainScreenController extends GetxController
     // --- SORT BY TITLE ---- //
     // descending
     if (sortOrder.value == LisoItemSortOrder.titleDescending) {
-      items.sort(
-        (a, b) => b.title.compareTo(a.title),
-      );
+      items.sort((a, b) => b.title.compareTo(a.title));
     }
 
     // ascending
     if (sortOrder.value == LisoItemSortOrder.titleAscending) {
-      items.sort(
-        (a, b) => a.title.compareTo(b.title),
-      );
+      items.sort((a, b) => a.title.compareTo(b.title));
     }
 
     // --- SORT BY TITLE ---- //
     // descending
     if (sortOrder.value == LisoItemSortOrder.categoryDescending) {
-      items.sort(
-        (a, b) => b.category.compareTo(a.category),
-      );
+      items.sort((a, b) => b.category.compareTo(a.category));
     }
 
     // ascending
     if (sortOrder.value == LisoItemSortOrder.categoryAscending) {
-      items.sort(
-        (a, b) => a.category.compareTo(b.category),
-      );
+      items.sort((a, b) => a.category.compareTo(b.category));
     }
 
     // --- SORT BY DATE MODIFIED ---- //
@@ -255,31 +330,23 @@ class MainScreenController extends GetxController
     // --- SORT BY FAVORITE ---- //
     // descending
     if (sortOrder.value == LisoItemSortOrder.favoriteDescending) {
-      items.sort(
-        (a, b) => b.favorite ? 1 : -1,
-      );
+      items.sort((a, b) => b.favorite ? 1 : -1);
     }
 
     // ascending
     if (sortOrder.value == LisoItemSortOrder.favoriteAscending) {
-      items.sort(
-        (a, b) => a.favorite ? 1 : -1,
-      );
+      items.sort((a, b) => a.favorite ? 1 : -1);
     }
 
     // --- SORT BY PROTECTED ---- //
     // descending
     if (sortOrder.value == LisoItemSortOrder.protectedDescending) {
-      items.sort(
-        (a, b) => b.protected ? 1 : -1,
-      );
+      items.sort((a, b) => b.protected ? 1 : -1);
     }
 
     // ascending
     if (sortOrder.value == LisoItemSortOrder.protectedAscending) {
-      items.sort(
-        (a, b) => a.protected ? 1 : -1,
-      );
+      items.sort((a, b) => a.protected ? 1 : -1);
     }
 
     // load items
@@ -300,7 +367,7 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timer?.cancel();
 
-        if (await LisoManager.authenticated() && encryptionKey == null) {
+        if (AuthenticationService.to.isAuthenticated && encryptionKey == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
@@ -318,117 +385,4 @@ class MainScreenController extends GetxController
       return Future.value(msg);
     });
   }
-
-  void showSortSheet() {
-    final sortName = sortOrder.value.name;
-    final ascending = sortName.contains('Ascending');
-
-    final icon = Icon(
-      ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
-    );
-
-    final sortItems = [
-      ContextMenuItem(
-        title: 'title'.tr,
-        leading: const Icon(LineIcons.font),
-        trailing: sortName.contains('title') ? icon : null,
-        function: () {
-          if (!sortName.contains('title')) {
-            sortOrder.value = LisoItemSortOrder.titleDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.titleDescending
-                : LisoItemSortOrder.titleAscending;
-          }
-        },
-      ),
-      ContextMenuItem(
-        title: 'category'.tr,
-        leading: const Icon(LineIcons.sitemap),
-        trailing: sortName.contains('category') ? icon : null,
-        function: () {
-          if (!sortName.contains('category')) {
-            sortOrder.value = LisoItemSortOrder.categoryDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.categoryDescending
-                : LisoItemSortOrder.categoryAscending;
-          }
-        },
-      ),
-      ContextMenuItem(
-        title: 'date_modified'.tr,
-        leading: const Icon(LineIcons.calendar),
-        trailing: sortName.contains('dateModified') ? icon : null,
-        function: () {
-          if (!sortName.contains('dateModified')) {
-            sortOrder.value =
-                LisoItemSortOrder.dateModifiedDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.dateModifiedDescending
-                : LisoItemSortOrder.dateModifiedAscending;
-          }
-        },
-      ),
-      ContextMenuItem(
-        title: 'date_created'.tr,
-        leading: const Icon(LineIcons.calendarAlt),
-        trailing: sortName.contains('dateCreated') ? icon : null,
-        function: () {
-          if (!sortName.contains('dateCreated')) {
-            sortOrder.value =
-                LisoItemSortOrder.dateCreatedDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.dateCreatedDescending
-                : LisoItemSortOrder.dateCreatedAscending;
-          }
-        },
-      ),
-      ContextMenuItem(
-        title: 'favorite'.tr,
-        leading: const FaIcon(FontAwesomeIcons.heart),
-        trailing: sortName.contains('favorite') ? icon : null,
-        function: () {
-          if (!sortName.contains('favorite')) {
-            sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.favoriteDescending
-                : LisoItemSortOrder.favoriteAscending;
-          }
-        },
-      ),
-      ContextMenuItem(
-        title: 'protected'.tr,
-        leading: const Icon(LineIcons.alternateShield),
-        trailing: sortName.contains('protected') ? icon : null,
-        function: () {
-          if (!sortName.contains('protected')) {
-            sortOrder.value = LisoItemSortOrder.protectedDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.protectedDescending
-                : LisoItemSortOrder.protectedAscending;
-          }
-        },
-      ),
-    ];
-
-    ContextMenu(
-      initialItem: sortItems.firstWhere(
-        (e) => sortName
-            .toLowerCase()
-            .contains(e.title.toLowerCase().replaceAll(' ', '')),
-      ),
-      position: lastMousePosition,
-      items: sortItems,
-    ).show();
-  }
-
-  void menu() => ContextMenu(
-        position: lastMousePosition,
-        items: menuItems,
-      ).show();
 }

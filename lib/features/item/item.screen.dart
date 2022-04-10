@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/menu/menu.button.dart';
 
 import '../general/busy_indicator.widget.dart';
 import '../main/main_screen.controller.dart';
@@ -90,11 +91,14 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
         children: [
           // ICON
           Obx(
-            () => IconButton(
-              icon: controller.icon().isEmpty
+            () => ContextMenuButton(
+              controller.menuItemsChangeIcon,
+              child: controller.icon().isEmpty
                   ? const Icon(Icons.photo, size: 30)
-                  : Image.memory(controller.icon()),
-              onPressed: controller.changeIcon,
+                  : Image.memory(
+                      controller.icon(),
+                      width: 30,
+                    ),
             ),
           ),
           const SizedBox(width: 10),
@@ -176,9 +180,9 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
           icon: const Icon(LineIcons.check),
         ),
         if (mode == 'update') ...[
-          IconButton(
-            icon: const Icon(LineIcons.verticalEllipsis),
-            onPressed: controller.menu,
+          ContextMenuButton(
+            controller.menuItems,
+            child: const Icon(LineIcons.verticalEllipsis),
           ),
         ],
         const SizedBox(width: 10),
@@ -200,16 +204,9 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       onLoading: const BusyIndicator(),
     );
 
-    final scaffold = Scaffold(
+    return Scaffold(
       appBar: appBar,
       body: content,
     );
-
-    return GetPlatform.isMobile
-        ? scaffold
-        : MouseRegion(
-            onHover: (event) => controller.lastMousePosition = event.position,
-            child: scaffold,
-          );
   }
 }

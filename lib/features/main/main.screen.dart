@@ -6,6 +6,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/item/item.tile.dart';
+import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../drawer/drawer.widget.dart';
@@ -53,24 +54,22 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final content = controller.obx(
-      (_) => GetPlatform.isMobile
-          ? listView
-          : MouseRegion(
-              child: listView,
-              onHover: (event) => controller.lastMousePosition = event.position,
-            ),
+      (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
         iconData: LineIcons.seedling,
         message: 'no_items'.tr,
         child: DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
-            ? TextButton.icon(
-                icon: const Icon(LineIcons.plus),
-                label: Text(
-                  'add_item'.tr,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+            ? ContextMenuButton(
+                controller.menuItemsCategory,
+                child: TextButton.icon(
+                  icon: const Icon(LineIcons.plus),
+                  label: Text(
+                    'add_item'.tr,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () {},
                 ),
-                onPressed: controller.menu,
               )
             : null,
       ),
@@ -94,25 +93,35 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           icon: const Icon(LineIcons.search),
           onPressed: searchPressed,
         ),
-        IconButton(
-          icon: const Icon(LineIcons.sort),
-          onPressed: controller.showSortSheet,
+        Obx(
+          () => ContextMenuButton(
+            controller.menuItemsSort,
+            initialItem: controller.menuItemsSort.firstWhere(
+              (e) => controller.sortOrder.value.name
+                  .toLowerCase()
+                  .contains(e.title.toLowerCase().replaceAll(' ', '')),
+            ),
+            child: IconButton(
+              icon: const Icon(LineIcons.sort),
+              onPressed: () {},
+            ),
+          ),
         ),
       ],
     );
 
-    // custom floating action button
-    final floatingActionButton = FloatingActionButton(
-      child: const Icon(LineIcons.plus),
-      onPressed: controller.menu,
+    final floatingActionButton = ContextMenuButton(
+      controller.menuItemsCategory,
+      child: FloatingActionButton(
+        child: const Icon(LineIcons.plus),
+        onPressed: () {},
+      ),
     );
-
-    const drawerWidth = 240.0;
 
     if (screen.screenType == ScreenType.Desktop) {
       return Row(
         children: [
-          const SizedBox(width: drawerWidth, child: DrawerMenu()),
+          const SizedBox(width: 240.0, child: DrawerMenu()),
           Container(width: 0.5, color: Colors.black),
           Expanded(
             child: Scaffold(

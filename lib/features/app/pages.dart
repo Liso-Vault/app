@@ -23,6 +23,7 @@ import 'package:liso/features/unlock/unlock_screen.controller.dart';
 import 'package:liso/features/welcome/welcome.screen.dart';
 import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
+import '../../core/middlewares/authentication.middleware.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
 import '../main/main_screen.controller.dart';
@@ -37,6 +38,7 @@ class AppPages {
       page: () => MainScreen(),
       binding: MainScreenBinding(),
       transition: Transition.fadeIn,
+      middlewares: [AuthenticationMiddleware()],
     ),
     GetPage(
       name: Routes.welcome,

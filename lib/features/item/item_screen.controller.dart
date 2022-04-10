@@ -30,7 +30,6 @@ class ItemScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   // VARIABLES
   HiveLisoItem? item;
-  Offset? lastMousePosition;
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
@@ -56,19 +55,36 @@ class ItemScreenController extends GetxController
       ContextMenuItem(
         title: 'copy'.tr + ' ${item!.significant.keys.first}',
         leading: const Icon(LineIcons.copy),
-        function: () => Utils.copyToClipboard(item!.significant.values.first),
+        onSelected: () => Utils.copyToClipboard(item!.significant.values.first),
       ),
       if (item!.categoryObject == LisoItemCategory.cryptoWallet) ...[
         // TODO: export wallet and generate qr code
         ContextMenuItem(
           title: 'export_wallet'.tr,
           leading: const Icon(LineIcons.fileExport),
-          function: () {},
+          onSelected: () {},
         ),
         ContextMenuItem(
           title: 'QR Code',
           leading: const Icon(LineIcons.qrcode),
-          function: () {},
+          onSelected: () {},
+        ),
+      ]
+    ];
+  }
+
+  List<ContextMenuItem> get menuItemsChangeIcon {
+    return [
+      ContextMenuItem(
+        title: 'change'.tr,
+        leading: const Icon(LineIcons.image),
+        onSelected: _pickIcon,
+      ),
+      if (icon.value.isNotEmpty) ...[
+        ContextMenuItem(
+          title: 'remove'.tr,
+          leading: const Icon(LineIcons.trash),
+          onSelected: () => icon.value = Uint8List(0),
         ),
       ]
     ];
@@ -178,26 +194,6 @@ class ItemScreenController extends GetxController
     // tags.add(tagsController.text);
   }
 
-  void changeIcon() async {
-    ContextMenu(
-      position: lastMousePosition,
-      items: [
-        ContextMenuItem(
-          title: 'change'.tr,
-          leading: const Icon(LineIcons.image),
-          function: _pickIcon,
-        ),
-        if (icon.value.isNotEmpty) ...[
-          ContextMenuItem(
-            title: 'remove'.tr,
-            leading: const Icon(LineIcons.trash),
-            function: () => icon.value = Uint8List(0),
-          ),
-        ]
-      ],
-    ).show();
-  }
-
   void _pickIcon() async {
     FilePickerResult? result;
 
@@ -225,9 +221,4 @@ class ItemScreenController extends GetxController
 
     icon.value = await file.readAsBytes();
   }
-
-  void menu() => ContextMenu(
-        items: menuItems,
-        position: lastMousePosition,
-      ).show();
 }

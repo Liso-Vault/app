@@ -7,6 +7,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/utils/extensions.dart';
@@ -26,23 +27,28 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
       children: [
         const Divider(),
         ListTile(
-          leading: Image.asset(
-            Images.logo,
-            height: 25,
-            color: Colors.grey,
-          ),
+          leading: Image.asset(Images.logo, height: 25, color: Colors.grey),
           trailing: const Icon(LineIcons.copy),
           title: const Text('Liso Address'),
           subtitle: Text(masterWallet?.address ?? ''),
           onTap: () => Utils.copyToClipboard(masterWallet!.address),
         ),
         const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.adjust),
-          trailing: const Icon(LineIcons.angleRight),
-          title: Text('theme'.tr),
-          subtitle: Obx(() => Text(controller.theme().tr)),
-          onTap: controller.selectTheme,
+        Obx(
+          () => ContextMenuButton(
+            controller.menuItemsTheme,
+            useMouseRegion: true,
+            initialItem: controller.menuItemsTheme.firstWhere(
+              (e) => e.title.toLowerCase() == controller.theme.value,
+            ),
+            // TODO: use mouse region for accurate popup position
+            child: ListTile(
+              leading: const Icon(LineIcons.adjust),
+              trailing: const Icon(LineIcons.angleRight),
+              title: Text('theme'.tr),
+              subtitle: Obx(() => Text(controller.theme().tr)),
+            ),
+          ),
         ),
         const Divider(),
         ListTile(
@@ -111,13 +117,6 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
       ],
     );
 
-    final content = GetPlatform.isMobile
-        ? listView
-        : MouseRegion(
-            child: listView,
-            onHover: (event) => controller.lastMousePosition = event.position,
-          );
-
     return Scaffold(
       appBar: AppBar(
         title: Text('settings'.tr),
@@ -131,7 +130,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
               ),
       ),
       body: controller.obx(
-        (_) => content,
+        (_) => listView,
         onLoading: Obx(
           () => BusyIndicator(
             message: controller.busyMessage.value,

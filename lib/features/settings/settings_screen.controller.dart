@@ -15,7 +15,6 @@ import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../menu/context.menu.dart';
 import '../menu/menu.item.dart';
 
 class SettingsScreenBinding extends Bindings {
@@ -28,7 +27,25 @@ class SettingsScreenBinding extends Bindings {
 class SettingsScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   // VARIABLES
-  Offset? lastMousePosition;
+  List<ContextMenuItem> get menuItemsTheme {
+    return [
+      ContextMenuItem(
+        title: ThemeMode.system.name.tr,
+        leading: const Icon(LineIcons.microchip),
+        onSelected: () => changeTheme(ThemeMode.system),
+      ),
+      ContextMenuItem(
+        title: ThemeMode.dark.name.tr,
+        leading: const Icon(LineIcons.moon),
+        onSelected: () => changeTheme(ThemeMode.dark),
+      ),
+      ContextMenuItem(
+        title: ThemeMode.light.name.tr,
+        leading: const Icon(LineIcons.sun),
+        onSelected: () => changeTheme(ThemeMode.light),
+      ),
+    ];
+  }
 
   // PROPERTIES
   final busyMessage = ''.obs;
@@ -46,37 +63,9 @@ class SettingsScreenController extends GetxController
   }
 
   // FUNCTIONS
-
-  void selectTheme() {
-    final items = [
-      ContextMenuItem(
-        title: ThemeMode.system.name.tr,
-        leading: const Icon(LineIcons.microchip),
-        function: () => changeTheme(ThemeMode.system),
-      ),
-      ContextMenuItem(
-        title: ThemeMode.dark.name.tr,
-        leading: const Icon(LineIcons.moon),
-        function: () => changeTheme(ThemeMode.dark),
-      ),
-      ContextMenuItem(
-        title: ThemeMode.light.name.tr,
-        leading: const Icon(LineIcons.sun),
-        function: () => changeTheme(ThemeMode.light),
-      ),
-    ];
-
-    ContextMenu(
-      position: lastMousePosition,
-      initialItem: items.firstWhere(
-        (e) => e.title == PersistenceController.to.theme.val.tr,
-      ),
-      items: items,
-    ).show();
-  }
-
   void changeTheme(ThemeMode mode) {
     PersistenceController.to.theme.val = mode.name;
+    theme.value = mode.name;
     Get.changeThemeMode(mode);
   }
 

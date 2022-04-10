@@ -70,6 +70,7 @@ dependencies:
   either_option: 2.0.1-dev.1
   intl: ^0.17.0
   share_plus: ^4.0.3
+  equatable: ^2.0.3
 
   # INFO
   device_info_plus: ^3.2.2

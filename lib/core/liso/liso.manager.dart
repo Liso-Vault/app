@@ -14,11 +14,6 @@ import 'liso_paths.dart';
 class LisoManager {
   static final console = Console(name: 'LisoManager');
 
-  static Future<bool> authenticated() async {
-    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
-    return await file.exists();
-  }
-
   static Future<void> reset() async {
     // delete biometric storage
     final storage = await BiometricUtils.getStorage();

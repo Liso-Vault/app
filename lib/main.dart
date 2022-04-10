@@ -12,6 +12,7 @@ import 'core/controllers/persistence.controller.dart';
 import 'core/hive/hive.manager.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
+import 'core/services/authentication.service.dart';
 import 'core/utils/biometric.util.dart';
 import 'core/utils/console.dart';
 import 'features/app/app.dart';
@@ -39,12 +40,13 @@ void main() async {
     // init Biometric Utils
     BiometricUtils.init();
 
-    // Initialize Top Controllers
+    // GET CONTROLLERS
     Get.put(PersistenceController());
     Get.put(GlobalController());
+    // GET SERVICES
+    Get.put(AuthenticationService());
     // setup window size for desktop
     _setupWindowSize();
-
     // run main app
     runApp(const App());
   }, (Object exception, StackTrace stackTrace) {

@@ -5,19 +5,17 @@ import '../../core/animations/animations.dart';
 import '../../core/utils/console.dart';
 import 'menu.item.dart';
 
-class ContextMenu extends StatelessWidget with ConsoleMixin {
-  final List<ContextMenuItem> items;
+class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
+  final List<ContextMenuItem> contextItems;
   final ContextMenuItem? initialItem;
-  final Offset? position;
 
-  const ContextMenu({
+  const ContextMenuSheet(
+    this.contextItems, {
     Key? key,
-    required this.items,
     this.initialItem,
-    required this.position,
   }) : super(key: key);
 
-  Future<void> _showMobile() async {
+  Future<void> show() async {
     return await Get.bottomSheet(
       this,
       isScrollControlled: false,
@@ -25,51 +23,10 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
     );
   }
 
-  Future<void> _showDesktop() async {
-    if (position == null) return console.error('null position');
-
-    final rect = RelativeRect.fromLTRB(
-      position!.dx,
-      position!.dy,
-      position!.dx,
-      position!.dy,
-    );
-
-    await showMenu(
-      context: Get.context!,
-      position: rect,
-      initialValue: initialItem,
-      items: items
-          .map(
-            (e) => PopupMenuItem<ContextMenuItem>(
-              value: e,
-              onTap: () => e.function?.call(),
-              child: Row(
-                children: [
-                  e.leading!,
-                  const SizedBox(width: 15),
-                  Text(e.title),
-                  if (e.trailing != null) ...[
-                    const Spacer(),
-                    e.trailing!,
-                  ]
-                ],
-              ),
-            ),
-          )
-          .toList(),
-    );
-  }
-
-  Future<void> show() async {
-    if (GetPlatform.isMobile) return _showMobile();
-    _showDesktop();
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget _itemBuilder(context, index) {
-      final item = items[index];
+      final item = contextItems[index];
 
       final tile = ListTile(
         title: Text(item.title),
@@ -78,7 +35,7 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
         selected: item == initialItem,
         onTap: () {
           Get.back();
-          item.function?.call();
+          item.onSelected?.call();
         },
       );
 
@@ -91,7 +48,7 @@ class ContextMenu extends StatelessWidget with ConsoleMixin {
 
     return ListView.builder(
       shrinkWrap: true,
-      itemCount: items.length,
+      itemCount: contextItems.length,
       itemBuilder: _itemBuilder,
       padding: const EdgeInsets.all(15),
     );

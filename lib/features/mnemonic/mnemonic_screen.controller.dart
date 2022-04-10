@@ -18,7 +18,6 @@ class MnemonicScreenBinding extends Bindings {
 
 class MnemonicScreenController extends GetxController with ConsoleMixin {
   // VARIABLES'
-  Offset? lastMousePosition;
 
   // PROPERTIES
   final mnemonic = ''.obs;
@@ -46,13 +45,12 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   }
 
   void options() {
-    ContextMenu(
-      position: lastMousePosition,
-      items: [
+    ContextMenuSheet(
+      [
         ContextMenuItem(
           title: 'Copy Mnemonic Phrase',
           leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          function: () => Utils.copyToClipboard(mnemonic()),
+          onSelected: () => Utils.copyToClipboard(mnemonic()),
         ),
       ],
     ).show();

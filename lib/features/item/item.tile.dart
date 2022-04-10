@@ -6,6 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/utils/globals.dart';
@@ -87,6 +88,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final drawerController = Get.find<DrawerMenuController>();
+    final isLargeScreen = !MainScreenController.to.expandableDrawer;
 
     final isArchived =
         drawerController.boxFilter.value == HiveBoxFilter.archived;
@@ -99,7 +101,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           item.favorite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
           color: item.favorite ? Colors.pink : null,
         ),
-        function: _favorite,
+        onSelected: _favorite,
       ),
       // ContextMenuItem(
       //   title: item.protected ? 'unprotect'.tr : 'protect'.tr,
@@ -115,35 +117,30 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
           leading: const Icon(LineIcons.archive),
-          function: _archive,
+          onSelected: _archive,
         ),
       ],
       if (!isTrash) ...[
         ContextMenuItem(
           title: isArchived ? 'move_to_trash'.tr : 'trash'.tr,
           leading: const Icon(LineIcons.trash),
-          function: _trash,
+          onSelected: _trash,
         ),
       ],
       if (isTrash || isArchived) ...[
         ContextMenuItem(
           title: 'restore'.tr,
           leading: const Icon(LineIcons.trashRestore),
-          function: _restore,
+          onSelected: _restore,
         ),
       ],
       ContextMenuItem(
         title: 'details'.tr,
         leading: const Icon(LineIcons.code),
         // TODO: adaptive route for json viewer screen
-        function: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
+        onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
       ),
     ];
-
-    void _menu() => ContextMenu(
-          items: menuItems,
-          position: MainScreenController.to.lastMousePosition,
-        ).show();
 
     final title = Text(
       item.title,
@@ -212,17 +209,21 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             LisoItemCategory.values.byName(item.category),
           );
 
-    final tile = ListTile(
+    Widget tile = ListTile(
       leading: leading,
       title: title,
       subtitle: subTitle,
-      trailing: IconButton(
-        onPressed: _menu,
-        icon: const Icon(LineIcons.verticalEllipsis),
+      trailing: ContextMenuButton(
+        menuItems,
+        child: const Icon(LineIcons.verticalEllipsis),
       ),
-      onLongPress: _menu,
+      onLongPress:
+          isLargeScreen ? null : () => ContextMenuSheet(menuItems).show(),
       onTap: _open,
     );
+
+    // if large screen
+    if (isLargeScreen) return tile;
 
     final swipeAction = SwipeActionCell(
       key: ObjectKey(item),
@@ -245,7 +246,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         if (isTrash || isArchived) ...[
           SwipeAction(
             title: 'restore'.tr,
-            color: kAppColor,
+            color: kAppColorDarker,
             icon: const Icon(LineIcons.trashRestore),
             style: const TextStyle(fontSize: 15),
             onTap: (CompletionHandler handler) async {
@@ -284,9 +285,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return GestureDetector(
-      onSecondaryTap: _menu, // mouse right click
-      child: swipeAction,
-    );
+    return swipeAction;
   }
 }
