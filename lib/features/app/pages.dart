@@ -103,5 +103,10 @@ class AppPages {
       page: () => const AboutScreen(),
       binding: AboutScreenBinding(),
     ),
+    GetPage(
+      name: Routes.ipfs,
+      page: () => const AboutScreen(),
+      binding: AboutScreenBinding(),
+    ),
   ];
 }

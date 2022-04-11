@@ -50,6 +50,7 @@ class SettingsScreenController extends GetxController
   // PROPERTIES
   final busyMessage = ''.obs;
   final theme = PersistenceController.to.theme.val.obs;
+  final ipfsServerUrl = 'http://127.0.0.1:5001'.obs;
 
   // GETTERS
   bool get canExportVault =>

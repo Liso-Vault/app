@@ -11,6 +11,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
   final ContextMenuItem? initialItem;
   final bool useMouseRegion;
   final List<ContextMenuItem> contextItems;
+  final EdgeInsets padding;
 
   const ContextMenuButton(
     this.contextItems, {
@@ -18,12 +19,13 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     required this.child,
     this.initialItem,
     this.useMouseRegion = false,
+    this.padding = const EdgeInsets.all(8.0),
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final wrappedChild = Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: padding,
       child: child,
     );
 
@@ -83,7 +85,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
         ),
       );
 
-      selectedItem!.onSelected!.call();
+      selectedItem?.onSelected?.call();
     }
 
     return MouseRegion(

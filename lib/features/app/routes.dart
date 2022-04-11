@@ -18,4 +18,6 @@ abstract class Routes {
   static const settings = '/settings';
   static const about = '/about';
   static const unknown = '/unknown';
+
+  static const ipfs = '/ipfs';
 }

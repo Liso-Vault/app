@@ -132,14 +132,14 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void _reloadMain() async {
-    final mainScreenController = Get.find<MainScreenController>();
+    // final mainScreenController = Get.find<MainScreenController>();
 
-    // delay for better Mobile UX
-    if (mainScreenController.expandableDrawer) {
-      await Future.delayed(500.milliseconds);
-    }
+    // // delay for better Mobile UX
+    // if (mainScreenController.expandableDrawer) {
+    //   await Future.delayed(500.milliseconds);
+    // }
 
-    mainScreenController.reload();
+    MainScreenController.to.reload();
     Get.back();
   }
 }

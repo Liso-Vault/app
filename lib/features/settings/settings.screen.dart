@@ -34,6 +34,14 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           onTap: () => Utils.copyToClipboard(masterWallet!.address),
         ),
         const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.cube),
+          trailing: const Icon(LineIcons.angleRight),
+          title: const Text('IPFS Configuration'),
+          subtitle: Obx(() => Text(controller.ipfsServerUrl.value)),
+          onTap: () => Get.toNamed(Routes.ipfs),
+        ),
+        const Divider(),
         Obx(
           () => ContextMenuButton(
             controller.menuItemsTheme,
@@ -41,7 +49,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
             initialItem: controller.menuItemsTheme.firstWhere(
               (e) => e.title.toLowerCase() == controller.theme.value,
             ),
-            // TODO: use mouse region for accurate popup position
+            padding: EdgeInsets.zero,
             child: ListTile(
               leading: const Icon(LineIcons.adjust),
               trailing: const Icon(LineIcons.angleRight),
