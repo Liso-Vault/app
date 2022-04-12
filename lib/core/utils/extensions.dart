@@ -1,4 +1,5 @@
 // DISTINCT LIST
+import 'package:liso/core/utils/globals.dart';
 import 'package:web3dart/web3dart.dart';
 
 extension IterableExtension<T> on Iterable<T> {
@@ -17,4 +18,6 @@ extension IterableExtension<T> on Iterable<T> {
 
 extension WalletExtension on Wallet {
   String get address => privateKey.address.hexEip55;
+
+  String get fileName => '$address.$kVaultExtension';
 }

@@ -61,6 +61,7 @@ final en = {
   "reset_vault": "Reset Vault",
   "export_vault": "Export Vault",
   "import_vault": "Import Vault",
+  "import_liso_file": "Import Liso File",
   "lock_vault": "Lock Vault",
   "create_vault": "Create Vault",
   "export_wallet": "Export Wallet",
@@ -84,4 +85,9 @@ final en = {
   "light": "Light",
   "system": "System",
   "change_theme": "Change Theme",
+  "synchronize": "Synchronize",
+  "instant_sync": "Instant Sync",
+  "configuration": "Configuration",
+  "server_url": "Server URL",
+  "time_machine_explorer": "Time Machine Explorer",
 };

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 class UIUtils {
   static showSnackBar({
@@ -30,17 +31,20 @@ class UIUtils {
   }
 
   static void showSimpleDialog(String title, String message) {
-    Get.generalDialog(
-      pageBuilder: (_, __, ___) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            child: const Text('Okay'),
-            onPressed: Get.back,
-          ),
-        ],
-      ),
-    );
+    Get.dialog(AlertDialog(
+      title: Text(title),
+      content: MainScreenController.to.expandableDrawer
+          ? Text(message)
+          : SizedBox(
+              width: 600,
+              child: Text(message),
+            ),
+      actions: [
+        TextButton(
+          child: const Text('Okay'),
+          onPressed: Get.back,
+        ),
+      ],
+    ));
   }
 }

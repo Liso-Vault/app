@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:hive/hive.dart';
 
 import 'app.hive.dart';
@@ -41,6 +43,8 @@ class HiveMetadata extends HiveObject {
         "updatedTime": updatedTime.toIso8601String(),
       };
 
+  String toJsonString() => jsonEncode(toJson());
+
   Future<HiveMetadata> getUpdated() async {
     return HiveMetadata(
       app: await HiveMetadataApp.get(),
@@ -60,4 +64,7 @@ class HiveMetadata extends HiveObject {
   }
 
   static Future<Map<String, dynamic>> getJson() async => (await get()).toJson();
+
+  static Future<String> getJsonString() async =>
+      jsonEncode((await get()).toJson());
 }

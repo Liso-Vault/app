@@ -43,18 +43,10 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           ),
           const SizedBox(height: 10),
           TextButton.icon(
-            label: Text('import'.tr),
+            label: Text('import_vault'.tr),
             icon: const Icon(LineIcons.download),
             onPressed: () => Get.toNamed(Routes.import),
           ),
-          // if (kDebugMode) ...[
-          //   const SizedBox(height: 10),
-          //   TextButton.icon(
-          //     label: Text('sign_in'.tr),
-          //     icon: const Icon(LineIcons.sign),
-          //     onPressed: () => Get.toNamed(Routes.signIn),
-          //   ),
-          // ]
         ],
       ),
     );

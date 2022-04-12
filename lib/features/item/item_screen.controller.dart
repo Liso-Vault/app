@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -214,7 +215,7 @@ class ItemScreenController extends GetxController
     if (await file.length() > kMaxIconSize) {
       return UIUtils.showSimpleDialog(
         'Image Too Large',
-        'Please choose an image with size not larger than ${kMaxIconSize / 1000}kb',
+        'Please choose an image with size not larger than ${filesize(kMaxIconSize)}',
       );
     }
 

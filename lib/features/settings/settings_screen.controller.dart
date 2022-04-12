@@ -26,6 +26,8 @@ class SettingsScreenBinding extends Bindings {
 
 class SettingsScreenController extends GetxController
     with ConsoleMixin, StateMixin {
+  static SettingsScreenController get to => Get.find();
+
   // VARIABLES
   List<ContextMenuItem> get menuItemsTheme {
     return [
@@ -50,7 +52,7 @@ class SettingsScreenController extends GetxController
   // PROPERTIES
   final busyMessage = ''.obs;
   final theme = PersistenceController.to.theme.val.obs;
-  final ipfsServerUrl = 'http://127.0.0.1:5001'.obs;
+  final ipfsServerUrl = ''.obs;
 
   // GETTERS
   bool get canExportVault =>
@@ -59,6 +61,9 @@ class SettingsScreenController extends GetxController
   // INIT
   @override
   void onInit() {
+    final persistence = Get.find<PersistenceController>();
+    ipfsServerUrl.value =
+        '${persistence.ipfsScheme.val}://${persistence.ipfsHost.val}:${persistence.ipfsPort.val}';
     change(null, status: RxStatus.success());
     super.onInit();
   }

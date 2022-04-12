@@ -19,6 +19,8 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.unlock);
     }
 
+    // TODO: if IPFS Sync is on, then sync first
+
     return null;
   }
 }

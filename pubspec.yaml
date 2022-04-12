@@ -42,8 +42,11 @@ dependencies:
   get_storage: ^2.0.3 # persistence
   path_provider: ^2.0.9
   path: ^1.8.1
+  filesize: ^2.0.1
   file_picker: ^4.5.1 # exporting + importing
   archive: ^3.3.0 # archiving hive boxes
+  ipfs_rpc: # ^0.0.1 # decentralized storage server
+    path: ../../packages/ipfs_rpc/
 
   # UI
   line_icons: ^2.0.1
@@ -92,4 +95,3 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/origins/
-    

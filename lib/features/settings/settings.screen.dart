@@ -1,8 +1,7 @@
-import 'package:desktop_window/desktop_window.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -34,22 +33,14 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           onTap: () => Utils.copyToClipboard(masterWallet!.address),
         ),
         const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.cube),
-          trailing: const Icon(LineIcons.angleRight),
-          title: const Text('IPFS Configuration'),
-          subtitle: Obx(() => Text(controller.ipfsServerUrl.value)),
-          onTap: () => Get.toNamed(Routes.ipfs),
-        ),
-        const Divider(),
         Obx(
           () => ContextMenuButton(
             controller.menuItemsTheme,
             useMouseRegion: true,
+            padding: EdgeInsets.zero,
             initialItem: controller.menuItemsTheme.firstWhere(
               (e) => e.title.toLowerCase() == controller.theme.value,
             ),
-            padding: EdgeInsets.zero,
             child: ListTile(
               leading: const Icon(LineIcons.adjust),
               trailing: const Icon(LineIcons.angleRight),
@@ -60,8 +51,28 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.lock),
+          leading: const Icon(LineIcons.cube),
           trailing: const Icon(LineIcons.angleRight),
+          title: const Text('IPFS Configuration'),
+          subtitle: Obx(() => Text(controller.ipfsServerUrl.value)),
+          onTap: () async {
+            await Utils.adaptiveRouteOpen(name: Routes.ipfs);
+            controller.ipfsServerUrl.value =
+                PersistenceController.to.ipfsServerUrl;
+          },
+        ),
+        const Divider(),
+        ListTile(
+          title: Text('time_machine_explorer'.tr),
+          subtitle: const Text('Go back in time to undo your changes'),
+          leading: const Icon(LineIcons.clock),
+          trailing: const Icon(LineIcons.angleRight),
+          onTap: () => Utils.adaptiveRouteOpen(name: Routes.ipfsExplorer),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.lock),
+          trailing: const Icon(LineIcons.doorOpen),
           title: Text('lock'.tr + ' $kAppName'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
@@ -105,23 +116,6 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           title: Text('reset'.tr + ' $kAppName'),
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),
-        const Divider(),
-        if (kDebugMode) ...[
-          ListTile(
-            title: const Text('Google Drive'),
-            leading: const Icon(LineIcons.googleDrive),
-            onTap: () => Get.offAndToNamed(Routes.signIn),
-          ),
-          const Divider(),
-          ListTile(
-            title: const Text('Window Size'),
-            leading: const Icon(LineIcons.bug),
-            onTap: () async {
-              final size = await DesktopWindow.getWindowSize();
-              console.info('size: $size');
-            },
-          ),
-        ],
       ],
     );
 

@@ -4,23 +4,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/authentication.service.dart';
+import 'package:liso/core/services/ipfs.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
+import 'package:liso/features/ipfs/ipfs_screen.controller.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
 import '../../core/form_fields/pin.field.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item_screen.controller.dart';
 import '../menu/menu.item.dart';
 import '../search/search.delegate.dart';
@@ -39,6 +43,9 @@ class MainScreenBinding extends Bindings {
     Get.create(() => AboutScreenController());
     Get.create(() => ExportScreenController());
     Get.create(() => ResetScreenController());
+    // ipfs
+    Get.create(() => IPFSScreenController());
+    Get.create(() => IPFSExplorerScreenController());
   }
 }
 
@@ -51,6 +58,7 @@ class MainScreenController extends GetxController
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerMenuController>();
+  final persistence = Get.find<PersistenceController>();
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
@@ -210,7 +218,7 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  void _watchBoxes() {
+  void _watchBoxes() async {
     // console.warning(
     //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
     // );
@@ -224,15 +232,28 @@ class MainScreenController extends GetxController
       return console.error('hive boxes are not open');
     }
 
-    itemsSubscription = HiveManager.items?.watch().listen((_) => _load());
-    archivedSubscription = HiveManager.archived?.watch().listen((_) => _load());
-    trashSubscription = HiveManager.trash?.watch().listen((_) => _load());
+    itemsSubscription = HiveManager.items?.watch().listen(_onChangesDetected);
+    archivedSubscription =
+        HiveManager.archived?.watch().listen(_onChangesDetected);
+    trashSubscription = HiveManager.trash?.watch().listen(_onChangesDetected);
   }
 
   void unwatchBoxes() {
     itemsSubscription?.cancel();
     archivedSubscription?.cancel();
     trashSubscription?.cancel();
+  }
+
+  void _onChangesDetected(BoxEvent event) async {
+    console.info('hive changes detected');
+    _load();
+
+    await IPFSService.to.updateLocalMetadata();
+
+    // if sync and instant sync is on
+    if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
+      IPFSService.to.sync();
+    }
   }
 
   void reload() => _load();
@@ -360,6 +381,11 @@ class MainScreenController extends GetxController
   }
 
   void _initAppLifeCycleEvents() {
+    // if sync and instant sync is on
+    if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
+      IPFSService.to.sync();
+    }
+
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
       console.warning(msg!);
@@ -373,8 +399,7 @@ class MainScreenController extends GetxController
       } else if (msg == AppLifecycleState.inactive.toString()) {
         // lock after <duration> of inactivity
         if (timeLockEnabled) {
-          final timeLock =
-              PersistenceController.to.timeLockDuration.val.seconds;
+          final timeLock = persistence.timeLockDuration.val.seconds;
           timer = Timer.periodic(timeLock, (timer) {
             encryptionKey = null;
             timer.cancel();

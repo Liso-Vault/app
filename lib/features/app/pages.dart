@@ -9,6 +9,8 @@ import 'package:liso/features/google/sign_in.screen.dart';
 import 'package:liso/features/google/sign_in_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
+import 'package:liso/features/ipfs/ipfs.screen.dart';
+import 'package:liso/features/ipfs/ipfs_screen.controller.dart';
 import 'package:liso/features/main/main.screen.dart';
 import 'package:liso/features/mnemonic/confirm/confirm_mnemonic.screen.dart';
 import 'package:liso/features/mnemonic/confirm/confirm_mnemonic_screen.controller.dart';
@@ -24,6 +26,8 @@ import 'package:liso/features/welcome/welcome.screen.dart';
 import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
+import '../ipfs/explorer/ipfs_explorer.screen.dart';
+import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
 import '../main/main_screen.controller.dart';
@@ -103,10 +107,16 @@ class AppPages {
       page: () => const AboutScreen(),
       binding: AboutScreenBinding(),
     ),
+    // IPFS
     GetPage(
       name: Routes.ipfs,
-      page: () => const AboutScreen(),
-      binding: AboutScreenBinding(),
+      page: () => const IPFSScreen(),
+      binding: IPFSScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.ipfsExplorer,
+      page: () => const IPFSExplorerScreen(),
+      binding: IPFSExplorerScreenBinding(),
     ),
   ];
 }

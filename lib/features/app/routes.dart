@@ -20,4 +20,5 @@ abstract class Routes {
   static const unknown = '/unknown';
 
   static const ipfs = '/ipfs';
+  static const ipfsExplorer = '/ipfs_explorer';
 }

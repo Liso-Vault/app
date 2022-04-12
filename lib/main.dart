@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:liso/core/services/ipfs.service.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import 'core/controllers/global.controller.dart';
@@ -45,6 +46,7 @@ void main() async {
     Get.put(GlobalController());
     // GET SERVICES
     Get.put(AuthenticationService());
+    Get.put(IPFSService());
     // setup window size for desktop
     _setupWindowSize();
     // run main app
