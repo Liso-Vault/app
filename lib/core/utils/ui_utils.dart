@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 
 class UIUtils {
   static showSnackBar({
@@ -33,7 +32,7 @@ class UIUtils {
   static void showSimpleDialog(String title, String message) {
     Get.dialog(AlertDialog(
       title: Text(title),
-      content: MainScreenController.to.expandableDrawer
+      content: GetPlatform.isMobile
           ? Text(message)
           : SizedBox(
               width: 600,

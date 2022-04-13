@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/services/ipfs.service.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/ui_utils.dart';
+
+import '../../core/utils/ui_utils.dart';
 
 class IPFSScreenBinding extends Bindings {
   @override
@@ -16,16 +17,17 @@ class IPFSScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();
-  final urlController = TextEditingController();
+  final ipfsUrlController = TextEditingController();
   final persistence = Get.find<PersistenceController>();
 
   // PROPERTIES
   final protocol = ''.obs;
+  final ipfsBusy = false.obs;
 
   @override
   void onInit() {
     change(null, status: RxStatus.success());
-    urlController.text = persistence.ipfsServerUrl;
+    ipfsUrlController.text = persistence.ipfsServerUrl;
     super.onInit();
   }
 
@@ -39,14 +41,7 @@ class IPFSScreenController extends GetxController
 
   void save() async {
     if (!formKey.currentState!.validate()) return;
-    final uri = Uri.tryParse(urlController.text);
-
-    if (uri == null) {
-      return UIUtils.showSimpleDialog(
-        'Invalid Server URL',
-        'Please enter a valid IPFS Server URL',
-      );
-    }
+    final uri = Uri.parse(ipfsUrlController.text);
 
     // save to persistence
     persistence.ipfsScheme.val = uri.scheme;
@@ -68,17 +63,33 @@ class IPFSScreenController extends GetxController
     Get.back();
   }
 
-  String? validateUri(String data) {
-    final uri = Uri.tryParse(data);
+  Future<bool> checkIPFS({bool showSuccess = true}) async {
+    ipfsBusy.value = true;
 
-    if (uri != null &&
-        !uri.hasQuery &&
-        uri.hasEmptyPath &&
-        uri.hasPort &&
-        uri.host.isNotEmpty) {
-      return null;
+    final uri = Uri.tryParse(ipfsUrlController.text);
+    if (uri == null) return false;
+
+    // save to persistence
+    final persistence = Get.find<PersistenceController>();
+    persistence.ipfsScheme.val = uri.scheme;
+    persistence.ipfsHost.val = uri.host;
+    persistence.ipfsPort.val = uri.port;
+
+    final connected = await IPFSService.to.init();
+    ipfsBusy.value = false;
+
+    if (!connected) {
+      UIUtils.showSimpleDialog(
+        'IPFS Connection Failed',
+        'Failed to connect to: ${ipfsUrlController.text}\nDouble check the Server URL and make sure your IPFS Node is up and running',
+      );
+    } else if (showSuccess) {
+      UIUtils.showSimpleDialog(
+        'IPFS Connection Success',
+        'Successfully connects to your server: ${ipfsUrlController.text}\nYou\'re now ready to sync.',
+      );
     }
 
-    return 'Invalid Server URL';
+    return connected;
   }
 }

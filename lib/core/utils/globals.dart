@@ -45,6 +45,7 @@ const kVaultExtension = 'liso';
 const kMaxIconSize = 500000;
 const kMinWindowSize = Size(400, 850);
 const kMetadataFileName = 'metadata.json';
+const kTempArchiveFileName = 'ipfs_vault.liso';
 
 // COLORS
 const kAppColor = Color(0xff02f297);

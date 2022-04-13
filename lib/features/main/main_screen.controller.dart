@@ -91,7 +91,8 @@ class MainScreenController extends GetxController
   final data = <HiveLisoItem>[].obs;
 
   // GETTERS
-  bool get expandableDrawer => scaffoldKey.currentState!.hasDrawer;
+  bool get expandableDrawer =>
+      scaffoldKey.currentState?.hasDrawer ?? GetPlatform.isMobile;
 
   List<ContextMenuItem> get menuItemsSort {
     final sortName = sortOrder.value.name;

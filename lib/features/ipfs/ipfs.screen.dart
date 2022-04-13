@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../general/busy_indicator.widget.dart';
@@ -21,14 +22,30 @@ class IPFSScreen extends GetWidget<IPFSScreenController> with ConsoleMixin {
         key: controller.formKey,
         child: Column(
           children: [
-            TextFormField(
-              controller: controller.urlController,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              validator: (data) => controller.validateUri(data!),
-              decoration: InputDecoration(
-                labelText: 'server_url'.tr,
-                hintText: 'http://127.0.0.1:5001',
-              ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: controller.ipfsUrlController,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (data) => Utils.validateUri(data!),
+                    decoration: InputDecoration(
+                      labelText: 'server_url'.tr,
+                      hintText: 'http://127.0.0.1:5001',
+                    ),
+                  ),
+                ),
+                Obx(
+                  () => Visibility(
+                    visible: !controller.ipfsBusy(),
+                    child: IconButton(
+                      onPressed: controller.checkIPFS,
+                      icon: const Icon(LineIcons.vial),
+                    ),
+                    replacement: const BusyIndicator(),
+                  ),
+                ),
+              ],
             ),
             const Divider(),
             SimpleBuilder(

@@ -5,11 +5,14 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
+import 'package:liso/core/services/ipfs.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
+import 'package:web3dart/web3dart.dart';
 
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
@@ -22,12 +25,24 @@ class ImportScreenBinding extends Bindings {
   }
 }
 
+enum ImportMode {
+  file,
+  ipfs,
+}
+
 class ImportScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final seedController = TextEditingController();
   final filePathController = TextEditingController();
+  final ipfsUrlController =
+      TextEditingController(text: PersistenceController.to.ipfsServerUrl);
   final formKey = GlobalKey<FormState>();
+  final tempArchivePath = join(LisoPaths.temp!.path, kTempArchiveFileName);
+
+  // PROPERTIES
+  final importMode = ImportMode.file.obs;
+  final ipfsBusy = false.obs;
 
   // INIT
   @override
@@ -42,7 +57,11 @@ class ImportScreenController extends GetxController
     InputFileStream? inputStream;
 
     try {
-      inputStream = InputFileStream(filePathController.text);
+      inputStream = InputFileStream(
+        importMode() == ImportMode.file
+            ? filePathController.text
+            : tempArchivePath,
+      );
     } catch (e) {
       UIUtils.showSimpleDialog(
         'Error Importing Vault',
@@ -77,18 +96,85 @@ class ImportScreenController extends GetxController
     await outputStream.close();
   }
 
-  Future<void> continuePressed() async {
-    // TODO: ask for read permission to prevent error
+  Future<bool> _downloadVault() async {
+    final seedHex = bip39.mnemonicToSeedHex(seedController.text);
+    final address = EthPrivateKey.fromHex(seedHex).address.hexEip55;
+    console.info('finding $address.$kVaultExtension...');
+    // check if the vault exists
+    final ipfsVaultPath = join(
+      '/$kAppName',
+      address,
+      address + '.$kVaultExtension',
+    );
 
-    if (!formKey.currentState!.validate()) return;
-    if (seedController.text.isEmpty) return console.error('invalid mnemonic');
+    // /Liso/0x123EA62e9A059B29f8886f57E3AB2dea4B809965/0x123EA62e9A059B29f8886f57E3AB2dea4B809965.liso
+    final resultStat = await IPFSService.to.ipfs.files.stat(arg: ipfsVaultPath);
+
+    String? vaultHash;
+
+    resultStat.fold(
+      (error) {
+        if (error.message.contains('does not exist')) {
+          return UIUtils.showSimpleDialog(
+            'No Vault Found',
+            'We did not find a vault: $ipfsVaultPath in your IPFS Server. Please create a new vault if you\'re new to $kAppName then you can sync to IPFS after',
+          );
+        }
+
+        return UIUtils.showSimpleDialog(
+          'IPFS Stat Error',
+          '${error.toJson()} > continuePressed()',
+        );
+      },
+      (response) {
+        vaultHash = response.hash!;
+        console.info('vault hash: $vaultHash');
+      },
+    );
+
+    if (vaultHash == null) {
+      console.error('vault hash is empty for some reason');
+      return false;
+    }
+
+    // start download
+    // TODO: download progress indicator
+    final resultDownload = await IPFSService.to.ipfs.root.cat(
+      arg: vaultHash,
+      savePath: tempArchivePath,
+    );
+
+    bool downloaded = false;
+
+    resultDownload.fold(
+      (error) => UIUtils.showSimpleDialog(
+          'IPFS Download Error', error.toJson().toString()),
+      (response) => downloaded = true,
+    );
+
+    return downloaded;
+  }
+
+  Future<void> continuePressed() async {
     if (status == RxStatus.loading()) return console.error('still busy');
+    if (!formKey.currentState!.validate()) return;
 
     change(null, status: RxStatus.loading());
 
+    if (importMode.value == ImportMode.ipfs) {
+      final connected = await checkIPFS(showSuccess: false);
+      if (!connected) return change(null, status: RxStatus.success());
+    }
+
+    // download and save vault file from IPFS
+    if (importMode.value == ImportMode.ipfs) {
+      final success = await _downloadVault();
+      if (!success) return change(null, status: RxStatus.success());
+    }
+
     // METHOD 1
     final archive = _getArchive();
-    if (archive == null) return;
+    if (archive == null) return change(null, status: RxStatus.success());
 
     // check if archive contains files
     if (archive.files.isEmpty) {
@@ -116,7 +202,6 @@ class ImportScreenController extends GetxController
 
     // temporarily extract items box file
     await _extractTempItemsBox(itemBoxFiles.first);
-
     // check if encryption key is correct
     final seedHex = bip39.mnemonicToSeedHex(seedController.text);
     final tempEncryptionKey = utf8.encode(seedHex.substring(0, 32));
@@ -134,14 +219,18 @@ class ImportScreenController extends GetxController
 
     // set the correct encryption key
     encryptionKey = tempEncryptionKey;
-
     // extract all hive boxes
     await _extractMainArchive();
+
+    // turn on IPFS sync if successfully imported via IPFS
+    if (importMode.value == ImportMode.ipfs) {
+      PersistenceController.to.ipfsSync.val = true;
+    }
 
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(
-      title: 'Successfully Imported Vault File',
+      title: 'Successfully Imported Vault',
       body: basename(filePathController.text),
     );
 
@@ -171,5 +260,35 @@ class ImportScreenController extends GetxController
     }
 
     filePathController.text = result.files.single.path!;
+  }
+
+  Future<bool> checkIPFS({bool showSuccess = true}) async {
+    ipfsBusy.value = true;
+
+    final uri = Uri.tryParse(ipfsUrlController.text);
+    if (uri == null) return false;
+
+    // save to persistence
+    final persistence = Get.find<PersistenceController>();
+    persistence.ipfsScheme.val = uri.scheme;
+    persistence.ipfsHost.val = uri.host;
+    persistence.ipfsPort.val = uri.port;
+
+    final connected = await IPFSService.to.init();
+    ipfsBusy.value = false;
+
+    if (!connected) {
+      UIUtils.showSimpleDialog(
+        'IPFS Connection Failed',
+        'Failed to connect to: ${ipfsUrlController.text}\nDouble check the Server URL and make sure your IPFS Node is up and running',
+      );
+    } else if (showSuccess) {
+      UIUtils.showSimpleDialog(
+        'IPFS Connection Success',
+        'Successfully connects to your server: ${ipfsUrlController.text}\nYou\'re now ready to sync.',
+      );
+    }
+
+    return connected;
   }
 }

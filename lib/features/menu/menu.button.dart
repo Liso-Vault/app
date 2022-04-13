@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/context.menu.dart';
 
 import 'menu.item.dart';
@@ -30,7 +29,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     );
 
     // if mobile / small screen
-    if (MainScreenController.to.expandableDrawer) {
+    if (GetPlatform.isMobile) {
       return InkWell(
         child: AbsorbPointer(child: wrappedChild),
         onTap: () => ContextMenuSheet(

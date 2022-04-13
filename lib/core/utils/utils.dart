@@ -241,4 +241,18 @@ class Utils {
       routeSettings: RouteSettings(name: name),
     );
   }
+
+  static String? validateUri(String data) {
+    final uri = Uri.tryParse(data);
+
+    if (uri != null &&
+        !uri.hasQuery &&
+        uri.hasEmptyPath &&
+        uri.hasPort &&
+        uri.host.isNotEmpty) {
+      return null;
+    }
+
+    return 'Invalid Server URL';
+  }
 }

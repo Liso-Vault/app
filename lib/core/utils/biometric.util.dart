@@ -31,7 +31,6 @@ class BiometricUtils {
       return null;
     }
 
-    console.info('biometric password: $biometricPassword');
     return biometricPassword;
   }
 

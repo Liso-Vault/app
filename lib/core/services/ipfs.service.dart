@@ -32,7 +32,7 @@ class IPFSService extends GetxService with ConsoleMixin {
   String get pastPath => join(rootPath, 'Past');
 
   // FUNCTIONS
-  Future<void> init() async {
+  Future<bool> init() async {
     console.info('initializing...');
 
     // initialize IPFS Client config
@@ -57,6 +57,8 @@ class IPFSService extends GetxService with ConsoleMixin {
       await ipfs.files.mkdir(arg: backupsPath, parents: true);
       await ipfs.files.mkdir(arg: pastPath, parents: true);
     }
+
+    return connected;
   }
 
   // Check if we are connected to the IPFS Server
