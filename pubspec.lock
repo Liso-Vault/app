@@ -78,6 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.6"
+  buffer:
+    dependency: transitive
+    description:
+      name: buffer
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.1.1"
   build:
     dependency: transitive
     description:
@@ -907,6 +914,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  minio:
+    dependency: "direct main"
+    description:
+      name: minio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.5.0"
   node_preamble:
     dependency: transitive
     description:

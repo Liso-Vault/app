@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/controllers/persistence.controller.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -69,10 +71,34 @@ class SettingsScreenController extends GetxController
   }
 
   // FUNCTIONS
-  void changeTheme(ThemeMode mode) {
+  void changeTheme(ThemeMode mode) async {
     PersistenceController.to.theme.val = mode.name;
     theme.value = mode.name;
     Get.changeThemeMode(mode);
+
+    // // work here
+    // final minio = Minio(
+    //   endPoint: 's3.filebase.com',
+    //   accessKey: '3DC71F7874895BB2A8DD',
+    //   secretKey: 'dz7hU31uUOmgzQNoIYciMJMBDMVGztV19BBH2ZLw',
+    //   useSSL: true,
+    // );
+
+    // final file = File(
+    //   '/Users/nemoryoliver/Library/Containers/com.liso.app/Data/Library/Application Support/com.liso.app/temp/0x123EA62e9A059B29f8886f57E3AB2dea4B809965.liso',
+    // );
+
+    // final bytes = await file.readAsBytes();
+
+    // await minio.putObject(
+    //   'liso-sia',
+    //   '0x123EA62e9A059B29f8886f57E3AB2dea4B809965.liso',
+    //   Stream<Uint8List>.value(bytes),
+    //   metadata: {"some": "value", "key": "value"},
+    //   onProgress: (bytes) => console.info('$bytes uploaded'),
+    // );
+
+    // console.warning('done');
   }
 
   void exportWallet() async {

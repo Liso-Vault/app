@@ -29,7 +29,8 @@ class IPFSService extends GetxService with ConsoleMixin {
   }
 
   String get backupsPath => join(rootPath, 'Backups');
-  String get pastPath => join(rootPath, 'Past');
+  String get historyPath => join(rootPath, 'History');
+  String get filesPath => join(rootPath, 'Files');
 
   // FUNCTIONS
   Future<bool> init() async {
@@ -47,15 +48,16 @@ class IPFSService extends GetxService with ConsoleMixin {
     final connected = await isConnected();
 
     if (connected) {
-      console.warning(
-        'Connected to: ${ipfs.client.baseUrl}',
-      );
+      console.warning('Connected to: ${ipfs.client.baseUrl}');
 
-      // create necessary directories
-      console.info('creating directories...');
-      await ipfs.files.mkdir(arg: rootPath, parents: true);
-      await ipfs.files.mkdir(arg: backupsPath, parents: true);
-      await ipfs.files.mkdir(arg: pastPath, parents: true);
+      if (masterWallet?.address != null) {
+        // create necessary directories
+        console.info('creating directories...');
+        await ipfs.files.mkdir(arg: rootPath, parents: true);
+        await ipfs.files.mkdir(arg: backupsPath, parents: true);
+        await ipfs.files.mkdir(arg: historyPath, parents: true);
+        await ipfs.files.mkdir(arg: filesPath, parents: true);
+      }
     }
 
     return connected;
@@ -85,7 +87,7 @@ class IPFSService extends GetxService with ConsoleMixin {
     final localMetadata = await _obtainLocalMetadata();
     HiveMetadata? serverMetadata;
 
-    // backup a copy to /Past first before modifying/writing
+    // backup a copy to /History first before modifying/writing
     try {
       serverMetadata = await _obtainServerMetadata();
     } catch (e) {
@@ -113,10 +115,10 @@ class IPFSService extends GetxService with ConsoleMixin {
       }
     }
 
-    // copy server vault to past before writing
+    // copy server vault to history before writing
     final serverStat = await _obtainServerStat();
     if (serverStat != null) {
-      await _copyToPast(serverStat.hash!);
+      await _copyToHistory(serverStat.hash!);
     }
 
     // archive to .liso file locally
@@ -188,6 +190,7 @@ class IPFSService extends GetxService with ConsoleMixin {
 
     // create one if doesn't exist
     if (persistence.vaultMetadata.val.isEmpty) {
+      // TODO: check if user first sync, do not overwrite current on ipfs
       metadata = await HiveMetadata.get(); // new
     } else {
       // get updated metadata
@@ -256,19 +259,19 @@ class IPFSService extends GetxService with ConsoleMixin {
     return stat;
   }
 
-  Future<bool> _copyToPast(String serverHash) async {
+  Future<bool> _copyToHistory(String serverHash) async {
     // TODO: Time Machine Limit
     // before copying, check if user has used more than the limit
-    // if limit is reached, delete last past item before copying
+    // if limit is reached, delete last history item before copying
 
-    console.info('copying vault to /Past...');
+    console.info('copying vault to /History...');
 
-    final pastFileName = serverHash + '.$kVaultExtension';
+    final historyFileName = serverHash + '.$kVaultExtension';
 
-    // backup a copy to /Past first before modifying/writing
+    // backup a copy to /History first before modifying/writing
     final resultCp = await IPFSService.to.ipfs.files.cp(
       source: join(IPFSService.to.rootPath, masterWallet!.fileName),
-      destination: join(IPFSService.to.pastPath, pastFileName),
+      destination: join(IPFSService.to.historyPath, historyFileName),
     );
 
     bool success = false;
@@ -276,16 +279,16 @@ class IPFSService extends GetxService with ConsoleMixin {
     resultCp.fold(
       (error) {
         if (error.message.contains('already has entry')) {
-          return console.info('already have a copy to /Past');
+          return console.info('already have a copy to /History');
         } else {
           return UIUtils.showSimpleDialog(
             'Error IPFS Sync Preparation',
-            error.toJson().toString() + ' > _copyToPast()',
+            error.toJson().toString() + ' > _copyToHistory()',
           );
         }
       },
       (response) {
-        console.info('successfully copied to /Past');
+        console.info('successfully copied to /History');
         success = true;
       },
     );

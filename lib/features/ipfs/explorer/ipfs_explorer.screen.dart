@@ -136,7 +136,7 @@ class FileTile extends StatelessWidget with ConsoleMixin {
   void _askToImport(FilesLsEntry entry) {
     final content = RichText(
       text: TextSpan(
-        text: 'Are you sure you want to import vault with hash: ',
+        text: 'Are you sure you want to restore vault with hash: ',
         style: Get.theme.dialogTheme.contentTextStyle,
         children: <TextSpan>[
           TextSpan(
@@ -154,7 +154,7 @@ class FileTile extends StatelessWidget with ConsoleMixin {
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Restore Vault From IPFS'),
+      title: const Text('Restore From IPFS'),
       content: MainScreenController.to.expandableDrawer
           ? content
           : SizedBox(

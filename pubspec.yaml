@@ -1,7 +1,7 @@
 name: liso
 description: Liso - Encrypted Seed Vault
 publish_to: "none"
-version: 0.3.0+11
+version: 0.1.0+1
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -45,6 +45,7 @@ dependencies:
   filesize: ^2.0.1
   file_picker: ^4.5.1 # exporting + importing
   archive: ^3.3.0 # archiving hive boxes
+  minio: ^3.5.0 # Filebase API
   ipfs_rpc: # ^0.0.1 # decentralized storage server
     path: ../../packages/ipfs_rpc/
 
@@ -56,9 +57,9 @@ dependencies:
   flutter_svg: ^1.0.3
   simple_animations: ^4.0.1
   bubble_tab_indicator: ^0.1.6
-  blur: ^3.1.0
+  blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
-  chips_input: ^0.1.0
+  chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^2.2.0
   flutter_quill: ^4.1.1 # rich text editor
 
