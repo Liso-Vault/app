@@ -46,7 +46,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     });
 
     _populate();
-    _fetch();
+    fetch();
   }
 
   void _populate() {
@@ -65,7 +65,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     S3Service.to.init();
   }
 
-  void _fetch() async {
+  Future<void> fetch() async {
     console.info('fetching...');
 
     try {

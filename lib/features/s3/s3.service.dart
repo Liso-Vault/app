@@ -26,8 +26,9 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
 
-  void init() {
+  Future<void> init() async {
     final config = Get.find<ConfigService>();
+    if (config.s3.endpoint.isEmpty) await config.fetch();
 
     client = Minio(
       endPoint: config.s3.endpoint,
@@ -39,9 +40,18 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   // check if s3 is ready
-  Future<bool> ready() => client!.bucketExists(ConfigService.to.s3.bucket);
+  Future<bool> ready() {
+    _prepare();
+    return client!.bucketExists(ConfigService.to.s3.bucket);
+  }
+
+  Future<void> _prepare() async {
+    if (client == null || client!.endPoint.isEmpty) await init();
+  }
 
   Future<Either<String, String>> upload(File file) async {
+    await _prepare();
+
     try {
       final eTag = await S3Service.to.client!.putObject(
         ConfigService.to.s3.bucket,
@@ -63,6 +73,8 @@ class S3Service extends GetxService with ConsoleMixin {
     S3ContentType? filterType,
     List<String> filterExtensions = const [],
   }) async {
+    await _prepare();
+
     final result = await client!.listAllObjectsV2(
       ConfigService.to.s3.bucket,
       prefix: path,
