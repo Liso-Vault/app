@@ -78,7 +78,7 @@ class S3ExplorerScreenController extends GetxController
 
   void test() async {
     final file = await LisoManager.archive();
-    if (file == null) return;
+    if (file == null) return console.error('no archive file');
     final result = await S3Service.to.upload(file);
 
     return result.fold(

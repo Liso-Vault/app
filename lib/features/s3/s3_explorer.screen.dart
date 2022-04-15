@@ -64,9 +64,11 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
             icon: const Icon(LineIcons.syncIcon),
           ),
         ),
-        IconButton(
-          onPressed: !controller.busy() ? controller.test : null,
-          icon: const Icon(LineIcons.bug),
+        Obx(
+          () => IconButton(
+            onPressed: !controller.busy() ? controller.test : null,
+            icon: const Icon(LineIcons.bug),
+          ),
         ),
       ],
     );
