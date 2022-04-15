@@ -1,7 +1,7 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:liso/features/app/routes.dart';
@@ -15,7 +15,7 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PersistenceController persistence = Get.find();
+    final PersistenceService persistence = Get.find();
 
     const subThemes = FlexSubThemesData(
       thinBorderWidth: 0.1,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -14,7 +14,7 @@ class IPFSScreen extends GetWidget<IPFSScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final persistence = Get.find<PersistenceController>();
+    final persistence = Get.find<PersistenceService>();
 
     final content = SingleChildScrollView(
       padding: const EdgeInsets.all(15),

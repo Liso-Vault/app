@@ -31,6 +31,8 @@ import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
 import '../main/main_screen.controller.dart';
+import '../s3/s3_explorer.screen.dart';
+import '../s3/s3_exporer_screen.controller.dart';
 import 'routes.dart';
 
 class AppPages {
@@ -117,6 +119,11 @@ class AppPages {
       name: Routes.ipfsExplorer,
       page: () => const IPFSExplorerScreen(),
       binding: IPFSExplorerScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.s3Explorer,
+      page: () => const S3ExplorerScreen(),
+      binding: S3ExplorerScreenBinding(),
     ),
   ];
 }

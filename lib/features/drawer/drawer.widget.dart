@@ -84,6 +84,11 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               selected: controller.filterProtected(),
             ),
           ),
+          ListTile(
+            title: Text('files'.tr),
+            leading: const FaIcon(FontAwesomeIcons.fileLines),
+            onTap: controller.files,
+          ),
           Obx(
             () => ListTile(
               title: Row(

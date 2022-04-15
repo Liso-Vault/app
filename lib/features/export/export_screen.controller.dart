@@ -4,7 +4,7 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
@@ -30,7 +30,7 @@ class ExportScreenController extends GetxController
   final passwordController = TextEditingController();
 
   // PROPERTIES
-  final attemptsLeft = PersistenceController.to.maxUnlockAttempts.val.obs;
+  final attemptsLeft = PersistenceService.to.maxUnlockAttempts.val.obs;
   final busyMessage = ''.obs;
 
   // GETTERS
@@ -40,6 +40,12 @@ class ExportScreenController extends GetxController
   void onInit() {
     change(null, status: RxStatus.success());
     super.onInit();
+  }
+
+  @override
+  void change(newState, {RxStatus? status}) {
+    if (newState != null) busyMessage.value = newState;
+    super.change(newState, status: status);
   }
 
   // FUNCTIONS
@@ -69,9 +75,7 @@ class ExportScreenController extends GetxController
     // }
 
     if (status == RxStatus.loading()) return console.error('still busy');
-    change(null, status: RxStatus.loading());
-    busyMessage.value = 'Exporting...';
-
+    change('Exporting...', status: RxStatus.loading());
     final archiveFileName = '${masterWallet!.address}.$kVaultExtension';
 
     final encoder = ZipFileEncoder();
@@ -96,8 +100,7 @@ class ExportScreenController extends GetxController
       return _done();
     }
 
-    busyMessage.value = 'Choose export path...';
-
+    change('Choose export path...', status: RxStatus.loading());
     timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform
@@ -109,7 +112,7 @@ class ExportScreenController extends GetxController
     }
 
     console.info('export path: $exportPath');
-    busyMessage.value = 'Exporting to: $exportPath';
+    change('Exporting to: $exportPath', status: RxStatus.loading());
     await Future.delayed(1.seconds); // just for style
 
     await Utils.moveFile(
@@ -126,7 +129,6 @@ class ExportScreenController extends GetxController
   }
 
   void _done() {
-    busyMessage.value = '';
     change(null, status: RxStatus.success());
     Get.back();
   }

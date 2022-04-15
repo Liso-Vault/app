@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/console.dart';
@@ -31,7 +31,7 @@ class UnlockScreenController extends GetxController
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
 
   // PROPERTIES
-  final attemptsLeft = PersistenceController.to.maxUnlockAttempts.val.obs;
+  final attemptsLeft = PersistenceService.to.maxUnlockAttempts.val.obs;
   final canProceed = false.obs;
   final obscurePassword = true.obs;
 

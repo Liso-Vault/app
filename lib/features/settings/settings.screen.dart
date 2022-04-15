@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -58,7 +58,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           onTap: () async {
             await Utils.adaptiveRouteOpen(name: Routes.ipfs);
             controller.ipfsServerUrl.value =
-                PersistenceController.to.ipfsServerUrl;
+                PersistenceService.to.ipfsServerUrl;
           },
         ),
         const Divider(),

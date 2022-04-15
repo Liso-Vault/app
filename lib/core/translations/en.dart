@@ -90,4 +90,7 @@ final en = {
   "configuration": "Configuration",
   "server_url": "Server URL",
   "time_machine_explorer": "Time Machine Explorer",
+  "file_explorer": "File Explorer",
+  "file": "File",
+  "files": "Files",
 };

@@ -1,18 +1,25 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
 
-class CrashlyticsManager {
-  static final console = Console(name: 'CrashlyticsManager');
+class CrashlyticsService extends GetxService with ConsoleMixin {
+  static CrashlyticsService get to => Get.find();
 
   // VARIABLES
-
-  // PROPERTIES
 
   // GETTERS
 
   // INIT
-  static void init() {
+  @override
+  void onInit() {
+    _init();
+    console.info('onInit');
+    super.onInit();
+  }
+
+  // FUNCTIONS
+  void _init() {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
       kReleaseMode, // TODO: let user decide
     );
@@ -24,8 +31,7 @@ class CrashlyticsManager {
     };
   }
 
-  // FUNCTIONS
-  static void record(FlutterErrorDetails details) {
+  void record(FlutterErrorDetails details) {
     final errorString = details.summary.value.toString();
 
     if (kDebugMode) {

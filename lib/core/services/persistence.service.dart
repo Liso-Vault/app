@@ -7,8 +7,8 @@ import 'package:ipfs_rpc/ipfs_rpc.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/console.dart';
 
-class PersistenceController extends GetxController with ConsoleMixin {
-  static PersistenceController get to => Get.find();
+class PersistenceService extends GetxService with ConsoleMixin {
+  static PersistenceService get to => Get.find();
 
   // BOX
   final box = GetStorage();

@@ -1,5 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 
 class NotificationsManager {
@@ -62,7 +62,7 @@ class NotificationsManager {
     );
 
     await plugin.show(
-      PersistenceController.to.notificationId.val++,
+      PersistenceService.to.notificationId.val++,
       title,
       body,
       details,

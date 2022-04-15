@@ -27,6 +27,8 @@ dependencies:
   firebase_analytics: 9.1.2
   firebase_crashlytics: 2.5.3
   firebase_performance: 0.8.0+7
+  firebase_remote_config: ^2.0.4
+  # firebase_app_check: ^0.0.6+9
 
   # GOOGLE
   google_sign_in: ^5.2.4

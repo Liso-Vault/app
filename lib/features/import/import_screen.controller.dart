@@ -5,10 +5,10 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/services/ipfs.service.dart';
+import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
@@ -36,7 +36,7 @@ class ImportScreenController extends GetxController
   final seedController = TextEditingController();
   final filePathController = TextEditingController();
   final ipfsUrlController =
-      TextEditingController(text: PersistenceController.to.ipfsServerUrl);
+      TextEditingController(text: PersistenceService.to.ipfsServerUrl);
   final formKey = GlobalKey<FormState>();
   final tempArchivePath = join(LisoPaths.temp!.path, kTempArchiveFileName);
 
@@ -224,7 +224,7 @@ class ImportScreenController extends GetxController
 
     // turn on IPFS sync if successfully imported via IPFS
     if (importMode.value == ImportMode.ipfs) {
-      PersistenceController.to.ipfsSync.val = true;
+      PersistenceService.to.ipfsSync.val = true;
     }
 
     change(null, status: RxStatus.success());
@@ -269,7 +269,7 @@ class ImportScreenController extends GetxController
     if (uri == null) return false;
 
     // save to persistence
-    final persistence = Get.find<PersistenceController>();
+    final persistence = Get.find<PersistenceService>();
     persistence.ipfsScheme.val = uri.scheme;
     persistence.ipfsHost.val = uri.host;
     persistence.ipfsPort.val = uri.port;

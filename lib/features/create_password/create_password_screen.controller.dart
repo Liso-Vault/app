@@ -5,7 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -88,7 +88,7 @@ class CreatePasswordScreenController extends GetxController
     );
 
     // save wallet address to persistence
-    PersistenceController.to.address.val = masterWallet!.address;
+    PersistenceService.to.address.val = masterWallet!.address;
 
     // save password to biometric storage
     final storage = await BiometricUtils.getStorage(

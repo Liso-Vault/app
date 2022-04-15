@@ -20,6 +20,9 @@ PODS:
   - Firebase/Crashlytics (8.11.0):
     - Firebase/CoreOnly
     - FirebaseCrashlytics (~> 8.11.0)
+  - Firebase/RemoteConfig (8.11.0):
+    - Firebase/CoreOnly
+    - FirebaseRemoteConfig (~> 8.11.0)
   - firebase_analytics (9.1.2):
     - Firebase/Analytics (= 8.11.0)
     - firebase_core
@@ -37,6 +40,13 @@ PODS:
     - Firebase/Crashlytics (~> 8.11.0)
     - firebase_core
     - FlutterMacOS
+  - firebase_remote_config (2.0.4):
+    - Firebase/CoreOnly (~> 8.11.0)
+    - Firebase/RemoteConfig (~> 8.11.0)
+    - firebase_core
+    - FlutterMacOS
+  - FirebaseABTesting (8.12.0):
+    - FirebaseCore (~> 8.0)
   - FirebaseAnalytics (8.11.0):
     - FirebaseAnalytics/AdIdSupport (= 8.11.0)
     - FirebaseCore (~> 8.0)
@@ -81,6 +91,12 @@ PODS:
     - GoogleUtilities/Environment (~> 7.7)
     - GoogleUtilities/UserDefaults (~> 7.7)
     - PromisesObjC (< 3.0, >= 1.2)
+  - FirebaseRemoteConfig (8.11.0):
+    - FirebaseABTesting (~> 8.0)
+    - FirebaseCore (~> 8.0)
+    - FirebaseInstallations (~> 8.0)
+    - GoogleUtilities/Environment (~> 7.7)
+    - "GoogleUtilities/NSData+zlib (~> 7.7)"
   - flutter_local_notifications (0.0.1):
     - FlutterMacOS
   - FlutterMacOS (1.0.0)
@@ -152,6 +168,7 @@ DEPENDENCIES:
   - firebase_auth (from `Flutter/ephemeral/.symlinks/plugins/firebase_auth/macos`)
   - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
   - firebase_crashlytics (from `Flutter/ephemeral/.symlinks/plugins/firebase_crashlytics/macos`)
+  - firebase_remote_config (from `Flutter/ephemeral/.symlinks/plugins/firebase_remote_config/macos`)
   - flutter_local_notifications (from `Flutter/ephemeral/.symlinks/plugins/flutter_local_notifications/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
   - package_info_plus_macos (from `Flutter/ephemeral/.symlinks/plugins/package_info_plus_macos/macos`)
@@ -162,12 +179,14 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Firebase
+    - FirebaseABTesting
     - FirebaseAnalytics
     - FirebaseAuth
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCrashlytics
     - FirebaseInstallations
+    - FirebaseRemoteConfig
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleUtilities
@@ -192,6 +211,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_core/macos
   firebase_crashlytics:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_crashlytics/macos
+  firebase_remote_config:
+    :path: Flutter/ephemeral/.symlinks/plugins/firebase_remote_config/macos
   flutter_local_notifications:
     :path: Flutter/ephemeral/.symlinks/plugins/flutter_local_notifications/macos
   FlutterMacOS:
@@ -215,12 +236,15 @@ SPEC CHECKSUMS:
   firebase_auth: 09509665526e4e137aa4e79e5117155fc4560998
   firebase_core: 11d0b4e9fa6120706c015fbfe5f4b409758dae5d
   firebase_crashlytics: abe33970ebd5d174256000050d5e479e2539e935
+  firebase_remote_config: 796ac59697fdb2e370c6653d2473334781e550ab
+  FirebaseABTesting: 1b05c92327b3f0a9545cea3bab4d93e82550e29b
   FirebaseAnalytics: 4e4b13031034e6561ed3bd1d47b6fdabbd6487c6
   FirebaseAuth: d96d73aba85d192d7a7aa0b86dd6d7f8ec170b4b
   FirebaseCore: 2f4f85b453cc8fea4bb2b37e370007d2bcafe3f0
   FirebaseCoreDiagnostics: 3b40dfadef5b90433a60ae01f01e90fe87aa76aa
   FirebaseCrashlytics: 62268addefae79601057818156e8bc69d71fee41
   FirebaseInstallations: 25764cf322e77f99449395870a65b2bef88e1545
+  FirebaseRemoteConfig: a6a1ce9dabf404817ae2a44e8421d276660d9091
   flutter_local_notifications: 3805ca215b2fb7f397d78b66db91f6a747af52e4
   FlutterMacOS: 57701585bf7de1b3fc2bb61f6378d73bbdea8424
   GoogleAppMeasurement: aa3cb422fab2b05d2efac543a5720d1a85b9dea5

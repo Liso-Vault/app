@@ -4,22 +4,22 @@ import 'dart:io';
 import 'package:archive/archive_io.dart';
 import 'package:get/get.dart';
 import 'package:ipfs_rpc/ipfs_rpc.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/extensions.dart';
 import 'package:path/path.dart';
 
-import '../hive/models/metadata/metadata.hive.dart';
-import '../liso/liso_paths.dart';
-import '../utils/globals.dart';
-import '../utils/ui_utils.dart';
+import '../../core/hive/models/metadata/metadata.hive.dart';
+import '../../core/liso/liso_paths.dart';
+import '../../core/utils/globals.dart';
+import '../../core/utils/ui_utils.dart';
 
 class IPFSService extends GetxService with ConsoleMixin {
   static IPFSService get to => Get.find();
 
   // VARIABLES
   final ipfs = IPFS();
-  final persistence = Get.find<PersistenceController>();
+  final persistence = Get.find<PersistenceService>();
   bool ready = false;
 
   // GETTERS

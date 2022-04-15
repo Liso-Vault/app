@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
-import 'package:liso/core/services/ipfs.service.dart';
+import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:liso/core/utils/console.dart';
 
 import '../../core/utils/ui_utils.dart';
@@ -18,7 +18,7 @@ class IPFSScreenController extends GetxController
   // VARIABLES
   final formKey = GlobalKey<FormState>();
   final ipfsUrlController = TextEditingController();
-  final persistence = Get.find<PersistenceController>();
+  final persistence = Get.find<PersistenceService>();
 
   // PROPERTIES
   final protocol = ''.obs;
@@ -70,7 +70,7 @@ class IPFSScreenController extends GetxController
     if (uri == null) return false;
 
     // save to persistence
-    final persistence = Get.find<PersistenceController>();
+    final persistence = Get.find<PersistenceService>();
     persistence.ipfsScheme.val = uri.scheme;
     persistence.ipfsHost.val = uri.host;
     persistence.ipfsPort.val = uri.port;

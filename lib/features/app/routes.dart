@@ -19,6 +19,10 @@ abstract class Routes {
   static const about = '/about';
   static const unknown = '/unknown';
 
+  // IPFS
   static const ipfs = '/ipfs';
   static const ipfsExplorer = '/ipfs_explorer';
+
+  // S3
+  static const s3Explorer = '/s3_explorer';
 }

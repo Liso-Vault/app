@@ -6,12 +6,12 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/authentication.service.dart';
-import 'package:liso/core/services/ipfs.service.dart';
+import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
@@ -27,6 +27,7 @@ import '../drawer/drawer_widget.controller.dart';
 import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item_screen.controller.dart';
 import '../menu/menu.item.dart';
+import '../s3/s3_exporer_screen.controller.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenBinding extends Bindings {
@@ -46,6 +47,8 @@ class MainScreenBinding extends Bindings {
     // ipfs
     Get.create(() => IPFSScreenController());
     Get.create(() => IPFSExplorerScreenController());
+    // S3
+    Get.create(() => S3ExplorerScreenController());
   }
 }
 
@@ -58,7 +61,7 @@ class MainScreenController extends GetxController
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerMenuController>();
-  final persistence = Get.find<PersistenceController>();
+  final persistence = Get.find<PersistenceService>();
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values

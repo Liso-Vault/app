@@ -1,14 +1,12 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/controllers/persistence.controller.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -53,7 +51,7 @@ class SettingsScreenController extends GetxController
 
   // PROPERTIES
   final busyMessage = ''.obs;
-  final theme = PersistenceController.to.theme.val.obs;
+  final theme = PersistenceService.to.theme.val.obs;
   final ipfsServerUrl = ''.obs;
 
   // GETTERS
@@ -63,42 +61,24 @@ class SettingsScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    final persistence = Get.find<PersistenceController>();
+    final persistence = Get.find<PersistenceService>();
     ipfsServerUrl.value =
         '${persistence.ipfsScheme.val}://${persistence.ipfsHost.val}:${persistence.ipfsPort.val}';
     change(null, status: RxStatus.success());
     super.onInit();
   }
 
+  @override
+  void change(newState, {RxStatus? status}) {
+    if (newState != null) busyMessage.value = newState;
+    super.change(newState, status: status);
+  }
+
   // FUNCTIONS
   void changeTheme(ThemeMode mode) async {
-    PersistenceController.to.theme.val = mode.name;
+    PersistenceService.to.theme.val = mode.name;
     theme.value = mode.name;
     Get.changeThemeMode(mode);
-
-    // // work here
-    // final minio = Minio(
-    //   endPoint: 's3.filebase.com',
-    //   accessKey: '3DC71F7874895BB2A8DD',
-    //   secretKey: 'dz7hU31uUOmgzQNoIYciMJMBDMVGztV19BBH2ZLw',
-    //   useSSL: true,
-    // );
-
-    // final file = File(
-    //   '/Users/nemoryoliver/Library/Containers/com.liso.app/Data/Library/Application Support/com.liso.app/temp/0x123EA62e9A059B29f8886f57E3AB2dea4B809965.liso',
-    // );
-
-    // final bytes = await file.readAsBytes();
-
-    // await minio.putObject(
-    //   'liso-sia',
-    //   '0x123EA62e9A059B29f8886f57E3AB2dea4B809965.liso',
-    //   Stream<Uint8List>.value(bytes),
-    //   metadata: {"some": "value", "key": "value"},
-    //   onProgress: (bytes) => console.info('$bytes uploaded'),
-    // );
-
-    // console.warning('done');
   }
 
   void exportWallet() async {
@@ -112,9 +92,7 @@ class SettingsScreenController extends GetxController
     if (!unlocked) return;
 
     if (status == RxStatus.loading()) return console.error('still busy');
-    change(null, status: RxStatus.loading());
-    busyMessage.value = 'Exporting...';
-
+    change('Exporting...', status: RxStatus.loading());
     final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
 
     if (GetPlatform.isMobile) {
@@ -127,7 +105,7 @@ class SettingsScreenController extends GetxController
       return Get.back();
     }
 
-    busyMessage.value = 'Choose export path...';
+    change('Choose export path...', status: RxStatus.loading());
     timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform
@@ -139,7 +117,7 @@ class SettingsScreenController extends GetxController
     }
 
     console.info('export path: $exportPath');
-    busyMessage.value = 'Exporting to: $exportPath';
+    change('Exporting to: $exportPath', status: RxStatus.loading());
     await Future.delayed(1.seconds); // just for style
 
     await Utils.moveFile(
