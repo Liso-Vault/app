@@ -10,11 +10,10 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/liso/liso_paths.dart';
+import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
-import '../../core/utils/extensions.dart';
 import '../app/routes.dart';
 
 class ExportScreenBinding extends Bindings {
@@ -76,14 +75,12 @@ class ExportScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
-    final archiveFileName = '${masterWallet!.address}.$kVaultExtension';
 
     final encoder = ZipFileEncoder();
-    final archiveFilePath = join(LisoPaths.temp!.path, archiveFileName);
 
     try {
-      encoder.create(archiveFilePath);
-      await encoder.addDirectory(Directory(LisoPaths.hive!.path));
+      encoder.create(LisoManager.tempVaultFilePath);
+      await encoder.addDirectory(Directory(LisoManager.hivePath));
       encoder.close();
     } catch (e) {
       UIUtils.showSimpleDialog('File System Error', e.toString());
@@ -92,8 +89,8 @@ class ExportScreenController extends GetxController
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
-        [archiveFilePath],
-        subject: archiveFileName,
+        [LisoManager.tempVaultFilePath],
+        subject: LisoManager.vaultFilename,
         text: 'Liso Vault',
       );
 
@@ -101,11 +98,11 @@ class ExportScreenController extends GetxController
     }
 
     change('Choose export path...', status: RxStatus.loading());
-    timeLockEnabled = false; // temporarily disable
+    Globals.timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform
         .getDirectoryPath(dialogTitle: 'Choose Export Path');
-    timeLockEnabled = true; // re-enable
+    Globals.timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
       return change(null, status: RxStatus.success());
@@ -116,13 +113,13 @@ class ExportScreenController extends GetxController
     await Future.delayed(1.seconds); // just for style
 
     await Utils.moveFile(
-      File(archiveFilePath),
-      join(exportPath, archiveFileName),
+      File(LisoManager.tempVaultFilePath),
+      join(exportPath, LisoManager.vaultFilename),
     );
 
     NotificationsManager.notify(
       title: 'Successfully Exported Vault',
-      body: archiveFileName,
+      body: LisoManager.vaultFilename,
     );
 
     _done();

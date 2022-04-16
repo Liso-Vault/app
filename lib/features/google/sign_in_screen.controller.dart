@@ -186,7 +186,7 @@ class SignInScreenController extends GetxController
 
     console.info('media: ${media.contentType}');
 
-    // final saveFile = File('${LisoPaths.main!.path}/downloaded.liso');
+    // final saveFile = File('${LisoManager.mainPath}/downloaded.liso');
 
     List<int> dataStore = [];
 

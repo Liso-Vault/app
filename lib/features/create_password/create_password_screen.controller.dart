@@ -5,7 +5,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -16,8 +15,8 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:web3dart/credentials.dart';
 
+import '../../core/liso/liso.manager.dart';
 import '../../core/utils/biometric.util.dart';
-import '../../core/utils/extensions.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
   @override
@@ -81,14 +80,11 @@ class CreatePasswordScreenController extends GetxController
     // write a local master wallet
     final seedHex = Get.parameters['seedHex'];
 
-    masterWallet = Wallet.createNew(
+    Globals.wallet = Wallet.createNew(
       EthPrivateKey.fromHex(seedHex!),
       passwordController.text,
       Random.secure(),
     );
-
-    // save wallet address to persistence
-    PersistenceService.to.address.val = masterWallet!.address;
 
     // save password to biometric storage
     final storage = await BiometricUtils.getStorage(
@@ -103,12 +99,12 @@ class CreatePasswordScreenController extends GetxController
     }
 
     // write wallet json to file
-    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
-    await file.writeAsString(masterWallet!.toJson());
+    final file = File(LisoManager.walletFilePath);
+    await file.writeAsString(Globals.wallet!.toJson());
     console.info('wallet written: ${file.path}');
 
     // set global encryption key
-    encryptionKey = utf8.encode(seedHex.substring(0, 32));
+    Globals.encryptionKey = utf8.encode(seedHex.substring(0, 32));
     // open Hive Boxes
     await HiveManager.openBoxes();
     change(null, status: RxStatus.success());

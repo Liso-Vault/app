@@ -2,9 +2,9 @@ import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
-import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/console.dart';
 
+import '../liso/liso.manager.dart';
 import '../utils/globals.dart';
 import 'models/field.hive.dart';
 import 'models/item.hive.dart';
@@ -21,9 +21,7 @@ class HiveManager {
   // INIT
   static Future<void> init() async {
     // PATH
-    if (!GetPlatform.isWeb) {
-      Hive.init(LisoPaths.hive!.path);
-    }
+    if (!GetPlatform.isWeb) Hive.init(LisoManager.hivePath);
 
     // REGISTER ADAPTERS
     // liso
@@ -40,17 +38,17 @@ class HiveManager {
   static Future<void> openBoxes() async {
     items = await Hive.openBox(
       kHiveBoxItems,
-      encryptionCipher: HiveAesCipher(encryptionKey!),
+      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
     );
 
     archived = await Hive.openBox(
       kHiveBoxArchived,
-      encryptionCipher: HiveAesCipher(encryptionKey!),
+      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
     );
 
     trash = await Hive.openBox(
       kHiveBoxTrash,
-      encryptionCipher: HiveAesCipher(encryptionKey!),
+      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
     );
   }
 
@@ -60,12 +58,12 @@ class HiveManager {
     final _items = await Hive.openBox(
       kHiveBoxItems,
       encryptionCipher: HiveAesCipher(key),
-      path: LisoPaths.temp!.path,
+      path: LisoManager.tempPath,
     );
 
     final correct = _items.isNotEmpty;
     // delete box after use
-    await Hive.deleteBoxFromDisk(kHiveBoxItems, path: LisoPaths.temp!.path);
+    await Hive.deleteBoxFromDisk(kHiveBoxItems, path: LisoManager.tempPath);
     return correct;
   }
 

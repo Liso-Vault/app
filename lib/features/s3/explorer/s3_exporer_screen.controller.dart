@@ -1,16 +1,11 @@
-import 'dart:typed_data';
-
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
-import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/extensions.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 
-import '../../core/utils/globals.dart';
-import '../../core/utils/ui_utils.dart';
-import 'model/s3_content.model.dart';
+import '../../../core/utils/globals.dart';
+import '../../../core/utils/ui_utils.dart';
+import '../model/s3_content.model.dart';
 
 class S3ExplorerScreenBinding extends Bindings {
   @override
@@ -56,37 +51,59 @@ class S3ExplorerScreenController extends GetxController
   void load({required String path}) async {
     change(true, status: RxStatus.loading());
 
-    data.value = await S3Service.to.fetch(
+    final result = await S3Service.to.fetch(
       path: path,
       filterExtensions: ['.$kVaultExtension'],
     );
 
-    currentPath.value = path;
-    // set state
-    var status = RxStatus.success();
-    if (data.isEmpty) status = RxStatus.empty();
-    change(false, status: status);
+    result.fold(
+      (error) {
+        UIUtils.showSimpleDialog(
+          'Fetch Error',
+          '$error -> load()',
+        );
+
+        change(false, status: RxStatus.success());
+      },
+      (response) {
+        data.value = response;
+        currentPath.value = path;
+
+        change(
+          false,
+          status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
+        );
+      },
+    );
   }
 
   void backup(S3Content content) async {
-    //
+    final result = await S3Service.to.backup(content);
+
+    result.fold(
+      (error) => UIUtils.showSimpleDialog(
+        'Error Backup',
+        error,
+      ),
+      (response) => console.info('success: $response'),
+    );
   }
 
   void restore(S3Content content) {
     //
   }
 
-  void test() async {
-    final file = await LisoManager.archive();
-    if (file == null) return console.error('no archive file');
-    final result = await S3Service.to.upload(file);
-
-    return result.fold(
-      (error) => UIUtils.showSimpleDialog(
-        'Error Uploading',
-        error,
-      ),
-      (response) => console.info('success: $response'),
-    );
+  void upload() {
+    //
   }
+
+  void test() async {
+    S3Service.to.upSync();
+  }
+}
+
+// TODO: explorer type
+enum S3ExplorerType {
+  picker,
+  timeMachine,
 }

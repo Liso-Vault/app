@@ -70,12 +70,9 @@ class UnlockScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    final masterWalletFilePath =
-        '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
-
     try {
-      masterWallet = await compute(Isolates.loadWallet, {
-        'file_path': masterWalletFilePath,
+      Globals.wallet = await compute(Isolates.loadWallet, {
+        'file_path': LisoManager.walletFilePath,
         'password': passwordController.text,
       });
     } catch (e) {
@@ -109,8 +106,8 @@ class UnlockScreenController extends GetxController
 
     if (!passwordMode) {
       // the encryption key from master's private key
-      final seedHex = HEX.encode(masterWallet!.privateKey.privateKey);
-      encryptionKey = utf8.encode(seedHex.substring(0, 32));
+      final seedHex = HEX.encode(Globals.wallet!.privateKey.privateKey);
+      Globals.encryptionKey = utf8.encode(seedHex.substring(0, 32));
 
       // open Hive Boxes
       await HiveManager.openBoxes();

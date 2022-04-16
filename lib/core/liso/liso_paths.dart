@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:liso/core/utils/console.dart';
-import 'package:path/path.dart' as path;
+import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class LisoPaths {
@@ -11,8 +11,8 @@ class LisoPaths {
 
   static Future<void> init() async {
     main = await getApplicationSupportDirectory();
-    hive = Directory(path.join(main!.path, 'hive'));
-    temp = Directory(path.join(main!.path, 'temp'));
+    hive = Directory(join(main!.path, 'hive'));
+    temp = Directory(join(main!.path, 'temp'));
 
     // ensure directories exist
     await main!.create(recursive: true);
@@ -22,7 +22,5 @@ class LisoPaths {
     // print paths
     final console = Console(name: 'LisoPaths');
     console.info('main: ${main!.path}');
-    console.info('hive: ${hive!.path}');
-    console.info('temp: ${temp!.path}');
   }
 }

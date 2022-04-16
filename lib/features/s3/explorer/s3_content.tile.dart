@@ -1,14 +1,15 @@
+import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/s3/s3_exporer_screen.controller.dart';
+import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
 
-import '../../core/utils/console.dart';
-import '../../core/utils/globals.dart';
-import '../main/main_screen.controller.dart';
-import '../menu/menu.button.dart';
-import '../menu/menu.item.dart';
-import 'model/s3_content.model.dart';
+import '../../../core/utils/console.dart';
+import '../../../core/utils/globals.dart';
+import '../../main/main_screen.controller.dart';
+import '../../menu/menu.button.dart';
+import '../../menu/menu.item.dart';
+import '../model/s3_content.model.dart';
 
 class S3ContentTile extends StatelessWidget with ConsoleMixin {
   final S3Content content;
@@ -39,7 +40,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
 
     return ListTile(
       title: Text(content.name),
-      subtitle: Text(content.path),
+      subtitle: content.size > 0 ? Text(filesize(content.size)) : null,
       iconColor: content.isFile ? kAppColor : null,
       leading: Icon(
         content.isFile ? LineIcons.fileAlt : LineIcons.folderOpen,
@@ -61,30 +62,15 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
   }
 
   void _askToImport(S3Content s3content) {
-    final content = RichText(
-      text: TextSpan(
-        text: 'Are you sure you want to restore vault with hash: ',
-        style: Get.theme.dialogTheme.contentTextStyle,
-        children: <TextSpan>[
-          TextSpan(
-            text: s3content.name,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              color: kAppColorDarker,
-            ),
-          ),
-          const TextSpan(
-              text:
-                  '?\nCaution: This will overwrite your current local vault.'),
-        ],
-      ),
+    const content = Text(
+      'Are you sure you want to restore from this vault? \nYour current vault will be overwritten.',
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Restore From IPFS'),
+      title: const Text('Restore'),
       content: MainScreenController.to.expandableDrawer
           ? content
-          : SizedBox(
+          : const SizedBox(
               width: 600,
               child: content,
             ),

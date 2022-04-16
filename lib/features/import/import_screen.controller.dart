@@ -5,12 +5,12 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/features/ipfs/ipfs.service.dart';
+import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:path/path.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -33,16 +33,22 @@ enum ImportMode {
 class ImportScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
+  final formKey = GlobalKey<FormState>();
   final seedController = TextEditingController();
   final filePathController = TextEditingController();
-  final ipfsUrlController =
-      TextEditingController(text: PersistenceService.to.ipfsServerUrl);
-  final formKey = GlobalKey<FormState>();
-  final tempArchivePath = join(LisoPaths.temp!.path, kTempArchiveFileName);
+
+  final ipfsUrlController = TextEditingController(
+    text: PersistenceService.to.ipfsServerUrl,
+  );
 
   // PROPERTIES
   final importMode = ImportMode.file.obs;
   final ipfsBusy = false.obs;
+
+  // GETTERS
+  String get archiveFilePath => importMode() == ImportMode.file
+      ? filePathController.text
+      : LisoManager.tempVaultFilePath;
 
   // INIT
   @override
@@ -52,48 +58,17 @@ class ImportScreenController extends GetxController
   }
 
   // FUNCTIONS
-
-  Archive? _getArchive() {
-    InputFileStream? inputStream;
-
-    try {
-      inputStream = InputFileStream(
-        importMode() == ImportMode.file
-            ? filePathController.text
-            : tempArchivePath,
-      );
-    } catch (e) {
-      UIUtils.showSimpleDialog(
-        'Error Importing Vault',
-        e.toString(),
-      );
-
-      change(null, status: RxStatus.success());
-      console.error('error importing archive: $e');
-      return null;
-    }
-
-    return ZipDecoder().decodeBuffer(inputStream);
-  }
-
   Future<void> _extractMainArchive() async {
-    final archive = _getArchive();
+    final result = LisoManager.readArchive(archiveFilePath);
+    Archive? archive;
+
+    result.fold(
+      (error) => console.error('extract archive error: $error'),
+      (response) => archive = response,
+    );
+
     if (archive == null) return;
-
-    for (var file in archive.files) {
-      if (!file.isFile) continue;
-      final path = join(LisoPaths.hive!.path, basename(file.name));
-      final outputStream = OutputFileStream(path);
-      file.writeContent(outputStream);
-      await outputStream.close();
-    }
-  }
-
-  Future<void> _extractTempItemsBox(ArchiveFile file) async {
-    final outputStream =
-        OutputFileStream(join(LisoPaths.temp!.path, basename(file.name)));
-    file.writeContent(outputStream);
-    await outputStream.close();
+    await LisoManager.extractArchive(archive!, path: LisoManager.hivePath);
   }
 
   Future<bool> _downloadVault() async {
@@ -141,7 +116,7 @@ class ImportScreenController extends GetxController
     // TODO: download progress indicator
     final resultDownload = await IPFSService.to.ipfs.root.cat(
       arg: vaultHash,
-      savePath: tempArchivePath,
+      savePath: LisoManager.tempVaultFilePath,
     );
 
     bool downloaded = false;
@@ -173,11 +148,19 @@ class ImportScreenController extends GetxController
     }
 
     // METHOD 1
-    final archive = _getArchive();
+    final result = LisoManager.readArchive(archiveFilePath);
+
+    Archive? archive;
+
+    result.fold(
+      (error) => console.error('extract archive error: $error'),
+      (response) => archive = response,
+    );
+
     if (archive == null) return change(null, status: RxStatus.success());
 
     // check if archive contains files
-    if (archive.files.isEmpty) {
+    if (archive!.files.isEmpty) {
       UIUtils.showSimpleDialog(
         'Invalid Vault File',
         'The vault file you imported contains no files',
@@ -186,10 +169,10 @@ class ImportScreenController extends GetxController
       return change(null, status: RxStatus.success());
     }
 
-    console.info('temp archive files: ${archive.files.length}');
+    console.info('temp archive files: ${archive!.files.length}');
     // filter items.hive file
     final itemBoxFiles =
-        archive.files.where((e) => e.isFile && e.name.contains('items.hive'));
+        archive!.files.where((e) => e.isFile && e.name.contains('items.hive'));
     // if items.hive is not found
     if (itemBoxFiles.isEmpty) {
       UIUtils.showSimpleDialog(
@@ -201,7 +184,10 @@ class ImportScreenController extends GetxController
     }
 
     // temporarily extract items box file
-    await _extractTempItemsBox(itemBoxFiles.first);
+    await LisoManager.extractArchiveFile(
+      itemBoxFiles.first,
+      path: LisoManager.tempPath,
+    );
     // check if encryption key is correct
     final seedHex = bip39.mnemonicToSeedHex(seedController.text);
     final tempEncryptionKey = utf8.encode(seedHex.substring(0, 32));
@@ -218,7 +204,7 @@ class ImportScreenController extends GetxController
     }
 
     // set the correct encryption key
-    encryptionKey = tempEncryptionKey;
+    Globals.encryptionKey = tempEncryptionKey;
     // extract all hive boxes
     await _extractMainArchive();
 

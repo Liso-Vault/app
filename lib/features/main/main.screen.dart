@@ -1,6 +1,8 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -107,6 +109,39 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             ),
           ),
         ),
+        SimpleBuilder(
+          builder: (_) {
+            final syncButton = Badge(
+              badgeContent: Text(
+                PersistenceService.to.changes.val.toString(),
+              ),
+              position: BadgePosition.topEnd(top: -1, end: -5),
+              child: IconButton(
+                icon: const Icon(LineIcons.syncIcon),
+                onPressed: controller.upSync,
+              ),
+            );
+
+            const progressIndicator = Center(
+              child: SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(),
+              ),
+            );
+
+            return Obx(
+              () => Visibility(
+                visible: PersistenceService.to.changes.val > 0 &&
+                    !controller.syncing(),
+                child: syncButton,
+                replacement:
+                    controller.syncing() ? progressIndicator : const SizedBox(),
+              ),
+            );
+          },
+        ),
+        const SizedBox(width: 10),
       ],
     );
 

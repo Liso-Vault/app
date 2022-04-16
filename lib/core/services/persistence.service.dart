@@ -25,7 +25,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // NOTIFICATION
   final notificationId = 0.val('notification id');
   // WALLET
-  final address = ''.val('wallet address');
+  // final address = ''.val('wallet address');
   // IPFS
   final ipfsSync = false.val('ipfs sync');
   final ipfsInstantSync = false.val('ipfs instant sync');
@@ -33,8 +33,11 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final ipfsHost = '127.0.0.1'.val('ipfs host');
   final ipfsPort = 5001.val('ipfs port');
   final ipfsLocalStat = ''.val('ipfs local vault stat');
+  // FILEBASE
+  final s3LastModified = DateTime.now().val('s3 last modified');
   // VAULT
-  final vaultMetadata = ''.val('vault metadata');
+  final metadata = ''.val('vault metadata');
+  final changes = 0.val('vault changes count');
 
   // GETTERS
 

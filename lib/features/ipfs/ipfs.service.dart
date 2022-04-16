@@ -6,11 +6,10 @@ import 'package:get/get.dart';
 import 'package:ipfs_rpc/ipfs_rpc.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/extensions.dart';
 import 'package:path/path.dart';
 
 import '../../core/hive/models/metadata/metadata.hive.dart';
-import '../../core/liso/liso_paths.dart';
+import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 
@@ -24,8 +23,7 @@ class IPFSService extends GetxService with ConsoleMixin {
 
   // GETTERS
   String get rootPath {
-    final address = masterWallet?.address;
-    return join('/$kAppName', address);
+    return join('/$kAppName', LisoManager.walletAddress);
   }
 
   String get backupsPath => join(rootPath, 'Backups');
@@ -50,7 +48,7 @@ class IPFSService extends GetxService with ConsoleMixin {
     if (connected) {
       console.warning('Connected to: ${ipfs.client.baseUrl}');
 
-      if (masterWallet?.address != null) {
+      if (LisoManager.vaultFilename.isNotEmpty) {
         // create necessary directories
         console.info('creating directories...');
         await ipfs.files.mkdir(arg: rootPath, parents: true);
@@ -126,10 +124,9 @@ class IPFSService extends GetxService with ConsoleMixin {
     if (filePath.isEmpty) return;
 
     // write/upload to IPFS
-    final fileName = masterWallet!.fileName;
     final result = await ipfs.files.write(
-      arg: join(rootPath, fileName),
-      fileName: fileName,
+      arg: join(rootPath, LisoManager.vaultFilename),
+      fileName: LisoManager.vaultFilename,
       filePath: filePath,
       create: true,
       truncate: true,
@@ -182,19 +179,19 @@ class IPFSService extends GetxService with ConsoleMixin {
   Future<void> updateLocalMetadata() async {
     var metadata = await _obtainLocalMetadata();
     metadata = await metadata!.getUpdated();
-    persistence.vaultMetadata.val = metadata.toJsonString();
+    persistence.metadata.val = metadata.toJsonString();
   }
 
   Future<HiveMetadata?> _obtainLocalMetadata() async {
     HiveMetadata? metadata;
 
     // create one if doesn't exist
-    if (persistence.vaultMetadata.val.isEmpty) {
+    if (persistence.metadata.val.isEmpty) {
       // TODO: check if user first sync, do not overwrite current on ipfs
       metadata = await HiveMetadata.get(); // new
     } else {
       // get updated metadata
-      final metadataJson = jsonDecode(persistence.vaultMetadata.val);
+      final metadataJson = jsonDecode(persistence.metadata.val);
       metadata = HiveMetadata.fromJson(metadataJson);
     }
 
@@ -208,7 +205,7 @@ class IPFSService extends GetxService with ConsoleMixin {
     metadata = await metadata!.getUpdated();
 
     final metadataString = metadata.toJsonString();
-    final filePath = join(LisoPaths.temp!.path, kMetadataFileName);
+    final filePath = join(LisoManager.tempPath, kMetadataFileName);
     await File(filePath).writeAsString(metadataString);
 
     final result = await ipfs.files.write(
@@ -226,7 +223,7 @@ class IPFSService extends GetxService with ConsoleMixin {
         error.toJson().toString() + ' > syncMetadata()',
       ),
       (response) async {
-        persistence.vaultMetadata.val = metadataString; // save
+        persistence.metadata.val = metadataString; // save
         console.warning('metadata sync success');
       },
     );
@@ -239,7 +236,7 @@ class IPFSService extends GetxService with ConsoleMixin {
     final resultStat = await IPFSService.to.ipfs.files.stat(
       arg: join(
         IPFSService.to.rootPath,
-        masterWallet!.fileName,
+        LisoManager.vaultFilename,
       ),
     );
 
@@ -270,7 +267,7 @@ class IPFSService extends GetxService with ConsoleMixin {
 
     // backup a copy to /History first before modifying/writing
     final resultCp = await IPFSService.to.ipfs.files.cp(
-      source: join(IPFSService.to.rootPath, masterWallet!.fileName),
+      source: join(IPFSService.to.rootPath, LisoManager.vaultFilename),
       destination: join(IPFSService.to.historyPath, historyFileName),
     );
 
@@ -298,13 +295,11 @@ class IPFSService extends GetxService with ConsoleMixin {
 
   Future<String> _archiveLiso() async {
     console.info('archiving vault...');
-
     final encoder = ZipFileEncoder();
-    final filePath = join(LisoPaths.temp!.path, masterWallet!.fileName);
 
     try {
-      encoder.create(filePath);
-      await encoder.addDirectory(Directory(LisoPaths.hive!.path));
+      encoder.create(LisoManager.tempVaultFilePath);
+      await encoder.addDirectory(Directory(LisoManager.hivePath));
       encoder.close();
     } catch (e) {
       UIUtils.showSimpleDialog(
@@ -315,6 +310,6 @@ class IPFSService extends GetxService with ConsoleMixin {
       return '';
     }
 
-    return filePath;
+    return LisoManager.tempVaultFilePath;
   }
 }

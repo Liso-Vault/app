@@ -37,15 +37,15 @@ const kHiveBoxItems = 'items';
 const kHiveBoxArchived = 'archived';
 const kHiveBoxTrash = 'trash';
 
-const kLocalMasterWalletFileName = 'liso_wallet.json';
 const kAad = 'liso';
 const kRootDirectory = 'Liso';
 const kBiometricPasswordKey = 'biometric_password';
 const kVaultExtension = 'liso';
+const kWalletExtension = 'json';
 const kMaxIconSize = 500000;
 const kMinWindowSize = Size(400, 850);
 const kMetadataFileName = 'metadata.json';
-const kTempArchiveFileName = 'ipfs_vault.liso';
+const kTempVaultFileName = 'temp_vault.liso';
 
 // COLORS
 const kAppColor = Color(0xff02f297);
@@ -53,11 +53,6 @@ const kAppColorDarker = Color(0xFF00BC74);
 
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
-
-// VARS
-List<int>? encryptionKey;
-Wallet? masterWallet;
-bool timeLockEnabled = true;
 
 // ENUMS
 enum LisoItemSortOrder {
@@ -98,4 +93,10 @@ enum LisoItemCategory {
   wirelessRouter,
   encryption,
   none,
+}
+
+class Globals {
+  static bool timeLockEnabled = true;
+  static List<int>? encryptionKey;
+  static Wallet? wallet;
 }

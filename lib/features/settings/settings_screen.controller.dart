@@ -11,6 +11,7 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/hive/hive.manager.dart';
+import '../../core/liso/liso.manager.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
@@ -93,12 +94,12 @@ class SettingsScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
-    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
+    final file = File(LisoManager.walletFilePath);
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
         [file.path],
-        subject: kLocalMasterWalletFileName,
+        subject: LisoManager.walletFileName,
         text: 'Liso Wallet',
       );
 
@@ -106,11 +107,11 @@ class SettingsScreenController extends GetxController
     }
 
     change('Choose export path...', status: RxStatus.loading());
-    timeLockEnabled = false; // temporarily disable
+    Globals.timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform
         .getDirectoryPath(dialogTitle: 'Choose Export Path');
-    timeLockEnabled = true; // re-enable
+    Globals.timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
       return change(null, status: RxStatus.success());
@@ -120,14 +121,14 @@ class SettingsScreenController extends GetxController
     change('Exporting to: $exportPath', status: RxStatus.loading());
     await Future.delayed(1.seconds); // just for style
 
-    await Utils.moveFile(
-      file,
-      join(exportPath, kLocalMasterWalletFileName),
-    );
+    final exportFileName =
+        '${LisoManager.walletAddress}.wallet.$kWalletExtension';
+
+    file.copy(join(exportPath, exportFileName));
 
     NotificationsManager.notify(
       title: 'Successfully Exported Wallet',
-      body: kLocalMasterWalletFileName,
+      body: exportFileName,
     );
 
     Get.back();

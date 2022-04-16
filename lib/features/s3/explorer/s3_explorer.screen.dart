@@ -4,8 +4,8 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
-import '../general/busy_indicator.widget.dart';
-import '../general/centered_placeholder.widget.dart';
+import '../../general/busy_indicator.widget.dart';
+import '../../general/centered_placeholder.widget.dart';
 
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
@@ -64,17 +64,25 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
             icon: const Icon(LineIcons.syncIcon),
           ),
         ),
-        Obx(
-          () => IconButton(
-            onPressed: !controller.busy() ? controller.test : null,
-            icon: const Icon(LineIcons.bug),
-          ),
-        ),
+        // Obx(
+        //   () => IconButton(
+        //     onPressed: !controller.busy() ? controller.test : null,
+        //     icon: const Icon(LineIcons.bug),
+        //   ),
+        // ),
       ],
+    );
+
+    final floatingActionButton = Obx(
+      () => FloatingActionButton(
+        child: const Icon(LineIcons.upload),
+        onPressed: controller.busy() ? null : controller.upload,
+      ),
     );
 
     return Scaffold(
       appBar: appBar,
+      floatingActionButton: floatingActionButton,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

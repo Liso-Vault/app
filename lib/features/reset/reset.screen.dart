@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
-import '../../core/services/persistence.service.dart';
+import '../../core/liso/liso.manager.dart';
 import '../main/main_screen.controller.dart';
 
 class ResetScreen extends GetView<ResetScreenController> {
@@ -26,7 +25,7 @@ class ResetScreen extends GetView<ResetScreenController> {
         ),
         const SizedBox(height: 20),
         Text(
-          'Your local vault ${PersistenceService.to.address.val}.$kVaultExtension and $kLocalMasterWalletFileName file be deleted',
+          'Your local vault ${LisoManager.vaultFilename} and ${LisoManager.walletFileName} file be deleted',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

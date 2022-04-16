@@ -7,6 +7,7 @@ import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
+import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';
 
@@ -28,9 +29,9 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 15),
-          const Text(
-            "This will be the password to encrypt and decrypt the local $kLocalMasterWalletFileName file which also secures the (xxx.$kVaultExtension) vault with it's private key",
-            style: TextStyle(color: Colors.grey),
+          Text(
+            "This will be the password to encrypt and decrypt the local ${LisoManager.walletFileName} file which also secures the (xxx.$kVaultExtension) vault with it's private key",
+            style: const TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
@@ -65,7 +66,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               keyboardType: TextInputType.visiblePassword,
               obscureText: controller.obscureConfirmPassword(),
               textInputAction: TextInputAction.done,
-              onFieldSubmitted: (text) => controller.confirm,
+              onFieldSubmitted: (text) => controller.confirm(),
               validator: (text) => Utils.validatePassword(text!),
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(

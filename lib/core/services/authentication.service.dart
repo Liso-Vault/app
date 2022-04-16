@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:get/get.dart';
+import 'package:liso/core/utils/console.dart';
 
-import '../liso/liso_paths.dart';
-import '../utils/globals.dart';
+import '../liso/liso.manager.dart';
 
-class AuthenticationService extends GetxService {
+class AuthenticationService extends GetxService with ConsoleMixin {
   static AuthenticationService get to => Get.find();
 
   bool get isAuthenticated {
-    final walletPath = '${LisoPaths.main!.path}/$kLocalMasterWalletFileName';
-    return File(walletPath).existsSync();
+    return File(LisoManager.walletFilePath).existsSync();
   }
 }

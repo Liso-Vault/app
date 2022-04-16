@@ -1,18 +1,18 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
+import 'package:either_option/either_option.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/utils.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/extensions.dart';
+import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 
 import '../hive/hive.manager.dart';
-import '../utils/ui_utils.dart';
 import 'liso_paths.dart';
 
 class LisoManager {
@@ -20,61 +20,113 @@ class LisoManager {
   static final console = Console(name: 'LisoManager');
 
   // GETTERS
-  String get fileName => masterWallet!.fileName;
+  static String get mainPath => LisoPaths.main!.path;
+  static String get hivePath => LisoPaths.hive!.path;
+  static String get tempPath => LisoPaths.temp!.path;
+
+  static String get walletAddress =>
+      Globals.wallet?.privateKey.address.hexEip55 ?? '';
+
+  static String get vaultFilename => '$walletAddress.$kVaultExtension';
+
+  static String get tempVaultFilePath => join(tempPath, kTempVaultFileName);
+
+  static String get walletFileName => 'wallet.$kWalletExtension';
+
+  static String get walletFilePath => join(
+        mainPath,
+        walletFileName,
+      );
 
   // FUNCTIONS
+  static Future<Either<dynamic, File>> createArchive(
+    Directory directory, {
+    required String filePath,
+  }) async {
+    console.info('archiving...');
+    final encoder = ZipFileEncoder();
+
+    try {
+      encoder.create(filePath);
+      await encoder.addDirectory(directory);
+      encoder.close();
+    } catch (e) {
+      return Left(e);
+    }
+
+    console.info('archived!');
+    return Right(File(filePath));
+  }
+
+  static Either<dynamic, Archive> readArchive(String path) {
+    InputFileStream? inputStream;
+
+    try {
+      inputStream = InputFileStream(path);
+    } catch (e) {
+      return Left(e);
+    }
+
+    final archive = ZipDecoder().decodeBuffer(inputStream);
+    return Right(archive);
+  }
+
+  static Future<void> extractArchive(
+    Archive archive, {
+    required String path,
+  }) async {
+    for (var file in archive.files) {
+      if (!file.isFile) continue;
+      final outputStream = OutputFileStream(join(path, basename(file.name)));
+      file.writeContent(outputStream);
+      await outputStream.close();
+    }
+  }
+
+  static Future<void> extractArchiveFile(
+    ArchiveFile file, {
+    required String path,
+  }) async {
+    final outputStream = OutputFileStream(join(
+      LisoManager.tempPath,
+      basename(file.name),
+    ));
+
+    file.writeContent(outputStream);
+    await outputStream.close();
+  }
+
+  static Future<void> cleanTempPath() async {
+    // TODO: clean temp path
+    console.info('temp path cleaned!');
+  }
+
   static Future<void> reset() async {
     // delete biometric storage
     final storage = await BiometricUtils.getStorage();
     await storage.delete();
 
     // nullify global variables
-    encryptionKey = null;
-    masterWallet = null;
+    Globals.encryptionKey = null;
+    Globals.wallet = null;
 
+    // TODO: FileUtils for managing files
     // delete liso wallet file
-    final file = File('${LisoPaths.main!.path}/$kLocalMasterWalletFileName');
 
-    if (await file.exists()) {
-      await file.delete();
-      console.info('deleted: ${file.path}');
-    }
+    await FileUtils.delete(walletFilePath); // wallet
+    await FileUtils.delete(tempVaultFilePath); // temp vault
 
     // cancel hive boxes' stream subscriptions
     MainScreenController.to.unwatchBoxes();
     // reset hive
     await HiveManager.reset();
-
     // persistence
     await PersistenceService.to.box.erase();
-
     // delete FilePicker caches
     if (GetPlatform.isMobile) {
       await FilePicker.platform.clearTemporaryFiles();
     }
 
     console.info('reset!');
-  }
-
-  static Future<File?> archive() async {
-    console.info('archiving...');
-
-    final encoder = ZipFileEncoder();
-    final filePath = join(LisoPaths.temp!.path, masterWallet!.fileName);
-
-    try {
-      encoder.create(filePath);
-      await encoder.addDirectory(Directory(LisoPaths.hive!.path));
-      encoder.close();
-    } catch (e) {
-      UIUtils.showSimpleDialog(
-        'Error Archiving Vault',
-        e.toString() + ' > archive()',
-      );
-
-      return null;
-    }
-
-    return File(filePath);
   }
 }

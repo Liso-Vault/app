@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -9,7 +8,7 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
-import '../../core/utils/extensions.dart';
+import '../../core/liso/liso.manager.dart';
 import '../general/busy_indicator.widget.dart';
 import '../main/main_screen.controller.dart';
 import 'settings_screen.controller.dart';
@@ -29,8 +28,8 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: Image.asset(Images.logo, height: 25, color: Colors.grey),
           trailing: const Icon(LineIcons.copy),
           title: const Text('Liso Address'),
-          subtitle: Text(masterWallet?.address ?? ''),
-          onTap: () => Utils.copyToClipboard(masterWallet!.address),
+          subtitle: Text(LisoManager.walletAddress),
+          onTap: () => Utils.copyToClipboard(LisoManager.walletAddress),
         ),
         const Divider(),
         Obx(
@@ -49,25 +48,25 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
             ),
           ),
         ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.cube),
-          trailing: const Icon(LineIcons.angleRight),
-          title: const Text('IPFS Configuration'),
-          subtitle: Obx(() => Text(controller.ipfsServerUrl.value)),
-          onTap: () async {
-            await Utils.adaptiveRouteOpen(name: Routes.ipfs);
-            controller.ipfsServerUrl.value =
-                PersistenceService.to.ipfsServerUrl;
-          },
-        ),
+        // const Divider(),
+        // ListTile(
+        //   leading: const Icon(LineIcons.cube),
+        //   trailing: const Icon(LineIcons.angleRight),
+        //   title: const Text('IPFS Configuration'),
+        //   subtitle: Obx(() => Text(controller.ipfsServerUrl.value)),
+        //   onTap: () async {
+        //     await Utils.adaptiveRouteOpen(name: Routes.ipfs);
+        //     controller.ipfsServerUrl.value =
+        //         PersistenceService.to.ipfsServerUrl;
+        //   },
+        // ),
         const Divider(),
         ListTile(
           title: Text('time_machine_explorer'.tr),
           subtitle: const Text('Go back in time to undo your changes'),
           leading: const Icon(LineIcons.clock),
           trailing: const Icon(LineIcons.angleRight),
-          onTap: () => Utils.adaptiveRouteOpen(name: Routes.ipfsExplorer),
+          onTap: () => Utils.adaptiveRouteOpen(name: Routes.s3Explorer),
         ),
         const Divider(),
         ListTile(

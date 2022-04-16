@@ -1,3 +1,5 @@
+import 'package:minio/models.dart';
+
 class S3Content {
   final String name;
   final String path;
@@ -6,7 +8,7 @@ class S3Content {
   final Object? object;
 
   S3Content({
-    required this.name,
+    this.name = '',
     required this.path,
     this.size = 0,
     this.type = S3ContentType.directory,

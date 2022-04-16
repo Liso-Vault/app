@@ -6,14 +6,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/services/authentication.service.dart';
-import 'package:liso/features/ipfs/ipfs.service.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
@@ -27,7 +28,8 @@ import '../drawer/drawer_widget.controller.dart';
 import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item_screen.controller.dart';
 import '../menu/menu.item.dart';
-import '../s3/s3_exporer_screen.controller.dart';
+import '../s3/explorer/s3_exporer_screen.controller.dart';
+import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenBinding extends Bindings {
@@ -62,6 +64,7 @@ class MainScreenController extends GetxController
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerMenuController>();
   final persistence = Get.find<PersistenceService>();
+  final syncing = false.obs;
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
@@ -197,7 +200,8 @@ class MainScreenController extends GetxController
 
   // INIT
   @override
-  void onInit() async {
+  void onInit() {
+    S3Service.to.syncStatus();
     _initAppLifeCycleEvents();
     Utils.setDisplayMode();
     _load();
@@ -251,13 +255,13 @@ class MainScreenController extends GetxController
   void _onChangesDetected(BoxEvent event) async {
     console.info('hive changes detected');
     _load();
+    persistence.changes.val++;
+    // await IPFSService.to.updateLocalMetadata();
 
-    await IPFSService.to.updateLocalMetadata();
-
-    // if sync and instant sync is on
-    if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
-      IPFSService.to.sync();
-    }
+    // // if sync and instant sync is on
+    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
+    //   IPFSService.to.sync();
+    // }
   }
 
   void reload() => _load();
@@ -385,10 +389,12 @@ class MainScreenController extends GetxController
   }
 
   void _initAppLifeCycleEvents() {
-    // if sync and instant sync is on
-    if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
-      IPFSService.to.sync();
-    }
+    // // if sync and instant sync is on
+    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
+    //   IPFSService.to.sync();
+    // }
+
+    // S3Service.to.sync();
 
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
@@ -397,15 +403,16 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timer?.cancel();
 
-        if (AuthenticationService.to.isAuthenticated && encryptionKey == null) {
+        if (AuthenticationService.to.isAuthenticated &&
+            Globals.encryptionKey == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
         // lock after <duration> of inactivity
-        if (timeLockEnabled) {
+        if (Globals.timeLockEnabled) {
           final timeLock = persistence.timeLockDuration.val.seconds;
           timer = Timer.periodic(timeLock, (timer) {
-            encryptionKey = null;
+            Globals.encryptionKey = null;
             timer.cancel();
           });
         }
@@ -413,5 +420,32 @@ class MainScreenController extends GetxController
 
       return Future.value(msg);
     });
+  }
+
+  Future<void> upSync() async {
+    syncing.value = true;
+    final result = await S3Service.to.upSync();
+    bool success = false;
+
+    result.fold(
+      (error) => UIUtils.showSimpleDialog(
+        'Error Syncing',
+        error + ' > sync()',
+      ),
+      (response) => success = response,
+    );
+
+    if (!success) {
+      syncing.value = false;
+      return;
+    }
+
+    syncing.value = false;
+    persistence.changes.val = 0;
+
+    NotificationsManager.notify(
+      title: 'Successfully Synced',
+      body: 'Your vault just got updated.',
+    );
   }
 }
