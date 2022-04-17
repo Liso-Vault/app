@@ -18,8 +18,8 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
     };
     return HiveLisoItem(
       category: fields[0] as String,
-      icon: fields[1] as Uint8List,
-      title: fields[2] as String,
+      title: fields[1] as String,
+      iconUrl: fields[2] as String,
       fields: (fields[3] as List).cast<HiveLisoField>(),
       favorite: fields[4] as bool,
       protected: fields[5] as bool,
@@ -35,9 +35,9 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       ..writeByte(0)
       ..write(obj.category)
       ..writeByte(1)
-      ..write(obj.icon)
-      ..writeByte(2)
       ..write(obj.title)
+      ..writeByte(2)
+      ..write(obj.iconUrl)
       ..writeByte(3)
       ..write(obj.fields)
       ..writeByte(4)

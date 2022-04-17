@@ -7,6 +7,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -133,18 +134,9 @@ class SettingsScreenController extends GetxController
   }
 
   void changePassword() {
-    Get.generalDialog(
-      pageBuilder: (_, __, ___) => AlertDialog(
-        title: const Text('Change Password Instruction'),
-        content: const Text(
-            'In order to change your wallet password, you are required to reset everything, re-import the vault, then you can set a new password. Make sure you have the master seed phrase and backed up the latest vault before proceeding.'),
-        actions: [
-          TextButton(
-            child: const Text('Okay'),
-            onPressed: Get.back,
-          ),
-        ],
-      ),
+    UIUtils.showSimpleDialog(
+      'Change Password Instruction',
+      'In order to change your wallet password, you are required to reset everything, re-import the vault, then you can set a new password. Make sure you have the master seed phrase and backed up the latest vault before proceeding.',
     );
   }
 }

@@ -16,7 +16,8 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // GENERAL
   final localeCode = 'en'.val('locale code');
   // WINDOW SIZE
-  final windowSize = const Size(1200, 800).obs;
+  final windowWidth = 1200.0.val('window width');
+  final windowHeight = 800.0.val('window height');
   // THEME
   final theme = ThemeMode.system.name.val('theme');
   // SECURITY
@@ -24,8 +25,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final timeLockDuration = 30.val('time lock duration'); // in seconds
   // NOTIFICATION
   final notificationId = 0.val('notification id');
-  // WALLET
-  // final address = ''.val('wallet address');
+  final sync = true.val('sync');
   // IPFS
   final ipfsSync = false.val('ipfs sync');
   final ipfsInstantSync = false.val('ipfs instant sync');

@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/hive/hive.manager.dart';
@@ -14,6 +13,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_chip.widget.dart';
+import '../general/remote_image.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
 import '../menu/context.menu.dart';
 import '../menu/menu.item.dart';
@@ -88,7 +88,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final drawerController = Get.find<DrawerMenuController>();
-    final isLargeScreen = !MainScreenController.to.expandableDrawer;
+    final isLargeScreen = !Utils.isDrawerExpandable;
 
     final isArchived =
         drawerController.boxFilter.value == HiveBoxFilter.archived;
@@ -199,9 +199,9 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    final leading = item.icon.isNotEmpty
-        ? Image.memory(
-            item.icon,
+    final leading = item.iconUrl.isNotEmpty
+        ? RemoteImage(
+            url: item.iconUrl,
             width: 35,
             alignment: Alignment.centerLeft,
           )

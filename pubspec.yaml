@@ -14,25 +14,20 @@ dependencies:
   get: ^4.6.1
 
   # CRYTPOGRAPHY + SECURITY
-  web3dart: ^2.3.5
-  bip39: ^1.0.6
+  web3dart: ^2.3.5 # EVM + Wallet
+  bip39: ^1.0.6 # Mnemonic Seed Phrases
   hex: ^0.2.0
-  cryptography: ^2.0.5
-  biometric_storage: ^4.1.0 # secure storage with biometrics
-  local_auth: ^1.1.11 # check biometric availability
+  cryptography: ^2.0.5 # Cipher & Decipher
+  biometric_storage: ^4.1.1 # secure storage with biometrics
+  local_auth: ^2.0.0 # check biometric availability
 
   # FIREBASE
-  firebase_core: 1.13.1
-  firebase_auth: 3.3.11
-  firebase_analytics: 9.1.2
-  firebase_crashlytics: 2.5.3
-  firebase_performance: 0.8.0+7
+  firebase_core: 1.14.1
+  firebase_analytics: 9.1.5
+  firebase_crashlytics: 2.6.2
+  firebase_performance: 0.8.0+9
   firebase_remote_config: ^2.0.4
   # firebase_app_check: ^0.0.6+9
-
-  # GOOGLE
-  google_sign_in: ^5.2.4
-  googleapis: ^8.1.0
 
   # WORKAROUND
   desktop_webview_auth: ^0.0.6 # MacOS Google Sign In
@@ -55,7 +50,7 @@ dependencies:
   line_icons: ^2.0.1
   font_awesome_flutter: ^10.1.0
   flex_color_scheme: ^4.2.0 # themes
-  desktop_window: ^0.4.0 # set desktop window size
+  window_manager: ^0.2.1 # set desktop window size
   flutter_svg: ^1.0.3
   simple_animations: ^4.0.1
   bubble_tab_indicator: ^0.1.6
@@ -64,7 +59,8 @@ dependencies:
   chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^2.2.0
   flutter_quill: ^4.1.1 # rich text editor
-  badges: ^2.0.2 
+  badges: ^2.0.2
+  cached_network_image: ^3.2.0
 
   # TOOLS
   logger: ^1.1.0
@@ -76,12 +72,12 @@ dependencies:
   flutter_local_notifications: ^9.4.0
   either_option: 2.0.1-dev.1
   intl: ^0.17.0
-  share_plus: ^4.0.3
+  share_plus: ^4.0.4
   equatable: ^2.0.3
 
   # INFO
-  device_info_plus: ^3.2.2
-  package_info_plus: ^1.4.0
+  device_info_plus: ^3.2.3
+  package_info_plus: ^1.4.2
 
 dev_dependencies:
   # flutter_test:
@@ -89,7 +85,7 @@ dev_dependencies:
 
   flutter_lints: ^1.0.4
   hive_generator: ^1.1.2
-  build_runner: ^2.1.8
+  build_runner: ^2.1.10
   flutter_native_splash: ^2.1.1
 
 flutter:

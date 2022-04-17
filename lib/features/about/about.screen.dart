@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -158,13 +158,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
       appBar: AppBar(
         title: const Text('About'),
         centerTitle: false,
-        // X icon for desktop instead of back for mobile
-        leading: MainScreenController.to.expandableDrawer
-            ? null
-            : IconButton(
-                onPressed: Get.back,
-                icon: const Icon(LineIcons.times),
-              ),
+        leading: const AppBarLeadingButton(),
       ),
       body: _content,
     );

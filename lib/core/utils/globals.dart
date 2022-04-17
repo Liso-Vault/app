@@ -46,6 +46,7 @@ const kMaxIconSize = 50000;
 const kMinWindowSize = Size(400, 850);
 const kMetadataFileName = 'metadata.json';
 const kTempVaultFileName = 'temp_vault.liso';
+const kDesktopChangePoint = 800.0; // responsive setting
 
 // COLORS
 const kAppColor = Color(0xff02f297);

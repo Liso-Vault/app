@@ -18,7 +18,6 @@ class HiveManager {
 
   // VARIABLES
   static Box<HiveLisoItem>? items, archived, trash;
-
   static StreamSubscription? itemsStream, archivedStream, trashStream;
 
   // GETTERS
@@ -27,7 +26,6 @@ class HiveManager {
   static Future<void> init() async {
     // PATH
     if (!GetPlatform.isWeb) Hive.init(LisoManager.hivePath);
-
     // REGISTER ADAPTERS
     // liso
     Hive.registerAdapter(HiveLisoItemAdapter());
@@ -36,7 +34,6 @@ class HiveManager {
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());
     Hive.registerAdapter(HiveMetadataDeviceAdapter());
-
     console.info("init");
   }
 
@@ -57,6 +54,7 @@ class HiveManager {
     );
 
     _watchBoxes();
+    console.info('openBoxes');
   }
 
   static Future<void> closeBoxes() async {
@@ -64,6 +62,7 @@ class HiveManager {
     await archived?.close();
     await trash?.close();
     await _unwatchBoxes();
+    console.info('closeBoxes');
   }
 
   static void _watchBoxes() {
@@ -99,11 +98,9 @@ class HiveManager {
   static Future<void> reset() async {
     await closeBoxes();
     await Hive.deleteFromDisk();
-
     items = null;
     archived = null;
     trash = null;
-
     console.info('reset');
   }
 }

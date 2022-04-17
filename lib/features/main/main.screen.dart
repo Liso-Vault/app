@@ -22,7 +22,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       : super(
           key: key,
           settings: const ResponsiveScreenSettings(
-            desktopChangePoint: 800,
+            desktopChangePoint: kDesktopChangePoint,
           ),
         );
 
@@ -142,7 +142,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
     );
 
-    if (screen.screenType == ScreenType.Desktop) {
+    if (screen.isDesktop) {
       return Row(
         children: [
           const SizedBox(width: 240.0, child: DrawerMenu()),

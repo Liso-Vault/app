@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -21,9 +20,9 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
   @HiveField(0)
   String category;
   @HiveField(1)
-  Uint8List icon;
-  @HiveField(2)
   String title;
+  @HiveField(2)
+  String iconUrl;
   @HiveField(3)
   List<HiveLisoField> fields;
   @HiveField(4)
@@ -37,8 +36,8 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
 
   HiveLisoItem({
     required this.category,
-    required this.icon,
     required this.title,
+    this.iconUrl = '',
     required this.fields,
     this.favorite = false,
     this.protected = false,
@@ -48,7 +47,7 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
 
   factory HiveLisoItem.fromJson(Map<String, dynamic> json) => HiveLisoItem(
         category: json["category"],
-        icon: json["icon"],
+        iconUrl: json["icon_url"],
         title: json["title"],
         fields: json["fields"],
         favorite: json["favorite"],
@@ -60,7 +59,7 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
   Map<String, dynamic> toJson() {
     return {
       "category": category,
-      "icon": icon,
+      "icon_url": iconUrl,
       "title": title,
       "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
       "favorite": favorite,

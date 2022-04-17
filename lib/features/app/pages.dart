@@ -5,8 +5,6 @@ import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/create_password/create_password_screen.controller.dart';
 import 'package:liso/features/export/export.screen.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
-import 'package:liso/features/google/sign_in.screen.dart';
-import 'package:liso/features/google/sign_in_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
 import 'package:liso/features/ipfs/ipfs.screen.dart';
@@ -50,12 +48,6 @@ class AppPages {
       name: Routes.welcome,
       page: () => const WelcomeScreen(),
       binding: WelcomeScreenBinding(),
-      transition: Transition.fadeIn,
-    ),
-    GetPage(
-      name: Routes.signIn,
-      page: () => const SignInScreen(),
-      binding: SignInScreenBinding(),
       transition: Transition.fadeIn,
     ),
     GetPage(

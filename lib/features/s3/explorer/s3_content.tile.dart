@@ -6,7 +6,7 @@ import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
 
 import '../../../core/utils/console.dart';
 import '../../../core/utils/globals.dart';
-import '../../main/main_screen.controller.dart';
+import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';
 import '../../menu/menu.item.dart';
 import '../model/s3_content.model.dart';
@@ -68,7 +68,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: const Text('Restore'),
-      content: MainScreenController.to.expandableDrawer
+      content: Utils.isDrawerExpandable
           ? content
           : const SizedBox(
               width: 600,

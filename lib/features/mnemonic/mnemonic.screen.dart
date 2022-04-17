@@ -5,6 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/custom_chip.widget.dart';
+import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/utils/globals.dart';
 import 'mnemonic_screen.controller.dart';
@@ -15,24 +16,23 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final phrases = Wrap(
-      spacing: 5,
-      runSpacing: 10,
-      alignment: WrapAlignment.center,
-      children: controller.mnemonic.value
-          .split(' ')
-          .map(
-            (e) => CustomChip(
-              label: Text(e, style: const TextStyle(fontSize: 18)),
-            ),
-          )
-          .toList(),
-    );
-
-    final mnemonicPhrase = GestureDetector(
-      onLongPress: controller.options,
-      onSecondaryTap: controller.options,
-      child: phrases,
+    final phrases = ContextMenuButton(
+      controller.menuItems,
+      child: Obx(
+        () => Wrap(
+          spacing: 5,
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: controller.mnemonic.value
+              .split(' ')
+              .map(
+                (e) => CustomChip(
+                  label: Text(e, style: const TextStyle(fontSize: 18)),
+                ),
+              )
+              .toList(),
+        ),
+      ),
     );
 
     final content = Column(
@@ -63,7 +63,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
                     child: Blur(
                       blur: 5.0,
                       blurColor: Colors.grey.shade900,
-                      child: mnemonicPhrase,
+                      child: phrases,
                     ),
                   ),
                   IconButton(
@@ -73,7 +73,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
                   ),
                 ],
               ),
-              mnemonicPhrase,
+              phrases,
             ],
           ),
         ),
@@ -97,13 +97,24 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
           controller.chkWrittenSeed,
         ),
         const SizedBox(height: 20),
-        Obx(
-          () => TextButton.icon(
-            onPressed:
-                controller.canProceed ? controller.continuePressed : null,
-            label: Text('continue'.tr),
-            icon: const Icon(LineIcons.arrowRight),
-          ),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Obx(
+              () => TextButton.icon(
+                onPressed:
+                    controller.canProceed ? controller.continuePressed : null,
+                label: Text('continue'.tr),
+                icon: const Icon(LineIcons.arrowRight),
+              ),
+            ),
+            const SizedBox(width: 10),
+            TextButton.icon(
+              onPressed: controller.generate,
+              label: Text('generate'.tr),
+              icon: const Icon(LineIcons.flask),
+            ),
+          ],
         ),
       ],
     );

@@ -4,8 +4,8 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/utils.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 
+import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'ipfs_screen.controller.dart';
 
@@ -95,13 +95,7 @@ class IPFSScreen extends GetWidget<IPFSScreenController> with ConsoleMixin {
     final appBar = AppBar(
       title: Text('IPFS ${'configuration'.tr}'),
       centerTitle: false,
-      // X icon for desktop instead of back for mobile
-      leading: MainScreenController.to.expandableDrawer
-          ? null
-          : IconButton(
-              onPressed: Get.back,
-              icon: const Icon(LineIcons.times),
-            ),
+      leading: const AppBarLeadingButton(),
       actions: [
         IconButton(
           onPressed: controller.save,

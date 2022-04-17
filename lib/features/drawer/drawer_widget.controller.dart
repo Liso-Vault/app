@@ -20,7 +20,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   // VARIABLES
   // maintain expansion tile state
   bool categoriesExpanded = true, tagsExpanded = true;
-  final mainController = Get.find<MainScreenController>();
 
   // PROPERTIES
   final boxFilter = HiveBoxFilter.all.obs;
@@ -81,7 +80,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.toggle();
     filterProtected.value = false;
     filterTag.value = '';
-    mainController.reload();
+    MainScreenController.to.reload();
     Get.back();
   }
 
@@ -89,7 +88,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.toggle();
     filterFavorites.value = false;
     filterTag.value = '';
-    mainController.reload();
+    MainScreenController.to.reload();
     Get.back();
   }
 
@@ -98,19 +97,19 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     boxFilter.value = HiveBoxFilter.all;
-    _reloadMain();
+    _done();
   }
 
   void filterArchivedItems() {
     _clearFilters();
     boxFilter.value = HiveBoxFilter.archived;
-    _reloadMain();
+    _done();
   }
 
   void filterTrashItems() {
     _clearFilters();
     boxFilter.value = HiveBoxFilter.trash;
-    _reloadMain();
+    _done();
   }
 
   void filterByCategory(String category) {
@@ -119,14 +118,14 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterCategory.value =
         _category == filterCategory.value ? LisoItemCategory.none : _category;
     filterTag.value = '';
-    _reloadMain();
+    _done();
   }
 
   void filterByTag(String tag) {
     // if already selected, deselect
     if (tag == filterTag.value) tag = '';
     filterTag.value = tag;
-    _reloadMain();
+    _done();
   }
 
   void _clearFilters() {
@@ -138,13 +137,13 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     Utils.adaptiveRouteOpen(name: Routes.s3Explorer);
   }
 
-  void _reloadMain() async {
+  void _done() async {
     // // delay for better Mobile UX
     // if (mainController.expandableDrawer) {
     //   await Future.delayed(500.milliseconds);
     // }
 
-    mainController.reload();
+    MainScreenController.to.reload();
     Get.back();
   }
 }

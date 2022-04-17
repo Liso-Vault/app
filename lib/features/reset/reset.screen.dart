@@ -3,11 +3,11 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
 import '../../core/liso/liso.manager.dart';
-import '../main/main_screen.controller.dart';
 
 class ResetScreen extends GetView<ResetScreenController> {
   const ResetScreen({Key? key}) : super(key: key);
@@ -57,14 +57,7 @@ class ResetScreen extends GetView<ResetScreenController> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        leading: MainScreenController.to.expandableDrawer
-            ? null
-            : IconButton(
-                onPressed: Get.back,
-                icon: const Icon(LineIcons.times),
-              ),
-      ),
+      appBar: AppBar(leading: const AppBarLeadingButton()),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: Center(

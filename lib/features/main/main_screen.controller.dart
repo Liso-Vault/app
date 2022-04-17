@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -15,6 +14,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:window_manager/window_manager.dart';
 
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -23,14 +23,13 @@ import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenController extends GetxController
-    with StateMixin, ConsoleMixin {
+    with StateMixin, ConsoleMixin, WindowListener {
   static MainScreenController get to => Get.find();
 
   // VARIABLES
   Timer? timeLockTimer;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
-  final drawerController = Get.find<DrawerMenuController>();
   final persistence = Get.find<PersistenceService>();
   final upSyncing = false.obs;
   final downSyncing = false.obs;
@@ -46,7 +45,6 @@ class MainScreenController extends GetxController
               LisoItemCategory.values.byName(e.name),
             ),
             onSelected: () {
-              console.warning('context tapped');
               Utils.adaptiveRouteOpen(
                 name: Routes.item,
                 parameters: {'mode': 'add', 'category': e.name},
@@ -64,9 +62,6 @@ class MainScreenController extends GetxController
 
   // GETTERS
   bool get syncing => upSyncing.value || downSyncing.value;
-
-  bool get expandableDrawer =>
-      scaffoldKey.currentState?.hasDrawer ?? GetPlatform.isMobile;
 
   List<ContextMenuItem> get menuItemsSort {
     final sortName = sortOrder.value.name;
@@ -169,26 +164,75 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    downSync();
-    _initAppLifeCycleEvents();
-    Utils.setDisplayMode();
-    _load();
+    windowManager.addListener(this);
+    windowManager.setPreventClose(true);
     console.info('onInit');
     super.onInit();
   }
 
   @override
   void onReady() {
-    // listen for sort order changes
+    downSync();
+    _initAppLifeCycleEvents();
     sortOrder.listen((order) => _load());
+    _load();
+    // listen for sort order changes
     console.info('onReady');
     super.onReady();
   }
 
   @override
   void onClose() {
+    windowManager.removeListener(this);
     timeLockTimer?.cancel();
     super.onClose();
+  }
+
+  @override
+  void onWindowClose() async {
+    bool preventClosing = await windowManager.isPreventClose();
+    final confirmClose = !Get.isDialogOpen! &&
+        preventClosing &&
+        persistence.changes.val > 0 &&
+        persistence.sync.val;
+
+    if (!confirmClose) return windowManager.destroy();
+
+    final content = Text(
+      'There are ${persistence.changes.val} unsynced changes you may want to sync first before exiting.',
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Unsynced Changes'),
+      content: Utils.isDrawerExpandable
+          ? content
+          : SizedBox(
+              width: 600,
+              child: content,
+            ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: Get.back,
+          style: TextButton.styleFrom(),
+        ),
+        TextButton(
+          child: const Text('Force Close'),
+          onPressed: () => windowManager.destroy(),
+        ),
+      ],
+    ));
+
+    super.onWindowClose();
+  }
+
+  @override
+  void onWindowResized() async {
+    final size = await windowManager.getSize();
+    persistence.windowWidth.val = size.width;
+    persistence.windowHeight.val = size.height;
+    console.warning('window resized: $size');
+    super.onWindowResized();
   }
 
   // FUNCTIONS
@@ -197,7 +241,7 @@ class MainScreenController extends GetxController
 
   void _load() async {
     change(null, status: RxStatus.loading());
-
+    final drawerController = Get.find<DrawerMenuController>();
     List<HiveLisoItem> items = [];
 
     // FILTER BY BOX
@@ -390,21 +434,9 @@ class MainScreenController extends GetxController
       MainScreenController.to.reload();
       console.info('load');
     }
-
-    // await IPFSService.to.updateLocalMetadata();
-
-    // // if sync and instant sync is on
-    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
-    //   IPFSService.to.sync();
-    // }
   }
 
   void _initAppLifeCycleEvents() {
-    // // if sync and instant sync is on
-    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
-    //   IPFSService.to.sync();
-    // }
-
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
       console.warning(msg!);

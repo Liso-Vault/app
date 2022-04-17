@@ -6,8 +6,9 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
-import '../main/main_screen.controller.dart';
+import '../general/remote_image.widget.dart';
 import 'item_screen.controller.dart';
 
 class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
@@ -93,10 +94,10 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
           Obx(
             () => ContextMenuButton(
               controller.menuItemsChangeIcon,
-              child: controller.icon().isEmpty
+              child: controller.iconUrl().isEmpty
                   ? const Icon(Icons.photo, size: 30)
-                  : Image.memory(
-                      controller.icon(),
+                  : RemoteImage(
+                      url: controller.iconUrl(),
                       width: 30,
                     ),
             ),
@@ -167,13 +168,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
     final appBar = AppBar(
       centerTitle: false,
       title: Text(category.tr),
-      // X icon for desktop instead of back for mobile
-      leading: MainScreenController.to.expandableDrawer
-          ? null
-          : IconButton(
-              onPressed: Get.back,
-              icon: const Icon(LineIcons.times),
-            ),
+      leading: const AppBarLeadingButton(),
       actions: [
         IconButton(
           onPressed: mode == 'update' ? controller.edit : controller.add,

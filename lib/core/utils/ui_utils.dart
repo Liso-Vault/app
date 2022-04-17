@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/utils/utils.dart';
 
 class UIUtils {
   static showSnackBar({
@@ -19,20 +20,22 @@ class UIUtils {
           fontSize: 16,
         ),
       ),
+      maxWidth: 500,
       messageText: Text(message, style: const TextStyle(fontSize: 14)),
       duration: Duration(seconds: seconds),
       borderRadius: 8,
       backgroundColor: Get.isDarkMode ? Colors.grey.shade900 : Colors.white,
       shouldIconPulse: true,
       margin: const EdgeInsets.fromLTRB(8, 8, 8, 8.0),
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition:
+          Utils.isDrawerExpandable ? SnackPosition.BOTTOM : SnackPosition.TOP,
     );
   }
 
   static void showSimpleDialog(String title, String message) {
     Get.dialog(AlertDialog(
       title: Text(title),
-      content: GetPlatform.isMobile
+      content: Utils.isDrawerExpandable
           ? Text(message)
           : SizedBox(
               width: 600,

@@ -5,10 +5,11 @@ import 'package:ipfs_rpc/ipfs_rpc.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.item.dart';
 import 'package:path/path.dart';
 
+import '../../../core/utils/utils.dart';
+import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
 import '../../menu/menu.button.dart';
@@ -47,13 +48,7 @@ class IPFSExplorerScreen extends GetWidget<IPFSExplorerScreenController>
     final appBar = AppBar(
       title: Text('time_machine_explorer'.tr),
       centerTitle: false,
-      // X icon for desktop instead of back for mobile
-      leading: MainScreenController.to.expandableDrawer
-          ? null
-          : IconButton(
-              onPressed: Get.back,
-              icon: const Icon(LineIcons.times),
-            ),
+      leading: const AppBarLeadingButton(),
       actions: [
         Obx(
           () => IconButton(
@@ -155,7 +150,7 @@ class FileTile extends StatelessWidget with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: const Text('Restore From IPFS'),
-      content: MainScreenController.to.expandableDrawer
+      content: Utils.isDrawerExpandable
           ? content
           : SizedBox(
               width: 600,

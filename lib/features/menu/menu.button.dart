@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/menu/context.menu.dart';
 
+import '../../core/utils/utils.dart';
 import 'menu.item.dart';
 
 class ContextMenuButton extends StatelessWidget with ConsoleMixin {
@@ -29,7 +30,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     );
 
     // if mobile / small screen
-    if (GetPlatform.isMobile) {
+    if (Utils.isDrawerExpandable) {
       return InkWell(
         child: AbsorbPointer(child: wrappedChild),
         onTap: () => ContextMenuSheet(

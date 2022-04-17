@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:either_option/either_option.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,13 +12,13 @@ import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:path/path.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../app/routes.dart';
+import '../s3/s3.service.dart';
 
 class ImportScreenBinding extends Bindings {
   @override
@@ -27,7 +29,8 @@ class ImportScreenBinding extends Bindings {
 
 enum ImportMode {
   file,
-  ipfs,
+  liso,
+  s3,
 }
 
 class ImportScreenController extends GetxController
@@ -42,7 +45,7 @@ class ImportScreenController extends GetxController
   );
 
   // PROPERTIES
-  final importMode = ImportMode.file.obs;
+  final importMode = ImportMode.liso.obs;
   final ipfsBusy = false.obs;
 
   // GETTERS
@@ -71,63 +74,41 @@ class ImportScreenController extends GetxController
     await LisoManager.extractArchive(archive!, path: LisoManager.hivePath);
   }
 
-  Future<bool> _downloadVault() async {
+  Future<Either<dynamic, bool>> _downloadVault() async {
     final seedHex = bip39.mnemonicToSeedHex(seedController.text);
     final address = EthPrivateKey.fromHex(seedHex).address.hexEip55;
     console.info('finding $address.$kVaultExtension...');
     // check if the vault exists
-    final ipfsVaultPath = join(
-      '/$kAppName',
+    final vaultPath = join(
       address,
-      address + '.$kVaultExtension',
+      '$address.$kVaultExtension',
     );
 
-    final resultStat = await IPFSService.to.ipfs.files.stat(arg: ipfsVaultPath);
-    String? vaultHash;
+    final downloadResult = await S3Service.to.downloadVault(path: vaultPath);
+    File? vaultFile;
+    dynamic _error;
 
-    resultStat.fold(
-      (error) {
-        if (error.message.contains('does not exist')) {
-          return UIUtils.showSimpleDialog(
-            'No Vault Found',
-            'We did not find a vault: $ipfsVaultPath in your IPFS Server. Please create a new vault if you\'re new to $kAppName then you can sync to IPFS after',
-          );
-        }
-
-        return UIUtils.showSimpleDialog(
-          'IPFS Stat Error',
-          '${error.toJson()} > continuePressed()',
-        );
-      },
-      (response) {
-        vaultHash = response.hash!;
-        console.info('vault hash: $vaultHash');
-      },
+    downloadResult.fold(
+      (error) => _error = error,
+      (file) => vaultFile = file,
     );
 
-    if (vaultHash == null) {
-      console.error('vault hash is empty for some reason');
-      return false;
+    if (_error != null) return Left(_error);
+    final readResult = LisoManager.readArchive(vaultFile!.path);
+    Archive? archive;
+
+    readResult.fold(
+      (error) => _error = error,
+      (response) => archive = response,
+    );
+
+    console.info('archive files: ${archive!.files.length}');
+    // check if archive contains files
+    if (_error != null || archive!.files.isEmpty) {
+      return Left('$_error > archive is empty');
     }
 
-    // start download
-    // TODO: download progress indicator
-    final resultDownload = await IPFSService.to.ipfs.root.cat(
-      arg: vaultHash,
-      savePath: LisoManager.tempVaultFilePath,
-    );
-
-    bool downloaded = false;
-
-    resultDownload.fold(
-      (error) => UIUtils.showSimpleDialog(
-        'IPFS Download Error',
-        error.toJson().toString(),
-      ),
-      (response) => downloaded = true,
-    );
-
-    return downloaded;
+    return Right(true);
   }
 
   Future<void> continuePressed() async {
@@ -136,15 +117,24 @@ class ImportScreenController extends GetxController
 
     change(null, status: RxStatus.loading());
 
-    if (importMode.value == ImportMode.ipfs) {
-      final connected = await checkIPFS(showSuccess: false);
-      if (!connected) return change(null, status: RxStatus.success());
-    }
-
     // download and save vault file from IPFS
-    if (importMode.value == ImportMode.ipfs) {
-      final success = await _downloadVault();
-      if (!success) return change(null, status: RxStatus.success());
+    if (importMode.value == ImportMode.liso) {
+      final downloadResult = await _downloadVault();
+      bool successDownload = false;
+
+      downloadResult.fold(
+        (error) {
+          UIUtils.showSimpleDialog(
+            'Error Downloading',
+            '$error > continuePressed()',
+          );
+
+          return change(null, status: RxStatus.success());
+        },
+        (response) => successDownload = response,
+      );
+
+      if (!successDownload) return change(null, status: RxStatus.success());
     }
 
     // read archive
@@ -198,9 +188,9 @@ class ImportScreenController extends GetxController
     Globals.encryptionKey = tempEncryptionKey;
     // extract all hive boxes
     await _extractMainArchive();
-    // turn on IPFS sync if successfully imported via IPFS
-    if (importMode.value == ImportMode.ipfs) {
-      PersistenceService.to.ipfsSync.val = true;
+    // turn on sync setting if successfully imported via cloud
+    if (importMode.value == ImportMode.liso) {
+      PersistenceService.to.sync.val = true;
     }
 
     change(null, status: RxStatus.success());
@@ -237,35 +227,5 @@ class ImportScreenController extends GetxController
     }
 
     filePathController.text = result.files.single.path!;
-  }
-
-  Future<bool> checkIPFS({bool showSuccess = true}) async {
-    ipfsBusy.value = true;
-
-    final uri = Uri.tryParse(ipfsUrlController.text);
-    if (uri == null) return false;
-
-    // save to persistence
-    final persistence = Get.find<PersistenceService>();
-    persistence.ipfsScheme.val = uri.scheme;
-    persistence.ipfsHost.val = uri.host;
-    persistence.ipfsPort.val = uri.port;
-
-    final connected = await IPFSService.to.init();
-    ipfsBusy.value = false;
-
-    if (!connected) {
-      UIUtils.showSimpleDialog(
-        'IPFS Connection Failed',
-        'Failed to connect to: ${ipfsUrlController.text}\nDouble check the Server URL and make sure your IPFS Node is up and running',
-      );
-    } else if (showSuccess) {
-      UIUtils.showSimpleDialog(
-        'IPFS Connection Success',
-        'Successfully connects to your server: ${ipfsUrlController.text}\nYou\'re now ready to sync.',
-      );
-    }
-
-    return connected;
   }
 }

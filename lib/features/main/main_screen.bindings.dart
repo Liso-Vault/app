@@ -16,8 +16,8 @@ import 'main_screen.controller.dart';
 class MainScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => MainScreenController());
-    Get.lazyPut(() => DrawerMenuController());
+    Get.lazyPut(() => MainScreenController(), fenix: true);
+    Get.lazyPut(() => DrawerMenuController(), fenix: true);
     // WIDGETS
     Get.create(() => PasswordFormFieldController());
     Get.create(() => PINFormFieldController());

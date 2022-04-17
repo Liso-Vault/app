@@ -5,7 +5,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../../core/utils/utils.dart';
 import 'drawer_widget.controller.dart';
@@ -181,7 +180,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('settings'.tr),
                 leading: const Icon(LineIcons.cog),
                 onTap: () {
-                  if (MainScreenController.to.expandableDrawer) {
+                  if (Utils.isDrawerExpandable) {
                     Get.offAndToNamed(Routes.settings);
                   } else {
                     // Get.toNamed(Routes.settings);
@@ -194,7 +193,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 leading: const Icon(LineIcons.infoCircle),
                 onTap: () {
                   // TODO: support offAndToNamed in adaptiveRouteOpen
-                  if (MainScreenController.to.expandableDrawer) {
+                  if (Utils.isDrawerExpandable) {
                     Get.offAndToNamed(Routes.about);
                   } else {
                     Utils.adaptiveRouteOpen(name: Routes.about);

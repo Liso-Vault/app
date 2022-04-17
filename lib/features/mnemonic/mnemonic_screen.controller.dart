@@ -6,7 +6,6 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 
-import '../menu/context.menu.dart';
 import '../menu/menu.item.dart';
 
 class MnemonicScreenBinding extends Bindings {
@@ -18,6 +17,13 @@ class MnemonicScreenBinding extends Bindings {
 
 class MnemonicScreenController extends GetxController with ConsoleMixin {
   // VARIABLES'
+  List<ContextMenuItem> get menuItems => [
+        ContextMenuItem(
+          title: 'Copy Mnemonic Phrase',
+          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+          onSelected: () => Utils.copyToClipboard(mnemonic()),
+        )
+      ];
 
   // PROPERTIES
   final mnemonic = ''.obs;
@@ -44,15 +50,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
     );
   }
 
-  void options() {
-    ContextMenuSheet(
-      [
-        ContextMenuItem(
-          title: 'Copy Mnemonic Phrase',
-          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
-          onSelected: () => Utils.copyToClipboard(mnemonic()),
-        ),
-      ],
-    ).show();
+  void generate() {
+    mnemonic.value = bip39.generateMnemonic(strength: 256);
   }
 }

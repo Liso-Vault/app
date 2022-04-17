@@ -8,10 +8,11 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:window_manager/window_manager.dart';
 
+import '../services/persistence.service.dart';
 import 'console.dart';
 import 'globals.dart';
 
@@ -103,6 +104,19 @@ class Utils {
     } on PlatformException catch (e) {
       console.error('display mode error: $e');
     }
+  }
+
+  static Future<void> setWindowSize() async {
+    if (!GetPlatform.isDesktop || GetPlatform.isWeb) return;
+    await windowManager.setMinimumSize(kMinWindowSize);
+
+    final persistence = PersistenceService.to;
+
+    // set preferred size
+    await windowManager.setSize(Size(
+      persistence.windowWidth.val,
+      persistence.windowHeight.val,
+    ));
   }
 
   static String originImageParser(String origin) {
@@ -219,7 +233,7 @@ class Utils {
     Map<String, String> parameters = const {},
   }) {
     // Regular navigation for mobile
-    if (MainScreenController.to.expandableDrawer) {
+    if (isDrawerExpandable) {
       return Get.toNamed(name, parameters: parameters);
     }
 
@@ -255,4 +269,7 @@ class Utils {
 
     return 'Invalid Server URL';
   }
+
+  static bool get isDrawerExpandable =>
+      Get.mediaQuery.size.width < kDesktopChangePoint;
 }

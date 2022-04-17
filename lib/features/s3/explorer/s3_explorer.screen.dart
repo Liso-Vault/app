@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 
+import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
-
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
 
@@ -43,13 +42,7 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
     final appBar = AppBar(
       title: Text('file_explorer'.tr),
       centerTitle: false,
-      // X icon for desktop instead of back for mobile
-      leading: MainScreenController.to.expandableDrawer
-          ? null
-          : IconButton(
-              onPressed: Get.back,
-              icon: const Icon(LineIcons.times),
-            ),
+      leading: const AppBarLeadingButton(),
       actions: [
         Obx(
           () => IconButton(
@@ -64,12 +57,6 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
             icon: const Icon(LineIcons.syncIcon),
           ),
         ),
-        // Obx(
-        //   () => IconButton(
-        //     onPressed: !controller.busy() ? controller.test : null,
-        //     icon: const Icon(LineIcons.bug),
-        //   ),
-        // ),
       ],
     );
 

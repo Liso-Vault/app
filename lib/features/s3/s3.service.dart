@@ -67,23 +67,31 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // CAN DOWN SYNC
   Future<StatObjectResult?> _canDownSync() async {
+    if (persistence.changes.val > 0) {
+      console.error('there are still unsynced changes');
+      return null;
+    }
+
     console.info('_canDownSync...');
     final statResult = await stat(lisoContent);
     StatObjectResult? statObject;
 
     statResult.fold(
       (error) {
-        console.error('Stat Error: $error');
         if (error is MinioError && error.message!.contains('Not Found')) {
           // user has never synced, let him do it's first upSync
           canUpSync = true;
+        } else {
+          console.error('Stat Error: $error');
         }
       },
       (response) => statObject = response,
     );
 
+    if (canUpSync) return null;
+
     if (statObject?.metaData?['client'] == null) {
-      console.error('null metadata from server');
+      console.warning('new user / null metadata from server');
       canUpSync = true;
       return null;
     }
@@ -113,7 +121,7 @@ class S3Service extends GetxService with ConsoleMixin {
     // choose the most updated item between vaults and merge
 
     console.info('down syncing...');
-    final downloadResult = await _downloadVault();
+    final downloadResult = await downloadVault(path: vaultPath);
     File? vaultFile;
     dynamic _error;
 
@@ -324,23 +332,18 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(contents);
   }
 
-  Future<Either<dynamic, File>> _downloadVault() async {
+  Future<Either<dynamic, File>> downloadVault({required String path}) async {
     await _prepare();
     console.info('downloading...');
     MinioByteStream? stream;
 
     try {
-      stream = await client!.getObject(ConfigService.to.s3.bucket, vaultPath);
+      stream = await client!.getObject(ConfigService.to.s3.bucket, path);
     } catch (e) {
       return Left(e);
     }
 
     console.info('download size: ${filesize(stream.contentLength)}');
-
-    // stream.listen((value) {
-    //   console.info('streaming: $value');
-    // });
-
     final file = File(LisoManager.tempVaultFilePath);
     await stream.pipe(file.openWrite());
     console.info('downloaded to: ${LisoManager.tempVaultFilePath}');

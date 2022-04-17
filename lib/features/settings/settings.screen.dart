@@ -9,8 +9,8 @@ import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/liso/liso.manager.dart';
+import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
-import '../main/main_screen.controller.dart';
 import 'settings_screen.controller.dart';
 
 class SettingsScreen extends GetWidget<SettingsScreenController>
@@ -122,13 +122,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
       appBar: AppBar(
         title: Text('settings'.tr),
         centerTitle: false,
-        // X icon for desktop instead of back for mobile
-        leading: MainScreenController.to.expandableDrawer
-            ? null
-            : IconButton(
-                onPressed: Get.back,
-                icon: const Icon(LineIcons.times),
-              ),
+        leading: const AppBarLeadingButton(),
       ),
       body: controller.obx(
         (_) => listView,

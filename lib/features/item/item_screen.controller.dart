@@ -1,8 +1,3 @@
-import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:file_picker/file_picker.dart';
-import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -10,7 +5,6 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
@@ -42,7 +36,7 @@ class ItemScreenController extends GetxController
 
   // parse fields to actual widgets
   final widgets = <Widget>[].obs;
-  final icon = Uint8List(0).obs;
+  final iconUrl = ''.obs;
 
   // PROPERTIES
   final favorite = false.obs;
@@ -80,11 +74,11 @@ class ItemScreenController extends GetxController
         leading: const Icon(LineIcons.image),
         onSelected: _pickIcon,
       ),
-      if (icon.value.isNotEmpty) ...[
+      if (iconUrl.value.isNotEmpty) ...[
         ContextMenuItem(
           title: 'remove'.tr,
           leading: const Icon(LineIcons.trash),
-          onSelected: () => icon.value = Uint8List(0),
+          onSelected: () => iconUrl.value = '',
         ),
       ]
     ];
@@ -108,7 +102,7 @@ class ItemScreenController extends GetxController
   void _populateItem() {
     final hiveKey = Get.parameters['hiveKey'].toString();
     item = HiveManager.items!.get(int.parse(hiveKey));
-    icon.value = item!.icon;
+    iconUrl.value = item!.iconUrl;
     titleController.text = item!.title;
     favorite.value = item!.favorite;
     protected.value = item!.protected;
@@ -117,7 +111,6 @@ class ItemScreenController extends GetxController
 
   Future<void> _loadTemplate() async {
     final drawerController = Get.find<DrawerMenuController>();
-
     favorite.value = drawerController.filterFavorites.value;
     protected.value = drawerController.filterProtected.value;
 
@@ -125,7 +118,6 @@ class ItemScreenController extends GetxController
 
     item = HiveLisoItem(
       category: category,
-      icon: Uint8List(0),
       title: '',
       fields: _fields,
       tags: [],
@@ -142,7 +134,7 @@ class ItemScreenController extends GetxController
 
     final newItem = HiveLisoItem(
       category: category,
-      icon: icon(),
+      iconUrl: iconUrl.value,
       title: titleController.text,
       tags: tags,
       fields: _fields,
@@ -159,7 +151,7 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (item == null) return;
 
-    item!.icon = icon();
+    item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tags;
@@ -195,30 +187,32 @@ class ItemScreenController extends GetxController
   }
 
   void _pickIcon() async {
-    FilePickerResult? result;
+    // FilePickerResult? result;
 
-    try {
-      result = await FilePicker.platform.pickFiles(type: FileType.image);
-    } catch (e) {
-      return console.error('FilePicker error: $e');
-    }
+    // try {
+    //   result = await FilePicker.platform.pickFiles(type: FileType.image);
+    // } catch (e) {
+    //   return console.error('FilePicker error: $e');
+    // }
 
-    if (result == null || result.files.isEmpty) {
-      return console.warning("canceled FilePicker");
-    }
+    // if (result == null || result.files.isEmpty) {
+    //   return console.warning("canceled FilePicker");
+    // }
 
-    final image = result.files.single;
+    // final image = result.files.single;
 
-    final file = File(image.path!);
-    if (!await file.exists()) return console.warning("doesn't exist");
+    // final file = File(image.path!);
+    // if (!await file.exists()) return console.warning("doesn't exist");
 
-    if (await file.length() > kMaxIconSize) {
-      return UIUtils.showSimpleDialog(
-        'Image Too Large',
-        'Please choose an image with size not larger than ${filesize(kMaxIconSize)}',
-      );
-    }
+    // if (await file.length() > kMaxIconSize) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Image Too Large',
+    //     'Please choose an image with size not larger than ${filesize(kMaxIconSize)}',
+    //   );
+    // }
 
-    icon.value = await file.readAsBytes();
+    // iconUrl.value = await file.readAsBytes();
+
+    // TODO: enter image url or upload to s3 and set as url
   }
 }

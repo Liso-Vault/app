@@ -8,7 +8,6 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
 
 import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
 import '../general/segmented_item.widget.dart';
 import 'import_screen.controller.dart';
 
@@ -40,63 +39,56 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               groupValue: controller.importMode.value,
               onValueChanged: (value) => controller.importMode.value = value,
               children: const {
+                ImportMode.liso: SegmentedControlItem(
+                  text: '$kAppName Cloud',
+                  iconData: LineIcons.cloud,
+                ),
                 ImportMode.file: SegmentedControlItem(
                   text: 'File',
-                  iconData: LineIcons.file,
+                  iconData: LineIcons.archiveFile,
                 ),
-                ImportMode.ipfs: SegmentedControlItem(
-                  text: 'IPFS',
-                  iconData: LineIcons.cube,
-                ),
+                // ImportMode.s3: SegmentedControlItem(
+                //   text: 'S3',
+                //   iconData: LineIcons.amazonWebServicesAws,
+                // ),
+                // ImportMode.ipfs: SegmentedControlItem(
+                //   text: 'IPFS',
+                //   iconData: LineIcons.cube,
+                // ),
               },
             ),
           ),
           const SizedBox(height: 20),
-          Obx(
-            () => controller.importMode() == ImportMode.file
-                ? Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: controller.filePathController,
-                          validator: (text) =>
-                              text!.isEmpty ? 'Import your vault file' : null,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          decoration: const InputDecoration(
-                            hintText: 'Path to your vault file',
-                          ),
-                        ),
+          Obx(() {
+            if (controller.importMode() == ImportMode.file) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: controller.filePathController,
+                      validator: (text) =>
+                          text!.isEmpty ? 'Import your vault file' : null,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      decoration: const InputDecoration(
+                        hintText: 'Path to your vault file',
                       ),
-                      IconButton(
-                        icon: const Icon(LineIcons.upload),
-                        onPressed: controller.importFile,
-                      ),
-                    ],
-                  )
-                : Row(
-                    children: [
-                      Expanded(
-                        child: TextFormField(
-                          controller: controller.ipfsUrlController,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          validator: (data) => Utils.validateUri(data!),
-                          decoration: InputDecoration(
-                            labelText: 'server_url'.tr,
-                            hintText: 'http://127.0.0.1:5001',
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: !controller.ipfsBusy(),
-                        child: IconButton(
-                          onPressed: controller.checkIPFS,
-                          icon: const Icon(LineIcons.vial),
-                        ),
-                        replacement: const BusyIndicator(),
-                      ),
-                    ],
+                    ),
                   ),
-          ),
+                  IconButton(
+                    icon: const Icon(LineIcons.upload),
+                    onPressed: controller.importFile,
+                  ),
+                ],
+              );
+            } else if (controller.importMode() == ImportMode.liso) {
+              return const Text(
+                'Enter the seed phrase you used to sync to the Decentralized $kAppName Cloud Storage',
+                textAlign: TextAlign.center,
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          }),
           const SizedBox(height: 20),
           PassphraseCard(controller: controller.seedController),
           const SizedBox(height: 20),
@@ -116,6 +108,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
         child: Center(
           child: Container(
             constraints: Styles.containerConstraints,
+            padding: const EdgeInsets.all(20),
             child: controller.obx(
               (_) => SingleChildScrollView(child: content),
               onLoading: const BusyIndicator(),
