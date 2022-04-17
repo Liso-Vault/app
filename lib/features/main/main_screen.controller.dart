@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,7 +23,6 @@ import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
 import '../../core/form_fields/pin.field.dart';
-import '../../core/liso/liso.manager.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
@@ -216,7 +214,7 @@ class MainScreenController extends GetxController
   void onReady() {
     // listen for sort order changes
     sortOrder.listen((order) => _load());
-    _watchBoxes();
+    watchBoxes();
     console.info('onReady');
     super.onReady();
   }
@@ -229,7 +227,7 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  void _watchBoxes() async {
+  void watchBoxes() async {
     // console.warning(
     //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
     // );
@@ -464,38 +462,5 @@ class MainScreenController extends GetxController
       title: 'Successfully Synced',
       body: 'Your vault just got updated.',
     );
-  }
-
-  bool oliver = true;
-
-  void test() async {
-    console.error(oliver ? 'oliver' : 'anna');
-
-    const path =
-        '/Users/nemoryoliver/Library/Containers/com.liso.app/Data/Library/Application Support/com.liso.app/';
-
-    final readResult = LisoManager.readArchive(
-      path + (oliver ? 'oliver.liso' : 'anna.liso'),
-    );
-
-    Archive? archive;
-
-    readResult.fold(
-      (error) => console.error('error: $error'),
-      (response) => archive = response,
-    );
-
-    await HiveManager.closeBoxes();
-
-    await LisoManager.extractArchive(
-      archive!,
-      path: LisoManager.hivePath,
-    );
-
-    await HiveManager.openBoxes();
-
-    reload();
-
-    oliver = !oliver;
   }
 }

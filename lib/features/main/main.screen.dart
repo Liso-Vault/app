@@ -92,10 +92,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
       actions: [
         IconButton(
-          icon: const Icon(LineIcons.bug),
-          onPressed: controller.test,
-        ),
-        IconButton(
           icon: const Icon(LineIcons.search),
           onPressed: searchPressed,
         ),
