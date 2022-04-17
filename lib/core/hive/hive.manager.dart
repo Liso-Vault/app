@@ -52,6 +52,12 @@ class HiveManager {
     );
   }
 
+  static Future<void> closeBoxes() async {
+    await items?.close();
+    await archived?.close();
+    await trash?.close();
+  }
+
   // workaround to check if encryption key is correct
   static Future<bool> isEncryptionKeyCorrect(List<int> key) async {
     // initialize as a temporary hive box
@@ -68,6 +74,7 @@ class HiveManager {
   }
 
   static Future<void> reset() async {
+    await closeBoxes();
     await Hive.deleteFromDisk();
 
     items = null;

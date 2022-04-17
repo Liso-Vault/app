@@ -96,10 +96,6 @@ class S3ExplorerScreenController extends GetxController
   void upload() {
     //
   }
-
-  void test() async {
-    S3Service.to.upSync();
-  }
 }
 
 // TODO: explorer type

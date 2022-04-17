@@ -59,41 +59,57 @@ class LisoManager {
   }
 
   static Either<dynamic, Archive> readArchive(String path) {
-    InputFileStream? inputStream;
+    // console.info('readArchive: $path');
 
     try {
-      inputStream = InputFileStream(path);
+      final archive = ZipDecoder().decodeBuffer(InputFileStream(path));
+      return Right(archive);
     } catch (e) {
+      console.error('readArchive(): ' + e.toString());
       return Left(e);
     }
-
-    final archive = ZipDecoder().decodeBuffer(inputStream);
-    return Right(archive);
   }
 
-  static Future<void> extractArchive(
+  static Future<Either<dynamic, bool>> extractArchive(
     Archive archive, {
     required String path,
   }) async {
-    for (var file in archive.files) {
-      if (!file.isFile) continue;
-      final outputStream = OutputFileStream(join(path, basename(file.name)));
-      file.writeContent(outputStream);
-      await outputStream.close();
+    // console.info('extractArchive: $path');
+
+    try {
+      for (var file in archive.files) {
+        if (!file.isFile) continue;
+        final outputStream = OutputFileStream(join(path, basename(file.name)));
+        file.writeContent(outputStream);
+        await outputStream.close();
+      }
+
+      return Right(true);
+    } catch (e) {
+      console.error('extractArchive(): ' + e.toString());
+      return Left(e);
     }
   }
 
-  static Future<void> extractArchiveFile(
+  static Future<Either<dynamic, bool>> extractArchiveFile(
     ArchiveFile file, {
     required String path,
   }) async {
+    // console.info('extractArchiveFile: $path');
+
     final outputStream = OutputFileStream(join(
       LisoManager.tempPath,
       basename(file.name),
     ));
 
-    file.writeContent(outputStream);
-    await outputStream.close();
+    try {
+      file.writeContent(outputStream);
+      await outputStream.close();
+      return Right(true);
+    } catch (e) {
+      console.error('extractArchive(): ' + e.toString());
+      return Left(e);
+    }
   }
 
   static Future<void> cleanTempPath() async {
@@ -102,6 +118,7 @@ class LisoManager {
   }
 
   static Future<void> reset() async {
+    console.info('resetting...');
     // delete biometric storage
     final storage = await BiometricUtils.getStorage();
     await storage.delete();

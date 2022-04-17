@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:archive/archive.dart';
 import 'package:either_option/either_option.dart';
+import 'package:filesize/filesize.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
@@ -11,9 +13,9 @@ import 'package:minio/minio.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
 
+import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
-import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 import 'model/s3_content.model.dart';
 
@@ -24,14 +26,22 @@ class S3Service extends GetxService with ConsoleMixin {
   Minio? client;
   final config = Get.find<ConfigService>();
   final persistence = Get.find<PersistenceService>();
+  bool canUpSync = false;
+
+  // PROPERTIES
+  final downloadTotalSize = 0.obs;
+  final downloadedSize = 0.obs;
+
+  final uploadTotalSize = 0.obs;
+  final uploadedSize = 0.obs;
 
   // GETTERS
   String get rootPath => '${LisoManager.walletAddress}/';
   String get backupsPath => join(rootPath, 'Backups');
   String get historyPath => join(rootPath, 'History');
-  S3Content get lisoContent => S3Content(path: lisoPath);
+  S3Content get lisoContent => S3Content(path: vaultPath);
 
-  String get lisoPath => join(
+  String get vaultPath => join(
         LisoManager.walletAddress,
         LisoManager.vaultFilename,
       );
@@ -55,73 +65,113 @@ class S3Service extends GetxService with ConsoleMixin {
     );
   }
 
-  // check if s3 is ready
-  Future<Either<dynamic, bool>> ready() async {
-    await _prepare();
-    console.info('ready...');
-    bool success = false;
+  // CAN DOWN SYNC
+  Future<StatObjectResult?> _canDownSync() async {
+    console.info('_canDownSync...');
 
-    try {
-      client!.bucketExists(config.s3.bucket);
-    } catch (e) {
-      return Left(e);
-    }
-
-    return Right(success);
-  }
-
-  Future<void> syncStatus() async {
     final statResult = await stat(lisoContent);
+    StatObjectResult? statObject;
 
     statResult.fold(
       (error) {
         console.error('Stat Error: $error');
         if (error is MinioError && error.message!.contains('Not Found')) {
-          //
+          // user has never synced, let him do it's first upSync
+          canUpSync = true;
         }
       },
-      (response) async {
-        if (response.metaData == null || response.metaData?['client'] == null) {
-          return console.error('null metadata from server');
-        }
-
-        // final server =
-        //     HiveMetadata.fromJson(jsonDecode(response.metaData!['client']!));
-        // final local = _localMetadata()!;
-
-        // if (local.updatedTime == server.updatedTime) {
-        //   return console.info('in sync with server');
-        // } else if (local.updatedTime.isBefore(server.updatedTime)) {
-        //   _syncServerVault();
-        //   return console.info('local is behind server');
-        // } else if (local.updatedTime.isAfter(server.updatedTime)) {
-        //   // TODO: download server vault > compare everything with local
-        //   // choose the most updated item between vaults and merge
-        //   return console.info('local is ahead server');
-        // }
-      },
+      (response) => statObject = response,
     );
+
+    if (statObject?.metaData?['client'] == null) {
+      console.error('null metadata from server');
+      canUpSync = true;
+      return null;
+    }
+
+    final server = HiveMetadata.fromJson(
+      jsonDecode(statObject!.metaData!['client']!),
+    );
+
+    final local = _localMetadata();
+    console.info('local: ${local?.updatedTime}, server: ${server.updatedTime}');
+
+    if (local != null && local.updatedTime == server.updatedTime) {
+      console.info('in sync with server');
+      canUpSync = true;
+      return null;
+    }
+
+    return statObject;
   }
 
-  Future<Either<dynamic, bool>> downSync() async {
+  // DOWN SYNC
+  Future<void> downSync() async {
+    final statObject = await _canDownSync();
+    if (statObject == null) return;
+
+    // TODO: download server vault > compare everything with local
+    // choose the most updated item between vaults and merge
+
     console.info('down syncing...');
+    final downloadResult = await _downloadVault();
+    File? vaultFile;
+    dynamic _error;
 
-    final result = await _downloadVault();
-
-    result.fold(
-      (error) => null,
-      (file) {
-        // TODO: down sync
-        // extract archive to temp folder
-        // verify extracted hive boxes
-        // delete hive from disk
-        // move downloaded hive boxes to main
-      },
+    downloadResult.fold(
+      (error) => _error = error,
+      (file) => vaultFile = file,
     );
 
-    return Right(true);
+    if (_error != null) {
+      return UIUtils.showSimpleDialog(
+        'Error Downloading',
+        '$_error > downSync()',
+      );
+    }
+
+    final readResult = LisoManager.readArchive(vaultFile!.path);
+    Archive? archive;
+
+    readResult.fold(
+      (error) => _error = error,
+      (response) => archive = response,
+    );
+
+    console.info('archive files: ${archive!.files.length}');
+
+    // check if archive contains files
+    if (_error != null || archive!.files.isEmpty) {
+      return UIUtils.showSimpleDialog(
+        'Error Archive',
+        '$_error > downSync()',
+      );
+    }
+
+    // not syncing
+    // delete boxes
+    await HiveManager.closeBoxes();
+    // extract boxes
+    await LisoManager.extractArchive(
+      archive!,
+      path: LisoManager.hivePath,
+    );
+    // re-open boxes
+    await HiveManager.openBoxes();
+
+    // we are now ready to upSync because we are not in sync with server
+    canUpSync = true;
+
+    // save updated local metadata
+    final server = HiveMetadata.fromJson(
+      jsonDecode(statObject.metaData!['client']!),
+    );
+
+    persistence.metadata.val = server.toJsonString();
+    console.warning('downloaded and in sync!');
   }
 
+  // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
     console.info('syncing...');
     final backupResult = await backup(lisoContent);
@@ -142,7 +192,7 @@ class S3Service extends GetxService with ConsoleMixin {
     archiveResult.fold(
       (error) => UIUtils.showSimpleDialog(
         'Error Archiving',
-        error + ' > upSync()',
+        '$error > upSync()',
       ),
       (response) => file = response,
     );
@@ -154,7 +204,7 @@ class S3Service extends GetxService with ConsoleMixin {
     uploadResult.fold(
       (error) => UIUtils.showSimpleDialog(
         'Error Uploading',
-        error + ' > upSync()',
+        '$error > upSync()',
       ),
       (response) {
         success = true;
@@ -169,20 +219,25 @@ class S3Service extends GetxService with ConsoleMixin {
     await _prepare();
     console.info('upload...');
     final metadataString = await _updatedLocalMetadata();
+    uploadTotalSize.value = await file.length();
 
     String eTag = '';
 
     try {
       eTag = await client!.putObject(
         config.s3.bucket,
-        lisoPath,
+        vaultPath,
         Stream<Uint8List>.value(file.readAsBytesSync()),
         metadata: {'client': metadataString},
-        onProgress: (size) {}, // TODO: progress bar
+        onProgress: (size) => uploadedSize.value = size,
       );
     } catch (e) {
       return Left(e);
     }
+
+    // reset download indicators
+    uploadTotalSize.value = 0;
+    uploadedSize.value = 0;
 
     // save updated local metadata
     persistence.metadata.val = metadataString;
@@ -209,7 +264,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, StatObjectResult>> stat(S3Content content) async {
     await _prepare();
-    console.info('stat: ${content.path}...');
+    console.info('stat: ${basename(content.path)}...');
 
     try {
       final result = await client!.statObject(
@@ -276,18 +331,23 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, File>> _downloadVault() async {
     await _prepare();
     console.info('downloading...');
-
     MinioByteStream? stream;
 
     try {
-      stream = await client!.getObject(ConfigService.to.s3.bucket, lisoPath);
+      stream = await client!.getObject(ConfigService.to.s3.bucket, vaultPath);
     } catch (e) {
       return Left(e);
     }
 
+    console.info('download size: ${filesize(stream.contentLength)}');
+
+    // stream.listen((value) {
+    //   console.info('streaming: $value');
+    // });
+
     final file = File(LisoManager.tempVaultFilePath);
     await stream.pipe(file.openWrite());
-    console.info('downloaded!');
+    console.info('downloaded to: ${LisoManager.tempVaultFilePath}');
     return Right(file);
   }
 

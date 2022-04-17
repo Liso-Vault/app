@@ -92,6 +92,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
       actions: [
         IconButton(
+          icon: const Icon(LineIcons.bug),
+          onPressed: controller.test,
+        ),
+        IconButton(
           icon: const Icon(LineIcons.search),
           onPressed: searchPressed,
         ),
@@ -133,10 +137,11 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             return Obx(
               () => Visibility(
                 visible: PersistenceService.to.changes.val > 0 &&
-                    !controller.syncing(),
+                    !controller.upSyncing(),
                 child: syncButton,
-                replacement:
-                    controller.syncing() ? progressIndicator : const SizedBox(),
+                replacement: controller.upSyncing()
+                    ? progressIndicator
+                    : const SizedBox(),
               ),
             );
           },

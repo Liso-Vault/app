@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/s3/s3.service.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
 
 enum HiveBoxFilter {
@@ -132,9 +133,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterTag.value = '';
   }
 
-  void files() {
-    // Utils.adaptiveRouteOpen(name: Routes.s3Explorer);
-    S3Service.to.syncStatus();
+  void files() async {
+    Utils.adaptiveRouteOpen(name: Routes.s3Explorer);
   }
 
   void _reloadMain() async {

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:archive/archive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -23,6 +24,7 @@ import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 
 import '../../core/form_fields/pin.field.dart';
+import '../../core/liso/liso.manager.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
@@ -64,7 +66,8 @@ class MainScreenController extends GetxController
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerMenuController>();
   final persistence = Get.find<PersistenceService>();
-  final syncing = false.obs;
+  final upSyncing = false.obs;
+  final downSyncing = false.obs;
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
@@ -201,7 +204,7 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    S3Service.to.syncStatus();
+    downSync();
     _initAppLifeCycleEvents();
     Utils.setDisplayMode();
     _load();
@@ -394,8 +397,6 @@ class MainScreenController extends GetxController
     //   IPFSService.to.sync();
     // }
 
-    // S3Service.to.sync();
-
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
       console.warning(msg!);
@@ -422,30 +423,79 @@ class MainScreenController extends GetxController
     });
   }
 
+  Future<void> downSync() async {
+    downSyncing.value = true;
+    await S3Service.to.downSync();
+    downSyncing.value = false;
+    reload();
+  }
+
   Future<void> upSync() async {
-    syncing.value = true;
+    // make sure we are down synced before can up sync
+    if (!S3Service.to.canUpSync) {
+      await downSync();
+
+      if (!S3Service.to.canUpSync) {
+        return console.error('unable to upSync because downSync failed');
+      }
+    }
+
+    upSyncing.value = true;
     final result = await S3Service.to.upSync();
     bool success = false;
 
     result.fold(
       (error) => UIUtils.showSimpleDialog(
         'Error Syncing',
-        error + ' > sync()',
+        '$error > sync()',
       ),
       (response) => success = response,
     );
 
     if (!success) {
-      syncing.value = false;
+      upSyncing.value = false;
       return;
     }
 
-    syncing.value = false;
+    upSyncing.value = false;
     persistence.changes.val = 0;
 
     NotificationsManager.notify(
       title: 'Successfully Synced',
       body: 'Your vault just got updated.',
     );
+  }
+
+  bool oliver = true;
+
+  void test() async {
+    console.error(oliver ? 'oliver' : 'anna');
+
+    const path =
+        '/Users/nemoryoliver/Library/Containers/com.liso.app/Data/Library/Application Support/com.liso.app/';
+
+    final readResult = LisoManager.readArchive(
+      path + (oliver ? 'oliver.liso' : 'anna.liso'),
+    );
+
+    Archive? archive;
+
+    readResult.fold(
+      (error) => console.error('error: $error'),
+      (response) => archive = response,
+    );
+
+    await HiveManager.closeBoxes();
+
+    await LisoManager.extractArchive(
+      archive!,
+      path: LisoManager.hivePath,
+    );
+
+    await HiveManager.openBoxes();
+
+    reload();
+
+    oliver = !oliver;
   }
 }

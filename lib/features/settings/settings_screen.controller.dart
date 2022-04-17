@@ -12,9 +12,7 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/liso/liso.manager.dart';
-import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../menu/menu.item.dart';
 

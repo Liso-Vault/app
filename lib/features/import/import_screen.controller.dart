@@ -82,9 +82,7 @@ class ImportScreenController extends GetxController
       address + '.$kVaultExtension',
     );
 
-    // /Liso/0x123EA62e9A059B29f8886f57E3AB2dea4B809965/0x123EA62e9A059B29f8886f57E3AB2dea4B809965.liso
     final resultStat = await IPFSService.to.ipfs.files.stat(arg: ipfsVaultPath);
-
     String? vaultHash;
 
     resultStat.fold(
@@ -123,7 +121,9 @@ class ImportScreenController extends GetxController
 
     resultDownload.fold(
       (error) => UIUtils.showSimpleDialog(
-          'IPFS Download Error', error.toJson().toString()),
+        'IPFS Download Error',
+        error.toJson().toString(),
+      ),
       (response) => downloaded = true,
     );
 
@@ -147,52 +147,43 @@ class ImportScreenController extends GetxController
       if (!success) return change(null, status: RxStatus.success());
     }
 
-    // METHOD 1
+    // read archive
     final result = LisoManager.readArchive(archiveFilePath);
-
     Archive? archive;
+    dynamic _error;
 
     result.fold(
-      (error) => console.error('extract archive error: $error'),
+      (error) => _error = error,
       (response) => archive = response,
     );
 
-    if (archive == null) return change(null, status: RxStatus.success());
+    console.info('archive files: ${archive?.files.length}');
 
-    // check if archive contains files
-    if (archive!.files.isEmpty) {
+    if (archive == null || archive!.files.isEmpty) {
       UIUtils.showSimpleDialog(
-        'Invalid Vault File',
-        'The vault file you imported contains no files',
+        'Error Extracting',
+        '$_error > continuePressed()',
       );
 
       return change(null, status: RxStatus.success());
     }
 
-    console.info('temp archive files: ${archive!.files.length}');
-    // filter items.hive file
-    final itemBoxFiles =
-        archive!.files.where((e) => e.isFile && e.name.contains('items.hive'));
-    // if items.hive is not found
-    if (itemBoxFiles.isEmpty) {
-      UIUtils.showSimpleDialog(
-        'Invalid Vault',
-        'The vault you imported contains no items',
-      );
+    // get items.hive file
+    final itemsHiveFile = archive!.files.firstWhere(
+      (e) => e.isFile && e.name.contains('items.hive'),
+    );
 
-      return change(null, status: RxStatus.success());
-    }
-
-    // temporarily extract items box file
+    // temporarily extract for verification
     await LisoManager.extractArchiveFile(
-      itemBoxFiles.first,
+      itemsHiveFile,
       path: LisoManager.tempPath,
     );
     // check if encryption key is correct
     final seedHex = bip39.mnemonicToSeedHex(seedController.text);
     final tempEncryptionKey = utf8.encode(seedHex.substring(0, 32));
-    final correctKey =
-        await HiveManager.isEncryptionKeyCorrect(tempEncryptionKey);
+    final correctKey = await HiveManager.isEncryptionKeyCorrect(
+      tempEncryptionKey,
+    );
 
     if (!correctKey) {
       UIUtils.showSimpleDialog(
@@ -207,7 +198,6 @@ class ImportScreenController extends GetxController
     Globals.encryptionKey = tempEncryptionKey;
     // extract all hive boxes
     await _extractMainArchive();
-
     // turn on IPFS sync if successfully imported via IPFS
     if (importMode.value == ImportMode.ipfs) {
       PersistenceService.to.ipfsSync.val = true;
@@ -225,6 +215,7 @@ class ImportScreenController extends GetxController
 
   void importFile() async {
     if (status == RxStatus.loading()) return console.error('still busy');
+    if (GetPlatform.isAndroid) FilePicker.platform.clearTemporaryFiles();
     change(null, status: RxStatus.loading());
 
     FilePickerResult? result;
