@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
@@ -69,7 +68,6 @@ class S3Service extends GetxService with ConsoleMixin {
   // CAN DOWN SYNC
   Future<StatObjectResult?> _canDownSync() async {
     console.info('_canDownSync...');
-
     final statResult = await stat(lisoContent);
     StatObjectResult? statObject;
 
@@ -149,18 +147,14 @@ class S3Service extends GetxService with ConsoleMixin {
       );
     }
 
-    // not syncing
-    // delete boxes
     await HiveManager.closeBoxes();
     // extract boxes
     await LisoManager.extractArchive(
       archive!,
       path: LisoManager.hivePath,
     );
-    // re-open boxes
-    await HiveManager.openBoxes();
-    MainScreenController.to.watchBoxes();
 
+    await HiveManager.openBoxes();
     // we are now ready to upSync because we are not in sync with server
     canUpSync = true;
 

@@ -13,7 +13,6 @@ import 'package:liso/resources/resources.dart';
 
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../search/search.delegate.dart';
 import 'main_screen.controller.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -31,17 +30,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         controller.data[index],
         key: GlobalKey(),
       );
-
-  void searchPressed() async {
-    controller.searchDelegate = ItemsSearchDelegate();
-
-    await showSearch(
-      context: Get.context!,
-      delegate: controller.searchDelegate!,
-    );
-
-    controller.searchDelegate = null;
-  }
 
   @override
   Widget? builder() {
@@ -93,7 +81,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       actions: [
         IconButton(
           icon: const Icon(LineIcons.search),
-          onPressed: searchPressed,
+          onPressed: controller.search,
         ),
         Obx(
           () => ContextMenuButton(
@@ -111,15 +99,17 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         SimpleBuilder(
           builder: (_) {
-            final syncButton = Badge(
-              badgeContent: Text(
-                PersistenceService.to.changes.val.toString(),
-              ),
+            final changeCount = PersistenceService.to.changes.val;
+
+            final syncButton = IconButton(
+              icon: const Icon(LineIcons.syncIcon),
+              onPressed: controller.sync,
+            );
+
+            final syncBadge = Badge(
+              badgeContent: Text(changeCount.toString()),
               position: BadgePosition.topEnd(top: -1, end: -5),
-              child: IconButton(
-                icon: const Icon(LineIcons.syncIcon),
-                onPressed: controller.upSync,
-              ),
+              child: syncButton,
             );
 
             const progressIndicator = Center(
@@ -132,12 +122,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
             return Obx(
               () => Visibility(
-                visible: PersistenceService.to.changes.val > 0 &&
-                    !controller.upSyncing(),
-                child: syncButton,
-                replacement: controller.upSyncing()
-                    ? progressIndicator
-                    : const SizedBox(),
+                visible: !controller.syncing,
+                child: changeCount > 0 ? syncBadge : syncButton,
+                replacement:
+                    controller.syncing ? progressIndicator : const SizedBox(),
               ),
             );
           },

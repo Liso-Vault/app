@@ -30,7 +30,7 @@ import '../ipfs/explorer/ipfs_explorer.screen.dart';
 import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
-import '../main/main_screen.controller.dart';
+import '../main/main_screen.bindings.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import 'routes.dart';

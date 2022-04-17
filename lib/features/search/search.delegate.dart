@@ -16,6 +16,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
         icon: const Icon(Icons.clear),
         onPressed: () => query = '',
       ),
+      const SizedBox(width: 10),
     ];
   }
 
@@ -41,8 +42,6 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
     final items = HiveManager.items!.values
         .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
-
-    console.info('search result: ${items.length}');
 
     return ListView.builder(
       itemCount: items.length,

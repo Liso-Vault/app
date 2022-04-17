@@ -1,8 +1,11 @@
-import 'package:get/get_utils/src/platform/platform.dart';
+import 'dart:async';
+
+import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../liso/liso.manager.dart';
 import '../utils/globals.dart';
@@ -15,6 +18,8 @@ class HiveManager {
 
   // VARIABLES
   static Box<HiveLisoItem>? items, archived, trash;
+
+  static StreamSubscription? itemsStream, archivedStream, trashStream;
 
   // GETTERS
 
@@ -50,12 +55,30 @@ class HiveManager {
       kHiveBoxTrash,
       encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
     );
+
+    _watchBoxes();
   }
 
   static Future<void> closeBoxes() async {
     await items?.close();
     await archived?.close();
     await trash?.close();
+    await _unwatchBoxes();
+  }
+
+  static void _watchBoxes() {
+    final mainController = Get.find<MainScreenController>();
+    itemsStream = items?.watch().listen(mainController.onBoxChanged);
+    archivedStream = archived?.watch().listen(mainController.onBoxChanged);
+    trashStream = trash?.watch().listen(mainController.onBoxChanged);
+    console.info('watchBoxes');
+  }
+
+  static Future<void> _unwatchBoxes() async {
+    await itemsStream?.cancel();
+    await archivedStream?.cancel();
+    await trashStream?.cancel();
+    console.info('unwatchBoxes');
   }
 
   // workaround to check if encryption key is correct

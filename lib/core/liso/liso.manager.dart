@@ -9,7 +9,6 @@ import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 
 import '../hive/hive.manager.dart';
@@ -112,29 +111,17 @@ class LisoManager {
     }
   }
 
-  static Future<void> cleanTempPath() async {
-    // TODO: clean temp path
-    console.info('temp path cleaned!');
-  }
-
   static Future<void> reset() async {
     console.info('resetting...');
     // delete biometric storage
     final storage = await BiometricUtils.getStorage();
     await storage.delete();
-
     // nullify global variables
     Globals.encryptionKey = null;
     Globals.wallet = null;
-
-    // TODO: FileUtils for managing files
-    // delete liso wallet file
-
+    // delete files
     await FileUtils.delete(walletFilePath); // wallet
     await FileUtils.delete(tempVaultFilePath); // temp vault
-
-    // cancel hive boxes' stream subscriptions
-    MainScreenController.to.unwatchBoxes();
     // reset hive
     await HiveManager.reset();
     // persistence

@@ -6,7 +6,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -15,51 +14,20 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/export/export_screen.controller.dart';
-import 'package:liso/features/ipfs/ipfs_screen.controller.dart';
-import 'package:liso/features/reset/reset_screen.controller.dart';
-import 'package:liso/features/settings/settings_screen.controller.dart';
 
-import '../../core/form_fields/pin.field.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
-import '../item/item_screen.controller.dart';
 import '../menu/menu.item.dart';
-import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
-
-class MainScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => MainScreenController());
-    Get.lazyPut(() => DrawerMenuController());
-    // WIDGETS
-    Get.create(() => PasswordFormFieldController());
-    Get.create(() => PINFormFieldController());
-    // SCREENS
-    Get.create(() => ItemScreenController());
-    Get.create(() => SettingsScreenController());
-    Get.create(() => AboutScreenController());
-    Get.create(() => ExportScreenController());
-    Get.create(() => ResetScreenController());
-    // ipfs
-    Get.create(() => IPFSScreenController());
-    Get.create(() => IPFSExplorerScreenController());
-    // S3
-    Get.create(() => S3ExplorerScreenController());
-  }
-}
 
 class MainScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   static MainScreenController get to => Get.find();
 
   // VARIABLES
-  Timer? timer;
+  Timer? timeLockTimer;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final drawerController = Get.find<DrawerMenuController>();
@@ -90,14 +58,13 @@ class MainScreenController extends GetxController
   }
 
   ItemsSearchDelegate? searchDelegate;
-  StreamSubscription? itemsSubscription,
-      archivedSubscription,
-      trashSubscription;
 
   // PROPERTIES
   final data = <HiveLisoItem>[].obs;
 
   // GETTERS
+  bool get syncing => upSyncing.value || downSyncing.value;
+
   bool get expandableDrawer =>
       scaffoldKey.currentState?.hasDrawer ?? GetPlatform.isMobile;
 
@@ -214,56 +181,17 @@ class MainScreenController extends GetxController
   void onReady() {
     // listen for sort order changes
     sortOrder.listen((order) => _load());
-    watchBoxes();
     console.info('onReady');
     super.onReady();
   }
 
   @override
   void onClose() {
-    timer?.cancel();
+    timeLockTimer?.cancel();
     super.onClose();
   }
 
   // FUNCTIONS
-
-  void watchBoxes() async {
-    // console.warning(
-    //   'Event: key: ${event.key}, value: ${event.value}, deleted: ${event.deleted}',
-    // );
-
-    // if (event.deleted) {
-    //   data.removeWhere((e) => e.key == event.key);
-    // }
-
-    // watch hive box changes
-    if (HiveManager.items != null && !HiveManager.items!.isOpen) {
-      return console.error('hive boxes are not open');
-    }
-
-    itemsSubscription = HiveManager.items?.watch().listen(_onChangesDetected);
-    archivedSubscription =
-        HiveManager.archived?.watch().listen(_onChangesDetected);
-    trashSubscription = HiveManager.trash?.watch().listen(_onChangesDetected);
-  }
-
-  void unwatchBoxes() {
-    itemsSubscription?.cancel();
-    archivedSubscription?.cancel();
-    trashSubscription?.cancel();
-  }
-
-  void _onChangesDetected(BoxEvent event) async {
-    console.info('hive changes detected');
-    _load();
-    persistence.changes.val++;
-    // await IPFSService.to.updateLocalMetadata();
-
-    // // if sync and instant sync is on
-    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
-    //   IPFSService.to.sync();
-    // }
-  }
 
   void reload() => _load();
 
@@ -389,43 +317,21 @@ class MainScreenController extends GetxController
     drawerController.refresh();
   }
 
-  void _initAppLifeCycleEvents() {
-    // // if sync and instant sync is on
-    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
-    //   IPFSService.to.sync();
-    // }
+  void sync() {
+    if (syncing) return;
 
-    // auto-lock after app is inactive
-    SystemChannels.lifecycle.setMessageHandler((msg) async {
-      console.warning(msg!);
-
-      if (msg == AppLifecycleState.resumed.toString()) {
-        timer?.cancel();
-
-        if (AuthenticationService.to.isAuthenticated &&
-            Globals.encryptionKey == null) {
-          Get.toNamed(Routes.unlock);
-        }
-      } else if (msg == AppLifecycleState.inactive.toString()) {
-        // lock after <duration> of inactivity
-        if (Globals.timeLockEnabled) {
-          final timeLock = persistence.timeLockDuration.val.seconds;
-          timer = Timer.periodic(timeLock, (timer) {
-            Globals.encryptionKey = null;
-            timer.cancel();
-          });
-        }
-      }
-
-      return Future.value(msg);
-    });
+    if (persistence.changes.val > 0) {
+      upSync();
+    } else {
+      downSync();
+    }
   }
 
   Future<void> downSync() async {
     downSyncing.value = true;
     await S3Service.to.downSync();
     downSyncing.value = false;
-    reload();
+    _load();
   }
 
   Future<void> upSync() async {
@@ -462,5 +368,66 @@ class MainScreenController extends GetxController
       title: 'Successfully Synced',
       body: 'Your vault just got updated.',
     );
+  }
+
+  void search() async {
+    searchDelegate = ItemsSearchDelegate();
+
+    await showSearch(
+      context: Get.context!,
+      delegate: searchDelegate!,
+    );
+
+    searchDelegate = null;
+  }
+
+  void onBoxChanged(BoxEvent event) async {
+    console.info('box changed');
+    // add change only if not a deleted event to prevent duplicates
+    if (!event.deleted) {
+      persistence.changes.val++;
+      // use the static getter to avoid not reloading bug
+      MainScreenController.to.reload();
+      console.info('load');
+    }
+
+    // await IPFSService.to.updateLocalMetadata();
+
+    // // if sync and instant sync is on
+    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
+    //   IPFSService.to.sync();
+    // }
+  }
+
+  void _initAppLifeCycleEvents() {
+    // // if sync and instant sync is on
+    // if (persistence.ipfsSync.val && persistence.ipfsInstantSync.val) {
+    //   IPFSService.to.sync();
+    // }
+
+    // auto-lock after app is inactive
+    SystemChannels.lifecycle.setMessageHandler((msg) async {
+      console.warning(msg!);
+
+      if (msg == AppLifecycleState.resumed.toString()) {
+        timeLockTimer?.cancel();
+
+        if (AuthenticationService.to.isAuthenticated &&
+            Globals.encryptionKey == null) {
+          Get.toNamed(Routes.unlock);
+        }
+      } else if (msg == AppLifecycleState.inactive.toString()) {
+        // lock after <duration> of inactivity
+        if (Globals.timeLockEnabled) {
+          final timeLock = persistence.timeLockDuration.val.seconds;
+          timeLockTimer = Timer.periodic(timeLock, (timer) {
+            Globals.encryptionKey = null;
+            timer.cancel();
+          });
+        }
+      }
+
+      return Future.value(msg);
+    });
   }
 }

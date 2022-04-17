@@ -20,6 +20,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   // VARIABLES
   // maintain expansion tile state
   bool categoriesExpanded = true, tagsExpanded = true;
+  final mainController = Get.find<MainScreenController>();
 
   // PROPERTIES
   final boxFilter = HiveBoxFilter.all.obs;
@@ -80,7 +81,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.toggle();
     filterProtected.value = false;
     filterTag.value = '';
-    MainScreenController.to.reload();
+    mainController.reload();
     Get.back();
   }
 
@@ -88,7 +89,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.toggle();
     filterFavorites.value = false;
     filterTag.value = '';
-    MainScreenController.to.reload();
+    mainController.reload();
     Get.back();
   }
 
@@ -138,14 +139,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void _reloadMain() async {
-    // final mainScreenController = Get.find<MainScreenController>();
-
     // // delay for better Mobile UX
-    // if (mainScreenController.expandableDrawer) {
+    // if (mainController.expandableDrawer) {
     //   await Future.delayed(500.milliseconds);
     // }
 
-    MainScreenController.to.reload();
+    mainController.reload();
     Get.back();
   }
 }
