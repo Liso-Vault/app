@@ -58,9 +58,9 @@ class HiveManager {
   }
 
   static Future<void> closeBoxes() async {
-    await items?.close();
-    await archived?.close();
-    await trash?.close();
+    if (items?.isOpen == true) await items?.close();
+    if (archived?.isOpen == true) await archived?.close();
+    if (trash?.isOpen == true) await trash?.close();
     await _unwatchBoxes();
     console.info('closeBoxes');
   }

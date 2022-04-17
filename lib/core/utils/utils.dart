@@ -109,7 +109,6 @@ class Utils {
   static Future<void> setWindowSize() async {
     if (!GetPlatform.isDesktop || GetPlatform.isWeb) return;
     await windowManager.setMinimumSize(kMinWindowSize);
-
     final persistence = PersistenceService.to;
 
     // set preferred size

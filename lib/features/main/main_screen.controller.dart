@@ -164,8 +164,11 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    windowManager.addListener(this);
-    windowManager.setPreventClose(true);
+    if (GetPlatform.isDesktop) {
+      windowManager.addListener(this);
+      windowManager.setPreventClose(true);
+    }
+
     console.info('onInit');
     super.onInit();
   }
@@ -183,7 +186,10 @@ class MainScreenController extends GetxController
 
   @override
   void onClose() {
-    windowManager.removeListener(this);
+    if (GetPlatform.isDesktop) {
+      windowManager.removeListener(this);
+    }
+
     timeLockTimer?.cancel();
     super.onClose();
   }
@@ -218,7 +224,9 @@ class MainScreenController extends GetxController
         ),
         TextButton(
           child: const Text('Force Close'),
-          onPressed: () => windowManager.destroy(),
+          onPressed: () {
+            if (GetPlatform.isDesktop) windowManager.destroy();
+          },
         ),
       ],
     ));

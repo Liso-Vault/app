@@ -81,14 +81,15 @@ class S3Service extends GetxService with ConsoleMixin {
         if (error is MinioError && error.message!.contains('Not Found')) {
           // user has never synced, let him do it's first upSync
           canUpSync = true;
+          console.error('Vault not found. User must be new');
         } else {
           console.error('Stat Error: $error');
         }
       },
-      (response) => statObject = response,
+      (response) {
+        statObject = response;
+      },
     );
-
-    if (canUpSync) return null;
 
     if (statObject?.metaData?['client'] == null) {
       console.warning('new user / null metadata from server');
@@ -115,7 +116,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // DOWN SYNC
   Future<void> downSync() async {
     final statObject = await _canDownSync();
-    if (statObject == null) return;
+    if (statObject == null) return console.error('stat object is null');
 
     // TODO: download server vault > compare everything with local
     // choose the most updated item between vaults and merge

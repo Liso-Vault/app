@@ -34,12 +34,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
   @override
   Widget? builder() {
     final listView = Obx(
-      () => ListView.separated(
-        shrinkWrap: true,
-        itemCount: controller.data.length,
-        itemBuilder: itemBuilder,
-        separatorBuilder: (context, index) => const Divider(height: 0),
-        padding: const EdgeInsets.symmetric(vertical: 15),
+      () => Opacity(
+        opacity: controller.syncing ? 0.5 : 1,
+        child: AbsorbPointer(
+          absorbing: controller.syncing,
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemCount: controller.data.length,
+            itemBuilder: itemBuilder,
+            separatorBuilder: (context, index) => const Divider(height: 0),
+            padding: const EdgeInsets.symmetric(vertical: 15),
+          ),
+        ),
       ),
     );
 
