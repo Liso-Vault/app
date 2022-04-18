@@ -40,7 +40,7 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
     controller.text = initialValue;
 
     if (mode == PassphraseMode.create) {
-      _generateSeed(strength: 256);
+      controller.text = bip39.generateMnemonic();
     } else if (mode == PassphraseMode.confirm) {
       //
     } else if (mode == PassphraseMode.import) {
@@ -48,10 +48,6 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
     } else if (mode == PassphraseMode.none) {
       //
     }
-  }
-
-  void _generateSeed({required int strength}) {
-    controller.text = bip39.generateMnemonic(strength: strength);
   }
 
   String? _validateSeed(String mnemonic) {

@@ -37,7 +37,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   // INIT
   @override
   void onInit() {
-    mnemonic.value = bip39.generateMnemonic(strength: 256);
+    mnemonic.value = bip39.generateMnemonic();
     super.onInit();
   }
 
@@ -51,6 +51,6 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   }
 
   void generate() {
-    mnemonic.value = bip39.generateMnemonic(strength: 256);
+    mnemonic.value = bip39.generateMnemonic();
   }
 }

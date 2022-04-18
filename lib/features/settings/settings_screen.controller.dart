@@ -65,6 +65,7 @@ class SettingsScreenController extends GetxController
     ipfsServerUrl.value =
         '${persistence.ipfsScheme.val}://${persistence.ipfsHost.val}:${persistence.ipfsPort.val}';
     change(null, status: RxStatus.success());
+
     super.onInit();
   }
 
@@ -76,9 +77,12 @@ class SettingsScreenController extends GetxController
 
   // FUNCTIONS
   void changeTheme(ThemeMode mode) async {
-    PersistenceService.to.theme.val = mode.name;
-    theme.value = mode.name;
-    Get.changeThemeMode(mode);
+    // PersistenceService.to.theme.val = mode.name;
+    // theme.value = mode.name;
+    // Get.changeThemeMode(mode);
+
+    final address = await Globals.wallet?.privateKey.extractAddress();
+    console.info('address: ${address?.hex}');
   }
 
   void exportWallet() async {

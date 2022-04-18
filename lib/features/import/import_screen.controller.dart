@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:bip32/bip32.dart' as bip32;
 import 'package:either_option/either_option.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
@@ -61,26 +64,24 @@ class ImportScreenController extends GetxController
   }
 
   // FUNCTIONS
-  Future<void> _extractMainArchive() async {
-    final result = LisoManager.readArchive(archiveFilePath);
-    Archive? archive;
-
-    result.fold(
-      (error) => console.error('extract archive error: $error'),
-      (response) => archive = response,
-    );
-
-    if (archive == null) return;
-    await LisoManager.extractArchive(archive!, path: LisoManager.hivePath);
-  }
 
   Future<Either<dynamic, bool>> _downloadVault() async {
+    USE https://github.com/oliverbytes/web3_app/
+
     final seedHex = bip39.mnemonicToSeedHex(seedController.text);
-    final address = EthPrivateKey.fromHex(seedHex).address.hexEip55;
-    console.info('finding $address.$kVaultExtension...');
+    final root = bip32.BIP32.fromSeed(Uint8List.fromList(HEX.decode(seedHex)));
+    const accountIndex = 0;
+    final child1 = root.derivePath("m/44'/60'/0'/0/$accountIndex");
+    final privateKey = HEX.encode(child1.privateKey!);
+    final credentials = EthPrivateKey.fromHex(privateKey);
+    final address = await credentials.extractAddress();
+
+    console.info('finding ${address.hex}.$kVaultExtension...');
+
+    return Left('error');
     // check if the vault exists
     final vaultPath = join(
-      address,
+      address.hex,
       '$address.$kVaultExtension',
     );
 
@@ -187,7 +188,10 @@ class ImportScreenController extends GetxController
     // set the correct encryption key
     Globals.encryptionKey = tempEncryptionKey;
     // extract all hive boxes
-    await _extractMainArchive();
+    await LisoManager.extractArchive(
+      archive!,
+      path: LisoManager.hivePath,
+    );
     // turn on sync setting if successfully imported via cloud
     if (importMode.value == ImportMode.liso) {
       PersistenceService.to.sync.val = true;
