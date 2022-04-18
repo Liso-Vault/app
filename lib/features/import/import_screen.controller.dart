@@ -13,6 +13,7 @@ import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
@@ -66,22 +67,14 @@ class ImportScreenController extends GetxController
   // FUNCTIONS
 
   Future<Either<dynamic, bool>> _downloadVault() async {
-    USE https://github.com/oliverbytes/web3_app/
+    final privateKey =
+        WalletService.to.mnemonicToPrivateKey(seedController.text);
+    final address = privateKey.address.hex;
+    console.info('finding $address.$kVaultExtension...');
 
-    final seedHex = bip39.mnemonicToSeedHex(seedController.text);
-    final root = bip32.BIP32.fromSeed(Uint8List.fromList(HEX.decode(seedHex)));
-    const accountIndex = 0;
-    final child1 = root.derivePath("m/44'/60'/0'/0/$accountIndex");
-    final privateKey = HEX.encode(child1.privateKey!);
-    final credentials = EthPrivateKey.fromHex(privateKey);
-    final address = await credentials.extractAddress();
-
-    console.info('finding ${address.hex}.$kVaultExtension...');
-
-    return Left('error');
     // check if the vault exists
     final vaultPath = join(
-      address.hex,
+      address,
       '$address.$kVaultExtension',
     );
 
@@ -125,6 +118,8 @@ class ImportScreenController extends GetxController
 
       downloadResult.fold(
         (error) {
+          //  TODO: offer to create vault instead
+
           UIUtils.showSimpleDialog(
             'Error Downloading',
             '$error > continuePressed()',
@@ -170,8 +165,10 @@ class ImportScreenController extends GetxController
       path: LisoManager.tempPath,
     );
     // check if encryption key is correct
-    final seedHex = bip39.mnemonicToSeedHex(seedController.text);
-    final tempEncryptionKey = utf8.encode(seedHex.substring(0, 32));
+    final privateKeyHex =
+        WalletService.to.mnemonicToPrivateKeyHex(seedController.text);
+
+    final tempEncryptionKey = utf8.encode(privateKeyHex.substring(0, 32));
     final correctKey = await HiveManager.isEncryptionKeyCorrect(
       tempEncryptionKey,
     );
@@ -179,14 +176,12 @@ class ImportScreenController extends GetxController
     if (!correctKey) {
       UIUtils.showSimpleDialog(
         'Incorrect Seed Phrase',
-        'Please enter the corresponding mnemonic seed phrase used to secure your vault.',
+        'Please enter the mnemonic seed phrase you backed up to secure your vault.',
       );
 
       return change(null, status: RxStatus.success());
     }
 
-    // set the correct encryption key
-    Globals.encryptionKey = tempEncryptionKey;
     // extract all hive boxes
     await LisoManager.extractArchive(
       archive!,
@@ -204,7 +199,10 @@ class ImportScreenController extends GetxController
       body: basename(filePathController.text),
     );
 
-    Get.toNamed(Routes.createPassword, parameters: {'seedHex': seedHex});
+    Get.toNamed(
+      Routes.createPassword,
+      parameters: {'privateKeyHex': privateKeyHex},
+    );
   }
 
   void importFile() async {

@@ -116,8 +116,7 @@ class LisoManager {
     // delete biometric storage
     final storage = await BiometricUtils.getStorage();
     await storage.delete();
-    // nullify global variables
-    Globals.encryptionKey = null;
+    // nullify wallet
     Globals.wallet = null;
     // delete files
     await FileUtils.delete(walletFilePath); // wallet

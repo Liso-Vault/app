@@ -1,5 +1,7 @@
 // COMPANY
 
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web3dart/credentials.dart';
@@ -96,7 +98,10 @@ enum LisoItemCategory {
 }
 
 class Globals {
+  // VARIABLES
   static bool timeLockEnabled = true;
-  static List<int>? encryptionKey;
   static Wallet? wallet;
+
+  // GETTERS
+  static Uint8List get encryptionKey => wallet!.privateKey.privateKey;
 }

@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -43,6 +44,7 @@ void main() async {
     NotificationsManager.init();
     BiometricUtils.init();
     // GetX services
+    Get.put(WalletService());
     Get.put(ConfigService());
     Get.put(PersistenceService());
     Get.put(S3Service());

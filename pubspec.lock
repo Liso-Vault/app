@@ -43,13 +43,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.2"
-  base58check:
-    dependency: transitive
-    description:
-      name: base58check
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   biometric_storage:
     dependency: "direct main"
     description:
@@ -58,7 +51,7 @@ packages:
     source: hosted
     version: "4.1.1"
   bip32:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: bip32
       url: "https://pub.dartlang.org"
@@ -281,13 +274,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.17.1"
-  dart_bip32_bip44:
-    dependency: "direct main"
-    description:
-      name: dart_bip32_bip44
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.2.0"
   dart_style:
     dependency: transitive
     description:
@@ -302,13 +288,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.8"
-  decimal:
-    dependency: transitive
-    description:
-      name: decimal
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.0"
   desktop_webview_auth:
     dependency: "direct main"
     description:
@@ -386,13 +365,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
-  ethers:
-    dependency: "direct main"
-    description:
-      name: ethers
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1+3"
   ffi:
     dependency: transitive
     description:
@@ -1229,13 +1201,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1+1"
-  rational:
-    dependency: transitive
-    description:
-      name: rational
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0"
   rxdart:
     dependency: transitive
     description:

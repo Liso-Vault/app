@@ -15,7 +15,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.welcome);
     }
 
-    if (Globals.encryptionKey == null) {
+    if (Globals.wallet == null) {
       return const RouteSettings(name: Routes.unlock);
     }
 

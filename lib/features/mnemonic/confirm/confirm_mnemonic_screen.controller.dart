@@ -6,6 +6,8 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
+import '../../../core/services/wallet.service.dart';
+
 class ConfirmMnemonicScreenBinding extends Bindings {
   @override
   void dependencies() {
@@ -41,7 +43,12 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
       return;
     }
 
-    final seedHex = bip39.mnemonicToSeedHex(seedController.text);
-    Get.toNamed(Routes.createPassword, parameters: {'seedHex': seedHex});
+    final privateKeyHex =
+        WalletService.to.mnemonicToPrivateKeyHex(seedController.text);
+
+    Get.toNamed(
+      Routes.createPassword,
+      parameters: {'privateKeyHex': privateKeyHex},
+    );
   }
 }

@@ -453,7 +453,7 @@ class MainScreenController extends GetxController
         timeLockTimer?.cancel();
 
         if (AuthenticationService.to.isAuthenticated &&
-            Globals.encryptionKey == null) {
+            Globals.wallet == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
@@ -461,7 +461,7 @@ class MainScreenController extends GetxController
         if (Globals.timeLockEnabled) {
           final timeLock = persistence.timeLockDuration.val.seconds;
           timeLockTimer = Timer.periodic(timeLock, (timer) {
-            Globals.encryptionKey = null;
+            Globals.wallet = null;
             timer.cancel();
           });
         }

@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -77,12 +78,11 @@ class CreatePasswordScreenController extends GetxController
     }
 
     // write a local master wallet
-    final seedHex = Get.parameters['seedHex'];
+    final privateKeyHex = Get.parameters['privateKeyHex'];
 
-    Globals.wallet = Wallet.createNew(
-      EthPrivateKey.fromHex(seedHex!),
-      passwordController.text,
-      Random.secure(),
+    Globals.wallet = WalletService.to.privateKeyHexToWallet(
+      privateKeyHex!,
+      password: passwordController.text,
     );
 
     // save password to biometric storage
@@ -102,8 +102,6 @@ class CreatePasswordScreenController extends GetxController
     await file.writeAsString(Globals.wallet!.toJson());
     console.info('wallet written: ${file.path}');
 
-    // set global encryption key
-    Globals.encryptionKey = utf8.encode(seedHex.substring(0, 32));
     // open Hive Boxes
     await HiveManager.openBoxes();
     change(null, status: RxStatus.success());

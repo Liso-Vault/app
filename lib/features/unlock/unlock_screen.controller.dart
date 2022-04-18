@@ -104,10 +104,6 @@ class UnlockScreenController extends GetxController
     if (passwordMode) return Get.back(result: true);
 
     if (!passwordMode) {
-      // the encryption key from master's private key
-      final seedHex = HEX.encode(Globals.wallet!.privateKey.privateKey);
-      Globals.encryptionKey = utf8.encode(seedHex.substring(0, 32));
-
       // open Hive Boxes
       await HiveManager.openBoxes();
 

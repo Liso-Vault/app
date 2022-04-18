@@ -38,19 +38,21 @@ class HiveManager {
   }
 
   static Future<void> openBoxes() async {
+    final cipher = HiveAesCipher(Globals.encryptionKey);
+
     items = await Hive.openBox(
       kHiveBoxItems,
-      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
+      encryptionCipher: cipher,
     );
 
     archived = await Hive.openBox(
       kHiveBoxArchived,
-      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
+      encryptionCipher: cipher,
     );
 
     trash = await Hive.openBox(
       kHiveBoxTrash,
-      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
+      encryptionCipher: cipher,
     );
 
     _watchBoxes();
