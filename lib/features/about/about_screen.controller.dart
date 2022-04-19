@@ -34,14 +34,16 @@ class AboutScreenController extends GetxController {
   void showLicenses(BuildContext context) async {
     final packageInfo = await PackageInfo.fromPlatform();
 
+    final icon = Padding(
+      padding: const EdgeInsets.symmetric(vertical: 15),
+      child: Image.asset(Images.logo, height: 50),
+    );
+
     showLicensePage(
       context: context,
-      applicationIcon: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: Image.asset(Images.logo, height: 50),
-      ),
+      applicationIcon: icon,
       applicationName: packageInfo.appName,
-      applicationVersion: '${packageInfo.version}+${packageInfo.buildNumber}',
+      applicationVersion: appVersion,
       applicationLegalese:
           'Copyright © ${DateTime.now().year} $kDeveloperName\nAll rights reserved.',
     );

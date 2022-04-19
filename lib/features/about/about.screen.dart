@@ -28,10 +28,12 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           style: TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 10),
-        Text(
-          controller.appVersion,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 10),
+        Obx(
+          () => Text(
+            controller.appVersion,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 10),
+          ),
         ),
         const SizedBox(height: 10),
         const Padding(

@@ -93,4 +93,5 @@ final en = {
   "file_explorer": "File Explorer",
   "file": "File",
   "files": "Files",
+  "existing": "Existing",
 };

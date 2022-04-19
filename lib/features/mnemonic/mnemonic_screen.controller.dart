@@ -17,6 +17,9 @@ class MnemonicScreenBinding extends Bindings {
 
 class MnemonicScreenController extends GetxController with ConsoleMixin {
   // VARIABLES'
+  final formKey = GlobalKey<FormState>();
+  final seedController = TextEditingController();
+
   List<ContextMenuItem> get menuItems => [
         ContextMenuItem(
           title: 'Copy Mnemonic Phrase',
@@ -30,6 +33,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   final chkBackedUpSeed = false.obs;
   final chkWrittenSeed = false.obs;
   final passphraseIndexedStack = 0.obs;
+  final mode = MnemonicMode.generate.obs;
 
   // GETTERS
   bool get canProceed => chkBackedUpSeed() && chkWrittenSeed();
@@ -44,13 +48,25 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
+    String _mnemonic = mnemonic();
+
+    if (mode.value == MnemonicMode.restore) {
+      if (!formKey.currentState!.validate()) return;
+      _mnemonic = seedController.text;
+    }
+
     Get.toNamed(
       Routes.confirmMnemonic,
-      parameters: {'mnemonic': mnemonic()},
+      parameters: {'mnemonic': _mnemonic},
     );
   }
 
   void generate() {
     mnemonic.value = bip39.generateMnemonic(strength: 256);
   }
+}
+
+enum MnemonicMode {
+  restore,
+  generate,
 }

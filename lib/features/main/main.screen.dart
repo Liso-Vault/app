@@ -85,13 +85,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ],
       ),
       actions: [
-        IconButton(
-          icon: const Icon(LineIcons.search),
-          onPressed: controller.search,
+        Obx(
+          () => IconButton(
+            icon: const Icon(LineIcons.search),
+            onPressed: !controller.syncing ? controller.search : null,
+          ),
         ),
         Obx(
           () => ContextMenuButton(
             controller.menuItemsSort,
+            enabled: !controller.syncing,
             initialItem: controller.menuItemsSort.firstWhere(
               (e) => controller.sortOrder.value.name
                   .toLowerCase()
@@ -99,7 +102,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             ),
             child: IconButton(
               icon: const Icon(LineIcons.sort),
-              onPressed: () {},
+              onPressed: !controller.syncing ? () {} : null,
             ),
           ),
         ),
@@ -118,11 +121,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               child: syncButton,
             );
 
-            const progressIndicator = Center(
-              child: SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(),
+            const progressIndicator = Padding(
+              padding: EdgeInsets.all(10),
+              child: Center(
+                child: SizedBox(
+                  height: 20,
+                  width: 20,
+                  child: CircularProgressIndicator(),
+                ),
               ),
             );
 
@@ -140,11 +146,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ],
     );
 
-    final floatingActionButton = ContextMenuButton(
-      controller.menuItemsCategory,
-      child: FloatingActionButton(
-        child: const Icon(LineIcons.plus),
-        onPressed: () {},
+    final floatingActionButton = Obx(
+      () => ContextMenuButton(
+        controller.menuItemsCategory,
+        enabled: !controller.syncing,
+        child: FloatingActionButton(
+          child: const Icon(LineIcons.plus),
+          onPressed: () {},
+        ),
       ),
     );
 

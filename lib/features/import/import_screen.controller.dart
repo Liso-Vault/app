@@ -1,23 +1,19 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:archive/archive_io.dart';
-import 'package:bip39/bip39.dart' as bip39;
-import 'package:bip32/bip32.dart' as bip32;
 import 'package:either_option/either_option.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:minio/minio.dart';
 import 'package:path/path.dart';
-import 'package:web3dart/web3dart.dart';
 
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
@@ -66,7 +62,7 @@ class ImportScreenController extends GetxController
 
   // FUNCTIONS
 
-  Future<Either<dynamic, bool>> _downloadVault() async {
+  Future<bool> _downloadVault() async {
     final privateKey =
         WalletService.to.mnemonicToPrivateKey(seedController.text);
     final address = privateKey.address.hex;
@@ -79,58 +75,46 @@ class ImportScreenController extends GetxController
     );
 
     final downloadResult = await S3Service.to.downloadVault(path: vaultPath);
-    File? vaultFile;
     dynamic _error;
 
     downloadResult.fold(
       (error) => _error = error,
-      (file) => vaultFile = file,
+      (file) {},
     );
 
-    if (_error != null) return Left(_error);
-    final readResult = LisoManager.readArchive(vaultFile!.path);
-    Archive? archive;
+    if (_error != null) {
+      console.error('download error: $_error');
 
-    readResult.fold(
-      (error) => _error = error,
-      (response) => archive = response,
-    );
+      final newUser =
+          _error is MinioError && _error.message!.contains('does not exist');
 
-    console.info('archive files: ${archive!.files.length}');
-    // check if archive contains files
-    if (_error != null || archive!.files.isEmpty) {
-      return Left('$_error > archive is empty');
+      if (newUser) {
+        UIUtils.showSimpleDialog(
+          'No vault found',
+          "It looks like you're a new $kAppName user. Consider creating a vault instead and start securing your data.",
+        );
+      } else {
+        UIUtils.showSimpleDialog(
+          'Error Downloading',
+          '$_error > _downloadVault()',
+        );
+      }
+
+      return false;
     }
 
-    return Right(true);
+    return true;
   }
 
   Future<void> continuePressed() async {
     if (status == RxStatus.loading()) return console.error('still busy');
     if (!formKey.currentState!.validate()) return;
-
     change(null, status: RxStatus.loading());
 
     // download and save vault file from IPFS
     if (importMode.value == ImportMode.liso) {
-      final downloadResult = await _downloadVault();
-      bool successDownload = false;
-
-      downloadResult.fold(
-        (error) {
-          //  TODO: offer to create vault instead
-
-          UIUtils.showSimpleDialog(
-            'Error Downloading',
-            '$error > continuePressed()',
-          );
-
-          return change(null, status: RxStatus.success());
-        },
-        (response) => successDownload = response,
-      );
-
-      if (!successDownload) return change(null, status: RxStatus.success());
+      final success = await _downloadVault();
+      if (!success) return change(null, status: RxStatus.success());
     }
 
     // read archive
@@ -145,7 +129,7 @@ class ImportScreenController extends GetxController
 
     console.info('archive files: ${archive?.files.length}');
 
-    if (archive == null || archive!.files.isEmpty) {
+    if (_error != null || (archive != null && archive!.files.isEmpty)) {
       UIUtils.showSimpleDialog(
         'Error Extracting',
         '$_error > continuePressed()',
@@ -196,7 +180,7 @@ class ImportScreenController extends GetxController
 
     NotificationsManager.notify(
       title: 'Successfully Imported Vault',
-      body: basename(filePathController.text),
+      body: basename(archiveFilePath),
     );
 
     Get.toNamed(

@@ -12,6 +12,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
   final bool useMouseRegion;
   final List<ContextMenuItem> contextItems;
   final EdgeInsets padding;
+  final bool enabled;
 
   const ContextMenuButton(
     this.contextItems, {
@@ -20,6 +21,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     this.initialItem,
     this.useMouseRegion = false,
     this.padding = const EdgeInsets.all(8.0),
+    this.enabled = true,
   }) : super(key: key);
 
   @override
@@ -66,6 +68,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
         itemBuilder: (context) => popupItems,
         child: AbsorbPointer(child: wrappedChild),
         initialValue: initialItem,
+        enabled: enabled,
       );
     }
 
@@ -92,7 +95,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       onHover: (event) => position = event.position,
       child: InkWell(
         child: AbsorbPointer(child: wrappedChild),
-        onTap: _showMenu,
+        onTap: enabled ? _showMenu : null,
       ),
     );
   }

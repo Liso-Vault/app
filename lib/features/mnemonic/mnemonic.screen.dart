@@ -1,13 +1,18 @@
 import 'package:blur/blur.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/custom_chip.widget.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../general/passphrase.card.dart';
+import '../general/segmented_item.widget.dart';
 import 'mnemonic_screen.controller.dart';
 
 class MnemonicScreen extends GetView<MnemonicScreenController>
@@ -16,8 +21,10 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final phrases = ContextMenuButton(
-      controller.menuItems,
+    final phraseChips = GestureDetector(
+      onTap: controller.generate,
+      onLongPress: () => Utils.copyToClipboard(controller.mnemonic.value),
+      onSecondaryTap: () => Utils.copyToClipboard(controller.mnemonic.value),
       child: Obx(
         () => Wrap(
           spacing: 5,
@@ -32,6 +39,32 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
               )
               .toList(),
         ),
+      ),
+    );
+
+    final seedPhrase = Obx(
+      () => IndexedStack(
+        index: controller.passphraseIndexedStack(),
+        children: [
+          Stack(
+            alignment: Alignment.center,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Blur(
+                  blur: 5.0,
+                  blurColor: Colors.grey.shade900,
+                  child: phraseChips,
+                ),
+              ),
+              IconButton(
+                icon: const Icon(LineIcons.eye),
+                onPressed: () => controller.passphraseIndexedStack.value = 1,
+              ),
+            ],
+          ),
+          phraseChips,
+        ],
       ),
     );
 
@@ -50,35 +83,37 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
+        const SizedBox(height: 20),
+        Obx(
+          () => CupertinoSegmentedControl<MnemonicMode>(
+            groupValue: controller.mode.value,
+            onValueChanged: (value) => controller.mode.value = value,
+            children: {
+              MnemonicMode.generate: SegmentedControlItem(
+                text: 'generate'.tr,
+                iconData: LineIcons.flask,
+              ),
+              MnemonicMode.restore: SegmentedControlItem(
+                text: 'existing'.tr,
+                iconData: LineIcons.pen,
+              ),
+            },
+          ),
+        ),
         const SizedBox(height: 15),
         Obx(
-          () => IndexedStack(
-            index: controller.passphraseIndexedStack(),
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(10),
-                    child: Blur(
-                      blur: 5.0,
-                      blurColor: Colors.grey.shade900,
-                      child: phrases,
-                    ),
-                  ),
-                  IconButton(
-                    icon: const Icon(LineIcons.eye),
-                    onPressed: () =>
-                        controller.passphraseIndexedStack.value = 1,
-                  ),
-                ],
+          () => Visibility(
+            visible: controller.mode.value == MnemonicMode.generate,
+            child: seedPhrase,
+            replacement: Form(
+              key: controller.formKey,
+              child: PassphraseCard(
+                controller: controller.seedController,
               ),
-              phrases,
-            ],
+            ),
           ),
         ),
         const SizedBox(height: 20),
-        const Divider(),
         ObxValue(
           (RxBool data) => CheckboxListTile(
             title: const Text(
@@ -97,24 +132,13 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
           controller.chkWrittenSeed,
         ),
         const SizedBox(height: 20),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Obx(
-              () => TextButton.icon(
-                onPressed:
-                    controller.canProceed ? controller.continuePressed : null,
-                label: Text('continue'.tr),
-                icon: const Icon(LineIcons.arrowRight),
-              ),
-            ),
-            const SizedBox(width: 10),
-            TextButton.icon(
-              onPressed: controller.generate,
-              label: Text('generate'.tr),
-              icon: const Icon(LineIcons.flask),
-            ),
-          ],
+        Obx(
+          () => TextButton.icon(
+            onPressed:
+                controller.canProceed ? controller.continuePressed : null,
+            label: Text('continue'.tr),
+            icon: const Icon(LineIcons.arrowRight),
+          ),
         ),
       ],
     );
