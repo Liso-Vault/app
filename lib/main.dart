@@ -14,7 +14,6 @@ import 'core/firebase/crashlytics.service.dart';
 import 'core/hive/hive.manager.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
-import 'core/services/authentication.service.dart';
 import 'core/services/persistence.service.dart';
 import 'core/utils/biometric.util.dart';
 import 'core/utils/console.dart';
@@ -48,7 +47,6 @@ void main() async {
     Get.put(ConfigService());
     Get.put(PersistenceService());
     Get.put(S3Service());
-    Get.put(AuthenticationService());
     Get.put(IPFSService());
     // utils
     Utils.setDisplayMode(); // refresh rate

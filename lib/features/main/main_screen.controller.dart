@@ -8,8 +8,8 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/core/services/authentication.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -212,10 +212,7 @@ class MainScreenController extends GetxController
       title: const Text('Unsynced Changes'),
       content: Utils.isDrawerExpandable
           ? content
-          : SizedBox(
-              width: 600,
-              child: content,
-            ),
+          : SizedBox(width: 600, child: content),
       actions: [
         TextButton(
           child: const Text('Cancel'),
@@ -365,8 +362,7 @@ class MainScreenController extends GetxController
 
     // reload SearchDelegate to reflect
     searchDelegate?.reload(Get.context!);
-    // update drawer state
-    drawerController.refresh();
+    drawerController.refresh(); // update drawer state
   }
 
   void sync() {
@@ -401,10 +397,7 @@ class MainScreenController extends GetxController
     bool success = false;
 
     result.fold(
-      (error) => UIUtils.showSimpleDialog(
-        'Error Syncing',
-        '$error > sync()',
-      ),
+      (error) => UIUtils.showSimpleDialog('Error Syncing', '$error > sync()'),
       (response) => success = response,
     );
 
@@ -452,8 +445,7 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timeLockTimer?.cancel();
 
-        if (AuthenticationService.to.isAuthenticated &&
-            Globals.wallet == null) {
+        if (WalletService.to.fileExists && Globals.wallet == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {

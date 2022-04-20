@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hex/hex.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';

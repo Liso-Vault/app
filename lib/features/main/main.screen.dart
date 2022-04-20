@@ -56,15 +56,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         iconData: LineIcons.seedling,
         message: 'no_items'.tr,
         child: DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
-            ? ContextMenuButton(
-                controller.menuItemsCategory,
-                child: TextButton.icon(
-                  icon: const Icon(LineIcons.plus),
-                  label: Text(
-                    'add_item'.tr,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
+            ? Obx(
+                () => ContextMenuButton(
+                  controller.menuItemsCategory,
+                  enabled: !controller.syncing,
+                  child: TextButton.icon(
+                    icon: const Icon(LineIcons.plus),
+                    label: Text(
+                      'add_item'.tr,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onPressed: !controller.syncing ? () {} : null,
                   ),
-                  onPressed: () {},
                 ),
               )
             : null,
@@ -78,10 +81,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         children: [
           Image.asset(Images.logo, height: 17),
           const SizedBox(width: 10),
-          const Text(
-            kAppName,
-            style: TextStyle(fontSize: 20),
-          )
+          const Text(kAppName, style: TextStyle(fontSize: 20))
         ],
       ),
       actions: [
