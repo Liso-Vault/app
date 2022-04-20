@@ -84,6 +84,8 @@ class HiveManager {
 
   // workaround to check if encryption key is correct
   static Future<bool> isEncryptionKeyCorrect(List<int> key) async {
+    console.warning('key length: ${key.length}');
+
     // initialize as a temporary hive box
     final _items = await Hive.openBox(
       kHiveBoxItems,

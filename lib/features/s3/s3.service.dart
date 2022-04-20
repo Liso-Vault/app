@@ -16,6 +16,7 @@ import 'package:path/path.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
+import '../../core/utils/file.util.dart';
 import '../../core/utils/ui_utils.dart';
 import 'model/s3_content.model.dart';
 
@@ -86,9 +87,7 @@ class S3Service extends GetxService with ConsoleMixin {
           console.error('Stat Error: $error');
         }
       },
-      (response) {
-        statObject = response;
-      },
+      (response) => statObject = response,
     );
 
     if (statObject?.metaData?['client'] == null) {
@@ -139,6 +138,7 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     final readResult = LisoManager.readArchive(vaultFile!.path);
+    FileUtils.delete(vaultFile!.path); // delete temporary vault file
     Archive? archive;
 
     readResult.fold(
@@ -335,11 +335,12 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, File>> downloadVault({required String path}) async {
     await _prepare();
-    console.info('downloading...');
+    console.info('downloading: ${ConfigService.to.s3.bucket} -> $path');
     MinioByteStream? stream;
 
     try {
-      stream = await client!.getObject(ConfigService.to.s3.bucket, path);
+      stream = await client!.getObject(ConfigService.to.s3.bucket,
+          '0x61dD06c6EAb83d2257a6126Bc15fC7A4AdE14a0a/0x61dD06c6EAb83d2257a6126Bc15fC7A4AdE14a0a.liso');
     } catch (e) {
       return Left(e);
     }

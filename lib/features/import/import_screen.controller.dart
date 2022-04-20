@@ -1,20 +1,24 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
+import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../s3/s3.service.dart';
 
@@ -64,17 +68,13 @@ class ImportScreenController extends GetxController
     final privateKey =
         WalletService.to.mnemonicToPrivateKey(seedController.text);
     final address = privateKey.address.hex;
-    console.info('finding $address.$kVaultExtension...');
+    final fileName = '$address.$kVaultExtension';
 
-    // check if the vault exists
-    final vaultPath = join(
-      address,
-      '$address.$kVaultExtension',
+    final downloadResult = await S3Service.to.downloadVault(
+      path: join(address, fileName),
     );
 
-    final downloadResult = await S3Service.to.downloadVault(path: vaultPath);
     dynamic _error;
-
     downloadResult.fold(
       (error) => _error = error,
       (file) {},
@@ -112,11 +112,15 @@ class ImportScreenController extends GetxController
     // download and save vault file from IPFS
     if (importMode.value == ImportMode.liso) {
       final success = await _downloadVault();
-      if (!success) return change(null, status: RxStatus.success());
+      if (!success) {
+        FileUtils.delete(archiveFilePath); // delete temp downloaded vault
+        return change(null, status: RxStatus.success());
+      }
     }
 
     // read archive
     final result = LisoManager.readArchive(archiveFilePath);
+    FileUtils.delete(archiveFilePath); // delete temp downloaded vault
     Archive? archive;
     dynamic _error;
 
@@ -147,15 +151,14 @@ class ImportScreenController extends GetxController
       path: LisoManager.tempPath,
     );
     // check if encryption key is correct
-    final privateKeyHex =
-        WalletService.to.mnemonicToPrivateKeyHex(seedController.text);
+    final credentials =
+        WalletService.to.mnemonicToPrivateKey(seedController.text);
 
-    final tempEncryptionKey = utf8.encode(privateKeyHex.substring(0, 32));
-    final correctKey = await HiveManager.isEncryptionKeyCorrect(
-      tempEncryptionKey,
+    final isCorrect = await HiveManager.isEncryptionKeyCorrect(
+      credentials.privateKey,
     );
 
-    if (!correctKey) {
+    if (!isCorrect) {
       UIUtils.showSimpleDialog(
         'Incorrect Seed Phrase',
         'Please enter the mnemonic seed phrase you backed up to secure your vault.',
@@ -183,7 +186,7 @@ class ImportScreenController extends GetxController
 
     Get.toNamed(
       Routes.createPassword,
-      parameters: {'privateKeyHex': privateKeyHex},
+      parameters: {'privateKeyHex': HEX.encode(credentials.privateKey)},
     );
   }
 

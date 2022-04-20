@@ -20,12 +20,7 @@ class WalletService extends GetxService with ConsoleMixin {
     int index = 0,
   }) {
     final privateKey = mnemonicToPrivateKey(mnemonic, index: index);
-
-    return Wallet.createNew(
-      privateKey,
-      password,
-      Random.secure(),
-    );
+    return Wallet.createNew(privateKey, password, Random.secure());
   }
 
   Wallet privateKeyHexToWallet(
@@ -33,12 +28,7 @@ class WalletService extends GetxService with ConsoleMixin {
     required String password,
   }) {
     final privateKey = EthPrivateKey.fromHex(privateKeyHex);
-
-    return Wallet.createNew(
-      privateKey,
-      password,
-      Random.secure(),
-    );
+    return Wallet.createNew(privateKey, password, Random.secure());
   }
 
   EthPrivateKey mnemonicToPrivateKey(String mnemonic, {int index = 0}) {
@@ -51,8 +41,7 @@ class WalletService extends GetxService with ConsoleMixin {
     final seed = Uint8List.fromList(HEX.decode(seedHex));
     final root = bip32.BIP32.fromSeed(seed);
     final path = root.derivePath("m/44'/60'/0'/0/$index");
-    final privateKeyHex = HEX.encode(path.privateKey!);
-    return privateKeyHex;
+    return HEX.encode(path.privateKey!);
   }
 
   bool get fileExists => File(LisoManager.walletFilePath).existsSync();

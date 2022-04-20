@@ -103,7 +103,6 @@ class UnlockScreenController extends GetxController
     if (!passwordMode) {
       // open Hive Boxes
       await HiveManager.openBoxes();
-
       change(null, status: RxStatus.success());
       Get.offNamedUntil(Routes.main, (route) => false);
     }
