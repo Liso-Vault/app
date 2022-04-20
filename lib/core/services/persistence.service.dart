@@ -25,7 +25,9 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final timeLockDuration = 30.val('time lock duration'); // in seconds
   // NOTIFICATION
   final notificationId = 0.val('notification id');
-  final sync = true.val('sync');
+  // SYNC
+  final sync = false.val('sync');
+  final syncConfirmed = false.val('sync confirmed');
   // IPFS
   final ipfsSync = false.val('ipfs sync');
   final ipfsInstantSync = false.val('ipfs instant sync');
@@ -40,6 +42,8 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final changes = 0.val('vault changes count');
 
   // GETTERS
+
+  bool get canSync => sync.val && syncConfirmed.val;
 
   String get ipfsServerUrl =>
       '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';

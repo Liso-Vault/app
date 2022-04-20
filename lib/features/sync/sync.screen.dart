@@ -1,0 +1,101 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/styles.dart';
+import 'package:liso/features/general/appbar_leading.widget.dart';
+
+import '../../core/services/persistence.service.dart';
+import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
+import 'sync_screen.controller.dart';
+
+class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
+  const SyncScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(LineIcons.cloud, size: 100, color: kAppColor),
+        const SizedBox(height: 20),
+        const Text(
+          '$kAppName Cloud',
+          style: TextStyle(fontSize: 20),
+        ),
+        const SizedBox(height: 15),
+        const Text(
+          "Choose your preferred vault management feature",
+          textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.grey),
+        ),
+        const SizedBox(height: 20),
+        SimpleBuilder(
+          builder: (context) {
+            return Column(
+              children: <Widget>[
+                RadioListTile<bool>(
+                  title: const Text('Sync with $kAppName Cloud'),
+                  subtitle: const Text(
+                    'Conveniently keep multiple devices in sync',
+                  ),
+                  secondary: const Icon(LineIcons.syncIcon),
+                  value: true,
+                  groupValue: PersistenceService.to.sync.val,
+                  onChanged: (value) => PersistenceService.to.sync.val = value!,
+                ),
+                RadioListTile<bool>(
+                  title: const Text('Offline'),
+                  subtitle: const Text(
+                    'Manually manage offline vaults across your devices',
+                  ),
+                  secondary: const Icon(Icons.wifi_off),
+                  value: false,
+                  groupValue: PersistenceService.to.sync.val,
+                  onChanged: (value) => PersistenceService.to.sync.val = value!,
+                ),
+              ],
+            );
+          },
+        ),
+        const SizedBox(height: 20),
+        if (Get.previousRoute == Routes.welcome) ...[
+          const Divider(),
+          TextButton.icon(
+            onPressed: controller.save,
+            label: Text('save'.tr),
+            icon: const Icon(LineIcons.arrowRight),
+          ),
+        ] else ...[
+          const Divider(),
+          ListTile(
+            title: Text('time_machine_explorer'.tr),
+            subtitle: const Text('Go back in time to undo your changes'),
+            leading: const Icon(LineIcons.clock),
+            trailing: const Icon(LineIcons.angleRight),
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.s3Explorer),
+          ),
+        ]
+      ],
+    );
+
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: false,
+        leading: const AppBarLeadingButton(),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Center(
+          child: Container(
+            constraints: Styles.containerConstraints,
+            padding: const EdgeInsets.all(20),
+            child: SingleChildScrollView(child: content),
+          ),
+        ),
+      ),
+    );
+  }
+}

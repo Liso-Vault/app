@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -61,12 +62,16 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         //   },
         // ),
         const Divider(),
-        ListTile(
-          title: Text('time_machine_explorer'.tr),
-          subtitle: const Text('Go back in time to undo your changes'),
-          leading: const Icon(LineIcons.clock),
-          trailing: const Icon(LineIcons.angleRight),
-          onTap: () => Utils.adaptiveRouteOpen(name: Routes.s3Explorer),
+        SimpleBuilder(
+          builder: (context) {
+            return ListTile(
+              leading: const Icon(LineIcons.cloud),
+              trailing: const Icon(LineIcons.angleRight),
+              title: const Text('Cloud Sync'),
+              subtitle: Text(PersistenceService.to.sync.val ? 'On' : 'Off'),
+              onTap: () => Utils.adaptiveRouteOpen(name: Routes.sync),
+            );
+          },
         ),
         const Divider(),
         ListTile(

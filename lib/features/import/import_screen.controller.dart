@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +15,6 @@ import 'package:path/path.dart';
 
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../s3/s3.service.dart';
 
@@ -72,6 +68,7 @@ class ImportScreenController extends GetxController
 
     final downloadResult = await S3Service.to.downloadVault(
       path: join(address, fileName),
+      force: true,
     );
 
     dynamic _error;
@@ -172,10 +169,10 @@ class ImportScreenController extends GetxController
       archive!,
       path: LisoManager.hivePath,
     );
+
     // turn on sync setting if successfully imported via cloud
-    if (importMode.value == ImportMode.liso) {
-      PersistenceService.to.sync.val = true;
-    }
+    PersistenceService.to.sync.val =
+        importMode.value == ImportMode.liso ? true : false;
 
     change(null, status: RxStatus.success());
 
@@ -184,7 +181,7 @@ class ImportScreenController extends GetxController
       body: basename(archiveFilePath),
     );
 
-    Get.toNamed(
+    Get.offNamed(
       Routes.createPassword,
       parameters: {'privateKeyHex': HEX.encode(credentials.privateKey)},
     );

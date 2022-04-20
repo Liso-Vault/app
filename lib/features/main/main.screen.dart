@@ -108,6 +108,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         SimpleBuilder(
           builder: (_) {
+            if (!PersistenceService.to.sync.val) return const SizedBox.shrink();
+
             final changeCount = PersistenceService.to.changes.val;
 
             final syncButton = IconButton(

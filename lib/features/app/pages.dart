@@ -31,6 +31,8 @@ import '../item/item_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
+import '../sync/sync.screen.dart';
+import '../sync/sync_screen.controller.dart';
 import 'routes.dart';
 
 class AppPages {
@@ -101,7 +103,11 @@ class AppPages {
       page: () => const AboutScreen(),
       binding: AboutScreenBinding(),
     ),
-    // IPFS
+    GetPage(
+      name: Routes.sync,
+      page: () => const SyncScreen(),
+      binding: SyncScreenBinding(),
+    ),
     GetPage(
       name: Routes.ipfs,
       page: () => const IPFSScreen(),

@@ -68,6 +68,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // CAN DOWN SYNC
   Future<StatObjectResult?> _canDownSync() async {
+    if (!persistence.canSync) return null;
     if (persistence.changes.val > 0) {
       console.error('there are still unsynced changes');
       return null;
@@ -114,6 +115,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // DOWN SYNC
   Future<void> downSync() async {
+    if (!persistence.canSync) return;
     final statObject = await _canDownSync();
     if (statObject == null) return console.error('stat object is null');
 
@@ -178,6 +180,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
+    if (!persistence.canSync) return Left('offline');
     console.info('syncing...');
     final backupResult = await backup(lisoContent);
 
@@ -221,6 +224,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, String>> upload(File file) async {
+    if (!persistence.canSync) return Left('offline');
     await _prepare();
     console.info('upload...');
     final metadataString = await _updatedLocalMetadata();
@@ -250,6 +254,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, CopyObjectResult>> backup(S3Content content) async {
+    if (!persistence.canSync) return Left('offline');
     await _prepare();
     console.info('backup: ${content.path}...');
 
@@ -268,6 +273,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, StatObjectResult>> stat(S3Content content) async {
+    if (!persistence.canSync) return Left('offline');
     await _prepare();
     console.info('stat: ${basename(content.path)}...');
 
@@ -288,6 +294,7 @@ class S3Service extends GetxService with ConsoleMixin {
     S3ContentType? filterType,
     List<String> filterExtensions = const [],
   }) async {
+    if (!persistence.canSync) return Left('offline');
     await _prepare();
     console.info('fetch: $path...');
 
@@ -333,7 +340,11 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(contents);
   }
 
-  Future<Either<dynamic, File>> downloadVault({required String path}) async {
+  Future<Either<dynamic, File>> downloadVault({
+    required String path,
+    bool force = false,
+  }) async {
+    if (!persistence.canSync && !force) return Left('offline');
     await _prepare();
     console.info('downloading: ${ConfigService.to.s3.bucket} -> $path');
     MinioByteStream? stream;

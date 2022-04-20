@@ -75,7 +75,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(LineIcons.upload),
+                    icon: const Icon(LineIcons.download),
                     onPressed: controller.importFile,
                   ),
                 ],

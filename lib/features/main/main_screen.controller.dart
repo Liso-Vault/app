@@ -245,6 +245,9 @@ class MainScreenController extends GetxController
   void reload() => _load();
 
   void _load() async {
+    final boxIsOpen = HiveManager.items?.isOpen ?? false;
+    if (!boxIsOpen) return;
+
     change(null, status: RxStatus.loading());
     final drawerController = Get.find<DrawerMenuController>();
     List<HiveLisoItem> items = [];
@@ -367,7 +370,7 @@ class MainScreenController extends GetxController
 
   void sync() {
     if (syncing) return;
-
+    console.warning('persistence.changes.val: ${persistence.changes.val}');
     if (persistence.changes.val > 0) {
       upSync();
     } else {
@@ -376,6 +379,7 @@ class MainScreenController extends GetxController
   }
 
   Future<void> downSync() async {
+    if (downSyncing.value) return;
     downSyncing.value = true;
     await S3Service.to.downSync();
     downSyncing.value = false;
@@ -383,14 +387,15 @@ class MainScreenController extends GetxController
   }
 
   Future<void> upSync() async {
-    // make sure we are down synced before can up sync
-    if (!S3Service.to.canUpSync) {
-      await downSync();
+    if (upSyncing.value) return;
+    // // make sure we are down synced before can up sync
+    // if (!S3Service.to.canUpSync) {
+    //   await downSync();
 
-      if (!S3Service.to.canUpSync) {
-        return console.error('unable to upSync because downSync failed');
-      }
-    }
+    //   if (!S3Service.to.canUpSync) {
+    //     return console.error('unable to upSync because downSync failed');
+    //   }
+    // }
 
     upSyncing.value = true;
     final result = await S3Service.to.upSync();

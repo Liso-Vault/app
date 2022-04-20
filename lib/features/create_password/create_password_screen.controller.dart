@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -108,6 +109,10 @@ class CreatePasswordScreenController extends GetxController
       body: kAppDescription,
     );
 
-    Get.offNamedUntil(Routes.main, (route) => false);
+    if (PersistenceService.to.sync.val) {
+      Get.offAllNamed(Routes.sync, parameters: {'': ''});
+    } else {
+      Get.offNamedUntil(Routes.main, (route) => false);
+    }
   }
 }

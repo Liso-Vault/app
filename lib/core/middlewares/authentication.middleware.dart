@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 
@@ -15,6 +16,10 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
     if (Globals.wallet == null) {
       return const RouteSettings(name: Routes.unlock);
+    }
+
+    if (!PersistenceService.to.syncConfirmed.val) {
+      return const RouteSettings(name: Routes.sync);
     }
 
     return null;

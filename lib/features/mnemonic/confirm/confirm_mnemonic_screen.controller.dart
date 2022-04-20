@@ -45,7 +45,7 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
     final privateKeyHex =
         WalletService.to.mnemonicToPrivateKeyHex(seedController.text);
 
-    Get.toNamed(
+    Get.offAllNamed(
       Routes.createPassword,
       parameters: {'privateKeyHex': privateKeyHex},
     );
