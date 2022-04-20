@@ -83,8 +83,7 @@ class UnlockScreenController extends GetxController
 
         if (attemptsLeft() <= 0) {
           await LisoManager.reset();
-          Get.offNamedUntil(Routes.main, (route) => false);
-          return;
+          return Get.offNamedUntil(Routes.main, (route) => false);
         }
       }
 
@@ -104,7 +103,7 @@ class UnlockScreenController extends GetxController
       // open Hive Boxes
       await HiveManager.openBoxes();
       change(null, status: RxStatus.success());
-      Get.offNamedUntil(Routes.main, (route) => false);
+      return Get.offNamedUntil(Routes.main, (route) => false);
     }
   }
 }

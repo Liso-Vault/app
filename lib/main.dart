@@ -32,6 +32,7 @@ void main() async {
     // initialize firebase and crashlytics before anything else to catch & report errors
     await Firebase.initializeApp();
     Get.put(CrashlyticsService());
+    Get.put(ConfigService());
 
     if (GetPlatform.isDesktop) {
       await windowManager.ensureInitialized();
@@ -44,7 +45,6 @@ void main() async {
     BiometricUtils.init();
     // GetX services
     Get.put(WalletService());
-    Get.put(ConfigService());
     Get.put(PersistenceService());
     Get.put(S3Service());
     Get.put(IPFSService());

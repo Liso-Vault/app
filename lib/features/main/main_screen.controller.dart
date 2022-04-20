@@ -381,7 +381,7 @@ class MainScreenController extends GetxController
   Future<void> downSync() async {
     if (downSyncing.value) return;
     downSyncing.value = true;
-    await S3Service.to.downSync();
+    await S3Service.to.tryDownSync();
     downSyncing.value = false;
     _load();
   }

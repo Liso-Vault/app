@@ -7,6 +7,8 @@ import 'package:ipfs_rpc/ipfs_rpc.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/console.dart';
 
+import '../liso/liso.manager.dart';
+
 class PersistenceService extends GetxService with ConsoleMixin {
   static PersistenceService get to => Get.find();
 
@@ -40,10 +42,12 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // VAULT
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
+  // final walletAddress = ''.val('wallet address');
 
   // GETTERS
 
-  bool get canSync => sync.val && syncConfirmed.val;
+  bool get canSync =>
+      sync.val && syncConfirmed.val && LisoManager.walletAddress.isNotEmpty;
 
   String get ipfsServerUrl =>
       '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';

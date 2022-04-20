@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
 
-import '../../../features/s3/s3.service.dart';
 import 'models/config_client.model.dart';
 import 'models/config_global.model.dart';
 import 'models/config_s3.model.dart';
@@ -33,7 +32,7 @@ class ConfigService extends GetxService with ConsoleMixin {
 
   void _init() async {
     // SETTINGS
-    await FirebaseRemoteConfig.instance.setConfigSettings(RemoteConfigSettings(
+    await instance.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: 10.seconds,
       minimumFetchInterval: kDebugMode ? 0.seconds : 2.hours,
     ));
@@ -61,8 +60,6 @@ class ConfigService extends GetxService with ConsoleMixin {
     s3 = ConfigS3.fromJson(
       jsonDecode(instance.getString("s3_config")),
     );
-
-    S3Service.to.init();
   }
 
   Future<void> fetch() async {

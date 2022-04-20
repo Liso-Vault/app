@@ -48,6 +48,11 @@ class S3Service extends GetxService with ConsoleMixin {
       );
 
   // INIT
+  @override
+  void onInit() {
+    init();
+    super.onInit();
+  }
 
   // FUNCTIONS
 
@@ -67,14 +72,14 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   // CAN DOWN SYNC
-  Future<StatObjectResult?> _canDownSync() async {
-    if (!persistence.canSync) return null;
+  Future<void> tryDownSync() async {
+    if (!persistence.canSync) return;
     if (persistence.changes.val > 0) {
       console.error('there are still unsynced changes');
-      return null;
+      return;
     }
 
-    console.info('_canDownSync...');
+    console.info('tryDownSync...');
     final statResult = await stat(lisoContent);
     StatObjectResult? statObject;
 
@@ -94,7 +99,7 @@ class S3Service extends GetxService with ConsoleMixin {
     if (statObject?.metaData?['client'] == null) {
       console.warning('new user / null metadata from server');
       canUpSync = true;
-      return null;
+      return;
     }
 
     final server = HiveMetadata.fromJson(
@@ -107,17 +112,15 @@ class S3Service extends GetxService with ConsoleMixin {
     if (local != null && local.updatedTime == server.updatedTime) {
       console.info('in sync with server');
       canUpSync = true;
-      return null;
+      return;
     }
 
-    return statObject;
+    _downSync(server);
   }
 
   // DOWN SYNC
-  Future<void> downSync() async {
+  Future<void> _downSync(HiveMetadata serverMetadata) async {
     if (!persistence.canSync) return;
-    final statObject = await _canDownSync();
-    if (statObject == null) return console.error('stat object is null');
 
     // TODO: download server vault > compare everything with local
     // choose the most updated item between vaults and merge
@@ -170,11 +173,7 @@ class S3Service extends GetxService with ConsoleMixin {
     canUpSync = true;
 
     // save updated local metadata
-    final server = HiveMetadata.fromJson(
-      jsonDecode(statObject.metaData!['client']!),
-    );
-
-    persistence.metadata.val = server.toJsonString();
+    persistence.metadata.val = serverMetadata.toJsonString();
     console.warning('downloaded and in sync!');
   }
 

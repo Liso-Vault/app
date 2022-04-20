@@ -9,7 +9,6 @@ import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 
 import '../hive/hive.manager.dart';

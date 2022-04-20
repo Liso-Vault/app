@@ -65,10 +65,12 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         SimpleBuilder(
           builder: (context) {
             return ListTile(
-              leading: const Icon(LineIcons.cloud),
+              leading: const Icon(LineIcons.memory),
               trailing: const Icon(LineIcons.angleRight),
-              title: const Text('Cloud Sync'),
-              subtitle: Text(PersistenceService.to.sync.val ? 'On' : 'Off'),
+              title: const Text('Vault Management'),
+              subtitle: Text(
+                PersistenceService.to.sync.val ? '$kAppName Cloud' : 'Offline',
+              ),
               onTap: () => Utils.adaptiveRouteOpen(name: Routes.sync),
             );
           },
@@ -77,7 +79,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ListTile(
           leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.doorOpen),
-          title: Text('lock'.tr + ' $kAppName'),
+          title: Text('lock'.tr + ' Vault'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
         // TODO: Change Password is same as Import Vault
@@ -106,13 +108,13 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           title: Text('export_wallet'.tr),
           onTap: controller.exportWallet,
         ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.alternateShield),
-          trailing: const Icon(LineIcons.infoCircle),
-          title: const Text('Change Password'),
-          onTap: controller.changePassword,
-        ),
+        // const Divider(),
+        // ListTile(
+        //   leading: const Icon(LineIcons.alternateShield),
+        //   trailing: const Icon(LineIcons.infoCircle),
+        //   title: const Text('Change Password'),
+        //   onTap: controller.changePassword,
+        // ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.trashRestore),

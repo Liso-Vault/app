@@ -83,6 +83,10 @@ class CreatePasswordScreenController extends GetxController
       password: passwordController.text,
     );
 
+    // persist wallet address for pre-syncing logic
+    // PersistenceService.to.walletAddress.val =
+    //     Globals.wallet!.privateKey.address.hexEip55;
+
     // save password to biometric storage
     final storage = await BiometricUtils.getStorage(
       title: "Secure Wallet Password",
@@ -110,7 +114,7 @@ class CreatePasswordScreenController extends GetxController
     );
 
     if (PersistenceService.to.sync.val) {
-      Get.offAllNamed(Routes.sync, parameters: {'': ''});
+      Get.offAllNamed(Routes.sync);
     } else {
       Get.offNamedUntil(Routes.main, (route) => false);
     }

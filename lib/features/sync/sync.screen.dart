@@ -19,10 +19,10 @@ class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.cloud, size: 100, color: kAppColor),
+        const Icon(LineIcons.memory, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
-          '$kAppName Cloud',
+          'Vault Management',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
@@ -37,11 +37,11 @@ class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
             return Column(
               children: <Widget>[
                 RadioListTile<bool>(
-                  title: const Text('Sync with $kAppName Cloud'),
+                  title: const Text('$kAppName Cloud Sync'),
                   subtitle: const Text(
-                    'Conveniently keep multiple devices in sync',
+                    'Securely keep multiple devices in sync',
                   ),
-                  secondary: const Icon(LineIcons.syncIcon),
+                  secondary: const Icon(LineIcons.cloud),
                   value: true,
                   groupValue: PersistenceService.to.sync.val,
                   onChanged: (value) => PersistenceService.to.sync.val = value!,
@@ -49,7 +49,7 @@ class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
                 RadioListTile<bool>(
                   title: const Text('Offline'),
                   subtitle: const Text(
-                    'Manually manage offline vaults across your devices',
+                    'Manually import/export offline vaults across your devices',
                   ),
                   secondary: const Icon(Icons.wifi_off),
                   value: false,

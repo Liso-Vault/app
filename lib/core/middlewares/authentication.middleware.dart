@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../features/app/routes.dart';
 import '../utils/globals.dart';
@@ -22,6 +23,8 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.sync);
     }
 
+    // start down syncing
+    MainScreenController.to.downSync();
     return null;
   }
 }

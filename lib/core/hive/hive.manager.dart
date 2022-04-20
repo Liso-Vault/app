@@ -68,10 +68,16 @@ class HiveManager {
   }
 
   static void _watchBoxes() {
-    final mainController = Get.find<MainScreenController>();
-    itemsStream = items?.watch().listen(mainController.onBoxChanged);
-    archivedStream = archived?.watch().listen(mainController.onBoxChanged);
-    trashStream = trash?.watch().listen(mainController.onBoxChanged);
+    itemsStream = items?.watch().listen(
+          MainScreenController.to.onBoxChanged,
+        );
+    archivedStream = archived?.watch().listen(
+          MainScreenController.to.onBoxChanged,
+        );
+    trashStream = trash?.watch().listen(
+          MainScreenController.to.onBoxChanged,
+        );
+
     console.info('watchBoxes');
   }
 
