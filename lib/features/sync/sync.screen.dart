@@ -9,9 +9,8 @@ import '../../core/services/persistence.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import 'sync_screen.controller.dart';
 
-class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
+class SyncScreen extends StatelessWidget with ConsoleMixin {
   const SyncScreen({Key? key}) : super(key: key);
 
   @override
@@ -61,10 +60,10 @@ class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
           },
         ),
         const SizedBox(height: 20),
-        if (Get.previousRoute == Routes.welcome) ...[
+        if (Get.previousRoute.contains(Routes.createPassword)) ...[
           const Divider(),
           TextButton.icon(
-            onPressed: controller.save,
+            onPressed: save,
             label: Text('save'.tr),
             icon: const Icon(LineIcons.arrowRight),
           ),
@@ -84,7 +83,9 @@ class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        leading: const AppBarLeadingButton(),
+        leading: Get.previousRoute.contains(Routes.createPassword)
+            ? null
+            : const AppBarLeadingButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -97,5 +98,16 @@ class SyncScreen extends GetView<SyncScreenController> with ConsoleMixin {
         ),
       ),
     );
+  }
+
+  void save() {
+    final persistence = Get.find<PersistenceService>();
+    persistence.syncConfirmed.val = true;
+
+    if (Get.previousRoute.contains(Routes.createPassword)) {
+      Get.offNamedUntil(Routes.main, (route) => false);
+    } else {
+      Get.back();
+    }
   }
 }

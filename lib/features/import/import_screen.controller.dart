@@ -173,7 +173,6 @@ class ImportScreenController extends GetxController
     // turn on sync setting if successfully imported via cloud
     PersistenceService.to.sync.val =
         importMode.value == ImportMode.liso ? true : false;
-
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(

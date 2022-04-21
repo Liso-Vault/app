@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,19 +8,16 @@ import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.item.dart';
-import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenController extends GetxController
@@ -29,10 +27,9 @@ class MainScreenController extends GetxController
   // VARIABLES
   Timer? timeLockTimer;
   var scaffoldKey = GlobalKey<ScaffoldState>();
+  ItemsSearchDelegate? searchDelegate;
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final persistence = Get.find<PersistenceService>();
-  final upSyncing = false.obs;
-  final downSyncing = false.obs;
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
@@ -55,14 +52,10 @@ class MainScreenController extends GetxController
         .toList();
   }
 
-  ItemsSearchDelegate? searchDelegate;
-
   // PROPERTIES
   final data = <HiveLisoItem>[].obs;
 
   // GETTERS
-  bool get syncing => upSyncing.value || downSyncing.value;
-
   List<ContextMenuItem> get menuItemsSort {
     final sortName = sortOrder.value.name;
     final ascending = sortName.contains('Ascending');
@@ -175,11 +168,8 @@ class MainScreenController extends GetxController
 
   @override
   void onReady() {
-    downSync();
     _initAppLifeCycleEvents();
-    sortOrder.listen((order) => _load());
-    _load();
-    // listen for sort order changes
+    sortOrder.listen((order) => load());
     console.info('onReady');
     super.onReady();
   }
@@ -242,14 +232,12 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  void reload() => _load();
-
-  void _load() async {
+  void load() async {
     final boxIsOpen = HiveManager.items?.isOpen ?? false;
-    if (!boxIsOpen) return;
+    if (!boxIsOpen) return console.warning('box is not open');
 
     change(null, status: RxStatus.loading());
-    final drawerController = Get.find<DrawerMenuController>();
+    final drawerController = DrawerMenuController.to;
     List<HiveLisoItem> items = [];
 
     // FILTER BY BOX
@@ -366,58 +354,7 @@ class MainScreenController extends GetxController
     // reload SearchDelegate to reflect
     searchDelegate?.reload(Get.context!);
     drawerController.refresh(); // update drawer state
-  }
-
-  void sync() {
-    if (syncing) return;
-    console.warning('persistence.changes.val: ${persistence.changes.val}');
-    if (persistence.changes.val > 0) {
-      upSync();
-    } else {
-      downSync();
-    }
-  }
-
-  Future<void> downSync() async {
-    if (downSyncing.value) return;
-    downSyncing.value = true;
-    await S3Service.to.tryDownSync();
-    downSyncing.value = false;
-    _load();
-  }
-
-  Future<void> upSync() async {
-    if (upSyncing.value) return;
-    // // make sure we are down synced before can up sync
-    // if (!S3Service.to.canUpSync) {
-    //   await downSync();
-
-    //   if (!S3Service.to.canUpSync) {
-    //     return console.error('unable to upSync because downSync failed');
-    //   }
-    // }
-
-    upSyncing.value = true;
-    final result = await S3Service.to.upSync();
-    bool success = false;
-
-    result.fold(
-      (error) => UIUtils.showSimpleDialog('Error Syncing', '$error > sync()'),
-      (response) => success = response,
-    );
-
-    if (!success) {
-      upSyncing.value = false;
-      return;
-    }
-
-    upSyncing.value = false;
-    persistence.changes.val = 0;
-
-    NotificationsManager.notify(
-      title: 'Successfully Synced',
-      body: 'Your vault just got updated.',
-    );
+    console.info('_load()');
   }
 
   void search() async {
@@ -437,7 +374,7 @@ class MainScreenController extends GetxController
     if (!event.deleted) {
       persistence.changes.val++;
       // use the static getter to avoid not reloading bug
-      MainScreenController.to.reload();
+      load();
       console.info('load');
     }
   }

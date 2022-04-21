@@ -33,20 +33,22 @@ class UIUtils {
   }
 
   static void showSimpleDialog(String title, String message) {
-    Get.dialog(AlertDialog(
-      title: Text(title),
-      content: Utils.isDrawerExpandable
-          ? Text(message)
-          : SizedBox(
-              width: 600,
-              child: Text(message),
-            ),
-      actions: [
-        TextButton(
-          child: const Text('Okay'),
-          onPressed: Get.back,
-        ),
-      ],
-    ));
+    Get.dialog(
+      AlertDialog(
+        title: Text(title),
+        content: Utils.isDrawerExpandable
+            ? Text(message)
+            : SizedBox(
+                width: 600,
+                child: Text(message),
+              ),
+        actions: [
+          TextButton(
+            child: const Text('Okay'),
+            onPressed: Get.back,
+          ),
+        ],
+      ),
+    );
   }
 }

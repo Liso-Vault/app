@@ -11,14 +11,13 @@ import '../item/item_screen.controller.dart';
 import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../settings/settings_screen.controller.dart';
-import '../sync/sync_screen.controller.dart';
 import 'main_screen.controller.dart';
 
 class MainScreenBinding extends Bindings {
   @override
   void dependencies() {
     Get.put(MainScreenController(), permanent: true);
-    Get.lazyPut(() => DrawerMenuController(), fenix: true);
+    Get.put(DrawerMenuController(), permanent: true);
     // WIDGETS
     Get.create(() => PasswordFormFieldController());
     Get.create(() => PINFormFieldController());
@@ -28,7 +27,6 @@ class MainScreenBinding extends Bindings {
     Get.create(() => AboutScreenController());
     Get.create(() => ExportScreenController());
     Get.create(() => ResetScreenController());
-    Get.create(() => SyncScreenController());
     // ipfs
     Get.create(() => IPFSScreenController());
     Get.create(() => IPFSExplorerScreenController());

@@ -10,11 +10,6 @@ class NotificationsManager {
   static void cancelAll() => plugin.cancelAll();
 
   static void init() async {
-    _initPlugin();
-    console.info("init");
-  }
-
-  static void _initPlugin() {
     const iosSettings = IOSInitializationSettings(
       onDidReceiveLocalNotification: onForegroundPayload,
     );
@@ -32,15 +27,13 @@ class NotificationsManager {
       onSelectNotification: onBackgroundPayload,
     );
 
-    console.info("_initPlugin");
+    console.info("init");
   }
 
   static void notify({
     required final String title,
     required final String body,
   }) async {
-    console.info("notify...");
-
     const iosDetails = IOSNotificationDetails();
     const macosDetails = MacOSNotificationDetails();
     const linuxDetails = LinuxNotificationDetails();
@@ -68,8 +61,6 @@ class NotificationsManager {
       details,
       payload: '',
     );
-
-    console.info("done");
   }
 
   static void onBackgroundPayload(String? payload) async {

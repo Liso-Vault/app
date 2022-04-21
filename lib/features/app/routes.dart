@@ -15,6 +15,7 @@ abstract class Routes {
   static const unlock = '/unlock';
   static const export = '/export';
   static const sync = '/sync';
+  static const syncing = '/syncing';
 
   static const settings = '/settings';
   static const about = '/about';

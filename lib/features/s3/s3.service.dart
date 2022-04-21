@@ -18,6 +18,7 @@ import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/ui_utils.dart';
+import '../sync/sync.service.dart';
 import 'model/s3_content.model.dart';
 
 class S3Service extends GetxService with ConsoleMixin {
@@ -27,12 +28,10 @@ class S3Service extends GetxService with ConsoleMixin {
   Minio? client;
   final config = Get.find<ConfigService>();
   final persistence = Get.find<PersistenceService>();
-  bool canUpSync = false;
 
   // PROPERTIES
   final downloadTotalSize = 0.obs;
   final downloadedSize = 0.obs;
-
   final uploadTotalSize = 0.obs;
   final uploadedSize = 0.obs;
 
@@ -55,7 +54,6 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-
   Future<void> _prepare() async {
     if (client == null || client!.endPoint.isEmpty) await init();
   }
@@ -74,11 +72,6 @@ class S3Service extends GetxService with ConsoleMixin {
   // CAN DOWN SYNC
   Future<void> tryDownSync() async {
     if (!persistence.canSync) return;
-    if (persistence.changes.val > 0) {
-      console.error('there are still unsynced changes');
-      return;
-    }
-
     console.info('tryDownSync...');
     final statResult = await stat(lisoContent);
     StatObjectResult? statObject;
@@ -86,9 +79,9 @@ class S3Service extends GetxService with ConsoleMixin {
     statResult.fold(
       (error) {
         if (error is MinioError && error.message!.contains('Not Found')) {
-          // user has never synced, let him do it's first upSync
-          canUpSync = true;
-          console.error('Vault not found. User must be new');
+          console.error('New cloud user: upsync current vault');
+          SyncService.to.inSync.value = true;
+          upSync();
         } else {
           console.error('Stat Error: $error');
         }
@@ -96,11 +89,7 @@ class S3Service extends GetxService with ConsoleMixin {
       (response) => statObject = response,
     );
 
-    if (statObject?.metaData?['client'] == null) {
-      console.warning('new user / null metadata from server');
-      canUpSync = true;
-      return;
-    }
+    if (statObject?.metaData?['client'] == null) return;
 
     final server = HiveMetadata.fromJson(
       jsonDecode(statObject!.metaData!['client']!),
@@ -111,7 +100,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     if (local != null && local.updatedTime == server.updatedTime) {
       console.info('in sync with server');
-      canUpSync = true;
+      SyncService.to.inSync.value = true;
       return;
     }
 
@@ -122,8 +111,9 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<void> _downSync(HiveMetadata serverMetadata) async {
     if (!persistence.canSync) return;
 
-    // TODO: download server vault > compare everything with local
-    // choose the most updated item between vaults and merge
+    // TODO: download server vault > remove identical items
+    // compare server's item updated datetime over local
+    // choose the most updated item, merge and upSync if there are pending changes
 
     console.info('down syncing...');
     final downloadResult = await downloadVault(path: vaultPath);
@@ -170,7 +160,8 @@ class S3Service extends GetxService with ConsoleMixin {
 
     await HiveManager.openBoxes();
     // we are now ready to upSync because we are not in sync with server
-    canUpSync = true;
+    SyncService.to.inSync.value = true;
+    PersistenceService.to.changes.val = 0;
 
     // save updated local metadata
     persistence.metadata.val = serverMetadata.toJsonString();
@@ -179,6 +170,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
+    if (!SyncService.to.inSync.value) return Left('not in sync with server');
     if (!persistence.canSync) return Left('offline');
     console.info('syncing...');
     final backupResult = await backup(lisoContent);
@@ -205,7 +197,7 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     if (file == null) return Left('Null Archive File');
-    final uploadResult = await upload(file!);
+    final uploadResult = await _uploadVault(file!);
     bool success = false;
 
     uploadResult.fold(
@@ -222,7 +214,7 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(success);
   }
 
-  Future<Either<dynamic, String>> upload(File file) async {
+  Future<Either<dynamic, String>> _uploadVault(File file) async {
     if (!persistence.canSync) return Left('offline');
     await _prepare();
     console.info('upload...');
@@ -349,8 +341,7 @@ class S3Service extends GetxService with ConsoleMixin {
     MinioByteStream? stream;
 
     try {
-      stream = await client!.getObject(ConfigService.to.s3.bucket,
-          '0x61dD06c6EAb83d2257a6126Bc15fC7A4AdE14a0a/0x61dD06c6EAb83d2257a6126Bc15fC7A4AdE14a0a.liso');
+      stream = await client!.getObject(ConfigService.to.s3.bucket, path);
     } catch (e) {
       return Left(e);
     }

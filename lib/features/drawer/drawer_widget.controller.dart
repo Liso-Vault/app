@@ -80,7 +80,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.toggle();
     filterProtected.value = false;
     filterTag.value = '';
-    MainScreenController.to.reload();
+    MainScreenController.to.load();
     Get.back();
   }
 
@@ -88,7 +88,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.toggle();
     filterFavorites.value = false;
     filterTag.value = '';
-    MainScreenController.to.reload();
+    MainScreenController.to.load();
     Get.back();
   }
 
@@ -143,7 +143,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     //   await Future.delayed(500.milliseconds);
     // }
 
-    MainScreenController.to.reload();
+    MainScreenController.to.load();
     Get.back();
   }
 }

@@ -19,7 +19,9 @@ import 'core/utils/biometric.util.dart';
 import 'core/utils/console.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
+import 'features/connectivity/connectivity.service.dart';
 import 'features/s3/s3.service.dart';
+import 'features/sync/sync.service.dart';
 
 void main() async {
   final console = Console(name: 'Main');
@@ -48,6 +50,8 @@ void main() async {
     Get.put(PersistenceService());
     Get.put(S3Service());
     Get.put(IPFSService());
+    Get.put(SyncService());
+    Get.put(ConnectivityService());
     // utils
     Utils.setDisplayMode(); // refresh rate
     await Utils.setWindowSize(); // for desktop

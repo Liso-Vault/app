@@ -32,7 +32,8 @@ import '../main/main_screen.bindings.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../sync/sync.screen.dart';
-import '../sync/sync_screen.controller.dart';
+import '../sync/syncing/syncing.screen.dart';
+import '../sync/syncing/syncing_screen.controller.dart';
 import 'routes.dart';
 
 class AppPages {
@@ -106,7 +107,11 @@ class AppPages {
     GetPage(
       name: Routes.sync,
       page: () => const SyncScreen(),
-      binding: SyncScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.syncing,
+      page: () => const SyncingScreen(),
+      binding: SyncingScreenBinding(),
     ),
     GetPage(
       name: Routes.ipfs,
