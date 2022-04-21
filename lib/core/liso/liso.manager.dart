@@ -72,13 +72,17 @@ class LisoManager {
   static Future<Either<dynamic, bool>> extractArchive(
     Archive archive, {
     required String path,
+    String fileNamePrefix = '',
   }) async {
     // console.info('extractArchive: $path');
 
     try {
       for (var file in archive.files) {
         if (!file.isFile) continue;
-        final outputStream = OutputFileStream(join(path, basename(file.name)));
+        final outputStream = OutputFileStream(
+          join(path, fileNamePrefix + basename(file.name)),
+        );
+
         file.writeContent(outputStream);
         await outputStream.close();
       }

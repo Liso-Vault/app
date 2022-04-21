@@ -219,6 +219,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                       );
 
                       if (tempItems.isEmpty) {
+                        tempItems.close();
                         return console.warning('temp items is empty');
                       }
 

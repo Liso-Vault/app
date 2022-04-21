@@ -110,11 +110,6 @@ class S3Service extends GetxService with ConsoleMixin {
   // DOWN SYNC
   Future<void> _downSync(HiveMetadata serverMetadata) async {
     if (!persistence.canSync) return;
-
-    // TODO: download server vault > remove identical items
-    // compare server's item updated datetime over local
-    // choose the most updated item, merge and upSync if there are pending changes
-
     console.info('down syncing...');
     final downloadResult = await downloadVault(path: vaultPath);
     File? vaultFile;
@@ -150,14 +145,16 @@ class S3Service extends GetxService with ConsoleMixin {
       );
     }
 
-    await HiveManager.closeBoxes();
+    // await HiveManager.closeBoxes();
     // extract boxes
     await LisoManager.extractArchive(
       archive!,
-      path: LisoManager.hivePath,
+      path: LisoManager.tempPath,
+      fileNamePrefix: 'temp_',
     );
     // open boxes
-    await HiveManager.openBoxes();
+    // await HiveManager.openBoxes();
+
     // we are now ready to upSync because we are not in sync with server
     SyncService.to.inSync.value = true;
     PersistenceService.to.changes.val = 0;
