@@ -58,7 +58,7 @@ class HiveManager {
       path: LisoManager.hivePath,
     );
 
-    _watchBoxes();
+    watchBoxes();
     console.info('openBoxes');
   }
 
@@ -66,11 +66,11 @@ class HiveManager {
     if (items?.isOpen == true) await items?.close();
     if (archived?.isOpen == true) await archived?.close();
     if (trash?.isOpen == true) await trash?.close();
-    await _unwatchBoxes();
+    await unwatchBoxes();
     console.info('closeBoxes');
   }
 
-  static void _watchBoxes() {
+  static void watchBoxes() {
     itemsStream = items?.watch().listen(
           MainScreenController.to.onBoxChanged,
         );
@@ -84,7 +84,7 @@ class HiveManager {
     console.info('watchBoxes');
   }
 
-  static Future<void> _unwatchBoxes() async {
+  static Future<void> unwatchBoxes() async {
     await itemsStream?.cancel();
     await archivedStream?.cancel();
     await trashStream?.cancel();

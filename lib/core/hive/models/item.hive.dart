@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_quill/flutter_quill.dart';
@@ -16,7 +17,7 @@ import 'metadata/metadata.hive.dart';
 part 'item.hive.g.dart';
 
 @HiveType(typeId: 1)
-class HiveLisoItem extends HiveObject with ConsoleMixin {
+class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(0)
   final String identifier;
   @HiveField(1)
@@ -265,4 +266,7 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
 
     return {_identifier: _value};
   }
+
+  @override
+  List<Object?> get props => [identifier, metadata.updatedTime];
 }

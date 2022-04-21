@@ -6,6 +6,7 @@ import 'package:archive/archive.dart';
 import 'package:either_option/either_option.dart';
 import 'package:filesize/filesize.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
@@ -14,9 +15,11 @@ import 'package:minio/models.dart';
 import 'package:path/path.dart';
 
 import '../../core/hive/hive.manager.dart';
+import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/file.util.dart';
+import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 import '../sync/sync.service.dart';
 import 'model/s3_content.model.dart';
@@ -153,14 +156,93 @@ class S3Service extends GetxService with ConsoleMixin {
       fileNamePrefix: 'temp_',
     );
     // open boxes
-    // await HiveManager.openBoxes();
-
+    // await HiveManager.openBoxes();\
     // we are now ready to upSync because we are not in sync with server
     SyncService.to.inSync.value = true;
     PersistenceService.to.changes.val = 0;
     // save updated local metadata
     persistence.metadata.val = serverMetadata.toJsonString();
     console.warning('downloaded and in sync!');
+    await _mergeItems(box: kHiveBoxItems);
+    await _mergeItems(box: kHiveBoxArchived);
+    await _mergeItems(box: kHiveBoxTrash);
+    await S3Service.to.upSync();
+  }
+
+  Future<void> _mergeItems({required String box}) async {
+    final localItems = HiveManager.items!;
+    final cipher = HiveAesCipher(Globals.encryptionKey);
+    final tempItems = await Hive.openBox<HiveLisoItem>(
+      'temp_$box',
+      encryptionCipher: cipher,
+      path: LisoManager.tempPath,
+    );
+
+    if (tempItems.isEmpty) {
+      tempItems.close();
+      return console.warning('temp items is empty');
+    }
+
+    console.warning('server items: ${tempItems.length}');
+    console.warning('local items: ${localItems.length}');
+
+    // MERGED
+    final mergedItems = {...tempItems.values, ...localItems.values};
+    console.info('merged: ${mergedItems.length}');
+    final leastUpdatedDuplicates = <HiveLisoItem>[];
+
+    for (var x in mergedItems) {
+      console.warning(
+        '${x.identifier} - ${x.metadata.updatedTime}',
+      );
+      // skip if item already added to least updated item list
+      if (leastUpdatedDuplicates
+          .where((e) => e.identifier == x.identifier)
+          .isNotEmpty) continue;
+      // find duplicates
+      final duplicate = mergedItems.where((y) => y.identifier == x.identifier);
+      // return the least updated item in duplicate
+      if (duplicate.length > 1) {
+        final _leastUpdatedItem = duplicate.first.metadata.updatedTime
+                .isBefore(duplicate.last.metadata.updatedTime)
+            ? duplicate.first
+            : duplicate.last;
+        leastUpdatedDuplicates.add(_leastUpdatedItem);
+      }
+    }
+
+    console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
+    // remove duplicate + least updated item
+    mergedItems.removeWhere(
+      (e) => leastUpdatedDuplicates.contains(e),
+    );
+
+    console.info('final: ${mergedItems.length}');
+    for (var e in mergedItems) {
+      console.warning(
+        '${e.identifier} - ${e.metadata.updatedTime}',
+      );
+    }
+
+    // delete temp items
+    await tempItems.clear();
+    await tempItems.deleteFromDisk();
+    // clear and reload updated items
+
+    await HiveManager.unwatchBoxes();
+
+    if (box == kHiveBoxItems) {
+      await HiveManager.items!.clear();
+      await HiveManager.items!.addAll(mergedItems);
+    } else if (box == kHiveBoxArchived) {
+      await HiveManager.archived!.clear();
+      await HiveManager.archived!.addAll(mergedItems);
+    } else if (box == kHiveBoxTrash) {
+      await HiveManager.trash!.clear();
+      await HiveManager.trash!.addAll(mergedItems);
+    }
+
+    HiveManager.watchBoxes();
   }
 
   // UP SYNC

@@ -21,15 +21,17 @@ class SyncService extends GetxService with ConsoleMixin {
   bool get syncing => upSyncing.value || downSyncing.value;
 
   void sync() {
-    if (syncing) return console.warning('already syncing');
-    final changes = PersistenceService.to.changes.val;
+    // if (syncing) return console.warning('already syncing');
+    // final changes = PersistenceService.to.changes.val;
 
-    if (changes > 0) {
-      console.warning('pending changes: $changes');
-      upSync();
-    } else {
-      downSync();
-    }
+    // if (changes > 0) {
+    //   console.warning('pending changes: $changes');
+    //   upSync();
+    // } else {
+    //   downSync();
+    // }
+
+    downSync();
   }
 
   // INIT
