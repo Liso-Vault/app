@@ -28,14 +28,16 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     this.searchMode = false,
   }) : super(key: key);
 
-  void _favorite() {
+  void _favorite() async {
     item.favorite = !item.favorite;
+    item.metadata = await item.metadata.getUpdated();
     item.save();
   }
 
   // void _protect() async {
   //   if (item.protected && !(await _unlock())) return;
   //   item.protected = !item.protected;
+  //   item.metadata = await item.metadata.getUpdated();
   //   item.save();
   //   _reloadSearchDelegate();
   // }

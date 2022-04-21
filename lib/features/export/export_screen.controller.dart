@@ -10,6 +10,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/hive/hive.manager.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
@@ -77,15 +78,19 @@ class ExportScreenController extends GetxController
     change('Exporting...', status: RxStatus.loading());
 
     final encoder = ZipFileEncoder();
+    await HiveManager.closeBoxes();
 
     try {
       encoder.create(LisoManager.tempVaultFilePath);
       await encoder.addDirectory(Directory(LisoManager.hivePath));
       encoder.close();
     } catch (e) {
+      await HiveManager.openBoxes();
       UIUtils.showSimpleDialog('File System Error', e.toString());
       return change(null, status: RxStatus.success());
     }
+
+    await HiveManager.openBoxes();
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(

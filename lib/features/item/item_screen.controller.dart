@@ -5,6 +5,7 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
@@ -117,6 +118,7 @@ class ItemScreenController extends GetxController
     final _fields = TemplateParser.parse(category);
 
     item = HiveLisoItem(
+      identifier: const Uuid().v4(),
       category: category,
       title: '',
       fields: _fields,
@@ -129,10 +131,10 @@ class ItemScreenController extends GetxController
 
   void add() async {
     if (!formKey.currentState!.validate()) return;
-
     final _fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
 
     final newItem = HiveLisoItem(
+      identifier: const Uuid().v4(),
       category: category,
       iconUrl: iconUrl.value,
       title: titleController.text,

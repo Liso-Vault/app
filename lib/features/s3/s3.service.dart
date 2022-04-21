@@ -142,7 +142,6 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     console.info('archive files: ${archive!.files.length}');
-
     // check if archive contains files
     if (_error != null || archive!.files.isEmpty) {
       return UIUtils.showSimpleDialog(
@@ -157,12 +156,11 @@ class S3Service extends GetxService with ConsoleMixin {
       archive!,
       path: LisoManager.hivePath,
     );
-
+    // open boxes
     await HiveManager.openBoxes();
     // we are now ready to upSync because we are not in sync with server
     SyncService.to.inSync.value = true;
     PersistenceService.to.changes.val = 0;
-
     // save updated local metadata
     persistence.metadata.val = serverMetadata.toJsonString();
     console.warning('downloaded and in sync!');
@@ -182,10 +180,12 @@ class S3Service extends GetxService with ConsoleMixin {
       ),
     );
 
+    await HiveManager.closeBoxes();
     final archiveResult = await LisoManager.createArchive(
       Directory(LisoManager.hivePath),
       filePath: LisoManager.tempVaultFilePath,
     );
+    await HiveManager.openBoxes();
 
     File? file;
     archiveResult.fold(
@@ -220,7 +220,6 @@ class S3Service extends GetxService with ConsoleMixin {
     console.info('upload...');
     final metadataString = await _updatedLocalMetadata();
     uploadTotalSize.value = await file.length();
-
     String eTag = '';
 
     try {
@@ -235,10 +234,10 @@ class S3Service extends GetxService with ConsoleMixin {
       return Left(e);
     }
 
+    file.delete(); // delete temp vault file
     // reset download indicators
     uploadTotalSize.value = 0;
     uploadedSize.value = 0;
-
     // save updated local metadata
     persistence.metadata.val = metadataString;
     return Right(eTag);

@@ -18,23 +18,26 @@ part 'item.hive.g.dart';
 @HiveType(typeId: 1)
 class HiveLisoItem extends HiveObject with ConsoleMixin {
   @HiveField(0)
-  String category;
+  final String identifier;
   @HiveField(1)
-  String title;
+  final String category;
   @HiveField(2)
-  String iconUrl;
+  String title;
   @HiveField(3)
-  List<HiveLisoField> fields;
+  String iconUrl;
   @HiveField(4)
-  bool favorite;
+  List<HiveLisoField> fields;
   @HiveField(5)
-  bool protected;
+  bool favorite;
   @HiveField(6)
-  List<String> tags;
+  bool protected;
   @HiveField(7)
+  List<String> tags;
+  @HiveField(8)
   HiveMetadata metadata;
 
   HiveLisoItem({
+    required this.identifier,
     required this.category,
     required this.title,
     this.iconUrl = '',
@@ -46,6 +49,7 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
   });
 
   factory HiveLisoItem.fromJson(Map<String, dynamic> json) => HiveLisoItem(
+        identifier: json["identifier"],
         category: json["category"],
         iconUrl: json["icon_url"],
         title: json["title"],
@@ -58,6 +62,7 @@ class HiveLisoItem extends HiveObject with ConsoleMixin {
 
   Map<String, dynamic> toJson() {
     return {
+      "identifier": identifier,
       "category": category,
       "icon_url": iconUrl,
       "title": title,

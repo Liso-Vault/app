@@ -43,16 +43,19 @@ class HiveManager {
     items = await Hive.openBox(
       kHiveBoxItems,
       encryptionCipher: cipher,
+      path: LisoManager.hivePath,
     );
 
     archived = await Hive.openBox(
       kHiveBoxArchived,
       encryptionCipher: cipher,
+      path: LisoManager.hivePath,
     );
 
     trash = await Hive.openBox(
       kHiveBoxTrash,
       encryptionCipher: cipher,
+      path: LisoManager.hivePath,
     );
 
     _watchBoxes();

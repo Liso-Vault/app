@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -10,8 +14,11 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/hive/models/item.hive.dart';
+import '../../core/liso/liso.manager.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -183,6 +190,99 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               key: controller.scaffoldKey,
               appBar: appBar,
               body: content,
+              bottomNavigationBar: ButtonBar(
+                children: [
+                  TextButton.icon(
+                    label: const Text('Sync'),
+                    icon: const Icon(LineIcons.syncIcon),
+                    onPressed: () async {
+                      // const serverPath =
+                      //     '/Users/nemoryoliver/Library/Containers/com.liso.app/Data/Library/Application Support/com.liso.app/temp/temp_vault.liso';
+                      // final archiveResult = LisoManager.readArchive(serverPath);
+
+                      // archiveResult.fold(
+                      //   (error) => console.error('error: $error'),
+                      //   (archive) async {
+                      //     await LisoManager.extractArchive(
+                      //       archive,
+                      //       path: LisoManager.tempPath,
+                      //     );
+                      //   },
+                      // );
+
+                      final localItems = HiveManager.items!;
+                      final cipher = HiveAesCipher(Globals.encryptionKey);
+                      final tempItems = await Hive.openBox<HiveLisoItem>(
+                        'temp_$kHiveBoxItems',
+                        encryptionCipher: cipher,
+                        path: LisoManager.tempPath,
+                      );
+
+                      if (tempItems.isEmpty) {
+                        return console.warning('temp items is empty');
+                      }
+
+                      console.warning('server items: ${tempItems.length}');
+                      console.warning('local items: ${localItems.length}');
+
+                      // MERGED
+                      final mergedItems = {
+                        ...tempItems.values,
+                        ...localItems.values
+                      };
+
+                      console.info('merged: ${mergedItems.length}');
+                      final leastUpdatedDuplicates = <HiveLisoItem>[];
+
+                      for (var x in mergedItems) {
+                        console.warning(
+                          '${x.identifier} - ${x.metadata.updatedTime}',
+                        );
+                        // skip if item already added to least updated item list
+                        if (leastUpdatedDuplicates
+                            .where((e) => e.identifier == x.identifier)
+                            .isNotEmpty) continue;
+
+                        // find duplicates
+                        final duplicate = mergedItems
+                            .where((y) => y.identifier == x.identifier);
+
+                        if (duplicate.length > 1) {
+                          // return the least updated item in duplicate
+                          final _leastUpdatedItem = duplicate
+                                  .first.metadata.updatedTime
+                                  .isBefore(duplicate.last.metadata.updatedTime)
+                              ? duplicate.first
+                              : duplicate.last;
+                          leastUpdatedDuplicates.add(_leastUpdatedItem);
+                        }
+                      }
+
+                      console.info(
+                          'least updated duplicates: ${leastUpdatedDuplicates.length}');
+                      // remove duplicate + least updated item
+                      mergedItems.removeWhere(
+                        (e) => leastUpdatedDuplicates.contains(e),
+                      );
+
+                      console.info('final: ${mergedItems.length}');
+                      for (var e in mergedItems) {
+                        console.warning(
+                          '${e.identifier} - ${e.metadata.updatedTime}',
+                        );
+                      }
+
+                      // // delete temp items
+                      // tempItems.deleteFromDisk();
+                      // // clear and reload updated items
+                      // HiveManager.items!.clear();
+                      // HiveManager.items!.addAll(mergedItems);
+                      // // upSync
+                      // S3Service.to.upSync();
+                    },
+                  ),
+                ],
+              ),
               floatingActionButton: Obx(
                 () =>
                     DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
