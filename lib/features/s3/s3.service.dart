@@ -37,6 +37,8 @@ class S3Service extends GetxService with ConsoleMixin {
   final downloadedSize = 0.obs;
   final uploadTotalSize = 0.obs;
   final uploadedSize = 0.obs;
+  final progressValue = 0.05.obs;
+  final progressText = 'Syncing...'.obs;
 
   // GETTERS
   String get rootPath => '${LisoManager.walletAddress}/';
@@ -72,6 +74,11 @@ class S3Service extends GetxService with ConsoleMixin {
     );
   }
 
+  void _syncProgress(double value, String? message) {
+    progressValue.value = value;
+    if (message != null) progressText.value = message;
+  }
+
   Future<Either<dynamic, bool>> sync() async {
     if (!persistence.canSync) return const Right(false);
 
@@ -82,6 +89,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     console.info('syncing...');
     syncing.value = true;
+    _syncProgress(0.1, 'Syncing...');
     final statResult = await stat(lisoContent);
 
     if (statResult.isLeft) {
@@ -89,7 +97,9 @@ class S3Service extends GetxService with ConsoleMixin {
           statResult.left.message!.contains('Not Found')) {
         console.error('New cloud user: upsync current vault');
         inSync.value = true;
+        _syncProgress(0.5, 'Initializing...');
         final upsyncResult = await upSync();
+        _syncProgress(1, '');
         syncing.value = false;
 
         return Right(
@@ -106,20 +116,31 @@ class S3Service extends GetxService with ConsoleMixin {
       jsonDecode(statResult.right.metaData!['client']!),
     );
 
-    final downResult = await _downSync(serverMetadata);
-    syncing.value = false;
+    _syncProgress(0.2, 'Fetching...');
+    final downResult = await _downSync();
     if (downResult.isLeft) return Left(downResult.left);
+
+    // we are now ready to upSync because we are not in sync with server
+    inSync.value = true;
+    PersistenceService.to.changes.val = 0;
+    persistence.metadata.val = serverMetadata.toJsonString();
+
+    // up sync local changes with server
+    _syncProgress(0.5, 'Pushing...');
+    await upSync();
+    syncing.value = false;
+    _syncProgress(1, '');
     MainScreenController.to.load();
     return Right(downResult.right);
   }
 
   // DOWN SYNC
-  Future<Either<dynamic, bool>> _downSync(HiveMetadata serverMetadata) async {
+  Future<Either<dynamic, bool>> _downSync() async {
     if (!persistence.canSync) return const Right(false);
     console.info('down syncing...');
     final downloadResult = await downloadVault(path: vaultPath);
     if (downloadResult.isLeft) return Left(downloadResult.left);
-
+    _syncProgress(0.3, null);
     final vaultFile = downloadResult.right;
     final readResult = LisoManager.readArchive(vaultFile.path);
     FileUtils.delete(vaultFile.path); // delete temporary vault file
@@ -134,16 +155,10 @@ class S3Service extends GetxService with ConsoleMixin {
 
     if (extractResult.isLeft) return Left(extractResult.left);
     await HiveManager.unwatchBoxes();
+    _syncProgress(0.4, null);
     await _mergeItems();
     HiveManager.watchBoxes();
-    // we are now ready to upSync because we are not in sync with server
-    inSync.value = true;
-    PersistenceService.to.changes.val = 0;
-    persistence.metadata.val = serverMetadata.toJsonString();
-    console.warning('downloaded and in sync!');
-    MainScreenController.to.load();
-    // up sync local changes with server
-    await upSync();
+
     return const Right(true);
   }
 
@@ -230,7 +245,9 @@ class S3Service extends GetxService with ConsoleMixin {
     await HiveManager.openBoxes();
     if (archiveResult.isLeft) return Left(archiveResult.left);
     // UPLOAD
+    _syncProgress(0.7, null);
     final uploadResult = await _uploadVault(archiveResult.right);
+    _syncProgress(0.9, null);
     if (uploadResult.isLeft) return Left(uploadResult.left);
     console.info('uploaded! eTag: ${uploadResult.right}');
     return const Right(true);

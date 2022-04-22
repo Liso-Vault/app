@@ -33,37 +33,6 @@ class SyncingScreenController extends GetxController
   }
 
   void cancel() {
-    // const message =
-    //     'Skipping the initial synchronization might cause vault discrepancies accross multiplpe devices.';
-
-    // Get.dialog(
-    //   AlertDialog(
-    //     title: const Text('Skip Sync'),
-    //     content: Utils.isDrawerExpandable
-    //         ? const Text(message)
-    //         : const SizedBox(
-    //             width: 600,
-    //             child: Text(message),
-    //           ),
-    //     actions: [
-    //       TextButton(
-    //         child: const Text('Skip Sync'),
-    //         onPressed: () {
-    //           AuthenticationMiddleware.ignoreSync = true;
-    //           Get.offNamedUntil(Routes.main, (route) => false);
-    //         },
-    //       ),
-    //       TextButton(
-    //         child: const Text('Sync'),
-    //         onPressed: () {
-    //           Get.back();
-    //           downSync();
-    //         },
-    //       ),
-    //     ],
-    //   ),
-    // );
-
     AuthenticationMiddleware.ignoreSync = true;
     Get.offNamedUntil(Routes.main, (route) => false);
   }

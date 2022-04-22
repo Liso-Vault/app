@@ -164,14 +164,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final floatingActionButton = Obx(
-      () => ContextMenuButton(
-        controller.menuItemsCategory,
-        enabled: !S3Service.to.syncing.value,
-        child: FloatingActionButton(
-          child: const Icon(LineIcons.plus),
-          onPressed: () {},
-        ),
-      ),
+      () => S3Service.to.syncing.value
+          ? const SizedBox.shrink()
+          : ContextMenuButton(
+              controller.menuItemsCategory,
+              enabled: !S3Service.to.syncing.value,
+              child: FloatingActionButton(
+                child: const Icon(LineIcons.plus),
+                onPressed: () {},
+              ),
+            ),
     );
 
     if (screen.isDesktop) {
@@ -181,7 +183,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           Container(width: 0.5, color: Colors.black),
           Expanded(
             child: Scaffold(
-              key: controller.scaffoldKey,
               appBar: appBar,
               body: content,
               floatingActionButton: Obx(
@@ -197,7 +198,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     // 1 SECTION FOR PHONE DEVICES
     else {
       return Scaffold(
-        key: controller.scaffoldKey,
         appBar: appBar,
         body: content,
         floatingActionButton: floatingActionButton,

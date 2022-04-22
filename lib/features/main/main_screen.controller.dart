@@ -26,7 +26,6 @@ class MainScreenController extends GetxController
 
   // VARIABLES
   Timer? timeLockTimer;
-  var scaffoldKey = GlobalKey<ScaffoldState>();
   ItemsSearchDelegate? searchDelegate;
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
   final persistence = Get.find<PersistenceService>();
@@ -370,7 +369,7 @@ class MainScreenController extends GetxController
     console.info('box changed');
     // add change only if not a deleted event to prevent duplicates
     if (!event.deleted) {
-      // persistence.changes.val++;
+      persistence.changes.val++;
       // use the static getter to avoid not reloading bug
       load();
     }

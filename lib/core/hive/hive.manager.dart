@@ -52,15 +52,12 @@ class HiveManager {
 
   static Future<void> closeBoxes() async {
     if (items?.isOpen == true) await items?.close();
-    await unwatchBoxes();
+    unwatchBoxes();
     console.info('closeBoxes');
   }
 
   static void watchBoxes() {
-    itemsStream = items?.watch().listen(
-          MainScreenController.to.onBoxChanged,
-        );
-
+    itemsStream = items?.watch().listen(MainScreenController.to.onBoxChanged);
     console.info('watchBoxes');
   }
 
@@ -69,10 +66,13 @@ class HiveManager {
     console.info('unwatchBoxes');
   }
 
+  static Future<void> deleteBoxes() async {
+    await items?.deleteFromDisk();
+    console.info('deleteBoxes');
+  }
+
   // workaround to check if encryption key is correct
   static Future<bool> isEncryptionKeyCorrect(List<int> key) async {
-    console.warning('key length: ${key.length}');
-
     // initialize as a temporary hive box
     final _items = await Hive.openBox(
       kHiveBoxItems,
@@ -80,15 +80,15 @@ class HiveManager {
       path: LisoManager.tempPath,
     );
 
+    // TODO: what if vault is literally empty
     final correct = _items.isNotEmpty;
-    // delete box after use
-    await Hive.deleteBoxFromDisk(kHiveBoxItems, path: LisoManager.tempPath);
+    _items.close();
     return correct;
   }
 
   static Future<void> reset() async {
     await closeBoxes();
-    await Hive.deleteFromDisk();
+    await deleteBoxes();
     items = null;
     console.info('reset');
   }

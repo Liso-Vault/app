@@ -8,7 +8,6 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
-import '../../core/hive/hive.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';

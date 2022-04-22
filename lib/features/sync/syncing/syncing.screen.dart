@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/sync/syncing/syncing_screen.controller.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import '../../general/centered_placeholder.widget.dart';
 
@@ -16,10 +18,19 @@ class SyncingScreen extends GetView<SyncingScreenController> {
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              CircularProgressIndicator(),
-              SizedBox(height: 30),
-              Text('Syncing...'),
+            children: [
+              Obx(
+                () => CircularPercentIndicator(
+                  radius: 25,
+                  lineWidth: 6.0,
+                  percent: S3Service.to.progressValue.value,
+                  progressColor: Get.theme.primaryColor,
+                  backgroundColor:
+                      Get.isDarkMode ? Colors.grey.shade600 : Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 15),
+              const Text('Syncing...'),
             ],
           ),
         ),

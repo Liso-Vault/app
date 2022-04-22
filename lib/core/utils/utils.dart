@@ -35,18 +35,6 @@ class Utils {
     }
   }
 
-  static Future<File> moveFile(File file, String path) async {
-    try {
-      // prefer using rename as it is probably faster
-      return await file.rename(path);
-    } on FileSystemException catch (_) {
-      // if rename fails, copy the source file and then delete it
-      final newFile = await file.copy(path);
-      await file.delete();
-      return newFile;
-    }
-  }
-
   static String generatePassword({
     bool letter = true,
     bool number = true,

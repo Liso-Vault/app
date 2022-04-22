@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
@@ -12,9 +15,11 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 
+import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../app/routes.dart';
+import '../main/main_screen.controller.dart';
 import '../s3/s3.service.dart';
 
 class ImportScreenBinding extends Bindings {
@@ -117,19 +122,16 @@ class ImportScreenController extends GetxController
     }
 
     final archive = result.right;
-    // get items.hive file
-    final itemsHiveFile = archive.files.firstWhere(
-      (e) => e.isFile && e.name.contains('items.hive'),
-    );
-
-    // temporarily extract for verification
-    await LisoManager.extractArchiveFile(
-      itemsHiveFile,
+    // extract to temp directory for verification
+    await LisoManager.extractArchive(
+      archive,
       path: LisoManager.tempPath,
     );
+
     // check if encryption key is correct
-    final credentials =
-        WalletService.to.mnemonicToPrivateKey(seedController.text);
+    final credentials = WalletService.to.mnemonicToPrivateKey(
+      seedController.text,
+    );
 
     final isCorrect = await HiveManager.isEncryptionKeyCorrect(
       credentials.privateKey,
@@ -144,12 +146,16 @@ class ImportScreenController extends GetxController
       return change(null, status: RxStatus.success());
     }
 
-    // extract all hive boxes
-    await LisoManager.extractArchive(
-      archive,
-      path: LisoManager.hivePath,
-    );
+    // move temporarily extracted hive files to main hive directory
+    final tempItemsFile =
+        File(join(LisoManager.tempPath, '$kHiveBoxItems.hive'));
+    final destinationItemsPath =
+        join(LisoManager.hivePath, '$kHiveBoxItems.hive');
 
+    await FileUtils.move(tempItemsFile, destinationItemsPath);
+
+    // ignore syncing screen if we just imported
+    AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud
     PersistenceService.to.sync.val =
         importMode.value == ImportMode.liso ? true : false;

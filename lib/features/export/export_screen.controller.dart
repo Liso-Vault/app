@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
@@ -117,7 +118,7 @@ class ExportScreenController extends GetxController
     change('Exporting to: $exportPath', status: RxStatus.loading());
     await Future.delayed(1.seconds); // just for style
 
-    await Utils.moveFile(
+    await FileUtils.move(
       File(LisoManager.tempVaultFilePath),
       join(exportPath, LisoManager.vaultFilename),
     );
