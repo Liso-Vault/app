@@ -33,8 +33,10 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(6)
   bool protected;
   @HiveField(7)
-  List<String> tags;
+  bool trashed;
   @HiveField(8)
+  List<String> tags;
+  @HiveField(9)
   HiveMetadata metadata;
 
   HiveLisoItem({
@@ -45,6 +47,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     required this.fields,
     this.favorite = false,
     this.protected = false,
+    this.trashed = false,
     this.tags = const [],
     required this.metadata,
   });
@@ -57,6 +60,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         fields: json["fields"],
         favorite: json["favorite"],
         protected: json["protected"],
+        trashed: json["trashed"],
         tags: json["tags"],
         metadata: HiveMetadata.fromJson(json["metadata"]),
       );
@@ -70,6 +74,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
       "favorite": favorite,
       "protected": protected,
+      "trashed": trashed,
       "tags": tags,
       "metadata": metadata.toJson(),
     };

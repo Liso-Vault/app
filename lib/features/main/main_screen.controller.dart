@@ -238,16 +238,7 @@ class MainScreenController extends GetxController
 
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
-    List<HiveLisoItem> items = [];
-
-    // FILTER BY BOX
-    if (drawerController.boxFilter.value == HiveBoxFilter.all) {
-      items = HiveManager.items!.values.toList();
-    } else if (drawerController.boxFilter.value == HiveBoxFilter.archived) {
-      items = HiveManager.archived!.values.toList();
-    } else if (drawerController.boxFilter.value == HiveBoxFilter.trash) {
-      items = HiveManager.trash!.values.toList();
-    }
+    var items = HiveManager.items!.values.toList();
 
     // FILTER FAVORITES
     if (drawerController.filterFavorites.value) {
@@ -257,6 +248,13 @@ class MainScreenController extends GetxController
     // FILTER PROTECTED
     if (drawerController.filterProtected.value) {
       items = items.where((e) => e.protected).toList();
+    }
+
+    // FILTER TRASHED
+    if (drawerController.filterTrashed.value) {
+      items = items.where((e) => e.trashed).toList();
+    } else {
+      items = items.where((e) => !e.trashed).toList();
     }
 
     // FILTER BY CATEGORY

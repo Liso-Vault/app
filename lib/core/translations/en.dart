@@ -37,6 +37,8 @@ final en = {
   "archive": "Archive",
   "trash": "Trash",
   "restore": "Restore",
+  "delete": "Delete",
+  "delete_permanently": "Delete Permanently",
   "move_to_trash": "Move to trash",
   "move_to_archive": "Move to archive",
   "app": "App",

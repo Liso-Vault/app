@@ -36,8 +36,6 @@ const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
 
 // BOXES
 const kHiveBoxItems = 'items';
-const kHiveBoxArchived = 'archived';
-const kHiveBoxTrash = 'trash';
 
 const kRootDirectory = 'Liso';
 const kBiometricPasswordKey = 'biometric_password';

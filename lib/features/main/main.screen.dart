@@ -58,8 +58,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       onEmpty: CenteredPlaceholder(
         iconData: LineIcons.seedling,
         message: 'no_items'.tr,
-        child: DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
-            ? Obx(
+        child: DrawerMenuController.to.filterTrashed.value
+            ? null
+            : Obx(
                 () => ContextMenuButton(
                   controller.menuItemsCategory,
                   enabled: !S3Service.to.syncing.value,
@@ -72,8 +73,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     onPressed: !S3Service.to.syncing.value ? () {} : null,
                   ),
                 ),
-              )
-            : null,
+              ),
       ),
     );
 
@@ -185,10 +185,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               appBar: appBar,
               body: content,
               floatingActionButton: Obx(
-                () =>
-                    DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all
-                        ? floatingActionButton
-                        : const SizedBox.shrink(),
+                () => !DrawerMenuController.to.filterTrashed.value
+                    ? floatingActionButton
+                    : const SizedBox.shrink(),
               ),
             ),
           ),

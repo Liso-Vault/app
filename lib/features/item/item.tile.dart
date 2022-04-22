@@ -5,13 +5,13 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
@@ -42,20 +42,21 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   //   _reloadSearchDelegate();
   // }
 
-  void _archive() async {
+  void _delete() {
     item.delete();
-    await HiveManager.archived!.add(item);
+    MainScreenController.to.load();
   }
 
   void _trash() async {
-    // TODO: prompt to delete with selector sheet
-    item.delete();
-    await HiveManager.trash!.add(item);
+    item.trashed = !item.trashed;
+    item.metadata = await item.metadata.getUpdated();
+    item.save();
+    // _reloadSearchDelegate();
   }
 
-  void _restore() async {
+  void _restore() {
     item.delete();
-    await HiveManager.items!.add(item);
+    HiveManager.items!.add(item);
   }
 
   void _open() async {
@@ -89,12 +90,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final drawerController = Get.find<DrawerMenuController>();
     final isLargeScreen = !Utils.isDrawerExpandable;
-
-    final isArchived =
-        drawerController.boxFilter.value == HiveBoxFilter.archived;
-    final isTrash = drawerController.boxFilter.value == HiveBoxFilter.trash;
 
     final menuItems = [
       ContextMenuItem(
@@ -115,33 +111,30 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       //   ),
       //   function: _protect,
       // ),
-      if (!isArchived) ...[
-        ContextMenuItem(
-          title: isTrash ? 'move_to_archive'.tr : 'archive'.tr,
-          leading: const Icon(LineIcons.archive),
-          onSelected: _archive,
-        ),
-      ],
-      if (!isTrash) ...[
-        ContextMenuItem(
-          title: isArchived ? 'move_to_trash'.tr : 'trash'.tr,
-          leading: const Icon(LineIcons.trash),
-          onSelected: _trash,
-        ),
-      ],
-      if (isTrash || isArchived) ...[
-        ContextMenuItem(
-          title: 'restore'.tr,
-          leading: const Icon(LineIcons.trashRestore),
-          onSelected: _restore,
-        ),
-      ],
       ContextMenuItem(
         title: 'details'.tr,
         leading: const Icon(LineIcons.code),
         // TODO: adaptive route for json viewer screen
         onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
       ),
+      if (item.trashed) ...[
+        ContextMenuItem(
+          title: 'restore'.tr,
+          leading: const Icon(LineIcons.trashRestore),
+          onSelected: _restore,
+        ),
+        ContextMenuItem(
+          title: 'delete_permanently'.tr,
+          leading: const Icon(LineIcons.trash),
+          onSelected: _delete,
+        ),
+      ] else ...[
+        ContextMenuItem(
+          title: 'move_to_trash'.tr,
+          leading: const Icon(LineIcons.trash),
+          onSelected: _trash,
+        ),
+      ],
     ];
 
     final title = Text(
@@ -153,15 +146,14 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     final subTitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(item.identifier),
-        // if (item.subTitle.isNotEmpty) ...[
-        //   Text(
-        //     item.subTitle,
-        //     overflow: TextOverflow.ellipsis,
-        //     maxLines: 1,
-        //   ),
-        //   const SizedBox(height: 5),
-        // ],
+        if (item.subTitle.isNotEmpty) ...[
+          Text(
+            item.subTitle,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+          const SizedBox(height: 5),
+        ],
         Wrap(
           runSpacing: 5,
           children: [
@@ -246,7 +238,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             _favorite();
           },
         ),
-        if (isTrash || isArchived) ...[
+        if (item.trashed) ...[
           SwipeAction(
             title: 'restore'.tr,
             color: kAppColorDarker,
@@ -260,31 +252,22 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         ],
       ],
       trailingActions: <SwipeAction>[
-        if (!isTrash) ...[
-          SwipeAction(
-            title: 'trash'.tr,
-            color: Colors.red,
-            icon: const Icon(LineIcons.trash),
-            style: const TextStyle(fontSize: 15),
-            performsFirstActionWithFullSwipe: true,
-            onTap: (CompletionHandler handler) async {
-              await handler(true);
+        SwipeAction(
+          title: item.trashed ? 'delete_permanently'.tr : 'trash'.tr,
+          color: Colors.red,
+          icon: const Icon(LineIcons.trash),
+          style: const TextStyle(fontSize: 15),
+          performsFirstActionWithFullSwipe: true,
+          onTap: (CompletionHandler handler) async {
+            await handler(true);
+
+            if (item.trashed) {
+              _delete();
+            } else {
               _trash();
-            },
-          ),
-        ],
-        if (!isArchived) ...[
-          SwipeAction(
-            title: 'archive'.tr,
-            color: Colors.orange,
-            icon: const Icon(LineIcons.archive),
-            style: const TextStyle(fontSize: 15),
-            onTap: (CompletionHandler handler) async {
-              await handler(true);
-              _archive();
-            },
-          ),
-        ],
+            }
+          },
+        ),
       ],
     );
 

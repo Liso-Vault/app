@@ -30,21 +30,18 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
 
         final items = [
           header,
-          Obx(
-            () => ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('all_Items'.tr),
-                  if (controller.itemsCount > 0) ...[
-                    Chip(label: Text(controller.itemsCount.toString())),
-                  ]
-                ],
-              ),
-              leading: const Icon(LineIcons.list),
-              onTap: controller.filterAllItems,
-              selected: controller.boxFilter() == HiveBoxFilter.all,
+          ListTile(
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('all_Items'.tr),
+                if (controller.itemsCount > 0) ...[
+                  Chip(label: Text(controller.itemsCount.toString())),
+                ]
+              ],
             ),
+            leading: const Icon(LineIcons.list),
+            onTap: controller.filterAllItems,
           ),
           Obx(
             () => ListTile(
@@ -76,32 +73,9 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   ]
                 ],
               ),
-              leading: controller.filterProtected()
-                  ? const FaIcon(FontAwesomeIcons.shield)
-                  : const FaIcon(FontAwesomeIcons.shieldHalved),
+              leading: const FaIcon(FontAwesomeIcons.shieldHalved),
               onTap: controller.filterProtectedItems,
               selected: controller.filterProtected(),
-            ),
-          ),
-          ListTile(
-            title: Text('files'.tr),
-            leading: const FaIcon(FontAwesomeIcons.fileLines),
-            onTap: controller.files,
-          ),
-          Obx(
-            () => ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('archived'.tr),
-                  if (controller.archivedCount > 0) ...[
-                    Chip(label: Text(controller.archivedCount.toString())),
-                  ]
-                ],
-              ),
-              leading: const Icon(LineIcons.archive),
-              onTap: controller.filterArchivedItems,
-              selected: controller.boxFilter() == HiveBoxFilter.archived,
             ),
           ),
           Obx(
@@ -110,15 +84,20 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('trash'.tr),
-                  if (controller.trashCount > 0) ...[
-                    Chip(label: Text(controller.trashCount.toString())),
+                  if (controller.trashedCount > 0) ...[
+                    Chip(label: Text(controller.trashedCount.toString())),
                   ]
                 ],
               ),
               leading: const Icon(LineIcons.trash),
-              onTap: controller.filterTrashItems,
-              selected: controller.boxFilter() == HiveBoxFilter.trash,
+              onTap: controller.filterTrashedItems,
+              selected: controller.filterTrashed(),
             ),
+          ),
+          ListTile(
+            title: Text('files'.tr),
+            leading: const FaIcon(FontAwesomeIcons.fileLines),
+            onTap: controller.files,
           ),
           ExpansionTile(
             initiallyExpanded: controller.categoriesExpanded,

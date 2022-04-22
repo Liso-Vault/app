@@ -22,9 +22,9 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   bool categoriesExpanded = true, tagsExpanded = true;
 
   // PROPERTIES
-  final boxFilter = HiveBoxFilter.all.obs;
   final filterFavorites = false.obs;
   final filterProtected = false.obs;
+  final filterTrashed = false.obs;
   final filterCategory = LisoItemCategory.none.obs;
   final filterTag = ''.obs;
 
@@ -33,7 +33,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   // Obtain used categories distinctly
   Set<String> get categories {
     if (HiveManager.items == null) return {};
-
     final Set<String> _categories = {};
 
     for (var e in HiveManager.items!.values) {
@@ -60,7 +59,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     return _tags;
   }
 
-  int get itemsCount => HiveManager.items?.length ?? 0;
+  int get itemsCount =>
+      HiveManager.items?.values.where((e) => !e.trashed).length ?? 0;
 
   int get favoriteCount =>
       HiveManager.items?.values.where((e) => e.favorite).length ?? 0;
@@ -68,9 +68,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   int get protectedCount =>
       HiveManager.items?.values.where((e) => e.protected).length ?? 0;
 
-  int get archivedCount => HiveManager.archived?.length ?? 0;
-
-  int get trashCount => HiveManager.trash?.length ?? 0;
+  int get trashedCount =>
+      HiveManager.items?.values.where((e) => e.trashed).length ?? 0;
 
   // INIT
 
@@ -79,36 +78,32 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   void filterFavoriteItems() async {
     filterFavorites.toggle();
     filterProtected.value = false;
+    filterTrashed.value = false;
     filterTag.value = '';
-    MainScreenController.to.load();
-    Get.back();
+    _done();
   }
 
   void filterProtectedItems() async {
     filterProtected.toggle();
     filterFavorites.value = false;
+    filterTrashed.value = false;
     filterTag.value = '';
-    MainScreenController.to.load();
-    Get.back();
+    _done();
+  }
+
+  void filterTrashedItems() async {
+    filterTrashed.toggle();
+    filterFavorites.value = false;
+    filterProtected.value = false;
+    filterTag.value = '';
+    _done();
   }
 
   void filterAllItems() {
     _clearFilters();
     filterFavorites.value = false;
     filterProtected.value = false;
-    boxFilter.value = HiveBoxFilter.all;
-    _done();
-  }
-
-  void filterArchivedItems() {
-    _clearFilters();
-    boxFilter.value = HiveBoxFilter.archived;
-    _done();
-  }
-
-  void filterTrashItems() {
-    _clearFilters();
-    boxFilter.value = HiveBoxFilter.trash;
+    filterTrashed.value = false;
     _done();
   }
 

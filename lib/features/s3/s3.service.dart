@@ -130,9 +130,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     if (extractResult.isLeft) return Left(extractResult.left);
     await HiveManager.unwatchBoxes();
-    await _mergeItems(box: kHiveBoxItems);
-    await _mergeItems(box: kHiveBoxArchived);
-    await _mergeItems(box: kHiveBoxTrash);
+    await _mergeItems();
     HiveManager.watchBoxes();
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
@@ -145,19 +143,11 @@ class S3Service extends GetxService with ConsoleMixin {
     return const Right(true);
   }
 
-  Future<void> _mergeItems({required String box}) async {
-    Box<HiveLisoItem>? localItems;
-
-    if (box == kHiveBoxItems) {
-      localItems = HiveManager.items!;
-    } else if (box == kHiveBoxArchived) {
-      localItems = HiveManager.archived!;
-    } else if (box == kHiveBoxTrash) {
-      localItems = HiveManager.trash!;
-    }
+  Future<void> _mergeItems() async {
+    var localItems = HiveManager.items!;
 
     final tempItems = await Hive.openBox<HiveLisoItem>(
-      'temp_$box',
+      'temp_$kHiveBoxItems',
       encryptionCipher: HiveAesCipher(Globals.encryptionKey),
       path: LisoManager.tempPath,
     );
@@ -169,7 +159,7 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     console.warning('server items: ${tempItems.length}');
-    console.warning('local items: ${localItems!.length}');
+    console.warning('local items: ${localItems.length}');
 
     // MERGED
     final mergedItems = {...tempItems.values, ...localItems.values};
@@ -199,24 +189,6 @@ class S3Service extends GetxService with ConsoleMixin {
     mergedItems.removeWhere(
       (e) => leastUpdatedDuplicates.contains(e),
     );
-
-    if (box == kHiveBoxItems) {
-      // archived
-      mergedItems.removeWhere(
-        (e) => HiveManager.archived!.values.contains(e),
-      );
-      // trash
-      mergedItems.removeWhere(
-        (e) => HiveManager.trash!.values.contains(e),
-      );
-    }
-
-    // console.info('final: ${mergedItems.length}');
-    // for (var e in mergedItems) {
-    //   console.warning(
-    //     '${e.identifier} - ${e.metadata.updatedTime}',
-    //   );
-    // }
 
     // delete temp items
     await tempItems.clear();

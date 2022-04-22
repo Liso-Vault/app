@@ -17,8 +17,8 @@ class HiveManager {
   static final console = Console(name: 'HiveManager');
 
   // VARIABLES
-  static Box<HiveLisoItem>? items, archived, trash;
-  static StreamSubscription? itemsStream, archivedStream, trashStream;
+  static Box<HiveLisoItem>? items;
+  static StreamSubscription? itemsStream;
 
   // GETTERS
 
@@ -46,26 +46,12 @@ class HiveManager {
       path: LisoManager.hivePath,
     );
 
-    archived = await Hive.openBox(
-      kHiveBoxArchived,
-      encryptionCipher: cipher,
-      path: LisoManager.hivePath,
-    );
-
-    trash = await Hive.openBox(
-      kHiveBoxTrash,
-      encryptionCipher: cipher,
-      path: LisoManager.hivePath,
-    );
-
     watchBoxes();
     console.info('openBoxes');
   }
 
   static Future<void> closeBoxes() async {
     if (items?.isOpen == true) await items?.close();
-    if (archived?.isOpen == true) await archived?.close();
-    if (trash?.isOpen == true) await trash?.close();
     await unwatchBoxes();
     console.info('closeBoxes');
   }
@@ -74,20 +60,12 @@ class HiveManager {
     itemsStream = items?.watch().listen(
           MainScreenController.to.onBoxChanged,
         );
-    archivedStream = archived?.watch().listen(
-          MainScreenController.to.onBoxChanged,
-        );
-    trashStream = trash?.watch().listen(
-          MainScreenController.to.onBoxChanged,
-        );
 
     console.info('watchBoxes');
   }
 
   static Future<void> unwatchBoxes() async {
     await itemsStream?.cancel();
-    await archivedStream?.cancel();
-    await trashStream?.cancel();
     console.info('unwatchBoxes');
   }
 
@@ -112,8 +90,6 @@ class HiveManager {
     await closeBoxes();
     await Hive.deleteFromDisk();
     items = null;
-    archived = null;
-    trash = null;
     console.info('reset');
   }
 }
