@@ -370,13 +370,12 @@ class MainScreenController extends GetxController
 
   void onBoxChanged(BoxEvent event) async {
     console.info('box changed');
-    // // add change only if not a deleted event to prevent duplicates
-    // if (!event.deleted) {
-    //   persistence.changes.val++;
-    //   // use the static getter to avoid not reloading bug
-    //   load();
-    //   console.info('load');
-    // }
+    // add change only if not a deleted event to prevent duplicates
+    if (!event.deleted) {
+      // persistence.changes.val++;
+      // use the static getter to avoid not reloading bug
+      load();
+    }
   }
 
   void _initAppLifeCycleEvents() {

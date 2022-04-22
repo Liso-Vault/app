@@ -91,7 +91,7 @@ class S3Service extends GetxService with ConsoleMixin {
         inSync.value = true;
         final upsyncResult = await upSync();
         if (upsyncResult.isLeft) return Left(upsyncResult.left);
-        return const Right(true);
+        return Right(upsyncResult.right);
       }
 
       console.error('Stat Error: ${statResult.left}');
@@ -102,45 +102,12 @@ class S3Service extends GetxService with ConsoleMixin {
       jsonDecode(statResult.right.metaData!['client']!),
     );
 
-    await _downSync(serverMetadata);
+    final downResult = await _downSync(serverMetadata);
+    if (downResult.isLeft) return Left(downResult.left);
     syncing.value = false;
     MainScreenController.to.load();
-    return const Right(true);
+    return Right(downResult.right);
   }
-
-  // CAN DOWN SYNC
-  // Future<void> tryDownSync() async {
-  //   if (!persistence.canSync) return;
-  //   console.info('tryDownSync...');
-  //   final statResult = await stat(lisoContent);
-
-  //   if (statResult.isLeft) {
-  //     if (statResult.left is MinioError &&
-  //         statResult.left.message!.contains('Not Found')) {
-  //       console.error('New cloud user: upsync current vault');
-  //       inSync.value = true;
-  //     } else {
-  //       console.error('Stat Error: $statResult.left');
-  //     }
-
-  //     return;
-  //   }
-
-  //   final server = HiveMetadata.fromJson(
-  //     jsonDecode(statResult.right.metaData!['client']!),
-  //   );
-
-  //   final local = _localMetadata();
-  //   console.info('local: ${local?.updatedTime}, server: ${server.updatedTime}');
-
-  //   // if (local != null && local.updatedTime == server.updatedTime) {
-  //   //   console.info('in sync with server');
-  //   //   SyncService.to.inSync.value = true;
-  //   //   return;
-  //   // }
-
-  //   _downSync(server);
-  // }
 
   // DOWN SYNC
   Future<Either<dynamic, bool>> _downSync(HiveMetadata serverMetadata) async {
@@ -162,9 +129,6 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     if (extractResult.isLeft) return Left(extractResult.left);
-    // save updated local metadata
-    persistence.metadata.val = serverMetadata.toJsonString();
-    console.warning('downloaded and in sync!');
     await HiveManager.unwatchBoxes();
     await _mergeItems(box: kHiveBoxItems);
     await _mergeItems(box: kHiveBoxArchived);
@@ -173,6 +137,8 @@ class S3Service extends GetxService with ConsoleMixin {
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
     PersistenceService.to.changes.val = 0;
+    persistence.metadata.val = serverMetadata.toJsonString();
+    console.warning('downloaded and in sync!');
     MainScreenController.to.load();
     // up sync local changes with server
     await upSync();
@@ -233,6 +199,17 @@ class S3Service extends GetxService with ConsoleMixin {
     mergedItems.removeWhere(
       (e) => leastUpdatedDuplicates.contains(e),
     );
+
+    if (box == kHiveBoxItems) {
+      // archived
+      mergedItems.removeWhere(
+        (e) => HiveManager.archived!.values.contains(e),
+      );
+      // trash
+      mergedItems.removeWhere(
+        (e) => HiveManager.trash!.values.contains(e),
+      );
+    }
 
     // console.info('final: ${mergedItems.length}');
     // for (var e in mergedItems) {
