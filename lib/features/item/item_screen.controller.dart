@@ -133,19 +133,30 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     final _fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
 
-    final newItem = HiveLisoItem(
-      identifier: const Uuid().v4(),
-      category: category,
-      iconUrl: iconUrl.value,
-      title: titleController.text,
-      tags: tags,
-      fields: _fields,
-      metadata: await HiveMetadata.get(),
-      favorite: favorite(),
-      protected: protected(),
-    );
+    bool protected = false;
+    bool favorite = true;
+    bool trashed = false;
 
-    await HiveManager.items!.add(newItem);
+    for (var i = 0; i < 1000; i++) {
+      protected = !protected;
+      favorite = !favorite;
+      trashed = !trashed;
+
+      final newItem = HiveLisoItem(
+        identifier: const Uuid().v4(),
+        category: category,
+        iconUrl: iconUrl.value,
+        title: titleController.text + ' $i',
+        tags: tags,
+        fields: _fields,
+        metadata: await HiveMetadata.get(),
+        favorite: favorite,
+        protected: protected,
+      );
+
+      await HiveManager.items!.add(newItem);
+    }
+
     Get.back();
   }
 

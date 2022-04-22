@@ -90,10 +90,14 @@ class S3Service extends GetxService with ConsoleMixin {
         console.error('New cloud user: upsync current vault');
         inSync.value = true;
         final upsyncResult = await upSync();
-        if (upsyncResult.isLeft) return Left(upsyncResult.left);
-        return Right(upsyncResult.right);
+        syncing.value = false;
+
+        return Right(
+          upsyncResult.isLeft ? upsyncResult.left : upsyncResult.right,
+        );
       }
 
+      syncing.value = false;
       console.error('Stat Error: ${statResult.left}');
       return Left(statResult.left);
     }
@@ -103,8 +107,8 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     final downResult = await _downSync(serverMetadata);
-    if (downResult.isLeft) return Left(downResult.left);
     syncing.value = false;
+    if (downResult.isLeft) return Left(downResult.left);
     MainScreenController.to.load();
     return Right(downResult.right);
   }
