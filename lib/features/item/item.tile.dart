@@ -48,15 +48,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }
 
   void _trash() async {
-    item.trashed = !item.trashed;
+    item.trashed = true;
     item.metadata = await item.metadata.getUpdated();
     item.save();
     // _reloadSearchDelegate();
   }
 
-  void _restore() {
-    item.delete();
-    HiveManager.items!.add(item);
+  void _restore() async {
+    item.trashed = false;
+    item.metadata = await item.metadata.getUpdated();
+    item.save();
+    // _reloadSearchDelegate();
   }
 
   void _open() async {
