@@ -16,8 +16,20 @@ class SyncingScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   @override
   void onInit() {
-    S3Service.to.sync();
+    sync();
     super.onInit();
+  }
+
+  void sync() async {
+    change(null, status: RxStatus.loading());
+    final result = await S3Service.to.sync();
+
+    if (result.isLeft) {
+      change(null, status: RxStatus.error('Error syncing: ${result.left}'));
+    } else {
+      change(null, status: RxStatus.success());
+      Get.offNamedUntil(Routes.main, (route) => false);
+    }
   }
 
   void cancel() {

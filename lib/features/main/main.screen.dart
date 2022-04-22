@@ -16,7 +16,6 @@ import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../s3/s3.service.dart';
-import '../sync/sync.service.dart';
 import 'main_screen.controller.dart';
 
 // ignore: use_key_in_widget_constructors

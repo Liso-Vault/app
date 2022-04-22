@@ -4,7 +4,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/sync/syncing/syncing_screen.controller.dart';
 
 import '../../general/centered_placeholder.widget.dart';
-import '../../s3/s3.service.dart';
 
 class SyncingScreen extends GetView<SyncingScreenController> {
   const SyncingScreen({Key? key}) : super(key: key);
@@ -32,7 +31,7 @@ class SyncingScreen extends GetView<SyncingScreenController> {
           child: TextButton.icon(
             label: const Text('Try again'),
             icon: const Icon(LineIcons.syncIcon),
-            onPressed: S3Service.to.sync,
+            onPressed: controller.sync,
           ),
         ),
       ),

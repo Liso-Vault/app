@@ -1,8 +1,5 @@
 import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
-
-import '../s3/s3.service.dart';
 
 class SyncService extends GetxService with ConsoleMixin {
   static SyncService get to => Get.find();

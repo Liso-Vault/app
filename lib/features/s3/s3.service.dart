@@ -20,7 +20,6 @@ import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
-import '../../core/utils/ui_utils.dart';
 import 'model/s3_content.model.dart';
 
 class S3Service extends GetxService with ConsoleMixin {
@@ -59,11 +58,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
   Future<void> _prepare() async {
-    if (client == null || client!.endPoint.isEmpty) {
-      await _init();
-    } else {
-      console.error('service is not initialized');
-    }
+    if (client == null || client!.endPoint.isEmpty) await _init();
   }
 
   Future<void> _init() async {
@@ -77,12 +72,16 @@ class S3Service extends GetxService with ConsoleMixin {
     );
   }
 
-  Future<void> sync() async {
-    if (!persistence.canSync) return;
-    if (syncing.value) return console.warning('already down syncing');
+  Future<Either<dynamic, bool>> sync() async {
+    if (!persistence.canSync) return const Right(false);
+
+    if (syncing.value) {
+      console.warning('already down syncing');
+      return const Right(false);
+    }
+
     console.info('syncing...');
     syncing.value = true;
-
     final statResult = await stat(lisoContent);
 
     if (statResult.isLeft) {
@@ -90,12 +89,13 @@ class S3Service extends GetxService with ConsoleMixin {
           statResult.left.message!.contains('Not Found')) {
         console.error('New cloud user: upsync current vault');
         inSync.value = true;
-        await upSync();
-      } else {
-        console.error('Stat Error: $statResult.left');
+        final upsyncResult = await upSync();
+        if (upsyncResult.isLeft) return Left(upsyncResult.left);
+        return const Right(true);
       }
 
-      return;
+      console.error('Stat Error: ${statResult.left}');
+      return Left(statResult.left);
     }
 
     final serverMetadata = HiveMetadata.fromJson(
@@ -103,9 +103,9 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     await _downSync(serverMetadata);
-
     syncing.value = false;
     MainScreenController.to.load();
+    return const Right(true);
   }
 
   // CAN DOWN SYNC
@@ -143,28 +143,16 @@ class S3Service extends GetxService with ConsoleMixin {
   // }
 
   // DOWN SYNC
-  Future<void> _downSync(HiveMetadata serverMetadata) async {
-    if (!persistence.canSync) return;
+  Future<Either<dynamic, bool>> _downSync(HiveMetadata serverMetadata) async {
+    if (!persistence.canSync) return const Right(false);
     console.info('down syncing...');
     final downloadResult = await downloadVault(path: vaultPath);
-
-    if (downloadResult.isLeft) {
-      return UIUtils.showSimpleDialog(
-        'Error Downloading',
-        '${downloadResult.left} > downSync()',
-      );
-    }
+    if (downloadResult.isLeft) return Left(downloadResult.left);
 
     final vaultFile = downloadResult.right;
     final readResult = LisoManager.readArchive(vaultFile.path);
     FileUtils.delete(vaultFile.path); // delete temporary vault file
-
-    if (readResult.isLeft) {
-      return UIUtils.showSimpleDialog(
-        'Error Archive',
-        '${readResult.left} > downSync()',
-      );
-    }
+    if (readResult.isLeft) return Left(readResult.left);
 
     // extract boxes
     final extractResult = await LisoManager.extractArchive(
@@ -173,13 +161,7 @@ class S3Service extends GetxService with ConsoleMixin {
       fileNamePrefix: 'temp_',
     );
 
-    if (extractResult.isLeft) {
-      return UIUtils.showSimpleDialog(
-        'Error Archive',
-        '${extractResult.left} > downSync()',
-      );
-    }
-
+    if (extractResult.isLeft) return Left(extractResult.left);
     // save updated local metadata
     persistence.metadata.val = serverMetadata.toJsonString();
     console.warning('downloaded and in sync!');
@@ -188,12 +170,13 @@ class S3Service extends GetxService with ConsoleMixin {
     await _mergeItems(box: kHiveBoxArchived);
     await _mergeItems(box: kHiveBoxTrash);
     HiveManager.watchBoxes();
-    MainScreenController.to.load();
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
     PersistenceService.to.changes.val = 0;
+    MainScreenController.to.load();
     // up sync local changes with server
     await upSync();
+    return const Right(true);
   }
 
   Future<void> _mergeItems({required String box}) async {
@@ -292,28 +275,10 @@ class S3Service extends GetxService with ConsoleMixin {
     );
     // reopen boxes
     await HiveManager.openBoxes();
-
-    if (archiveResult.isLeft) {
-      UIUtils.showSimpleDialog(
-        'Error Archiving',
-        '${archiveResult.left} > upSync()',
-      );
-
-      return Left(archiveResult.left);
-    }
-
+    if (archiveResult.isLeft) return Left(archiveResult.left);
     // UPLOAD
     final uploadResult = await _uploadVault(archiveResult.right);
-
-    if (uploadResult.isLeft) {
-      UIUtils.showSimpleDialog(
-        'Error Uploading',
-        '${uploadResult.left} > upSync()',
-      );
-
-      return Left(uploadResult.left);
-    }
-
+    if (uploadResult.isLeft) return Left(uploadResult.left);
     console.info('uploaded! eTag: ${uploadResult.right}');
     return const Right(true);
   }
