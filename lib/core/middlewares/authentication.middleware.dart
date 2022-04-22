@@ -4,7 +4,7 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/sync/sync.service.dart';
+import 'package:liso/features/s3/s3.service.dart';
 
 import '../../features/app/routes.dart';
 import '../utils/globals.dart';
@@ -27,7 +27,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     if (!ignoreSync &&
-        !SyncService.to.inSync.value &&
+        !S3Service.to.inSync.value &&
         PersistenceService.to.sync.val) {
       return const RouteSettings(name: Routes.syncing);
     }

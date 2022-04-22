@@ -2,14 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:archive/archive.dart';
-import 'package:either_option/either_option.dart';
+import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
@@ -21,7 +21,6 @@ import '../../core/liso/liso.manager.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
-import '../sync/sync.service.dart';
 import 'model/s3_content.model.dart';
 
 class S3Service extends GetxService with ConsoleMixin {
@@ -33,6 +32,8 @@ class S3Service extends GetxService with ConsoleMixin {
   final persistence = Get.find<PersistenceService>();
 
   // PROPERTIES
+  final syncing = false.obs;
+  final inSync = false.obs;
   final downloadTotalSize = 0.obs;
   final downloadedSize = 0.obs;
   final uploadTotalSize = 0.obs;
@@ -52,16 +53,20 @@ class S3Service extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() {
-    init();
+    _init();
     super.onInit();
   }
 
   // FUNCTIONS
   Future<void> _prepare() async {
-    if (client == null || client!.endPoint.isEmpty) await init();
+    if (client == null || client!.endPoint.isEmpty) {
+      await _init();
+    } else {
+      console.error('service is not initialized');
+    }
   }
 
-  Future<void> init() async {
+  Future<void> _init() async {
     if (config.s3.endpoint.isEmpty) await config.fetch();
     console.info('init...');
 
@@ -72,119 +77,150 @@ class S3Service extends GetxService with ConsoleMixin {
     );
   }
 
-  // CAN DOWN SYNC
-  Future<void> tryDownSync() async {
+  Future<void> sync() async {
     if (!persistence.canSync) return;
-    console.info('tryDownSync...');
+    if (syncing.value) return console.warning('already down syncing');
+    console.info('syncing...');
+    syncing.value = true;
+
     final statResult = await stat(lisoContent);
-    StatObjectResult? statObject;
 
-    statResult.fold(
-      (error) {
-        if (error is MinioError && error.message!.contains('Not Found')) {
-          console.error('New cloud user: upsync current vault');
-          SyncService.to.inSync.value = true;
-          upSync();
-        } else {
-          console.error('Stat Error: $error');
-        }
-      },
-      (response) => statObject = response,
-    );
+    if (statResult.isLeft) {
+      if (statResult.left is MinioError &&
+          statResult.left.message!.contains('Not Found')) {
+        console.error('New cloud user: upsync current vault');
+        inSync.value = true;
+        await upSync();
+      } else {
+        console.error('Stat Error: $statResult.left');
+      }
 
-    if (statObject?.metaData?['client'] == null) return;
-
-    final server = HiveMetadata.fromJson(
-      jsonDecode(statObject!.metaData!['client']!),
-    );
-
-    final local = _localMetadata();
-    console.info('local: ${local?.updatedTime}, server: ${server.updatedTime}');
-
-    if (local != null && local.updatedTime == server.updatedTime) {
-      console.info('in sync with server');
-      SyncService.to.inSync.value = true;
       return;
     }
 
-    _downSync(server);
+    final serverMetadata = HiveMetadata.fromJson(
+      jsonDecode(statResult.right.metaData!['client']!),
+    );
+
+    await _downSync(serverMetadata);
+
+    syncing.value = false;
+    MainScreenController.to.load();
   }
+
+  // CAN DOWN SYNC
+  // Future<void> tryDownSync() async {
+  //   if (!persistence.canSync) return;
+  //   console.info('tryDownSync...');
+  //   final statResult = await stat(lisoContent);
+
+  //   if (statResult.isLeft) {
+  //     if (statResult.left is MinioError &&
+  //         statResult.left.message!.contains('Not Found')) {
+  //       console.error('New cloud user: upsync current vault');
+  //       inSync.value = true;
+  //     } else {
+  //       console.error('Stat Error: $statResult.left');
+  //     }
+
+  //     return;
+  //   }
+
+  //   final server = HiveMetadata.fromJson(
+  //     jsonDecode(statResult.right.metaData!['client']!),
+  //   );
+
+  //   final local = _localMetadata();
+  //   console.info('local: ${local?.updatedTime}, server: ${server.updatedTime}');
+
+  //   // if (local != null && local.updatedTime == server.updatedTime) {
+  //   //   console.info('in sync with server');
+  //   //   SyncService.to.inSync.value = true;
+  //   //   return;
+  //   // }
+
+  //   _downSync(server);
+  // }
 
   // DOWN SYNC
   Future<void> _downSync(HiveMetadata serverMetadata) async {
     if (!persistence.canSync) return;
     console.info('down syncing...');
     final downloadResult = await downloadVault(path: vaultPath);
-    File? vaultFile;
-    dynamic _error;
 
-    downloadResult.fold(
-      (error) => _error = error,
-      (file) => vaultFile = file,
-    );
-
-    if (_error != null) {
+    if (downloadResult.isLeft) {
       return UIUtils.showSimpleDialog(
         'Error Downloading',
-        '$_error > downSync()',
+        '${downloadResult.left} > downSync()',
       );
     }
 
-    final readResult = LisoManager.readArchive(vaultFile!.path);
-    FileUtils.delete(vaultFile!.path); // delete temporary vault file
-    Archive? archive;
+    final vaultFile = downloadResult.right;
+    final readResult = LisoManager.readArchive(vaultFile.path);
+    FileUtils.delete(vaultFile.path); // delete temporary vault file
 
-    readResult.fold(
-      (error) => _error = error,
-      (response) => archive = response,
-    );
-
-    console.info('archive files: ${archive!.files.length}');
-    // check if archive contains files
-    if (_error != null || archive!.files.isEmpty) {
+    if (readResult.isLeft) {
       return UIUtils.showSimpleDialog(
         'Error Archive',
-        '$_error > downSync()',
+        '${readResult.left} > downSync()',
       );
     }
 
-    // await HiveManager.closeBoxes();
     // extract boxes
-    await LisoManager.extractArchive(
-      archive!,
+    final extractResult = await LisoManager.extractArchive(
+      readResult.right,
       path: LisoManager.tempPath,
       fileNamePrefix: 'temp_',
     );
-    // open boxes
-    // await HiveManager.openBoxes();\
-    // we are now ready to upSync because we are not in sync with server
-    SyncService.to.inSync.value = true;
-    PersistenceService.to.changes.val = 0;
+
+    if (extractResult.isLeft) {
+      return UIUtils.showSimpleDialog(
+        'Error Archive',
+        '${extractResult.left} > downSync()',
+      );
+    }
+
     // save updated local metadata
     persistence.metadata.val = serverMetadata.toJsonString();
     console.warning('downloaded and in sync!');
+    await HiveManager.unwatchBoxes();
     await _mergeItems(box: kHiveBoxItems);
     await _mergeItems(box: kHiveBoxArchived);
     await _mergeItems(box: kHiveBoxTrash);
-    await S3Service.to.upSync();
+    HiveManager.watchBoxes();
+    MainScreenController.to.load();
+    // we are now ready to upSync because we are not in sync with server
+    inSync.value = true;
+    PersistenceService.to.changes.val = 0;
+    // up sync local changes with server
+    await upSync();
   }
 
   Future<void> _mergeItems({required String box}) async {
-    final localItems = HiveManager.items!;
-    final cipher = HiveAesCipher(Globals.encryptionKey);
+    Box<HiveLisoItem>? localItems;
+
+    if (box == kHiveBoxItems) {
+      localItems = HiveManager.items!;
+    } else if (box == kHiveBoxArchived) {
+      localItems = HiveManager.archived!;
+    } else if (box == kHiveBoxTrash) {
+      localItems = HiveManager.trash!;
+    }
+
     final tempItems = await Hive.openBox<HiveLisoItem>(
       'temp_$box',
-      encryptionCipher: cipher,
+      encryptionCipher: HiveAesCipher(Globals.encryptionKey),
       path: LisoManager.tempPath,
     );
 
     if (tempItems.isEmpty) {
-      tempItems.close();
+      await tempItems.clear();
+      await tempItems.deleteFromDisk();
       return console.warning('temp items is empty');
     }
 
     console.warning('server items: ${tempItems.length}');
-    console.warning('local items: ${localItems.length}');
+    console.warning('local items: ${localItems!.length}');
 
     // MERGED
     final mergedItems = {...tempItems.values, ...localItems.values};
@@ -192,9 +228,7 @@ class S3Service extends GetxService with ConsoleMixin {
     final leastUpdatedDuplicates = <HiveLisoItem>[];
 
     for (var x in mergedItems) {
-      console.warning(
-        '${x.identifier} - ${x.metadata.updatedTime}',
-      );
+      // console.warning('${x.identifier} - ${x.metadata.updatedTime}');
       // skip if item already added to least updated item list
       if (leastUpdatedDuplicates
           .where((e) => e.identifier == x.identifier)
@@ -217,84 +251,75 @@ class S3Service extends GetxService with ConsoleMixin {
       (e) => leastUpdatedDuplicates.contains(e),
     );
 
-    console.info('final: ${mergedItems.length}');
-    for (var e in mergedItems) {
-      console.warning(
-        '${e.identifier} - ${e.metadata.updatedTime}',
-      );
-    }
+    // console.info('final: ${mergedItems.length}');
+    // for (var e in mergedItems) {
+    //   console.warning(
+    //     '${e.identifier} - ${e.metadata.updatedTime}',
+    //   );
+    // }
 
     // delete temp items
     await tempItems.clear();
     await tempItems.deleteFromDisk();
     // clear and reload updated items
-
-    await HiveManager.unwatchBoxes();
-
-    if (box == kHiveBoxItems) {
-      await HiveManager.items!.clear();
-      await HiveManager.items!.addAll(mergedItems);
-    } else if (box == kHiveBoxArchived) {
-      await HiveManager.archived!.clear();
-      await HiveManager.archived!.addAll(mergedItems);
-    } else if (box == kHiveBoxTrash) {
-      await HiveManager.trash!.clear();
-      await HiveManager.trash!.addAll(mergedItems);
-    }
-
-    HiveManager.watchBoxes();
+    await localItems.clear();
+    await localItems.addAll(mergedItems);
   }
 
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
-    if (!SyncService.to.inSync.value) return Left('not in sync with server');
-    if (!persistence.canSync) return Left('offline');
+    if (!persistence.canSync) return const Left('offline');
+    if (!inSync.value) {
+      return const Left('not in sync with server');
+    }
+
     console.info('syncing...');
     final backupResult = await backup(lisoContent);
+    // ignore backup error and continue
+    if (backupResult.isLeft) {
+      console.warning('Failed to backup: ${backupResult.left}');
+    } else {
+      console.info(
+        'success! eTag: ${backupResult.right.eTag}, lastModified: ${backupResult.right.lastModified}',
+      );
+    }
 
-    backupResult.fold(
-      (error) => console.warning('Failed to backup: $error'),
-      (response) => console.info(
-        'success! eTag: ${response.eTag}, lastModified: ${response.lastModified}',
-      ),
-    );
-
+    // temporarily close boxes to exclude hive .lock files
     await HiveManager.closeBoxes();
     final archiveResult = await LisoManager.createArchive(
       Directory(LisoManager.hivePath),
       filePath: LisoManager.tempVaultFilePath,
     );
+    // reopen boxes
     await HiveManager.openBoxes();
 
-    File? file;
-    archiveResult.fold(
-      (error) => UIUtils.showSimpleDialog(
+    if (archiveResult.isLeft) {
+      UIUtils.showSimpleDialog(
         'Error Archiving',
-        '$error > upSync()',
-      ),
-      (response) => file = response,
-    );
+        '${archiveResult.left} > upSync()',
+      );
 
-    if (file == null) return Left('Null Archive File');
-    final uploadResult = await _uploadVault(file!);
-    bool success = false;
+      return Left(archiveResult.left);
+    }
 
-    uploadResult.fold(
-      (error) => UIUtils.showSimpleDialog(
+    // UPLOAD
+    final uploadResult = await _uploadVault(archiveResult.right);
+
+    if (uploadResult.isLeft) {
+      UIUtils.showSimpleDialog(
         'Error Uploading',
-        '$error > upSync()',
-      ),
-      (response) {
-        success = true;
-        console.info('uploaded! eTag: $response');
-      },
-    );
+        '${uploadResult.left} > upSync()',
+      );
 
-    return Right(success);
+      return Left(uploadResult.left);
+    }
+
+    console.info('uploaded! eTag: ${uploadResult.right}');
+    return const Right(true);
   }
 
   Future<Either<dynamic, String>> _uploadVault(File file) async {
-    if (!persistence.canSync) return Left('offline');
+    if (!persistence.canSync) return const Left('offline');
     await _prepare();
     console.info('upload...');
     final metadataString = await _updatedLocalMetadata();
@@ -323,7 +348,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, CopyObjectResult>> backup(S3Content content) async {
-    if (!persistence.canSync) return Left('offline');
+    if (!persistence.canSync) return const Left('offline');
     await _prepare();
     console.info('backup: ${content.path}...');
 
@@ -342,7 +367,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, StatObjectResult>> stat(S3Content content) async {
-    if (!persistence.canSync) return Left('offline');
+    if (!persistence.canSync) return const Left('offline');
     await _prepare();
     console.info('stat: ${basename(content.path)}...');
 
@@ -363,7 +388,7 @@ class S3Service extends GetxService with ConsoleMixin {
     S3ContentType? filterType,
     List<String> filterExtensions = const [],
   }) async {
-    if (!persistence.canSync) return Left('offline');
+    if (!persistence.canSync) return const Left('offline');
     await _prepare();
     console.info('fetch: $path...');
 
@@ -413,7 +438,7 @@ class S3Service extends GetxService with ConsoleMixin {
     required String path,
     bool force = false,
   }) async {
-    if (!persistence.canSync && !force) return Left('offline');
+    if (!persistence.canSync && !force) return const Left('offline');
     await _prepare();
     console.info('downloading: ${ConfigService.to.s3.bucket} -> $path');
     MinioByteStream? stream;
@@ -421,6 +446,7 @@ class S3Service extends GetxService with ConsoleMixin {
     try {
       stream = await client!.getObject(ConfigService.to.s3.bucket, path);
     } catch (e) {
+      console.error('download error: $e');
       return Left(e);
     }
 

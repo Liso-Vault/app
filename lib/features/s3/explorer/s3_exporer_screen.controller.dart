@@ -56,7 +56,7 @@ class S3ExplorerScreenController extends GetxController
       filterExtensions: ['.$kVaultExtension'],
     );
 
-    result.fold(
+    result.either(
       (error) {
         UIUtils.showSimpleDialog(
           'Fetch Error',
@@ -80,7 +80,7 @@ class S3ExplorerScreenController extends GetxController
   void backup(S3Content content) async {
     final result = await S3Service.to.backup(content);
 
-    result.fold(
+    result.either(
       (error) => UIUtils.showSimpleDialog(
         'Error Backup',
         error,

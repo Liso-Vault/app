@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -370,13 +371,13 @@ class MainScreenController extends GetxController
 
   void onBoxChanged(BoxEvent event) async {
     console.info('box changed');
-    // add change only if not a deleted event to prevent duplicates
-    if (!event.deleted) {
-      persistence.changes.val++;
-      // use the static getter to avoid not reloading bug
-      load();
-      console.info('load');
-    }
+    // // add change only if not a deleted event to prevent duplicates
+    // if (!event.deleted) {
+    //   persistence.changes.val++;
+    //   // use the static getter to avoid not reloading bug
+    //   load();
+    //   console.info('load');
+    // }
   }
 
   void _initAppLifeCycleEvents() {

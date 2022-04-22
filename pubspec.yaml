@@ -71,7 +71,7 @@ dependencies:
   timeago: ^3.2.2
   permission_handler: ^9.2.0
   flutter_local_notifications: ^9.4.0
-  either_option: 2.0.1-dev.1
+  either_dart: ^0.1.4
   intl: ^0.17.0
   share_plus: ^4.0.4
   equatable: ^2.0.3

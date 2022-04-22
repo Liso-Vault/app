@@ -99,11 +99,9 @@ class UnlockScreenController extends GetxController
 
     if (passwordMode) return Get.back(result: true);
 
-    if (!passwordMode) {
-      // open Hive Boxes
-      await HiveManager.openBoxes();
-      change(null, status: RxStatus.success());
-      return Get.offNamedUntil(Routes.main, (route) => false);
-    }
+    // open Hive Boxes
+    await HiveManager.openBoxes();
+    change(null, status: RxStatus.success());
+    return Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

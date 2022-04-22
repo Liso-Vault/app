@@ -15,6 +15,7 @@ import 'package:liso/resources/resources.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../s3/s3.service.dart';
 import '../sync/sync.service.dart';
 import 'main_screen.controller.dart';
 
@@ -38,9 +39,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
   Widget? builder() {
     final listView = Obx(
       () => Opacity(
-        opacity: SyncService.to.syncing ? 0.5 : 1,
+        opacity: S3Service.to.syncing.value ? 0.5 : 1,
         child: AbsorbPointer(
-          absorbing: SyncService.to.syncing,
+          absorbing: S3Service.to.syncing.value,
           child: ListView.separated(
             shrinkWrap: true,
             itemCount: controller.data.length,
@@ -62,14 +63,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             ? Obx(
                 () => ContextMenuButton(
                   controller.menuItemsCategory,
-                  enabled: !SyncService.to.syncing,
+                  enabled: !S3Service.to.syncing.value,
                   child: TextButton.icon(
                     icon: const Icon(LineIcons.plus),
                     label: Text(
                       'add_item'.tr,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    onPressed: !SyncService.to.syncing ? () {} : null,
+                    onPressed: !S3Service.to.syncing.value ? () {} : null,
                   ),
                 ),
               )
@@ -88,13 +89,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       Obx(
         () => IconButton(
           icon: const Icon(LineIcons.search),
-          onPressed: !SyncService.to.syncing ? controller.search : null,
+          onPressed: !S3Service.to.syncing.value ? controller.search : null,
         ),
       ),
       Obx(
         () => ContextMenuButton(
           controller.menuItemsSort,
-          enabled: !SyncService.to.syncing,
+          enabled: !S3Service.to.syncing.value,
           initialItem: controller.menuItemsSort.firstWhere(
             (e) => controller.sortOrder.value.name
                 .toLowerCase()
@@ -102,7 +103,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
           child: IconButton(
             icon: const Icon(LineIcons.sort),
-            onPressed: !SyncService.to.syncing ? () {} : null,
+            onPressed: !S3Service.to.syncing.value ? () {} : null,
           ),
         ),
       ),
@@ -113,7 +114,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
           final syncButton = IconButton(
             icon: const Icon(LineIcons.syncIcon),
-            onPressed: SyncService.to.sync,
+            onPressed: S3Service.to.sync,
           );
 
           final syncBadge = Badge(
@@ -135,11 +136,12 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
           return Obx(
             () => Visibility(
-              visible:
-                  !SyncService.to.syncing && ConnectivityService.to.connected(),
+              visible: !S3Service.to.syncing.value &&
+                  ConnectivityService.to.connected(),
               child: changeCount > 0 ? syncBadge : syncButton,
-              replacement:
-                  SyncService.to.syncing ? progressIndicator : const SizedBox(),
+              replacement: S3Service.to.syncing.value
+                  ? progressIndicator
+                  : const SizedBox(),
             ),
           );
         },
@@ -165,7 +167,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final floatingActionButton = Obx(
       () => ContextMenuButton(
         controller.menuItemsCategory,
-        enabled: !SyncService.to.syncing,
+        enabled: !S3Service.to.syncing.value,
         child: FloatingActionButton(
           child: const Icon(LineIcons.plus),
           onPressed: () {},
@@ -183,23 +185,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               key: controller.scaffoldKey,
               appBar: appBar,
               body: content,
-              bottomNavigationBar: ButtonBar(
-                children: [
-                  TextButton.icon(
-                    label: const Text('Sync'),
-                    icon: const Icon(LineIcons.syncIcon),
-                    onPressed: () async {
-                      // // delete temp items
-                      // tempItems.deleteFromDisk();
-                      // // clear and reload updated items
-                      // HiveManager.items!.clear();
-                      // HiveManager.items!.addAll(mergedItems);
-                      // // upSync
-                      // S3Service.to.upSync();
-                    },
-                  ),
-                ],
-              ),
               floatingActionButton: Obx(
                 () =>
                     DrawerMenuController.to.boxFilter.value == HiveBoxFilter.all

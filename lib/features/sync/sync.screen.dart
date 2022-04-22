@@ -15,6 +15,20 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
+    final newSetup = Get.previousRoute == Routes.welcome ||
+        Get.previousRoute.contains(Routes.createPassword);
+
+    void save() {
+      final persistence = Get.find<PersistenceService>();
+      persistence.syncConfirmed.val = true;
+
+      if (newSetup) {
+        Get.offNamedUntil(Routes.main, (route) => false);
+      } else {
+        Get.back();
+      }
+    }
+
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -60,7 +74,7 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
           },
         ),
         const SizedBox(height: 20),
-        if (Get.previousRoute.contains(Routes.createPassword)) ...[
+        if (newSetup) ...[
           const Divider(),
           TextButton.icon(
             onPressed: save,
@@ -83,9 +97,7 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        leading: Get.previousRoute.contains(Routes.createPassword)
-            ? null
-            : const AppBarLeadingButton(),
+        leading: newSetup ? null : const AppBarLeadingButton(),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -98,16 +110,5 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
         ),
       ),
     );
-  }
-
-  void save() {
-    final persistence = Get.find<PersistenceService>();
-    persistence.syncConfirmed.val = true;
-
-    if (Get.previousRoute.contains(Routes.createPassword)) {
-      Get.offNamedUntil(Routes.main, (route) => false);
-    } else {
-      Get.back();
-    }
   }
 }

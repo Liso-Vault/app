@@ -1,4 +1,3 @@
-import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -63,42 +62,33 @@ class ImportScreenController extends GetxController
   Future<bool> _downloadVault() async {
     final privateKey =
         WalletService.to.mnemonicToPrivateKey(seedController.text);
-    final address = privateKey.address.hex;
+    final address = privateKey.address.hexEip55;
     final fileName = '$address.$kVaultExtension';
 
-    final downloadResult = await S3Service.to.downloadVault(
+    final result = await S3Service.to.downloadVault(
       path: join(address, fileName),
       force: true,
     );
 
-    dynamic _error;
-    downloadResult.fold(
-      (error) => _error = error,
-      (file) {},
-    );
+    if (result.isRight || result.left == null) return true;
+    final newUser = result.left is MinioError &&
+        result.left.message!.contains('does not exist');
 
-    if (_error != null) {
-      console.error('download error: $_error');
-
-      final newUser =
-          _error is MinioError && _error.message!.contains('does not exist');
-
-      if (newUser) {
-        UIUtils.showSimpleDialog(
-          'No vault found',
-          "It looks like you're a new $kAppName user. Consider creating a vault instead and start securing your data.",
-        );
-      } else {
-        UIUtils.showSimpleDialog(
-          'Error Downloading',
-          '$_error > _downloadVault()',
-        );
-      }
-
-      return false;
+    if (newUser) {
+      UIUtils.showSimpleDialog(
+        'Vault Not Found',
+        "It looks like you're a new $kAppName user. Consider creating a vault instead and start securing your data.",
+      );
+    } else {
+      UIUtils.showSimpleDialog(
+        'Error Downloading',
+        '${result.left} > _downloadVault()',
+      );
     }
 
-    return true;
+    // delete temp downloaded vault
+    FileUtils.delete(archiveFilePath);
+    return false;
   }
 
   Future<void> continuePressed() async {
@@ -106,11 +96,9 @@ class ImportScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     change(null, status: RxStatus.loading());
 
-    // download and save vault file from IPFS
+    // download vault file
     if (importMode.value == ImportMode.liso) {
-      final success = await _downloadVault();
-      if (!success) {
-        FileUtils.delete(archiveFilePath); // delete temp downloaded vault
+      if (!(await _downloadVault())) {
         return change(null, status: RxStatus.success());
       }
     }
@@ -118,27 +106,19 @@ class ImportScreenController extends GetxController
     // read archive
     final result = LisoManager.readArchive(archiveFilePath);
     FileUtils.delete(archiveFilePath); // delete temp downloaded vault
-    Archive? archive;
-    dynamic _error;
 
-    result.fold(
-      (error) => _error = error,
-      (response) => archive = response,
-    );
-
-    console.info('archive files: ${archive?.files.length}');
-
-    if (_error != null || (archive != null && archive!.files.isEmpty)) {
+    if (result.isLeft) {
       UIUtils.showSimpleDialog(
         'Error Extracting',
-        '$_error > continuePressed()',
+        '${result.left} > continuePressed()',
       );
 
       return change(null, status: RxStatus.success());
     }
 
+    final archive = result.right;
     // get items.hive file
-    final itemsHiveFile = archive!.files.firstWhere(
+    final itemsHiveFile = archive.files.firstWhere(
       (e) => e.isFile && e.name.contains('items.hive'),
     );
 
@@ -166,7 +146,7 @@ class ImportScreenController extends GetxController
 
     // extract all hive boxes
     await LisoManager.extractArchive(
-      archive!,
+      archive,
       path: LisoManager.hivePath,
     );
 

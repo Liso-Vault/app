@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
-import 'package:either_option/either_option.dart';
+import 'package:either_dart/either.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/services/persistence.service.dart';
@@ -87,7 +87,7 @@ class LisoManager {
         await outputStream.close();
       }
 
-      return Right(true);
+      return const Right(true);
     } catch (e) {
       console.error('extractArchive(): ' + e.toString());
       return Left(e);
@@ -108,7 +108,7 @@ class LisoManager {
     try {
       file.writeContent(outputStream);
       await outputStream.close();
-      return Right(true);
+      return const Right(true);
     } catch (e) {
       console.error('extractArchive(): ' + e.toString());
       return Left(e);

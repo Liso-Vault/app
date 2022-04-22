@@ -4,7 +4,6 @@ import 'package:liso/core/middlewares/authentication.middleware.dart';
 import '../../../core/utils/console.dart';
 import '../../app/routes.dart';
 import '../../s3/s3.service.dart';
-import '../sync.service.dart';
 
 class SyncingScreenBinding extends Bindings {
   @override
@@ -17,20 +16,8 @@ class SyncingScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   @override
   void onInit() {
-    downSync();
+    S3Service.to.sync();
     super.onInit();
-  }
-
-  Future<void> downSync() async {
-    change(null, status: RxStatus.loading());
-    await S3Service.to.tryDownSync();
-
-    if (SyncService.to.inSync()) {
-      change(null, status: RxStatus.success());
-      Get.offNamedUntil(Routes.main, (route) => false);
-    } else {
-      change(null, status: RxStatus.error('Failed to sync'));
-    }
   }
 
   void cancel() {

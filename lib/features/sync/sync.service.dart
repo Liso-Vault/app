@@ -1,10 +1,7 @@
 import 'package:get/get.dart';
-import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
-import '../../core/notifications/notifications.manager.dart';
-import '../../core/utils/ui_utils.dart';
 import '../s3/s3.service.dart';
 
 class SyncService extends GetxService with ConsoleMixin {
@@ -13,66 +10,66 @@ class SyncService extends GetxService with ConsoleMixin {
   // VARIABLES
 
   // PROPERTIES
-  final inSync = false.obs;
-  final upSyncing = false.obs;
-  final downSyncing = false.obs;
+  // final inSync = false.obs;
+  // final syncing = false.obs;
+  // final upSyncing = false.obs;
+  // final downSyncing = false.obs;
 
   // GETTERS
-  bool get syncing => upSyncing.value || downSyncing.value;
+  // bool get syncing => upSyncing.value || downSyncing.value;
 
-  void sync() {
-    // if (syncing) return console.warning('already syncing');
-    // final changes = PersistenceService.to.changes.val;
+  // FUNCTIONS
+  // void sync() async {
+  //   if (syncing.value) return console.warning('already down syncing');
+  //   syncing.value = true;
+  //   await S3Service.to.tryDownSync();
+  //   syncing.value = false;
+  //   MainScreenController.to.load();
 
-    // if (changes > 0) {
-    //   console.warning('pending changes: $changes');
-    //   upSync();
-    // } else {
-    //   downSync();
-    // }
+  //   // if (syncing) return console.warning('already syncing');
+  //   // final changes = PersistenceService.to.changes.val;
 
-    downSync();
-  }
+  //   // if (changes > 0) {
+  //   //   console.warning('pending changes: $changes');
+  //   //   upSync();
+  //   // } else {
+  //   //   downSync();
+  //   // }
+  // }
 
-  // INIT
+  // Future<void> downSync() async {
+  //   if (downSyncing.value) return console.warning('already down syncing');
+  //   downSyncing.value = true;
+  //   await S3Service.to.tryDownSync();
+  //   downSyncing.value = false;
+  //   MainScreenController.to.load();
+  // }
 
-  Future<void> downSync() async {
-    if (downSyncing.value) return console.warning('already down syncing');
-    downSyncing.value = true;
-    await S3Service.to.tryDownSync();
-    downSyncing.value = false;
-    MainScreenController.to.load();
-  }
+  // Future<void> upSync() async {
+  //   if (upSyncing.value) return console.warning('already up syncing');
 
-  Future<void> upSync() async {
-    if (upSyncing.value) return console.warning('already up syncing');
+  //   if (!inSync.value) {
+  //     // try down syncing again before up syncing
+  //     await downSync();
+  //     if (!inSync.value) return console.warning('not in sync');
+  //   }
 
-    if (!inSync.value) {
-      // try down syncing again before up syncing
-      await downSync();
-      if (!inSync.value) return console.warning('not in sync');
-    }
+  //   upSyncing.value = true;
+  //   final result = await S3Service.to.upSync();
+  //   upSyncing.value = false;
 
-    upSyncing.value = true;
-    final result = await S3Service.to.upSync();
-    bool success = false;
+  //   if (result.isLeft) {
+  //     return UIUtils.showSimpleDialog(
+  //       'Error Syncing',
+  //       '${result.left} > sync()',
+  //     );
+  //   }
 
-    result.fold(
-      (error) => UIUtils.showSimpleDialog('Error Syncing', '$error > sync()'),
-      (response) => success = response,
-    );
-
-    if (!success) {
-      upSyncing.value = false;
-      return;
-    }
-
-    upSyncing.value = false;
-    PersistenceService.to.changes.val = 0;
-
-    NotificationsManager.notify(
-      title: 'Successfully Synced',
-      body: 'Your vault just got updated.',
-    );
-  }
+  //   if (!result.right) return;
+  //   PersistenceService.to.changes.val = 0;
+  //   NotificationsManager.notify(
+  //     title: 'Successfully Synced',
+  //     body: 'Your vault just got updated.',
+  //   );
+  // }
 }
