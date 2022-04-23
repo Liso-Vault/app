@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:ipfs_rpc/ipfs_rpc.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/console.dart';
@@ -47,7 +44,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final s3LastModified = DateTime.now().val('s3 last modified');
   // VAULT
   final groupIndex = 0.val('group index');
-  final groups = ['Personal', 'Work'].val('groups');
+  final groups = 'Personal,Work'.val('groups');
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
   // final walletAddress = ''.val('wallet address');
@@ -61,6 +58,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
       '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';
 
   List<Map<String, dynamic>> get groupsMap => groups.val
+      .split(',')
       .asMap()
       .entries
       .map((e) => {'index': e.key, 'name': e.value})

@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
 import '../../core/hive/models/item.hive.dart';
+import '../../core/services/persistence.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
@@ -19,6 +22,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   static DrawerMenuController get to => Get.find();
 
   // VARIABLES
+  final persistence = Get.find<PersistenceService>();
+
   // maintain expansion tile state
   bool categoriesExpanded = true, tagsExpanded = true;
 
@@ -68,11 +73,58 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   int get protectedCount => groupedItems.where((e) => e.protected).length;
   int get trashedCount => groupedItems.where((e) => e.trashed).length;
 
+  List<Widget> get groupTiles =>
+      persistence.groupsMap.map(transformGroup).toList();
+
   // INIT
 
   // FUNCTIONS
-  void filterGroup() async {
-    done();
+  Widget transformGroup(Map<String, dynamic> e) {
+    final updatedText = ''.obs;
+    final editMode = false.obs;
+    final groups = persistence.groups.val.split(',');
+    final focusNode = FocusNode();
+    final isAddTile = e['index'] == 999;
+
+    debounce<String>(
+      updatedText,
+      (text) {
+        if (text.isEmpty) return;
+
+        if (isAddTile) {
+          groups.add(text);
+        } else {
+          groups[e['index']] = text;
+        }
+
+        persistence.groups.val = groups.join(',');
+        focusNode.unfocus();
+      },
+      time: 500.milliseconds,
+    );
+
+    return Obx(
+      () => ListTile(
+        title: editMode.value || isAddTile
+            ? TextField(
+                focusNode: focusNode,
+                controller: TextEditingController(text: e['name']),
+                decoration: null,
+                onChanged: (text) => updatedText.value = text,
+              )
+            : Text(e['name']),
+        leading: Icon(isAddTile ? LineIcons.plus : LineIcons.dotCircle),
+        selected: e['index'] == filterGroupIndex.value,
+        onLongPress: () {
+          editMode.toggle();
+          console.info('toggled: ${editMode.value}');
+        },
+        onTap: () {
+          filterGroupIndex.value = e['index'];
+          done();
+        },
+      ),
+    );
   }
 
   void filterFavoriteItems() async {
