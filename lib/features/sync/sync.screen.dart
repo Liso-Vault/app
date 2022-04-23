@@ -15,9 +15,8 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    console.info('PREVIOUS ROUTE: ${Get.previousRoute}');
-
     final newSetup = Get.parameters['new_setup'] != null;
+    console.info('newSetup: $newSetup');
 
     void save() {
       final persistence = Get.find<PersistenceService>();
@@ -53,13 +52,14 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
                 RadioListTile<bool>(
                   title: const Text('$kAppName Cloud Sync'),
                   subtitle: const Text(
-                    'Securely keep multiple devices in sync',
+                    "Securely keep multiple devices in sync in a decentralized cloud storage",
                   ),
                   secondary: const Icon(LineIcons.cloud),
                   value: true,
                   groupValue: PersistenceService.to.sync.val,
                   onChanged: (value) => PersistenceService.to.sync.val = value!,
                 ),
+                const Divider(),
                 RadioListTile<bool>(
                   title: const Text('Offline'),
                   subtitle: const Text(
@@ -82,9 +82,9 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
             icon: const Icon(LineIcons.arrowCircleRight),
           ),
         ] else ...[
-          const Divider(),
+          const Divider(height: 80),
           ListTile(
-            title: Text('time_machine_explorer'.tr),
+            title: Text('$kAppName ' + 'time_machine'.tr),
             subtitle: const Text('Go back in time to undo your changes'),
             leading: const Icon(LineIcons.clock),
             trailing: const Icon(LineIcons.angleRight),

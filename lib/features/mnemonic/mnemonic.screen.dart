@@ -135,7 +135,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
             onPressed:
                 controller.canProceed ? controller.continuePressed : null,
             label: Text('continue'.tr),
-            icon: const Icon(LineIcons.arrowRight),
+            icon: const Icon(LineIcons.arrowCircleRight),
           ),
         ),
       ],

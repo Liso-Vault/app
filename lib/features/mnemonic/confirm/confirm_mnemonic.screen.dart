@@ -35,7 +35,7 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
         TextButton.icon(
           onPressed: controller.continuePressed,
           label: Text('continue'.tr),
-          icon: const Icon(LineIcons.arrowRight),
+          icon: const Icon(LineIcons.arrowCircleRight),
         ),
       ],
     );

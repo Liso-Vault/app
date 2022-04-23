@@ -15,7 +15,6 @@ import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../app/routes.dart';
 import '../s3/s3.service.dart';

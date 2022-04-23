@@ -36,7 +36,7 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
           style: TextStyle(color: Colors.white),
         ),
         const SizedBox(height: 20),
-        TextButton.icon(
+        ElevatedButton.icon(
           label: Text('export'.tr),
           icon: const Icon(LineIcons.upload),
           onPressed: controller.unlock,
@@ -53,17 +53,17 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
 
     return Scaffold(
       appBar: AppBar(leading: const AppBarLeadingButton()),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: Container(
-            constraints: Styles.containerConstraints,
-            child: controller.obx(
-              (_) => SingleChildScrollView(child: content),
-              onLoading: Obx(
-                () => BusyIndicator(
-                  message: controller.busyMessage.value,
-                ),
+      body: Center(
+        child: Container(
+          constraints: Styles.containerConstraints,
+          child: controller.obx(
+            (_) => SingleChildScrollView(
+              child: content,
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+            ),
+            onLoading: Obx(
+              () => BusyIndicator(
+                message: controller.busyMessage.value,
               ),
             ),
           ),

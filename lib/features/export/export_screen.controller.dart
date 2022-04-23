@@ -4,7 +4,6 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -77,8 +76,8 @@ class ExportScreenController extends GetxController
     }
 
     await HiveManager.openBoxes();
-
     final tempVaultFile = File(LisoManager.exportVaultFilePath);
+    console.info('path: ${tempVaultFile.path}');
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
@@ -87,7 +86,8 @@ class ExportScreenController extends GetxController
         text: GetPlatform.isIOS ? null : 'Liso Vault',
       );
 
-      tempVaultFile.delete();
+      console.info('done');
+      // tempVaultFile.delete();
       return _done();
     }
 

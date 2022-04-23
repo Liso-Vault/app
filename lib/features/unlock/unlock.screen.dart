@@ -63,7 +63,11 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
               () => TextButton.icon(
                 label:
                     Text(controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
-                icon: const Icon(LineIcons.lockOpen),
+                icon: Icon(
+                  controller.passwordMode
+                      ? LineIcons.arrowCircleRight
+                      : LineIcons.lockOpen,
+                ),
                 onPressed: controller.canProceed() ? controller.unlock : null,
               ),
             ),

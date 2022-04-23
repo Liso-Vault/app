@@ -1,5 +1,5 @@
 name: liso
-description: Liso - Encrypted Seed Vault
+description: Liso
 publish_to: "none"
 version: 0.1.0+1
 
@@ -16,7 +16,7 @@ dependencies:
   # CRYTPOGRAPHY + SECURITY
   web3dart: ^2.3.5 # EVM + Wallet
   bip39: ^1.0.6 # Mnemonic Seed Phrases
-  bip32: ^2.0.0 # 
+  bip32: ^2.0.0 #
   hex: ^0.2.0
   cryptography: ^2.0.5 # Cipher & Decipher
   biometric_storage: ^4.1.1 # secure storage with biometrics
@@ -28,7 +28,7 @@ dependencies:
   firebase_analytics: 9.1.5
   firebase_crashlytics: 2.6.2
   firebase_performance: 0.8.0+9
-  firebase_remote_config: ^2.0.4
+  firebase_remote_config: 2.0.4
   # firebase_app_check: ^0.0.6+9
 
   # WORKAROUND
@@ -52,9 +52,7 @@ dependencies:
   line_icons: ^2.0.1
   font_awesome_flutter: ^10.1.0
   flex_color_scheme: ^4.2.0 # themes
-  flutter_svg: ^1.0.3
   simple_animations: ^4.0.1
-  bubble_tab_indicator: ^0.1.6
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input

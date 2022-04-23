@@ -6,6 +6,7 @@ import 'package:liso/core/utils/console.dart';
 import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
+import '../s3.service.dart';
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
 
@@ -74,8 +75,13 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Obx(() => Text(controller.currentPath.value)),
+            padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+            child: Obx(
+              () => Text(
+                controller.currentPath.value
+                    .replaceAll(S3Service.to.rootPath, 'Root/'),
+              ),
+            ),
           ),
           const Divider(),
           Expanded(child: content),

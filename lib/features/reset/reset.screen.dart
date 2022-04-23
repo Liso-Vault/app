@@ -59,7 +59,7 @@ class ResetScreen extends GetView<ResetScreenController> {
     return Scaffold(
       appBar: AppBar(leading: const AppBarLeadingButton()),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(30),
         child: Center(
           child: Container(
             constraints: Styles.containerConstraints,

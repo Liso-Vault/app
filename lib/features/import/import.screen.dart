@@ -82,7 +82,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               );
             } else if (controller.importMode() == ImportMode.liso) {
               return const Text(
-                'Enter the seed phrase you used to sync to the Decentralized $kAppName Cloud Storage',
+                'Enter the seed phrase you used to sync to $kAppName Cloud',
                 textAlign: TextAlign.center,
               );
             } else {
@@ -95,7 +95,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           TextButton.icon(
             onPressed: controller.continuePressed,
             label: Text('continue'.tr),
-            icon: const Icon(LineIcons.arrowRight),
+            icon: const Icon(LineIcons.arrowCircleRight),
           ),
         ],
       ),

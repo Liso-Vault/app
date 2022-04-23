@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:local_auth/local_auth.dart';
 
-import '../../core/utils/biometric.util.dart';
 import 'welcome_screen.controller.dart';
 
 class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {

@@ -5,6 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
@@ -52,28 +53,30 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
     );
 
+    final addItemButton = ContextMenuButton(
+      controller.menuItemsCategory,
+      child: TextButton.icon(
+        icon: const Icon(LineIcons.plus),
+        onPressed: () {},
+        label: Text(
+          'add_item'.tr,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+
     final childContent = controller.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
-      onEmpty: CenteredPlaceholder(
-        iconData: LineIcons.seedling,
-        message: 'no_items'.tr,
-        child: DrawerMenuController.to.filterTrashed.value
-            ? null
-            : Obx(
-                () => ContextMenuButton(
-                  controller.menuItemsCategory,
-                  enabled: !S3Service.to.syncing.value,
-                  child: TextButton.icon(
-                    icon: const Icon(LineIcons.plus),
-                    label: Text(
-                      'add_item'.tr,
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    onPressed: !S3Service.to.syncing.value ? () {} : null,
-                  ),
-                ),
-              ),
+      onEmpty: Obx(
+        () => CenteredPlaceholder(
+          iconData: LineIcons.seedling,
+          message: 'no_items'.tr,
+          child: S3Service.to.syncing.value ||
+                  DrawerMenuController.to.filterTrashed.value
+              ? null
+              : addItemButton,
+        ),
       ),
     );
 
@@ -113,7 +116,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
           final syncButton = IconButton(
             icon: const Icon(LineIcons.syncIcon),
-            onPressed: S3Service.to.sync,
+            onPressed: () {
+              UIUtils.showSnackBar(
+                title: 'Syncing to $kAppName Cloud',
+                message: 'Please wait...',
+                icon: const Icon(LineIcons.syncIcon),
+                seconds: 4,
+              );
+
+              S3Service.to.sync();
+            },
           );
 
           final syncBadge = Badge(
@@ -164,11 +176,11 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final floatingActionButton = Obx(
-      () => S3Service.to.syncing.value
+      () => S3Service.to.syncing.value ||
+              DrawerMenuController.to.filterTrashed.value
           ? const SizedBox.shrink()
           : ContextMenuButton(
               controller.menuItemsCategory,
-              enabled: !S3Service.to.syncing.value,
               child: FloatingActionButton(
                 child: const Icon(LineIcons.plus),
                 onPressed: () {},

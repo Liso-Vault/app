@@ -79,12 +79,9 @@ class SettingsScreenController extends GetxController
 
   // FUNCTIONS
   void changeTheme(ThemeMode mode) async {
-    // PersistenceService.to.theme.val = mode.name;
-    // theme.value = mode.name;
-    // Get.changeThemeMode(mode);
-
-    final address = await Globals.wallet?.privateKey.extractAddress();
-    console.info('address: ${address?.hex}');
+    PersistenceService.to.theme.val = mode.name;
+    theme.value = mode.name;
+    Get.changeThemeMode(mode);
   }
 
   void exportWallet() async {
@@ -104,8 +101,10 @@ class SettingsScreenController extends GetxController
     final exportFileName =
         '${LisoManager.walletAddress}.wallet.$kWalletExtension';
 
-    final tempFile =
-        await mainFile.copy(join(LisoPaths.temp!.path, exportFileName));
+    final tempFile = await mainFile.copy(join(
+      LisoPaths.temp!.path,
+      exportFileName,
+    ));
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
@@ -114,7 +113,7 @@ class SettingsScreenController extends GetxController
         text: GetPlatform.isIOS ? null : 'Liso Wallet',
       );
 
-      tempFile.delete();
+      // tempFile.delete();
       return Get.back();
     }
 

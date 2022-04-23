@@ -94,7 +94,7 @@ final en = {
   "instant_sync": "Instant Sync",
   "configuration": "Configuration",
   "server_url": "Server URL",
-  "time_machine_explorer": "Time Machine Explorer",
+  "time_machine": "Time Machine",
   "file_explorer": "File Explorer",
   "file": "File",
   "files": "Files",

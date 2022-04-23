@@ -34,7 +34,6 @@ class LisoManager {
       );
 
   static String get vaultFilename => '$walletAddress.$kVaultExtension';
-
   static String get tempVaultFilePath => join(tempPath, kTempVaultFileName);
   static String get exportVaultFilePath => join(tempPath, vaultFilename);
 
