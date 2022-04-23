@@ -1,7 +1,6 @@
 import 'package:biometric_storage/biometric_storage.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:local_auth/local_auth.dart';
 
 import '../liso/liso.manager.dart';
 import 'console.dart';
@@ -12,7 +11,7 @@ class BiometricUtils {
 
   static Future<void> init() async {
     if (!GetPlatform.isMobile) return; // fingerprint for mobile only
-    supported = await LocalAuthentication().canCheckBiometrics;
+    supported = await canAuthenticate();
     console.info('init');
   }
 
@@ -20,7 +19,7 @@ class BiometricUtils {
     String? biometricPassword;
 
     try {
-      final storage = await getStorage();
+      final storage = await getStorage(kBiometricPasswordKey);
       biometricPassword = await storage.read();
     } catch (e) {
       console.error('biometric storage error: $e');
@@ -36,8 +35,10 @@ class BiometricUtils {
   }
 
   static Future<BiometricStorageFile> getStorage(
-      {String title = 'Unlock $kAppName'}) async {
-    const preSubTitle = 'securely store and access your wallet password via';
+    String name, {
+    String title = 'Unlock $kAppName',
+  }) async {
+    const preSubTitle = 'securely access $kAppName via';
 
     // TODO: localize
     final applePrompt = IosPromptInfo(
@@ -53,7 +54,7 @@ class BiometricUtils {
     );
 
     final passwordStorage = await BiometricStorage().getStorage(
-      kBiometricPasswordKey,
+      name,
       promptInfo: PromptInfo(
         macOsPromptInfo: applePrompt,
         iosPromptInfo: applePrompt,
@@ -65,15 +66,10 @@ class BiometricUtils {
   }
 
   static Future<bool> canAuthenticate() async {
-    if (!supported) {
-      console.info('biometrics not applicable');
-      return false;
-    }
-
     final response = await BiometricStorage().canAuthenticate();
 
     if (response != CanAuthenticateResponse.success) {
-      console.warning('biometric authentication not supported');
+      console.warning('biometric authentication not supported: $response');
       return false;
     }
 

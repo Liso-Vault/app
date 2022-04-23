@@ -65,6 +65,6 @@ void main() async {
       stack: stackTrace,
     );
 
-    CrashlyticsService.to.record(details);
+    CrashlyticsService.recordStatic(details);
   });
 }

@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
@@ -19,7 +18,6 @@ import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../app/routes.dart';
-import '../main/main_screen.controller.dart';
 import '../s3/s3.service.dart';
 
 class ImportScreenBinding extends Bindings {
@@ -48,18 +46,26 @@ class ImportScreenController extends GetxController
 
   // PROPERTIES
   final importMode = ImportMode.liso.obs;
-  final ipfsBusy = false.obs;
+  final busy = false.obs;
 
   // GETTERS
   String get archiveFilePath => importMode() == ImportMode.file
       ? filePathController.text
       : LisoManager.tempVaultFilePath;
 
+  Future<bool> get canPop async => !busy.value;
+
   // INIT
   @override
   void onInit() {
     change(null, status: RxStatus.success());
     super.onInit();
+  }
+
+  @override
+  void change(newState, {RxStatus? status}) {
+    busy.value = status == RxStatus.loading();
+    super.change(newState, status: status);
   }
 
   // FUNCTIONS

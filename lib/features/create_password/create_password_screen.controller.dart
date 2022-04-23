@@ -55,7 +55,6 @@ class CreatePasswordScreenController extends GetxController
 
   void confirm() async {
     if (!formKey.currentState!.validate()) return;
-
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
@@ -89,7 +88,8 @@ class CreatePasswordScreenController extends GetxController
 
     // save password to biometric storage
     final storage = await BiometricUtils.getStorage(
-      title: "Secure Wallet Password",
+      kBiometricPasswordKey,
+      title: "Secure $kAppName",
     ); // TODO: localize
 
     try {

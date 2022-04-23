@@ -21,7 +21,8 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   void _init() {
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      kReleaseMode, // TODO: let user decide
+      // PersistenceService.to.crashReporting.val, // TODO: let user decide
+      kReleaseMode,
     );
 
     // CAPTURE FLUTTER ERRORS
@@ -31,7 +32,11 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     };
   }
 
-  void record(FlutterErrorDetails details) {
+  void record(FlutterErrorDetails details) =>
+      CrashlyticsService.recordStatic(details);
+
+  static void recordStatic(FlutterErrorDetails details) {
+    final console = Console(name: 'CrashlyticsService');
     final errorString = details.summary.value.toString();
 
     if (kDebugMode) {

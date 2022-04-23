@@ -65,13 +65,23 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<void> _init() async {
     if (config.s3.endpoint.isEmpty) await config.fetch();
+
+    if (config.s3.endpoint.isEmpty) {
+      await Future.delayed(2.seconds);
+      await config.fetch();
+    }
+
     console.info('init...');
 
-    client = Minio(
-      endPoint: config.s3.endpoint,
-      accessKey: config.s3.key,
-      secretKey: config.s3.secret,
-    );
+    try {
+      client = Minio(
+        endPoint: config.s3.endpoint,
+        accessKey: config.s3.key,
+        secretKey: config.s3.secret,
+      );
+    } catch (e) {
+      console.error('Minio error: $e');
+    }
   }
 
   void _syncProgress(double value, String? message) {

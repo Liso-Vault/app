@@ -15,7 +15,6 @@ import '../../core/hive/hive.manager.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 
 class ExportScreenBinding extends Bindings {
@@ -60,21 +59,6 @@ class ExportScreenController extends GetxController
         false;
 
     if (!unlocked) return;
-
-    // if (GetPlatform.isAndroid) {
-    //   final storagePermissionGranted =
-    //       await Permission.storage.request().isGranted;
-
-    //   if (!storagePermissionGranted) {
-    //     UIUtils.showSimpleDialog(
-    //       'Storage Permission Denied',
-    //       "Please allow manage storage permission to enable exporting",
-    //     );
-
-    //     return;
-    //   }
-    // }
-
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
 

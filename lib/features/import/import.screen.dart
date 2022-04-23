@@ -101,7 +101,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
       ),
     );
 
-    return Scaffold(
+    final scaffold = Scaffold(
       appBar: AppBar(centerTitle: false),
       body: Padding(
         padding: const EdgeInsets.all(15),
@@ -116,6 +116,11 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           ),
         ),
       ),
+    );
+
+    return WillPopScope(
+      onWillPop: () => controller.canPop,
+      child: scaffold,
     );
   }
 }

@@ -118,7 +118,7 @@ class LisoManager {
   static Future<void> reset() async {
     console.info('resetting...');
     // delete biometric storage
-    final storage = await BiometricUtils.getStorage();
+    final storage = await BiometricUtils.getStorage(kBiometricPasswordKey);
     await storage.delete();
     // nullify wallet
     Globals.wallet = null;
