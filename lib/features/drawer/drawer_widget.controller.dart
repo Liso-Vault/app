@@ -3,6 +3,7 @@ import 'package:liso/core/utils/console.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
+import '../../core/hive/models/item.hive.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
@@ -22,6 +23,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   bool categoriesExpanded = true, tagsExpanded = true;
 
   // PROPERTIES
+  final filterGroupIndex = 0.obs;
   final filterFavorites = false.obs;
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
@@ -29,13 +31,17 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterTag = ''.obs;
 
   // GETTERS
+  Iterable<HiveLisoItem> get groupedItems => HiveManager.items == null
+      ? []
+      : HiveManager.items!.values.where(
+          (e) => e.group == filterGroupIndex.value,
+        );
 
   // Obtain used categories distinctly
   Set<String> get categories {
-    if (HiveManager.items == null) return {};
     final Set<String> _categories = {};
 
-    for (var e in HiveManager.items!.values) {
+    for (var e in groupedItems) {
       _categories.add(e.category);
     }
 
@@ -44,9 +50,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   // Obtain used tags distinctly
   Set<String> get tags {
-    if (HiveManager.items == null) return {};
-
-    final _usedTags = HiveManager.items!.values
+    final _usedTags = groupedItems
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
 
@@ -59,28 +63,24 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     return _tags;
   }
 
-  int get itemsCount =>
-      HiveManager.items?.values.where((e) => !e.trashed).length ?? 0;
-
-  int get favoriteCount =>
-      HiveManager.items?.values.where((e) => e.favorite).length ?? 0;
-
-  int get protectedCount =>
-      HiveManager.items?.values.where((e) => e.protected).length ?? 0;
-
-  int get trashedCount =>
-      HiveManager.items?.values.where((e) => e.trashed).length ?? 0;
+  int get itemsCount => groupedItems.where((e) => !e.trashed).length;
+  int get favoriteCount => groupedItems.where((e) => e.favorite).length;
+  int get protectedCount => groupedItems.where((e) => e.protected).length;
+  int get trashedCount => groupedItems.where((e) => e.trashed).length;
 
   // INIT
 
   // FUNCTIONS
+  void filterGroup() async {
+    done();
+  }
 
   void filterFavoriteItems() async {
     filterFavorites.toggle();
     filterProtected.value = false;
     filterTrashed.value = false;
     filterTag.value = '';
-    _done();
+    done();
   }
 
   void filterProtectedItems() async {
@@ -88,7 +88,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterTrashed.value = false;
     filterTag.value = '';
-    _done();
+    done();
   }
 
   void filterTrashedItems() async {
@@ -96,7 +96,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTag.value = '';
-    _done();
+    done();
   }
 
   void filterAllItems() {
@@ -104,7 +104,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;
-    _done();
+    done();
   }
 
   void filterByCategory(String category) {
@@ -113,14 +113,14 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterCategory.value =
         _category == filterCategory.value ? LisoItemCategory.none : _category;
     filterTag.value = '';
-    _done();
+    done();
   }
 
   void filterByTag(String tag) {
     // if already selected, deselect
     if (tag == filterTag.value) tag = '';
     filterTag.value = tag;
-    _done();
+    done();
   }
 
   void _clearFilters() {
@@ -132,13 +132,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     Utils.adaptiveRouteOpen(name: Routes.s3Explorer);
   }
 
-  void _done() async {
-    // // delay for better Mobile UX
-    // if (mainController.expandableDrawer) {
-    //   await Future.delayed(500.milliseconds);
-    // }
-
+  void done() async {
     MainScreenController.to.load();
-    Get.back();
+    if (Utils.isDrawerExpandable) Get.back();
   }
 }

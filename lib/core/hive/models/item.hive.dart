@@ -38,6 +38,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   List<String> tags;
   @HiveField(9)
   HiveMetadata metadata;
+  @HiveField(10)
+  int group;
 
   HiveLisoItem({
     required this.identifier,
@@ -50,6 +52,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.trashed = false,
     this.tags = const [],
     required this.metadata,
+    required this.group,
   });
 
   factory HiveLisoItem.fromJson(Map<String, dynamic> json) => HiveLisoItem(
@@ -63,6 +66,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         trashed: json["trashed"],
         tags: json["tags"],
         metadata: HiveMetadata.fromJson(json["metadata"]),
+        group: json["group"],
       );
 
   Map<String, dynamic> toJson() {
@@ -77,6 +81,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "trashed": trashed,
       "tags": tags,
       "metadata": metadata.toJson(),
+      "group": group,
     };
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -42,6 +43,7 @@ class ItemScreenController extends GetxController
   // PROPERTIES
   final favorite = false.obs;
   final protected = false.obs;
+  final groupIndex = PersistenceService.to.groupIndex.val.obs;
 
   // GETTERS
   // MENU ITEMS
@@ -107,6 +109,7 @@ class ItemScreenController extends GetxController
     titleController.text = item!.title;
     favorite.value = item!.favorite;
     protected.value = item!.protected;
+    groupIndex.value = item!.group;
     tags = item!.tags;
   }
 
@@ -114,6 +117,7 @@ class ItemScreenController extends GetxController
     final drawerController = Get.find<DrawerMenuController>();
     favorite.value = drawerController.filterFavorites.value;
     protected.value = drawerController.filterProtected.value;
+    groupIndex.value = drawerController.filterGroupIndex.value;
 
     final _fields = TemplateParser.parse(category);
 
@@ -123,9 +127,10 @@ class ItemScreenController extends GetxController
       title: '',
       fields: _fields,
       tags: [],
-      metadata: await HiveMetadata.get(),
       favorite: favorite.value,
       protected: protected.value,
+      metadata: await HiveMetadata.get(),
+      group: groupIndex.value,
     );
   }
 
@@ -140,37 +145,13 @@ class ItemScreenController extends GetxController
       title: titleController.text,
       tags: tags,
       fields: _fields,
+      favorite: favorite.value,
+      protected: protected.value,
       metadata: await HiveMetadata.get(),
-      favorite: favorite(),
-      protected: protected(),
+      group: groupIndex.value,
     );
 
     await HiveManager.items!.add(newItem);
-
-    // bool protected = false;
-    // bool favorite = true;
-    // bool trashed = false;
-
-    // for (var i = 0; i < 1000; i++) {
-    //   protected = !protected;
-    //   favorite = !favorite;
-    //   trashed = !trashed;
-
-    //   final newItem = HiveLisoItem(
-    //     identifier: const Uuid().v4(),
-    //     category: category,
-    //     iconUrl: iconUrl.value,
-    //     title: titleController.text + ' $i',
-    //     tags: tags,
-    //     fields: _fields,
-    //     metadata: await HiveMetadata.get(),
-    //     favorite: favorite,
-    //     protected: protected,
-    //   );
-
-    //   await HiveManager.items!.add(newItem);
-    // }
-
     Get.back();
   }
 
@@ -182,9 +163,10 @@ class ItemScreenController extends GetxController
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tags;
-    item!.favorite = favorite();
-    item!.protected = protected();
+    item!.favorite = favorite.value;
+    item!.protected = protected.value;
     item!.metadata = await item!.metadata.getUpdated();
+    item!.group = groupIndex.value;
     await item!.save();
 
     Get.back();

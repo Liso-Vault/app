@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:ipfs_rpc/ipfs_rpc.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:path/path.dart';
 
 import '../liso/liso.manager.dart';
 
@@ -13,7 +15,10 @@ class PersistenceService extends GetxService with ConsoleMixin {
   static PersistenceService get to => Get.find();
 
   // BOX
-  final box = GetStorage();
+  final box = GetStorage(
+    'persistence',
+    join(LisoPaths.main!.path, 'get_storage'),
+  );
 
   // GENERAL
   final localeCode = 'en'.val('locale code');
@@ -41,6 +46,8 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // FILEBASE
   final s3LastModified = DateTime.now().val('s3 last modified');
   // VAULT
+  final groupIndex = 0.val('group index');
+  final groups = ['Personal', 'Work'].val('groups');
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
   // final walletAddress = ''.val('wallet address');
@@ -53,17 +60,11 @@ class PersistenceService extends GetxService with ConsoleMixin {
   String get ipfsServerUrl =>
       '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';
 
-  FilesStatResponse? get localStat {
-    dynamic jsonObject;
-
-    try {
-      jsonObject = jsonDecode(ipfsLocalStat.val);
-    } catch (e) {
-      return null;
-    }
-
-    return FilesStatResponse.fromJson(jsonObject);
-  }
+  List<Map<String, dynamic>> get groupsMap => groups.val
+      .asMap()
+      .entries
+      .map((e) => {'index': e.key, 'name': e.value})
+      .toList();
 
   @override
   void onInit() {

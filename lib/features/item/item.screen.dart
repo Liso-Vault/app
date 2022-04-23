@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
@@ -125,6 +126,21 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       // TAGS
       tagsInput,
       const SizedBox(height: 10),
+      DropdownButtonFormField<int>(
+        isExpanded: true,
+        value: controller.groupIndex.value,
+        onChanged: (_value) => controller.groupIndex.value = _value!,
+        decoration: const InputDecoration(labelText: 'Group'),
+        items: [
+          ...PersistenceService.to.groupsMap
+              .map((e) => DropdownMenuItem<int>(
+                    child: Text(e['name']),
+                    value: e['index'],
+                  ))
+              .toList()
+        ],
+      ),
+      const SizedBox(height: 10),
       ObxValue(
         (RxBool data) => SwitchListTile(
           title: Text('favorite'.tr),
@@ -148,6 +164,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
         ),
         controller.protected,
       ),
+
       if (mode == 'update') ...[
         const Divider(),
         Text(

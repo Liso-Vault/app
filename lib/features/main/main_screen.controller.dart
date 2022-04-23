@@ -239,6 +239,11 @@ class MainScreenController extends GetxController
     final drawerController = DrawerMenuController.to;
     var items = HiveManager.items!.values.toList();
 
+    // FILTER GROUP
+    items = items
+        .where((e) => e.group == drawerController.filterGroupIndex.value)
+        .toList();
+
     // FILTER FAVORITES
     if (drawerController.filterFavorites.value) {
       items = items.where((e) => e.favorite).toList();

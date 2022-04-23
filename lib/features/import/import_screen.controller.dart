@@ -152,13 +152,17 @@ class ImportScreenController extends GetxController
     }
 
     // move temporarily extracted hive files to main hive directory
-    final tempItemsFile =
-        File(join(LisoManager.tempPath, '$kHiveBoxItems.hive'));
-    final destinationItemsPath =
-        join(LisoManager.hivePath, '$kHiveBoxItems.hive');
+    final tempItemsFile = File(join(
+      LisoManager.tempPath,
+      '$kHiveBoxItems.hive',
+    ));
+
+    final destinationItemsPath = join(
+      LisoManager.hivePath,
+      '$kHiveBoxItems.hive',
+    );
 
     await FileUtils.move(tempItemsFile, destinationItemsPath);
-
     // ignore syncing screen if we just imported
     AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud

@@ -67,6 +67,7 @@ final en = {
   "lock_vault": "Lock Vault",
   "create_vault": "Create Vault",
   "export_wallet": "Export Wallet",
+  "vault": "Vault",
   "confirm": "Confirm",
   "generate": "Generate",
   "proceed": "Proceed",
@@ -99,4 +100,6 @@ final en = {
   "file": "File",
   "files": "Files",
   "existing": "Existing",
+  "group": "Group",
+  "groups": "Groups",
 };

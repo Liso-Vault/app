@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
@@ -30,7 +31,35 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
 
         final items = [
           header,
+          SimpleBuilder(
+            builder: (_) => ExpansionTile(
+              maintainState: true,
+              title: Text(
+                'groups'.tr.toUpperCase(),
+                style: const TextStyle(fontSize: 13),
+              ),
+              initiallyExpanded: true,
+              children: [
+                ...PersistenceService.to.groupsMap
+                    .map(
+                      (e) => ListTile(
+                        title: Text(e['name']),
+                        leading: const Icon(LineIcons.dotCircle),
+                        selected:
+                            e['index'] == controller.filterGroupIndex.value,
+                        onTap: () {
+                          controller.filterGroupIndex.value = e['index'];
+                          controller.done();
+                        },
+                      ),
+                    )
+                    .toList(),
+              ],
+            ),
+          ),
           ListTile(
+            leading: const Icon(LineIcons.list),
+            onTap: controller.filterAllItems,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -40,8 +69,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 ]
               ],
             ),
-            leading: const Icon(LineIcons.list),
-            onTap: controller.filterAllItems,
           ),
           Obx(
             () => ListTile(
