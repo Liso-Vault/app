@@ -20,15 +20,14 @@ dependencies:
   hex: ^0.2.0
   cryptography: ^2.0.5 # Cipher & Decipher
   biometric_storage: ^4.1.1 # secure storage with biometrics
-  secure_biometric_storage: ^0.2.2
   local_auth: ^2.0.0 # check biometric availability
 
   # FIREBASE
-  firebase_core: 1.14.1
-  firebase_analytics: 9.1.5
-  firebase_crashlytics: 2.6.2
-  firebase_performance: 0.8.0+9
-  firebase_remote_config: 2.0.4
+  firebase_core: 1.15.0
+  firebase_analytics: 9.1.6
+  firebase_crashlytics: 2.6.3
+  firebase_performance: 0.8.0+10
+  firebase_remote_config: 2.0.5
   # firebase_app_check: ^0.0.6+9
 
   # WORKAROUND
@@ -51,20 +50,20 @@ dependencies:
   # UI
   line_icons: ^2.0.1
   font_awesome_flutter: ^10.1.0
-  flex_color_scheme: ^4.2.0 # themes
+  flex_color_scheme: 5.0.0 # themes
   simple_animations: ^4.0.1
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^2.2.0
-  flutter_quill: ^4.1.1 # rich text editor
+  flutter_quill: ^4.1.3 # rich text editor
   badges: ^2.0.2
   cached_network_image: ^3.2.0
   percent_indicator: ^4.0.0
 
   # TOOLS
   logger: ^1.1.0
-  url_launcher: ^6.0.20
+  url_launcher: ^6.1.0
   supercharged: ^2.1.1
   timeago: ^3.2.2
   flutter_local_notifications: ^9.4.0

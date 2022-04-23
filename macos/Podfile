@@ -4,7 +4,7 @@ platform :osx, '10.12'
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 # Disable IDFA Tracking
-$FirebaseAnalyticsWithoutAdIdSupport = true
+# $FirebaseAnalyticsWithoutAdIdSupport = true
 
 project 'Runner', {
   'Debug' => :debug,
