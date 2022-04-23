@@ -73,59 +73,29 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   int get protectedCount => groupedItems.where((e) => e.protected).length;
   int get trashedCount => groupedItems.where((e) => e.trashed).length;
 
+  bool get filterAll =>
+      !filterFavorites.value &&
+      !filterProtected.value &&
+      !filterTrashed.value &&
+      filterTag.isEmpty &&
+      filterCategory.value == LisoItemCategory.none;
+
   List<Widget> get groupTiles =>
-      persistence.groupsMap.map(transformGroup).toList();
+      persistence.groupsMap.map((Map<String, dynamic> e) {
+        return ListTile(
+          title: Text(e['name']),
+          leading: const Icon(LineIcons.dotCircle),
+          selected: e['index'] == filterGroupIndex.value,
+          onTap: () {
+            filterGroupIndex.value = e['index'];
+            done();
+          },
+        );
+      }).toList();
 
   // INIT
 
   // FUNCTIONS
-  Widget transformGroup(Map<String, dynamic> e) {
-    final updatedText = ''.obs;
-    final editMode = false.obs;
-    final groups = persistence.groups.val.split(',');
-    final focusNode = FocusNode();
-    final isAddTile = e['index'] == 999;
-
-    debounce<String>(
-      updatedText,
-      (text) {
-        if (text.isEmpty) return;
-
-        if (isAddTile) {
-          groups.add(text);
-        } else {
-          groups[e['index']] = text;
-        }
-
-        persistence.groups.val = groups.join(',');
-        focusNode.unfocus();
-      },
-      time: 500.milliseconds,
-    );
-
-    return Obx(
-      () => ListTile(
-        title: editMode.value || isAddTile
-            ? TextField(
-                focusNode: focusNode,
-                controller: TextEditingController(text: e['name']),
-                decoration: null,
-                onChanged: (text) => updatedText.value = text,
-              )
-            : Text(e['name']),
-        leading: Icon(isAddTile ? LineIcons.plus : LineIcons.dotCircle),
-        selected: e['index'] == filterGroupIndex.value,
-        onLongPress: () {
-          editMode.toggle();
-          console.info('toggled: ${editMode.value}');
-        },
-        onTap: () {
-          filterGroupIndex.value = e['index'];
-          done();
-        },
-      ),
-    );
-  }
 
   void filterFavoriteItems() async {
     filterFavorites.toggle();

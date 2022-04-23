@@ -7,6 +7,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 
 import '../../../core/utils/utils.dart';
+import '../../core/services/persistence.service.dart';
 import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends StatelessWidget with ConsoleMixin {
@@ -22,7 +23,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             child: InkWell(
               child: const Text('WALLET SECTION'),
               onTap: () {
-                // PersistenceService.to.groups.val = 'Personal,Work';
+                PersistenceService.to.groups.val = 'Personal,Work';
               },
             ),
           ),
@@ -38,23 +39,23 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 style: const TextStyle(fontSize: 13),
               ),
               initiallyExpanded: true,
-              children: [
-                ...controller.groupTiles,
-                controller.transformGroup({'index': 999, 'name': 'Add Group'}),
-              ],
+              children: controller.groupTiles,
             ),
           ),
-          ListTile(
-            leading: const Icon(LineIcons.list),
-            onTap: controller.filterAllItems,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('all_Items'.tr),
-                if (controller.itemsCount > 0) ...[
-                  Chip(label: Text(controller.itemsCount.toString())),
-                ]
-              ],
+          Obx(
+            () => ListTile(
+              leading: const Icon(LineIcons.list),
+              onTap: controller.filterAllItems,
+              selected: controller.filterAll,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('all_Items'.tr),
+                  if (controller.itemsCount > 0) ...[
+                    Chip(label: Text(controller.itemsCount.toString())),
+                  ]
+                ],
+              ),
             ),
           ),
           Obx(
