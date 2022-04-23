@@ -1229,6 +1229,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.27.3"
+  secure_biometric_storage:
+    dependency: "direct main"
+    description:
+      name: secure_biometric_storage
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.2"
   share_plus:
     dependency: "direct main"
     description:

@@ -36,6 +36,7 @@ class LisoManager {
   static String get vaultFilename => '$walletAddress.$kVaultExtension';
 
   static String get tempVaultFilePath => join(tempPath, kTempVaultFileName);
+  static String get exportVaultFilePath => join(tempPath, vaultFilename);
 
   // FUNCTIONS
   static Future<Either<dynamic, File>> createArchive(
@@ -118,8 +119,7 @@ class LisoManager {
   static Future<void> reset() async {
     console.info('resetting...');
     // delete biometric storage
-    final storage = await BiometricUtils.getStorage(kBiometricPasswordKey);
-    await storage.delete();
+    await BiometricUtils.deletePassword();
     // nullify wallet
     Globals.wallet = null;
     // delete files

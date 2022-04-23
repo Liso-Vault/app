@@ -4,8 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
@@ -97,15 +99,22 @@ class SettingsScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
-    final file = File(LisoManager.walletFilePath);
+    final mainFile = File(LisoManager.walletFilePath);
+
+    final exportFileName =
+        '${LisoManager.walletAddress}.wallet.$kWalletExtension';
+
+    final tempFile =
+        await mainFile.copy(join(LisoPaths.temp!.path, exportFileName));
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
-        [file.path],
-        subject: LisoManager.walletFileName,
-        text: 'Liso Wallet',
+        [tempFile.path],
+        subject: exportFileName,
+        text: GetPlatform.isIOS ? null : 'Liso Wallet',
       );
 
+      tempFile.delete();
       return Get.back();
     }
 
@@ -123,11 +132,7 @@ class SettingsScreenController extends GetxController
     console.info('export path: $exportPath');
     change('Exporting to: $exportPath', status: RxStatus.loading());
     await Future.delayed(1.seconds); // just for style
-
-    final exportFileName =
-        '${LisoManager.walletAddress}.wallet.$kWalletExtension';
-
-    file.copy(join(exportPath, exportFileName));
+    FileUtils.move(tempFile, join(exportPath, exportFileName));
 
     NotificationsManager.notify(
       title: 'Successfully Exported Wallet',

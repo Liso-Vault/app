@@ -45,6 +45,9 @@ class ConfigService extends GetxService with ConsoleMixin {
     });
 
     _populate();
+
+    // workaround for https://github.com/firebase/flutterfire/issues/6196
+    if (GetPlatform.isIOS) await Future.delayed(1.seconds);
     fetch();
   }
 

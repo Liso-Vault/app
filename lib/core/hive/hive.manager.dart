@@ -87,7 +87,6 @@ class HiveManager {
   }
 
   static Future<void> reset() async {
-    await closeBoxes();
     await deleteBoxes();
     items = null;
     console.info('reset');

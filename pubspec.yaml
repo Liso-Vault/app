@@ -20,6 +20,7 @@ dependencies:
   hex: ^0.2.0
   cryptography: ^2.0.5 # Cipher & Decipher
   biometric_storage: ^4.1.1 # secure storage with biometrics
+  secure_biometric_storage: ^0.2.2
   local_auth: ^2.0.0 # check biometric availability
 
   # FIREBASE

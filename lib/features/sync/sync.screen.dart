@@ -15,8 +15,9 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final newSetup = Get.previousRoute == Routes.welcome ||
-        Get.previousRoute.contains(Routes.createPassword);
+    console.info('PREVIOUS ROUTE: ${Get.previousRoute}');
+
+    final newSetup = Get.parameters['new_setup'] != null;
 
     void save() {
       final persistence = Get.find<PersistenceService>();
@@ -73,13 +74,12 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
             );
           },
         ),
-        const SizedBox(height: 20),
         if (newSetup) ...[
           const Divider(),
           TextButton.icon(
             onPressed: save,
-            label: Text('save'.tr),
-            icon: const Icon(LineIcons.arrowRight),
+            label: Text('continue'.tr),
+            icon: const Icon(LineIcons.arrowCircleRight),
           ),
         ] else ...[
           const Divider(),
@@ -94,18 +94,23 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        leading: newSetup ? null : const AppBarLeadingButton(),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: Container(
-            constraints: Styles.containerConstraints,
-            padding: const EdgeInsets.all(20),
-            child: SingleChildScrollView(child: content),
+    return WillPopScope(
+      onWillPop: () => Future.value(!newSetup),
+      child: Scaffold(
+        appBar: newSetup
+            ? null
+            : AppBar(
+                centerTitle: false,
+                leading: const AppBarLeadingButton(),
+              ),
+        body: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Center(
+            child: Container(
+              constraints: Styles.containerConstraints,
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(child: content),
+            ),
           ),
         ),
       ),

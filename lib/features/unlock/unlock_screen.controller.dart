@@ -52,7 +52,6 @@ class UnlockScreenController extends GetxController
   // biometric storage
   void authenticateBiometrics() async {
     if (!GetPlatform.isMobile) return; // mobile only
-    if (!await BiometricUtils.canAuthenticate()) return;
     final biometricPassword = await BiometricUtils.getPassword();
     if (biometricPassword == null) return;
     // set the password then programmatically unlock

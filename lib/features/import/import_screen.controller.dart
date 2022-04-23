@@ -167,11 +167,6 @@ class ImportScreenController extends GetxController
         importMode.value == ImportMode.liso ? true : false;
     change(null, status: RxStatus.success());
 
-    NotificationsManager.notify(
-      title: 'Successfully Imported Vault',
-      body: basename(archiveFilePath),
-    );
-
     Get.offNamed(
       Routes.createPassword,
       parameters: {'privateKeyHex': HEX.encode(credentials.privateKey)},

@@ -86,24 +86,12 @@ class CreatePasswordScreenController extends GetxController
     // PersistenceService.to.walletAddress.val =
     //     Globals.wallet!.privateKey.address.hexEip55;
 
-    // save password to biometric storage
-    final storage = await BiometricUtils.getStorage(
-      kBiometricPasswordKey,
-      title: "Secure $kAppName",
-    ); // TODO: localize
-
-    try {
-      await storage.write(passwordController.text);
-    } catch (e) {
-      change(null, status: RxStatus.success());
-      return console.error('biometric error: $e');
-    }
-
     // write wallet json to file
     final file = File(LisoManager.walletFilePath);
     await file.writeAsString(Globals.wallet!.toJson());
-    console.info('wallet written: ${file.path}');
-
+    console.info('wallet written to: ${file.path}');
+    // save password to biometric storage
+    await BiometricUtils.savePassword(passwordController.text);
     // open Hive Boxes
     await HiveManager.openBoxes();
     change(null, status: RxStatus.success());
@@ -114,7 +102,7 @@ class CreatePasswordScreenController extends GetxController
     );
 
     if (PersistenceService.to.sync.val) {
-      Get.offAllNamed(Routes.sync);
+      Get.offAllNamed(Routes.sync, parameters: {'new_setup': 'true'});
     } else {
       Get.offNamedUntil(Routes.main, (route) => false);
     }

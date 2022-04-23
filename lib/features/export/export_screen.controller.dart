@@ -4,6 +4,7 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -62,11 +63,11 @@ class ExportScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
 
-    final encoder = ZipFileEncoder();
     await HiveManager.closeBoxes();
+    final encoder = ZipFileEncoder();
 
     try {
-      encoder.create(LisoManager.tempVaultFilePath);
+      encoder.create(LisoManager.exportVaultFilePath);
       await encoder.addDirectory(Directory(LisoManager.hivePath));
       encoder.close();
     } catch (e) {
@@ -77,13 +78,16 @@ class ExportScreenController extends GetxController
 
     await HiveManager.openBoxes();
 
+    final tempVaultFile = File(LisoManager.exportVaultFilePath);
+
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
-        [LisoManager.tempVaultFilePath],
+        [tempVaultFile.path],
         subject: LisoManager.vaultFilename,
-        text: 'Liso Vault',
+        text: GetPlatform.isIOS ? null : 'Liso Vault',
       );
 
+      tempVaultFile.delete();
       return _done();
     }
 
@@ -103,7 +107,7 @@ class ExportScreenController extends GetxController
     await Future.delayed(1.seconds); // just for style
 
     await FileUtils.move(
-      File(LisoManager.tempVaultFilePath),
+      tempVaultFile,
       join(exportPath, LisoManager.vaultFilename),
     );
 

@@ -48,18 +48,23 @@ class SyncingScreen extends GetView<SyncingScreenController> {
       ),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: controller.obx(
-          (state) => const SizedBox.shrink(),
-          onLoading: const SizedBox.shrink(),
-          onError: (message) => IconButton(
-            onPressed: controller.cancel,
-            icon: const Icon(LineIcons.times),
-          ),
+    final appBar = AppBar(
+      leading: controller.obx(
+        (state) => const SizedBox.shrink(),
+        onLoading: const SizedBox.shrink(),
+        onError: (message) => IconButton(
+          onPressed: controller.cancel,
+          icon: const Icon(LineIcons.times),
         ),
       ),
-      body: content,
+    );
+
+    return WillPopScope(
+      onWillPop: () => Future.value(false),
+      child: Scaffold(
+        appBar: appBar,
+        body: content,
+      ),
     );
   }
 }

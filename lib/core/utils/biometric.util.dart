@@ -1,37 +1,56 @@
 import 'package:biometric_storage/biometric_storage.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:local_auth/local_auth.dart';
 
 import '../liso/liso.manager.dart';
 import 'console.dart';
 
 class BiometricUtils {
   static final console = Console(name: 'BiometricUtils');
-  static bool supported = false;
+  static bool touchFaceIdSupported = false;
 
   static Future<void> init() async {
-    if (!GetPlatform.isMobile) return; // fingerprint for mobile only
-    supported = await canAuthenticate();
+    if (GetPlatform.isMobile) {
+      touchFaceIdSupported = await LocalAuthentication().canCheckBiometrics;
+    }
+
     console.info('init');
   }
 
-  static Future<String?> getPassword() async {
-    String? biometricPassword;
+  static Future<bool> savePassword(String password) async {
+    if (!await canAuthenticate()) return false;
+
+    final storage = await getStorage(
+      kBiometricPasswordKey,
+      title: 'Secure $kAppName',
+    );
 
     try {
-      final storage = await getStorage(kBiometricPasswordKey);
-      biometricPassword = await storage.read();
+      await storage.write(password);
+      return true;
+    } catch (e) {
+      console.error('biometric storage error: $e');
+      return false;
+    }
+  }
+
+  static Future<String?> getPassword() async {
+    if (!await canAuthenticate()) return null;
+    final storage = await getStorage(kBiometricPasswordKey);
+
+    try {
+      return await storage.read();
     } catch (e) {
       console.error('biometric storage error: $e');
       return null;
     }
+  }
 
-    if (biometricPassword == null) {
-      console.warning('no password stored in biometric storage');
-      return null;
-    }
-
-    return biometricPassword;
+  static Future<void> deletePassword() async {
+    if (!await canAuthenticate()) return;
+    final storage = await getStorage(kBiometricPasswordKey);
+    await storage.delete();
   }
 
   static Future<BiometricStorageFile> getStorage(

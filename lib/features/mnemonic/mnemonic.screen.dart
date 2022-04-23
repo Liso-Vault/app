@@ -98,7 +98,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
             },
           ),
         ),
-        const SizedBox(height: 15),
+        const SizedBox(height: 20),
         Obx(
           () => Visibility(
             visible: controller.mode.value == MnemonicMode.generate,

@@ -67,7 +67,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
                 onPressed: controller.canProceed() ? controller.unlock : null,
               ),
             ),
-            if (BiometricUtils.supported) ...[
+            if (BiometricUtils.touchFaceIdSupported) ...[
               const SizedBox(width: 15),
               IconButton(
                 icon: const Icon(LineIcons.fingerprint),
