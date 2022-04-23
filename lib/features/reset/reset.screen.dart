@@ -8,6 +8,7 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
 import '../../core/liso/liso.manager.dart';
+import '../../core/services/wallet.service.dart';
 
 class ResetScreen extends GetView<ResetScreenController> {
   const ResetScreen({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class ResetScreen extends GetView<ResetScreenController> {
         ),
         const SizedBox(height: 20),
         Text(
-          'Your local vault ${LisoManager.vaultFilename} and ${LisoManager.walletFileName} file be deleted',
+          'Your local vault ${LisoManager.vaultFilename} and ${WalletService.to.fileName} file be deleted',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

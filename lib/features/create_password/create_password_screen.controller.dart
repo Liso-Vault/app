@@ -86,7 +86,7 @@ class CreatePasswordScreenController extends GetxController
     //     Globals.wallet!.privateKey.address.hexEip55;
 
     // write wallet json to file
-    final file = File(LisoManager.walletFilePath);
+    final file = File(WalletService.to.filePath);
     await file.writeAsString(Globals.wallet!.toJson());
     console.info('wallet written to: ${file.path}');
     // save password to biometric storage

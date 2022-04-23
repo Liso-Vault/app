@@ -16,6 +16,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/services/wallet.service.dart';
 import '../app/routes.dart';
 import '../menu/menu.item.dart';
 
@@ -96,10 +97,10 @@ class SettingsScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
-    final mainFile = File(LisoManager.walletFilePath);
+    final mainFile = File(WalletService.to.filePath);
 
     final exportFileName =
-        '${LisoManager.walletAddress}.wallet.$kWalletExtension';
+        '${WalletService.to.address}.wallet.$kWalletExtension';
 
     final tempFile = await mainFile.copy(join(
       LisoPaths.temp!.path,

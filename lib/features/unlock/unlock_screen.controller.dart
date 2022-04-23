@@ -11,6 +11,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
 import '../../core/hive/hive.manager.dart';
+import '../../core/services/wallet.service.dart';
 import '../../core/utils/biometric.util.dart';
 
 class UnlockScreenBinding extends Bindings {
@@ -67,7 +68,7 @@ class UnlockScreenController extends GetxController
 
     try {
       Globals.wallet = await compute(Isolates.loadWallet, {
-        'file_path': LisoManager.walletFilePath,
+        'file_path': WalletService.to.filePath,
         'password': passwordController.text,
       });
     } catch (e) {

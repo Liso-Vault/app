@@ -10,6 +10,7 @@ import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/liso/liso.manager.dart';
+import '../../core/services/wallet.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'settings_screen.controller.dart';
@@ -29,8 +30,8 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: Image.asset(Images.logo, height: 25, color: Colors.grey),
           trailing: const Icon(LineIcons.copy),
           title: const Text('Liso Address'),
-          subtitle: Text(LisoManager.walletAddress),
-          onTap: () => Utils.copyToClipboard(LisoManager.walletAddress),
+          subtitle: Text(WalletService.to.address),
+          onTap: () => Utils.copyToClipboard(WalletService.to.address),
         ),
         const Divider(),
         Obx(

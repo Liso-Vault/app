@@ -18,6 +18,7 @@ import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
+import '../../core/services/wallet.service.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
 import 'model/s3_content.model.dart';
@@ -41,13 +42,13 @@ class S3Service extends GetxService with ConsoleMixin {
   final progressText = 'Syncing...'.obs;
 
   // GETTERS
-  String get rootPath => '${LisoManager.walletAddress}/';
+  String get rootPath => '${WalletService.to.address}/';
   String get backupsPath => join(rootPath, 'Backups');
   String get historyPath => join(rootPath, 'History');
   S3Content get lisoContent => S3Content(path: vaultPath);
 
   String get vaultPath => join(
-        LisoManager.walletAddress,
+        WalletService.to.address,
         LisoManager.vaultFilename,
       );
 

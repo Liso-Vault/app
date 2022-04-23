@@ -5,6 +5,7 @@ import 'package:either_dart/either.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -23,17 +24,8 @@ class LisoManager {
   static String get hivePath => LisoPaths.hive!.path;
   static String get tempPath => LisoPaths.temp!.path;
 
-  static String get walletAddress =>
-      Globals.wallet?.privateKey.address.hexEip55 ?? '';
-
-  static String get walletFileName => 'wallet.$kWalletExtension';
-
-  static String get walletFilePath => join(
-        mainPath,
-        walletFileName,
-      );
-
-  static String get vaultFilename => '$walletAddress.$kVaultExtension';
+  static String get vaultFilename =>
+      '${WalletService.to.address}.$kVaultExtension';
   static String get tempVaultFilePath => join(tempPath, kTempVaultFileName);
   static String get exportVaultFilePath => join(tempPath, vaultFilename);
 
@@ -122,7 +114,7 @@ class LisoManager {
     // nullify wallet
     Globals.wallet = null;
     // delete files
-    await FileUtils.delete(walletFilePath); // wallet
+    await FileUtils.delete(WalletService.to.filePath); // wallet
     await FileUtils.delete(tempVaultFilePath); // temp vault
     // reset hive
     await HiveManager.reset();

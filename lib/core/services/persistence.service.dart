@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/liso/liso_paths.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:path/path.dart';
@@ -52,7 +53,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // GETTERS
 
   bool get canSync =>
-      sync.val && syncConfirmed.val && LisoManager.walletAddress.isNotEmpty;
+      sync.val && syncConfirmed.val && WalletService.to.address.isNotEmpty;
 
   String get ipfsServerUrl =>
       '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';

@@ -10,6 +10,7 @@ import 'package:path/path.dart';
 
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
+import '../../core/services/wallet.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 
@@ -23,7 +24,7 @@ class IPFSService extends GetxService with ConsoleMixin {
 
   // GETTERS
   String get rootPath {
-    return join('/$kAppName', LisoManager.walletAddress);
+    return join('/$kAppName', WalletService.to.address);
   }
 
   String get backupsPath => join(rootPath, 'Backups');

@@ -7,7 +7,6 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 
 import '../../../core/utils/utils.dart';
-import '../../core/services/persistence.service.dart';
 import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends StatelessWidget with ConsoleMixin {
@@ -18,19 +17,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
     return GetBuilder(
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
-        final header = DrawerHeader(
-          child: Center(
-            child: InkWell(
-              child: const Text('WALLET SECTION'),
-              onTap: () {
-                PersistenceService.to.groups.val = 'Personal,Work';
-              },
-            ),
-          ),
-        );
-
         final items = [
-          header,
+          // header,
           SimpleBuilder(
             builder: (_) => ExpansionTile(
               maintainState: true,
@@ -38,7 +26,9 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 'groups'.tr.toUpperCase(),
                 style: const TextStyle(fontSize: 13),
               ),
-              initiallyExpanded: true,
+              onExpansionChanged: (expanded) =>
+                  controller.groupsExpanded = expanded,
+              initiallyExpanded: controller.groupsExpanded,
               children: controller.groupTiles,
             ),
           ),
@@ -109,11 +99,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               selected: controller.filterTrashed(),
             ),
           ),
-          ListTile(
-            title: Text('files'.tr),
-            leading: const FaIcon(FontAwesomeIcons.fileLines),
-            onTap: controller.files,
-          ),
+
           ExpansionTile(
             initiallyExpanded: controller.categoriesExpanded,
             title: Text(
@@ -171,6 +157,21 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             initiallyExpanded: true,
             children: [
               ListTile(
+                title: Text('files'.tr),
+                leading: const FaIcon(FontAwesomeIcons.fileLines),
+                onTap: controller.files,
+              ),
+              ListTile(
+                title: Text('wallet'.tr),
+                leading: const FaIcon(LineIcons.wallet),
+                // onTap: controller.files,
+              ),
+              ListTile(
+                title: Text('browser'.tr),
+                leading: const FaIcon(LineIcons.wiredNetwork),
+                // onTap: controller.files,
+              ),
+              ListTile(
                 title: Text('settings'.tr),
                 leading: const Icon(LineIcons.cog),
                 onTap: () {
@@ -196,6 +197,33 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
             ],
           ),
+          ExpansionTile(
+            maintainState: true,
+            initiallyExpanded: controller.toolsExpanded,
+            onExpansionChanged: (expanded) =>
+                controller.toolsExpanded = expanded,
+            title: Text(
+              'tools'.tr.toUpperCase(),
+              style: const TextStyle(fontSize: 13),
+            ),
+            children: [
+              ListTile(
+                title: Text('breach_scanner'.tr),
+                leading: const FaIcon(LineIcons.exclamationTriangle),
+                // onTap: controller.files,
+              ),
+              ListTile(
+                title: Text('password_health'.tr),
+                leading: const FaIcon(LineIcons.laptopMedical),
+                // onTap: controller.files,
+              ),
+              ListTile(
+                title: Text('otp_generator'.tr),
+                leading: const FaIcon(LineIcons.flask),
+                // onTap: controller.files,
+              ),
+            ],
+          )
         ];
 
         return Drawer(

@@ -4,6 +4,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:local_auth/local_auth.dart';
 
 import '../liso/liso.manager.dart';
+import '../services/wallet.service.dart';
 import 'console.dart';
 
 class BiometricUtils {
@@ -68,7 +69,7 @@ class BiometricUtils {
     // TODO: localize
     final androidPrompt = AndroidPromptInfo(
       title: title,
-      subtitle: LisoManager.walletFileName,
+      subtitle: WalletService.to.fileName,
       description: '${GetUtils.capitalizeFirst(preSubTitle)} KeyStore',
     );
 

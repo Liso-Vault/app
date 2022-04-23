@@ -8,6 +8,7 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import '../../core/liso/liso.manager.dart';
+import '../../core/services/wallet.service.dart';
 import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';
 
@@ -30,7 +31,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           ),
           const SizedBox(height: 15),
           Text(
-            "This will be the password to encrypt and decrypt the local ${LisoManager.walletFileName} file which also secures the (xxx.$kVaultExtension) vault with it's private key",
+            "This will be the password to encrypt and decrypt the local ${WalletService.to.fileName} file which also secures the (xxx.$kVaultExtension) vault with it's private key",
             style: const TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),

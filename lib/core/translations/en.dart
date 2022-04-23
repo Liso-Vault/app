@@ -102,4 +102,9 @@ final en = {
   "existing": "Existing",
   "group": "Group",
   "groups": "Groups",
+  "wallet": "Wallet",
+  "browser": "Browser",
+  "breach_scanner": "Breach Scanner",
+  "password_health": "Password Health",
+  "otp_generator": "OTP Generator",
 };
