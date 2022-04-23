@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>848138515356-79apc9n4ji9ahcruielpkt0k7dnab2r5.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.848138515356-79apc9n4ji9ahcruielpkt0k7dnab2r5</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>848138515356-mbctvo4tkq9c5kf294a537eiofimreno.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB_tJW08aoA71YLRgT3vurUGM6lcmWbun0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>848138515356</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.liso.app</string>
+	<key>PROJECT_ID</key>
+	<string>liso-vault</string>
+	<key>STORAGE_BUCKET</key>
+	<string>liso-vault.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:848138515356:ios:f16e4b05f31f2c8f3b0e59</string>
+</dict>
+</plist>
