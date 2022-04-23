@@ -51,26 +51,23 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           ),
           const SizedBox(height: 10),
           TextButton.icon(
-            label: const Text('test'),
-            icon: const Icon(LineIcons.download),
+            label: const Text('Biometric Test'),
+            icon: const Icon(LineIcons.bug),
             onPressed: () async {
-              // if (!await BiometricUtils.canAuthenticate()) return;
+              if (!await BiometricUtils.canAuthenticate()) return;
 
-              // final storage = await BiometricUtils.getStorage(
-              //   'test_storage',
-              //   title: "Test $kAppName",
-              // );
+              final storage = await BiometricUtils.getStorage(
+                'test_storage',
+                title: "Test $kAppName",
+              );
 
-              // try {
-              //   await storage.write('test');
-              // } catch (e) {
-              //   return console.error('biometric error: $e');
-              // }
+              try {
+                await storage.write('test');
+              } catch (e) {
+                return console.error('biometric error: $e');
+              }
 
-              // console.info('success');
-
-              console.info(
-                  'ConfigService.to.s3.endpoint: #${ConfigService.to.s3.endpoint}#');
+              console.info('success');
             },
           ),
         ],

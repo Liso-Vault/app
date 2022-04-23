@@ -67,12 +67,7 @@ class BiometricUtils {
 
   static Future<bool> canAuthenticate() async {
     final response = await BiometricStorage().canAuthenticate();
-
-    if (response != CanAuthenticateResponse.success) {
-      console.warning('biometric authentication not supported: $response');
-      return false;
-    }
-
-    return true;
+    console.warning('biometric: $response');
+    return response == CanAuthenticateResponse.success;
   }
 }
