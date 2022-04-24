@@ -9,7 +9,6 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
-import '../../core/liso/liso.manager.dart';
 import '../../core/services/wallet.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';

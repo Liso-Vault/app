@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../liso/liso.manager.dart';
 import '../services/wallet.service.dart';
 import 'console.dart';
 

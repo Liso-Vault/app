@@ -24,7 +24,6 @@ class App extends StatelessWidget {
     );
 
     const density = VisualDensity.compact;
-    const useSubThemes = true;
 
     // MATERIAL APP
     return GetMaterialApp(
@@ -45,7 +44,6 @@ class App extends StatelessWidget {
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColor),
-        useSubThemes: useSubThemes,
         visualDensity: density,
         subThemesData: subThemes,
       ).toTheme,
@@ -54,7 +52,6 @@ class App extends StatelessWidget {
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColorDarker),
         appBarBackground: Colors.grey.shade100,
-        useSubThemes: useSubThemes,
         visualDensity: density,
         subThemesData: subThemes,
       ).toTheme,

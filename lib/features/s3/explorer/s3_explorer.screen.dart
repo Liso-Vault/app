@@ -35,13 +35,14 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: LineIcons.cube,
-        message: 'no_items'.tr,
+        iconData: LineIcons.file,
+        message: 'no_files'.tr,
       ),
     );
 
     final appBar = AppBar(
-      title: Text('file_explorer'.tr),
+      title:
+          Text(controller.isTimeMachine ? 'Time Machine' : 'file_explorer'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [
@@ -52,6 +53,14 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
             icon: const Icon(LineIcons.alternateLevelUp),
           ),
         ),
+        if (!controller.isTimeMachine) ...[
+          Obx(
+            () => IconButton(
+              onPressed: !controller.busy() ? controller.newFolder : null,
+              icon: const Icon(LineIcons.folderPlus),
+            ),
+          ),
+        ],
         Obx(
           () => IconButton(
             onPressed: !controller.busy() ? controller.reload : null,
@@ -64,7 +73,7 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
     final floatingActionButton = Obx(
       () => FloatingActionButton(
         child: const Icon(LineIcons.upload),
-        onPressed: controller.busy() ? null : controller.upload,
+        onPressed: controller.busy() ? null : controller.pickFile,
       ),
     );
 

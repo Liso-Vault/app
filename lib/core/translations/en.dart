@@ -51,6 +51,7 @@ final en = {
   "too_short": "Too short",
   "no_items": "No items",
   "add_item": "Add Item",
+  "no_files": "No Files",
   "remove": "Remove",
   "change": "Change",
   "copy": "Copy",

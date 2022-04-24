@@ -7,8 +7,6 @@ import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:path/path.dart';
 
-import '../liso/liso.manager.dart';
-
 class PersistenceService extends GetxService with ConsoleMixin {
   static PersistenceService get to => Get.find();
 

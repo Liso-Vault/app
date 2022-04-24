@@ -164,11 +164,13 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ListTile(
                 title: Text('wallet'.tr),
                 leading: const FaIcon(LineIcons.wallet),
+                enabled: false,
                 // onTap: controller.files,
               ),
               ListTile(
                 title: Text('browser'.tr),
                 leading: const FaIcon(LineIcons.wiredNetwork),
+                enabled: false,
                 // onTap: controller.files,
               ),
               ListTile(
@@ -178,7 +180,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   if (Utils.isDrawerExpandable) {
                     Get.offAndToNamed(Routes.settings);
                   } else {
-                    // Get.toNamed(Routes.settings);
                     Utils.adaptiveRouteOpen(name: Routes.settings);
                   }
                 },
@@ -210,16 +211,19 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ListTile(
                 title: Text('breach_scanner'.tr),
                 leading: const FaIcon(LineIcons.exclamationTriangle),
+                enabled: false,
                 // onTap: controller.files,
               ),
               ListTile(
                 title: Text('password_health'.tr),
                 leading: const FaIcon(LineIcons.laptopMedical),
+                enabled: false,
                 // onTap: controller.files,
               ),
               ListTile(
                 title: Text('otp_generator'.tr),
                 leading: const FaIcon(LineIcons.flask),
+                enabled: false,
                 // onTap: controller.files,
               ),
             ],

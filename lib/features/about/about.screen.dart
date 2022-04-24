@@ -56,14 +56,14 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           trailing: const Icon(LineIcons.alternateExternalLink),
           title: const Text('Liso Website'),
           subtitle: const Text(kAppWebsiteUrl),
-          onTap: () => launch(kAppWebsiteUrl),
+          onTap: () => launchUrl(Uri.parse(kAppWebsiteUrl)),
         ),
         // ListTile(
         //   leading: const Icon(LineIcons.github),
         //   trailing: const Icon(LineIcons.alternateExternalLink),
         //   title: const Text('Liso GitHub'),
         //   subtitle: const Text(kAppGithubUrl),
-        //   onTap: () => launch(kAppGithubUrl),
+        //   onTap: () => launchUrl(Uri.parse(kAppGithubUrl),
         // ),
         const Divider(),
         ListTile(
@@ -71,21 +71,21 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           trailing: const Icon(LineIcons.alternateExternalLink),
           title: const Text('Liso Twitter'),
           subtitle: const Text('@liso_vault'),
-          onTap: () => launch(kAppTwitterUrl),
+          onTap: () => launchUrl(Uri.parse(kAppTwitterUrl)),
         ),
         // ListTile(
         //   leading: const Icon(LineIcons.instagram),
         //   trailing: const Icon(LineIcons.alternateExternalLink),
         //   title: const Text('Liso Instagram'),
         //   subtitle: const Text('@liso_vault'),
-        //   onTap: () => launch(kAppInstagramUrl),
+        //   onTap: () => launchUrl(Uri.parse(kAppInstagramUrl),
         // ),
         // ListTile(
         //   leading: const Icon(LineIcons.facebook),
         //   trailing: const Icon(LineIcons.alternateExternalLink),
         //   title: const Text('Liso Facebook'),
         //   subtitle: const Text('@liso_vault'),
-        //   onTap: () => launch(kAppFacebookUrl),
+        //   onTap: () => launchUrl(Uri.parse(kAppFacebookUrl),
         // ),
         const Divider(),
         ListTile(
@@ -93,8 +93,8 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           trailing: const Icon(LineIcons.alternateExternalLink),
           title: const Text('Liso Email'),
           subtitle: const Text(kAppEmail),
-          onTap: () =>
-              launch('mailto:liso.vault@gmail.com?subject=Liso%20Support'),
+          onTap: () => launchUrl(
+              Uri.parse('mailto:liso.vault@gmail.com?subject=Liso%20Support')),
         ),
         const Divider(),
         ListTile(
@@ -110,14 +110,14 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         ListTile(
           leading: const Icon(LineIcons.list),
           title: const Text('Roadmap'),
-          onTap: () => launch(kAppRoadmapUrl),
+          onTap: () => launchUrl(Uri.parse(kAppRoadmapUrl)),
           trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.users),
           title: const Text('Community & Help'),
-          onTap: () => launch(kAppSupportUrl),
+          onTap: () => launchUrl(Uri.parse(kAppSupportUrl)),
           trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         // ListTile(
@@ -125,7 +125,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   trailing: const Icon(LineIcons.alternateExternalLink),
         //   title: const Text('Check for updates'),
         //   subtitle: Obx(() => Text(controller.appVersion)),
-        //   onTap: () => launch(kAppGithubReleasesUrl),
+        //   onTap: () => launchUrl(Uri.parse(kAppGithubReleasesUrl),
         // ),
         // if (kDebugMode) ...[
         //   ListTile(
@@ -142,7 +142,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           leading: const Icon(LineIcons.code),
           title: const Text(kDeveloperName),
           subtitle: const Text('Developer'),
-          onTap: () => launch(kDeveloperWebsite),
+          onTap: () => launchUrl(Uri.parse(kDeveloperWebsite)),
           trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         const Divider(),

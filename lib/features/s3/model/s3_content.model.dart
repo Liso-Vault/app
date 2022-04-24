@@ -1,4 +1,7 @@
 import 'package:minio/models.dart';
+import 'package:path/path.dart';
+
+import '../../../core/utils/utils.dart';
 
 class S3Content {
   final String name;
@@ -16,6 +19,11 @@ class S3Content {
   });
 
   bool get isFile => type == S3ContentType.file;
+
+  String get fileExtension => extension(path);
+
+  String get updatedTimeAgo =>
+      object != null ? Utils.timeAgo(object!.lastModified!, short: false) : '';
 }
 
 enum S3ContentType {

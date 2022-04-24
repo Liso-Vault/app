@@ -14,7 +14,6 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/hive/hive.manager.dart';
-import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/wallet.service.dart';
 import '../app/routes.dart';

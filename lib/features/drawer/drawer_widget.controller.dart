@@ -154,7 +154,10 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void files() async {
-    Utils.adaptiveRouteOpen(name: Routes.s3Explorer);
+    Utils.adaptiveRouteOpen(
+      name: Routes.s3Explorer,
+      parameters: {'type': 'explorer'},
+    );
   }
 
   void done() async {

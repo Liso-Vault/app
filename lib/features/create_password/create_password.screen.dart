@@ -7,7 +7,6 @@ import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
-import '../../core/liso/liso.manager.dart';
 import '../../core/services/wallet.service.dart';
 import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';

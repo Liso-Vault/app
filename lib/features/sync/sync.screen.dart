@@ -88,7 +88,10 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
             subtitle: const Text('Go back in time to undo your changes'),
             leading: const Icon(LineIcons.clock),
             trailing: const Icon(LineIcons.angleRight),
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.s3Explorer),
+            onTap: () => Utils.adaptiveRouteOpen(
+              name: Routes.s3Explorer,
+              parameters: {'type': 'time_machine'},
+            ),
           ),
         ]
       ],

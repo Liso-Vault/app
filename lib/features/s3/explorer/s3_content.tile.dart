@@ -24,33 +24,47 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final menuItems = [
-      ContextMenuItem(
-        title: 'Restore',
-        leading: const Icon(LineIcons.trashRestore),
-        onSelected: () => controller.restore(content),
-      ),
-      if (!controller.currentPath.value.contains('Backups/')) ...[
+      if (content.fileExtension == kVaultExtension) ...[
         ContextMenuItem(
-          title: 'Backup',
-          leading: const Icon(LineIcons.fileDownload),
-          onSelected: () => controller.backup(content),
+          title: 'Restore',
+          leading: const Icon(LineIcons.trashRestore),
+          onSelected: () => controller.restore(content),
+        ),
+        if (!controller.currentPath.value.contains('Backups/')) ...[
+          ContextMenuItem(
+            title: 'Backup',
+            leading: const Icon(LineIcons.fileDownload),
+            onSelected: () => controller.backup(content),
+          ),
+        ]
+      ] else ...[
+        ContextMenuItem(
+          title: 'Delete',
+          leading: const Icon(LineIcons.trash),
+          onSelected: () => controller.delete(content),
         ),
       ]
     ];
 
     return ListTile(
       title: Text(content.name),
-      subtitle: content.size > 0 ? Text(filesize(content.size)) : null,
+      subtitle: content.size > 0
+          ? Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(filesize(content.size)),
+                if (content.object != null) Text(content.updatedTimeAgo),
+              ],
+            )
+          : null,
       iconColor: content.isFile ? kAppColor : null,
       leading: Icon(
         content.isFile ? LineIcons.fileAlt : LineIcons.folderOpen,
       ),
-      trailing: content.isFile
-          ? ContextMenuButton(
-              menuItems,
-              child: const Icon(LineIcons.verticalEllipsis),
-            )
-          : null,
+      trailing: ContextMenuButton(
+        menuItems,
+        child: const Icon(LineIcons.verticalEllipsis),
+      ),
       onTap: () {
         if (content.isFile) {
           _askToImport(content);

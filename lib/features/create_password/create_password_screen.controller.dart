@@ -12,7 +12,6 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 
-import '../../core/liso/liso.manager.dart';
 import '../../core/utils/biometric.util.dart';
 
 class CreatePasswordScreenBinding extends Bindings {

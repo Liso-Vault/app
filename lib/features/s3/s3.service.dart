@@ -9,7 +9,9 @@ import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:minio/io.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
@@ -45,6 +47,15 @@ class S3Service extends GetxService with ConsoleMixin {
   String get rootPath => '${WalletService.to.address}/';
   String get backupsPath => join(rootPath, 'Backups');
   String get historyPath => join(rootPath, 'History');
+
+  String get filesPath =>
+      join(
+        rootPath,
+        'Files',
+        DrawerMenuController.to.filterGroupIndex.value.toString(),
+      ) +
+      '/';
+
   S3Content get lisoContent => S3Content(path: vaultPath);
 
   String get vaultPath => join(
@@ -149,7 +160,12 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, bool>> _downSync() async {
     if (!persistence.canSync) return const Right(false);
     console.info('down syncing...');
-    final downloadResult = await downloadVault(path: vaultPath);
+
+    final downloadResult = await downloadFile(
+      s3Path: vaultPath,
+      filePath: LisoManager.tempVaultFilePath,
+    );
+
     if (downloadResult.isLeft) return Left(downloadResult.left);
     _syncProgress(0.3, null);
     final vaultFile = downloadResult.right;
@@ -257,40 +273,20 @@ class S3Service extends GetxService with ConsoleMixin {
     if (archiveResult.isLeft) return Left(archiveResult.left);
     // UPLOAD
     _syncProgress(0.7, null);
-    final uploadResult = await _uploadVault(archiveResult.right);
+    final metadataString = await updatedLocalMetadata();
+
+    final uploadResult = await uploadFile(
+      archiveResult.right,
+      s3Path: vaultPath,
+      metadata: metadataString,
+    );
+
+    archiveResult.right.delete(); // delete temp vault file
+    persistence.metadata.val = metadataString;
     _syncProgress(0.9, null);
     if (uploadResult.isLeft) return Left(uploadResult.left);
     console.info('uploaded! eTag: ${uploadResult.right}');
     return const Right(true);
-  }
-
-  Future<Either<dynamic, String>> _uploadVault(File file) async {
-    if (!persistence.canSync) return const Left('offline');
-    await _prepare();
-    console.info('upload...');
-    final metadataString = await _updatedLocalMetadata();
-    uploadTotalSize.value = await file.length();
-    String eTag = '';
-
-    try {
-      eTag = await client!.putObject(
-        config.s3.bucket,
-        vaultPath,
-        Stream<Uint8List>.value(file.readAsBytesSync()),
-        metadata: {'client': metadataString},
-        onProgress: (size) => uploadedSize.value = size,
-      );
-    } catch (e) {
-      return Left(e);
-    }
-
-    file.delete(); // delete temp vault file
-    // reset download indicators
-    uploadTotalSize.value = 0;
-    uploadedSize.value = 0;
-    // save updated local metadata
-    persistence.metadata.val = metadataString;
-    return Right(eTag);
   }
 
   Future<Either<dynamic, CopyObjectResult>> backup(S3Content content) async {
@@ -327,6 +323,23 @@ class S3Service extends GetxService with ConsoleMixin {
     } catch (e) {
       return Left(e);
     }
+  }
+
+  Future<Either<dynamic, bool>> remove(S3Content content) async {
+    if (!persistence.canSync) return const Left('offline');
+    await _prepare();
+    console.info('removing: ${content.path}...');
+
+    try {
+      await client!.removeObject(
+        config.s3.bucket,
+        content.path,
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    return const Right(true);
   }
 
   Future<Either<dynamic, List<S3Content>>> fetch({
@@ -380,27 +393,84 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(contents);
   }
 
-  Future<Either<dynamic, File>> downloadVault({
-    required String path,
+  Future<Either<dynamic, File>> downloadFile({
+    required String s3Path,
+    required String filePath,
     bool force = false,
   }) async {
     if (!persistence.canSync && !force) return const Left('offline');
     await _prepare();
-    console.info('downloading: ${ConfigService.to.s3.bucket} -> $path');
+    console.info('downloading: ${ConfigService.to.s3.bucket} -> $s3Path');
     MinioByteStream? stream;
 
     try {
-      stream = await client!.getObject(ConfigService.to.s3.bucket, path);
+      stream = await client!.getObject(ConfigService.to.s3.bucket, s3Path);
     } catch (e) {
       console.error('download error: $e');
       return Left(e);
     }
 
     console.info('download size: ${filesize(stream.contentLength)}');
-    final file = File(LisoManager.tempVaultFilePath);
+    final file = File(filePath);
     await stream.pipe(file.openWrite());
-    console.info('downloaded to: ${LisoManager.tempVaultFilePath}');
+    console.info('downloaded to: $filePath');
     return Right(file);
+  }
+
+  Future<Either<dynamic, String>> uploadFile(
+    File file, {
+    required String s3Path,
+    required String metadata,
+  }) async {
+    if (!persistence.canSync) return const Left('offline');
+    await _prepare();
+    console.info('uploading...');
+
+    uploadTotalSize.value = await file.length();
+    String eTag = '';
+
+    try {
+      eTag = await client!.putObject(
+        config.s3.bucket,
+        s3Path,
+        Stream<Uint8List>.value(file.readAsBytesSync()),
+        metadata: {'client': metadata},
+        onProgress: (size) => uploadedSize.value = size,
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    // reset download indicators
+    uploadTotalSize.value = 0;
+    uploadedSize.value = 0;
+
+    return Right(eTag);
+  }
+
+  Future<Either<dynamic, String>> createFolder(
+    String name, {
+    required String s3Path,
+    required String metadata,
+  }) async {
+    if (!persistence.canSync) return const Left('offline');
+    await _prepare();
+    console.info('creating folder...');
+
+    String eTag = '';
+
+    try {
+      eTag = await client!.putObject(
+        config.s3.bucket,
+        join(s3Path, name + '/'),
+        Stream<Uint8List>.value(Uint8List(0)),
+        metadata: {'client': metadata},
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    return Right(eTag);
   }
 
   List<S3Content> _objectsToContents(List<Object> objects) {
@@ -410,9 +480,10 @@ class S3Service extends GetxService with ConsoleMixin {
             name: basename(e.key!),
             path: e.key!,
             size: e.size!,
-            type: extension(e.key!).isNotEmpty
+            type: extension(e.key!).isNotEmpty || e.size! > 0
                 ? S3ContentType.file
                 : S3ContentType.directory,
+            object: e,
           ),
         )
         .toList();
@@ -435,7 +506,7 @@ class S3Service extends GetxService with ConsoleMixin {
     return HiveMetadata.fromJson(jsonDecode(persistence.metadata.val));
   }
 
-  Future<String> _updatedLocalMetadata() async {
+  Future<String> updatedLocalMetadata() async {
     final metadata = _localMetadata() ?? await HiveMetadata.get();
     return (await metadata.getUpdated()).toJsonString();
   }

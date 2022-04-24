@@ -75,8 +75,9 @@ class ImportScreenController extends GetxController
     final address = privateKey.address.hexEip55;
     final fileName = '$address.$kVaultExtension';
 
-    final result = await S3Service.to.downloadVault(
-      path: join(address, fileName),
+    final result = await S3Service.to.downloadFile(
+      s3Path: join(address, fileName),
+      filePath: LisoManager.tempVaultFilePath,
       force: true,
     );
 

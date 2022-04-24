@@ -16,8 +16,14 @@ import 'console.dart';
 import 'globals.dart';
 
 class Utils {
+  // VARIABLES
   static final console = Console(name: 'Utils');
 
+  // GETTERS
+  static bool get isDrawerExpandable =>
+      Get.mediaQuery.size.width < kDesktopChangePoint;
+
+  // FUNCTIONS
   // TODO: improve password validation
   static String? validatePassword(String text) {
     const min = 8;
@@ -256,6 +262,9 @@ class Utils {
     return 'Invalid Server URL';
   }
 
-  static bool get isDrawerExpandable =>
-      Get.mediaQuery.size.width < kDesktopChangePoint;
+  // TODO: folder validation
+  static String? validateFolderName(String name) {
+    if (name.isNotEmpty) return null;
+    return 'Invalid Folder Name';
+  }
 }
