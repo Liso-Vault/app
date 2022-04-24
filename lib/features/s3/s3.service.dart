@@ -11,7 +11,6 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:minio/io.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
@@ -36,6 +35,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // PROPERTIES
   final syncing = false.obs;
   final inSync = false.obs;
+  final storageSize = 0.obs;
   final downloadTotalSize = 0.obs;
   final downloadedSize = 0.obs;
   final uploadTotalSize = 0.obs;
@@ -391,6 +391,47 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     return Right(contents);
+  }
+
+  void fetchStorageSize() async {
+    final result = await folderSize(S3Service.to.rootPath);
+
+    if (result.isLeft) {
+      return console.error('fetchStorageSize: ${result.left}');
+    }
+
+    storageSize.value = result.right;
+  }
+
+  Future<Either<dynamic, int>> folderSize(String s3Path) async {
+    if (!persistence.canSync) return const Left('offline');
+    await _prepare();
+    console.info('folder size: $s3Path...');
+
+    ListObjectsResult? result;
+
+    try {
+      result = await client!.listAllObjectsV2(
+        config.s3.bucket,
+        prefix: s3Path,
+        recursive: true,
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    console.info(
+      'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
+    );
+
+    int totalSize = 0;
+
+    for (var e in result.objects) {
+      totalSize += e.size!;
+    }
+
+    console.info('total size: $totalSize');
+    return Right(totalSize);
   }
 
   Future<Either<dynamic, File>> downloadFile({

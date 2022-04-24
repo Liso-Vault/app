@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -87,6 +88,8 @@ class S3ExplorerScreenController extends GetxController
         );
       },
     );
+
+    S3Service.to.fetchStorageSize();
   }
 
   void backup(S3Content content) async {
@@ -102,9 +105,10 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void restore(S3Content content) {
-    //
+    // use S3Service.to.sync with a custom s3path
   }
 
+  // TODO: confirmation dialog
   void delete(S3Content content) async {
     change(null, status: RxStatus.loading());
     final result = await S3Service.to.remove(content);
@@ -127,6 +131,7 @@ class S3ExplorerScreenController extends GetxController
     await reload();
   }
 
+  // TODO: max upload size
   void pickFile() async {
     FilePickerResult? result;
 
@@ -145,10 +150,20 @@ class S3ExplorerScreenController extends GetxController
     }
 
     console.info('picked: ${result.files.single.path!}');
-    await _upload(File(result.files.single.path!));
+
+    final file = File(result.files.single.path!);
+
+    if (await file.length() > kMaxUploadSizeLimit) {
+      return UIUtils.showSimpleDialog(
+        'File Too Large',
+        'Upload size limit is ${filesize(kMaxUploadSizeLimit.toInt())} per file',
+      );
+    }
+
+    _upload(file);
   }
 
-  Future<void> _upload(File file) async {
+  void _upload(File file) async {
     change(null, status: RxStatus.loading());
 
     final result = await S3Service.to.uploadFile(

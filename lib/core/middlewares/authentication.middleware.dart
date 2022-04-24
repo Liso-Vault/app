@@ -32,7 +32,12 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.syncing);
     }
 
-    MainScreenController.to.load();
+    init();
     return null;
+  }
+
+  void init() {
+    MainScreenController.to.load();
+    S3Service.to.fetchStorageSize();
   }
 }

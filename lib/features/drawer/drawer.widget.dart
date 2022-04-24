@@ -1,10 +1,13 @@
+import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/s3/s3.service.dart';
 
 import '../../../core/utils/utils.dart';
 import 'drawer_widget.controller.dart';
@@ -156,10 +159,37 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             initiallyExpanded: true,
             children: [
-              ListTile(
-                title: Text('files'.tr),
-                leading: const FaIcon(FontAwesomeIcons.fileLines),
-                onTap: controller.files,
+              SimpleBuilder(
+                builder: (_) => PersistenceService.to.sync.val
+                    ? ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('files'.tr),
+                            Chip(
+                              label: Obx(
+                                () => Text(
+                                  filesize(S3Service.to.storageSize.value, 0) +
+                                      '/${filesize(kMaxStorageSizeLimit, 0)}',
+                                  style: const TextStyle(fontSize: 11),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Obx(
+                            () => LinearProgressIndicator(
+                              value: S3Service.to.storageSize.value.toDouble() /
+                                  kMaxStorageSizeLimit,
+                            ),
+                          ),
+                        ),
+                        leading: const FaIcon(FontAwesomeIcons.fileLines),
+                        onTap: controller.files,
+                      )
+                    : const SizedBox.shrink(),
               ),
               ListTile(
                 title: Text('wallet'.tr),

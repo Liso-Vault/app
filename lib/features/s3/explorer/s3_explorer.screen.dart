@@ -67,6 +67,18 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
             icon: const Icon(LineIcons.syncIcon),
           ),
         ),
+        // IconButton(
+        //   icon: const Icon(Icons.bug_report),
+        //   onPressed: () async {
+        //     final result = await S3Service.to.folderSize(S3Service.to.rootPath);
+
+        //     if (result.isLeft) {
+        //       return console.error('total size error: ${result.left}');
+        //     }
+
+        //     console.warning('total size: ${filesize(result.right)}');
+        //   },
+        // )
       ],
     );
 
@@ -79,7 +91,8 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
 
     return Scaffold(
       appBar: appBar,
-      floatingActionButton: floatingActionButton,
+      floatingActionButton:
+          controller.isTimeMachine ? null : floatingActionButton,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
