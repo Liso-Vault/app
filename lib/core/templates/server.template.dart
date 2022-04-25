@@ -6,7 +6,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'url',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'URL',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -22,7 +20,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -34,7 +31,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'admin_url',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Admin Console URL',
         'hint': 'https://console.com',
       },
@@ -43,7 +39,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'admin_username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Admin Username',
       },
     ),
@@ -51,7 +46,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'admin_password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Admin Password',
       },
     ),
@@ -63,7 +57,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'hosting_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Name',
       },
     ),
@@ -71,7 +64,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'hosting_website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://hosting.com',
       },
@@ -84,7 +76,6 @@ List<HiveLisoField> templateServerFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

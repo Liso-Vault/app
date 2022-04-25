@@ -177,7 +177,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     }
 
     final _field = fields.firstWhere((e) => e.identifier == _identifier);
-    String _value = _field.data['value'];
+    String _value = _field.data['value'] ?? '';
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {
@@ -268,7 +268,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     // convert Map keys to human readable format
     _identifier = GetUtils.capitalize(_identifier.replaceAll('_', ' '))!;
 
-    String _value = _field.data['value'];
+    String _value = _field.data['value'] ?? '';
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {

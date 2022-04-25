@@ -4,11 +4,14 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
@@ -116,26 +119,109 @@ class S3ExplorerScreenController extends GetxController
   }
 
   // TODO: confirmation dialog
-  void delete(S3Content content) async {
+  void confirmDelete(S3Content content) async {
+    void _delete() async {
+      Get.back();
+
+      change(true, status: RxStatus.loading());
+      final result = await S3Service.to.remove(content);
+
+      if (result.isLeft) {
+        change(false, status: RxStatus.success());
+
+        return UIUtils.showSimpleDialog(
+          'Delete Failed',
+          'Error: ${result.left}',
+        );
+      }
+
+      NotificationsManager.notify(
+        title: 'Successfully Deleted',
+        body: content.name,
+      );
+
+      change(false, status: RxStatus.success());
+      await reload();
+    }
+
+    final _content = Text('Are you sure you want to delete "${content.name}"?');
+
+    Get.dialog(AlertDialog(
+      title: const Text('Delete File'),
+      content: Utils.isDrawerExpandable
+          ? _content
+          : SizedBox(
+              width: 600,
+              child: _content,
+            ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: Get.back,
+          style: TextButton.styleFrom(),
+        ),
+        TextButton(
+          child: const Text('Confirm Delete'),
+          onPressed: _delete,
+        ),
+      ],
+    ));
+  }
+
+  void download(S3Content content) async {
     change(true, status: RxStatus.loading());
-    final result = await S3Service.to.remove(content);
+    final downloadPath = join(LisoPaths.temp!.path, content.name);
+
+    final result = await S3Service.to.downloadFile(
+      s3Path: content.path,
+      filePath: downloadPath,
+    );
 
     if (result.isLeft) {
       change(false, status: RxStatus.success());
 
       return UIUtils.showSimpleDialog(
-        'Delete Failed',
-        'Error: ${result.left}',
+        'Failed To Download',
+        '${result.left} -> download()',
       );
     }
 
+    if (GetPlatform.isMobile) {
+      await Share.shareFiles(
+        [downloadPath],
+        subject: content.name,
+        text: GetPlatform.isIOS ? null : content.name,
+      );
+
+      return change(false, status: RxStatus.success());
+    }
+
+    Globals.timeLockEnabled = false; // temporarily disable
+    // choose directory and export file
+    final exportPath = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Choose Export Path',
+    );
+
+    Globals.timeLockEnabled = true; // re-enable
+    // user cancelled picker
+    if (exportPath == null) {
+      return change(null, status: RxStatus.success());
+    }
+
+    console.info('export path: $exportPath');
+    await Future.delayed(1.seconds); // just for style
+
+    await FileUtils.move(
+      result.right,
+      join(exportPath, content.name),
+    );
+
     NotificationsManager.notify(
-      title: 'Successfully Deleted',
+      title: 'Downloaded File',
       body: content.name,
     );
 
     change(false, status: RxStatus.success());
-    await reload();
   }
 
   // TODO: max upload size
@@ -220,7 +306,7 @@ class S3ExplorerScreenController extends GetxController
         change(false, status: RxStatus.success());
 
         return UIUtils.showSimpleDialog(
-          'Delete Failed',
+          'Create Folder Failed',
           'Error: ${result.left}',
         );
       }
@@ -268,8 +354,8 @@ class S3ExplorerScreenController extends GetxController
                 .isNotEmpty;
 
             if (!exists) {
-              _createDirectory(folderController.text);
               Get.back();
+              _createDirectory(folderController.text);
             } else {
               UIUtils.showSimpleDialog(
                 'Folder Already Exists',

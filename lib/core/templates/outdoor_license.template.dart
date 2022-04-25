@@ -8,7 +8,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'full_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Full Name',
       },
     ),
@@ -16,7 +15,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'valid_from',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Valid From',
       },
     ),
@@ -24,7 +22,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'expires',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Expires',
       },
     ),
@@ -32,7 +29,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'approved_wildlife',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Approved Wildlife',
       },
     ),
@@ -40,7 +36,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'maximum_quota',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Maximum Quota',
       },
     ),
@@ -48,7 +43,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'state',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'State',
       },
     ),
@@ -56,7 +50,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'country',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Country',
         'choices': kCountryChoices,
       },
@@ -69,7 +62,6 @@ List<HiveLisoField> templateOutdoorLicenseFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

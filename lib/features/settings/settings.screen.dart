@@ -108,13 +108,17 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           title: Text('export_wallet'.tr),
           onTap: controller.exportWallet,
         ),
-        // const Divider(),
-        // ListTile(
-        //   leading: const Icon(LineIcons.alternateShield),
-        //   trailing: const Icon(LineIcons.infoCircle),
-        //   title: const Text('Change Password'),
-        //   onTap: controller.changePassword,
-        // ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.download),
+          trailing: const Icon(LineIcons.angleRight),
+          title: const Text('Import External Items'),
+          enabled: false,
+          subtitle: const Text(
+            'From 1Password, LastPass, KeePass, NordPass, and etc',
+          ),
+          onTap: () {},
+        ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.trashRestore),

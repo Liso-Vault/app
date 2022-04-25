@@ -1,5 +1,6 @@
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:liso/core/utils/console.dart';
 
 class PassphraseCard extends StatelessWidget with ConsoleMixin {
@@ -7,6 +8,7 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
   final String initialValue;
   final bool required;
   final TextEditingController controller;
+  final Function(String)? onFieldSubmitted;
 
   const PassphraseCard({
     Key? key,
@@ -14,6 +16,7 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
     this.initialValue = '',
     this.required = true,
     required this.controller,
+    this.onFieldSubmitted,
   }) : super(key: key);
 
   String? obtainMnemonicPhrase() =>
@@ -30,6 +33,11 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
       textInputAction: TextInputAction.next,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (text) => _validateSeed(text!),
+      onFieldSubmitted: onFieldSubmitted,
+      inputFormatters: [
+        // don't allow new lines
+        FilteringTextInputFormatter.deny(RegExp(r'\n')),
+      ],
       decoration: const InputDecoration(
         labelText: 'Mnemonic Seed Phrase',
       ),

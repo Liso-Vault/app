@@ -6,14 +6,12 @@ List<HiveLisoField> templateSocialSecurityFields() {
       identifier: 'name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Name',
       },
     ),
     HiveLisoField(
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Number',
       },
     ),
@@ -25,7 +23,6 @@ List<HiveLisoField> templateSocialSecurityFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

@@ -19,7 +19,7 @@ class MnemonicFormField extends StatelessWidget {
     return PassphraseCard(
       controller: _fieldController,
       mode: PassphraseMode.none,
-      initialValue: field.data['value'],
+      initialValue: field.data['value'] ?? '',
       required: false,
     );
   }

@@ -6,7 +6,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'version',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Version',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'license_key',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'License Key',
       },
     ),
@@ -26,7 +24,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'licensed_to',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Licensed To',
       },
     ),
@@ -34,7 +31,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'registered_email',
       type: LisoFieldType.email.name,
       data: {
-        'value': '',
         'label': 'Registered Email',
       },
     ),
@@ -42,7 +38,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'company',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Company',
       },
     ),
@@ -54,7 +49,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'download_page',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Download Page',
         'hint': 'https://page.com/downloads',
       },
@@ -63,7 +57,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'publisher',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Publisher',
       },
     ),
@@ -71,7 +64,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://software.com',
       },
@@ -80,7 +72,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'retail_price',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Retail Price',
       },
     ),
@@ -88,7 +79,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'support_email',
       type: LisoFieldType.email.name,
       data: {
-        'value': '',
         'label': 'Support Email',
       },
     ),
@@ -100,7 +90,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'purchase_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Purchase Date',
       },
     ),
@@ -108,7 +97,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'order_number',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Order Number',
       },
     ),
@@ -116,7 +104,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'order_total',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Order Total',
       },
     ),
@@ -128,7 +115,6 @@ List<HiveLisoField> templateSoftwareLicenseFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

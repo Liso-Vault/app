@@ -6,7 +6,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'group',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Group',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://members.com',
       },
@@ -22,13 +20,12 @@ List<HiveLisoField> templateMembershipFields() {
     HiveLisoField(
       identifier: 'telephone',
       type: LisoFieldType.phone.name,
-      data: {'value': '', 'label': 'Telephone', 'hint': '+1-123-456-7890'},
+      data: {'label': 'Telephone', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'member_id',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -36,7 +33,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'member_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Member Name',
       },
     ),
@@ -44,7 +40,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'member_since',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Member Since',
       },
     ),
@@ -52,7 +47,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'expiration_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Expiration Date',
       },
     ),
@@ -60,7 +54,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'pin',
       type: LisoFieldType.pin.name,
       data: {
-        'value': '',
         'label': 'PIN',
       },
     ),
@@ -72,7 +65,6 @@ List<HiveLisoField> templateMembershipFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

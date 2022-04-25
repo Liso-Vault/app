@@ -6,7 +6,6 @@ List<HiveLisoField> templatePasswordFields() {
       identifier: 'password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templatePasswordFields() {
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://site.com',
       },
@@ -27,7 +25,6 @@ List<HiveLisoField> templatePasswordFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

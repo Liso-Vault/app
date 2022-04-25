@@ -94,8 +94,10 @@ class ExportScreenController extends GetxController
     change('Choose export path...', status: RxStatus.loading());
     Globals.timeLockEnabled = false; // temporarily disable
     // choose directory and export file
-    final exportPath = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose Export Path');
+    final exportPath = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Choose Export Path',
+    );
+
     Globals.timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {

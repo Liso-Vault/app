@@ -7,7 +7,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'base_station_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Base Station Name',
       },
     ),
@@ -15,7 +14,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'base_station_password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Base Station Password',
       },
     ),
@@ -23,7 +21,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'server',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Server / IP Address',
       },
     ),
@@ -31,7 +28,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'airport_id',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Airport ID',
       },
     ),
@@ -39,7 +35,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'network_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Network Name',
       },
     ),
@@ -47,7 +42,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'wireless_security',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Wireless Security',
         'choices': kWirelessSecurityChoices,
       },
@@ -56,7 +50,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'wireless_network_password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Wireless Network Password',
       },
     ),
@@ -64,7 +57,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'wireless_storage_password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Wireless Storage Password',
       },
     ),
@@ -76,7 +68,6 @@ List<HiveLisoField> templateWirelessRouterFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

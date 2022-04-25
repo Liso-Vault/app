@@ -10,7 +10,6 @@ List<HiveLisoField> templateEncryptionFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

@@ -6,7 +6,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Date',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'location',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Location',
       },
     ),
@@ -22,7 +20,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'healthcare_professional',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Healthcare Professional',
       },
     ),
@@ -30,7 +27,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'patient',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Patient',
       },
     ),
@@ -38,7 +34,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'visit_reason',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Reason for visit',
       },
     ),
@@ -50,7 +45,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'medication',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Medication',
       },
     ),
@@ -58,7 +52,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'dosage',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Dosage',
       },
     ),
@@ -66,7 +59,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'medical_notes',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Medical Notes',
       },
     ),
@@ -78,7 +70,6 @@ List<HiveLisoField> templateMedicalRecordFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

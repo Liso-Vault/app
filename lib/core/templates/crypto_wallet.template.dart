@@ -6,7 +6,6 @@ List<HiveLisoField> templateCryptoWalletFields() {
       identifier: 'seed',
       type: LisoFieldType.mnemonicSeed.name,
       data: {
-        'value': '',
         'label': 'Seed Phrase',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateCryptoWalletFields() {
       identifier: 'password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -26,7 +24,6 @@ List<HiveLisoField> templateCryptoWalletFields() {
       identifier: 'address',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Address',
       },
     ),
@@ -38,7 +35,6 @@ List<HiveLisoField> templateCryptoWalletFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

@@ -24,7 +24,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final menuItems = [
-      if (content.fileExtension == kVaultExtension) ...[
+      if (content.isVaultFile) ...[
         ContextMenuItem(
           title: 'Restore',
           leading: const Icon(LineIcons.trashRestore),
@@ -38,10 +38,17 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
           ),
         ]
       ] else ...[
+        if (content.isFile) ...[
+          ContextMenuItem(
+            title: 'Download',
+            leading: const Icon(LineIcons.download),
+            onSelected: () => controller.download(content),
+          ),
+        ],
         ContextMenuItem(
           title: 'Delete',
           leading: const Icon(LineIcons.trash),
-          onSelected: () => controller.delete(content),
+          onSelected: () => controller.confirmDelete(content),
         ),
       ],
     ];

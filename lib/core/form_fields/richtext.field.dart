@@ -23,7 +23,7 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    if (field.data['value'].isEmpty) {
+    if (field.data['value'] != null && field.data['value'].isEmpty) {
       _fieldController = QuillController.basic();
     } else {
       dynamic json;

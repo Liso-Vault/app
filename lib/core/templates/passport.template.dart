@@ -9,7 +9,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'type',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Type',
       },
     ),
@@ -17,7 +16,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'issuing_country',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Issuing Country',
         'choices': kCountryChoices,
       },
@@ -26,7 +24,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'number',
       type: LisoFieldType.passport.name,
       data: {
-        'value': '',
         'label': 'Number',
       },
     ),
@@ -34,7 +31,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'full_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Full Name',
       },
     ),
@@ -42,7 +38,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'gender',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Gender',
         'choices': kGenderChoices,
       },
@@ -51,7 +46,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'nationality',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Nationality',
       },
     ),
@@ -59,7 +53,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'issuing_authority',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Issuing Authority',
       },
     ),
@@ -67,7 +60,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'date_of_birth',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Date of Birth',
       },
     ),
@@ -75,7 +67,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'issued_on',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Issued On',
       },
     ),
@@ -83,7 +74,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'expiration_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Expiration Date',
       },
     ),
@@ -95,7 +85,6 @@ List<HiveLisoField> templatePassportFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Note',
       },
     ),

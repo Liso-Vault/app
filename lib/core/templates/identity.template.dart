@@ -8,7 +8,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'first_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'First Name',
       },
     ),
@@ -16,7 +15,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'middle_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Middle Name',
       },
     ),
@@ -24,7 +22,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'last_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Last Name',
       },
     ),
@@ -32,7 +29,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'gender',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Gender',
         'choices': kGenderChoices,
       },
@@ -41,7 +37,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'birth_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Birth Date',
       },
     ),
@@ -49,7 +44,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'occupation',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Occupation',
       },
     ),
@@ -57,7 +51,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'company',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Company',
       },
     ),
@@ -65,7 +58,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'department',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Department',
       },
     ),
@@ -73,41 +65,28 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'job_title',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Job Title',
       },
     ),
     HiveLisoField(
       identifier: 'phone_number',
       type: LisoFieldType.phone.name,
-      data: {'value': '', 'label': 'Phone Number', 'hint': '+1-123-456-7890'},
+      data: {'label': 'Phone Number', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'home_number',
       type: LisoFieldType.phone.name,
-      data: {
-        'value': '',
-        'label': 'Home Phone Number',
-        'hint': '+1-123-456-7890'
-      },
+      data: {'label': 'Home Phone Number', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'cell_number',
       type: LisoFieldType.phone.name,
-      data: {
-        'value': '',
-        'label': 'Cell Phone Number',
-        'hint': '+1-123-456-7890'
-      },
+      data: {'label': 'Cell Phone Number', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'business_number',
       type: LisoFieldType.phone.name,
-      data: {
-        'value': '',
-        'label': 'Business Phone Number',
-        'hint': '+1-123-456-7890'
-      },
+      data: {'label': 'Business Phone Number', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'address',
@@ -125,7 +104,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -133,7 +111,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'email',
       type: LisoFieldType.email.name,
       data: {
-        'value': '',
         'label': 'Email',
       },
     ),
@@ -141,7 +118,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://website.com',
       },
@@ -150,7 +126,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'twitter',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Twitter',
       },
     ),
@@ -158,7 +133,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'facebook',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Facebook',
       },
     ),
@@ -166,7 +140,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'instagram',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Instagram',
       },
     ),
@@ -174,7 +147,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'tiktok',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'TikTok',
       },
     ),
@@ -186,7 +158,6 @@ List<HiveLisoField> templateIdentityFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

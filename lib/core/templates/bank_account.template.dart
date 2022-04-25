@@ -9,7 +9,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'bank_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Bank Name',
       },
     ),
@@ -17,7 +16,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'account_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Account Name',
       },
     ),
@@ -25,7 +23,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'type',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Type',
         'choices': kBankTypeChoices,
       },
@@ -34,7 +31,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'routing_number',
       type: LisoFieldType.number.name,
       data: {
-        'value': '',
         'label': 'Routing Number',
       },
     ),
@@ -42,7 +38,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'account_number',
       type: LisoFieldType.number.name,
       data: {
-        'value': '',
         'label': 'Account Number',
       },
     ),
@@ -50,7 +45,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'swift',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'SWIFT',
       },
     ),
@@ -58,7 +52,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'iban',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'IBAN',
       },
     ),
@@ -66,7 +59,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'pin',
       type: LisoFieldType.pin.name,
       data: {
-        'value': '',
         'label': 'PIN',
       },
     ),
@@ -78,7 +70,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'branch_phone',
       type: LisoFieldType.phone.name,
       data: {
-        'value': '',
         'label': 'Phone',
         'hint': '+1-123-456-7890',
       },
@@ -99,7 +90,6 @@ List<HiveLisoField> templateBankAccountFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

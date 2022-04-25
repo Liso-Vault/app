@@ -8,7 +8,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'type',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Type',
         'choices': kDatabaseTypeChoices,
       },
@@ -17,7 +16,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'server',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Server',
         'hint': 'https://server.com',
       },
@@ -26,7 +24,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'port',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Port',
         'hint': '8080',
       },
@@ -35,7 +32,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'database',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Database',
       },
     ),
@@ -43,7 +39,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -51,7 +46,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -59,7 +53,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'sid',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'SID',
       },
     ),
@@ -67,7 +60,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'alias',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Alias',
       },
     ),
@@ -75,7 +67,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'connection_options',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Connection Options',
       },
     ),
@@ -87,7 +78,6 @@ List<HiveLisoField> templateDatabaseFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

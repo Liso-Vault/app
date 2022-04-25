@@ -6,7 +6,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'company_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Company Name',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'member_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Member Name',
       },
     ),
@@ -22,7 +20,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'member_id',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Member ID',
       },
     ),
@@ -30,7 +27,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'pin',
       type: LisoFieldType.pin.name,
       data: {
-        'value': '',
         'label': 'PIN',
       },
     ),
@@ -42,7 +38,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'member_since',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Member Since',
       },
     ),
@@ -50,7 +45,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'customer_service_phone',
       type: LisoFieldType.phone.name,
       data: {
-        'value': '',
         'label': 'Customer Service Phone',
         'hint': '+1-123-456-7890',
       },
@@ -59,7 +53,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Wesbite',
         'hint': 'https://rewards.com',
       },
@@ -72,7 +65,6 @@ List<HiveLisoField> templateRewardsProgramFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

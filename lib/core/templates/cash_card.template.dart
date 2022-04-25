@@ -8,7 +8,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'holder_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Cardholder Name',
       },
     ),
@@ -16,7 +15,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'type',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Type',
         'choices': kCashCardTypeChoices,
       },
@@ -25,7 +23,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'card_number',
       type: LisoFieldType.number.name,
       data: {
-        'value': '',
         'label': 'Number',
       },
     ),
@@ -33,7 +30,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'verification_number',
       type: LisoFieldType.pin.name,
       data: {
-        'value': '',
         'label': 'Verification Number',
       },
     ),
@@ -41,7 +37,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'expiration_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Expiration Date',
       },
     ),
@@ -49,7 +44,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'valid_from',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Valid From',
       },
     ),
@@ -61,38 +55,28 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'issuing_bank',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Issuing Bank',
       },
     ),
     HiveLisoField(
       identifier: 'local_phone',
       type: LisoFieldType.phone.name,
-      data: {'value': '', 'label': 'Phone (Local)', 'hint': '+1-123-456-7890'},
+      data: {'label': 'Phone (Local)', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'toll_free_phone',
       type: LisoFieldType.phone.name,
-      data: {
-        'value': '',
-        'label': 'Phone (Toll Free)',
-        'hint': '+1-123-456-7890'
-      },
+      data: {'label': 'Phone (Toll Free)', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'intl_phone',
       type: LisoFieldType.phone.name,
-      data: {
-        'value': '',
-        'label': 'Phone (International)',
-        'hint': '+1-123-456-7890'
-      },
+      data: {'label': 'Phone (International)', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://bank.com',
       },
@@ -105,7 +89,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'pin',
       type: LisoFieldType.pin.name,
       data: {
-        'value': '',
         'label': 'PIN',
       },
     ),
@@ -113,7 +96,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'credit_limit',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Credit Limit',
       },
     ),
@@ -121,7 +103,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'withdrawal_limit',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Withdrawal Limit',
       },
     ),
@@ -129,7 +110,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'interest_rate',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Interest Rate',
       },
     ),
@@ -137,7 +117,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'issue_number',
       type: LisoFieldType.number.name,
       data: {
-        'value': '',
         'label': 'Issue Number',
       },
     ),
@@ -149,7 +128,6 @@ List<HiveLisoField> templateCashCardFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

@@ -8,7 +8,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -16,7 +15,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'credential',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -24,7 +22,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'type',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Type',
         'choices': kAPICredentialTypeChoices,
       },
@@ -33,7 +30,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'file_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'File Name',
       },
     ),
@@ -41,7 +37,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'valid_from',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Valid From',
       },
     ),
@@ -49,7 +44,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'expiration_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Expiration Date',
       },
     ),
@@ -57,7 +51,6 @@ List<HiveLisoField> templateAPICredentialFields() {
       identifier: 'host_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Host Name',
       },
     ),
@@ -68,7 +61,7 @@ List<HiveLisoField> templateAPICredentialFields() {
     HiveLisoField(
       identifier: 'note',
       type: LisoFieldType.textArea.name,
-      data: {'value': '', 'label': 'Notes'},
+      data: {'label': 'Notes'},
     ),
   ];
 }

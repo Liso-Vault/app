@@ -6,7 +6,6 @@ List<HiveLisoField> templateLoginFields() {
       identifier: 'username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -14,7 +13,6 @@ List<HiveLisoField> templateLoginFields() {
       identifier: 'password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -22,7 +20,6 @@ List<HiveLisoField> templateLoginFields() {
       identifier: 'website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Website',
         'hint': 'https://login.com',
       },
@@ -35,7 +32,6 @@ List<HiveLisoField> templateLoginFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

@@ -8,7 +8,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'type',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Type',
         'choices': kEmailTypeChoices,
       },
@@ -17,7 +16,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -25,7 +23,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'server',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Server',
         'hint': 'https://server.com',
       },
@@ -34,7 +31,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'port_number',
       type: LisoFieldType.number.name,
       data: {
-        'value': '',
         'label': 'Port Number',
         'hint': '8080',
       },
@@ -43,7 +39,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -51,7 +46,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'security',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Security',
         'choices': kEmailSecurityChoices,
       },
@@ -60,7 +54,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'auth_method',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Auth Method',
         'choices': kEmailAuthMethodChoices,
       },
@@ -73,7 +66,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'smtp_server',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'SMTP Server',
         'hint': 'https://server.com',
       },
@@ -82,7 +74,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'smtp_port_number',
       type: LisoFieldType.number.name,
       data: {
-        'value': '',
         'label': 'Port Number',
         'hint': '8080',
       },
@@ -91,7 +82,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'smtp_username',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Username',
       },
     ),
@@ -99,7 +89,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'smtp_password',
       type: LisoFieldType.password.name,
       data: {
-        'value': '',
         'label': 'Password',
       },
     ),
@@ -107,7 +96,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'smtp_security',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Security',
         'choices': kEmailSecurityChoices,
       },
@@ -116,7 +104,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'smtp_auth_method',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Auth Method',
         'choices': kEmailAuthMethodChoices,
       },
@@ -129,7 +116,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'provider',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Provider',
       },
     ),
@@ -137,7 +123,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'provider_website',
       type: LisoFieldType.url.name,
       data: {
-        'value': '',
         'label': 'Provider Website',
         'hint': 'https://provider.com',
       },
@@ -145,16 +130,12 @@ List<HiveLisoField> templateEmailFields() {
     HiveLisoField(
       identifier: 'local_phone',
       type: LisoFieldType.phone.name,
-      data: {'value': '', 'label': 'Phone (Local)', 'hint': '+1-123-456-7890'},
+      data: {'label': 'Phone (Local)', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       identifier: 'toll_free_phone',
       type: LisoFieldType.phone.name,
-      data: {
-        'value': '',
-        'label': 'Phone (Toll Free)',
-        'hint': '+1-123-456-7890'
-      },
+      data: {'label': 'Phone (Toll Free)', 'hint': '+1-123-456-7890'},
     ),
     HiveLisoField(
       type: LisoFieldType.section.name,
@@ -164,7 +145,6 @@ List<HiveLisoField> templateEmailFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),

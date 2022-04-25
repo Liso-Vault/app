@@ -8,7 +8,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'full_name',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Full Name',
       },
     ),
@@ -16,7 +15,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'birthdate',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Birth Date',
       },
     ),
@@ -24,7 +22,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'gender',
       type: LisoFieldType.choices.name,
       data: {
-        'value': '',
         'label': 'Gender',
         'choices': kGenderChoices,
       },
@@ -33,7 +30,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'height',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Height',
       },
     ),
@@ -41,7 +37,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'number',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Number',
       },
     ),
@@ -49,7 +44,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'license_class',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'License Class',
       },
     ),
@@ -57,7 +51,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'conditions',
       type: LisoFieldType.textField.name,
       data: {
-        'value': '',
         'label': 'Conditions',
       },
     ),
@@ -65,7 +58,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'expiration_date',
       type: LisoFieldType.date.name,
       data: {
-        'value': '',
         'label': 'Expiration Date',
       },
     ),
@@ -85,7 +77,6 @@ List<HiveLisoField> templateDriversLicenseFields() {
       identifier: 'note',
       type: LisoFieldType.textArea.name,
       data: {
-        'value': '',
         'label': 'Notes',
       },
     ),
