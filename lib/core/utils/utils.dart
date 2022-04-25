@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
-import 'package:password_strength/password_strength.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:window_manager/window_manager.dart';
 

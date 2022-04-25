@@ -131,10 +131,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void filterAllItems() {
-    _clearFilters();
-    filterFavorites.value = false;
-    filterProtected.value = false;
-    filterTrashed.value = false;
+    clearFilters();
     done();
   }
 
@@ -154,9 +151,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     done();
   }
 
-  void _clearFilters() {
+  void clearFilters() {
     filterCategory.value = LisoItemCategory.none;
     filterTag.value = '';
+    filterFavorites.value = false;
+    filterProtected.value = false;
+    filterTrashed.value = false;
   }
 
   void files() async {

@@ -115,9 +115,24 @@ class ItemScreenController extends GetxController
 
   Future<void> _loadTemplate() async {
     final drawerController = Get.find<DrawerMenuController>();
-    favorite.value = drawerController.filterFavorites.value;
-    protected.value = drawerController.filterProtected.value;
     groupIndex.value = drawerController.filterGroupIndex.value;
+    favorite.value = drawerController.filterFavorites.value;
+
+    // protected templates by default
+    final protectedCategories = [
+      LisoItemCategory.cryptoWallet,
+      LisoItemCategory.cashCard,
+      LisoItemCategory.bankAccount,
+      LisoItemCategory.apiCredential,
+      LisoItemCategory.email,
+      LisoItemCategory.login,
+      LisoItemCategory.passport,
+      LisoItemCategory.encryption,
+      LisoItemCategory.wirelessRouter,
+    ];
+
+    protected.value = drawerController.filterProtected.value ||
+        protectedCategories.contains(LisoItemCategory.values.byName(category));
 
     final _fields = TemplateParser.parse(category);
 
@@ -237,33 +252,5 @@ class ItemScreenController extends GetxController
         ),
       ],
     ));
-
-    // FilePickerResult? result;
-
-    // try {
-    //   result = await FilePicker.platform.pickFiles(type: FileType.image);
-    // } catch (e) {
-    //   return console.error('FilePicker error: $e');
-    // }
-
-    // if (result == null || result.files.isEmpty) {
-    //   return console.warning("canceled FilePicker");
-    // }
-
-    // final image = result.files.single;
-
-    // final file = File(image.path!);
-    // if (!await file.exists()) return console.warning("doesn't exist");
-
-    // if (await file.length() > kMaxIconSize) {
-    //   return UIUtils.showSimpleDialog(
-    //     'Image Too Large',
-    //     'Please choose an image with size not larger than ${filesize(kMaxIconSize)}',
-    //   );
-    // }
-
-    // iconUrl.value = await file.readAsBytes();
-
-    // TODO: enter image url or upload to s3 and set as url
   }
 }
