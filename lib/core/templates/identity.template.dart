@@ -1,10 +1,12 @@
+import 'package:liso/core/data/genders.dart';
+
+import '../data/address_value.default.dart';
 import '../hive/models/field.hive.dart';
 
 List<HiveLisoField> templateIdentityFields() {
   return [
     HiveLisoField(
       identifier: 'first_name',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -12,12 +14,7 @@ List<HiveLisoField> templateIdentityFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'middle_name',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -25,12 +22,7 @@ List<HiveLisoField> templateIdentityFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'last_name',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -38,46 +30,161 @@ List<HiveLisoField> templateIdentityFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'gender',
-      reserved: true,
-      type: LisoFieldType.gender.name,
+      type: LisoFieldType.choices.name,
       data: {
         'value': '',
         'label': 'Gender',
+        'choices': kGenderChoices,
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.section.name,
-      data: {'value': 'Address'},
+      identifier: 'birth_date',
+      type: LisoFieldType.date.name,
+      data: {
+        'value': '',
+        'label': 'Birth Date',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'occupation',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Occupation',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'company',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Company',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'department',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Department',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'job_title',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Job Title',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'phone_number',
+      type: LisoFieldType.phone.name,
+      data: {'value': '', 'label': 'Phone Number', 'hint': '+1-123-456-7890'},
+    ),
+    HiveLisoField(
+      identifier: 'home_number',
+      type: LisoFieldType.phone.name,
+      data: {
+        'value': '',
+        'label': 'Home Phone Number',
+        'hint': '+1-123-456-7890'
+      },
+    ),
+    HiveLisoField(
+      identifier: 'cell_number',
+      type: LisoFieldType.phone.name,
+      data: {
+        'value': '',
+        'label': 'Cell Phone Number',
+        'hint': '+1-123-456-7890'
+      },
+    ),
+    HiveLisoField(
+      identifier: 'business_number',
+      type: LisoFieldType.phone.name,
+      data: {
+        'value': '',
+        'label': 'Business Phone Number',
+        'hint': '+1-123-456-7890'
+      },
     ),
     HiveLisoField(
       identifier: 'address',
-      reserved: true,
       type: LisoFieldType.address.name,
       data: {
-        'value': {
-          'street1': '',
-          'street2': '',
-          'city': '',
-          'state': '',
-          'zip': '',
-          'country': '',
-        },
+        'value': kAddressDefaultValue,
+        'label': 'Address',
       },
     ),
     HiveLisoField(
-      reserved: true,
+      type: LisoFieldType.section.name,
+      data: {'value': 'Internet Details'},
+    ),
+    HiveLisoField(
+      identifier: 'username',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Username',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'email',
+      type: LisoFieldType.email.name,
+      data: {
+        'value': '',
+        'label': 'Email',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'website',
+      type: LisoFieldType.url.name,
+      data: {
+        'value': '',
+        'label': 'Website',
+        'hint': 'https://website.com',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'twitter',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Twitter',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'facebook',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Facebook',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'instagram',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'Instagram',
+      },
+    ),
+    HiveLisoField(
+      identifier: 'tiktok',
+      type: LisoFieldType.textField.name,
+      data: {
+        'value': '',
+        'label': 'TikTok',
+      },
+    ),
+    HiveLisoField(
       type: LisoFieldType.section.name,
       data: {'value': 'Others'},
     ),
     HiveLisoField(
       identifier: 'note',
-      reserved: true,
       type: LisoFieldType.textArea.name,
       data: {
         'value': '',

@@ -7,6 +7,8 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
@@ -78,16 +80,6 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
     );
 
     final items = [
-      // Text(
-      //   category.tr,
-      //   style: const TextStyle(fontSize: 30),
-      // ),
-      // const SizedBox(height: 15),
-      // const Text(
-      //   'Make sure you are alone in a safe room',
-      //   style: TextStyle(color: Colors.grey),
-      // ),
-      // const SizedBox(height: 15),
       Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -96,7 +88,9 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
             () => ContextMenuButton(
               controller.menuItemsChangeIcon,
               child: controller.iconUrl().isEmpty
-                  ? const Icon(Icons.photo, size: 30)
+                  ? Utils.categoryIcon(
+                      LisoItemCategory.values.byName(controller.item!.category),
+                    )
                   : RemoteImage(
                       url: controller.iconUrl(),
                       width: 30,
@@ -120,7 +114,14 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       ),
       const SizedBox(height: 10),
       // -------- RENDER FIELDS AS WIDGETS -------- //
-      Obx(() => Column(children: [...controller.widgets])),
+      Obx(
+        () => ListView.separated(
+          shrinkWrap: true,
+          itemCount: controller.widgets.length,
+          separatorBuilder: (_, index) => const SizedBox(height: 10),
+          itemBuilder: (_, index) => controller.widgets[index],
+        ),
+      ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
       // TAGS
@@ -147,6 +148,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
           value: data(),
           onChanged: data,
           activeColor: Colors.pink,
+          activeTrackColor: Colors.pink,
           secondary: data()
               ? const FaIcon(FontAwesomeIcons.solidHeart)
               : const FaIcon(FontAwesomeIcons.heart),

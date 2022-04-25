@@ -21,8 +21,9 @@ class PhoneFormField extends StatelessWidget {
       controller: _fieldController,
       keyboardType: TextInputType.phone,
       inputFormatters: [inputFormatterRestrictSpaces],
-      validator: (data) =>
-          GetUtils.isPhoneNumber(data!) ? null : 'Invalid phone number',
+      validator: (data) => data!.isEmpty || GetUtils.isPhoneNumber(data)
+          ? null
+          : 'Invalid phone number',
       decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],

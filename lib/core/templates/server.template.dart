@@ -4,7 +4,6 @@ List<HiveLisoField> templateServerFields() {
   return [
     HiveLisoField(
       identifier: 'url',
-      reserved: true,
       type: LisoFieldType.url.name,
       data: {
         'value': '',
@@ -12,12 +11,7 @@ List<HiveLisoField> templateServerFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'username',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -25,12 +19,7 @@ List<HiveLisoField> templateServerFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'password',
-      reserved: true,
       type: LisoFieldType.password.name,
       data: {
         'value': '',
@@ -38,26 +27,20 @@ List<HiveLisoField> templateServerFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
       type: LisoFieldType.section.name,
       data: {'value': 'Admin'},
     ),
     HiveLisoField(
       identifier: 'admin_url',
-      reserved: true,
       type: LisoFieldType.url.name,
       data: {
         'value': '',
         'label': 'Admin Console URL',
+        'hint': 'https://console.com',
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'admin_username',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -65,12 +48,7 @@ List<HiveLisoField> templateServerFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'admin_password',
-      reserved: true,
       type: LisoFieldType.password.name,
       data: {
         'value': '',
@@ -78,13 +56,11 @@ List<HiveLisoField> templateServerFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
       type: LisoFieldType.section.name,
       data: {'value': 'Hosting Provider'},
     ),
     HiveLisoField(
-      identifier: 'hosting_provider',
-      reserved: true,
+      identifier: 'hosting_name',
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -92,13 +68,20 @@ List<HiveLisoField> templateServerFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
+      identifier: 'hosting_website',
+      type: LisoFieldType.url.name,
+      data: {
+        'value': '',
+        'label': 'Website',
+        'hint': 'https://hosting.com',
+      },
+    ),
+    HiveLisoField(
       type: LisoFieldType.section.name,
       data: {'value': 'Others'},
     ),
     HiveLisoField(
       identifier: 'note',
-      reserved: true,
       type: LisoFieldType.textArea.name,
       data: {
         'value': '',

@@ -48,6 +48,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               decoration: InputDecoration(
                 hintText: 'password'.tr,
                 suffixIcon: IconButton(
+                  padding: const EdgeInsets.only(right: 10),
                   onPressed: controller.obscurePassword.toggle,
                   icon: Icon(
                     controller.obscurePassword()
@@ -72,6 +73,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               decoration: InputDecoration(
                 hintText: 'confirm_password'.tr,
                 suffixIcon: IconButton(
+                  padding: const EdgeInsets.only(right: 10),
                   onPressed: controller.obscureConfirmPassword.toggle,
                   icon: Icon(
                     controller.obscureConfirmPassword()

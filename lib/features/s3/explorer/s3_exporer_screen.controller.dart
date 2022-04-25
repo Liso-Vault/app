@@ -248,7 +248,6 @@ class S3ExplorerScreenController extends GetxController
         TextButton(
           child: const Text('Cancel'),
           onPressed: Get.back,
-          style: TextButton.styleFrom(),
         ),
         TextButton(
           child: const Text('Create'),

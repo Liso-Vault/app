@@ -13,7 +13,7 @@ class SectionFormField extends StatelessWidget {
         field.data['value'].toUpperCase(),
         textAlign: TextAlign.left,
         style: const TextStyle(
-          fontSize: 9,
+          fontSize: 12,
           color: Colors.grey,
         ),
       ),

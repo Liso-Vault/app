@@ -1,10 +1,12 @@
+import 'package:liso/core/data/countries.choices.dart';
+
+import '../data/genders.dart';
 import '../hive/models/field.hive.dart';
 
 List<HiveLisoField> templatePassportFields() {
   return [
     HiveLisoField(
       identifier: 'type',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -12,38 +14,24 @@ List<HiveLisoField> templatePassportFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'issuing_country',
-      reserved: true,
-      type: LisoFieldType.country.name,
+      type: LisoFieldType.choices.name,
       data: {
         'value': '',
         'label': 'Issuing Country',
+        'choices': kCountryChoices,
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'number',
-      reserved: true,
-      type: LisoFieldType.textField.name,
+      type: LisoFieldType.passport.name,
       data: {
         'value': '',
         'label': 'Number',
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'full_name',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -51,25 +39,16 @@ List<HiveLisoField> templatePassportFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'gender',
-      reserved: true,
-      type: LisoFieldType.gender.name,
+      type: LisoFieldType.choices.name,
       data: {
         'value': '',
         'label': 'Gender',
+        'choices': kGenderChoices,
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'nationality',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -77,12 +56,7 @@ List<HiveLisoField> templatePassportFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'issuing_authority',
-      reserved: true,
       type: LisoFieldType.textField.name,
       data: {
         'value': '',
@@ -90,12 +64,7 @@ List<HiveLisoField> templatePassportFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'date_of_birth',
-      reserved: true,
       type: LisoFieldType.date.name,
       data: {
         'value': '',
@@ -103,12 +72,7 @@ List<HiveLisoField> templatePassportFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
       identifier: 'issued_on',
-      reserved: true,
       type: LisoFieldType.date.name,
       data: {
         'value': '',
@@ -116,26 +80,20 @@ List<HiveLisoField> templatePassportFields() {
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.spacer.name,
-    ),
-    HiveLisoField(
-      identifier: 'expiry_date',
-      reserved: true,
+      identifier: 'expiration_date',
       type: LisoFieldType.date.name,
       data: {
         'value': '',
-        'label': 'Expiry Date',
+        'label': 'Expiration Date',
       },
     ),
     HiveLisoField(
-      reserved: true,
-      type: LisoFieldType.divider.name,
+      type: LisoFieldType.section.name,
+      data: {'value': 'Others'},
     ),
     HiveLisoField(
       identifier: 'note',
       type: LisoFieldType.textArea.name,
-      reserved: true,
       data: {
         'value': '',
         'label': 'Note',

@@ -67,7 +67,11 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
       ),
       onTap: () {
         if (content.isFile) {
-          _askToImport(content);
+          if (content.isVaultFile) {
+            _askToImport(content);
+          } else {
+            // TODO: ask to download or preview
+          }
         } else {
           controller.load(path: content.path);
         }

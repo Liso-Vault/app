@@ -21,7 +21,7 @@ class HiveLisoField extends HiveObject {
   HiveLisoField({
     this.identifier = '',
     required this.type,
-    this.reserved = false,
+    this.reserved = true,
     this.required = false,
     this.data = const {},
   });
@@ -54,18 +54,19 @@ enum LisoFieldType {
   textArea,
   richText,
   address, // {street1, street2, city, state, zip, country}
-  gender,
   date,
   time, // {timezone}
   datetime, // {timezone}
-  country,
   phone, // {country code, postfix}
   email,
   url,
   password,
   pin,
+  choices,
   coordinates, // {latitude, longitude}
   divider,
   spacer,
   tags,
+  number,
+  passport,
 }

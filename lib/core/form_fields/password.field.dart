@@ -27,6 +27,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
               labelText: field.data['label'],
               hintText: field.data['hint'],
               suffixIcon: IconButton(
+                padding: const EdgeInsets.only(right: 10),
                 onPressed: controller.obscureText.toggle,
                 icon: Icon(
                   controller.obscureText.value

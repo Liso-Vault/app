@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
@@ -11,7 +12,6 @@ class PINFormField extends GetWidget<PINFormFieldController> {
   PINFormField(this.field, {Key? key}) : super(key: key);
 
   TextEditingController? _fieldController;
-
   String get value => _fieldController!.text;
 
   @override
@@ -23,7 +23,10 @@ class PINFormField extends GetWidget<PINFormFieldController> {
         controller: _fieldController,
         keyboardType: TextInputType.number,
         obscureText: controller.obscureText(),
-        inputFormatters: [inputFormatterRestrictSpaces],
+        inputFormatters: [
+          inputFormatterRestrictSpaces,
+          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+        ],
         validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
             ? null
             : 'Not a numeric PIN',
@@ -31,6 +34,7 @@ class PINFormField extends GetWidget<PINFormFieldController> {
           labelText: field.data['label'],
           hintText: field.data['hint'],
           suffixIcon: IconButton(
+            padding: const EdgeInsets.only(right: 10),
             onPressed: controller.obscureText.toggle,
             icon: Obx(
               () => Icon(

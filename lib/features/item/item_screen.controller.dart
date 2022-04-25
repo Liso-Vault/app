@@ -196,6 +196,48 @@ class ItemScreenController extends GetxController
   }
 
   void _pickIcon() async {
+    final formKey = GlobalKey<FormState>();
+    final iconController = TextEditingController();
+
+    void _save() async {
+      if (!formKey.currentState!.validate()) return;
+      iconUrl.value = iconController.text;
+      Get.back();
+    }
+
+    final content = TextFormField(
+      controller: iconController,
+      autofocus: true,
+      keyboardType: TextInputType.url,
+      validator: (data) =>
+          data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: const InputDecoration(
+        labelText: 'Name',
+        hintText: 'https://images.com/icon.png',
+      ),
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Icon URL'),
+      content: Form(
+        key: formKey,
+        child: Utils.isDrawerExpandable
+            ? content
+            : SizedBox(width: 600, child: content),
+      ),
+      actions: [
+        TextButton(
+          child: const Text('Cancel'),
+          onPressed: Get.back,
+        ),
+        TextButton(
+          child: const Text('Save'),
+          onPressed: _save,
+        ),
+      ],
+    ));
+
     // FilePickerResult? result;
 
     // try {

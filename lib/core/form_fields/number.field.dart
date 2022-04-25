@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
+import '../utils/globals.dart';
+
 // ignore: must_be_immutable
-class TextFieldForm extends StatelessWidget {
+class NumberFormField extends StatelessWidget {
   final HiveLisoField field;
-  TextFieldForm(this.field, {Key? key}) : super(key: key);
+  NumberFormField(this.field, {Key? key}) : super(key: key);
 
   TextEditingController? _fieldController;
   String get value => _fieldController!.text;
@@ -15,7 +19,14 @@ class TextFieldForm extends StatelessWidget {
 
     return TextFormField(
       controller: _fieldController,
-      textCapitalization: TextCapitalization.sentences,
+      keyboardType: TextInputType.number,
+      inputFormatters: [
+        inputFormatterRestrictSpaces,
+        FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+      ],
+      validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
+          ? null
+          : 'Not a numeric PIN',
       decoration: InputDecoration(
         labelText: field.data['label'],
         hintText: field.data['hint'],

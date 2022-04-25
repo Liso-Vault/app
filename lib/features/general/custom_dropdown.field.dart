@@ -5,7 +5,7 @@ import '../../core/hive/models/field.hive.dart';
 
 // ignore: must_be_immutable
 class CustomDropDownFormField extends StatelessWidget {
-  final List<DropdownMenuItem<String>> items;
+  final List<DropdownMenuItem<dynamic>> items;
   final HiveLisoField field;
 
   CustomDropDownFormField(
@@ -21,7 +21,7 @@ class CustomDropDownFormField extends StatelessWidget {
     // set initial value
     value = field.data['value'];
 
-    return DropdownButtonFormField<String>(
+    return DropdownButtonFormField<dynamic>(
       isExpanded: true, // fix for renderflex overflowed
       value: field.data['value'],
       items: items,

@@ -5,7 +5,6 @@ List<HiveLisoField> templateNoteFields() {
     HiveLisoField(
       identifier: 'note',
       type: LisoFieldType.richText.name,
-      reserved: true,
       data: {
         'value': '',
         'label': 'Note',

@@ -19,9 +19,6 @@ groups:
   - path: assets/images
     class_name: Images
     types: [ .png, .jpg, .jpeg, .webp, .webm, .bmp ]
-  - path: assets/images/origins
-    class_name: OriginImages
-    types: [ .png, .jpg, .jpeg, .webp, .webm, .bmp ]
 #  - path: assets/vectors
 #    class_name: Svgs
 #    package: res

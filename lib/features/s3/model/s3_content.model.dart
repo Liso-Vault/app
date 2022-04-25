@@ -1,3 +1,4 @@
+import 'package:liso/core/utils/globals.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
 
@@ -17,6 +18,8 @@ class S3Content {
     this.type = S3ContentType.directory,
     this.object,
   });
+
+  bool get isVaultFile => fileExtension == kVaultExtension;
 
   bool get isFile => type == S3ContentType.file;
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:liso/core/form_fields/country.field.dart';
+import 'package:liso/core/data/countries.choices.dart';
+import 'package:liso/core/form_fields/choices.field.dart';
+import 'package:liso/core/form_fields/section.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/utils/console.dart';
 
@@ -13,7 +15,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
   TextEditingController? _cityController;
   TextEditingController? _stateController;
   TextEditingController? _zipController;
-  CountryFormField? _countryFormField;
+  ChoicesFormField? _countryFormField;
 
   // TODO: ADDRESS FIELD JSON TO CLASS
   Map<String, dynamic> get value {
@@ -37,16 +39,24 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
     _stateController = TextEditingController(text: value['state']);
     _zipController = TextEditingController(text: value['zip']);
 
-    _countryFormField = CountryFormField(
+    _countryFormField = ChoicesFormField(
       HiveLisoField(
-        reserved: true,
-        type: LisoFieldType.country.name,
-        data: {'value': value['country'], 'label': 'Country'},
+        type: LisoFieldType.choices.name,
+        data: {
+          'value': value['country'],
+          'label': 'Country',
+          'choices': kCountryChoices,
+        },
       ),
     );
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SectionFormField(
+          HiveLisoField(type: '', data: {'value': field.data['label']}),
+        ),
+        const SizedBox(height: 10),
         TextFormField(
           controller: _street1Controller,
           keyboardType: TextInputType.streetAddress,

@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
-import 'package:liso/resources/resources.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:window_manager/window_manager.dart';
 
@@ -109,40 +108,6 @@ class Utils {
       persistence.windowWidth.val,
       persistence.windowHeight.val,
     ));
-  }
-
-  static String originImageParser(String origin) {
-    String imagePath = OriginImages.other;
-
-    switch (origin) {
-      case 'Metamask':
-        imagePath = OriginImages.metamask;
-        break;
-      case 'TrustWallet':
-        imagePath = OriginImages.trustWallet;
-        break;
-      case 'Exodus':
-        imagePath = OriginImages.exodus;
-        break;
-      case 'MyEtherWallet':
-        imagePath = OriginImages.myetherwallet;
-        break;
-      case 'BitGo':
-        imagePath = OriginImages.bitgo;
-        break;
-      case 'Math Wallet':
-        imagePath = OriginImages.mathWallet;
-        break;
-      case 'Cano':
-        imagePath = OriginImages.cano;
-        break;
-      case 'Syrius':
-        imagePath = OriginImages.syrius;
-        break;
-      default:
-    }
-
-    return imagePath;
   }
 
   static Icon categoryIcon(LisoItemCategory category, {Color? color}) {

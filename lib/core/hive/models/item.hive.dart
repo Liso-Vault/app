@@ -146,7 +146,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         _identifier = 'note';
         break;
       case LisoItemCategory.email:
-        _identifier = 'email';
+        _identifier = 'username';
         break;
       case LisoItemCategory.membership:
         _identifier = 'note';
@@ -234,7 +234,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         _identifier = 'note';
         break;
       case LisoItemCategory.email:
-        _identifier = 'email';
+        _identifier = 'username';
         break;
       case LisoItemCategory.membership:
         _identifier = 'note';

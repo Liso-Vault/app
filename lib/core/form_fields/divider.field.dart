@@ -5,6 +5,6 @@ class DividerFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('Unimplemented Field');
+    return const Divider();
   }
 }
