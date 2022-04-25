@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
+import 'package:password_strength/password_strength.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:window_manager/window_manager.dart';
 
@@ -23,21 +24,6 @@ class Utils {
       Get.mediaQuery.size.width < kDesktopChangePoint;
 
   // FUNCTIONS
-  // TODO: improve password validation
-  static String? validatePassword(String text) {
-    const min = 8;
-    const max = 30;
-
-    if (text.isEmpty) {
-      return 'Enter your strong password';
-    } else if (text.length < min) {
-      return 'Vault password must be at least $min characters';
-    } else if (text.length > max) {
-      return "That's a lot of a password";
-    } else {
-      return null;
-    }
-  }
 
   static String generatePassword({
     bool letter = true,
@@ -211,6 +197,34 @@ class Utils {
       dialog,
       routeSettings: RouteSettings(name: name),
     );
+  }
+
+  static String? validatePassword(String text) {
+    const min = 8;
+    const max = 100;
+
+    if (text.isEmpty) {
+      return 'Enter your strong password';
+    } else if (text.length < min) {
+      return 'Vault password must be at least $min characters';
+    } else if (text.length > max) {
+      return "That's a lot of a password";
+    } else {
+      final hasUppercase = text.contains(RegExp(r'[A-Z]'));
+      final hasLowercase = text.contains(RegExp(r'[a-z]'));
+      final hasDigits = text.contains(RegExp(r'[0-9]'));
+      final hasSpecialCharacters =
+          text.contains(RegExp(r'[!;*_=@#$%^&*(),.?":{}[]|<>]'));
+
+      if (!hasUppercase ||
+          !hasLowercase ||
+          !hasDigits ||
+          !hasSpecialCharacters) {
+        return 'Must contain a digit, special character, lower and uppercase letters';
+      } else {
+        return null;
+      }
+    }
   }
 
   static String? validateUri(String data) {
