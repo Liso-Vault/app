@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:liso/core/data/countries.choices.dart';
+import '../data/countries.choices.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/section.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';

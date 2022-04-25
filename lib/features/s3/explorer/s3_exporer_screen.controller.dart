@@ -57,12 +57,19 @@ class S3ExplorerScreenController extends GetxController
   }
 
   // FUNCTIONS
+  Future<void> pulledRefresh() async {
+    await load(path: currentPath.value, pulled: true);
+  }
+
   Future<void> reload() async => await load(path: currentPath.value);
 
   Future<void> up() async => await load(path: dirname(currentPath.value) + '/');
 
-  Future<void> load({required String path}) async {
-    change(true, status: RxStatus.loading());
+  Future<void> load({
+    required String path,
+    bool pulled = false,
+  }) async {
+    if (!pulled) change(true, status: RxStatus.loading());
 
     final result = await S3Service.to.fetch(
       path: path,
@@ -110,11 +117,11 @@ class S3ExplorerScreenController extends GetxController
 
   // TODO: confirmation dialog
   void delete(S3Content content) async {
-    change(null, status: RxStatus.loading());
+    change(true, status: RxStatus.loading());
     final result = await S3Service.to.remove(content);
 
     if (result.isLeft) {
-      change(null, status: RxStatus.success());
+      change(false, status: RxStatus.success());
 
       return UIUtils.showSimpleDialog(
         'Delete Failed',
@@ -127,12 +134,13 @@ class S3ExplorerScreenController extends GetxController
       body: content.name,
     );
 
-    change(null, status: RxStatus.success());
+    change(false, status: RxStatus.success());
     await reload();
   }
 
   // TODO: max upload size
   void pickFile() async {
+    change(true, status: RxStatus.loading());
     FilePickerResult? result;
 
     try {
@@ -141,19 +149,22 @@ class S3ExplorerScreenController extends GetxController
       );
     } catch (e) {
       console.error('FilePicker error: $e');
+      change(false, status: RxStatus.success());
       return;
     }
 
     if (result == null || result.files.isEmpty) {
       console.warning("canceled file picker");
+      change(false, status: RxStatus.success());
       return;
     }
 
     console.info('picked: ${result.files.single.path!}');
-
     final file = File(result.files.single.path!);
 
     if (await file.length() > kMaxUploadSizeLimit) {
+      change(false, status: RxStatus.success());
+
       return UIUtils.showSimpleDialog(
         'File Too Large',
         'Upload size limit is ${filesize(kMaxUploadSizeLimit.toInt())} per file',
@@ -164,7 +175,7 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void _upload(File file) async {
-    change(null, status: RxStatus.loading());
+    change(true, status: RxStatus.loading());
 
     final result = await S3Service.to.uploadFile(
       file,
@@ -173,7 +184,7 @@ class S3ExplorerScreenController extends GetxController
     );
 
     if (result.isLeft) {
-      change(null, status: RxStatus.success());
+      change(false, status: RxStatus.success());
 
       return UIUtils.showSimpleDialog(
         'Upload Failed',
@@ -186,7 +197,7 @@ class S3ExplorerScreenController extends GetxController
       body: basename(file.path),
     );
 
-    change(null, status: RxStatus.success());
+    change(false, status: RxStatus.success());
     await reload();
   }
 
@@ -197,7 +208,7 @@ class S3ExplorerScreenController extends GetxController
     void _createDirectory(String name) async {
       if (!formKey.currentState!.validate()) return;
       // TODO: check if folder already exists
-      change(null, status: RxStatus.loading());
+      change(true, status: RxStatus.loading());
 
       final result = await S3Service.to.createFolder(
         name,
@@ -206,7 +217,7 @@ class S3ExplorerScreenController extends GetxController
       );
 
       if (result.isLeft) {
-        change(null, status: RxStatus.success());
+        change(false, status: RxStatus.success());
 
         return UIUtils.showSimpleDialog(
           'Delete Failed',
@@ -219,7 +230,7 @@ class S3ExplorerScreenController extends GetxController
         body: folderController.text,
       );
 
-      change(null, status: RxStatus.success());
+      change(false, status: RxStatus.success());
       await reload();
     }
 

@@ -1,4 +1,4 @@
-import 'package:liso/core/data/bank_type.choices.dart';
+import '../data/bank_type.choices.dart';
 
 import '../data/address_value.default.dart';
 import '../hive/models/field.hive.dart';

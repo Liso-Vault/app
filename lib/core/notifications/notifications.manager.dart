@@ -68,7 +68,11 @@ class NotificationsManager {
   }
 
   static void onForegroundPayload(
-      int? id, String? title, String? body, String? payload) async {
+    int? id,
+    String? title,
+    String? body,
+    String? payload,
+  ) async {
     console.info('onForegroundPayload payload: ' + payload!);
   }
 }

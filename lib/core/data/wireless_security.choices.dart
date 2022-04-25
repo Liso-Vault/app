@@ -1,4 +1,4 @@
-final kWirelessSecurityChoices = [
+const kWirelessSecurityChoices = [
   {'name': 'No Security', 'value': 'no_security'},
   {'name': 'WPA3 Personal', 'value': 'wpa3_personal'},
   {'name': 'WPA3 Enterprise', 'value': 'wpa3_enterprises'},

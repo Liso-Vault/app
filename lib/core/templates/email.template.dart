@@ -1,4 +1,4 @@
-import 'package:liso/core/data/email.choices.dart';
+import '../data/email.choices.dart';
 
 import '../hive/models/field.hive.dart';
 

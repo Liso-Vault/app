@@ -46,6 +46,7 @@ class HiveManager {
       path: LisoManager.hivePath,
     );
 
+    _deleteDueTrashItems();
     watchBoxes();
     console.info('openBoxes');
   }
@@ -69,6 +70,18 @@ class HiveManager {
   static Future<void> deleteBoxes() async {
     await items?.deleteFromDisk();
     console.info('deleteBoxes');
+  }
+
+  static Future<void> _deleteDueTrashItems() async {
+    // DELETE DUE TRASH ITEMS
+    final itemsToDelete = items!.values.where(
+      (e) => e.daysLeftToDelete <= 0,
+    );
+
+    if (itemsToDelete.isNotEmpty) {
+      console.error('itemsToDelete: ${itemsToDelete.length}');
+      await items!.deleteAll(itemsToDelete);
+    }
   }
 
   // workaround to check if encryption key is correct

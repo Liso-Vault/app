@@ -25,7 +25,7 @@ class PINFormField extends GetWidget<PINFormFieldController> {
         obscureText: controller.obscureText(),
         inputFormatters: [
           inputFormatterRestrictSpaces,
-          FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+          FilteringTextInputFormatter.allow(RegExp("[0-9]")),
         ],
         validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
             ? null

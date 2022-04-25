@@ -5,7 +5,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
@@ -32,27 +31,11 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
   Widget itemBuilder(context, index) => ItemTile(
         controller.data[index],
-        key: GlobalKey(),
+        key: GlobalKey(), // TODO: do we still need this?
       );
 
   @override
   Widget? builder() {
-    final listView = Obx(
-      () => Opacity(
-        opacity: S3Service.to.syncing.value ? 0.5 : 1,
-        child: AbsorbPointer(
-          absorbing: S3Service.to.syncing.value,
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: controller.data.length,
-            itemBuilder: itemBuilder,
-            separatorBuilder: (context, index) => const Divider(height: 0),
-            padding: const EdgeInsets.only(bottom: 15),
-          ),
-        ),
-      ),
-    );
-
     final addItemButton = ContextMenuButton(
       controller.menuItemsCategory,
       child: TextButton.icon(
@@ -65,7 +48,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
     );
 
-    final childContent = controller.obx(
+    final listView = Obx(
+      () => ListView.separated(
+        shrinkWrap: true,
+        itemCount: controller.data.length,
+        itemBuilder: itemBuilder,
+        separatorBuilder: (_, index) => const Divider(height: 0),
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 15),
+      ),
+    );
+
+    var childContent = controller.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: Obx(
@@ -80,11 +74,27 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
     );
 
-    final content = Column(
-      children: [
-        const ConnectivityBar(),
-        Expanded(child: childContent),
-      ],
+    // enable pull to refresh if mobile
+    if (GetPlatform.isMobile) {
+      childContent = RefreshIndicator(
+        child: childContent,
+        onRefresh: controller.pulledRefresh,
+      );
+    }
+
+    final content = Obx(
+      () => Opacity(
+        opacity: S3Service.to.syncing.value ? 0.5 : 1,
+        child: AbsorbPointer(
+          absorbing: S3Service.to.syncing.value,
+          child: Column(
+            children: [
+              const ConnectivityBar(),
+              Expanded(child: childContent),
+            ],
+          ),
+        ),
+      ),
     );
 
     final appBarActions = [
@@ -116,16 +126,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
           final syncButton = IconButton(
             icon: const Icon(LineIcons.syncIcon),
-            onPressed: () {
-              UIUtils.showSnackBar(
-                title: 'Syncing to $kAppName Cloud',
-                message: 'Please wait...',
-                icon: const Icon(LineIcons.syncIcon),
-                seconds: 4,
-              );
-
-              S3Service.to.sync();
-            },
+            onPressed: controller.sync,
           );
 
           final syncBadge = Badge(
@@ -165,7 +166,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       children: [
         Image.asset(Images.logo, height: 17),
         const SizedBox(width: 10),
-        const Text(kAppName, style: TextStyle(fontSize: 20))
+        const Text(kAppName, style: TextStyle(fontSize: 20)),
       ],
     );
 
@@ -206,9 +207,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
         ],
       );
-    }
-    // 1 SECTION FOR PHONE DEVICES
-    else {
+    } else {
       return Scaffold(
         appBar: appBar,
         body: content,

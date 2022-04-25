@@ -118,6 +118,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
         () => ListView.separated(
           shrinkWrap: true,
           itemCount: controller.widgets.length,
+          physics: const NeverScrollableScrollPhysics(),
           separatorBuilder: (_, index) => const SizedBox(height: 10),
           itemBuilder: (_, index) => controller.widgets[index],
         ),

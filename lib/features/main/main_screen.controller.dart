@@ -15,9 +15,11 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.item.dart';
+import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenController extends GetxController
@@ -69,13 +71,9 @@ class MainScreenController extends GetxController
         leading: const Icon(LineIcons.font),
         trailing: sortName.contains('title') ? icon : null,
         onSelected: () {
-          if (!sortName.contains('title')) {
-            sortOrder.value = LisoItemSortOrder.titleDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.titleDescending
-                : LisoItemSortOrder.titleAscending;
-          }
+          sortOrder.value = !sortName.contains('title') || ascending
+              ? LisoItemSortOrder.titleDescending
+              : LisoItemSortOrder.titleAscending;
         },
       ),
       ContextMenuItem(
@@ -83,13 +81,9 @@ class MainScreenController extends GetxController
         leading: const Icon(LineIcons.sitemap),
         trailing: sortName.contains('category') ? icon : null,
         onSelected: () {
-          if (!sortName.contains('category')) {
-            sortOrder.value = LisoItemSortOrder.categoryDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.categoryDescending
-                : LisoItemSortOrder.categoryAscending;
-          }
+          sortOrder.value = !sortName.contains('category') || ascending
+              ? LisoItemSortOrder.categoryDescending
+              : LisoItemSortOrder.categoryAscending;
         },
       ),
       ContextMenuItem(
@@ -97,14 +91,9 @@ class MainScreenController extends GetxController
         leading: const Icon(LineIcons.calendar),
         trailing: sortName.contains('dateModified') ? icon : null,
         onSelected: () {
-          if (!sortName.contains('dateModified')) {
-            sortOrder.value =
-                LisoItemSortOrder.dateModifiedDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.dateModifiedDescending
-                : LisoItemSortOrder.dateModifiedAscending;
-          }
+          sortOrder.value = !sortName.contains('dateModified') || ascending
+              ? LisoItemSortOrder.dateModifiedDescending
+              : LisoItemSortOrder.dateModifiedAscending;
         },
       ),
       ContextMenuItem(
@@ -112,14 +101,9 @@ class MainScreenController extends GetxController
         leading: const Icon(LineIcons.calendarAlt),
         trailing: sortName.contains('dateCreated') ? icon : null,
         onSelected: () {
-          if (!sortName.contains('dateCreated')) {
-            sortOrder.value =
-                LisoItemSortOrder.dateCreatedDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.dateCreatedDescending
-                : LisoItemSortOrder.dateCreatedAscending;
-          }
+          sortOrder.value = !sortName.contains('dateCreated') || ascending
+              ? LisoItemSortOrder.dateCreatedDescending
+              : LisoItemSortOrder.dateCreatedAscending;
         },
       ),
       ContextMenuItem(
@@ -127,13 +111,9 @@ class MainScreenController extends GetxController
         leading: const FaIcon(FontAwesomeIcons.heart),
         trailing: sortName.contains('favorite') ? icon : null,
         onSelected: () {
-          if (!sortName.contains('favorite')) {
-            sortOrder.value = LisoItemSortOrder.favoriteDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.favoriteDescending
-                : LisoItemSortOrder.favoriteAscending;
-          }
+          sortOrder.value = !sortName.contains('favorite') || ascending
+              ? LisoItemSortOrder.favoriteDescending
+              : LisoItemSortOrder.favoriteAscending;
         },
       ),
       ContextMenuItem(
@@ -141,13 +121,9 @@ class MainScreenController extends GetxController
         leading: const Icon(LineIcons.alternateShield),
         trailing: sortName.contains('protected') ? icon : null,
         onSelected: () {
-          if (!sortName.contains('protected')) {
-            sortOrder.value = LisoItemSortOrder.protectedDescending; // default
-          } else {
-            sortOrder.value = ascending
-                ? LisoItemSortOrder.protectedDescending
-                : LisoItemSortOrder.protectedAscending;
-          }
+          sortOrder.value = !sortName.contains('protected') || ascending
+              ? LisoItemSortOrder.protectedDescending
+              : LisoItemSortOrder.protectedAscending;
         },
       ),
     ];
@@ -231,10 +207,24 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  void load() async {
+  Future<void> pulledRefresh() async {
+    await sync();
+  }
+
+  Future<void> sync() async {
+    UIUtils.showSnackBar(
+      title: 'Syncing to $kAppName Cloud',
+      message: 'Please wait...',
+      icon: const Icon(LineIcons.syncIcon),
+      seconds: 4,
+    );
+
+    await S3Service.to.sync();
+  }
+
+  Future<void> load() async {
     final boxIsOpen = HiveManager.items?.isOpen ?? false;
     if (!boxIsOpen) return console.warning('box is not open');
-
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
     var items = HiveManager.items!.values.toList();

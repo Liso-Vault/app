@@ -1,6 +1,5 @@
-import 'package:liso/core/data/genders.dart';
-
 import '../data/address_value.default.dart';
+import '../data/genders.choices.dart';
 import '../hive/models/field.hive.dart';
 
 List<HiveLisoField> templateDriversLicenseFields() {

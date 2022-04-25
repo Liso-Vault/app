@@ -1,4 +1,4 @@
-import 'package:liso/core/data/api_credential.choices.dart';
+import '../data/api_credential.choices.dart';
 
 import '../hive/models/field.hive.dart';
 

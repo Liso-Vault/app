@@ -30,7 +30,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // NOTIFICATION
   final notificationId = 0.val('notification id');
   // SYNC
-  final sync = false.val('sync');
+  final sync = true.val('sync');
   final syncConfirmed = false.val('sync confirmed');
   // IPFS
   final ipfsSync = false.val('ipfs sync');

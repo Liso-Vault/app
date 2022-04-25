@@ -1,6 +1,6 @@
-import 'package:liso/core/data/countries.choices.dart';
+import '../data/countries.choices.dart';
 
-import '../data/genders.dart';
+import '../data/genders.choices.dart';
 import '../hive/models/field.hive.dart';
 
 List<HiveLisoField> templatePassportFields() {

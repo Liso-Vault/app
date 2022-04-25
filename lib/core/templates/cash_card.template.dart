@@ -1,4 +1,4 @@
-import 'package:liso/core/data/cash_card.choices.dart';
+import '../data/cash_card.choices.dart';
 
 import '../hive/models/field.hive.dart';
 

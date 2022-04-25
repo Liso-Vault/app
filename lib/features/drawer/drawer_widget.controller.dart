@@ -71,9 +71,15 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     return _tags;
   }
 
-  int get itemsCount => groupedItems.where((e) => !e.trashed).length;
-  int get favoriteCount => groupedItems.where((e) => e.favorite).length;
-  int get protectedCount => groupedItems.where((e) => e.protected).length;
+  int get itemsCount =>
+      groupedItems.where((e) => !e.trashed && !e.trashed).length;
+
+  int get favoriteCount =>
+      groupedItems.where((e) => e.favorite && !e.trashed).length;
+
+  int get protectedCount =>
+      groupedItems.where((e) => e.protected && !e.trashed).length;
+
   int get trashedCount => groupedItems.where((e) => e.trashed).length;
 
   bool get filterAll =>

@@ -46,7 +46,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   Text('all_Items'.tr),
                   if (controller.itemsCount > 0) ...[
                     Chip(label: Text(controller.itemsCount.toString())),
-                  ]
+                  ],
                 ],
               ),
             ),
@@ -59,7 +59,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   Text('favorites'.tr),
                   if (controller.favoriteCount > 0) ...[
                     Chip(label: Text(controller.favoriteCount.toString())),
-                  ]
+                  ],
                 ],
               ),
               leading: controller.filterFavorites()
@@ -78,7 +78,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   Text('protected'.tr),
                   if (controller.protectedCount > 0) ...[
                     Chip(label: Text(controller.protectedCount.toString())),
-                  ]
+                  ],
                 ],
               ),
               leading: const FaIcon(FontAwesomeIcons.shieldHalved),
@@ -94,7 +94,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   Text('trash'.tr),
                   if (controller.trashedCount > 0) ...[
                     Chip(label: Text(controller.trashedCount.toString())),
-                  ]
+                  ],
                 ],
               ),
               leading: const Icon(LineIcons.trash),

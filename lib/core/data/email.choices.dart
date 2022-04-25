@@ -5,14 +5,14 @@ const kEmailTypeChoices = [
   {'name': '', 'value': ''},
 ];
 
-final kEmailSecurityChoices = [
+const kEmailSecurityChoices = [
   {'name': 'None', 'value': 'none'},
   {'name': 'SSL', 'value': 'ssl'},
   {'name': 'TLS', 'value': 'tls'},
   {'name': '', 'value': ''},
 ];
 
-final kEmailAuthMethodChoices = [
+const kEmailAuthMethodChoices = [
   {'name': 'None', 'value': 'none'},
   {'name': 'Password', 'value': 'password'},
   {'name': 'MD5 Challenge Response', 'value': 'md5_challenge'},

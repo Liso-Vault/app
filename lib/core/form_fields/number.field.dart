@@ -22,7 +22,7 @@ class NumberFormField extends StatelessWidget {
       keyboardType: TextInputType.number,
       inputFormatters: [
         inputFormatterRestrictSpaces,
-        FilteringTextInputFormatter.allow(RegExp("[0-9]"))
+        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
       ],
       validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
           ? null

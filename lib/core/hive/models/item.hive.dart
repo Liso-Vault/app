@@ -9,6 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:supercharged/supercharged.dart';
 
 import '../../utils/utils.dart';
 import 'field.hive.dart';
@@ -95,6 +96,11 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
 
   String get updatedTimeAgo =>
       Utils.timeAgo(metadata.updatedTime, short: false);
+
+  int get daysLeftToDelete =>
+      metadata.updatedTime.duration().inDays -
+      DateTime.now().duration().inDays +
+      10;
 
   LisoItemCategory get categoryObject =>
       LisoItemCategory.values.byName(category);

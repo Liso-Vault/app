@@ -43,7 +43,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
           leading: const Icon(LineIcons.trash),
           onSelected: () => controller.delete(content),
         ),
-      ]
+      ],
     ];
 
     return ListTile(

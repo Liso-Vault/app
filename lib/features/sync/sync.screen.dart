@@ -16,7 +16,6 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final newSetup = Get.parameters['new_setup'] != null;
-    console.info('newSetup: $newSetup');
 
     void save() {
       final persistence = Get.find<PersistenceService>();
@@ -93,7 +92,7 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
               parameters: {'type': 'time_machine'},
             ),
           ),
-        ]
+        ],
       ],
     );
 

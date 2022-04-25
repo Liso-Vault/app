@@ -57,7 +57,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.trashed = false;
     item.metadata = await item.metadata.getUpdated();
     item.save();
-    // _reloadSearchDelegate();
+    // // _reloadSearchDelegate();
   }
 
   void _open() async {
@@ -94,30 +94,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     final isLargeScreen = !Utils.isDrawerExpandable;
 
     final menuItems = [
-      ContextMenuItem(
-        title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-        leading: FaIcon(
-          item.favorite ? FontAwesomeIcons.solidHeart : FontAwesomeIcons.heart,
-          color: item.favorite ? Colors.pink : null,
-        ),
-        onSelected: _favorite,
-      ),
-      // ContextMenuItem(
-      //   title: item.protected ? 'unprotect'.tr : 'protect'.tr,
-      //   leading: FaIcon(
-      //     item.protected
-      //         ? FontAwesomeIcons.shield
-      //         : FontAwesomeIcons.shieldHalved,
-      //     color: item.protected ? kAppColor : null,
-      //   ),
-      //   function: _protect,
-      // ),
-      ContextMenuItem(
-        title: 'details'.tr,
-        leading: const Icon(LineIcons.code),
-        // TODO: adaptive route for json viewer screen
-        onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
-      ),
       if (item.trashed) ...[
         ContextMenuItem(
           title: 'restore'.tr,
@@ -131,11 +107,27 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         ),
       ] else ...[
         ContextMenuItem(
+          title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
+          leading: FaIcon(
+            item.favorite
+                ? FontAwesomeIcons.solidHeart
+                : FontAwesomeIcons.heart,
+            color: item.favorite ? Colors.pink : null,
+          ),
+          onSelected: _favorite,
+        ),
+        ContextMenuItem(
           title: 'move_to_trash'.tr,
           leading: const Icon(LineIcons.trash),
           onSelected: _trash,
         ),
       ],
+      ContextMenuItem(
+        title: 'details'.tr,
+        leading: const Icon(LineIcons.code),
+        // TODO: adaptive route for json viewer screen
+        onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
+      ),
     ];
 
     final title = Text(
@@ -190,6 +182,15 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
                 color: Colors.grey,
               ),
             ),
+            if (item.trashed) ...[
+              Text(
+                ' 🗑  ${item.daysLeftToDelete} days left',
+                style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.red,
+                ),
+              ),
+            ]
           ],
         )
       ],

@@ -1,4 +1,4 @@
-final kGenderChoices = [
+const kGenderChoices = [
   {'name': 'Male', 'value': 'male'},
   {'name': 'Female', 'value': 'female'},
   {'name': 'Transgender', 'value': 'transgender'},

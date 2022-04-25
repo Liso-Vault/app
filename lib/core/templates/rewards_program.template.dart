@@ -52,7 +52,7 @@ List<HiveLisoField> templateRewardsProgramFields() {
       data: {
         'value': '',
         'label': 'Customer Service Phone',
-        'hint': '+1-123-456-7890'
+        'hint': '+1-123-456-7890',
       },
     ),
     HiveLisoField(
