@@ -6,6 +6,8 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 
+import '../../../core/firebase/config/config.service.dart';
+
 class IPFSExplorerScreenBinding extends Bindings {
   @override
   void dependencies() {
@@ -21,12 +23,12 @@ class IPFSExplorerScreenController extends GetxController
 
   // PROPERTIES
   final data = <FilesLsEntry>[].obs;
-  final currentPath = '/$kAppName'.obs;
+  final currentPath = '/${ConfigService.to.appName}'.obs;
 
   // PROPERTIES
 
   // GETTERS
-  bool get canUp => currentPath.value != '/$kAppName';
+  bool get canUp => currentPath.value != '/${ConfigService.to.appName}';
 
   // INIT
 
@@ -38,7 +40,7 @@ class IPFSExplorerScreenController extends GetxController
 
   // FUNCTIONS
 
-  void load({String path = '/$kAppName'}) async {
+  void load({String path = '/Liso'}) async {
     change(null, status: RxStatus.loading());
 
     final result = await IPFSService.to.ipfs.files.ls(

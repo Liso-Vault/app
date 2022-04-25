@@ -9,14 +9,16 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/wallet.service.dart';
+import '../../core/utils/biometric.util.dart';
+import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../general/custom_chip.widget.dart';
 import '../menu/menu.item.dart';
 
 class SettingsScreenBinding extends Bindings {
@@ -141,10 +143,52 @@ class SettingsScreenController extends GetxController
     Get.back();
   }
 
-  void changePassword() {
-    UIUtils.showSimpleDialog(
-      'Change Password Instruction',
-      'In order to change your wallet password, you are required to reset everything, re-import the vault, then you can set a new password. Make sure you have the master seed phrase and backed up the latest vault before proceeding.',
+  void showSeed() async {
+    final seed = await BiometricUtils.obtain(kBiometricSeedKey);
+
+    final phraseChips = GestureDetector(
+      onLongPress: () => Utils.copyToClipboard(seed),
+      onSecondaryTap: () => Utils.copyToClipboard(seed),
+      child: Wrap(
+        spacing: 5,
+        runSpacing: 10,
+        alignment: WrapAlignment.start,
+        children: seed!
+            .split(' ')
+            .map((e) => CustomChip(
+                  label: Text(e, style: const TextStyle(fontSize: 18)),
+                ))
+            .toList(),
+      ),
     );
+
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        phraseChips,
+        const Divider(),
+        const Text(
+          "Make sure you're in a safe location and free from prying eyes",
+          style: TextStyle(color: Colors.grey),
+        ),
+      ],
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Your Seed Phrase'),
+      content: Utils.isDrawerExpandable
+          ? content
+          : SizedBox(
+              width: 600,
+              child: content,
+            ),
+      actions: [
+        TextButton(
+          child: const Text('Okay'),
+          onPressed: Get.back,
+        ),
+      ],
+    ));
   }
 }

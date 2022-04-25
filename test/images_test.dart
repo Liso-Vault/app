@@ -8,5 +8,6 @@ void main() {
     expect(File(Images.logo).existsSync(), true);
     expect(File(Images.placeholder).existsSync(), true);
     expect(File(Images.splash).existsSync(), true);
+    expect(File(Images.stackwares).existsSync(), true);
   });
 }

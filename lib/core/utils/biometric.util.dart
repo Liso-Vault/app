@@ -1,9 +1,8 @@
 import 'package:biometric_storage/biometric_storage.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:local_auth/local_auth.dart';
 
-import '../services/wallet.service.dart';
 import 'console.dart';
 
 class BiometricUtils {
@@ -18,12 +17,15 @@ class BiometricUtils {
     console.info('init');
   }
 
-  static Future<bool> savePassword(String password) async {
+  static Future<bool> save(
+    String password, {
+    required String key,
+  }) async {
     if (!await canAuthenticate()) return false;
 
     final storage = await getStorage(
-      kBiometricPasswordKey,
-      title: 'Secure $kAppName',
+      key,
+      title: 'Secure ${ConfigService.to.appName}',
     );
 
     try {
@@ -35,9 +37,9 @@ class BiometricUtils {
     }
   }
 
-  static Future<String?> getPassword() async {
+  static Future<String?> obtain(String key) async {
     if (!await canAuthenticate()) return null;
-    final storage = await getStorage(kBiometricPasswordKey);
+    final storage = await getStorage(key);
 
     try {
       return await storage.read();
@@ -47,29 +49,30 @@ class BiometricUtils {
     }
   }
 
-  static Future<void> deletePassword() async {
+  static Future<void> delete(String key) async {
     if (!await canAuthenticate()) return;
-    final storage = await getStorage(kBiometricPasswordKey);
+    final storage = await getStorage(key);
     await storage.delete();
   }
 
   static Future<BiometricStorageFile> getStorage(
     String name, {
-    String title = 'Unlock $kAppName',
+    String? title,
   }) async {
-    const preSubTitle = 'securely access $kAppName via';
+    title = title ?? 'Unlock ${ConfigService.to.appName}';
+    final preSubTitle = 'securely access ${ConfigService.to.appName}';
 
     // TODO: localize
     final applePrompt = IosPromptInfo(
-      accessTitle: '$preSubTitle KeyChain',
+      accessTitle: preSubTitle,
       saveTitle: title,
     );
 
     // TODO: localize
     final androidPrompt = AndroidPromptInfo(
       title: title,
-      subtitle: WalletService.to.fileName,
-      description: '${GetUtils.capitalizeFirst(preSubTitle)} KeyStore',
+      subtitle: '${ConfigService.to.appName} Vault',
+      description: GetUtils.capitalizeFirst(preSubTitle),
     );
 
     final passwordStorage = await BiometricStorage().getStorage(

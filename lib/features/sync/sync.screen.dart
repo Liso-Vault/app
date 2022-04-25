@@ -5,6 +5,7 @@ import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/services/persistence.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -49,7 +50,7 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
             return Column(
               children: <Widget>[
                 RadioListTile<bool>(
-                  title: const Text('$kAppName Cloud Sync'),
+                  title: Text('${ConfigService.to.appName} Cloud Sync'),
                   subtitle: const Text(
                     "Securely keep multiple devices in sync in a decentralized cloud storage",
                   ),
@@ -83,7 +84,7 @@ class SyncScreen extends StatelessWidget with ConsoleMixin {
         ] else ...[
           const Divider(height: 80),
           ListTile(
-            title: Text('$kAppName ' + 'time_machine'.tr),
+            title: Text('${ConfigService.to.appName} ' + 'time_machine'.tr),
             subtitle: const Text('Go back in time to undo your changes'),
             leading: const Icon(LineIcons.clock),
             trailing: const Icon(LineIcons.angleRight),

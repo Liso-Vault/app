@@ -88,7 +88,7 @@ class ImportScreenController extends GetxController
     if (newUser) {
       UIUtils.showSimpleDialog(
         'Vault Not Found',
-        "It looks like you're a new $kAppName user. Consider creating a vault instead and start securing your data.",
+        "It looks like you're a new user. Consider creating a vault instead and start securing your data.",
       );
     } else {
       UIUtils.showSimpleDialog(
@@ -173,7 +173,10 @@ class ImportScreenController extends GetxController
 
     Get.offNamed(
       Routes.createPassword,
-      parameters: {'privateKeyHex': HEX.encode(credentials.privateKey)},
+      parameters: {
+        'privateKeyHex': HEX.encode(credentials.privateKey),
+        'seed': seedController.text,
+      },
     );
   }
 

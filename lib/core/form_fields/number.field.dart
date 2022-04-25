@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
@@ -22,7 +21,7 @@ class NumberFormField extends StatelessWidget {
       keyboardType: TextInputType.number,
       inputFormatters: [
         inputFormatterRestrictSpaces,
-        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+        inputFormatterNumericOnly,
       ],
       validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
           ? null

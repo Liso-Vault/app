@@ -8,6 +8,7 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:path/path.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/services/wallet.service.dart';
@@ -24,7 +25,10 @@ class IPFSService extends GetxService with ConsoleMixin {
 
   // GETTERS
   String get rootPath {
-    return join('/$kAppName', WalletService.to.address);
+    return join(
+      '/${ConfigService.to.appName}',
+      WalletService.to.address,
+    );
   }
 
   String get backupsPath => join(rootPath, 'Backups');

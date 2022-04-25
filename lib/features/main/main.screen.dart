@@ -12,9 +12,11 @@ import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../general/remote_image.widget.dart';
 import '../s3/s3.service.dart';
 import 'main_screen.controller.dart';
 
@@ -164,9 +166,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final appBarTitle = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(Images.logo, height: 17),
+        RemoteImage(
+          url: ConfigService.to.general.app.image,
+          height: 17,
+          placeholder: Image.asset(Images.logo, height: 17),
+        ),
         const SizedBox(width: 10),
-        const Text(kAppName, style: TextStyle(fontSize: 20)),
+        Text(ConfigService.to.appName, style: const TextStyle(fontSize: 20)),
       ],
     );
 

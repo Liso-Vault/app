@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/firebase/config/config.service.dart';
+import '../general/remote_image.widget.dart';
 import 'welcome_screen.controller.dart';
 
 class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
@@ -19,17 +20,21 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset(Images.logo, width: 100),
+          RemoteImage(
+            url: ConfigService.to.general.app.image,
+            height: 100,
+            placeholder: Image.asset(Images.logo, height: 100),
+          ),
           const SizedBox(height: 20),
-          const Text(
-            kAppName,
-            style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+          Text(
+            ConfigService.to.appName,
+            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 10),
-          const Text(
-            kAppDescription,
+          Text(
+            ConfigService.to.general.app.shortDescription,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           ),
           const Divider(),
           const SizedBox(height: 20),

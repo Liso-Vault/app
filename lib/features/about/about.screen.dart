@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../core/firebase/config/config.service.dart';
+import '../general/remote_image.widget.dart';
+import '../menu/menu.button.dart';
 import 'about_screen.controller.dart';
 
 class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
@@ -20,12 +22,16 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const SizedBox(height: 20),
-        Image.asset(Images.logo, height: 50),
+        RemoteImage(
+          url: ConfigService.to.general.app.image,
+          height: 50,
+          placeholder: Image.asset(Images.logo, height: 50),
+        ),
         const SizedBox(height: 15),
-        const Text(
-          kAppName,
+        Text(
+          ConfigService.to.appName,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 25),
+          style: const TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 10),
         Obx(
@@ -36,89 +42,79 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           ),
         ),
         const SizedBox(height: 10),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Text(
-            kAppDescription,
+            ConfigService.to.general.app.shortDescription,
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
+            style: const TextStyle(color: Colors.grey),
           ),
         ),
 
         const SizedBox(height: 30),
         const Divider(),
         ListTile(
-          leading: Image.asset(
-            Images.logo,
+          leading: RemoteImage(
+            url: ConfigService.to.general.app.image,
             height: 25,
-            color: Colors.grey,
+            placeholder: Image.asset(Images.logo, height: 25),
           ),
           trailing: const Icon(LineIcons.alternateExternalLink),
-          title: const Text('Liso Website'),
-          subtitle: const Text(kAppWebsiteUrl),
-          onTap: () => launchUrl(Uri.parse(kAppWebsiteUrl)),
+          title: Text('${ConfigService.to.appName} Website'),
+          subtitle: Text(ConfigService.to.general.app.links.website),
+          onTap: () => launchUrl(Uri.parse(
+            ConfigService.to.general.app.links.website,
+          )),
         ),
-        // ListTile(
-        //   leading: const Icon(LineIcons.github),
-        //   trailing: const Icon(LineIcons.alternateExternalLink),
-        //   title: const Text('Liso GitHub'),
-        //   subtitle: const Text(kAppGithubUrl),
-        //   onTap: () => launchUrl(Uri.parse(kAppGithubUrl),
-        // ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.twitter),
+          leading: const Icon(LineIcons.rocket),
+          title: Text('${ConfigService.to.appName} Roadmap'),
+          onTap: () => launchUrl(Uri.parse(
+            ConfigService.to.general.app.links.roadmap,
+          )),
           trailing: const Icon(LineIcons.alternateExternalLink),
-          title: const Text('Liso Twitter'),
-          subtitle: const Text('@liso_vault'),
-          onTap: () => launchUrl(Uri.parse(kAppTwitterUrl)),
         ),
-        // ListTile(
-        //   leading: const Icon(LineIcons.instagram),
-        //   trailing: const Icon(LineIcons.alternateExternalLink),
-        //   title: const Text('Liso Instagram'),
-        //   subtitle: const Text('@liso_vault'),
-        //   onTap: () => launchUrl(Uri.parse(kAppInstagramUrl),
-        // ),
-        // ListTile(
-        //   leading: const Icon(LineIcons.facebook),
-        //   trailing: const Icon(LineIcons.alternateExternalLink),
-        //   title: const Text('Liso Facebook'),
-        //   subtitle: const Text('@liso_vault'),
-        //   onTap: () => launchUrl(Uri.parse(kAppFacebookUrl),
-        // ),
+        const Divider(),
+        ContextMenuButton(
+          controller.communityMenuItems,
+          useMouseRegion: true,
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            leading: const Icon(LineIcons.users),
+            title: const Text('Community & Help'),
+            trailing: const Icon(LineIcons.alternateExternalLink),
+            onTap: () {},
+          ),
+        ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.envelope),
+          leading: const Icon(LineIcons.userShield),
+          title: Text('${ConfigService.to.appName} Privacy'),
           trailing: const Icon(LineIcons.alternateExternalLink),
-          title: const Text('Liso Email'),
-          subtitle: const Text(kAppEmail),
-          onTap: () => launchUrl(
-              Uri.parse('mailto:liso.vault@gmail.com?subject=Liso%20Support')),
+          onTap: () => launchUrl(Uri.parse(
+            ConfigService.to.general.app.links.privacy,
+          )),
         ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.bookOpen),
+          title: Text('${ConfigService.to.appName} Terms'),
+          trailing: const Icon(LineIcons.alternateExternalLink),
+          onTap: () => launchUrl(Uri.parse(
+            ConfigService.to.general.app.links.terms,
+          )),
+        ),
+
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.gift),
           title: const Text('Invite a friend'),
           trailing: const Icon(LineIcons.share),
           onTap: () => Share.share(
-            kAppShareText,
-            subject: kAppName,
+            ConfigService.to.general.app.shareText,
+            subject: ConfigService.to.appName,
           ),
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.list),
-          title: const Text('Roadmap'),
-          onTap: () => launchUrl(Uri.parse(kAppRoadmapUrl)),
-          trailing: const Icon(LineIcons.alternateExternalLink),
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.users),
-          title: const Text('Community & Help'),
-          onTap: () => launchUrl(Uri.parse(kAppSupportUrl)),
-          trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         // ListTile(
         //   leading: const Icon(LineIcons.download),
@@ -127,23 +123,23 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   subtitle: Obx(() => Text(controller.appVersion)),
         //   onTap: () => launchUrl(Uri.parse(kAppGithubReleasesUrl),
         // ),
-        // if (kDebugMode) ...[
-        //   ListTile(
-        //     leading: const Icon(LineIcons.bug),
-        //     title: const Text('Window Size'),
-        //     onTap: () async {
-        //       final size = await DesktopWindow.getWindowSize();
-        //       console.info('size: $size');
-        //     },
-        //   ),
-        // ],
         const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.code),
-          title: const Text(kDeveloperName),
-          subtitle: const Text('Developer'),
-          onTap: () => launchUrl(Uri.parse(kDeveloperWebsite)),
-          trailing: const Icon(LineIcons.alternateExternalLink),
+        ContextMenuButton(
+          controller.developerMenuItems,
+          useMouseRegion: true,
+          padding: EdgeInsets.zero,
+          child: ListTile(
+            leading: RemoteImage(
+              url: ConfigService.to.general.developer.image,
+              height: 23,
+              width: 23,
+              placeholder: Image.asset(Images.stackwares, height: 23),
+            ),
+            title: const Text('Developer'),
+            subtitle: Text(ConfigService.to.devName),
+            trailing: const Icon(LineIcons.alternateExternalLink),
+            onTap: () {},
+          ),
         ),
         const Divider(),
         ListTile(

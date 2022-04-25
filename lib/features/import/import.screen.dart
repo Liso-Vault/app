@@ -7,6 +7,7 @@ import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
 import '../general/segmented_item.widget.dart';
 import 'import_screen.controller.dart';
@@ -38,12 +39,12 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             () => CupertinoSegmentedControl<ImportMode>(
               groupValue: controller.importMode.value,
               onValueChanged: (value) => controller.importMode.value = value,
-              children: const {
+              children: {
                 ImportMode.liso: SegmentedControlItem(
-                  text: '$kAppName Cloud',
+                  text: '${ConfigService.to.appName} Cloud',
                   iconData: LineIcons.cloud,
                 ),
-                ImportMode.file: SegmentedControlItem(
+                ImportMode.file: const SegmentedControlItem(
                   text: 'File',
                   iconData: LineIcons.archiveFile,
                 ),
@@ -81,8 +82,8 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 ],
               );
             } else if (controller.importMode() == ImportMode.liso) {
-              return const Text(
-                'Enter the seed phrase you used to sync to $kAppName Cloud',
+              return Text(
+                'Enter the seed phrase you used to sync to ${ConfigService.to.appName} Cloud',
                 textAlign: TextAlign.center,
               );
             } else {

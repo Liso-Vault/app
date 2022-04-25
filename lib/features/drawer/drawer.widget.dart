@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -22,6 +23,43 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       builder: (DrawerMenuController controller) {
         final items = [
           // header,
+          ExpansionTile(
+            maintainState: true,
+            title: const Text(
+              'Networks',
+              style: TextStyle(fontSize: 13),
+            ),
+            onExpansionChanged: (expanded) =>
+                controller.networksExpanded = expanded,
+            initiallyExpanded: controller.networksExpanded,
+            children: const [
+              ListTile(
+                title: Text('Ethereum'),
+                leading: FaIcon(LineIcons.ethereum),
+                enabled: false,
+              ),
+              ListTile(
+                title: Text('Polygon'),
+                leading: FaIcon(LineIcons.ethereum),
+                enabled: false,
+              ),
+              ListTile(
+                title: Text('Binance Chain'),
+                leading: FaIcon(LineIcons.ethereum),
+                enabled: false,
+              ),
+              ListTile(
+                title: Text('Solana'),
+                leading: FaIcon(LineIcons.ethereum),
+                enabled: false,
+              ),
+              ListTile(
+                title: Text('Avalanche'),
+                leading: FaIcon(LineIcons.ethereum),
+                enabled: false,
+              ),
+            ],
+          ),
           SimpleBuilder(
             builder: (_) => ExpansionTile(
               maintainState: true,
@@ -170,7 +208,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                               label: Obx(
                                 () => Text(
                                   filesize(S3Service.to.storageSize.value, 0) +
-                                      '/${filesize(kMaxStorageSizeLimit, 0)}',
+                                      '/${filesize(ConfigService.to.app.settings.maxStorageSize, 0)}',
                                   style: const TextStyle(fontSize: 11),
                                 ),
                               ),
@@ -182,7 +220,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           child: Obx(
                             () => LinearProgressIndicator(
                               value: S3Service.to.storageSize.value.toDouble() /
-                                  kMaxStorageSizeLimit,
+                                  ConfigService.to.app.settings.maxStorageSize,
                             ),
                           ),
                         ),
@@ -194,6 +232,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ListTile(
                 title: Text('wallet'.tr),
                 leading: const FaIcon(LineIcons.wallet),
+                enabled: false,
+                // onTap: controller.files,
+              ),
+              const ListTile(
+                title: Text('NFTs'),
+                leading: FaIcon(LineIcons.icons),
                 enabled: false,
                 // onTap: controller.files,
               ),

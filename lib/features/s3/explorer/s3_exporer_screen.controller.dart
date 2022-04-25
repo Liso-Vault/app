@@ -11,6 +11,7 @@ import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../../core/firebase/config/config.service.dart';
 import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
@@ -158,7 +159,6 @@ class S3ExplorerScreenController extends GetxController
         TextButton(
           child: const Text('Cancel'),
           onPressed: Get.back,
-          style: TextButton.styleFrom(),
         ),
         TextButton(
           child: const Text('Confirm Delete'),
@@ -248,12 +248,12 @@ class S3ExplorerScreenController extends GetxController
     console.info('picked: ${result.files.single.path!}');
     final file = File(result.files.single.path!);
 
-    if (await file.length() > kMaxUploadSizeLimit) {
+    if (await file.length() > ConfigService.to.app.settings.maxUploadSize) {
       change(false, status: RxStatus.success());
 
       return UIUtils.showSimpleDialog(
         'File Too Large',
-        'Upload size limit is ${filesize(kMaxUploadSizeLimit.toInt())} per file',
+        'Upload size limit is ${filesize(ConfigService.to.app.settings.maxUploadSize)} per file',
       );
     }
 

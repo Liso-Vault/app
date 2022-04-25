@@ -113,7 +113,8 @@ class LisoManager {
     // clear filters
     DrawerMenuController.to.clearFilters();
     // delete biometric storage
-    await BiometricUtils.deletePassword();
+    await BiometricUtils.delete(kBiometricPasswordKey);
+    await BiometricUtils.delete(kBiometricSeedKey);
     // nullify wallet
     Globals.wallet = null;
     // delete files

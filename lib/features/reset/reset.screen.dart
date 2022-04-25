@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/services/wallet.service.dart';
 
@@ -21,7 +21,7 @@ class ResetScreen extends GetView<ResetScreenController> {
         const Icon(LineIcons.exclamationTriangle, size: 100, color: Colors.red),
         const SizedBox(height: 20),
         Text(
-          'reset'.tr + ' $kAppName',
+          'reset'.tr + ' ${ConfigService.to.appName}',
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 20),

@@ -12,6 +12,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/biometric.util.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
@@ -89,14 +90,24 @@ class CreatePasswordScreenController extends GetxController
     await file.writeAsString(Globals.wallet!.toJson());
     console.info('wallet written to: ${file.path}');
     // save password to biometric storage
-    await BiometricUtils.savePassword(passwordController.text);
+    await BiometricUtils.save(
+      passwordController.text,
+      key: kBiometricPasswordKey,
+    );
+
+    final seed = Get.parameters['seed'];
+    await BiometricUtils.save(
+      seed!,
+      key: kBiometricSeedKey,
+    );
+
     // open Hive Boxes
     await HiveManager.openBoxes();
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(
-      title: 'Welcome to $kAppName', // TODO: localize
-      body: kAppDescription,
+      title: 'Welcome to ${ConfigService.to.appName}', // TODO: localize
+      body: ConfigService.to.general.app.shortDescription,
     );
 
     Get.offAllNamed(Routes.sync, parameters: {'new_setup': 'true'});

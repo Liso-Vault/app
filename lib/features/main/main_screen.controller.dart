@@ -15,6 +15,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -182,7 +183,6 @@ class MainScreenController extends GetxController
         TextButton(
           child: const Text('Cancel'),
           onPressed: Get.back,
-          style: TextButton.styleFrom(),
         ),
         TextButton(
           child: const Text('Force Close'),
@@ -213,7 +213,7 @@ class MainScreenController extends GetxController
 
   Future<void> sync() async {
     UIUtils.showSnackBar(
-      title: 'Syncing to $kAppName Cloud',
+      title: 'Syncing to ${ConfigService.to.appName} Cloud',
       message: 'Please wait...',
       icon: const Icon(LineIcons.syncIcon),
       seconds: 4,

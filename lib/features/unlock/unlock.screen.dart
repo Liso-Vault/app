@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/resources/resources.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/biometric.util.dart';
+import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
 
 class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
@@ -17,17 +18,21 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Image.asset(Images.logo, width: 100),
+        RemoteImage(
+          url: ConfigService.to.general.app.image,
+          height: 100,
+          placeholder: Image.asset(Images.logo, height: 100),
+        ),
         const SizedBox(height: 20),
-        const Text(
-          kAppName,
-          style: TextStyle(fontSize: 25),
+        Text(
+          ConfigService.to.appName,
+          style: const TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 15),
         Text(
           controller.passwordMode
               ? 'Enter your wallet password to proceed'
-              : 'Enter the wallet password to unlock $kAppName',
+              : 'Enter the wallet password to unlock ${ConfigService.to.appName}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

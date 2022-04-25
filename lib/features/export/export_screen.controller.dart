@@ -4,6 +4,7 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -83,7 +84,7 @@ class ExportScreenController extends GetxController
       await Share.shareFiles(
         [tempVaultFile.path],
         subject: LisoManager.vaultFilename,
-        text: GetPlatform.isIOS ? null : 'Liso Vault',
+        text: GetPlatform.isIOS ? null : '${ConfigService.to.appName} Vault',
       );
 
       console.info('done');

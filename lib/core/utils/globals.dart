@@ -6,55 +6,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web3dart/credentials.dart';
 
-// CONST
-const kAppName = 'Liso';
-const kAppDescription =
-    'Military-grade encrypted digital vault\nspecifically designed for securely storing sensitive informations';
-const kAppWebsiteUrl = 'https://liso-vault.github.io'; // TODO: custom domain
-// const kAppGithubUrl = 'https://github.com/Liso-Vault/app';
-// const kAppGithubReleasesUrl = 'https://github.com/Liso-Vault/app/releases';
-const kAppTwitterUrl = 'https://twitter.com/liso_vault';
-// const kAppFacebookUrl = 'https://facebook.com/liso_vault';
-// const kAppInstagramUrl = 'https://instagram.com/liso_vault';
-const kAppEmail = 'liso.vault@gmail.com'; // TODO: custom domain email
-const kAppSupportUrl = 'https://matrix.org'; // TODO: link to matrix server
-const kAppRoadmapUrl = 'https://liso-vault.github.io';
-const kAppShareText = kAppDescription + ' | Learn more: $kAppWebsiteUrl';
-
-const kDeveloperName = 'Stackwares';
-const kDeveloperTwitterHandle = '@Stackwares';
-const kDeveloperTwitterUrl = 'https://twitter.com/stackwares';
-const kDeveloperWebsite = 'https://stackwares.com';
-
-const kGooglePlayUrl =
-    'https://play.google.com/store/apps/details?id=com.liso.app';
-const kAppStoreUrl = ''; // TODO: app store url
-
-const kAppPrivacyUrl =
-    'https://liso-vault.github.io/privacy'; // TODO: privacy url
-const kAppTermsUrl = 'https://liso-vault.github.io/terms'; // TODO: terms url
-
-// BOXES
+// HIVE DATABASE
 const kHiveBoxItems = 'items';
-
-const kRootDirectory = 'Liso';
+// BIOMETRIC STORAGE
 const kBiometricPasswordKey = 'biometric_password';
+const kBiometricSeedKey = 'biometric_seed';
+// FILE EXTENSIONS
 const kVaultExtension = 'liso';
 const kWalletExtension = 'json';
-const kMinWindowSize = Size(400, 850);
+// FILE NAMES
 const kMetadataFileName = 'metadata.json';
 const kTempVaultFileName = 'temp_vault.liso';
+// DESKTOP
+const kMinWindowSize = Size(400, 850);
 const kDesktopChangePoint = 800.0; // responsive setting
-// TODO: remote config
-const kMaxStorageSizeLimit = 104857600;
-const kMaxUploadSizeLimit = kMaxStorageSizeLimit * 0.8;
-
 // COLORS
 const kAppColor = Color(0xff02f297);
 const kAppColorDarker = Color(0xFF00BC74);
-
+// INPUT FORMATTERS
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
+final inputFormatterNumericOnly =
+    FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
 // ENUMS
 enum LisoItemSortOrder {

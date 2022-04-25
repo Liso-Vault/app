@@ -3,9 +3,12 @@ import 'dart:convert';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/config/data/app_config.json.dart';
+import 'package:liso/core/firebase/config/data/general_config.json.dart';
 import 'package:liso/core/utils/console.dart';
 
-import 'models/config_client.model.dart';
+import 'data/s3_config.json.dart';
+import 'models/config_app.model.dart';
 import 'models/config_global.model.dart';
 import 'models/config_s3.model.dart';
 
@@ -13,8 +16,8 @@ class ConfigService extends GetxService with ConsoleMixin {
   static ConfigService get to => Get.find();
 
   // VARIABLES
-  var global = const ConfigGlobal();
-  var client = const ConfigClient();
+  var general = const ConfigGeneral();
+  var app = const ConfigApp();
   var s3 = const ConfigS3();
 
   // GETTERS
@@ -28,6 +31,11 @@ class ConfigService extends GetxService with ConsoleMixin {
     super.onInit();
   }
 
+  // GETTERS
+
+  String get appName => general.app.name;
+  String get devName => general.developer.name;
+
   // FUNCTIONS
 
   void _init() async {
@@ -38,26 +46,27 @@ class ConfigService extends GetxService with ConsoleMixin {
     ));
 
     // DEFAULTS
+
     await instance.setDefaults({
-      "global_config": (const ConfigGlobal()).toJsonString(),
-      "client_config": (const ConfigClient()).toJsonString(),
-      "s3_config": (const ConfigS3()).toJsonString(),
+      "general_config": jsonEncode(kConfigGeneralMap),
+      "app_config": jsonEncode(kConfigAppMap),
+      "s3_config": jsonEncode(kConfigS3Map),
     });
 
+    // pre-populate to make sure
     _populate();
-
     // workaround for https://github.com/firebase/flutterfire/issues/6196
-    if (GetPlatform.isIOS) await Future.delayed(1.seconds);
+    await Future.delayed(2.seconds);
     fetch();
   }
 
   void _populate() {
-    global = ConfigGlobal.fromJson(
-      jsonDecode(instance.getString("global_config")),
+    general = ConfigGeneral.fromJson(
+      jsonDecode(instance.getString("general_config")),
     );
 
-    client = ConfigClient.fromJson(
-      jsonDecode(instance.getString("client_config")),
+    app = ConfigApp.fromJson(
+      jsonDecode(instance.getString("app_config")),
     );
 
     s3 = ConfigS3.fromJson(
@@ -68,10 +77,14 @@ class ConfigService extends GetxService with ConsoleMixin {
   Future<void> fetch() async {
     console.info('fetching...');
 
-    try {
+    Future<void> _run() async {
       final updated = await instance.fetchAndActivate();
       console.info('fetched! updated: $updated');
       _populate();
+    }
+
+    try {
+      await _run();
     } catch (e) {
       console.error('error: $e');
     }

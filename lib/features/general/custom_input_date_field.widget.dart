@@ -40,6 +40,7 @@ class CustomInputDateField extends StatelessWidget with ConsoleMixin {
       keyboardType: TextInputType.datetime,
       inputFormatters: [
         inputFormatterRestrictSpaces,
+        // dd/MM/yyyy date format only
         FilteringTextInputFormatter.allow(RegExp("[0-9/]"))
       ],
       decoration: InputDecoration(

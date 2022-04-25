@@ -25,10 +25,11 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final persistence = Get.find<PersistenceService>();
 
   // maintain expansion tile state
-  bool groupsExpanded = true,
+  bool networksExpanded = false,
+      groupsExpanded = false,
       tagsExpanded = false,
       categoriesExpanded = false,
-      toolsExpanded = true;
+      toolsExpanded = false;
 
   // PROPERTIES
   final filterGroupIndex = 0.obs;
