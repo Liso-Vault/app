@@ -1,0 +1,56 @@
+[
+    {
+        "identifier": "seed",
+        "type": "mnemonicSeed",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Seed Phrase"
+        }
+    },
+    {
+        "identifier": "password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Password"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Wallet"
+        }
+    },
+    {
+        "identifier": "address",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Address"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

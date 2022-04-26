@@ -82,7 +82,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           padding: EdgeInsets.zero,
           child: ListTile(
             leading: const Icon(LineIcons.users),
-            title: const Text('Community & Help'),
+            title: Text('community_help'.tr),
             trailing: const Icon(LineIcons.alternateExternalLink),
             onTap: () {},
           ),
@@ -135,7 +135,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
               width: 23,
               placeholder: Image.asset(Images.stackwares, height: 23),
             ),
-            title: const Text('Developer'),
+            title: Text('developer'.tr),
             subtitle: Text(ConfigService.to.devName),
             trailing: const Icon(LineIcons.alternateExternalLink),
             onTap: () {},
@@ -144,7 +144,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.laptopCode),
-          title: const Text('Licenses'),
+          title: Text('licenses'.tr),
           onTap: () => controller.showLicenses(context),
         ),
         const Divider(),
@@ -154,7 +154,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('About'),
+        title: Text('about'.tr),
         centerTitle: false,
         leading: const AppBarLeadingButton(),
       ),

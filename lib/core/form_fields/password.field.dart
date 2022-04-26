@@ -14,7 +14,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data.value);
 
     return Column(
       children: [
@@ -24,8 +24,8 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
             keyboardType: TextInputType.visiblePassword,
             obscureText: controller.obscureText.value,
             decoration: InputDecoration(
-              labelText: field.data['label'],
-              hintText: field.data['hint'],
+              labelText: field.data.label,
+              hintText: field.data.hint,
               suffixIcon: IconButton(
                 padding: const EdgeInsets.only(right: 10),
                 onPressed: controller.obscureText.toggle,

@@ -1,24 +1,4 @@
-import 'package:liso/core/templates/api_credential.template.dart';
-import 'package:liso/core/templates/bank_account.template.dart';
-import 'package:liso/core/templates/cash_card.template.dart';
-import 'package:liso/core/templates/crypto_wallet.template.dart';
-import 'package:liso/core/templates/database.template.dart';
-import 'package:liso/core/templates/drivers_license.template.dart';
-import 'package:liso/core/templates/email.template.dart';
-import 'package:liso/core/templates/encryption.template.dart';
-import 'package:liso/core/templates/identity.template.dart';
-import 'package:liso/core/templates/login.template.dart';
-import 'package:liso/core/templates/medical_record.template.dart';
-import 'package:liso/core/templates/membership.template.dart';
-import 'package:liso/core/templates/note.template.dart';
-import 'package:liso/core/templates/outdoor_license.template.dart';
-import 'package:liso/core/templates/passport.template.dart';
-import 'package:liso/core/templates/password.template.dart';
-import 'package:liso/core/templates/rewards_program.template.dart';
-import 'package:liso/core/templates/server.template.dart';
-import 'package:liso/core/templates/social_security.template.dart';
-import 'package:liso/core/templates/software_license.template.dart';
-import 'package:liso/core/templates/wireless_router.template.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 
 import '../hive/models/field.hive.dart';
 import '../utils/globals.dart';
@@ -27,87 +7,87 @@ class TemplateParser {
   static List<HiveLisoField> parse(String template) {
     // CRYPTO WALLET
     if (template == LisoItemCategory.cryptoWallet.name) {
-      return templateCryptoWalletFields();
+      return ConfigService.to.templateCryptoWallet;
     }
     // LOGIN
     else if (template == LisoItemCategory.login.name) {
-      return templateLoginFields();
+      return ConfigService.to.templateLogin;
     }
     // PASSWORD
     else if (template == LisoItemCategory.password.name) {
-      return templatePasswordFields();
+      return ConfigService.to.templatePassword;
     }
     // IDENTITY
     else if (template == LisoItemCategory.identity.name) {
-      return templateIdentityFields();
+      return ConfigService.to.templateIdentity;
     }
     // NOTE
     else if (template == LisoItemCategory.note.name) {
-      return templateNoteFields();
+      return ConfigService.to.templateNote;
     }
     // CASH CARD
     else if (template == LisoItemCategory.cashCard.name) {
-      return templateCashCardFields();
+      return ConfigService.to.templateCashCard;
     }
     // BANK ACCOUNT
     else if (template == LisoItemCategory.bankAccount.name) {
-      return templateBankAccountFields();
+      return ConfigService.to.templateBankAccount;
     }
     // MEDICAL RECORDS
     else if (template == LisoItemCategory.medicalRecord.name) {
-      return templateMedicalRecordFields();
+      return ConfigService.to.templateMedicalRecord;
     }
     // PASSPORT
     else if (template == LisoItemCategory.passport.name) {
-      return templatePassportFields();
+      return ConfigService.to.templatePassport;
     }
     // SERVER
     else if (template == LisoItemCategory.server.name) {
-      return templateServerFields();
+      return ConfigService.to.templateServer;
     }
     // SOFTWARE LICENSE
     else if (template == LisoItemCategory.softwareLicense.name) {
-      return templateSoftwareLicenseFields();
+      return ConfigService.to.templateSoftwareLicense;
     }
     // API CREDENTIAL
     else if (template == LisoItemCategory.apiCredential.name) {
-      return templateAPICredentialFields();
+      return ConfigService.to.templateAPICredential;
     }
     // DATABASE
     else if (template == LisoItemCategory.database.name) {
-      return templateDatabaseFields();
+      return ConfigService.to.templateDatabase;
     }
     // DRIVER'S LICENSE
     else if (template == LisoItemCategory.driversLicense.name) {
-      return templateDriversLicenseFields();
+      return ConfigService.to.templateDriversLicense;
     }
     // EMAIL
     else if (template == LisoItemCategory.email.name) {
-      return templateEmailFields();
+      return ConfigService.to.templateEmailAccount;
     }
     // MEMBERSHIP
     else if (template == LisoItemCategory.membership.name) {
-      return templateMembershipFields();
+      return ConfigService.to.templateMembership;
     }
     // OUTDOOR LICENSE
     else if (template == LisoItemCategory.outdoorLicense.name) {
-      return templateOutdoorLicenseFields();
+      return ConfigService.to.templateOutdoorLicense;
     }
     // REWARDS PROGRAM
     else if (template == LisoItemCategory.rewardsProgram.name) {
-      return templateRewardsProgramFields();
+      return ConfigService.to.templateRewardsProgram;
     }
     // SOCIAL SECURITY
     else if (template == LisoItemCategory.socialSecurity.name) {
-      return templateSocialSecurityFields();
+      return ConfigService.to.templateSocialSecurity;
     }
     // WIRELESS ROUTER
     else if (template == LisoItemCategory.wirelessRouter.name) {
-      return templateWirelessRouterFields();
+      return ConfigService.to.templateWirelessRouter;
     }
     // ENCRYPTION
     else if (template == LisoItemCategory.encryption.name) {
-      return templateEncryptionFields();
+      return ConfigService.to.templateEncryption;
     }
 
     // UNKNOWN TEMPLATE

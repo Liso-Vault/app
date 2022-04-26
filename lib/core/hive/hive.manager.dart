@@ -30,6 +30,8 @@ class HiveManager {
     // liso
     Hive.registerAdapter(HiveLisoItemAdapter());
     Hive.registerAdapter(HiveLisoFieldAdapter());
+    Hive.registerAdapter(HiveLisoFieldDataAdapter());
+    Hive.registerAdapter(HiveLisoFieldChoicesAdapter());
     // metadata
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());

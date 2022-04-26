@@ -18,7 +18,7 @@ class DateFormField extends StatelessWidget with ConsoleMixin {
     DateTime? initialDate;
 
     try {
-      initialDate = DateFormat('dd/MM/yyyy').parse(field.data['value']);
+      initialDate = DateFormat('dd/MM/yyyy').parse(field.data.value!);
     } catch (e) {
       // empty date
     }
@@ -31,7 +31,7 @@ class DateFormField extends StatelessWidget with ConsoleMixin {
     return CustomInputDateField(
       controller: _fieldController,
       initialDate: initialDate,
-      label: field.data['label'],
+      label: field.data.label,
       hint: DateFormat('dd/MM/yyyy').format(DateTime.now()),
     );
   }

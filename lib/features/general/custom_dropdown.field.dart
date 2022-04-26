@@ -19,16 +19,14 @@ class CustomDropDownFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // set initial value
-    value = field.data['value'];
+    value = field.data.value;
 
     return DropdownButtonFormField<dynamic>(
       isExpanded: true, // fix for renderflex overflowed
       value: value,
       items: items,
       onChanged: (_value) => value = _value,
-      decoration: InputDecoration(
-        labelText: field.data['label'],
-      ),
+      decoration: InputDecoration(labelText: field.data.label),
     );
   }
 }

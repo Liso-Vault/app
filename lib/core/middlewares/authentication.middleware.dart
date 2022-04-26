@@ -23,7 +23,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     if (!PersistenceService.to.syncConfirmed.val) {
-      return const RouteSettings(name: Routes.sync);
+      return const RouteSettings(name: Routes.syncSettings);
     }
 
     if (!ignoreSync &&

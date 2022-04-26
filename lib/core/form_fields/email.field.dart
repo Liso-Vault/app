@@ -15,7 +15,7 @@ class EmailFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data.value);
 
     return TextFormField(
       controller: _fieldController,
@@ -25,8 +25,8 @@ class EmailFormField extends StatelessWidget {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [inputFormatterRestrictSpaces],
       decoration: InputDecoration(
-        labelText: field.data['label'],
-        hintText: field.data['hint'],
+        labelText: field.data.label,
+        hintText: field.data.hint,
       ),
     );
   }

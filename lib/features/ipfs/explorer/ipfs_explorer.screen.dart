@@ -158,11 +158,11 @@ class FileTile extends StatelessWidget with ConsoleMixin {
             ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr),
           onPressed: Get.back,
         ),
         TextButton(
-          child: const Text('Proceed'),
+          child: Text('proceed'.tr),
           onPressed: () => controller.restore(entry),
         ),
       ],

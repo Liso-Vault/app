@@ -1,0 +1,320 @@
+[
+    {
+        "identifier": "type",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Type",
+            "choices": [
+                {
+                    "name": "POP3",
+                    "value": "pop3"
+                },
+                {
+                    "name": "IMAP",
+                    "value": "imap"
+                },
+                {
+                    "name": "POP3/IMAP",
+                    "value": "pop3imap"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "username",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Username"
+        }
+    },
+    {
+        "identifier": "server",
+        "type": "url",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Server",
+            "hint": "https://server.com"
+        }
+    },
+    {
+        "identifier": "port_number",
+        "type": "number",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Port Number",
+            "hint": "8080"
+        }
+    },
+    {
+        "identifier": "password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Password"
+        }
+    },
+    {
+        "identifier": "security",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Security",
+            "choices": [
+                {
+                    "name": "None",
+                    "value": "none"
+                },
+                {
+                    "name": "SSL",
+                    "value": "ssl"
+                },
+                {
+                    "name": "TLS",
+                    "value": "tls"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "auth_method",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Auth Method",
+            "choices": [
+                {
+                    "name": "None",
+                    "value": "none"
+                },
+                {
+                    "name": "Password",
+                    "value": "password"
+                },
+                {
+                    "name": "MD5 Challenge Response",
+                    "value": "md5_challenge"
+                },
+                {
+                    "name": "Kerberized POP (KPOP)",
+                    "value": "kpop"
+                },
+                {
+                    "name": "Kerberos Version 4",
+                    "value": "kerberos4"
+                },
+                {
+                    "name": "Kerberos Version 5",
+                    "value": "kerberos5"
+                },
+                {
+                    "name": "NTLM",
+                    "value": "ntlm"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "SMTP"
+        }
+    },
+    {
+        "identifier": "smtp_server",
+        "type": "url",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "SMTP Server",
+            "hint": "https://server.com"
+        }
+    },
+    {
+        "identifier": "smtp_port_number",
+        "type": "number",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Port Number",
+            "hint": "8080"
+        }
+    },
+    {
+        "identifier": "smtp_username",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Username"
+        }
+    },
+    {
+        "identifier": "smtp_password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Password"
+        }
+    },
+    {
+        "identifier": "smtp_security",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Security",
+            "choices": [
+                {
+                    "name": "None",
+                    "value": "none"
+                },
+                {
+                    "name": "SSL",
+                    "value": "ssl"
+                },
+                {
+                    "name": "TLS",
+                    "value": "tls"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "smtp_auth_method",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Auth Method",
+            "choices": [
+                {
+                    "name": "None",
+                    "value": "none"
+                },
+                {
+                    "name": "Password",
+                    "value": "password"
+                },
+                {
+                    "name": "MD5 Challenge Response",
+                    "value": "md5_challenge"
+                },
+                {
+                    "name": "Kerberized POP (KPOP)",
+                    "value": "kpop"
+                },
+                {
+                    "name": "Kerberos Version 4",
+                    "value": "kerberos4"
+                },
+                {
+                    "name": "Kerberos Version 5",
+                    "value": "kerberos5"
+                },
+                {
+                    "name": "NTLM",
+                    "value": "ntlm"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Contact Information"
+        }
+    },
+    {
+        "identifier": "provider",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Provider"
+        }
+    },
+    {
+        "identifier": "provider_website",
+        "type": "url",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Provider Website",
+            "hint": "https://provider.com"
+        }
+    },
+    {
+        "identifier": "local_phone",
+        "type": "phone",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Phone (Local)",
+            "hint": "+1-123-456-7890"
+        }
+    },
+    {
+        "identifier": "toll_free_phone",
+        "type": "phone",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Phone (Toll Free)",
+            "hint": "+1-123-456-7890"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

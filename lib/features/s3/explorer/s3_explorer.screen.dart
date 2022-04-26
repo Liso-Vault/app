@@ -80,16 +80,19 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
             icon: const Icon(LineIcons.syncIcon),
           ),
         ),
+        const SizedBox(width: 10),
       ],
     );
 
     final floatingActionButton = Obx(
-      () => controller.isTimeMachine || controller.busy()
-          ? const SizedBox.shrink()
-          : FloatingActionButton(
-              child: const Icon(LineIcons.upload),
-              onPressed: controller.busy() ? null : controller.pickFile,
-            ),
+      () => Visibility(
+        visible: !controller.isTimeMachine && controller.busy(),
+        replacement: const SizedBox.shrink(),
+        child: FloatingActionButton(
+          child: const Icon(LineIcons.upload),
+          onPressed: controller.busy() ? null : controller.pickFile,
+        ),
+      ),
     );
 
     return Scaffold(

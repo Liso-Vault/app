@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
@@ -14,21 +15,21 @@ class NumberFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data.value);
 
     return TextFormField(
       controller: _fieldController,
       keyboardType: TextInputType.number,
       inputFormatters: [
         inputFormatterRestrictSpaces,
-        inputFormatterNumericOnly,
+        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
       ],
       validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
           ? null
           : 'Not a numeric PIN',
       decoration: InputDecoration(
-        labelText: field.data['label'],
-        hintText: field.data['hint'],
+        labelText: field.data.label,
+        hintText: field.data.hint,
       ),
     );
   }

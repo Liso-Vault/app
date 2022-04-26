@@ -1,0 +1,20 @@
+[
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

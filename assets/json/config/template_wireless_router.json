@@ -1,0 +1,126 @@
+[
+    {
+        "identifier": "base_station_name",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Base Station Name"
+        }
+    },
+    {
+        "identifier": "base_station_password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Base Station Password"
+        }
+    },
+    {
+        "identifier": "server",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Server / IP Address"
+        }
+    },
+    {
+        "identifier": "airport_id",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Airport ID"
+        }
+    },
+    {
+        "identifier": "network_name",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Network Name"
+        }
+    },
+    {
+        "identifier": "wireless_security",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Wireless Security",
+            "choices": [
+                {
+                    "name": "No Security",
+                    "value": "no_security"
+                },
+                {
+                    "name": "WPA3 Personal",
+                    "value": "wpa3_personal"
+                },
+                {
+                    "name": "WPA3 Enterprise",
+                    "value": "wpa3_enterprises"
+                },
+                {
+                    "name": "WPA2 Personal",
+                    "value": "wpa2_personal"
+                },
+                {
+                    "name": "WPA2 Enterprise",
+                    "value": "wpa2_enterprises"
+                },
+                {
+                    "name": "WPA",
+                    "value": "wpa"
+                },
+                {
+                    "name": "WEP",
+                    "value": "wep"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "wireless_network_password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Wireless Network Password"
+        }
+    },
+    {
+        "identifier": "wireless_storage_password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Wireless Storage Password"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

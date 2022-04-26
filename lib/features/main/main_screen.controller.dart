@@ -8,6 +8,7 @@ import 'package:hive/hive.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
+import 'package:liso/core/parsers/template.parser.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
@@ -181,7 +182,7 @@ class MainScreenController extends GetxController
           : SizedBox(width: 600, child: content),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr),
           onPressed: Get.back,
         ),
         TextButton(
@@ -221,6 +222,49 @@ class MainScreenController extends GetxController
 
     await S3Service.to.sync();
   }
+
+  void search() async {
+    searchDelegate = ItemsSearchDelegate();
+
+    await showSearch(
+      context: Get.context!,
+      delegate: searchDelegate!,
+    );
+
+    searchDelegate = null;
+  }
+
+  // void generateTemplates() {
+  // final contents = {
+  //   'api_credential.json': templateAPICredentialFields(),
+  //   'bank_account.json': templateBankAccountFields(),
+  //   'cash_card.json': templateCashCardFields(),
+  //   'crypto_wallet.json': templateCryptoWalletFields(),
+  //   'database.json': templateDatabaseFields(),
+  //   'drivers_license.json': templateDriversLicenseFields(),
+  //   'email_account.json': templateEmailFields(),
+  //   'encryption.json': templateEncryptionFields(),
+  //   'identity.json': templateIdentityFields(),
+  //   'login.json': templateLoginFields(),
+  //   'medical_record.json': templateMedicalRecordFields(),
+  //   'membership.json': templateMembershipFields(),
+  //   'note.json': templateNoteFields(),
+  //   'outdoor_license.json': templateOutdoorLicenseFields(),
+  //   'passport.json': templatePassportFields(),
+  //   'password.json': templatePasswordFields(),
+  //   'rewards_program.json': templateRewardsProgramFields(),
+  //   'server.json': templateServerFields(),
+  //   'social_security.json': templateSocialSecurityFields(),
+  //   'software_licnse.json': templateSoftwareLicenseFields(),
+  //   'wireless_router.json': templateWirelessRouterFields(),
+  // };
+
+  // for (var e in contents.entries) {
+  //   console.info('writing: ${e.key}');
+  //   await File(join(LisoPaths.temp!.path, e.key))
+  //       .writeAsString(jsonEncode(e.value));
+  // }
+  // }
 
   Future<void> load() async {
     final boxIsOpen = HiveManager.items?.isOpen ?? false;
@@ -347,17 +391,6 @@ class MainScreenController extends GetxController
     searchDelegate?.reload(Get.context!);
     drawerController.refresh(); // update drawer state
     console.info('_load()');
-  }
-
-  void search() async {
-    searchDelegate = ItemsSearchDelegate();
-
-    await showSearch(
-      context: Get.context!,
-      delegate: searchDelegate!,
-    );
-
-    searchDelegate = null;
   }
 
   void onBoxChanged(BoxEvent event) async {

@@ -43,7 +43,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final s3LastModified = DateTime.now().val('s3 last modified');
   // VAULT
   final groupIndex = 0.val('group index');
-  final groups = 'Personal,Work'.val('groups');
+  final groups = 'Personal,Work,Family,Other'.val('groups');
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
   // final walletAddress = ''.val('wallet address');

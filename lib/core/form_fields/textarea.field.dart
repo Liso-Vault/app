@@ -13,7 +13,7 @@ class TextAreaFormField extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data.value);
 
     return TextFormField(
       controller: _fieldController,
@@ -21,8 +21,8 @@ class TextAreaFormField extends StatelessWidget with ConsoleMixin {
       maxLines: 5,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: field.data['label'],
-        hintText: field.data['hint'],
+        labelText: field.data.label,
+        hintText: field.data.hint,
       ),
     );
   }

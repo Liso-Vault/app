@@ -109,7 +109,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       Obx(
         () => ContextMenuButton(
           controller.menuItemsSort,
-          enabled: !S3Service.to.syncing.value,
+          enabled: controller.data.isNotEmpty && !S3Service.to.syncing.value,
           initialItem: controller.menuItemsSort.firstWhere(
             (e) => controller.sortOrder.value.name
                 .toLowerCase()
@@ -117,7 +117,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
           child: IconButton(
             icon: const Icon(LineIcons.sort),
-            onPressed: !S3Service.to.syncing.value ? () {} : null,
+            onPressed: controller.data.isNotEmpty && !S3Service.to.syncing.value
+                ? () {}
+                : null,
           ),
         ),
       ),

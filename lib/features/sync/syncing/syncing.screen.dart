@@ -30,7 +30,7 @@ class SyncingScreen extends GetView<SyncingScreenController> {
                 ),
               ),
               const SizedBox(height: 15),
-              const Text('Syncing...'),
+              Text('syncing'.tr + '...'),
             ],
           ),
         ),
@@ -40,7 +40,7 @@ class SyncingScreen extends GetView<SyncingScreenController> {
           iconData: LineIcons.exclamationTriangle,
           message: message!,
           child: TextButton.icon(
-            label: const Text('Try again'),
+            label: Text('try_again'.tr),
             icon: const Icon(LineIcons.syncIcon),
             onPressed: controller.sync,
           ),

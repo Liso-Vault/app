@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../data/countries.choices.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/section.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
@@ -31,22 +31,22 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final value = field.data['value'];
+    final extra = field.data.extra!;
 
-    _street1Controller = TextEditingController(text: value['street1']);
-    _street2Controller = TextEditingController(text: value['street2']);
-    _cityController = TextEditingController(text: value['city']);
-    _stateController = TextEditingController(text: value['state']);
-    _zipController = TextEditingController(text: value['zip']);
+    _street1Controller = TextEditingController(text: extra['street1']);
+    _street2Controller = TextEditingController(text: extra['street2']);
+    _cityController = TextEditingController(text: extra['city']);
+    _stateController = TextEditingController(text: extra['state']);
+    _zipController = TextEditingController(text: extra['zip']);
 
     _countryFormField = ChoicesFormField(
       HiveLisoField(
         type: LisoFieldType.choices.name,
-        data: {
-          'value': value['country'],
-          'label': 'Country',
-          'choices': kCountryChoices,
-        },
+        data: HiveLisoFieldData(
+          value: extra['country'],
+          label: extra['Country'],
+          choices: ConfigService.to.choicesCountry,
+        ),
       ),
     );
 
@@ -54,16 +54,17 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionFormField(
-          HiveLisoField(type: '', data: {'value': field.data['label']}),
+          HiveLisoField(
+            type: '',
+            data: HiveLisoFieldData(value: field.data.label),
+          ),
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: _street1Controller,
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(
-            labelText: 'Street 1',
-          ),
+          decoration: const InputDecoration(labelText: 'Street 1'),
         ),
         const SizedBox(height: 10),
         TextFormField(
@@ -82,9 +83,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
         TextFormField(
           controller: _stateController,
           textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(
-            labelText: 'State / Province',
-          ),
+          decoration: const InputDecoration(labelText: 'State / Province'),
         ),
         const SizedBox(height: 10),
         TextFormField(

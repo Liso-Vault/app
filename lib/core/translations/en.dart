@@ -108,4 +108,15 @@ final en = {
   "breach_scanner": "Breach Scanner",
   "password_health": "Password Health",
   "otp_generator": "OTP Generator",
+  "all": "All",
+  "okay": "Okay",
+  "community_help": "Community & Help",
+  "developer": "Developer",
+  "licenses": "Licenses",
+  "delete_file": "Delete File",
+  "confirm_delete": "Confirm Delete",
+  "new_folder": "New Folder",
+  "offline": "Offline",
+  "try_again": "Try Again",
+  "syncing": "Syncing"
 };

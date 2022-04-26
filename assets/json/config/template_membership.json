@@ -1,0 +1,94 @@
+[
+    {
+        "identifier": "group",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Group"
+        }
+    },
+    {
+        "identifier": "website",
+        "type": "url",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Website",
+            "hint": "https://members.com"
+        }
+    },
+    {
+        "identifier": "telephone",
+        "type": "phone",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Telephone",
+            "hint": "+1-123-456-7890"
+        }
+    },
+    {
+        "identifier": "member_id",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Username"
+        }
+    },
+    {
+        "identifier": "member_name",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Member Name"
+        }
+    },
+    {
+        "identifier": "member_since",
+        "type": "date",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Member Since"
+        }
+    },
+    {
+        "identifier": "expiration_date",
+        "type": "date",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Expiration Date"
+        }
+    },
+    {
+        "identifier": "pin",
+        "type": "pin",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "PIN"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

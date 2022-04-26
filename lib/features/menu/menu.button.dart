@@ -35,10 +35,12 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     if (Utils.isDrawerExpandable) {
       return InkWell(
         child: AbsorbPointer(child: wrappedChild),
-        onTap: () => ContextMenuSheet(
-          contextItems,
-          initialItem: initialItem,
-        ).show(),
+        onTap: enabled
+            ? () => ContextMenuSheet(
+                  contextItems,
+                  initialItem: initialItem,
+                ).show()
+            : null,
       );
     }
 

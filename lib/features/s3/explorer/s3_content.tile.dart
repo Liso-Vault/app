@@ -92,7 +92,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Restore'),
+      title: Text('restore'.tr),
       content: Utils.isDrawerExpandable
           ? content
           : const SizedBox(
@@ -101,11 +101,11 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
             ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr),
           onPressed: Get.back,
         ),
         TextButton(
-          child: const Text('Proceed'),
+          child: Text('proceed'.tr),
           onPressed: () => controller.restore(s3content),
         ),
       ],

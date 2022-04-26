@@ -12,6 +12,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/wallet.service.dart';
@@ -49,6 +50,21 @@ class SettingsScreenController extends GetxController
         title: ThemeMode.light.name.tr,
         leading: const Icon(LineIcons.sun),
         onSelected: () => changeTheme(ThemeMode.light),
+      ),
+    ];
+  }
+
+  List<ContextMenuItem> get menuItemsSyncSetting {
+    return [
+      ContextMenuItem(
+        title: 'On',
+        leading: const Icon(LineIcons.cloud),
+        onSelected: () => PersistenceService.to.sync.val = true,
+      ),
+      ContextMenuItem(
+        title: 'Off',
+        leading: const Icon(LineIcons.powerOff),
+        onSelected: () => PersistenceService.to.sync.val = false,
       ),
     ];
   }
@@ -185,7 +201,7 @@ class SettingsScreenController extends GetxController
             ),
       actions: [
         TextButton(
-          child: const Text('Okay'),
+          child: Text('okay'.tr),
           onPressed: Get.back,
         ),
       ],

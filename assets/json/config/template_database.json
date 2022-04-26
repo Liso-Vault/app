@@ -1,0 +1,145 @@
+[
+    {
+        "identifier": "type",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Type",
+            "choices": [
+                {
+                    "name": "DB2",
+                    "value": "db2"
+                },
+                {
+                    "name": "File Maker",
+                    "value": "file_maker"
+                },
+                {
+                    "name": "Microsoft Access",
+                    "value": "ms_access"
+                },
+                {
+                    "name": "MS SQL Server",
+                    "value": "ms_sql"
+                },
+                {
+                    "name": "MySQL",
+                    "value": "mysql"
+                },
+                {
+                    "name": "Oracle",
+                    "value": "oracle"
+                },
+                {
+                    "name": "PostgreSQL",
+                    "value": "postgresql"
+                },
+                {
+                    "name": "SQLite",
+                    "value": "sqlite"
+                },
+                {
+                    "name": "Other",
+                    "value": "other"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "server",
+        "type": "url",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Server",
+            "hint": "https://server.com"
+        }
+    },
+    {
+        "identifier": "port",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Port",
+            "hint": "8080"
+        }
+    },
+    {
+        "identifier": "database",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Database"
+        }
+    },
+    {
+        "identifier": "username",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Username"
+        }
+    },
+    {
+        "identifier": "password",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Password"
+        }
+    },
+    {
+        "identifier": "sid",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "SID"
+        }
+    },
+    {
+        "identifier": "alias",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Alias"
+        }
+    },
+    {
+        "identifier": "connection_options",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Connection Options"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

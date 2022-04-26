@@ -44,7 +44,7 @@ class UIUtils {
               ),
         actions: [
           TextButton(
-            child: const Text('Okay'),
+            child: Text('okay'.tr),
             onPressed: Get.back,
           ),
         ],

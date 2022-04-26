@@ -1,0 +1,11 @@
+[
+    {
+        "identifier": "note",
+        "type": "richText",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Note"
+        }
+    }
+]

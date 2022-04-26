@@ -243,11 +243,11 @@ class ItemScreenController extends GetxController
       ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr),
           onPressed: Get.back,
         ),
         TextButton(
-          child: const Text('Save'),
+          child: Text('save'.tr),
           onPressed: _save,
         ),
       ],

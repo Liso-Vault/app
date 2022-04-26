@@ -10,7 +10,7 @@ class SectionFormField extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Text(
-        field.data['value'].toUpperCase(),
+        field.data.value!.toUpperCase(),
         textAlign: TextAlign.left,
         style: const TextStyle(
           fontSize: 12,

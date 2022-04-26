@@ -119,7 +119,6 @@ class LisoManager {
     Globals.wallet = null;
     // delete files
     await FileUtils.delete(WalletService.to.filePath); // wallet
-    await FileUtils.delete(tempVaultFilePath); // temp vault
     // reset hive
     await HiveManager.reset();
     // persistence

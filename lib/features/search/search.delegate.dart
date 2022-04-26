@@ -40,8 +40,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
     }
 
     final items = HiveManager.items!.values
-        .where((e) =>
-            !e.trashed && e.title.toLowerCase().contains(query.toLowerCase()))
+        .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(

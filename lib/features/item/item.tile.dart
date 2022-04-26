@@ -151,15 +151,25 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           runSpacing: 5,
           children: [
             if (item.favorite) ...[
-              const FaIcon(
-                FontAwesomeIcons.solidHeart,
-                color: Colors.pink,
-                size: 10,
+              const Padding(
+                padding: EdgeInsets.only(top: 4),
+                child: FaIcon(
+                  FontAwesomeIcons.solidHeart,
+                  color: Colors.pink,
+                  size: 10,
+                ),
               ),
               const SizedBox(width: 5),
             ],
             if (item.protected) ...[
-              const FaIcon(FontAwesomeIcons.shield, color: kAppColor, size: 10),
+              const Padding(
+                padding: EdgeInsets.only(top: 2),
+                child: FaIcon(
+                  FontAwesomeIcons.shield,
+                  color: kAppColor,
+                  size: 10,
+                ),
+              ),
               const SizedBox(width: 5),
             ],
             if (item.tags.isNotEmpty) ...[
@@ -231,9 +241,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           color: Colors.pink,
           widthSpace: 100,
           performsFirstActionWithFullSwipe: true,
-          icon: FaIcon(item.favorite
-              ? FontAwesomeIcons.solidHeart
-              : FontAwesomeIcons.heart),
+          icon: FaIcon(
+            item.favorite
+                ? FontAwesomeIcons.solidHeart
+                : FontAwesomeIcons.heart,
+          ),
           style: const TextStyle(fontSize: 15),
           onTap: (CompletionHandler handler) async {
             await handler(false);

@@ -125,13 +125,13 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         _identifier = 'note';
         break;
       case LisoItemCategory.cashCard:
-        _identifier = 'note';
+        _identifier = 'holder_name';
         break;
       case LisoItemCategory.bankAccount:
-        _identifier = 'note';
+        _identifier = 'account_name';
         break;
       case LisoItemCategory.medicalRecord:
-        _identifier = 'note';
+        _identifier = 'healthcare_professional';
         break;
       case LisoItemCategory.passport:
         _identifier = 'full_name';
@@ -140,34 +140,34 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         _identifier = 'url';
         break;
       case LisoItemCategory.softwareLicense:
-        _identifier = 'note';
+        _identifier = 'publisher';
         break;
       case LisoItemCategory.apiCredential:
-        _identifier = 'note';
+        _identifier = 'host_name';
         break;
       case LisoItemCategory.database:
-        _identifier = 'note';
+        _identifier = 'database';
         break;
       case LisoItemCategory.driversLicense:
-        _identifier = 'note';
+        _identifier = 'full_name';
         break;
       case LisoItemCategory.email:
         _identifier = 'username';
         break;
       case LisoItemCategory.membership:
-        _identifier = 'note';
+        _identifier = 'website';
         break;
       case LisoItemCategory.outdoorLicense:
-        _identifier = 'note';
+        _identifier = 'approved_wildlife';
         break;
       case LisoItemCategory.rewardsProgram:
-        _identifier = 'note';
+        _identifier = 'company_name';
         break;
       case LisoItemCategory.socialSecurity:
         _identifier = 'name';
         break;
       case LisoItemCategory.wirelessRouter:
-        _identifier = 'note';
+        _identifier = 'base_station_name';
         break;
       case LisoItemCategory.encryption:
         _identifier = 'note';
@@ -177,7 +177,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     }
 
     final _field = fields.firstWhere((e) => e.identifier == _identifier);
-    String _value = _field.data['value'] ?? '';
+    String _value = _field.data.value!;
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {
@@ -268,7 +268,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     // convert Map keys to human readable format
     _identifier = GetUtils.capitalize(_identifier.replaceAll('_', ' '))!;
 
-    String _value = _field.data['value'] ?? '';
+    String _value = _field.data.value!;
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {

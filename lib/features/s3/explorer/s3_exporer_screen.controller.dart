@@ -148,7 +148,7 @@ class S3ExplorerScreenController extends GetxController
     final _content = Text('Are you sure you want to delete "${content.name}"?');
 
     Get.dialog(AlertDialog(
-      title: const Text('Delete File'),
+      title: Text('delete_file'.tr),
       content: Utils.isDrawerExpandable
           ? _content
           : SizedBox(
@@ -157,11 +157,11 @@ class S3ExplorerScreenController extends GetxController
             ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr),
           onPressed: Get.back,
         ),
         TextButton(
-          child: const Text('Confirm Delete'),
+          child: Text('confirm_delete'.tr),
           onPressed: _delete,
         ),
       ],
@@ -334,7 +334,7 @@ class S3ExplorerScreenController extends GetxController
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('New Folder'),
+      title: Text('new_folder'.tr),
       content: Form(
         key: formKey,
         child: Utils.isDrawerExpandable
@@ -343,11 +343,11 @@ class S3ExplorerScreenController extends GetxController
       ),
       actions: [
         TextButton(
-          child: const Text('Cancel'),
+          child: Text('cancel'.tr),
           onPressed: Get.back,
         ),
         TextButton(
-          child: const Text('Create'),
+          child: Text('create'.tr),
           onPressed: () {
             final exists = data
                 .where((e) => !e.isFile && e.name == folderController.text)

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
@@ -34,7 +35,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           ),
           trailing: const Icon(LineIcons.copy),
           title: Text('${ConfigService.to.appName} Address'),
-          subtitle: Text(WalletService.to.address),
+          subtitle: Text(WalletService.to.shortAddress),
           onTap: () => Utils.copyToClipboard(WalletService.to.address),
         ),
         const Divider(),
@@ -54,57 +55,54 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
             ),
           ),
         ),
-        // const Divider(),
-        // ListTile(
-        //   leading: const Icon(LineIcons.cube),
-        //   trailing: const Icon(LineIcons.angleRight),
-        //   title: const Text('IPFS Configuration'),
-        //   subtitle: Obx(() => Text(controller.ipfsServerUrl.value)),
-        //   onTap: () async {
-        //     await Utils.adaptiveRouteOpen(name: Routes.ipfs);
-        //     controller.ipfsServerUrl.value =
-        //         PersistenceService.to.ipfsServerUrl;
-        //   },
-        // ),
         const Divider(),
         SimpleBuilder(
           builder: (context) {
-            return ListTile(
-              leading: const Icon(LineIcons.memory),
-              trailing: const Icon(LineIcons.angleRight),
-              title: const Text('Vault Management'),
-              subtitle: Text(
-                PersistenceService.to.sync.val
-                    ? '${ConfigService.to.appName} Cloud'
-                    : 'Offline',
+            return ContextMenuButton(
+              controller.menuItemsSyncSetting,
+              padding: EdgeInsets.zero,
+              child: ListTile(
+                leading: const Icon(LineIcons.cloud),
+                trailing: const Icon(LineIcons.angleRight),
+                title: Text('${ConfigService.to.appName} Cloud Sync'),
+                subtitle: Text(
+                  PersistenceService.to.sync.val ? 'On' : 'Off',
+                  style: TextStyle(
+                    color: PersistenceService.to.sync.val ? kAppColor : null,
+                  ),
+                ),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.syncSettings),
               ),
-              onTap: () => Utils.adaptiveRouteOpen(name: Routes.sync),
+            );
+          },
+        ),
+        SimpleBuilder(
+          builder: (context) {
+            if (!PersistenceService.to.sync.val) return const SizedBox.shrink();
+
+            return Column(
+              children: [
+                const Divider(),
+                ListTile(
+                  title: Text('time_machine'.tr),
+                  subtitle: const Text('Go back in time to undo your changes'),
+                  leading: const Icon(LineIcons.clock),
+                  trailing: const Icon(LineIcons.angleRight),
+                  onTap: () => Utils.adaptiveRouteOpen(
+                    name: Routes.s3Explorer,
+                    parameters: {'type': 'time_machine'},
+                  ),
+                )
+              ],
             );
           },
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.lock),
-          trailing: const Icon(LineIcons.doorOpen),
-          title: Text('lock'.tr + ' Vault'),
-          onTap: () => Get.offAndToNamed(Routes.unlock),
-        ),
-        // TODO: Change Password is same as Import Vault
-        // Remind user to backup first, then reset,
-        // const Divider(),
-        // ListTile(
-        //   leading: const Icon(LineIcons.download),
-        //   trailing: const Icon(LineIcons.angleRight),
-        //   title: Text('import_vault'.tr),
-        //   // TODO: reset vault before importing
-        //   // TODO: show warning that it will reset before importing
-        //   // onTap: () => Get.toNamed(Routes.import),
-        // ),
-        const Divider(),
-        ListTile(
           leading: const Icon(LineIcons.box),
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_vault'.tr),
+          subtitle: const Text('Save <vault>.liso to an external source'),
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.export),
           enabled: controller.canExportVault,
         ),
@@ -113,13 +111,15 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: const Icon(LineIcons.wallet),
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_wallet'.tr),
+          subtitle: const Text('Save <wallet>.json to an external source'),
           onTap: controller.exportWallet,
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.download),
           trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Import External Items'),
+          title: const Text('Import Items'),
+          subtitle: const Text('Import items from external sources'),
           enabled: false,
           onTap: () {},
         ),
@@ -128,14 +128,26 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: const Icon(LineIcons.key),
           trailing: const Icon(LineIcons.exclamationTriangle),
           title: const Text('Show Seed Phrase'),
+          subtitle: const Text('Make sure you are in a safe location'),
           onTap: controller.showSeed,
         ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(LineIcons.lock),
+          trailing: const Icon(LineIcons.doorOpen),
+          title: Text('lock'.tr + ' ${ConfigService.to.appName}'),
+          subtitle: const Text('Go back in time to undo your changes'),
+          onTap: () => Get.offAndToNamed(Routes.unlock),
+        ),
+        const Divider(),
         ListTile(
           leading: const Icon(LineIcons.trashRestore),
           trailing: const Icon(LineIcons.exclamationTriangle),
           title: Text('reset'.tr + ' ${ConfigService.to.appName}'),
+          subtitle: const Text('Lock the app'),
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),
+        const Divider(),
       ],
     );
 

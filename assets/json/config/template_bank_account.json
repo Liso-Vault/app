@@ -1,0 +1,158 @@
+[
+    {
+        "identifier": "bank_name",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Bank Name"
+        }
+    },
+    {
+        "identifier": "account_name",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Account Name"
+        }
+    },
+    {
+        "identifier": "type",
+        "type": "choices",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Type",
+            "choices": [
+                {
+                    "name": "Checking",
+                    "value": "checking"
+                },
+                {
+                    "name": "Savings",
+                    "value": "savings"
+                },
+                {
+                    "name": "Line of Credit",
+                    "value": "line_of_credit"
+                },
+                {
+                    "name": "ATM",
+                    "value": "atm"
+                },
+                {
+                    "name": "Money Market",
+                    "value": "money_market"
+                },
+                {
+                    "name": "Other",
+                    "value": "other"
+                },
+                {
+                    "name": "",
+                    "value": ""
+                }
+            ]
+        }
+    },
+    {
+        "identifier": "routing_number",
+        "type": "number",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Routing Number"
+        }
+    },
+    {
+        "identifier": "account_number",
+        "type": "number",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Account Number"
+        }
+    },
+    {
+        "identifier": "swift",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "SWIFT"
+        }
+    },
+    {
+        "identifier": "iban",
+        "type": "textField",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "IBAN"
+        }
+    },
+    {
+        "identifier": "pin",
+        "type": "pin",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "PIN"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Branch Information"
+        }
+    },
+    {
+        "identifier": "branch_phone",
+        "type": "phone",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Phone",
+            "hint": "+1-123-456-7890"
+        }
+    },
+    {
+        "identifier": "branch_address",
+        "type": "address",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "extra": {
+                "street1": "",
+                "street2": "",
+                "city": "",
+                "state": "",
+                "zip": "",
+                "country": ""
+            },
+            "label": "Branch Address"
+        }
+    },
+    {
+        "identifier": "",
+        "type": "section",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "value": "Others"
+        }
+    },
+    {
+        "identifier": "note",
+        "type": "textArea",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Notes"
+        }
+    }
+]

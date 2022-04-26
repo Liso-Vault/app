@@ -73,72 +73,82 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               children: controller.groupTiles,
             ),
           ),
-          Obx(
-            () => ListTile(
-              leading: const Icon(LineIcons.list),
-              onTap: controller.filterAllItems,
-              selected: controller.filterAll,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('all_Items'.tr),
-                  if (controller.itemsCount > 0) ...[
-                    Chip(label: Text(controller.itemsCount.toString())),
-                  ],
-                ],
-              ),
+          ExpansionTile(
+            maintainState: true,
+            title: Text(
+              'items'.tr.toUpperCase(),
+              style: const TextStyle(fontSize: 13),
             ),
-          ),
-          Obx(
-            () => ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('favorites'.tr),
-                  if (controller.favoriteCount > 0) ...[
-                    Chip(label: Text(controller.favoriteCount.toString())),
-                  ],
-                ],
+            initiallyExpanded: true,
+            children: [
+              Obx(
+                () => ListTile(
+                  leading: const Icon(LineIcons.list),
+                  onTap: controller.filterAllItems,
+                  selected: controller.filterAll,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('all'.tr),
+                      if (controller.itemsCount > 0) ...[
+                        Chip(label: Text(controller.itemsCount.toString())),
+                      ],
+                    ],
+                  ),
+                ),
               ),
-              leading: controller.filterFavorites()
-                  ? const FaIcon(FontAwesomeIcons.solidHeart,
-                      color: Colors.pink)
-                  : const FaIcon(FontAwesomeIcons.heart),
-              onTap: controller.filterFavoriteItems,
-              selected: controller.filterFavorites(),
-            ),
-          ),
-          Obx(
-            () => ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('protected'.tr),
-                  if (controller.protectedCount > 0) ...[
-                    Chip(label: Text(controller.protectedCount.toString())),
-                  ],
-                ],
+              Obx(
+                () => ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('favorites'.tr),
+                      if (controller.favoriteCount > 0) ...[
+                        Chip(label: Text(controller.favoriteCount.toString())),
+                      ],
+                    ],
+                  ),
+                  leading: controller.filterFavorites()
+                      ? const FaIcon(FontAwesomeIcons.solidHeart,
+                          color: Colors.pink)
+                      : const FaIcon(FontAwesomeIcons.heart),
+                  onTap: controller.filterFavoriteItems,
+                  selected: controller.filterFavorites(),
+                ),
               ),
-              leading: const FaIcon(FontAwesomeIcons.shieldHalved),
-              onTap: controller.filterProtectedItems,
-              selected: controller.filterProtected(),
-            ),
-          ),
-          Obx(
-            () => ListTile(
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('trash'.tr),
-                  if (controller.trashedCount > 0) ...[
-                    Chip(label: Text(controller.trashedCount.toString())),
-                  ],
-                ],
+              Obx(
+                () => ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('protected'.tr),
+                      if (controller.protectedCount > 0) ...[
+                        Chip(label: Text(controller.protectedCount.toString())),
+                      ],
+                    ],
+                  ),
+                  leading: const FaIcon(FontAwesomeIcons.shieldHalved),
+                  onTap: controller.filterProtectedItems,
+                  selected: controller.filterProtected(),
+                ),
               ),
-              leading: const Icon(LineIcons.trash),
-              onTap: controller.filterTrashedItems,
-              selected: controller.filterTrashed(),
-            ),
+              Obx(
+                () => ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('trash'.tr),
+                      if (controller.trashedCount > 0) ...[
+                        Chip(label: Text(controller.trashedCount.toString())),
+                      ],
+                    ],
+                  ),
+                  leading: const Icon(LineIcons.trash),
+                  onTap: controller.filterTrashedItems,
+                  selected: controller.filterTrashed(),
+                ),
+              ),
+            ],
           ),
 
           ExpansionTile(

@@ -15,7 +15,7 @@ class PINFormField extends GetWidget<PINFormFieldController> {
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data['value']);
+    _fieldController = TextEditingController(text: field.data.value);
 
     return Obx(
       () => TextFormField(
@@ -30,8 +30,8 @@ class PINFormField extends GetWidget<PINFormFieldController> {
             ? null
             : 'Not a numeric PIN',
         decoration: InputDecoration(
-          labelText: field.data['label'],
-          hintText: field.data['hint'],
+          labelText: field.data.label,
+          hintText: field.data.hint,
           suffixIcon: IconButton(
             padding: const EdgeInsets.only(right: 10),
             onPressed: controller.obscureText.toggle,
