@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   biometric_storage
-  desktop_webview_auth
   url_launcher_linux
   window_manager
 )

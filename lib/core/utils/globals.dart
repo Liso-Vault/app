@@ -2,7 +2,6 @@
 
 import 'dart:typed_data';
 
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:web3dart/credentials.dart';
@@ -29,34 +28,6 @@ final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
 final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
-
-// INPUT DECORATIONS
-const kSecondaryInputDecoration = InputDecoration(
-  enabledBorder: UnderlineInputBorder(
-    borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: Color.fromARGB(255, 85, 85, 85),
-    ),
-  ),
-  focusedBorder: UnderlineInputBorder(
-    borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: kAppColor,
-    ),
-  ),
-  errorBorder: UnderlineInputBorder(
-    borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: Color.fromARGB(255, 85, 85, 85),
-    ),
-  ),
-  focusedErrorBorder: UnderlineInputBorder(
-    borderSide: BorderSide(
-      style: BorderStyle.solid,
-      color: FlexColor.materialDarkError,
-    ),
-  ),
-);
 
 // ENUMS
 enum LisoItemSortOrder {

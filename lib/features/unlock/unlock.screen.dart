@@ -43,7 +43,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             onFieldSubmitted: (text) => controller.unlock(),
             validator: Utils.validatePassword,
             autovalidateMode: AutovalidateMode.onUserInteraction,
-            decoration: kSecondaryInputDecoration.copyWith(
+            decoration: InputDecoration(
               hintText: 'master_password'.tr,
               suffixIcon: IconButton(
                 padding: const EdgeInsets.only(right: 10),

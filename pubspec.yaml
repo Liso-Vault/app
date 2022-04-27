@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.3.0+2
+version: 0.3.0+4
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -29,10 +29,6 @@ dependencies:
   firebase_performance: 0.8.0+10
   firebase_remote_config: 2.0.5
   # firebase_app_check: ^0.0.6+9
-
-  # WORKAROUND
-  desktop_webview_auth: ^0.0.6 # MacOS Google Sign In
-  flutter_displaymode: ^0.4.0 # allow higher refresh rates
 
   # IO
   hive: ^2.1.0 # database
@@ -66,7 +62,7 @@ dependencies:
   url_launcher: ^6.1.0
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2
-  flutter_local_notifications: ^9.4.0
+  flutter_local_notifications: ^9.4.1
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
   share_plus: ^4.0.4 # exporting files and sharing texts
@@ -74,8 +70,9 @@ dependencies:
   connectivity_plus: ^2.3.0 # internet connectivity checking
   app_settings: ^4.1.5
   uuid: ^3.0.6 # unique identifiers for items
-  window_manager: ^0.2.1 # set desktop window size
+  window_manager: ^0.2.2 # set desktop window size
   dart_code_metrics: ^4.14.0 # checking unused stuffs
+  flutter_displaymode: ^0.4.0 # allow higher refresh rates
 
   # INFO
   device_info_plus: ^3.2.3

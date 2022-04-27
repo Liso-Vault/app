@@ -351,13 +351,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.7.3"
-  desktop_webview_auth:
-    dependency: "direct main"
-    description:
-      name: desktop_webview_auth
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.6"
   device_info_plus:
     dependency: "direct main"
     description:
@@ -663,7 +656,7 @@ packages:
       name: flutter_local_notifications
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "9.4.0"
+    version: "9.4.1"
   flutter_local_notifications_linux:
     dependency: transitive
     description:
@@ -1639,7 +1632,7 @@ packages:
       name: window_manager
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "0.2.2"
   xdg_directories:
     dependency: transitive
     description:
