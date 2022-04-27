@@ -34,6 +34,8 @@ import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../sync/sync_setting.screen.dart';
 import '../sync/syncing/syncing.screen.dart';
 import '../sync/syncing/syncing_screen.controller.dart';
+import '../wallet/wallet.screen.dart';
+import '../wallet/wallet_screen.controller.dart';
 import 'routes.dart';
 
 class AppPages {
@@ -127,6 +129,11 @@ class AppPages {
       name: Routes.s3Explorer,
       page: () => const S3ExplorerScreen(),
       binding: S3ExplorerScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.wallet,
+      page: () => const WalletScreen(),
+      binding: WalletScreenBinding(),
     ),
   ];
 }

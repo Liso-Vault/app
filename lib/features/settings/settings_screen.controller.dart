@@ -12,7 +12,6 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/wallet.service.dart';
@@ -97,8 +96,10 @@ class SettingsScreenController extends GetxController
 
   // FUNCTIONS
   void changeTheme(ThemeMode mode) async {
+    if (mode.name == PersistenceService.to.theme.val) return;
     PersistenceService.to.theme.val = mode.name;
     theme.value = mode.name;
+    if (GetPlatform.isDesktop) Get.back();
     Get.changeThemeMode(mode);
   }
 

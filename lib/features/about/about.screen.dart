@@ -21,7 +21,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const SizedBox(height: 20),
+        const SizedBox(height: 30),
         RemoteImage(
           url: ConfigService.to.general.app.image,
           height: 50,
@@ -33,7 +33,6 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           textAlign: TextAlign.center,
           style: const TextStyle(fontSize: 25),
         ),
-        const SizedBox(height: 10),
         Obx(
           () => Text(
             controller.appVersion,
@@ -54,11 +53,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         const SizedBox(height: 30),
         const Divider(),
         ListTile(
-          leading: RemoteImage(
-            url: ConfigService.to.general.app.image,
-            height: 25,
-            placeholder: Image.asset(Images.logo, height: 25),
-          ),
+          leading: const Icon(LineIcons.link),
           trailing: const Icon(LineIcons.alternateExternalLink),
           title: Text('${ConfigService.to.appName} Website'),
           subtitle: Text(ConfigService.to.general.app.links.website),

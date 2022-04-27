@@ -18,12 +18,15 @@ class App extends StatelessWidget {
     final PersistenceService persistence = Get.find();
 
     const subThemes = FlexSubThemesData(
-      thinBorderWidth: 0.1,
-      thickBorderWidth: 0.5,
       fabUseShape: false,
+      thinBorderWidth: 0.2,
+      thickBorderWidth: 0.5,
+      inputDecoratorUnfocusedHasBorder: true,
+      inputDecoratorIsFilled: false,
+      inputDecoratorRadius: 5,
+      inputDecoratorBorderType: FlexInputBorderType.underline,
+      inputDecoratorUnfocusedBorderIsColored: false,
     );
-
-    const density = VisualDensity.compact;
 
     // MATERIAL APP
     return GetMaterialApp(
@@ -44,16 +47,22 @@ class App extends StatelessWidget {
       darkTheme: FlexColorScheme.dark(
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColor),
-        visualDensity: density,
+        visualDensity: VisualDensity.compact,
+        appBarElevation: 0.3,
         subThemesData: subThemes,
+        onSurface: Colors.grey.shade500, // popupmenu background color
+        scaffoldBackground: const Color(0xFF161616),
+        background: const Color(0xFF1C1C1C), // drawer background color
       ).toTheme,
       // LIGHT THEME
       theme: FlexColorScheme.light(
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColorDarker),
-        appBarBackground: Colors.grey.shade100,
-        visualDensity: density,
+        appBarStyle: FlexAppBarStyle.background,
+        appBarElevation: 0.3,
+        visualDensity: VisualDensity.compact,
         subThemesData: subThemes,
+        onPrimary: Colors.white, // button text color
       ).toTheme,
       // UNKNOWN ROUTE FALLBACK SCREEN
       unknownRoute: GetPage(

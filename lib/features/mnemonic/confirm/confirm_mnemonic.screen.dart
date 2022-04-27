@@ -20,12 +20,12 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
         const Icon(LineIcons.doubleCheck, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
-          'Confirm Seed Phrase',
+          'Confirm Seed',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
         const Text(
-          "Re-enter your backed up master mnemonic seed phrase",
+          "Re-enter your seed phrase",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
@@ -35,10 +35,13 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
           onFieldSubmitted: (text) => controller.continuePressed,
         ),
         const SizedBox(height: 20),
-        TextButton.icon(
-          onPressed: controller.continuePressed,
-          label: Text('continue'.tr),
-          icon: const Icon(LineIcons.arrowCircleRight),
+        SizedBox(
+          width: 200,
+          child: ElevatedButton.icon(
+            onPressed: controller.continuePressed,
+            label: Text('continue'.tr),
+            icon: const Icon(LineIcons.arrowCircleRight),
+          ),
         ),
       ],
     );

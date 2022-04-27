@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/liso/liso.manager.dart';
 import '../../core/services/wallet.service.dart';
 
 class ResetScreen extends GetView<ResetScreenController> {
@@ -26,7 +26,7 @@ class ResetScreen extends GetView<ResetScreenController> {
         ),
         const SizedBox(height: 20),
         Text(
-          'Your local vault ${LisoManager.vaultFilename} and ${WalletService.to.fileName} file be deleted',
+          'Your local vault.$kVaultExtension and ${WalletService.to.fileName} file be deleted',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
@@ -34,7 +34,6 @@ class ResetScreen extends GetView<ResetScreenController> {
         const Text(
           "Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
         ),
         const SizedBox(height: 30),
         Row(

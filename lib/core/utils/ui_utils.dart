@@ -15,18 +15,14 @@ class UIUtils {
       icon: icon ?? const Icon(Icons.info, size: 25),
       titleText: Text(
         title,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
       maxWidth: 500,
       messageText: Text(message, style: const TextStyle(fontSize: 14)),
       duration: Duration(seconds: seconds),
       borderRadius: 8,
-      backgroundColor: Get.isDarkMode ? Colors.grey.shade900 : Colors.white,
       shouldIconPulse: true,
-      margin: const EdgeInsets.fromLTRB(8, 8, 8, 8.0),
+      margin: const EdgeInsets.all(8),
       snackPosition:
           Utils.isDrawerExpandable ? SnackPosition.BOTTOM : SnackPosition.TOP,
     );

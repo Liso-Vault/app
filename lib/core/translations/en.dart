@@ -7,6 +7,7 @@ final en = {
   "cryptoWallet": "Crypto Wallet",
   "login": "Login",
   "password": "Password",
+  "master_password": "Master Password",
   "identity": "Identity",
   "note": "Secure Note",
   "cashCard": "Debit/Credit Card",

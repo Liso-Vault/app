@@ -96,10 +96,13 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             onFieldSubmitted: (text) => controller.continuePressed,
           ),
           const SizedBox(height: 20),
-          TextButton.icon(
-            onPressed: controller.continuePressed,
-            label: Text('continue'.tr),
-            icon: const Icon(LineIcons.arrowCircleRight),
+          SizedBox(
+            width: 200,
+            child: ElevatedButton.icon(
+              onPressed: controller.continuePressed,
+              label: Text('continue'.tr),
+              icon: const Icon(LineIcons.arrowCircleRight),
+            ),
           ),
         ],
       ),

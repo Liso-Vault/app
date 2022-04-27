@@ -19,7 +19,7 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
     this.onFieldSubmitted,
   }) : super(key: key);
 
-  String? obtainMnemonicPhrase() =>
+  String? get value =>
       bip39.validateMnemonic(controller.text) ? controller.text : null;
 
   @override

@@ -18,8 +18,6 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
   // VARIABLES
   final seedController = TextEditingController();
 
-  // final passphraseCard = const PassphraseCard(mode: PassphraseMode.confirm);
-
   // PROPERTIES
 
   // GETTERS
@@ -42,8 +40,9 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
       return;
     }
 
-    final privateKeyHex =
-        WalletService.to.mnemonicToPrivateKeyHex(seedController.text);
+    final privateKeyHex = WalletService.to.mnemonicToPrivateKeyHex(
+      seedController.text,
+    );
 
     Get.offAllNamed(
       Routes.createPassword,

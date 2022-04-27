@@ -33,13 +33,15 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         const Text(
           "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file",
           textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
         ),
         const SizedBox(height: 20),
-        ElevatedButton.icon(
-          label: Text('export'.tr),
-          icon: const Icon(LineIcons.upload),
-          onPressed: controller.unlock,
+        SizedBox(
+          width: 200,
+          child: ElevatedButton.icon(
+            label: Text('export'.tr),
+            icon: const Icon(LineIcons.upload),
+            onPressed: controller.unlock,
+          ),
         ),
         const SizedBox(height: 10),
         Obx(

@@ -44,7 +44,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
         type: LisoFieldType.choices.name,
         data: HiveLisoFieldData(
           value: extra['country'],
-          label: extra['Country'],
+          label: 'Country',
           choices: ConfigService.to.choicesCountry,
         ),
       ),

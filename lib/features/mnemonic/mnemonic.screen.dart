@@ -25,14 +25,19 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
       onSecondaryTap: () => Utils.copyToClipboard(controller.mnemonic.value),
       child: Obx(
         () => Wrap(
-          spacing: 5,
-          runSpacing: 10,
+          spacing: GetPlatform.isMobile ? 1 : 5,
+          runSpacing: GetPlatform.isMobile ? 7 : 10,
           alignment: WrapAlignment.center,
           children: controller.mnemonic.value
               .split(' ')
               .map(
                 (e) => CustomChip(
-                  label: Text(e, style: const TextStyle(fontSize: 18)),
+                  label: Text(
+                    e,
+                    style: TextStyle(
+                      fontSize: GetPlatform.isMobile ? 13 : 17,
+                    ),
+                  ),
                 ),
               )
               .toList(),
@@ -132,11 +137,14 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         ),
         const SizedBox(height: 20),
         Obx(
-          () => TextButton.icon(
-            onPressed:
-                controller.canProceed ? controller.continuePressed : null,
-            label: Text('continue'.tr),
-            icon: const Icon(LineIcons.arrowCircleRight),
+          () => SizedBox(
+            width: 200,
+            child: ElevatedButton.icon(
+              onPressed:
+                  controller.canProceed ? controller.continuePressed : null,
+              label: Text('continue'.tr),
+              icon: const Icon(LineIcons.arrowCircleRight),
+            ),
           ),
         ),
       ],

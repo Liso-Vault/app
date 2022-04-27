@@ -26,7 +26,10 @@ class CustomDropDownFormField extends StatelessWidget {
       value: value,
       items: items,
       onChanged: (_value) => value = _value,
-      decoration: InputDecoration(labelText: field.data.label),
+      decoration: InputDecoration(
+        labelText: field.data.label,
+        hintText: field.data.hint,
+      ),
     );
   }
 }

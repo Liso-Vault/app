@@ -228,7 +228,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         _identifier = 'url';
         break;
       case LisoItemCategory.softwareLicense:
-        _identifier = 'note';
+        _identifier = 'publisher';
         break;
       case LisoItemCategory.apiCredential:
         _identifier = 'note';
@@ -243,7 +243,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         _identifier = 'username';
         break;
       case LisoItemCategory.membership:
-        _identifier = 'note';
+        _identifier = 'group';
         break;
       case LisoItemCategory.outdoorLicense:
         _identifier = 'note';
@@ -267,8 +267,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     final _field = fields.firstWhere((e) => e.identifier == _identifier);
     // convert Map keys to human readable format
     _identifier = GetUtils.capitalize(_identifier.replaceAll('_', ' '))!;
-
-    String _value = _field.data.value!;
+    var _value = _field.data.value!;
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {

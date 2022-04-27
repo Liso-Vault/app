@@ -1,6 +1,5 @@
 import 'package:chips_input/chips_input.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
@@ -132,7 +131,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
         isExpanded: true,
         value: controller.groupIndex.value,
         onChanged: (_value) => controller.groupIndex.value = _value!,
-        decoration: const InputDecoration(labelText: 'Group'),
+        decoration: const InputDecoration(labelText: 'Vault'),
         items: [
           ...PersistenceService.to.groupsMap
               .map((e) => DropdownMenuItem<int>(
@@ -144,26 +143,21 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       ),
       const SizedBox(height: 10),
       ObxValue(
-        (RxBool data) => SwitchListTile(
+        (RxBool data) => CheckboxListTile(
           title: Text('favorite'.tr),
           value: data(),
           onChanged: data,
           activeColor: Colors.pink,
-          activeTrackColor: Colors.pink,
-          secondary: data()
-              ? const FaIcon(FontAwesomeIcons.solidHeart)
-              : const FaIcon(FontAwesomeIcons.heart),
+          contentPadding: EdgeInsets.zero,
         ),
         controller.favorite,
       ),
       ObxValue(
-        (RxBool data) => SwitchListTile(
+        (RxBool data) => CheckboxListTile(
           title: Text('protected'.tr),
           value: data(),
           onChanged: data,
-          secondary: data()
-              ? const FaIcon(FontAwesomeIcons.shield)
-              : const FaIcon(FontAwesomeIcons.shieldHalved),
+          contentPadding: EdgeInsets.zero,
         ),
         controller.protected,
       ),
@@ -210,7 +204,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
         itemCount: items.length,
         shrinkWrap: true,
         itemBuilder: (context, index) => items[index],
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.all(30),
       ),
     );
 

@@ -86,7 +86,7 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
 
     final floatingActionButton = Obx(
       () => Visibility(
-        visible: !controller.isTimeMachine && controller.busy(),
+        visible: !controller.isTimeMachine && !controller.busy(),
         replacement: const SizedBox.shrink(),
         child: FloatingActionButton(
           child: const Icon(LineIcons.upload),

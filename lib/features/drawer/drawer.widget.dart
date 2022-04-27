@@ -23,48 +23,48 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       builder: (DrawerMenuController controller) {
         final items = [
           // header,
-          ExpansionTile(
-            maintainState: true,
-            title: const Text(
-              'Networks',
-              style: TextStyle(fontSize: 13),
-            ),
-            onExpansionChanged: (expanded) =>
-                controller.networksExpanded = expanded,
-            initiallyExpanded: controller.networksExpanded,
-            children: const [
-              ListTile(
-                title: Text('Ethereum'),
-                leading: FaIcon(LineIcons.ethereum),
-                enabled: false,
-              ),
-              ListTile(
-                title: Text('Polygon'),
-                leading: FaIcon(LineIcons.ethereum),
-                enabled: false,
-              ),
-              ListTile(
-                title: Text('Binance Chain'),
-                leading: FaIcon(LineIcons.ethereum),
-                enabled: false,
-              ),
-              ListTile(
-                title: Text('Solana'),
-                leading: FaIcon(LineIcons.ethereum),
-                enabled: false,
-              ),
-              ListTile(
-                title: Text('Avalanche'),
-                leading: FaIcon(LineIcons.ethereum),
-                enabled: false,
-              ),
-            ],
-          ),
+          // ExpansionTile(
+          //   maintainState: true,
+          //   title: const Text(
+          //     'Networks',
+          //     style: TextStyle(fontSize: 13),
+          //   ),
+          //   onExpansionChanged: (expanded) =>
+          //       controller.networksExpanded = expanded,
+          //   initiallyExpanded: controller.networksExpanded,
+          //   children: const [
+          //     ListTile(
+          //       title: Text('Ethereum'),
+          //       leading: FaIcon(LineIcons.ethereum),
+          //       enabled: false,
+          //     ),
+          //     ListTile(
+          //       title: Text('Polygon'),
+          //       leading: FaIcon(LineIcons.ethereum),
+          //       enabled: false,
+          //     ),
+          //     ListTile(
+          //       title: Text('Binance Chain'),
+          //       leading: FaIcon(LineIcons.ethereum),
+          //       enabled: false,
+          //     ),
+          //     ListTile(
+          //       title: Text('Solana'),
+          //       leading: FaIcon(LineIcons.ethereum),
+          //       enabled: false,
+          //     ),
+          //     ListTile(
+          //       title: Text('Avalanche'),
+          //       leading: FaIcon(LineIcons.ethereum),
+          //       enabled: false,
+          //     ),
+          //   ],
+          // ),
           SimpleBuilder(
             builder: (_) => ExpansionTile(
               maintainState: true,
               title: Text(
-                'groups'.tr.toUpperCase(),
+                'vaults'.tr.toUpperCase(),
                 style: const TextStyle(fontSize: 13),
               ),
               onExpansionChanged: (expanded) =>
@@ -219,7 +219,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                                 () => Text(
                                   filesize(S3Service.to.storageSize.value, 0) +
                                       '/${filesize(ConfigService.to.app.settings.maxStorageSize, 0)}',
-                                  style: const TextStyle(fontSize: 11),
+                                  style: const TextStyle(fontSize: 10),
                                 ),
                               ),
                             ),
@@ -242,8 +242,10 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ListTile(
                 title: Text('wallet'.tr),
                 leading: const FaIcon(LineIcons.wallet),
-                enabled: false,
-                // onTap: controller.files,
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.wallet,
+                  method: 'offAndToNamed',
+                ),
               ),
               const ListTile(
                 title: Text('NFTs'),
@@ -260,25 +262,18 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ListTile(
                 title: Text('settings'.tr),
                 leading: const Icon(LineIcons.cog),
-                onTap: () {
-                  if (Utils.isDrawerExpandable) {
-                    Get.offAndToNamed(Routes.settings);
-                  } else {
-                    Utils.adaptiveRouteOpen(name: Routes.settings);
-                  }
-                },
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.settings,
+                  method: 'offAndToNamed',
+                ),
               ),
               ListTile(
                 title: Text('about'.tr),
                 leading: const Icon(LineIcons.infoCircle),
-                onTap: () {
-                  // TODO: support offAndToNamed in adaptiveRouteOpen
-                  if (Utils.isDrawerExpandable) {
-                    Get.offAndToNamed(Routes.about);
-                  } else {
-                    Utils.adaptiveRouteOpen(name: Routes.about);
-                  }
-                },
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.about,
+                  method: 'offAndToNamed',
+                ),
               ),
             ],
           ),

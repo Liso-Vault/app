@@ -152,7 +152,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           children: [
             if (item.favorite) ...[
               const Padding(
-                padding: EdgeInsets.only(top: 4),
+                padding: EdgeInsets.only(top: 3),
                 child: FaIcon(
                   FontAwesomeIcons.solidHeart,
                   color: Colors.pink,
@@ -163,7 +163,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             ],
             if (item.protected) ...[
               const Padding(
-                padding: EdgeInsets.only(top: 2),
+                padding: EdgeInsets.only(top: 3),
                 child: FaIcon(
                   FontAwesomeIcons.shield,
                   color: kAppColor,

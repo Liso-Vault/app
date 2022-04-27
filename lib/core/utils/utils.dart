@@ -172,11 +172,18 @@ class Utils {
 
   static Future<dynamic>? adaptiveRouteOpen({
     required String name,
+    String method = 'toNamed',
     Map<String, String> parameters = const {},
   }) {
     // Regular navigation for mobile
     if (isDrawerExpandable) {
-      return Get.toNamed(name, parameters: parameters);
+      switch (method) {
+        case 'toNamed':
+          return Get.toNamed(name, parameters: parameters);
+        case 'offAndToNamed':
+          return Get.offAndToNamed(name, parameters: parameters);
+        default:
+      }
     }
 
     // Open page as dialog for desktop
@@ -198,11 +205,11 @@ class Utils {
     );
   }
 
-  static String? validatePassword(String text) {
+  static String? validatePassword(String? text) {
     const min = 8;
     const max = 100;
 
-    if (text.isEmpty) {
+    if (text == null || text.isEmpty) {
       return 'Enter your strong password';
     } else if (text.length < min) {
       return 'Vault password must be at least $min characters';

@@ -4,16 +4,14 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
-import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/services/wallet.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
-import '../general/remote_image.widget.dart';
 import 'settings_screen.controller.dart';
 
 class SettingsScreen extends GetWidget<SettingsScreenController>
@@ -26,18 +24,6 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const Divider(),
-        ListTile(
-          leading: RemoteImage(
-            url: ConfigService.to.general.app.image,
-            height: 25,
-            placeholder: Image.asset(Images.logo, height: 25),
-          ),
-          trailing: const Icon(LineIcons.copy),
-          title: Text('${ConfigService.to.appName} Address'),
-          subtitle: Text(WalletService.to.shortAddress),
-          onTap: () => Utils.copyToClipboard(WalletService.to.address),
-        ),
         const Divider(),
         Obx(
           () => ContextMenuButton(
@@ -76,24 +62,23 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
             );
           },
         ),
-        SimpleBuilder(
-          builder: (context) {
-            if (!PersistenceService.to.sync.val) return const SizedBox.shrink();
+        const Divider(),
+        ListTile(
+          title: Text('time_machine'.tr),
+          subtitle: const Text('Go back in time to undo your changes'),
+          leading: const Icon(LineIcons.clock),
+          trailing: const Icon(LineIcons.angleRight),
+          onTap: () {
+            if (!PersistenceService.to.sync.val) {
+              return UIUtils.showSimpleDialog(
+                'Sync Required',
+                'Please turn on ${ConfigService.to.appName} Cloud Sync to use this feature',
+              );
+            }
 
-            return Column(
-              children: [
-                const Divider(),
-                ListTile(
-                  title: Text('time_machine'.tr),
-                  subtitle: const Text('Go back in time to undo your changes'),
-                  leading: const Icon(LineIcons.clock),
-                  trailing: const Icon(LineIcons.angleRight),
-                  onTap: () => Utils.adaptiveRouteOpen(
-                    name: Routes.s3Explorer,
-                    parameters: {'type': 'time_machine'},
-                  ),
-                )
-              ],
+            Utils.adaptiveRouteOpen(
+              name: Routes.s3Explorer,
+              parameters: {'type': 'time_machine'},
             );
           },
         ),
@@ -120,8 +105,14 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           trailing: const Icon(LineIcons.angleRight),
           title: const Text('Import Items'),
           subtitle: const Text('Import items from external sources'),
-          enabled: false,
-          onTap: () {},
+          // enabled: false,
+          onTap: () {
+            UIUtils.showSnackBar(
+              title: 'Test',
+              message: 'Message',
+              seconds: 2,
+            );
+          },
         ),
         const Divider(),
         ListTile(
@@ -136,7 +127,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.doorOpen),
           title: Text('lock'.tr + ' ${ConfigService.to.appName}'),
-          subtitle: const Text('Go back in time to undo your changes'),
+          subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
         const Divider(),
@@ -144,7 +135,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: const Icon(LineIcons.trashRestore),
           trailing: const Icon(LineIcons.exclamationTriangle),
           title: Text('reset'.tr + ' ${ConfigService.to.appName}'),
-          subtitle: const Text('Lock the app'),
+          subtitle: const Text('Delete local vault and start over'),
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),
         const Divider(),

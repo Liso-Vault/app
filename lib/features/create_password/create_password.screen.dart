@@ -25,12 +25,12 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
           LineIcon(LineIcons.alternateShield, size: 100, color: kAppColor),
           const SizedBox(height: 20),
           Text(
-            'wallet_password'.tr,
+            'master_password'.tr,
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 15),
           Text(
-            "This will be the password to encrypt and decrypt the local ${WalletService.to.fileName} file which also secures the (xxx.$kVaultExtension) vault with it's private key",
+            "This will be the password to unlock the ${WalletService.to.fileName} file which also secures the vault.$kVaultExtension with the private key",
             style: const TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
@@ -43,7 +43,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               keyboardType: TextInputType.visiblePassword,
               obscureText: controller.obscurePassword(),
               textInputAction: TextInputAction.next,
-              validator: (text) => Utils.validatePassword(text!),
+              validator: Utils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 hintText: 'password'.tr,
@@ -68,7 +68,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               obscureText: controller.obscureConfirmPassword(),
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (text) => controller.confirm(),
-              validator: (text) => Utils.validatePassword(text!),
+              validator: Utils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               decoration: InputDecoration(
                 hintText: 'confirm_password'.tr,
@@ -114,16 +114,13 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
     return WillPopScope(
       onWillPop: () => Future.value(false),
       child: Scaffold(
-        // appBar: AppBar(),
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Center(
-            child: Container(
-              constraints: Styles.containerConstraints,
-              child: controller.obx(
-                (_) => SingleChildScrollView(child: content),
-                onLoading: const BusyIndicator(),
-              ),
+        body: Center(
+          child: Container(
+            constraints: Styles.containerConstraints,
+            padding: const EdgeInsets.all(30),
+            child: controller.obx(
+              (_) => SingleChildScrollView(child: content),
+              onLoading: const BusyIndicator(),
             ),
           ),
         ),

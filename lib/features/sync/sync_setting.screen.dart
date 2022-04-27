@@ -73,10 +73,13 @@ class SyncSettingScreen extends StatelessWidget with ConsoleMixin {
             ),
             const Divider(),
             const SizedBox(height: 20),
-            TextButton.icon(
-              onPressed: save,
-              label: Text('continue'.tr),
-              icon: const Icon(LineIcons.arrowCircleRight),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                onPressed: save,
+                label: Text('continue'.tr),
+                icon: const Icon(LineIcons.arrowCircleRight),
+              ),
             ),
           ],
         ),

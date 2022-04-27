@@ -7,6 +7,8 @@ import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/biometric.util.dart';
+import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
 
@@ -29,14 +31,6 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           style: const TextStyle(fontSize: 25),
         ),
         const SizedBox(height: 15),
-        Text(
-          controller.passwordMode
-              ? 'Enter your wallet password to proceed'
-              : 'Enter the wallet password to unlock ${ConfigService.to.appName}',
-          style: const TextStyle(color: Colors.grey),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 15),
         Obx(
           () => TextFormField(
             autofocus: true,
@@ -47,8 +41,10 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             textInputAction: TextInputAction.go,
             onChanged: controller.onChanged,
             onFieldSubmitted: (text) => controller.unlock(),
-            decoration: InputDecoration(
-              hintText: 'password'.tr,
+            validator: Utils.validatePassword,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            decoration: kSecondaryInputDecoration.copyWith(
+              hintText: 'master_password'.tr,
               suffixIcon: IconButton(
                 padding: const EdgeInsets.only(right: 10),
                 onPressed: controller.obscurePassword.toggle,
@@ -61,20 +57,23 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Obx(
-              () => TextButton.icon(
-                label:
-                    Text(controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
-                icon: Icon(
-                  controller.passwordMode
-                      ? LineIcons.arrowCircleRight
-                      : LineIcons.lockOpen,
+              () => SizedBox(
+                width: 200,
+                child: ElevatedButton.icon(
+                  label: Text(
+                      controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
+                  icon: Icon(
+                    controller.passwordMode
+                        ? LineIcons.arrowCircleRight
+                        : LineIcons.lockOpen,
+                  ),
+                  onPressed: controller.canProceed() ? controller.unlock : null,
                 ),
-                onPressed: controller.canProceed() ? controller.unlock : null,
               ),
             ),
             if (BiometricUtils.touchFaceIdSupported) ...[
