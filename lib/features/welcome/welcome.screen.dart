@@ -1,10 +1,13 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../general/remote_image.widget.dart';
@@ -57,22 +60,50 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
     );
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Stack(
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Obx(
-                () => Text(
-                  'v${controller.appVersion}',
-                  style: const TextStyle(color: Colors.grey, fontSize: 10),
-                ),
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: 'By proceeding, you agree to our ',
+                children: [
+                  TextSpan(
+                    text: 'Terms of Service',
+                    style: const TextStyle(color: kAppColor),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        console.info('tap');
+                        launchUrlString(
+                            ConfigService.to.general.app.links.terms);
+                      },
+                  ),
+                  const TextSpan(text: ' and '),
+                  TextSpan(
+                    text: 'Privacy Policy',
+                    style: const TextStyle(color: kAppColor),
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () => launchUrlString(
+                          ConfigService.to.general.app.links.privacy),
+                  ),
+                ],
               ),
             ),
-            Center(child: content)
+            const SizedBox(height: 10),
+            Obx(
+              () => Text(
+                'v${controller.appVersion}',
+                style: const TextStyle(color: Colors.grey, fontSize: 10),
+              ),
+            ),
           ],
         ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(child: content),
       ),
     );
   }

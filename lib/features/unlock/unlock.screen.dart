@@ -7,7 +7,6 @@ import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/biometric.util.dart';
-import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';

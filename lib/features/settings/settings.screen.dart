@@ -108,8 +108,9 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           // enabled: false,
           onTap: () {
             UIUtils.showSnackBar(
-              title: 'Test',
-              message: 'Message',
+              title: 'Import Items',
+              message:
+                  "Soon, you'll be able to import items from 1Password, LastPass, etc...",
               seconds: 2,
             );
           },

@@ -239,19 +239,28 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       )
                     : const SizedBox.shrink(),
               ),
-              ListTile(
-                title: Text('wallet'.tr),
-                leading: const FaIcon(LineIcons.wallet),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.wallet,
-                  method: 'offAndToNamed',
+              SimpleBuilder(
+                builder: (_) => Column(
+                  children: [
+                    if (!GetPlatform.isIOS ||
+                        PersistenceService.to.proTester.val) ...[
+                      ListTile(
+                        title: Text('wallet'.tr),
+                        leading: const FaIcon(LineIcons.wallet),
+                        onTap: () => Utils.adaptiveRouteOpen(
+                          name: Routes.wallet,
+                          method: 'offAndToNamed',
+                        ),
+                      ),
+                      const ListTile(
+                        title: Text('NFTs'),
+                        leading: FaIcon(LineIcons.icons),
+                        enabled: false,
+                        // onTap: controller.files,
+                      ),
+                    ],
+                  ],
                 ),
-              ),
-              const ListTile(
-                title: Text('NFTs'),
-                leading: FaIcon(LineIcons.icons),
-                enabled: false,
-                // onTap: controller.files,
               ),
               ListTile(
                 title: Text('browser'.tr),

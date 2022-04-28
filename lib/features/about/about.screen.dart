@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../general/remote_image.widget.dart';
@@ -22,10 +24,20 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const SizedBox(height: 30),
-        RemoteImage(
-          url: ConfigService.to.general.app.image,
-          height: 50,
-          placeholder: Image.asset(Images.logo, height: 50),
+        GestureDetector(
+          child: RemoteImage(
+            url: ConfigService.to.general.app.image,
+            height: 50,
+            placeholder: Image.asset(Images.logo, height: 50),
+          ),
+          onLongPress: () {
+            PersistenceService.to.proTester.val = true;
+
+            UIUtils.showSnackBar(
+              title: 'PRO Tester',
+              message: "PRO Tester mode has been enabled",
+            );
+          },
         ),
         const SizedBox(height: 15),
         Text(
@@ -57,17 +69,17 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           trailing: const Icon(LineIcons.alternateExternalLink),
           title: Text('${ConfigService.to.appName} Website'),
           subtitle: Text(ConfigService.to.general.app.links.website),
-          onTap: () => launchUrl(Uri.parse(
+          onTap: () => launchUrlString(
             ConfigService.to.general.app.links.website,
-          )),
+          ),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.rocket),
           title: Text('${ConfigService.to.appName} Roadmap'),
-          onTap: () => launchUrl(Uri.parse(
+          onTap: () => launchUrlString(
             ConfigService.to.general.app.links.roadmap,
-          )),
+          ),
           trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         const Divider(),
@@ -87,18 +99,16 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           leading: const Icon(LineIcons.userShield),
           title: Text('${ConfigService.to.appName} Privacy'),
           trailing: const Icon(LineIcons.alternateExternalLink),
-          onTap: () => launchUrl(Uri.parse(
-            ConfigService.to.general.app.links.privacy,
-          )),
+          onTap: () =>
+              launchUrlString(ConfigService.to.general.app.links.privacy),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.bookOpen),
           title: Text('${ConfigService.to.appName} Terms'),
           trailing: const Icon(LineIcons.alternateExternalLink),
-          onTap: () => launchUrl(Uri.parse(
-            ConfigService.to.general.app.links.terms,
-          )),
+          onTap: () =>
+              launchUrlString(ConfigService.to.general.app.links.terms),
         ),
 
         const Divider(),
@@ -116,7 +126,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         //   trailing: const Icon(LineIcons.alternateExternalLink),
         //   title: const Text('Check for updates'),
         //   subtitle: Obx(() => Text(controller.appVersion)),
-        //   onTap: () => launchUrl(Uri.parse(kAppGithubReleasesUrl),
+        //   onTap: () => launchUrlString(kAppGithubReleasesUrl),
         // ),
         const Divider(),
         ContextMenuButton(
