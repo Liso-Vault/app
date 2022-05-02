@@ -172,9 +172,18 @@ class SettingsScreenController extends GetxController
         alignment: WrapAlignment.start,
         children: seed!
             .split(' ')
-            .map((e) => CustomChip(
-                  label: Text(e, style: const TextStyle(fontSize: 18)),
-                ))
+            .asMap()
+            .entries
+            .map(
+              (e) => CustomChip(
+                label: Text(
+                  '${e.key + 1}. ${e.value}',
+                  style: TextStyle(
+                    fontSize: GetPlatform.isMobile ? null : 17,
+                  ),
+                ),
+              ),
+            )
             .toList(),
       ),
     );

@@ -48,11 +48,15 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     }
 
     // filtered errors
-    final filteredErrors = [];
+    final filteredErrors = [
+      'Box may be corrupted', // wrong encryption key
+    ];
 
     // filter unnecessary error reports
-    if (filteredErrors.contains(errorString)) {
-      return console.error('FILTERED: $errorString');
+    for (var e in filteredErrors) {
+      if (errorString.contains(e)) {
+        return console.error('FILTERED: $errorString');
+      }
     }
 
     FirebaseCrashlytics.instance.recordFlutterError(details);

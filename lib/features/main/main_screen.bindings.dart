@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:liso/features/wallet/assets/assets_screen.controller.dart';
 
 import '../../core/form_fields/password.field.dart';
 import '../../core/form_fields/pin.field.dart';
@@ -32,5 +33,7 @@ class MainScreenBinding extends Bindings {
     Get.create(() => IPFSExplorerScreenController());
     // S3
     Get.create(() => S3ExplorerScreenController());
+    // WALLET
+    Get.create(() => AssetsScreenController());
   }
 }

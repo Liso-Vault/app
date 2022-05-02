@@ -2,13 +2,13 @@ import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:bip32/bip32.dart' as bip32;
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:path/path.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:bip39/bip39.dart' as bip39;
-import 'package:bip32/bip32.dart' as bip32;
 
 import '../liso/liso.manager.dart';
 import '../utils/globals.dart';
@@ -18,7 +18,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   String get address => Globals.wallet?.privateKey.address.hexEip55 ?? '';
   String get shortAddress =>
-      address.substring(0, 7) + '...' + address.substring(address.length - 6);
+      address.substring(0, 13) + '...' + address.substring(address.length - 13);
 
   String get fileName => 'wallet.$kWalletExtension';
 
@@ -58,4 +58,32 @@ class WalletService extends GetxService with ConsoleMixin {
     final path = root.derivePath("m/44'/60'/0'/0/$index");
     return HEX.encode(path.privateKey!);
   }
+
+  // void sign() async {
+  //   final privateKey = Globals.wallet!.privateKey;
+  //   final privateKeyHex = HEX.encode(privateKey.privateKey);
+
+  //   const message = 'liso';
+  //   final messageBytes = Uint8List.fromList(utf8.encode(message));
+
+  //   final signedMessage = await privateKey.sign(messageBytes);
+  //   final signedMessageHex = HEX.encode(signedMessage);
+  //   console.warning(
+  //     'signedMessage: $signedMessageHex',
+  //   );
+
+  //   final signature = EthSigUtil.signMessage(
+  //     privateKey: privateKeyHex,
+  //     message: messageBytes,
+  //   );
+
+  //   console.info('signature: $signature');
+
+  //   final recoveredAddress = EthSigUtil.ecRecover(
+  //     signature: signature,
+  //     message: messageBytes,
+  //   );
+
+  //   console.info('recoveredAddress: $recoveredAddress');
+  // }
 }

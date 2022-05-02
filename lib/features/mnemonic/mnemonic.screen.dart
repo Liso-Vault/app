@@ -26,16 +26,18 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
       child: Obx(
         () => Wrap(
           spacing: GetPlatform.isMobile ? 1 : 5,
-          runSpacing: GetPlatform.isMobile ? 7 : 10,
+          runSpacing: GetPlatform.isMobile ? 5 : 10,
           alignment: WrapAlignment.center,
           children: controller.mnemonic.value
               .split(' ')
+              .asMap()
+              .entries
               .map(
                 (e) => CustomChip(
                   label: Text(
-                    e,
+                    '${e.key + 1}. ${e.value}',
                     style: TextStyle(
-                      fontSize: GetPlatform.isMobile ? 13 : 17,
+                      fontSize: GetPlatform.isMobile ? null : 17,
                     ),
                   ),
                 ),

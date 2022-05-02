@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/console.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
@@ -100,6 +101,12 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final appBarActions = [
+      // IconButton(
+      //   icon: const Icon(LineIcons.bug),
+      //   onPressed: () {
+      //     WalletService.to.sign();
+      //   },
+      // ),
       Obx(
         () => IconButton(
           icon: const Icon(LineIcons.search),

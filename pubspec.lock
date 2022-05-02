@@ -428,6 +428,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  eth_sig_util:
+    dependency: "direct main"
+    description:
+      name: eth_sig_util
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.7"
   ffi:
     dependency: transitive
     description:
@@ -692,6 +699,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.1.3"
+  flutter_svg:
+    dependency: "direct main"
+    description:
+      name: flutter_svg
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.3"
   flutter_swipe_action_cell:
     dependency: "direct main"
     description:
@@ -1075,6 +1089,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.1"
+  path_drawing:
+    dependency: transitive
+    description:
+      name: path_drawing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
+  path_parsing:
+    dependency: transitive
+    description:
+      name: path_parsing
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   path_provider:
     dependency: "direct main"
     description:

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../resources/resources.dart';
 
@@ -37,6 +38,39 @@ class RemoteImage extends StatelessWidget {
         fallbackHeight: height ?? 50,
         fallbackWidth: width ?? 50,
       ),
+    );
+  }
+}
+
+class DiceBearAvatar extends StatelessWidget {
+  final String sprites;
+  final String seed;
+  final double size;
+
+  const DiceBearAvatar({
+    Key? key,
+    this.sprites = 'big-smile',
+    required this.seed,
+    this.size = 50,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final placeholder = ClipRRect(
+      borderRadius: BorderRadius.circular(size),
+      child: Image.asset(
+        Images.placeholder,
+        fit: BoxFit.cover,
+        height: size,
+        width: size,
+      ),
+    );
+
+    return SvgPicture.network(
+      'https://avatars.dicebear.com/api/$sprites/$seed.svg?size=$size&radius=50',
+      height: size,
+      width: size,
+      placeholderBuilder: (_) => placeholder,
     );
   }
 }

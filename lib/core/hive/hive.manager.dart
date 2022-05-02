@@ -86,19 +86,25 @@ class HiveManager {
     }
   }
 
-  // workaround to check if encryption key is correct
+  // check if encryption key is correct
   static Future<bool> isEncryptionKeyCorrect(List<int> key) async {
-    // initialize as a temporary hive box
-    final _items = await Hive.openBox(
-      kHiveBoxItems,
-      encryptionCipher: HiveAesCipher(key),
-      path: LisoManager.tempPath,
-    );
+    Box<HiveLisoItem>? _items;
 
-    // TODO: what if vault is literally empty
-    final correct = _items.isNotEmpty;
+    try {
+      // initialize as a temporary hive box
+      _items = await Hive.openBox(
+        kHiveBoxItems,
+        encryptionCipher: HiveAesCipher(key),
+        path: LisoManager.tempPath,
+        crashRecovery: false, // throw error if wrong encryption key
+      );
+    } catch (e) {
+      console.error('incorrect encryption key');
+      return false;
+    }
+
     _items.close();
-    return correct;
+    return true;
   }
 
   static Future<void> reset() async {

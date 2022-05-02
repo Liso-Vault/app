@@ -27,11 +27,12 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         GestureDetector(
           child: RemoteImage(
             url: ConfigService.to.general.app.image,
-            height: 50,
-            placeholder: Image.asset(Images.logo, height: 50),
+            height: 100,
+            placeholder: Image.asset(Images.logo, height: 100),
           ),
           onLongPress: () {
-            PersistenceService.to.proTester.val = true;
+            PersistenceService.to.proTester.val =
+                !PersistenceService.to.proTester.val;
 
             UIUtils.showSnackBar(
               title: 'PRO Tester',

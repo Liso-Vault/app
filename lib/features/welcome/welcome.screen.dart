@@ -1,9 +1,7 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
@@ -39,6 +37,12 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.grey),
           ),
+          Obx(
+            () => Text(
+              'v${controller.appVersion}',
+              style: const TextStyle(color: Colors.grey, fontSize: 10),
+            ),
+          ),
           const Divider(),
           const SizedBox(height: 20),
           SizedBox(
@@ -65,38 +69,22 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: 'By proceeding, you agree to our ',
-                children: [
-                  TextSpan(
-                    text: 'Terms of Service',
-                    style: const TextStyle(color: kAppColor),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        console.info('tap');
-                        launchUrlString(
-                            ConfigService.to.general.app.links.terms);
-                      },
-                  ),
-                  const TextSpan(text: ' and '),
-                  TextSpan(
-                    text: 'Privacy Policy',
-                    style: const TextStyle(color: kAppColor),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () => launchUrlString(
-                          ConfigService.to.general.app.links.privacy),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10),
-            Obx(
-              () => Text(
-                'v${controller.appVersion}',
-                style: const TextStyle(color: Colors.grey, fontSize: 10),
-              ),
+            const Text('By proceeding, you agree to our'),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(
+                  onPressed: () =>
+                      launchUrlString(ConfigService.to.general.app.links.terms),
+                  child: const Text('Terms of Service'),
+                ),
+                const Text('and'),
+                TextButton(
+                  onPressed: () => launchUrlString(
+                      ConfigService.to.general.app.links.privacy),
+                  child: const Text('Privacy Policy'),
+                ),
+              ],
             ),
           ],
         ),
