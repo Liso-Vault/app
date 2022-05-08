@@ -21,12 +21,12 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
   void _init() {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
-
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      // PersistenceService.to.crashReporting.val, // TODO: let user decide
-      kReleaseMode,
-    );
+    if (isFirebaseSupported) {
+      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        // PersistenceService.to.crashReporting.val, // TODO: let user decide
+        kReleaseMode,
+      );
+    }
 
     // CAPTURE FLUTTER ERRORS
     FlutterError.onError = (details) {
@@ -39,8 +39,6 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       CrashlyticsService.recordStatic(details);
 
   static void recordStatic(FlutterErrorDetails details) {
-    if (!isFirebaseSupported) return;
-
     final console = Console(name: 'CrashlyticsService');
     final errorString = details.summary.value.toString();
 
@@ -64,6 +62,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       }
     }
 
+    if (!isFirebaseSupported) return console.warning('Not Supported');
     FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }
