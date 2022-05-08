@@ -42,7 +42,7 @@ dependencies:
   archive: ^3.3.0 # archiving hive boxes
   minio: ^3.5.0 # Filebase API
   ipfs_rpc: # ^0.0.1 # decentralized storage server
-    path: ../../packages/ipfs_rpc/
+    git: https://github.com/oliverbytes/ipfs_rpc.git
 
   # UI
   line_icons: ^2.0.1 # icons
@@ -88,6 +88,7 @@ dev_dependencies:
   hive_generator: ^1.1.2
   build_runner: ^2.1.10
   flutter_native_splash: ^2.1.1
+  msix: ^3.6.1
 
 flutter:
   uses-material-design: true

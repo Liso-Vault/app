@@ -2,6 +2,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/console.dart';
+import 'package:liso/core/utils/globals.dart';
 
 class CrashlyticsService extends GetxService with ConsoleMixin {
   static CrashlyticsService get to => Get.find();
@@ -20,6 +21,8 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
   void _init() {
+    if (!isFirebaseSupported) return console.warning('Not Supported');
+
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
       // PersistenceService.to.crashReporting.val, // TODO: let user decide
       kReleaseMode,
@@ -36,6 +39,8 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       CrashlyticsService.recordStatic(details);
 
   static void recordStatic(FlutterErrorDetails details) {
+    if (!isFirebaseSupported) return;
+
     final console = Console(name: 'CrashlyticsService');
     final errorString = details.summary.value.toString();
 

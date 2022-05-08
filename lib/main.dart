@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -31,7 +32,10 @@ void main() async {
     // improve performance
     GestureBinding.instance?.resamplingEnabled = true;
     // initialize firebase and crashlytics before anything else to catch & report errors
-    await Firebase.initializeApp();
+    if (isFirebaseSupported) {
+      await Firebase.initializeApp();
+    }
+
     Get.put(CrashlyticsService());
     Get.put(ConfigService());
 
@@ -57,6 +61,7 @@ void main() async {
     runApp(const App());
   }, (Object exception, StackTrace stackTrace) {
     console.error("DART_ERROR");
+    console.error('$exception');
 
     final details = FlutterErrorDetails(
       exception: exception,

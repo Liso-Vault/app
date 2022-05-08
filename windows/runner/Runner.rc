@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 1,0,0
+#define VERSION_AS_NUMBER 0,3,012,0
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "1.0.0"
+#define VERSION_AS_STRING "0.3.0+12"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "A new Flutter project." "\0"
+            VALUE "CompanyName", "com.liso.app" "\0"
+            VALUE "FileDescription", "A Cross-Platform, Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault + crypto wallet specifically designed for storing sensitive to super sensitive information and files." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "liso" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2021 com.example. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 Stackwares. All rights reserved." "\0"
             VALUE "OriginalFilename", "liso.exe" "\0"
-            VALUE "ProductName", "liso" "\0"
+            VALUE "ProductName", "Liso" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

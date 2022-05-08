@@ -89,10 +89,13 @@ class Utils {
     final persistence = PersistenceService.to;
 
     // set preferred size
-    await windowManager.setSize(Size(
+    console.wtf('setSize');
+    windowManager.setSize(Size(
       persistence.windowWidth.val,
       persistence.windowHeight.val,
     ));
+
+    console.wtf('done');
   }
 
   static Icon categoryIcon(LisoItemCategory category, {Color? color}) {

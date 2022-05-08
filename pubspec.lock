@@ -218,6 +218,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.0"
+  cli_dialog:
+    dependency: transitive
+    description:
+      name: cli_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0"
   cli_util:
     dependency: transitive
     description:
@@ -337,6 +344,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.14.0"
+  dart_console:
+    dependency: transitive
+    description:
+      name: dart_console
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   dart_style:
     dependency: transitive
     description:
@@ -746,6 +760,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.6.1"
+  get_it:
+    dependency: transitive
+    description:
+      name: get_it
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.2.0"
   get_storage:
     dependency: "direct main"
     description:
@@ -896,9 +917,11 @@ packages:
   ipfs_rpc:
     dependency: "direct main"
     description:
-      path: "../../packages/ipfs_rpc"
-      relative: true
-    source: path
+      path: "."
+      ref: HEAD
+      resolved-ref: ed14aa4d82b46710a34c8c597d1e68582ef185f5
+      url: "https://github.com/oliverbytes/ipfs_rpc.git"
+    source: git
     version: "0.0.1"
   js:
     dependency: transitive
@@ -1012,6 +1035,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.5.0"
+  msix:
+    dependency: "direct dev"
+    description:
+      name: msix
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.6.1"
   nm:
     dependency: transitive
     description:

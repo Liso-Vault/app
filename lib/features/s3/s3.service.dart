@@ -45,23 +45,23 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // GETTERS
   String get rootPath => '${WalletService.to.address}/';
-  String get backupsPath => join(rootPath, 'Backups');
-  String get historyPath => join(rootPath, 'History');
+  String get backupsPath => join(rootPath, 'Backups').replaceAll('\\', '/');
+  String get historyPath => join(rootPath, 'History').replaceAll('\\', '/');
 
-  String get filesPath =>
-      join(
-        rootPath,
-        'Files',
-        DrawerMenuController.to.filterGroupIndex.value.toString(),
-      ) +
-      '/';
+  String get filesPath => (join(
+            rootPath,
+            'Files',
+            DrawerMenuController.to.filterGroupIndex.value.toString(),
+          ) +
+          '/')
+      .replaceAll('\\', '/');
 
   S3Content get lisoContent => S3Content(path: vaultPath);
 
   String get vaultPath => join(
         WalletService.to.address,
         LisoManager.vaultFilename,
-      );
+      ).replaceAll('\\', '/');
 
   // INIT
   @override
@@ -503,7 +503,7 @@ class S3Service extends GetxService with ConsoleMixin {
     try {
       eTag = await client!.putObject(
         config.s3.bucket,
-        join(s3Path, name + '/'),
+        join(s3Path, name + '/').replaceAll('\\', '/'),
         Stream<Uint8List>.value(Uint8List(0)),
         metadata: {'client': metadata},
       );

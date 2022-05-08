@@ -6,8 +6,12 @@ class FileUtils {
   static final console = Console(name: 'FileUtils');
 
   static Future<void> delete(String path) async {
+    final file = File(path);
+
+    if (!await file.exists()) return;
+
     try {
-      await File(path).delete();
+      await file.delete();
     } catch (e) {
       console.error('error deleting: $e');
     }

@@ -4,10 +4,11 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/config/models/s3.temp.dart';
 import 'package:liso/core/utils/console.dart';
-import 'package:path/path.dart';
 
 import '../../hive/models/field.hive.dart';
+import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
 import 'models/config_global.model.dart';
 import 'models/config_s3.model.dart';
@@ -87,6 +88,11 @@ class ConfigService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   void _init() async {
+    if (!isFirebaseSupported) {
+      _populate(local: true);
+      return console.warning('Not Supported');
+    }
+
     // SETTINGS
     await instance.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: 10.seconds,
@@ -109,45 +115,148 @@ class ConfigService extends GetxService with ConsoleMixin {
     fetch();
   }
 
-  void _populate() async {
-    general = ConfigGeneral.fromJson(
-      jsonDecode(instance.getString('general_config')),
-    );
+  void _populate({bool local = false}) async {
+    general = ConfigGeneral.fromJson(jsonDecode(await _getString(
+      'general_config',
+      local: local,
+    )));
 
-    app = ConfigApp.fromJson(jsonDecode(instance.getString('app_config')));
-    s3 = ConfigS3.fromJson(jsonDecode(instance.getString('s3_config')));
+    app = ConfigApp.fromJson(jsonDecode(await _getString(
+      'app_config',
+      local: local,
+    )));
+
+    if (isFirebaseSupported) {
+      s3 = ConfigS3.fromJson(jsonDecode(await _getString(
+        's3_config',
+        local: local,
+      )));
+    } else {
+      s3 = const ConfigS3(
+        key: kS3Key,
+        secret: kS3Secret,
+        bucket: kS3Bucket,
+        endpoint: kS3Endpoint,
+      );
+    }
 
     choicesCountry = List<HiveLisoFieldChoices>.from(
-      jsonDecode(instance.getString('choices_country')).map(
+      jsonDecode(await _getString('choices_country', local: local)).map(
         (x) => HiveLisoFieldChoices.fromJson(x),
       ),
     );
 
     // TEMPLATES
-    templateAPICredential = await _parseTemplate('template_api_credential');
-    templateBankAccount = await _parseTemplate('template_bank_account');
-    templateCashCard = await _parseTemplate('template_cash_card');
-    templateCryptoWallet = await _parseTemplate('template_crypto_wallet');
-    templateDatabase = await _parseTemplate('template_database');
-    templateDriversLicense = await _parseTemplate('template_drivers_license');
-    templateEmailAccount = await _parseTemplate('template_email_account');
-    templateEncryption = await _parseTemplate('template_encryption');
-    templateIdentity = await _parseTemplate('template_identity');
-    templateLogin = await _parseTemplate('template_login');
-    templateMedicalRecord = await _parseTemplate('template_medical_record');
-    templateMembership = await _parseTemplate('template_membership');
-    templateNote = await _parseTemplate('template_note');
-    templateOutdoorLicense = await _parseTemplate('template_outdoor_license');
-    templatePassport = await _parseTemplate('template_passport');
-    templatePassword = await _parseTemplate('template_password');
-    templateRewardsProgram = await _parseTemplate('template_rewards_program');
-    templateServer = await _parseTemplate('template_server');
-    templateSocialSecurity = await _parseTemplate('template_social_security');
-    templateSoftwareLicense = await _parseTemplate('template_software_license');
-    templateWirelessRouter = await _parseTemplate('template_wireless_router');
+    templateAPICredential = await _parseTemplate(
+      'template_api_credential',
+      local: local,
+    );
+
+    templateBankAccount = await _parseTemplate(
+      'template_bank_account',
+      local: local,
+    );
+
+    templateCashCard = await _parseTemplate(
+      'template_cash_card',
+      local: local,
+    );
+
+    templateCryptoWallet = await _parseTemplate(
+      'template_crypto_wallet',
+      local: local,
+    );
+
+    templateDatabase = await _parseTemplate(
+      'template_database',
+      local: local,
+    );
+
+    templateDriversLicense = await _parseTemplate(
+      'template_drivers_license',
+      local: local,
+    );
+
+    templateEmailAccount = await _parseTemplate(
+      'template_email_account',
+      local: local,
+    );
+
+    templateEncryption = await _parseTemplate(
+      'template_encryption',
+      local: local,
+    );
+
+    templateIdentity = await _parseTemplate(
+      'template_identity',
+      local: local,
+    );
+
+    templateLogin = await _parseTemplate(
+      'template_login',
+      local: local,
+    );
+
+    templateMedicalRecord = await _parseTemplate(
+      'template_medical_record',
+      local: local,
+    );
+
+    templateMembership = await _parseTemplate(
+      'template_membership',
+      local: local,
+    );
+
+    templateNote = await _parseTemplate(
+      'template_note',
+      local: local,
+    );
+
+    templateOutdoorLicense = await _parseTemplate(
+      'template_outdoor_license',
+      local: local,
+    );
+
+    templatePassport = await _parseTemplate(
+      'template_passport',
+      local: local,
+    );
+
+    templatePassword = await _parseTemplate(
+      'template_password',
+      local: local,
+    );
+
+    templateRewardsProgram = await _parseTemplate(
+      'template_rewards_program',
+      local: local,
+    );
+
+    templateServer = await _parseTemplate(
+      'template_server',
+      local: local,
+    );
+
+    templateSocialSecurity = await _parseTemplate(
+      'template_social_security',
+      local: local,
+    );
+
+    templateSoftwareLicense = await _parseTemplate(
+      'template_software_license',
+      local: local,
+    );
+
+    templateWirelessRouter = await _parseTemplate(
+      'template_wireless_router',
+      local: local,
+    );
+
+    console.info('populated');
   }
 
   Future<void> fetch() async {
+    if (!isFirebaseSupported) return console.warning('Not Supported');
     console.info('fetching...');
 
     try {
@@ -161,8 +270,7 @@ class ConfigService extends GetxService with ConsoleMixin {
 
   Future<List<HiveLisoField>> _parseTemplate(String key,
       {bool local = false}) async {
-    final string =
-        local ? await _obtainLocalParameter(key) : _obtainServerParameter(key);
+    final string = await _getString(key, local: local);
 
     return List<HiveLisoField>.from(
       jsonDecode(string).map((e) => HiveLisoField.fromJson(e)),
@@ -170,8 +278,8 @@ class ConfigService extends GetxService with ConsoleMixin {
   }
 
   Future<String> _obtainLocalParameter(String key) async {
-    final path = join('assets', 'json', 'config');
-    final string = await rootBundle.loadString(join(path, '$key.json'));
+    // we don't use 'path' lib because of a bug for windows
+    final string = await rootBundle.loadString('assets/json/config/$key.json');
     if (string.isEmpty) throw 'empty local config parameter: $key';
     return string; // TODO: error handling
   }
@@ -180,5 +288,11 @@ class ConfigService extends GetxService with ConsoleMixin {
     final string = instance.getString(key);
     if (string.isEmpty) throw 'empty server config parameter: $key';
     return string; // TODO: error handling
+  }
+
+  Future<String> _getString(String key, {bool local = false}) async {
+    return local
+        ? await _obtainLocalParameter(key)
+        : _obtainServerParameter(key);
   }
 }

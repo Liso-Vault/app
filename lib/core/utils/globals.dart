@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:web3dart/credentials.dart';
 
 // HIVE DATABASE
@@ -28,6 +29,8 @@ final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
 final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
+
+final isFirebaseSupported = !GetPlatform.isWindows && !GetPlatform.isLinux;
 
 // ENUMS
 enum LisoItemSortOrder {

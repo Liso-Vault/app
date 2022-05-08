@@ -265,7 +265,8 @@ class S3ExplorerScreenController extends GetxController
 
     final result = await S3Service.to.uploadFile(
       file,
-      s3Path: join(currentPath.value, basename(file.path)),
+      s3Path:
+          join(currentPath.value, basename(file.path)).replaceAll('\\', '/'),
       metadata: await S3Service.to.updatedLocalMetadata(),
     );
 
