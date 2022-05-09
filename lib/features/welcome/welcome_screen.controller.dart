@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class WelcomeScreenBinding extends Bindings {

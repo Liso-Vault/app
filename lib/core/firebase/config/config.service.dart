@@ -4,8 +4,8 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/config/models/s3.temp.dart';
-import 'package:liso/core/utils/console.dart';
+// import 'package:liso/core/firebase/config/models/s3.temp.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 import '../../hive/models/field.hive.dart';
 import '../../utils/globals.dart';
@@ -111,7 +111,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     // pre-populate to make sure
     _populate();
     // workaround for https://github.com/firebase/flutterfire/issues/6196
-    await Future.delayed(2.seconds);
+    await Future.delayed(3.seconds);
     fetch();
   }
 
@@ -132,12 +132,13 @@ class ConfigService extends GetxService with ConsoleMixin {
         local: local,
       )));
     } else {
-      s3 = const ConfigS3(
-        key: kS3Key,
-        secret: kS3Secret,
-        bucket: kS3Bucket,
-        endpoint: kS3Endpoint,
-      );
+      // TODO: for windows
+      // s3 = const ConfigS3(
+      //   key: kS3Key,
+      //   secret: kS3Secret,
+      //   bucket: kS3Bucket,
+      //   endpoint: kS3Endpoint,
+      // );
     }
 
     choicesCountry = List<HiveLisoFieldChoices>.from(
@@ -277,6 +278,12 @@ class ConfigService extends GetxService with ConsoleMixin {
     );
   }
 
+  Future<String> _getString(String key, {bool local = false}) async {
+    return local
+        ? await _obtainLocalParameter(key)
+        : _obtainServerParameter(key);
+  }
+
   Future<String> _obtainLocalParameter(String key) async {
     // we don't use 'path' lib because of a bug for windows
     final string = await rootBundle.loadString('assets/json/config/$key.json');
@@ -288,11 +295,5 @@ class ConfigService extends GetxService with ConsoleMixin {
     final string = instance.getString(key);
     if (string.isEmpty) throw 'empty server config parameter: $key';
     return string; // TODO: error handling
-  }
-
-  Future<String> _getString(String key, {bool local = false}) async {
-    return local
-        ? await _obtainLocalParameter(key)
-        : _obtainServerParameter(key);
   }
 }

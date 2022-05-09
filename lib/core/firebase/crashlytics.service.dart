@@ -1,8 +1,9 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
+
+import 'package:firebase_crashlytics/firebase_crashlytics.dart' if (kIsWeb) '';
 
 class CrashlyticsService extends GetxService with ConsoleMixin {
   static CrashlyticsService get to => Get.find();
@@ -22,10 +23,10 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   void _init() {
     if (isFirebaseSupported) {
-      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-        // PersistenceService.to.crashReporting.val, // TODO: let user decide
-        kReleaseMode,
-      );
+      // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+      //   // PersistenceService.to.crashReporting.val, // TODO: let user decide
+      //   kReleaseMode,
+      // );
     }
 
     // CAPTURE FLUTTER ERRORS
@@ -63,6 +64,6 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     }
 
     if (!isFirebaseSupported) return console.warning('Not Supported');
-    FirebaseCrashlytics.instance.recordFlutterError(details);
+    // FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }

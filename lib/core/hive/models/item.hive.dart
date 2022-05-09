@@ -7,7 +7,7 @@ import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:supercharged/supercharged.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 import '../../features/general/custom_input_date_field.widget.dart';
 

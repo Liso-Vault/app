@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 class FileUtils {
   static final console = Console(name: 'FileUtils');

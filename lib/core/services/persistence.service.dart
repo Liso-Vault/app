@@ -4,18 +4,22 @@ import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/translations/data.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:path/path.dart';
 
 class PersistenceService extends GetxService with ConsoleMixin {
   static PersistenceService get to => Get.find();
 
   // BOX
-  final box = GetStorage(
-    'persistence',
-    join(LisoPaths.main!.path, 'get_storage'),
-  );
+  final box = GetPlatform.isWeb
+      ? GetStorage('persistence')
+      : GetStorage(
+          'persistence',
+          join(LisoPaths.main!.path, 'get_storage'),
+        );
 
+  // WALLET
+  final wallet = 'wallet'.val('');
   // GENERAL
   final localeCode = 'en'.val('locale code');
   final crashReporting = true.val('crash reporting');

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/menu/context.menu.dart';
 
 import '../../core/utils/utils.dart';

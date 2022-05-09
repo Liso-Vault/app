@@ -11,7 +11,7 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:window_manager/window_manager.dart';
 
 import '../services/persistence.service.dart';
-import 'console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'globals.dart';
 
 class Utils {

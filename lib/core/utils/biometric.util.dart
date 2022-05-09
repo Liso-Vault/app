@@ -1,9 +1,8 @@
 import 'package:biometric_storage/biometric_storage.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:local_auth/local_auth.dart';
-
-import 'console.dart';
 
 class BiometricUtils {
   static final console = Console(name: 'BiometricUtils');

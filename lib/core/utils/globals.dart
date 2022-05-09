@@ -30,7 +30,7 @@ final inputFormatterRestrictSpaces =
 final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
-final isFirebaseSupported = !GetPlatform.isWindows && !GetPlatform.isLinux;
+final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 
 // ENUMS
 enum LisoItemSortOrder {

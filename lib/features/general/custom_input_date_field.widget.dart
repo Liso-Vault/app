@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 
-import '../../core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import '../../core/utils/globals.dart';
 
 class CustomInputDateField extends StatelessWidget with ConsoleMixin {

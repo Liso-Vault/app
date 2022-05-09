@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 // ignore: must_be_immutable
 class TextAreaFormField extends StatelessWidget with ConsoleMixin {

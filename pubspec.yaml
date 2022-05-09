@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.3.0+12
+version: 0.3.0+13
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -75,6 +75,7 @@ dependencies:
   window_manager: ^0.2.2 # set desktop window size
   dart_code_metrics: ^4.14.0 # checking unused stuffs
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
+  console_mixin: ^0.0.1 # logger
 
   # INFO
   device_info_plus: ^3.2.3

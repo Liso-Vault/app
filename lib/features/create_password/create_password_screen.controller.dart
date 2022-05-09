@@ -6,7 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/services/wallet.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';

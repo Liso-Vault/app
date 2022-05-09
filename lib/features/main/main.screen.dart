@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';

@@ -10,7 +10,7 @@ import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:window_manager/window_manager.dart';
@@ -22,6 +22,21 @@ import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.item.dart';
 import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
+
+const kIOSRestrictedCategories = [
+  LisoItemCategory.bankAccount,
+  LisoItemCategory.cashCard,
+  LisoItemCategory.cryptoWallet,
+  LisoItemCategory.encryption,
+  LisoItemCategory.apiCredential,
+  LisoItemCategory.passport,
+  LisoItemCategory.password,
+  LisoItemCategory.login,
+  LisoItemCategory.socialSecurity,
+  LisoItemCategory.server,
+  LisoItemCategory.database,
+  LisoItemCategory.email,
+];
 
 class MainScreenController extends GetxController
     with StateMixin, ConsoleMixin, WindowListener {
@@ -35,14 +50,15 @@ class MainScreenController extends GetxController
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
-        .where((e) => e.name != 'none')
+        .where((e) =>
+            e.name != 'none' &&
+            ((!kIOSRestrictedCategories.contains(e) && GetPlatform.isIOS) ||
+                PersistenceService.to.proTester.val))
         .toList()
         .map(
           (e) => ContextMenuItem(
             title: e.name.tr,
-            leading: Utils.categoryIcon(
-              LisoItemCategory.values.byName(e.name),
-            ),
+            leading: Utils.categoryIcon(LisoItemCategory.values.byName(e.name)),
             onSelected: () {
               Utils.adaptiveRouteOpen(
                 name: Routes.item,
@@ -133,7 +149,7 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    if (GetPlatform.isDesktop) {
+    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       windowManager.addListener(this);
       windowManager.setPreventClose(true);
     }
@@ -152,7 +168,7 @@ class MainScreenController extends GetxController
 
   @override
   void onClose() {
-    if (GetPlatform.isDesktop) {
+    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       windowManager.removeListener(this);
     }
 
@@ -232,38 +248,6 @@ class MainScreenController extends GetxController
 
     searchDelegate = null;
   }
-
-  // void generateTemplates() {
-  // final contents = {
-  //   'api_credential.json': templateAPICredentialFields(),
-  //   'bank_account.json': templateBankAccountFields(),
-  //   'cash_card.json': templateCashCardFields(),
-  //   'crypto_wallet.json': templateCryptoWalletFields(),
-  //   'database.json': templateDatabaseFields(),
-  //   'drivers_license.json': templateDriversLicenseFields(),
-  //   'email_account.json': templateEmailFields(),
-  //   'encryption.json': templateEncryptionFields(),
-  //   'identity.json': templateIdentityFields(),
-  //   'login.json': templateLoginFields(),
-  //   'medical_record.json': templateMedicalRecordFields(),
-  //   'membership.json': templateMembershipFields(),
-  //   'note.json': templateNoteFields(),
-  //   'outdoor_license.json': templateOutdoorLicenseFields(),
-  //   'passport.json': templatePassportFields(),
-  //   'password.json': templatePasswordFields(),
-  //   'rewards_program.json': templateRewardsProgramFields(),
-  //   'server.json': templateServerFields(),
-  //   'social_security.json': templateSocialSecurityFields(),
-  //   'software_licnse.json': templateSoftwareLicenseFields(),
-  //   'wireless_router.json': templateWirelessRouterFields(),
-  // };
-
-  // for (var e in contents.entries) {
-  //   console.info('writing: ${e.key}');
-  //   await File(join(LisoPaths.temp!.path, e.key))
-  //       .writeAsString(jsonEncode(e.value));
-  // }
-  // }
 
   Future<void> load() async {
     final boxIsOpen = HiveManager.items?.isOpen ?? false;

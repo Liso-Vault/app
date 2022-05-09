@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:web3dart/credentials.dart';
 
 class Isolates {

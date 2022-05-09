@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/item/item.tile.dart';
 
 class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {

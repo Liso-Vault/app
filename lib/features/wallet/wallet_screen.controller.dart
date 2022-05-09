@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 class WalletScreenBinding extends Bindings {
   @override

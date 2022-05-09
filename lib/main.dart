@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/services/persistence.service.dart';
 import 'core/utils/biometric.util.dart';
-import 'core/utils/console.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/connectivity/connectivity.service.dart';
@@ -33,13 +33,23 @@ void main() async {
     GestureBinding.instance?.resamplingEnabled = true;
     // initialize firebase and crashlytics before anything else to catch & report errors
     if (isFirebaseSupported) {
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+        options: FirebaseOptions.fromMap(const {
+          'apiKey': "AIzaSyDcZD4YyXHHTkZaign3Xjq4Js5U0H-hsmk",
+          'authDomain': "liso-vault.firebaseapp.com",
+          'projectId': "liso-vault",
+          'storageBucket': "liso-vault.appspot.com",
+          'messagingSenderId': "848138515356",
+          'appId': "1:848138515356:web:ec3470f72ebaadd03b0e59",
+          'measurementId': "G-VWDGD50KS2"
+        }),
+      );
     }
 
     Get.put(CrashlyticsService());
     Get.put(ConfigService());
 
-    if (GetPlatform.isDesktop) {
+    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       await windowManager.ensureInitialized();
     }
     // init

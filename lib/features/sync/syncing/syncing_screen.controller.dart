@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 
-import '../../../core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import '../../app/routes.dart';
 import '../../s3/s3.service.dart';
 

@@ -3,7 +3,7 @@ import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/section.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 // ignore: must_be_immutable
 class AddressFormField extends StatelessWidget with ConsoleMixin {

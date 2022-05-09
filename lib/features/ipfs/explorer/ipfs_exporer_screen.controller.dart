@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:ipfs_rpc/ipfs_rpc.dart';
 import 'package:liso/features/ipfs/ipfs.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';

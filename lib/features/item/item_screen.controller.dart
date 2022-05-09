@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:uuid/uuid.dart';

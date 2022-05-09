@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../liso/liso.manager.dart';

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/app/routes.dart';
 
 class ResetScreenBinding extends Bindings {

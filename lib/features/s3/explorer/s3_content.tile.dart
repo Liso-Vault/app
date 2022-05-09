@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
 
-import '../../../core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
-import '../../core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 class ConnectivityService extends GetxService with ConsoleMixin {
   static ConnectivityService get to => Get.find();

@@ -6,7 +6,7 @@ import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:path/path.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -22,12 +22,10 @@ class WalletService extends GetxService with ConsoleMixin {
 
   String get fileName => 'wallet.$kWalletExtension';
 
-  String get filePath => join(
-        LisoManager.mainPath,
-        fileName,
-      );
+  String get filePath => join(LisoManager.mainPath, fileName);
 
-  bool get fileExists => File(filePath).existsSync();
+  // bool get fileExists => File(filePath).existsSync();
+  bool get fileExists => false;
 
   Wallet mnemonicToWallet(
     String mnemonic, {

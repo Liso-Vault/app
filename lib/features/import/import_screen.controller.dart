@@ -8,7 +8,7 @@ import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:minio/minio.dart';

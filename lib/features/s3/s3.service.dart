@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';

@@ -9,7 +9,7 @@ import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
 import 'package:liso/core/form_fields/url.field.dart';
-import 'package:liso/core/utils/console.dart';
+import 'package:console_mixin/console_mixin.dart';
 
 import '../form_fields/address.field.dart';
 import '../form_fields/email.field.dart';
