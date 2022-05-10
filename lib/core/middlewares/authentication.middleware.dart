@@ -14,7 +14,10 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
   @override
   RouteSettings? redirect(String? route) {
-    if (!WalletService.to.fileExists) {
+    console.wtf('redirect(): $route');
+
+    if (!WalletService.to.exists) {
+      console.info('###${PersistenceService.to.wallet.val}###');
       return const RouteSettings(name: Routes.welcome);
     }
 
@@ -33,11 +36,17 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     init();
-    return null;
+    return super.redirect(route);
   }
 
   void init() {
     MainScreenController.to.load();
     S3Service.to.fetchStorageSize();
+  }
+
+  @override
+  GetPage? onPageCalled(GetPage? page) {
+    console.wtf('onPageCalled(): $page');
+    return super.onPageCalled(page);
   }
 }

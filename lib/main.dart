@@ -9,6 +9,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/ipfs/ipfs.service.dart';
+import 'package:liso/firebase_options.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'core/firebase/config/config.service.dart';
@@ -34,15 +35,7 @@ void main() async {
     // initialize firebase and crashlytics before anything else to catch & report errors
     if (isFirebaseSupported) {
       await Firebase.initializeApp(
-        options: FirebaseOptions.fromMap(const {
-          'apiKey': "AIzaSyDcZD4YyXHHTkZaign3Xjq4Js5U0H-hsmk",
-          'authDomain': "liso-vault.firebaseapp.com",
-          'projectId': "liso-vault",
-          'storageBucket': "liso-vault.appspot.com",
-          'messagingSenderId': "848138515356",
-          'appId': "1:848138515356:web:ec3470f72ebaadd03b0e59",
-          'measurementId': "G-VWDGD50KS2"
-        }),
+        options: DefaultFirebaseOptions.currentPlatform,
       );
     }
 

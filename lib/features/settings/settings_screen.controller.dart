@@ -1,12 +1,12 @@
 import 'dart:io';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
@@ -115,15 +115,16 @@ class SettingsScreenController extends GetxController
 
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
-    final mainFile = File(WalletService.to.filePath);
 
     final exportFileName =
         '${WalletService.to.address}.wallet.$kWalletExtension';
 
-    final tempFile = await mainFile.copy(join(
+    final tempFile = File(join(
       LisoPaths.temp!.path,
       exportFileName,
     ));
+
+    await tempFile.writeAsString(PersistenceService.to.wallet.val);
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(

@@ -1,17 +1,15 @@
-import 'package:flutter/foundation.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/isolates.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:web3dart/credentials.dart';
 
 import '../../core/hive/hive.manager.dart';
-import '../../core/services/wallet.service.dart';
 import '../../core/utils/biometric.util.dart';
 
 class UnlockScreenBinding extends Bindings {
@@ -70,10 +68,10 @@ class UnlockScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     try {
-      Globals.wallet = await compute(Isolates.loadWallet, {
-        'file_path': WalletService.to.filePath,
-        'password': passwordController.text,
-      });
+      Globals.wallet = Wallet.fromJson(
+        PersistenceService.to.wallet.val,
+        passwordController.text,
+      );
     } catch (e) {
       console.error('load wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
@@ -101,8 +99,6 @@ class UnlockScreenController extends GetxController
     }
 
     if (passwordMode) return Get.back(result: true);
-
-    // open Hive Boxes
     await HiveManager.openBoxes();
     change(null, status: RxStatus.success());
     return Get.offNamedUntil(Routes.main, (route) => false);

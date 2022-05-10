@@ -37,6 +37,13 @@
             {
               "client_id": "848138515356-k88baaso1gqotrautv0le4ijpeo91bqm.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "848138515356-79apc9n4ji9ahcruielpkt0k7dnab2r5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.liso.app"
+              }
             }
           ]
         }

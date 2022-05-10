@@ -1,16 +1,14 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
-import 'package:console_mixin/console_mixin.dart';
-import 'package:path/path.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:web3dart/web3dart.dart';
 
-import '../liso/liso.manager.dart';
 import '../utils/globals.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
@@ -20,12 +18,7 @@ class WalletService extends GetxService with ConsoleMixin {
   String get shortAddress =>
       address.substring(0, 13) + '...' + address.substring(address.length - 13);
 
-  String get fileName => 'wallet.$kWalletExtension';
-
-  String get filePath => join(LisoManager.mainPath, fileName);
-
-  // bool get fileExists => File(filePath).existsSync();
-  bool get fileExists => false;
+  bool get exists => PersistenceService.to.wallet.val.isNotEmpty;
 
   Wallet mnemonicToWallet(
     String mnemonic, {

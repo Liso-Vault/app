@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,7 +11,6 @@ import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:window_manager/window_manager.dart';
@@ -50,10 +50,13 @@ class MainScreenController extends GetxController
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
-        .where((e) =>
-            e.name != 'none' &&
-            ((!kIOSRestrictedCategories.contains(e) && GetPlatform.isIOS) ||
-                PersistenceService.to.proTester.val))
+        .where((e) {
+          if (e.name == 'none') return false;
+          if (!GetPlatform.isIOS) return true;
+          // allow only notes category for iOS
+          return e == LisoItemCategory.note ||
+              PersistenceService.to.proTester.val;
+        })
         .toList()
         .map(
           (e) => ContextMenuItem(
@@ -153,6 +156,30 @@ class MainScreenController extends GetxController
       windowManager.addListener(this);
       windowManager.setPreventClose(true);
     }
+
+    // if (GetPlatform.isWeb) {
+    //   if (!WalletService.to.exists) {
+    //     Get.toNamed(Routes.welcome);
+    //     return;
+    //   }
+
+    //   if (Globals.wallet == null) {
+    //     Get.toNamed(Routes.unlock);
+    //     return;
+    //   }
+
+    //   if (!PersistenceService.to.syncConfirmed.val) {
+    //     Get.toNamed(Routes.syncSettings);
+    //     return;
+    //   }
+
+    //   if (!AuthenticationMiddleware.ignoreSync &&
+    //       !S3Service.to.inSync.value &&
+    //       PersistenceService.to.sync.val) {
+    //     Get.toNamed(Routes.syncing);
+    //     return;
+    //   }
+    // }
 
     console.info('onInit');
     super.onInit();
@@ -394,7 +421,7 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timeLockTimer?.cancel();
 
-        if (WalletService.to.fileExists && Globals.wallet == null) {
+        if (WalletService.to.exists && Globals.wallet == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {

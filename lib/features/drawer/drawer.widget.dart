@@ -208,7 +208,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             initiallyExpanded: true,
             children: [
               SimpleBuilder(
-                builder: (_) => PersistenceService.to.sync.val
+                builder: (_) => PersistenceService.to.sync.val &&
+                        !GetPlatform.isIOS
                     ? ListTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -262,12 +263,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   ],
                 ),
               ),
-              ListTile(
-                title: Text('browser'.tr),
-                leading: const FaIcon(LineIcons.wiredNetwork),
-                enabled: false,
-                // onTap: controller.files,
-              ),
+              // ListTile(
+              //   title: Text('browser'.tr),
+              //   leading: const FaIcon(LineIcons.wiredNetwork),
+              //   enabled: false,
+              //   // onTap: controller.files,
+              // ),
               ListTile(
                 title: Text('settings'.tr),
                 leading: const Icon(LineIcons.cog),

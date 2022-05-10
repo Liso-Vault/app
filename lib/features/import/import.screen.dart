@@ -28,13 +28,13 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             'import_vault'.tr,
             style: const TextStyle(fontSize: 20),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 10),
           const Text(
-            "Import your vault and enter your master seed phrase to decrypt it.\nMake sure you're in a safe location from prying eyes.",
+            "Import your vault and enter your master seed phrase to decrypt it.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Obx(
             () => CupertinoSegmentedControl<ImportMode>(
               groupValue: controller.importMode.value,
@@ -82,10 +82,11 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 ],
               );
             } else if (controller.importMode() == ImportMode.liso) {
-              return Text(
-                'Enter the seed phrase you used to sync to ${ConfigService.to.appName} Cloud',
-                textAlign: TextAlign.center,
-              );
+              // return Text(
+              //   'Enter the seed phrase you used to sync to ${ConfigService.to.appName} Cloud',
+              //   textAlign: TextAlign.center,
+              // );
+              return const SizedBox.shrink();
             } else {
               return const SizedBox.shrink();
             }

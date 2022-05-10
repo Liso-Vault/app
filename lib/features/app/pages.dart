@@ -47,7 +47,9 @@ class AppPages {
       page: () => MainScreen(),
       binding: MainScreenBinding(),
       transition: Transition.fadeIn,
-      middlewares: [AuthenticationMiddleware()],
+      middlewares: [
+        AuthenticationMiddleware(),
+      ],
     ),
     GetPage(
       name: Routes.welcome,

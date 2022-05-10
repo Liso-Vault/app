@@ -1,14 +1,13 @@
 import 'dart:io';
 
 import 'package:archive/archive_io.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/biometric.util.dart';
-import 'package:console_mixin/console_mixin.dart';
-import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:path/path.dart';
@@ -117,8 +116,8 @@ class LisoManager {
     await BiometricUtils.delete(kBiometricSeedKey);
     // nullify wallet
     Globals.wallet = null;
-    // delete files
-    await FileUtils.delete(WalletService.to.filePath); // wallet
+    // clear wallet persistence
+    PersistenceService.to.wallet.val = '';
     // reset hive
     await HiveManager.reset();
     // persistence

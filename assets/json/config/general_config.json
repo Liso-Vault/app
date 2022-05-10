@@ -38,9 +38,9 @@
     "app": {
         "name": "Liso",
         "image": "https://i.imgur.com/GW4HQ1r.png",
-        "short_description": "A Cross-Platform, Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault + crypto wallet specifically designed for storing sensitive to super sensitive information and files.",
+        "short_description": "A Cross-Platform, Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault.",
         "long_description": "",
-        "share_text": "A Cross-Platform, Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault + crypto wallet specifically designed for storing sensitive to super sensitive information and files. Learn more: https://twitter.com/liso_vault",
+        "share_text": "A Cross-Platform, Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault.",
         "emails": {
             "support": "support@liso.com",
             "issues": "issues@liso.com",

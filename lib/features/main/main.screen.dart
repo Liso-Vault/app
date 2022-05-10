@@ -198,7 +198,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               controller.menuItemsCategory,
               child: FloatingActionButton(
                 child: const Icon(LineIcons.plus),
-                onPressed: () {},
+                onPressed: () {
+                  console.wtf('floating');
+                },
               ),
             ),
     );

@@ -8,7 +8,6 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/services/wallet.service.dart';
 
 class ResetScreen extends GetView<ResetScreenController> {
   const ResetScreen({Key? key}) : super(key: key);
@@ -25,9 +24,9 @@ class ResetScreen extends GetView<ResetScreenController> {
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 20),
-        Text(
-          'Your local vault.$kVaultExtension and ${WalletService.to.fileName} file be deleted',
-          style: const TextStyle(color: Colors.grey),
+        const Text(
+          'Your local <vault>.$kVaultExtension will be deleted',
+          style: TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 15),

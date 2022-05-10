@@ -19,7 +19,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
         );
 
   // WALLET
-  final wallet = 'wallet'.val('');
+  final wallet = ''.val('wallet');
   // GENERAL
   final localeCode = 'en'.val('locale code');
   final crashReporting = true.val('crash reporting');

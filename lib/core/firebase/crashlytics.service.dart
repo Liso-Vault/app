@@ -1,9 +1,7 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
-
-import 'package:firebase_crashlytics/firebase_crashlytics.dart' if (kIsWeb) '';
 
 class CrashlyticsService extends GetxService with ConsoleMixin {
   static CrashlyticsService get to => Get.find();

@@ -1,13 +1,12 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
-import '../../core/services/wallet.service.dart';
 import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';
 
@@ -29,9 +28,9 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             style: const TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 15),
-          Text(
-            "This will be the password to unlock the ${WalletService.to.fileName} file which also secures the vault.$kVaultExtension with the private key",
-            style: const TextStyle(color: Colors.grey),
+          const Text(
+            "This will be the password to unlock the wallet which also secures the vault.$kVaultExtension with the private key",
+            style: TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 30),
