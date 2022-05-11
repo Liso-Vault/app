@@ -24,10 +24,9 @@ class ConfigGeneral {
 
 class ConfigGeneralApp {
   const ConfigGeneralApp({
-    this.name = 'Liso',
-    this.image = 'https://i.imgur.com/GW4HQ1r.png',
-    this.shortDescription =
-        'Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault specifically designed for storing sensitive to super sensitive data and files.',
+    this.name = '',
+    this.image = '',
+    this.shortDescription = '',
     this.longDescription = '',
     this.shareText = '',
     this.emails = const ConfigGeneralAppEmails(),
@@ -197,9 +196,9 @@ class ConfigGeneralStore {
 
 class ConfigGeneralDeveloper {
   const ConfigGeneralDeveloper({
-    this.name = 'Stackwares',
-    this.image = 'https://i.imgur.com/XygjDNZ.png',
-    this.shortDescription = 'We build the future of apps',
+    this.name = '',
+    this.image = '',
+    this.shortDescription = '=',
     this.longDescription = '',
     this.address = const ConfigGeneralDeveloperAddress(),
     this.emails = const ConfigGeneralDeveloperEmails(),

@@ -2,8 +2,8 @@ import 'dart:convert';
 
 class ConfigApp {
   const ConfigApp({
-    this.id = 'liso',
-    this.package = 'com.liso.app',
+    this.id = '',
+    this.package = '',
     this.enabled = true,
     this.build = const ConfigAppBuild(),
     this.settings = const ConfigAppSettings(),

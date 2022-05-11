@@ -52,31 +52,28 @@ class WalletService extends GetxService with ConsoleMixin {
     return HEX.encode(path.privateKey!);
   }
 
-  void sign() async {
+  void sign(String message) async {
+    final messageBytes = Uint8List.fromList(utf8.encode(message));
+
     final privateKey = Globals.wallet!.privateKey;
     final privateKeyHex = HEX.encode(privateKey.privateKey);
 
-    const message = 'liso';
-    final messageBytes = Uint8List.fromList(utf8.encode(message));
-
     final signedMessage = await privateKey.sign(messageBytes);
     final signedMessageHex = HEX.encode(signedMessage);
-    console.warning(
-      'signedMessage: $signedMessageHex',
-    );
 
     final signature = EthSigUtil.signMessage(
       privateKey: privateKeyHex,
       message: messageBytes,
     );
 
-    console.info('signature: $signature');
-
     final recoveredAddress = EthSigUtil.ecRecover(
       signature: signature,
       message: messageBytes,
     );
 
+    console.info('message: $message');
+    console.info('signature: $signature');
     console.info('recoveredAddress: $recoveredAddress');
+    console.wtf('signedMessageHex: $signedMessageHex');
   }
 }

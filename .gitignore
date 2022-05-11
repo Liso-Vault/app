@@ -45,10 +45,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-# temporary files
+# general
 *.temp.dart
 .fvm/fvm_config.json
+# firebase
 ios/firebase_app_id_file.json
 lib/firebase_options.dart
 macos/firebase_app_id_file.json
-android/app/google-services.json
+# remote config defaults
+assets/json/config/app_config.json
+assets/json/config/general_config.json
+assets/json/config/s3_config.json

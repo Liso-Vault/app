@@ -4,7 +4,6 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-// import 'package:liso/core/firebase/config/models/s3.temp.dart';
 import 'package:console_mixin/console_mixin.dart';
 
 import '../../hive/models/field.hive.dart';
@@ -126,20 +125,10 @@ class ConfigService extends GetxService with ConsoleMixin {
       local: local,
     )));
 
-    if (isFirebaseSupported) {
-      s3 = ConfigS3.fromJson(jsonDecode(await _getString(
-        's3_config',
-        local: local,
-      )));
-    } else {
-      // TODO: for windows
-      // s3 = const ConfigS3(
-      //   key: kS3Key,
-      //   secret: kS3Secret,
-      //   bucket: kS3Bucket,
-      //   endpoint: kS3Endpoint,
-      // );
-    }
+    s3 = ConfigS3.fromJson(jsonDecode(await _getString(
+      's3_config',
+      local: local,
+    )));
 
     choicesCountry = List<HiveLisoFieldChoices>.from(
       jsonDecode(await _getString('choices_country', local: local)).map(
