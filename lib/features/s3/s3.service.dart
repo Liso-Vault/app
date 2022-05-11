@@ -64,12 +64,6 @@ class S3Service extends GetxService with ConsoleMixin {
       ).replaceAll('\\', '/');
 
   // INIT
-  @override
-  void onInit() {
-    init();
-    console.info('onInit');
-    super.onInit();
-  }
 
   // FUNCTIONS
 
