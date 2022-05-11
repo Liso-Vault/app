@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
+import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/services/persistence.service.dart';
@@ -50,31 +52,31 @@ class WalletService extends GetxService with ConsoleMixin {
     return HEX.encode(path.privateKey!);
   }
 
-  // void sign() async {
-  //   final privateKey = Globals.wallet!.privateKey;
-  //   final privateKeyHex = HEX.encode(privateKey.privateKey);
+  void sign() async {
+    final privateKey = Globals.wallet!.privateKey;
+    final privateKeyHex = HEX.encode(privateKey.privateKey);
 
-  //   const message = 'liso';
-  //   final messageBytes = Uint8List.fromList(utf8.encode(message));
+    const message = 'liso';
+    final messageBytes = Uint8List.fromList(utf8.encode(message));
 
-  //   final signedMessage = await privateKey.sign(messageBytes);
-  //   final signedMessageHex = HEX.encode(signedMessage);
-  //   console.warning(
-  //     'signedMessage: $signedMessageHex',
-  //   );
+    final signedMessage = await privateKey.sign(messageBytes);
+    final signedMessageHex = HEX.encode(signedMessage);
+    console.warning(
+      'signedMessage: $signedMessageHex',
+    );
 
-  //   final signature = EthSigUtil.signMessage(
-  //     privateKey: privateKeyHex,
-  //     message: messageBytes,
-  //   );
+    final signature = EthSigUtil.signMessage(
+      privateKey: privateKeyHex,
+      message: messageBytes,
+    );
 
-  //   console.info('signature: $signature');
+    console.info('signature: $signature');
 
-  //   final recoveredAddress = EthSigUtil.ecRecover(
-  //     signature: signature,
-  //     message: messageBytes,
-  //   );
+    final recoveredAddress = EthSigUtil.ecRecover(
+      signature: signature,
+      message: messageBytes,
+    );
 
-  //   console.info('recoveredAddress: $recoveredAddress');
-  // }
+    console.info('recoveredAddress: $recoveredAddress');
+  }
 }

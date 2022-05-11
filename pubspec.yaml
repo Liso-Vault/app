@@ -21,21 +21,21 @@ dependencies:
   hex: ^0.2.0
   cryptography: ^2.0.5 # Cipher & Decipher
   biometric_storage: ^4.1.1 # secure storage with biometrics
-  local_auth: ^2.0.0 # check biometric availability
+  local_auth: ^2.0.2 # check biometric availability
 
   # FIREBASE
-  firebase_core: 1.15.0
+  firebase_core: 1.16.0
   firebase_analytics: 9.1.6
-  firebase_crashlytics: 2.6.3
-  firebase_performance: 0.8.0+10
-  firebase_remote_config: 2.0.5
+  firebase_crashlytics: 2.7.2
+  firebase_performance: 0.8.0+11
+  firebase_remote_config: 2.0.6
   # firebase_app_check: ^0.0.6+9
 
   # IO
   hive: ^2.1.0 # database
   hive_flutter: ^1.1.0
   get_storage: ^2.0.3 # persistence
-  path_provider: ^2.0.9
+  path_provider: ^2.0.10
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
   file_picker: ^4.5.1 # exporting + importing
@@ -47,33 +47,32 @@ dependencies:
   # UI
   line_icons: ^2.0.1 # icons
   font_awesome_flutter: ^10.1.0 # icons
-  flex_color_scheme: 5.0.0 # themes
-  simple_animations: ^4.0.1
+  flex_color_scheme: 5.0.1 # themes
+  simple_animations: ^4.0.2
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
-  flutter_swipe_action_cell: ^2.2.0
-  flutter_quill: ^4.1.3 # rich text editor
+  flutter_swipe_action_cell: ^2.2.1
+  flutter_quill: ^4.1.9 # rich text editor
   badges: ^2.0.2 # pending changes indicator
   cached_network_image: ^3.2.0 # load remote images
-  percent_indicator: ^4.0.0 # circular progress indicator
+  percent_indicator: ^4.0.1 # circular progress indicator
   flutter_svg: ^1.0.3
   
   # TOOLS
   logger: ^1.1.0
-  url_launcher: ^6.1.0
+  url_launcher: ^6.1.1
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2
-  flutter_local_notifications: ^9.4.1
+  flutter_local_notifications: ^9.5.2
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
   share_plus: ^4.0.4 # exporting files and sharing texts
   equatable: ^2.0.3
   connectivity_plus: ^2.3.0 # internet connectivity checking
-  app_settings: ^4.1.5
+  app_settings: ^4.1.6
   uuid: ^3.0.6 # unique identifiers for items
-  window_manager: ^0.2.2 # set desktop window size
-  dart_code_metrics: ^4.14.0 # checking unused stuffs
+  window_manager: ^0.2.3 # set desktop window size
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
   console_mixin: ^0.0.1 # logger
 
@@ -86,10 +85,11 @@ dev_dependencies:
   #   sdk: flutter
 
   flutter_lints: ^1.0.4
-  hive_generator: ^1.1.2
+  hive_generator: ^1.1.2 # hive database
   build_runner: ^2.1.10
   flutter_native_splash: ^2.1.1
-  msix: ^3.6.1
+  dart_code_metrics: ^4.15.0 # checking unused stuffs
+  msix: ^3.6.1 # windows installer packager
 
 flutter:
   uses-material-design: true

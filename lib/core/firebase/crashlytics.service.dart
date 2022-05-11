@@ -1,4 +1,5 @@
 import 'package:console_mixin/console_mixin.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -21,10 +22,10 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   void _init() {
     if (isFirebaseSupported) {
-      // FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      //   // PersistenceService.to.crashReporting.val, // TODO: let user decide
-      //   kReleaseMode,
-      // );
+      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+        // PersistenceService.to.crashReporting.val, // TODO: let user decide
+        kReleaseMode,
+      );
     }
 
     // CAPTURE FLUTTER ERRORS
@@ -34,7 +35,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     };
   }
 
-  void record(FlutterErrorDetails details) =>
+  void record(FlutterErrorDetails details, {bool fatal = false}) =>
       CrashlyticsService.recordStatic(details);
 
   static void recordStatic(FlutterErrorDetails details) {
@@ -50,9 +51,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     }
 
     // filtered errors
-    final filteredErrors = [
-      'Box may be corrupted', // wrong encryption key
-    ];
+    final filteredErrors = [];
 
     // filter unnecessary error reports
     for (var e in filteredErrors) {
@@ -62,6 +61,6 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     }
 
     if (!isFirebaseSupported) return console.warning('Not Supported');
-    // FirebaseCrashlytics.instance.recordFlutterError(details);
+    FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }
