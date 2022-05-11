@@ -1,14 +1,3 @@
-<!--
-*** Thanks for checking out this README Template. If you have a suggestion that would
-*** make this better, please fork the repo and create a pull request or simply open
-*** an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
-
-
-
-
-
 <!-- PROJECT SHIELDS -->
 <!--
 *** I'm using markdown "reference style" links for readability.
@@ -42,7 +31,7 @@
   </p>
   
   <h3 align="center">Data Vault + Crypto Wallet + Decentralized Storage</h3>
-  <p align="center">A Cross-Platform, Open Source, Non Custodial, Trustless, Decentralized, Military-Grade Encrypted Digital Vault + Wallet + Decentralized Cloud Storage specifically designed for storing private data and files.</p>
+  <p align="center">A Cross-Platform, Open Source, Non Custodial, Trustless, Zero-Knowledge, Decentralized, Military-Grade Encrypted Digital Vault + Wallet + Decentralized Cloud Storage specifically designed for storing private data and files.</p>
 </p>
 
 
