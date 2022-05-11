@@ -31,7 +31,7 @@ void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     // improve performance
-    GestureBinding.instance?.resamplingEnabled = true;
+    GestureBinding.instance.resamplingEnabled = true;
     // initialize firebase and crashlytics before anything else to catch & report errors
     if (isFirebaseSupported) {
       await Firebase.initializeApp(

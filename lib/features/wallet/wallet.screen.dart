@@ -178,7 +178,10 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
                                 color: Colors.grey,
                               ),
                             ),
-                            Text(WalletService.to.shortAddress),
+                            Text(
+                              WalletService.to.shortAddress,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ],
                         )
                       ],

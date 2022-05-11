@@ -1,13 +1,11 @@
-import 'dart:convert';
-
+import 'package:console_mixin/console_mixin.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_quill/flutter_quill.dart';
+// import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:supercharged/supercharged.dart';
 
@@ -182,7 +180,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {
       try {
-        _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+        // _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+        _value = 'Text editor not available.'; // TODO: flutter_quill
       } catch (e) {
         console.error('error decoding rich text: $e');
         _value = 'failed to decode';
@@ -272,7 +271,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {
       try {
-        _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+        // _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+        _value = ''; // TODO: flutter_quill
       } catch (e) {
         console.error('error decoding rich text: $e');
         _value = 'failed to decode';

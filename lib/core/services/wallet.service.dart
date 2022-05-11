@@ -18,7 +18,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   String get address => Globals.wallet?.privateKey.address.hexEip55 ?? '';
   String get shortAddress =>
-      address.substring(0, 13) + '...' + address.substring(address.length - 13);
+      address.substring(0, 11) + '...' + address.substring(address.length - 11);
 
   bool get exists => PersistenceService.to.wallet.val.isNotEmpty;
 

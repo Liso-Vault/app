@@ -100,7 +100,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     // SETTINGS
     await instance.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: 10.seconds,
-      minimumFetchInterval: kDebugMode ? 0.seconds : 1.hours,
+      minimumFetchInterval: kDebugMode ? 0.seconds : 1.minutes,
     ));
 
     // DEFAULTS
