@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/features/s3/s3.service.dart';
 
 import '../../hive/models/field.hive.dart';
 import '../../utils/globals.dart';
@@ -87,6 +88,9 @@ class ConfigService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   void _init() async {
+    // pre-populate top configs
+    _populateTopConfigs(local: true);
+
     if (!isFirebaseSupported) {
       _populate(local: true);
       return console.warning('Not Supported');
@@ -114,7 +118,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     fetch();
   }
 
-  void _populate({bool local = false}) async {
+  Future<void> _populateTopConfigs({bool local = false}) async {
     general = ConfigGeneral.fromJson(jsonDecode(await _getString(
       'general_config',
       local: local,
@@ -129,6 +133,10 @@ class ConfigService extends GetxService with ConsoleMixin {
       's3_config',
       local: local,
     )));
+  }
+
+  void _populate({bool local = false}) async {
+    _populateTopConfigs(local: local);
 
     choicesCountry = List<HiveLisoFieldChoices>.from(
       jsonDecode(await _getString('choices_country', local: local)).map(
@@ -242,6 +250,7 @@ class ConfigService extends GetxService with ConsoleMixin {
       local: local,
     );
 
+    S3Service.to.init();
     console.info('populated');
   }
 

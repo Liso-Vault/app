@@ -35,6 +35,7 @@ void main() async {
     // initialize firebase and crashlytics before anything else to catch & report errors
     if (isFirebaseSupported) {
       await Firebase.initializeApp(
+        name: 'Liso',
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }

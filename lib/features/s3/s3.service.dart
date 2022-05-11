@@ -66,31 +66,22 @@ class S3Service extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() {
-    _init();
+    init();
+    console.info('onInit');
     super.onInit();
   }
 
   // FUNCTIONS
-  Future<void> _prepare() async {
-    if (client == null || client!.endPoint.isEmpty) await _init();
-  }
 
-  Future<void> _init() async {
-    if (config.s3.endpoint.isEmpty) await config.fetch();
-
-    if (config.s3.endpoint.isEmpty) {
-      await Future.delayed(2.seconds);
-      await config.fetch();
-    }
-
-    console.info('init...');
-
+  void init() {
     try {
       client = Minio(
         endPoint: config.s3.endpoint,
         accessKey: config.s3.key,
         secretKey: config.s3.secret,
       );
+
+      console.info('init');
     } catch (e) {
       console.error('Minio error: $e');
     }
@@ -291,7 +282,6 @@ class S3Service extends GetxService with ConsoleMixin {
   // currently doesn't work on Filebase
   Future<Either<dynamic, CopyObjectResult>> backup(S3Content content) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('backup: ${content.path}...');
 
     try {
@@ -310,7 +300,6 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, StatObjectResult>> stat(S3Content content) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('stat: ${basename(content.path)}...');
 
     try {
@@ -327,7 +316,6 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, bool>> remove(S3Content content) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('removing: ${content.path}...');
 
     try {
@@ -348,9 +336,7 @@ class S3Service extends GetxService with ConsoleMixin {
     List<String> filterExtensions = const [],
   }) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('fetch: $path...');
-
     ListObjectsResult? result;
 
     try {
@@ -405,9 +391,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, int>> folderSize(String s3Path) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('folder size: $s3Path...');
-
     ListObjectsResult? result;
 
     try {
@@ -440,7 +424,6 @@ class S3Service extends GetxService with ConsoleMixin {
     bool force = false,
   }) async {
     if (!persistence.canSync && !force) return const Left('offline');
-    await _prepare();
     console.info('downloading: ${ConfigService.to.s3.bucket} -> $s3Path');
     MinioByteStream? stream;
 
@@ -464,9 +447,7 @@ class S3Service extends GetxService with ConsoleMixin {
     required String metadata,
   }) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('uploading...');
-
     uploadTotalSize.value = await file.length();
     String eTag = '';
 
@@ -495,9 +476,7 @@ class S3Service extends GetxService with ConsoleMixin {
     required String metadata,
   }) async {
     if (!persistence.canSync) return const Left('offline');
-    await _prepare();
     console.info('creating folder...');
-
     String eTag = '';
 
     try {
