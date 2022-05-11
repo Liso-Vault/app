@@ -1,44 +1,45 @@
-// import 'dart:convert';
+import 'dart:convert';
 
-// import 'package:cryptography/cryptography.dart';
-// import 'package:console_mixin/console_mixin.dart';
-// import 'package:liso/core/utils/globals.dart';
+import 'package:console_mixin/console_mixin.dart';
+import 'package:cryptography/cryptography.dart';
 
-// class LisoCrypter with ConsoleMixin {
-//   // SINGLETON
-//   static final LisoCrypter _singleton = LisoCrypter._internal();
+const kAad = 'liso';
 
-//   // FACTORY
-//   factory LisoCrypter() => _singleton;
+class LisoCrypter with ConsoleMixin {
+  // SINGLETON
+  static final LisoCrypter _singleton = LisoCrypter._internal();
 
-//   // INTERNAL
-//   late AesGcm algorithm;
+  // FACTORY
+  factory LisoCrypter() => _singleton;
 
-//   LisoCrypter._internal() {
-//     algorithm = AesGcm.with256bits();
-//   }
+  // INTERNAL
+  late AesGcm algorithm;
 
-//   // VARIABLES
-//   SecretKey? secretKey;
+  LisoCrypter._internal() {
+    algorithm = AesGcm.with256bits();
+  }
 
-//   Future<void> initSecretKey(List<int> bytes) async {
-//     secretKey = await algorithm.newSecretKeyFromBytes(bytes);
-//   }
+  // VARIABLES
+  SecretKey? secretKey;
 
-//   Future<SecretBox> encrypt(List<int> clearText) async {
-//     return await algorithm.encrypt(
-//       clearText,
-//       secretKey: secretKey!,
-//       nonce: algorithm.newNonce(),
-//       aad: utf8.encode(kAad),
-//     );
-//   }
+  Future<void> initSecretKey(List<int> bytes) async {
+    secretKey = await algorithm.newSecretKeyFromBytes(bytes);
+  }
 
-//   Future<List<int>> decrypt(SecretBox secretBox) async {
-//     return await algorithm.decrypt(
-//       secretBox,
-//       secretKey: secretKey!,
-//       aad: utf8.encode(kAad),
-//     );
-//   }
-// }
+  Future<SecretBox> encrypt(List<int> clearText) async {
+    return await algorithm.encrypt(
+      clearText,
+      secretKey: secretKey!,
+      nonce: algorithm.newNonce(),
+      aad: utf8.encode(kAad),
+    );
+  }
+
+  Future<List<int>> decrypt(SecretBox secretBox) async {
+    return await algorithm.decrypt(
+      secretBox,
+      secretKey: secretKey!,
+      aad: utf8.encode(kAad),
+    );
+  }
+}

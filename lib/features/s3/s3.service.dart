@@ -185,7 +185,6 @@ class S3Service extends GetxService with ConsoleMixin {
     _syncProgress(0.4, null);
     await _mergeItems();
     HiveManager.watchBoxes();
-
     return const Right(true);
   }
 
@@ -289,6 +288,7 @@ class S3Service extends GetxService with ConsoleMixin {
     return const Right(true);
   }
 
+  // currently doesn't work on Filebase
   Future<Either<dynamic, CopyObjectResult>> backup(S3Content content) async {
     if (!persistence.canSync) return const Left('offline');
     await _prepare();
