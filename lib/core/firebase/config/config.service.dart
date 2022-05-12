@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:liso/core/utils/secrets.dart';
 import 'package:liso/features/s3/s3.service.dart';
 
 import '../../hive/models/field.hive.dart';
@@ -107,11 +106,6 @@ class ConfigService extends GetxService with ConsoleMixin {
     Map<String, dynamic> parametersMap = {};
 
     for (var e in parameters) {
-      if (e == 's3_config') {
-        parametersMap.addAll(kFilebaseS3Config);
-        continue;
-      }
-
       parametersMap.addAll({e: await _obtainLocalParameter(e)});
     }
 
