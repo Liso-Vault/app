@@ -30,8 +30,8 @@
     <a href="https://github.com/liso-vault/app/issues">Request Feature</a>
   </p>
   
-  <h3 align="center">Data Vault + Crypto Wallet + Decentralized Storage</h3>
-  <p align="center">A Cross-Platform, Open Source, Non Custodial, Trustless, Zero-Knowledge, Decentralized, Military-Grade Encrypted Digital Vault + Wallet + Decentralized Cloud Storage specifically designed for storing private data and files.</p>
+  <h3 align="center">Decentralized & Open Source Password Manager</h3>
+  <p align="center">An open-source data management application that focuses mainly on securely storing private information and files. Think of 1Password, in a decentralized fashion. Combined with Metamask!</p>
 </p>
 
 
@@ -53,7 +53,24 @@
 
 
 ## About The Project
-(To be updated)
+Liso uses a powerful decentralized network of computers (Sia) to route your vault & files, making it impossible for anyone to leak your data. And with Sia's protocols, your files are broken into 30 pieces, each of which is encrypted and only you can decrypt them.
+
+Zero-Knowledge: No phone number or email is needed to create a Liso Vault
+Decentralized: Makes data breaches and central point of failures a thing of the past
+No-Logging: Liso doesn't store, track, or log your data
+Open-source: Check Liso's code yourself
+Offline Mode: You have the choice to use the app 100% offline
+Cross Platform: Supports most platforms
+
+Features
+* Biometric Authentication
+* Upload, Download, and Manage Files
+* Seamlessly sync across multiple devices
+* Multi-Vaults Support
+* 2 Factor Item Protection
+* Unlimited Devices
+* Unlimited Items
+* Export / Import Vault
 
 ### Supported Platforms
 - iOS
@@ -113,6 +130,10 @@ flutter run
 * More Cloud Sync Options - Google Drive, DropBox, Box, WLAN, FTP, etc.
 * Liso Token
 * Liso DAO
+* Liso Card - NFC Card to securely store your Wallet File
+* Yubi Key Support
+* Secure File Sharing
+* E2EE Secure Messenger
 
 See the [open issues](https://github.com/liso-vault/app/issues) for a list of proposed features (and known issues).
 

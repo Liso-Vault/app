@@ -165,7 +165,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       if (mode == 'update') ...[
         const Divider(),
         Text(
-          'Last modified ${controller.item?.updatedDateTimeFormatted}',
+          'Modified ${controller.item?.updatedDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

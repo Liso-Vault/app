@@ -253,11 +253,11 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           method: 'offAndToNamed',
                         ),
                       ),
-                      const ListTile(
-                        title: Text('NFTs'),
-                        leading: FaIcon(LineIcons.icons),
+                      ListTile(
+                        title: const Text('NFTs'),
+                        leading: const FaIcon(LineIcons.icons),
                         enabled: false,
-                        // onTap: controller.files,
+                        onTap: controller.files,
                       ),
                     ],
                   ],

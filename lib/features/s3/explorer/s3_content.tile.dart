@@ -23,6 +23,30 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
+    void _askToDownload() {
+      final _content = Text('Save "${content.name}" to local disk?');
+
+      Get.dialog(AlertDialog(
+        title: const Text('Download'),
+        content: Utils.isDrawerExpandable
+            ? _content
+            : SizedBox(width: 600, child: _content),
+        actions: [
+          TextButton(
+            child: Text('cancel'.tr),
+            onPressed: Get.back,
+          ),
+          TextButton(
+            child: const Text('Download'),
+            onPressed: () {
+              Get.back();
+              controller.download(content);
+            },
+          ),
+        ],
+      ));
+    }
+
     final menuItems = [
       if (content.isVaultFile) ...[
         ContextMenuItem(
@@ -42,7 +66,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
           ContextMenuItem(
             title: 'Download',
             leading: const Icon(LineIcons.download),
-            onSelected: () => controller.download(content),
+            onSelected: _askToDownload,
           ),
         ],
         ContextMenuItem(
@@ -77,7 +101,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
           if (content.isVaultFile) {
             _askToImport(content);
           } else {
-            // TODO: ask to download or preview
+            _askToDownload();
           }
         } else {
           controller.load(path: content.path);

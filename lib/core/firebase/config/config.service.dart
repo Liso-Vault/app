@@ -116,7 +116,6 @@ class ConfigService extends GetxService with ConsoleMixin {
     }
 
     await instance.setDefaults(parametersMap);
-
     // pre-populate to make sure
     _populate();
     // workaround for https://github.com/firebase/flutterfire/issues/6196

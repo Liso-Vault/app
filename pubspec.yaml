@@ -4,7 +4,7 @@ publish_to: "none"
 version: 0.3.0+15
 
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -14,7 +14,7 @@ dependencies:
   get: ^4.6.1
 
   # CRYTPOGRAPHY + SECURITY
-  web3dart: ^2.4.0 # Ethereum
+  web3dart: ^2.3.5 # Ethereum
   eth_sig_util: ^0.0.7
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 #
@@ -53,7 +53,10 @@ dependencies:
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^2.2.1
+  flutter_quill:
+    path: /Users/nemoryoliver/Desktop/Projects/Flutter/Others/flutter-quill
   # flutter_quill: ^4.1.9 # rich text editor # migrate to superlist
+  # super_editor: ^0.2.0 # rich text editor
   badges: ^2.0.2 # pending changes indicator
   cached_network_image: ^3.2.0 # load remote images
   percent_indicator: ^4.0.1 # circular progress indicator

@@ -32,14 +32,14 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     // improve performance
     GestureBinding.instance.resamplingEnabled = true;
-    // initialize firebase and crashlytics before anything else to catch & report errors
+
     if (isFirebaseSupported) {
       await Firebase.initializeApp(
-        name: 'Liso',
         options: DefaultFirebaseOptions.currentPlatform,
       );
     }
 
+    // initialize firebase and crashlytics before anything else to catch & report errors
     Get.put(CrashlyticsService());
     Get.put(ConfigService());
 

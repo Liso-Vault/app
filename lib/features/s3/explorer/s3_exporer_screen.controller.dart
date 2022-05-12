@@ -217,7 +217,7 @@ class S3ExplorerScreenController extends GetxController
     );
 
     NotificationsManager.notify(
-      title: 'Downloaded File',
+      title: 'Downloaded',
       body: content.name,
     );
 
