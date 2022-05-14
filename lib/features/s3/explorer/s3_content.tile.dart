@@ -23,6 +23,50 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
+    Widget _leadingIcon() {
+      if (!content.isFile) return const Icon(Icons.folder);
+      var _iconData = Icons.insert_drive_file;
+      if (content.fileType == null) return Icon(_iconData);
+
+      switch (content.fileType!) {
+        case 'image':
+          _iconData = Icons.photo;
+          break;
+        case 'video':
+          _iconData = Icons.play_arrow_rounded;
+          break;
+        case 'archive':
+          _iconData = Icons.archive;
+          break;
+        case 'audio':
+          _iconData = Icons.audio_file;
+          break;
+        case 'code':
+          _iconData = Icons.code;
+          break;
+        case 'book':
+          _iconData = Icons.menu_book_rounded;
+          break;
+        case 'exec':
+          _iconData = Icons.computer;
+          break;
+        case 'web':
+          _iconData = LineIcons.chrome;
+          break;
+        case 'sheet':
+          _iconData = LineIcons.excelFile;
+          break;
+        case 'text':
+          _iconData = Icons.drive_file_rename_outline_rounded;
+          break;
+        case 'font':
+          _iconData = Icons.font_download;
+          break;
+      }
+
+      return Icon(_iconData);
+    }
+
     void _askToDownload() {
       final _content = Text('Save "${content.maskedName}" to local disk?');
 
@@ -89,9 +133,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
             )
           : null,
       iconColor: content.isFile ? kAppColor : null,
-      leading: Icon(
-        content.isFile ? LineIcons.fileAlt : LineIcons.folderOpen,
-      ),
+      leading: _leadingIcon(),
       trailing: ContextMenuButton(
         menuItems,
         child: const Icon(LineIcons.verticalEllipsis),

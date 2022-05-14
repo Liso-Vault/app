@@ -1,15 +1,15 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/hive/hive.manager.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'settings_screen.controller.dart';
@@ -20,6 +20,9 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
 
   @override
   Widget build(BuildContext context) {
+    final persistence = Get.find<PersistenceService>();
+    final config = Get.find<ConfigService>();
+
     final listView = ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -44,21 +47,32 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         const Divider(),
         SimpleBuilder(
           builder: (context) {
-            return ContextMenuButton(
-              controller.menuItemsSyncSetting,
-              padding: EdgeInsets.zero,
-              child: ListTile(
-                leading: const Icon(LineIcons.cloud),
-                trailing: const Icon(LineIcons.angleRight),
-                title: Text('${ConfigService.to.appName} Cloud Sync'),
-                subtitle: Text(
-                  PersistenceService.to.sync.val ? 'On' : 'Off',
-                  style: TextStyle(
-                    color: PersistenceService.to.sync.val ? kAppColor : null,
-                  ),
+            return Column(
+              children: <Widget>[
+                CheckboxListTile(
+                  title: Text('${config.appName} Cloud Sync'),
+                  subtitle: const Text("Keep in sync with all your devices"),
+                  secondary: const Icon(LineIcons.cloud),
+                  value: persistence.sync.val,
+                  onChanged: (value) => persistence.sync.val = value!,
                 ),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.syncSettings),
-              ),
+                const Divider(),
+                CheckboxListTile(
+                  title: const Text('Errors & Crashes'),
+                  subtitle: const Text("Send anonymous crash & error reports"),
+                  secondary: const Icon(LineIcons.bug),
+                  value: persistence.crashReporting.val,
+                  onChanged: (value) => persistence.crashReporting.val = value!,
+                ),
+                const Divider(),
+                CheckboxListTile(
+                  title: const Text('Usage Statistics'),
+                  subtitle: const Text('Send anonymous usage statistics'),
+                  secondary: const Icon(Icons.analytics),
+                  value: persistence.analytics.val,
+                  onChanged: (value) => persistence.analytics.val = value!,
+                ),
+              ],
             );
           },
         ),
@@ -69,10 +83,10 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           leading: const Icon(LineIcons.clock),
           trailing: const Icon(LineIcons.angleRight),
           onTap: () {
-            if (!PersistenceService.to.sync.val) {
+            if (!persistence.sync.val) {
               return UIUtils.showSimpleDialog(
                 'Sync Required',
-                'Please turn on ${ConfigService.to.appName} Cloud Sync to use this feature',
+                'Please turn on ${config.appName} Cloud Sync to use this feature',
               );
             }
 
@@ -84,12 +98,34 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
+          leading: const Icon(LineIcons.download),
+          trailing: const Icon(LineIcons.angleRight),
+          title: const Text('Import Items'),
+          subtitle: const Text('Import items from external sources'),
+          // enabled: false,
+          onTap: () {
+            UIUtils.showSimpleDialog(
+              'Import Items',
+              "Soon, you'll be able to import items from 1Password, LastPass, etc...",
+            );
+          },
+        ),
+        const Divider(),
+        ListTile(
           leading: const Icon(LineIcons.box),
           trailing: const Icon(LineIcons.fileUpload),
           title: Text('export_vault'.tr),
           subtitle: const Text('Save <vault>.liso to an external source'),
-          onTap: () => Utils.adaptiveRouteOpen(name: Routes.export),
-          enabled: controller.canExportVault,
+          onTap: () {
+            if (HiveManager.items == null || HiveManager.items!.isEmpty) {
+              return UIUtils.showSimpleDialog(
+                'Empty Vault',
+                'Cannot export an empty vault.',
+              );
+            }
+
+            Utils.adaptiveRouteOpen(name: Routes.export);
+          },
         ),
         const Divider(),
         ListTile(
@@ -98,22 +134,6 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           title: Text('export_wallet'.tr),
           subtitle: const Text('Save <wallet>.json to an external source'),
           onTap: controller.exportWallet,
-        ),
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.download),
-          trailing: const Icon(LineIcons.angleRight),
-          title: const Text('Import Items'),
-          subtitle: const Text('Import items from external sources'),
-          // enabled: false,
-          onTap: () {
-            UIUtils.showSnackBar(
-              title: 'Import Items',
-              message:
-                  "Soon, you'll be able to import items from 1Password, LastPass, etc...",
-              seconds: 2,
-            );
-          },
         ),
         const Divider(),
         ListTile(
@@ -127,7 +147,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ListTile(
           leading: const Icon(LineIcons.lock),
           trailing: const Icon(LineIcons.doorOpen),
-          title: Text('lock'.tr + ' ${ConfigService.to.appName}'),
+          title: Text('lock'.tr + ' ${config.appName}'),
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
@@ -135,7 +155,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ListTile(
           leading: const Icon(LineIcons.trashRestore),
           trailing: const Icon(LineIcons.exclamationTriangle),
-          title: Text('reset'.tr + ' ${ConfigService.to.appName}'),
+          title: Text('reset'.tr + ' ${config.appName}'),
           subtitle: const Text('Delete local vault and start over'),
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),

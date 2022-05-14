@@ -5,11 +5,13 @@ import 'package:line_icons/line_icons.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
+import '../../core/firebase/firestore.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/services/persistence.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
+import '../s3/s3.service.dart';
 
 enum HiveBoxFilter {
   all,

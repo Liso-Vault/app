@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
+import 'package:liso/features/general/section.widget.dart';
 
 class SectionFormField extends StatelessWidget {
   final HiveLisoField field;
@@ -8,29 +8,6 @@ class SectionFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Opacity(
-        opacity: 0.6,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              field.data.value!.toUpperCase(),
-              textAlign: TextAlign.left,
-              style: TextStyle(
-                fontSize: 10,
-                // fontWeight: FontWeight.bold,
-                color: Get.theme.primaryColor,
-              ),
-            ),
-            Divider(
-              height: 5,
-              color: Get.theme.primaryColor,
-            ),
-          ],
-        ),
-      ),
-    );
+    return Section(text: field.data.value!.toUpperCase());
   }
 }

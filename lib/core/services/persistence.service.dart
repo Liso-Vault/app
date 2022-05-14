@@ -23,6 +23,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // GENERAL
   final localeCode = 'en'.val('locale code');
   final crashReporting = true.val('crash reporting');
+  final analytics = true.val('analytics');
   final proTester = true.val('pro tester');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window width');
@@ -44,14 +45,11 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final ipfsHost = '127.0.0.1'.val('ipfs host');
   final ipfsPort = 5001.val('ipfs port');
   final ipfsLocalStat = ''.val('ipfs local vault stat');
-  // FILEBASE
-  final s3LastModified = DateTime.now().val('s3 last modified');
   // VAULT
   final groupIndex = 0.val('group index');
   final groups = 'Personal,Work,Family,Other'.val('groups');
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
-  // final walletAddress = ''.val('wallet address');
 
   // GETTERS
 

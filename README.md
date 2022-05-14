@@ -119,6 +119,7 @@ flutter run
 <!-- ROADMAP -->
 ## Roadmap
 
+* Translations
 * Autofill Service
 * Breach Scanner
 * Password Health

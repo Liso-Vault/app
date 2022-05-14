@@ -6,6 +6,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -60,6 +61,7 @@ void main() async {
     Get.put(IPFSService());
     Get.put(ConnectivityService());
     Get.put(CipherService());
+    Get.put(FirestoreService());
     // utils
     Utils.setDisplayMode(); // refresh rate
     await Utils.setWindowSize(); // for desktop

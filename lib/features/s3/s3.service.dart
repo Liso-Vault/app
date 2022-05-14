@@ -4,9 +4,11 @@ import 'dart:typed_data';
 
 import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
@@ -23,6 +25,7 @@ import '../../core/services/wallet.service.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
 import 'model/s3_content.model.dart';
+import 'model/s3_folder_info.model.dart';
 
 class S3Service extends GetxService with ConsoleMixin {
   static S3Service get to => Get.find();
@@ -76,8 +79,11 @@ class S3Service extends GetxService with ConsoleMixin {
       );
 
       console.info('init');
-    } catch (e) {
-      console.error('Minio error: $e');
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
     }
   }
 
@@ -373,17 +379,19 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(contents);
   }
 
-  void fetchStorageSize() async {
-    final result = await folderSize(S3Service.to.rootPath);
+  Future<S3FolderInfo?> fetchStorageSize() async {
+    final result = await folderInfo(S3Service.to.rootPath);
 
     if (result.isLeft) {
-      return console.error('fetchStorageSize: ${result.left}');
+      console.error('fetchStorageSize: ${result.left}');
+      return null;
     }
 
-    storageSize.value = result.right;
+    storageSize.value = result.right.totalSize;
+    return result.right;
   }
 
-  Future<Either<dynamic, int>> folderSize(String s3Path) async {
+  Future<Either<dynamic, S3FolderInfo>> folderInfo(String s3Path) async {
     if (!persistence.canSync) return const Left('offline');
     console.info('folder size: $s3Path...');
     ListObjectsResult? result;
@@ -409,7 +417,11 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     console.info('total size: $totalSize');
-    return Right(totalSize);
+
+    return Right(S3FolderInfo(
+      objects: result.objects.length,
+      totalSize: totalSize,
+    ));
   }
 
   Future<Either<dynamic, File>> downloadFile({
@@ -423,8 +435,12 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       stream = await client!.getObject(ConfigService.to.s3.bucket, s3Path);
-    } catch (e) {
-      console.error('download error: $e');
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+
       return Left(e);
     }
 

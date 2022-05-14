@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/crashlytics.service.dart';
+import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -34,9 +36,17 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.syncing);
     }
 
-    // init
+    CrashlyticsService.to.init();
     MainScreenController.to.load();
-    S3Service.to.fetchStorageSize();
+
+    // record metadata
+    S3Service.to.fetchStorageSize().then((info) {
+      if (info == null) return;
+      FirestoreService.to.record(
+        objects: info.objects,
+        totalSize: info.totalSize,
+      );
+    });
 
     return super.redirect(route);
   }

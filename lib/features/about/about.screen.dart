@@ -23,13 +23,56 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const SizedBox(height: 30),
-        GestureDetector(
-          child: RemoteImage(
+        // const SizedBox(height: 30),
+        // GestureDetector(
+        //   child: RemoteImage(
+        //     url: ConfigService.to.general.app.image,
+        //     height: 100,
+        //     placeholder: Image.asset(Images.logo, height: 100),
+        //   ),
+        //   onLongPress: () {
+        //     PersistenceService.to.proTester.val =
+        //         !PersistenceService.to.proTester.val;
+
+        //     UIUtils.showSnackBar(
+        //       title: 'PRO Tester',
+        //       message: "PRO Tester mode has been enabled",
+        //     );
+        //   },
+        // ),
+        // const SizedBox(height: 15),
+        // Text(
+        //   ConfigService.to.appName,
+        //   textAlign: TextAlign.center,
+        //   style: const TextStyle(fontSize: 25),
+        // ),
+        // Obx(
+        //   () => Text(
+        //     controller.appVersion,
+        //     textAlign: TextAlign.center,
+        //     style: const TextStyle(fontSize: 10),
+        //   ),
+        // ),
+        // const SizedBox(height: 10),
+        // Padding(
+        //   padding: const EdgeInsets.symmetric(horizontal: 25),
+        //   child: Text(
+        //     ConfigService.to.general.app.shortDescription,
+        //     textAlign: TextAlign.center,
+        //     style: const TextStyle(color: Colors.grey),
+        //   ),
+        // ),
+        // const SizedBox(height: 30),
+        const Divider(),
+        ListTile(
+          leading: RemoteImage(
             url: ConfigService.to.general.app.image,
-            height: 100,
-            placeholder: Image.asset(Images.logo, height: 100),
+            height: 20,
+            placeholder: Image.asset(Images.logo, height: 20),
           ),
+          // trailing: const Icon(LineIcons.alternateExternalLink),
+          title: Text('${ConfigService.to.appName} ${controller.appVersion}'),
+          subtitle: Text(ConfigService.to.general.app.shortDescription),
           onLongPress: () {
             PersistenceService.to.proTester.val =
                 !PersistenceService.to.proTester.val;
@@ -40,30 +83,6 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
             );
           },
         ),
-        const SizedBox(height: 15),
-        Text(
-          ConfigService.to.appName,
-          textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 25),
-        ),
-        Obx(
-          () => Text(
-            controller.appVersion,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 10),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25),
-          child: Text(
-            ConfigService.to.general.app.shortDescription,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.grey),
-          ),
-        ),
-
-        const SizedBox(height: 30),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.link),
@@ -111,24 +130,25 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           onTap: () =>
               launchUrlString(ConfigService.to.general.app.links.terms),
         ),
-
-        const Divider(),
-        ListTile(
-          leading: const Icon(LineIcons.gift),
-          title: const Text('Invite a friend'),
-          trailing: const Icon(LineIcons.share),
-          onTap: () => Share.share(
-            ConfigService.to.general.app.shareText,
-            subject: ConfigService.to.appName,
+        if (GetPlatform.isMobile) ...[
+          const Divider(),
+          ListTile(
+            leading: const Icon(LineIcons.gift),
+            title: const Text('Invite a friend'),
+            trailing: const Icon(LineIcons.share),
+            onTap: () => Share.share(
+              ConfigService.to.general.app.shareText,
+              subject: ConfigService.to.appName,
+            ),
           ),
-        ),
-        // ListTile(
-        //   leading: const Icon(LineIcons.download),
-        //   trailing: const Icon(LineIcons.alternateExternalLink),
-        //   title: const Text('Check for updates'),
-        //   subtitle: Obx(() => Text(controller.appVersion)),
-        //   onTap: () => launchUrlString(kAppGithubReleasesUrl),
-        // ),
+          // ListTile(
+          //   leading: const Icon(LineIcons.download),
+          //   trailing: const Icon(LineIcons.alternateExternalLink),
+          //   title: const Text('Check for updates'),
+          //   subtitle: Obx(() => Text(controller.appVersion)),
+          //   onTap: () => launchUrlString(kAppGithubReleasesUrl),
+          // ),
+        ],
         const Divider(),
         ContextMenuButton(
           controller.developerMenuItems,

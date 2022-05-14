@@ -13,7 +13,6 @@ import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/hive/hive.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/wallet.service.dart';
 import '../../core/utils/biometric.util.dart';
@@ -75,8 +74,6 @@ class SettingsScreenController extends GetxController
   final ipfsServerUrl = ''.obs;
 
   // GETTERS
-  bool get canExportVault =>
-      HiveManager.items != null && HiveManager.items!.isNotEmpty;
 
   // INIT
   @override

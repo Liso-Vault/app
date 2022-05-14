@@ -30,16 +30,24 @@ class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
             const SizedBox(height: 50),
             const Text('Select a file to encrypt'),
             const SizedBox(height: 10),
-            ElevatedButton(
-              child: const Text('Encrypt File'),
-              onPressed: controller.encrypt,
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                icon: const Icon(LineIcons.eyeSlash),
+                label: Text('encrypt_file'.tr),
+                onPressed: controller.encrypt,
+              ),
             ),
             const Divider(height: 50),
             const Text('Select a file to decrypt'),
             const SizedBox(height: 10),
-            ElevatedButton(
-              child: const Text('Decrypt File'),
-              onPressed: controller.decrypt,
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                icon: const Icon(LineIcons.eye),
+                label: Text('decrypt_file'.tr),
+                onPressed: controller.decrypt,
+              ),
             ),
           ],
         ),

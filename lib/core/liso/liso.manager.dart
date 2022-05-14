@@ -4,7 +4,9 @@ import 'package:archive/archive_io.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/biometric.util.dart';
@@ -41,7 +43,12 @@ class LisoManager {
       encoder.create(filePath);
       await encoder.addDirectory(directory);
       encoder.close();
-    } catch (e) {
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+
       return Left(e);
     }
 
@@ -55,8 +62,12 @@ class LisoManager {
     try {
       final archive = ZipDecoder().decodeBuffer(InputFileStream(path));
       return Right(archive);
-    } catch (e) {
-      console.error('readArchive(): ' + e.toString());
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+
       return Left(e);
     }
   }
@@ -80,8 +91,12 @@ class LisoManager {
       }
 
       return const Right(true);
-    } catch (e) {
-      console.error('extractArchive(): ' + e.toString());
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+
       return Left(e);
     }
   }
@@ -101,8 +116,12 @@ class LisoManager {
       file.writeContent(outputStream);
       await outputStream.close();
       return const Right(true);
-    } catch (e) {
-      console.error('extractArchive(): ' + e.toString());
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+
       return Left(e);
     }
   }

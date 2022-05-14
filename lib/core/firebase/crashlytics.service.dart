@@ -2,7 +2,10 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
+
+import '../services/persistence.service.dart';
 
 class CrashlyticsService extends GetxService with ConsoleMixin {
   static CrashlyticsService get to => Get.find();
@@ -14,25 +17,26 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() {
-    _init();
-    console.info('onInit');
-    super.onInit();
-  }
-
-  // FUNCTIONS
-  void _init() {
-    if (isFirebaseSupported) {
-      FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-        // PersistenceService.to.crashReporting.val, // TODO: let user decide
-        kReleaseMode,
-      );
-    }
-
     // CAPTURE FLUTTER ERRORS
     FlutterError.onError = (details) {
       console.error("FLUTTER_ERROR");
       record(details);
     };
+
+    console.info('onInit');
+    super.onInit();
+  }
+
+  // FUNCTIONS
+
+  void init() {
+    if (!isFirebaseSupported) return console.warning('Not Supported');
+
+    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+      PersistenceService.to.crashReporting.val,
+    );
+
+    FirebaseCrashlytics.instance.setUserIdentifier(WalletService.to.address);
   }
 
   void record(FlutterErrorDetails details, {bool fatal = false}) =>

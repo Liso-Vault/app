@@ -121,4 +121,6 @@ final en = {
   "try_again": "Try Again",
   "syncing": "Syncing",
   "duplicate": "Duplicate",
+  "encrypt_file": "Encrypt File",
+  "decrypt_file": "Decrypt File",
 };
