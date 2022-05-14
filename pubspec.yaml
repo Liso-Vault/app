@@ -20,6 +20,7 @@ dependencies:
   bip32: ^2.0.0 #
   hex: ^0.2.0
   cryptography: ^2.0.5 # Cipher & Decipher
+  encrypt: ^5.0.1
   biometric_storage: ^4.1.1 # secure storage with biometrics
   local_auth: ^2.0.2 # check biometric availability
 

@@ -1,11 +1,11 @@
 {
-    "name": "liso",
-    "short_name": "liso",
+    "name": "Liso",
+    "short_name": "Liso",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#262626",
+    "theme_color": "#02f297",
+    "description": "An open-source data management application that focuses mainly on securely storing private information and files.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

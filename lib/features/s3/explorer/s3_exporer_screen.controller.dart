@@ -12,6 +12,7 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../core/firebase/config/config.service.dart';
+import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
@@ -186,17 +187,24 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
+    // encrypt file before uploading
+
+    final file = await CipherService.to.decryptFile(result.right);
+    final fileName = basename(file.path);
+
+    Globals.timeLockEnabled = false; // temporarily disable
+
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
-        [downloadPath],
-        subject: content.name,
-        text: GetPlatform.isIOS ? null : content.name,
+        [file.path],
+        subject: fileName,
+        text: GetPlatform.isIOS ? null : fileName,
       );
 
+      Globals.timeLockEnabled = true; // re-enable
       return change(false, status: RxStatus.success());
     }
 
-    Globals.timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform.getDirectoryPath(
       dialogTitle: 'Choose Export Path',
@@ -212,13 +220,13 @@ class S3ExplorerScreenController extends GetxController
     await Future.delayed(1.seconds); // just for style
 
     await FileUtils.move(
-      result.right,
-      join(exportPath, content.name),
+      file,
+      join(exportPath, fileName),
     );
 
     NotificationsManager.notify(
       title: 'Downloaded',
-      body: content.name,
+      body: fileName,
     );
 
     change(false, status: RxStatus.success());
@@ -227,6 +235,7 @@ class S3ExplorerScreenController extends GetxController
   // TODO: max upload size
   void pickFile() async {
     change(true, status: RxStatus.loading());
+    Globals.timeLockEnabled = false; // disable
     FilePickerResult? result;
 
     try {
@@ -234,16 +243,20 @@ class S3ExplorerScreenController extends GetxController
         type: FileType.any,
       );
     } catch (e) {
+      Globals.timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       change(false, status: RxStatus.success());
       return;
     }
 
     if (result == null || result.files.isEmpty) {
+      Globals.timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       change(false, status: RxStatus.success());
       return;
     }
+
+    Globals.timeLockEnabled = true; // re-enable
 
     console.info('picked: ${result.files.single.path!}');
     final file = File(result.files.single.path!);
@@ -262,12 +275,16 @@ class S3ExplorerScreenController extends GetxController
 
   void _upload(File file) async {
     change(true, status: RxStatus.loading());
+    // encrypt file before uploading
+    file = await CipherService.to.encryptFile(file);
 
     final result = await S3Service.to.uploadFile(
       file,
-      s3Path:
-          join(currentPath.value, basename(file.path)).replaceAll('\\', '/'),
       metadata: await S3Service.to.updatedLocalMetadata(),
+      s3Path: join(
+        currentPath.value,
+        basename(file.path),
+      ).replaceAll('\\', '/'),
     );
 
     if (result.isLeft) {

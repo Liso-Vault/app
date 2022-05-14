@@ -1,2 +1,1 @@
-## 0.0.1
-* TODO: to be updated
+## 0.3.0

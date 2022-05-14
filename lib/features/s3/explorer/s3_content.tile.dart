@@ -24,7 +24,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     void _askToDownload() {
-      final _content = Text('Save "${content.name}" to local disk?');
+      final _content = Text('Save "${content.maskedName}" to local disk?');
 
       Get.dialog(AlertDialog(
         title: const Text('Download'),
@@ -78,7 +78,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
     ];
 
     return ListTile(
-      title: Text(content.name),
+      title: Text(content.maskedName),
       subtitle: content.size > 0
           ? Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

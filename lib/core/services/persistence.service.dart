@@ -23,7 +23,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // GENERAL
   final localeCode = 'en'.val('locale code');
   final crashReporting = true.val('crash reporting');
-  final proTester = false.val('pro tester');
+  final proTester = true.val('pro tester');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window width');
   final windowHeight = 800.0.val('window height');

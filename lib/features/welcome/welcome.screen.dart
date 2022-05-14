@@ -23,8 +23,8 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
         children: [
           RemoteImage(
             url: ConfigService.to.general.app.image,
-            height: 100,
-            placeholder: Image.asset(Images.logo, height: 100),
+            height: 150,
+            placeholder: Image.asset(Images.logo, height: 150),
           ),
           const SizedBox(height: 20),
           Text(

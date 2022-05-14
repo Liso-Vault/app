@@ -3,6 +3,7 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -89,6 +90,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     return unlocked;
   }
 
+  void _duplicate() async {
+    final copy = HiveLisoItem.fromJson(item.toJson());
+    copy.title = copy.title + ' Copy';
+    copy.metadata = await copy.metadata.getUpdated();
+    HiveManager.items!.add(copy);
+  }
+
   @override
   Widget build(BuildContext context) {
     final isLargeScreen = !Utils.isDrawerExpandable;
@@ -120,6 +128,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           title: 'move_to_trash'.tr,
           leading: const Icon(LineIcons.trash),
           onSelected: _trash,
+        ),
+        ContextMenuItem(
+          title: 'duplicate'.tr,
+          leading: const Icon(LineIcons.copy),
+          onSelected: _duplicate,
         ),
       ],
       ContextMenuItem(

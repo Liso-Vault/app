@@ -15,6 +15,7 @@ const kBiometricSeedKey = 'biometric_seed';
 // FILE EXTENSIONS
 const kVaultExtension = 'liso';
 const kWalletExtension = 'json';
+const kEncryptedExtensionExtra = '.liso.enc';
 // FILE NAMES
 const kMetadataFileName = 'metadata.json';
 const kTempVaultFileName = 'temp_vault.liso';
@@ -31,6 +32,8 @@ final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
+
+const kS3MetadataVersion = '1';
 
 // ENUMS
 enum LisoItemSortOrder {

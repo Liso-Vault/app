@@ -185,6 +185,7 @@ class ImportScreenController extends GetxController
     if (GetPlatform.isAndroid) FilePicker.platform.clearTemporaryFiles();
     change(null, status: RxStatus.loading());
 
+    Globals.timeLockEnabled = false; // disable
     FilePickerResult? result;
 
     try {
@@ -192,6 +193,7 @@ class ImportScreenController extends GetxController
         type: FileType.any,
       );
     } catch (e) {
+      Globals.timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       return;
     }
@@ -199,6 +201,7 @@ class ImportScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (result == null || result.files.isEmpty) {
+      Globals.timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
     }

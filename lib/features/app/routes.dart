@@ -28,4 +28,5 @@ abstract class Routes {
 
   // CRYPTO
   static const wallet = '/wallet';
+  static const cipher = '/cipher';
 }

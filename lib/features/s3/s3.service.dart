@@ -450,8 +450,11 @@ class S3Service extends GetxService with ConsoleMixin {
         config.s3.bucket,
         s3Path,
         Stream<Uint8List>.value(file.readAsBytesSync()),
-        metadata: {'client': metadata},
         onProgress: (size) => uploadedSize.value = size,
+        metadata: {
+          'client': metadata,
+          'version': kS3MetadataVersion,
+        },
       );
     } catch (e) {
       return Left(e);
@@ -478,7 +481,10 @@ class S3Service extends GetxService with ConsoleMixin {
         config.s3.bucket,
         join(s3Path, name + '/').replaceAll('\\', '/'),
         Stream<Uint8List>.value(Uint8List(0)),
-        metadata: {'client': metadata},
+        metadata: {
+          'client': metadata,
+          'version': kS3MetadataVersion,
+        },
       );
     } catch (e) {
       return Left(e);
@@ -494,10 +500,10 @@ class S3Service extends GetxService with ConsoleMixin {
             name: basename(e.key!),
             path: e.key!,
             size: e.size!,
+            object: e,
             type: extension(e.key!).isNotEmpty || e.size! > 0
                 ? S3ContentType.file
                 : S3ContentType.directory,
-            object: e,
           ),
         )
         .toList();

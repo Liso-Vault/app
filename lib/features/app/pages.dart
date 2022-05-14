@@ -24,6 +24,8 @@ import 'package:liso/features/welcome/welcome.screen.dart';
 import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
+import '../Cipher/cipher_screen.controller.dart';
+import '../cipher/cipher.screen.dart';
 import '../ipfs/explorer/ipfs_explorer.screen.dart';
 import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
 import '../item/item.screen.dart';
@@ -136,6 +138,11 @@ class AppPages {
       name: Routes.wallet,
       page: () => const WalletScreen(),
       binding: WalletScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.cipher,
+      page: () => const CipherScreen(),
+      binding: CipherScreenBinding(),
     ),
   ];
 }

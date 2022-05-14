@@ -61,7 +61,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         category: json["category"],
         iconUrl: json["icon_url"],
         title: json["title"],
-        fields: json["fields"],
+        fields: List<HiveLisoField>.from(
+          json["fields"].map((x) => HiveLisoField.fromJson(x)),
+        ),
         favorite: json["favorite"],
         protected: json["protected"],
         trashed: json["trashed"],

@@ -9,6 +9,7 @@ import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -84,7 +85,6 @@ class SettingsScreenController extends GetxController
     ipfsServerUrl.value =
         '${persistence.ipfsScheme.val}://${persistence.ipfsHost.val}:${persistence.ipfsPort.val}';
     change(null, status: RxStatus.success());
-
     super.onInit();
   }
 
@@ -101,6 +101,10 @@ class SettingsScreenController extends GetxController
     theme.value = mode.name;
     if (GetPlatform.isDesktop) Get.back();
     Get.changeThemeMode(mode);
+    // reload main listview to fix refresh the backgrounds of tags
+    MainScreenController.to.data.clear();
+    await Future.delayed(200.milliseconds);
+    MainScreenController.to.load();
   }
 
   void exportWallet() async {
@@ -163,6 +167,7 @@ class SettingsScreenController extends GetxController
 
   void showSeed() async {
     final seed = await BiometricUtils.obtain(kBiometricSeedKey);
+    if (seed == null) return console.error('seed is null');
 
     final phraseChips = GestureDetector(
       onLongPress: () => Utils.copyToClipboard(seed),
@@ -171,7 +176,7 @@ class SettingsScreenController extends GetxController
         spacing: 5,
         runSpacing: 10,
         alignment: WrapAlignment.start,
-        children: seed!
+        children: seed
             .split(' ')
             .asMap()
             .entries

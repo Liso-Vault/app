@@ -119,5 +119,6 @@ final en = {
   "new_folder": "New Folder",
   "offline": "Offline",
   "try_again": "Try Again",
-  "syncing": "Syncing"
+  "syncing": "Syncing",
+  "duplicate": "Duplicate",
 };

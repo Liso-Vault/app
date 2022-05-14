@@ -1,3 +1,4 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -5,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -209,7 +209,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             children: [
               SimpleBuilder(
                 builder: (_) => PersistenceService.to.sync.val &&
-                        !GetPlatform.isIOS
+                        (!GetPlatform.isIOS ||
+                            PersistenceService.to.proTester.val)
                     ? ListTile(
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -297,6 +298,14 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
+              ListTile(
+                title: const Text('Cipher'),
+                leading: const FaIcon(LineIcons.userSecret),
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.cipher,
+                  method: 'offAndToNamed',
+                ),
+              ),
               ListTile(
                 title: Text('breach_scanner'.tr),
                 leading: const FaIcon(LineIcons.exclamationTriangle),

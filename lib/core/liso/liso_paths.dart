@@ -24,6 +24,13 @@ class LisoPaths {
     if (!GetPlatform.isWeb) {
       await main!.create(recursive: true);
       await hive!.create(recursive: true);
+
+      // cleanup temp directory on every app start
+      if (await temp!.exists()) {
+        await temp?.delete(recursive: true);
+      }
+
+      // recreate temp directory
       await temp!.create(recursive: true);
     }
 

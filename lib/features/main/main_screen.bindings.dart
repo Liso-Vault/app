@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:liso/features/cipher/cipher_screen.controller.dart';
 import 'package:liso/features/wallet/assets/assets_screen.controller.dart';
 
 import '../../core/form_fields/password.field.dart';
@@ -35,5 +36,7 @@ class MainScreenBinding extends Bindings {
     Get.create(() => S3ExplorerScreenController());
     // WALLET
     Get.create(() => AssetsScreenController());
+    // CIPHER
+    Get.create(() => CipherScreenController());
   }
 }

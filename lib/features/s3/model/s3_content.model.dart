@@ -27,6 +27,8 @@ class S3Content {
 
   String get updatedTimeAgo =>
       object != null ? Utils.timeAgo(object!.lastModified!, short: false) : '';
+
+  String get maskedName => name.replaceAll(kEncryptedExtensionExtra, '');
 }
 
 enum S3ContentType {
