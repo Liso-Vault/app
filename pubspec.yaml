@@ -15,8 +15,10 @@ dependencies:
 
   # CRYTPOGRAPHY + SECURITY
   # alchemy_web3: ^0.0.1 # Alchemy Platform
+  # alchemy_web3:
+  #   path: /Users/nemoryoliver/Desktop/Projects/Flutter/Packages/alchemy
   alchemy_web3:
-    path: /Users/nemoryoliver/Desktop/Projects/Flutter/Packages/alchemy
+    git: https://github.com/oliverbytes/alchemy_web3.git
   web3dart: ^2.4.0 # Ethereum
   eth_sig_util: ^0.0.7
   bip39: ^1.0.6 # Mnemonic Seed Phrases
@@ -43,7 +45,7 @@ dependencies:
   path_provider: ^2.0.10
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
-  file_picker: ^4.5.1 # exporting + importingcached_network_image
+  file_picker: ^4.5.1 # exporting + importing
   archive: ^3.3.0 # archiving hive boxes
   http: ^0.13.4
   minio: ^3.5.0 # Filebase API
@@ -59,9 +61,11 @@ dependencies:
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^3.0.0
-  flutter_quill:
-    path: /Users/nemoryoliver/Desktop/Projects/Flutter/Others/flutter-quill
-  # flutter_quill: ^4.1.9 # rich text editor # migrate to superlist
+  # flutter_quill:
+  #   path: /Users/nemoryoliver/Desktop/Projects/Flutter/Others/flutter-quill
+  # flutter_quill: ^4.2.0 # rich text editor # migrate to superlist
+  flutter_quill: 
+    git: https://github.com/oliverbytes/flutter-quill.git
   # super_editor: ^0.2.0 # rich text editor
   badges: ^2.0.2 # pending changes indicator
   cached_network_image: ^3.2.1 # load remote images
@@ -70,7 +74,6 @@ dependencies:
   qr_flutter: ^4.0.0 # generate QR Codes
 
   # TOOLS
-  logger: ^1.1.0
   url_launcher: ^6.1.2
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2

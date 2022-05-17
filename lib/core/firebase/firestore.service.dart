@@ -38,6 +38,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // record the some metadata: created time and updated time, items count and files count
   // data will be used for airdrops, and other promotions
   void record({required int objects, required int totalSize}) async {
+    if (!isFirebaseSupported) return console.warning('Not Supported');
     if (!PersistenceService.to.analytics.val) return;
 
     // TODO: calculate vault size for web
