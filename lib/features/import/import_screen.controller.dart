@@ -89,7 +89,7 @@ class ImportScreenController extends GetxController
     } else {
       UIUtils.showSimpleDialog(
         'Error Downloading',
-        '${result.left} > _downloadVault(), ${S3Service.to.client!.accessKey} | ${S3Service.to.client!.endPoint} | ${S3Service.to.client!.secretKey}',
+        '${result.left} > _downloadVault()',
       );
     }
 

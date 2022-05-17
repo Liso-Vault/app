@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 0,3,015,0
+#define VERSION_AS_NUMBER 0,3,116,0
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "0.3.0+15"
+#define VERSION_AS_STRING "0.3.1+16"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -90,7 +90,7 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.liso.app" "\0"
-            VALUE "FileDescription", "A Cross-Platform, Non custodial, Trustless, Decentralized, Military-grade encrypted digital vault + crypto wallet specifically designed for storing sensitive to super sensitive information and files." "\0"
+            VALUE "FileDescription", "An open-source data management application that focuses mainly on securely storing private information and files." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "liso" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 Stackwares. All rights reserved." "\0"
