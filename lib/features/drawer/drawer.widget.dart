@@ -1,9 +1,8 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -35,27 +34,27 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
           //   children: const [
           //     ListTile(
           //       title: Text('Ethereum'),
-          //       leading: FaIcon(LineIcons.ethereum),
+          //       leading: Icon(LineIcons.ethereum),
           //       enabled: false,
           //     ),
           //     ListTile(
           //       title: Text('Polygon'),
-          //       leading: FaIcon(LineIcons.ethereum),
+          //       leading: Icon(LineIcons.ethereum),
           //       enabled: false,
           //     ),
           //     ListTile(
           //       title: Text('Binance Chain'),
-          //       leading: FaIcon(LineIcons.ethereum),
+          //       leading: Icon(LineIcons.ethereum),
           //       enabled: false,
           //     ),
           //     ListTile(
           //       title: Text('Solana'),
-          //       leading: FaIcon(LineIcons.ethereum),
+          //       leading: Icon(LineIcons.ethereum),
           //       enabled: false,
           //     ),
           //     ListTile(
           //       title: Text('Avalanche'),
-          //       leading: FaIcon(LineIcons.ethereum),
+          //       leading: Icon(LineIcons.ethereum),
           //       enabled: false,
           //     ),
           //   ],
@@ -83,7 +82,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             children: [
               Obx(
                 () => ListTile(
-                  leading: const Icon(LineIcons.list),
+                  leading: const Icon(Iconsax.document),
                   onTap: controller.filterAllItems,
                   selected: controller.filterAll,
                   title: Row(
@@ -108,10 +107,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       ],
                     ],
                   ),
-                  leading: controller.filterFavorites()
-                      ? const FaIcon(FontAwesomeIcons.solidHeart,
-                          color: Colors.pink)
-                      : const FaIcon(FontAwesomeIcons.heart),
+                  leading: const Icon(Iconsax.heart),
                   onTap: controller.filterFavoriteItems,
                   selected: controller.filterFavorites(),
                 ),
@@ -127,7 +123,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       ],
                     ],
                   ),
-                  leading: const FaIcon(FontAwesomeIcons.shieldHalved),
+                  leading: const Icon(Iconsax.lock),
                   onTap: controller.filterProtectedItems,
                   selected: controller.filterProtected(),
                 ),
@@ -143,7 +139,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       ],
                     ],
                   ),
-                  leading: const Icon(LineIcons.trash),
+                  leading: const Icon(Iconsax.trash),
                   onTap: controller.filterTrashedItems,
                   selected: controller.filterTrashed(),
                 ),
@@ -160,14 +156,14 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             children: [
               ...controller.categories.map(
                 (e) {
-                  final _category = LisoItemCategory.values.byName(e);
+                  final category = LisoItemCategory.values.byName(e);
 
                   return Obx(
                     () => ListTile(
                       title: Text(e.tr),
-                      leading: Utils.categoryIcon(_category),
+                      leading: Utils.categoryIcon(category),
                       onTap: () => controller.filterByCategory(e),
-                      selected: _category == controller.filterCategory.value,
+                      selected: category == controller.filterCategory.value,
                     ),
                   );
                 },
@@ -188,7 +184,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                     (e) => Obx(
                       () => ListTile(
                         title: Text(e),
-                        leading: const Icon(LineIcons.tag),
+                        leading: const Icon(Iconsax.tag),
                         onTap: () => controller.filterByTag(e),
                         selected: e == controller.filterTag(),
                       ),
@@ -201,17 +197,19 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
           ),
           ExpansionTile(
             maintainState: true,
+            initiallyExpanded: true,
             title: Text(
               'app'.tr.toUpperCase(),
               style: const TextStyle(fontSize: 13),
             ),
-            initiallyExpanded: true,
             children: [
               SimpleBuilder(
                 builder: (_) => PersistenceService.to.sync.val &&
                         (!GetPlatform.isIOS ||
                             PersistenceService.to.proTester.val)
                     ? ListTile(
+                        leading: const Icon(Iconsax.document_cloud),
+                        onTap: controller.files,
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -219,8 +217,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                             Chip(
                               label: Obx(
                                 () => Text(
-                                  filesize(S3Service.to.storageSize.value, 0) +
-                                      '/${filesize(ConfigService.to.app.settings.maxStorageSize, 0)}',
+                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(ConfigService.to.app.settings.maxStorageSize, 0)}',
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               ),
@@ -228,16 +225,15 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           ],
                         ),
                         subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.only(top: 5),
                           child: Obx(
                             () => LinearProgressIndicator(
                               value: S3Service.to.storageSize.value.toDouble() /
                                   ConfigService.to.app.settings.maxStorageSize,
+                              backgroundColor: Colors.grey.withOpacity(0.1),
                             ),
                           ),
                         ),
-                        leading: const FaIcon(FontAwesomeIcons.fileLines),
-                        onTap: controller.files,
                       )
                     : const SizedBox.shrink(),
               ),
@@ -248,31 +244,25 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                         PersistenceService.to.proTester.val) ...[
                       ListTile(
                         title: Text('wallet'.tr),
-                        leading: const FaIcon(LineIcons.wallet),
+                        leading: const Icon(Iconsax.wallet_1),
                         onTap: () => Utils.adaptiveRouteOpen(
                           name: Routes.wallet,
                           method: 'offAndToNamed',
                         ),
                       ),
-                      ListTile(
-                        title: const Text('NFTs'),
-                        leading: const FaIcon(LineIcons.icons),
-                        enabled: false,
-                        onTap: controller.files,
-                      ),
                     ],
                   ],
                 ),
               ),
-              // ListTile(
-              //   title: Text('browser'.tr),
-              //   leading: const FaIcon(LineIcons.wiredNetwork),
-              //   enabled: false,
-              //   // onTap: controller.files,
-              // ),
+              ListTile(
+                title: Text('browser'.tr),
+                leading: const Icon(Iconsax.chrome),
+                enabled: false,
+                // onTap: controller.files,
+              ),
               ListTile(
                 title: Text('settings'.tr),
-                leading: const Icon(LineIcons.cog),
+                leading: const Icon(Iconsax.setting_3),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.settings,
                   method: 'offAndToNamed',
@@ -280,7 +270,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 title: Text('about'.tr),
-                leading: const Icon(LineIcons.infoCircle),
+                leading: const Icon(Iconsax.info_circle),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.about,
                   method: 'offAndToNamed',
@@ -300,7 +290,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             children: [
               ListTile(
                 title: const Text('Cipher'),
-                leading: const FaIcon(LineIcons.userSecret),
+                leading: const Icon(Iconsax.convert_3d_cube),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.cipher,
                   method: 'offAndToNamed',
@@ -308,19 +298,19 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 title: Text('breach_scanner'.tr),
-                leading: const FaIcon(LineIcons.exclamationTriangle),
+                leading: const Icon(Iconsax.warning_2),
                 enabled: false,
                 // onTap: controller.files,
               ),
               ListTile(
                 title: Text('password_health'.tr),
-                leading: const FaIcon(LineIcons.laptopMedical),
+                leading: const Icon(Iconsax.password_check),
                 enabled: false,
                 // onTap: controller.files,
               ),
               ListTile(
                 title: Text('otp_generator'.tr),
-                leading: const FaIcon(LineIcons.flask),
+                leading: const Icon(Iconsax.key),
                 enabled: false,
                 // onTap: controller.files,
               ),

@@ -3,14 +3,14 @@ import 'dart:async';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:window_manager/window_manager.dart';
@@ -88,7 +88,7 @@ class MainScreenController extends GetxController
     return [
       ContextMenuItem(
         title: 'title'.tr,
-        leading: const Icon(LineIcons.font),
+        leading: const Icon(Iconsax.text),
         trailing: sortName.contains('title') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('title') || ascending
@@ -98,7 +98,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'category'.tr,
-        leading: const Icon(LineIcons.sitemap),
+        leading: const Icon(Iconsax.category),
         trailing: sortName.contains('category') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('category') || ascending
@@ -108,7 +108,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_modified'.tr,
-        leading: const Icon(LineIcons.calendar),
+        leading: const Icon(Iconsax.calendar),
         trailing: sortName.contains('dateModified') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('dateModified') || ascending
@@ -118,7 +118,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_created'.tr,
-        leading: const Icon(LineIcons.calendarAlt),
+        leading: const Icon(Iconsax.calendar_tick),
         trailing: sortName.contains('dateCreated') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('dateCreated') || ascending
@@ -128,7 +128,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'favorite'.tr,
-        leading: const FaIcon(FontAwesomeIcons.heart),
+        leading: const Icon(Iconsax.heart),
         trailing: sortName.contains('favorite') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('favorite') || ascending
@@ -138,7 +138,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'protected'.tr,
-        leading: const Icon(LineIcons.alternateShield),
+        leading: const Icon(Iconsax.lock),
         trailing: sortName.contains('protected') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('protected') || ascending
@@ -224,8 +224,8 @@ class MainScreenController extends GetxController
           : SizedBox(width: 600, child: content),
       actions: [
         TextButton(
-          child: Text('cancel'.tr),
           onPressed: Get.back,
+          child: Text('cancel'.tr),
         ),
         TextButton(
           child: const Text('Force Close'),
@@ -258,7 +258,7 @@ class MainScreenController extends GetxController
     UIUtils.showSnackBar(
       title: 'Syncing to ${ConfigService.to.appName} Cloud',
       message: 'Please wait...',
-      icon: const Icon(LineIcons.syncIcon),
+      icon: const Icon(Iconsax.cloud_change),
       seconds: 4,
     );
 

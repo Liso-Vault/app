@@ -1,14 +1,12 @@
 import 'package:get/get.dart';
 import 'package:liso/features/cipher/cipher_screen.controller.dart';
-import 'package:liso/features/wallet/assets/assets_screen.controller.dart';
+import 'package:liso/features/wallet/wallet_screen.controller.dart';
 
 import '../../core/form_fields/password.field.dart';
 import '../../core/form_fields/pin.field.dart';
 import '../about/about_screen.controller.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../export/export_screen.controller.dart';
-import '../ipfs/explorer/ipfs_exporer_screen.controller.dart';
-import '../ipfs/ipfs_screen.controller.dart';
 import '../item/item_screen.controller.dart';
 import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
@@ -29,13 +27,10 @@ class MainScreenBinding extends Bindings {
     Get.create(() => AboutScreenController());
     Get.create(() => ExportScreenController());
     Get.create(() => ResetScreenController());
-    // ipfs
-    Get.create(() => IPFSScreenController());
-    Get.create(() => IPFSExplorerScreenController());
     // S3
     Get.create(() => S3ExplorerScreenController());
     // WALLET
-    Get.create(() => AssetsScreenController());
+    Get.create(() => WalletScreenController());
     // CIPHER
     Get.create(() => CipherScreenController());
   }

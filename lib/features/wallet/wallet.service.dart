@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:coingecko_api/coingecko_api.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
@@ -11,16 +12,63 @@ import 'package:hex/hex.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:web3dart/web3dart.dart';
 
-import '../utils/globals.dart';
+import '../../core/utils/globals.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
 
-  String get address => Globals.wallet?.privateKey.address.hexEip55 ?? '';
+  // VARIABLES
+  final gecko = CoinGeckoApi();
+
+  // PROPERTIES
+  final network = 'Polygon Testnet'.obs;
+
+  // GETTERS
+  EthereumAddress get address => Globals.wallet!.privateKey.address;
+
+  String get longAddress => address.hexEip55;
+
   String get shortAddress =>
-      address.substring(0, 11) + '...' + address.substring(address.length - 11);
+      '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
 
   bool get exists => PersistenceService.to.wallet.val.isNotEmpty;
+
+  double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
+
+  double get maticUsdBalance =>
+      PersistenceService.to.lastMaticBalance.val *
+      PersistenceService.to.lastMaticUsdPrice.val;
+
+  double get lisoUsdBalance =>
+      PersistenceService.to.lastLisoBalance.val *
+      PersistenceService.to.lastLisoUsdPrice.val;
+
+  @override
+  void onInit() {
+    load();
+    super.onInit();
+  }
+
+  // FUNCTIONS
+  void load() {
+    loadPrices();
+  }
+
+  void loadPrices() async {
+    final result = await gecko.simple.listPrices(
+      ids: ['matic-network'],
+      vsCurrencies: ['usd'],
+    );
+
+    if (result.isError) {
+      return console.error(
+        'code: ${result.errorCode}, message: ${result.errorMessage}',
+      );
+    }
+
+    PersistenceService.to.lastMaticUsdPrice.val =
+        result.data.first.getPriceIn('usd')!;
+  }
 
   Wallet mnemonicToWallet(
     String mnemonic, {

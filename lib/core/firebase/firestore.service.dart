@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/utils/globals.dart';
+import 'package:path/path.dart';
 
-import '../services/wallet.service.dart';
+import '../../features/wallet/wallet.service.dart';
 import 'crashlytics.service.dart';
 
 class FirestoreService extends GetxService with ConsoleMixin {
@@ -22,7 +27,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
       instance.collection('users');
 
   DocumentReference<Map<String, dynamic>> get userRef =>
-      usersRef.doc(WalletService.to.address);
+      usersRef.doc(WalletService.to.longAddress);
 
   DocumentReference<Map<String, dynamic>> get userStatsRef =>
       usersRef.doc('---stats---');
@@ -35,10 +40,19 @@ class FirestoreService extends GetxService with ConsoleMixin {
   void record({required int objects, required int totalSize}) async {
     if (!PersistenceService.to.analytics.val) return;
 
+    // TODO: calculate vault size for web
+    final vaultFile = File(join(
+      LisoPaths.hive!.path,
+      '$kHiveBoxItems.hive',
+    ));
+
     final data = {
       'updatedTime': FieldValue.serverTimestamp(),
       'metadata': {
-        'storageSize': totalSize,
+        "size": {
+          'storage': totalSize,
+          'vault': await vaultFile.length(),
+        },
         'count': {
           'items': HiveManager.items!.length,
           'files': objects,

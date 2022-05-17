@@ -25,72 +25,72 @@ class FormFieldUtils {
   }) {
     // ignore: unused_local_variable
     final console = Console(name: 'FormFieldUtils');
-    final List<HiveLisoField> _newFields = [];
+    final List<HiveLisoField> newFields = [];
 
     for (var i = 0; i < item.fields.length; i++) {
-      final _field = item.fields[i];
-      final _widget = widgets[i];
-      final _fieldType = LisoFieldType.values.byName(_field.type);
+      final field = item.fields[i];
+      final widget = widgets[i];
+      final fieldType = LisoFieldType.values.byName(field.type);
 
       dynamic formField;
 
-      switch (_fieldType) {
+      switch (fieldType) {
         case LisoFieldType.choices:
-          formField = _widget as ChoicesFormField;
+          formField = widget as ChoicesFormField;
           break;
         case LisoFieldType.textField:
-          formField = _widget as TextFieldForm;
+          formField = widget as TextFieldForm;
           break;
         case LisoFieldType.textArea:
-          formField = _widget as TextAreaFormField;
+          formField = widget as TextAreaFormField;
           break;
         case LisoFieldType.richText:
-          formField = _widget as RichTextFormField;
+          formField = widget as RichTextFormField;
           break;
         case LisoFieldType.password:
-          formField = _widget as PasswordFormField;
+          formField = widget as PasswordFormField;
           break;
         case LisoFieldType.url:
-          formField = _widget as URLFormField;
+          formField = widget as URLFormField;
           break;
         case LisoFieldType.email:
-          formField = _widget as EmailFormField;
+          formField = widget as EmailFormField;
           break;
         case LisoFieldType.date:
-          formField = _widget as DateFormField;
+          formField = widget as DateFormField;
           break;
         case LisoFieldType.phone:
-          formField = _widget as PhoneFormField;
+          formField = widget as PhoneFormField;
           break;
         case LisoFieldType.pin:
-          formField = _widget as PINFormField;
+          formField = widget as PINFormField;
           break;
         case LisoFieldType.number:
-          formField = _widget as NumberFormField;
+          formField = widget as NumberFormField;
           break;
         case LisoFieldType.passport:
-          formField = _widget as PassportFormField;
+          formField = widget as PassportFormField;
           break;
         case LisoFieldType.address:
-          formField = _widget as AddressFormField;
+          formField = widget as AddressFormField;
           break;
         case LisoFieldType.mnemonicSeed:
-          formField = _widget as MnemonicFormField;
+          formField = widget as MnemonicFormField;
           break;
         default:
       }
 
       if (formField != null) {
         if (formField.value is Map<String, dynamic>) {
-          _field.data.extra = formField.value;
+          field.data.extra = formField.value;
         } else {
-          _field.data.value = formField.value;
+          field.data.value = formField.value;
         }
       }
 
-      _newFields.add(_field);
+      newFields.add(field);
     }
 
-    return _newFields;
+    return newFields;
   }
 }

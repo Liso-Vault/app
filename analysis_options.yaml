@@ -47,3 +47,8 @@ dart_code_metrics:
     - prefer-trailing-comma
     - prefer-conditional-expressions
     - no-equal-then-else
+
+# web3dart
+analyzer:
+  exclude: 
+    - '**/*.g.dart'

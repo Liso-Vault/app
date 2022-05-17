@@ -14,7 +14,7 @@ class ChoicesFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = field.data.choices!
-        .map((e) => DropdownMenuItem(child: Text(e.name), value: e.value))
+        .map((e) => DropdownMenuItem(value: e.value, child: Text(e.name)))
         .toList();
 
     dropdown = CustomDropDownFormField(field, items: items);

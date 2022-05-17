@@ -1,11 +1,11 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -44,9 +44,9 @@ class CreatePasswordScreenController extends GetxController
   // FUNCTIONS
 
   void generate() {
-    final _password = Utils.generatePassword();
-    passwordController.text = _password;
-    passwordConfirmController.text = _password;
+    final password = Utils.generatePassword();
+    passwordController.text = password;
+    passwordConfirmController.text = password;
     obscurePassword.value = false;
     obscureConfirmPassword.value = false;
   }
@@ -65,7 +65,7 @@ class CreatePasswordScreenController extends GetxController
       UIUtils.showSnackBar(
         title: 'Passwords do not match',
         message: 'Re-enter your passwords',
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+        icon: const Icon(Iconsax.warning_2, color: Colors.red),
         seconds: 4,
       );
 
@@ -73,12 +73,16 @@ class CreatePasswordScreenController extends GetxController
     }
 
     // write a local master wallet
-    final privateKeyHex = Get.parameters['privateKeyHex'];
+    // TODO: use a global variable instead to prevent lost
+    final privateKeyHex = Get.parameters['privateKeyHex']!;
 
     Globals.wallet = WalletService.to.privateKeyHexToWallet(
-      privateKeyHex!,
+      privateKeyHex,
       password: passwordController.text,
     );
+
+    // just to make sure the Wallet is ready before proceeding
+    await Future.delayed(200.milliseconds);
 
     // save wallet to persistence
     PersistenceService.to.wallet.val = Globals.wallet!.toJson();
@@ -88,9 +92,9 @@ class CreatePasswordScreenController extends GetxController
       key: kBiometricPasswordKey,
     );
 
-    final seed = Get.parameters['seed'];
+    final seed = Get.parameters['seed']!;
     await BiometricUtils.save(
-      seed!,
+      seed,
       key: kBiometricSeedKey,
     );
 

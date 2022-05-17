@@ -40,9 +40,9 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
       );
 
       return ListItemAnimation(
-        child: tile,
         delay: 100.milliseconds,
         duration: 300.milliseconds,
+        child: tile,
       );
     }
 

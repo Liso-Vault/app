@@ -1,11 +1,11 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
-import '../../../core/services/wallet.service.dart';
+import '../../wallet/wallet.service.dart';
 
 class ConfirmMnemonicScreenBinding extends Bindings {
   @override
@@ -33,7 +33,7 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
       UIUtils.showSnackBar(
         title: 'Incorrect Mnemonic Phrase',
         message: "Please re-enter your backed up mnemonic seed phrase",
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+        icon: const Icon(Iconsax.warning_2, color: Colors.red),
         seconds: 4,
       );
 

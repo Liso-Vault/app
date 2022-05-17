@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/sync/syncing/syncing_screen.controller.dart';
@@ -30,18 +31,18 @@ class SyncingScreen extends GetView<SyncingScreenController> {
                 ),
               ),
               const SizedBox(height: 15),
-              Text('syncing'.tr + '...'),
+              Text('${'syncing'.tr}...'),
             ],
           ),
         ),
       ),
       onError: (message) => Material(
         child: CenteredPlaceholder(
-          iconData: LineIcons.exclamationTriangle,
+          iconData: Iconsax.warning_2,
           message: message!,
           child: TextButton.icon(
             label: Text('try_again'.tr),
-            icon: const Icon(LineIcons.syncIcon),
+            icon: const Icon(Iconsax.refresh),
             onPressed: controller.sync,
           ),
         ),

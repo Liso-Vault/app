@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
@@ -92,7 +93,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   void _duplicate() async {
     final copy = HiveLisoItem.fromJson(item.toJson());
-    copy.title = copy.title + ' Copy';
+    copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
     HiveManager.items!.add(copy);
   }
@@ -105,39 +106,37 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       if (item.trashed) ...[
         ContextMenuItem(
           title: 'restore'.tr,
-          leading: const Icon(LineIcons.trashRestore),
+          leading: const Icon(Iconsax.refresh),
           onSelected: _restore,
         ),
         ContextMenuItem(
           title: 'delete_permanently'.tr,
-          leading: const Icon(LineIcons.trash),
+          leading: const Icon(Iconsax.trash),
           onSelected: _delete,
         ),
       ] else ...[
         ContextMenuItem(
           title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
           leading: FaIcon(
-            item.favorite
-                ? FontAwesomeIcons.solidHeart
-                : FontAwesomeIcons.heart,
+            item.favorite ? Iconsax.heart_remove : Iconsax.heart_add,
             color: item.favorite ? Colors.pink : null,
           ),
           onSelected: _favorite,
         ),
         ContextMenuItem(
           title: 'move_to_trash'.tr,
-          leading: const Icon(LineIcons.trash),
+          leading: const Icon(Iconsax.trash),
           onSelected: _trash,
         ),
         ContextMenuItem(
           title: 'duplicate'.tr,
-          leading: const Icon(LineIcons.copy),
+          leading: const Icon(Iconsax.copy),
           onSelected: _duplicate,
         ),
       ],
       ContextMenuItem(
         title: 'details'.tr,
-        leading: const Icon(LineIcons.code),
+        leading: const Icon(Iconsax.code),
         // TODO: adaptive route for json viewer screen
         onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
       ),
@@ -244,58 +243,57 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     // if large screen
     if (isLargeScreen) return tile;
+    final leadingActions = <SwipeAction>[
+      SwipeAction(
+        title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
+        color: Colors.pink,
+        widthSpace: 100,
+        performsFirstActionWithFullSwipe: true,
+        icon: Icon(item.favorite ? Iconsax.heart5 : Iconsax.heart),
+        style: const TextStyle(fontSize: 15),
+        onTap: (CompletionHandler handler) async {
+          await handler(false);
+          _favorite();
+        },
+      ),
+      if (item.trashed) ...[
+        SwipeAction(
+          title: 'restore'.tr,
+          color: kAppColorDarker,
+          icon: const Icon(Iconsax.refresh),
+          style: const TextStyle(fontSize: 15),
+          onTap: (CompletionHandler handler) async {
+            await handler(true);
+            _restore();
+          },
+        ),
+      ],
+    ];
+
+    final trailingActions = <SwipeAction>[
+      SwipeAction(
+        title: item.trashed ? 'delete_permanently'.tr : 'trash'.tr,
+        color: Colors.red,
+        icon: const Icon(Iconsax.trash),
+        style: const TextStyle(fontSize: 15),
+        performsFirstActionWithFullSwipe: true,
+        onTap: (CompletionHandler handler) async {
+          await handler(true);
+
+          if (item.trashed) {
+            _delete();
+          } else {
+            _trash();
+          }
+        },
+      ),
+    ];
 
     final swipeAction = SwipeActionCell(
       key: ObjectKey(item),
+      leadingActions: leadingActions,
+      trailingActions: trailingActions,
       child: tile,
-      leadingActions: <SwipeAction>[
-        SwipeAction(
-          title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-          color: Colors.pink,
-          widthSpace: 100,
-          performsFirstActionWithFullSwipe: true,
-          icon: FaIcon(
-            item.favorite
-                ? FontAwesomeIcons.solidHeart
-                : FontAwesomeIcons.heart,
-          ),
-          style: const TextStyle(fontSize: 15),
-          onTap: (CompletionHandler handler) async {
-            await handler(false);
-            _favorite();
-          },
-        ),
-        if (item.trashed) ...[
-          SwipeAction(
-            title: 'restore'.tr,
-            color: kAppColorDarker,
-            icon: const Icon(LineIcons.trashRestore),
-            style: const TextStyle(fontSize: 15),
-            onTap: (CompletionHandler handler) async {
-              await handler(true);
-              _restore();
-            },
-          ),
-        ],
-      ],
-      trailingActions: <SwipeAction>[
-        SwipeAction(
-          title: item.trashed ? 'delete_permanently'.tr : 'trash'.tr,
-          color: Colors.red,
-          icon: const Icon(LineIcons.trash),
-          style: const TextStyle(fontSize: 15),
-          performsFirstActionWithFullSwipe: true,
-          onTap: (CompletionHandler handler) async {
-            await handler(true);
-
-            if (item.trashed) {
-              _delete();
-            } else {
-              _trash();
-            }
-          },
-        ),
-      ],
     );
 
     return swipeAction;

@@ -1,8 +1,8 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icon.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -21,7 +21,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LineIcon(LineIcons.alternateShield, size: 100, color: kAppColor),
+          LineIcon(Iconsax.password_check, size: 100, color: kAppColor),
           const SizedBox(height: 20),
           Text(
             'master_password'.tr,
@@ -51,8 +51,8 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
                   onPressed: controller.obscurePassword.toggle,
                   icon: Icon(
                     controller.obscurePassword()
-                        ? LineIcons.eye
-                        : LineIcons.eyeSlash,
+                        ? Iconsax.eye
+                        : Iconsax.eye_slash,
                   ),
                 ),
               ),
@@ -76,8 +76,8 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
                   onPressed: controller.obscureConfirmPassword.toggle,
                   icon: Icon(
                     controller.obscureConfirmPassword()
-                        ? LineIcons.eye
-                        : LineIcons.eyeSlash,
+                        ? Iconsax.eye
+                        : Iconsax.eye_slash,
                   ),
                 ),
               ),
@@ -96,13 +96,13 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
               ElevatedButton.icon(
                 onPressed: controller.confirm,
                 label: Text('confirm'.tr),
-                icon: const Icon(LineIcons.check),
+                icon: const Icon(Iconsax.arrow_circle_right),
               ),
               const SizedBox(width: 10),
               TextButton.icon(
                 onPressed: controller.generate,
                 label: Text('generate'.tr),
-                icon: const Icon(LineIcons.flask),
+                icon: const Icon(Iconsax.chart_3),
               ),
             ],
           )

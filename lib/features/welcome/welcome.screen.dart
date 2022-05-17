@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
@@ -29,7 +29,7 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
           const SizedBox(height: 20),
           Text(
             ConfigService.to.appName,
-            style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 25),
           ),
           const SizedBox(height: 10),
           Text(
@@ -49,14 +49,14 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             width: 200,
             child: ElevatedButton.icon(
               label: Text('create_vault'.tr),
-              icon: const Icon(LineIcons.plus),
+              icon: const Icon(Iconsax.box_add),
               onPressed: () => Get.toNamed(Routes.mnemonic),
             ),
           ),
           const SizedBox(height: 10),
           TextButton.icon(
             label: Text('import_vault'.tr),
-            icon: const Icon(LineIcons.download),
+            icon: const Icon(Iconsax.import_1),
             onPressed: () => Get.toNamed(Routes.import),
           ),
         ],

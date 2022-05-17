@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -49,8 +50,8 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
                 onPressed: controller.obscurePassword.toggle,
                 icon: Icon(
                   controller.obscurePassword()
-                      ? LineIcons.eye
-                      : LineIcons.eyeSlash,
+                      ? Iconsax.eye
+                      : Iconsax.eye_slash,
                 ),
               ),
             ),
@@ -68,7 +69,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
                       controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
                   icon: Icon(
                     controller.passwordMode
-                        ? LineIcons.arrowCircleRight
+                        ? Iconsax.arrow_circle_right
                         : LineIcons.lockOpen,
                   ),
                   onPressed: controller.canProceed() ? controller.unlock : null,
@@ -78,7 +79,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             if (BiometricUtils.touchFaceIdSupported) ...[
               const SizedBox(width: 15),
               IconButton(
-                icon: const Icon(LineIcons.fingerprint),
+                icon: const Icon(Iconsax.finger_scan),
                 onPressed: controller.authenticateBiometrics,
               ),
             ]
@@ -88,7 +89,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           const SizedBox(height: 10),
           Obx(
             () => Text(
-              '${controller.attemptsLeft()} ' + 'attempts_left'.tr,
+              '${controller.attemptsLeft()} ${'attempts_left'.tr}',
               style: const TextStyle(color: Colors.grey, fontSize: 10),
             ),
           ),

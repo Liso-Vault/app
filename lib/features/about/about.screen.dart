@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -19,63 +20,23 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final _content = ListView(
+    final config = Get.find<ConfigService>();
+    final persistence = Get.find<PersistenceService>();
+
+    final content = ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        // const SizedBox(height: 30),
-        // GestureDetector(
-        //   child: RemoteImage(
-        //     url: ConfigService.to.general.app.image,
-        //     height: 100,
-        //     placeholder: Image.asset(Images.logo, height: 100),
-        //   ),
-        //   onLongPress: () {
-        //     PersistenceService.to.proTester.val =
-        //         !PersistenceService.to.proTester.val;
-
-        //     UIUtils.showSnackBar(
-        //       title: 'PRO Tester',
-        //       message: "PRO Tester mode has been enabled",
-        //     );
-        //   },
-        // ),
-        // const SizedBox(height: 15),
-        // Text(
-        //   ConfigService.to.appName,
-        //   textAlign: TextAlign.center,
-        //   style: const TextStyle(fontSize: 25),
-        // ),
-        // Obx(
-        //   () => Text(
-        //     controller.appVersion,
-        //     textAlign: TextAlign.center,
-        //     style: const TextStyle(fontSize: 10),
-        //   ),
-        // ),
-        // const SizedBox(height: 10),
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 25),
-        //   child: Text(
-        //     ConfigService.to.general.app.shortDescription,
-        //     textAlign: TextAlign.center,
-        //     style: const TextStyle(color: Colors.grey),
-        //   ),
-        // ),
-        // const SizedBox(height: 30),
         const Divider(),
         ListTile(
           leading: RemoteImage(
-            url: ConfigService.to.general.app.image,
+            url: config.general.app.image,
             height: 20,
             placeholder: Image.asset(Images.logo, height: 20),
           ),
-          // trailing: const Icon(LineIcons.alternateExternalLink),
-          title: Text('${ConfigService.to.appName} ${controller.appVersion}'),
-          subtitle: Text(ConfigService.to.general.app.shortDescription),
+          title: Obx(() => Text('${config.appName} v${controller.appVersion}')),
           onLongPress: () {
-            PersistenceService.to.proTester.val =
-                !PersistenceService.to.proTester.val;
+            persistence.proTester.val = !persistence.proTester.val;
 
             UIUtils.showSnackBar(
               title: 'PRO Tester',
@@ -85,22 +46,22 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.link),
-          trailing: const Icon(LineIcons.alternateExternalLink),
-          title: Text('${ConfigService.to.appName} Website'),
-          subtitle: Text(ConfigService.to.general.app.links.website),
+          leading: const Icon(Iconsax.chrome),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: Text('${config.appName} Website'),
+          subtitle: Text(config.general.app.links.website),
           onTap: () => launchUrlString(
-            ConfigService.to.general.app.links.website,
+            config.general.app.links.website,
           ),
         ),
         const Divider(),
         ListTile(
           leading: const Icon(LineIcons.rocket),
-          title: Text('${ConfigService.to.appName} Roadmap'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: Text('${config.appName} Roadmap'),
           onTap: () => launchUrlString(
-            ConfigService.to.general.app.links.roadmap,
+            config.general.app.links.roadmap,
           ),
-          trailing: const Icon(LineIcons.alternateExternalLink),
         ),
         const Divider(),
         ContextMenuButton(
@@ -108,42 +69,54 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           useMouseRegion: true,
           padding: EdgeInsets.zero,
           child: ListTile(
-            leading: const Icon(LineIcons.users),
+            leading: const Icon(Iconsax.profile_2user),
             title: Text('community_help'.tr),
-            trailing: const Icon(LineIcons.alternateExternalLink),
+            trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () {},
           ),
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.userShield),
-          title: Text('${ConfigService.to.appName} Privacy'),
-          trailing: const Icon(LineIcons.alternateExternalLink),
-          onTap: () =>
-              launchUrlString(ConfigService.to.general.app.links.privacy),
+          leading: const Icon(LineIcons.productHunt),
+          title: Text('${config.appName} Product Hunt'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => launchUrlString(config.general.app.links.productHunt),
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.bookOpen),
-          title: Text('${ConfigService.to.appName} Terms'),
-          trailing: const Icon(LineIcons.alternateExternalLink),
-          onTap: () =>
-              launchUrlString(ConfigService.to.general.app.links.terms),
+          leading: const Icon(LineIcons.github),
+          title: Text('${config.appName} GitHub'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => launchUrlString(config.general.app.links.github),
         ),
-        if (GetPlatform.isMobile) ...[
+        const Divider(),
+        ListTile(
+          leading: const Icon(Iconsax.security_user),
+          title: Text('${config.appName} Privacy'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => launchUrlString(config.general.app.links.privacy),
+        ),
+        const Divider(),
+        ListTile(
+          leading: const Icon(Iconsax.book_1),
+          title: Text('${config.appName} Terms'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => launchUrlString(config.general.app.links.terms),
+        ),
+        if (!GetPlatform.isMobile) ...[
           const Divider(),
           ListTile(
-            leading: const Icon(LineIcons.gift),
+            leading: const Icon(Iconsax.forward_square),
             title: const Text('Invite a friend'),
-            trailing: const Icon(LineIcons.share),
+            trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () => Share.share(
-              ConfigService.to.general.app.shareText,
-              subject: ConfigService.to.appName,
+              config.general.app.shareText,
+              subject: config.appName,
             ),
           ),
           // ListTile(
           //   leading: const Icon(LineIcons.download),
-          //   trailing: const Icon(LineIcons.alternateExternalLink),
+          //   trailing: const Icon(Iconsax.arrow_right_3),
           //   title: const Text('Check for updates'),
           //   subtitle: Obx(() => Text(controller.appVersion)),
           //   onTap: () => launchUrlString(kAppGithubReleasesUrl),
@@ -156,21 +129,22 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           padding: EdgeInsets.zero,
           child: ListTile(
             leading: RemoteImage(
-              url: ConfigService.to.general.developer.image,
+              url: config.general.developer.image,
               height: 23,
               width: 23,
               placeholder: Image.asset(Images.stackwares, height: 23),
             ),
             title: Text('developer'.tr),
-            subtitle: Text(ConfigService.to.devName),
-            trailing: const Icon(LineIcons.alternateExternalLink),
+            subtitle: Text(config.devName),
+            trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () {},
           ),
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.laptopCode),
+          leading: const Icon(Iconsax.code_1),
           title: Text('licenses'.tr),
+          trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => controller.showLicenses(context),
         ),
         const Divider(),
@@ -184,7 +158,7 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
         centerTitle: false,
         leading: const AppBarLeadingButton(),
       ),
-      body: _content,
+      body: content,
     );
   }
 }

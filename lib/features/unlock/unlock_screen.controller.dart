@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -91,7 +91,7 @@ class UnlockScreenController extends GetxController
       UIUtils.showSnackBar(
         title: 'Incorrect password',
         message: 'Please enter your vault password',
-        icon: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+        icon: const Icon(Iconsax.warning_2, color: Colors.red),
         seconds: 4,
       );
 

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/utils/globals.dart';
 
+import '../../../core/firebase/config/config.service.dart';
 import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
@@ -35,20 +38,24 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
       ),
     );
 
+    const emptyTimeMachine = 'No backed up vaults';
+    final emptyExplorer =
+        'Start uploading your private files on ${ConfigService.to.appName} Cloud! With double AES-256 Military-Grade Encryption, worrying is a thing of the past.';
+
     var content = controller.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: LineIcons.file,
-        message: 'no_files'.tr,
+        iconData: Iconsax.document_cloud,
+        message: controller.isTimeMachine ? emptyTimeMachine : emptyExplorer,
       ),
     );
 
     // enable pull to refresh if mobile
     if (GetPlatform.isMobile) {
       content = RefreshIndicator(
-        child: content,
         onRefresh: controller.pulledRefresh,
+        child: content,
       );
     }
 
@@ -70,14 +77,14 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
           Obx(
             () => IconButton(
               onPressed: !controller.busy() ? controller.newFolder : null,
-              icon: const Icon(LineIcons.folderPlus),
+              icon: const Icon(Iconsax.folder_add),
             ),
           ),
         ],
         Obx(
           () => IconButton(
             onPressed: !controller.busy() ? controller.reload : null,
-            icon: const Icon(LineIcons.syncIcon),
+            icon: const Icon(Iconsax.refresh),
           ),
         ),
         const SizedBox(width: 10),
@@ -89,8 +96,8 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
         visible: !controller.isTimeMachine && !controller.busy(),
         replacement: const SizedBox.shrink(),
         child: FloatingActionButton(
-          child: const Icon(LineIcons.upload),
           onPressed: controller.busy() ? null : controller.pickFile,
+          child: const Icon(Iconsax.export_1),
         ),
       ),
     );
@@ -107,6 +114,10 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
               () => Text(
                 controller.currentPath.value
                     .replaceAll(S3Service.to.rootPath, 'Root/'),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: kAppColor,
+                ),
               ),
             ),
           ),

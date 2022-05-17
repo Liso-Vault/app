@@ -45,6 +45,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.values.byName(persistence.theme.val),
       // DARK THEME
       darkTheme: FlexColorScheme.dark(
+        fontFamily: 'RobotoFlex',
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColor),
         visualDensity: VisualDensity.compact,

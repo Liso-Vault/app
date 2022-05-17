@@ -4,7 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -14,7 +14,7 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/services/wallet.service.dart';
+import '../wallet/wallet.service.dart';
 import '../../core/utils/biometric.util.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -37,33 +37,18 @@ class SettingsScreenController extends GetxController
     return [
       ContextMenuItem(
         title: ThemeMode.system.name.tr,
-        leading: const Icon(LineIcons.microchip),
+        leading: const Icon(Iconsax.cpu),
         onSelected: () => changeTheme(ThemeMode.system),
       ),
       ContextMenuItem(
         title: ThemeMode.dark.name.tr,
-        leading: const Icon(LineIcons.moon),
+        leading: const Icon(Iconsax.moon),
         onSelected: () => changeTheme(ThemeMode.dark),
       ),
       ContextMenuItem(
         title: ThemeMode.light.name.tr,
-        leading: const Icon(LineIcons.sun),
+        leading: const Icon(Iconsax.sun_1),
         onSelected: () => changeTheme(ThemeMode.light),
-      ),
-    ];
-  }
-
-  List<ContextMenuItem> get menuItemsSyncSetting {
-    return [
-      ContextMenuItem(
-        title: 'On',
-        leading: const Icon(LineIcons.cloud),
-        onSelected: () => PersistenceService.to.sync.val = true,
-      ),
-      ContextMenuItem(
-        title: 'Off',
-        leading: const Icon(LineIcons.powerOff),
-        onSelected: () => PersistenceService.to.sync.val = false,
       ),
     ];
   }
@@ -118,7 +103,7 @@ class SettingsScreenController extends GetxController
     change('Exporting...', status: RxStatus.loading());
 
     final exportFileName =
-        '${WalletService.to.address}.wallet.$kWalletExtension';
+        '${WalletService.to.longAddress}.wallet.$kWalletExtension';
 
     final tempFile = File(join(
       LisoPaths.temp!.path,
@@ -214,8 +199,8 @@ class SettingsScreenController extends GetxController
             ),
       actions: [
         TextButton(
-          child: Text('okay'.tr),
           onPressed: Get.back,
+          child: Text('okay'.tr),
         ),
       ],
     ));

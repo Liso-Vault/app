@@ -1,6 +1,7 @@
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
 
@@ -24,61 +25,61 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     Widget _leadingIcon() {
-      if (!content.isFile) return const Icon(Icons.folder);
-      var _iconData = Icons.insert_drive_file;
-      if (content.fileType == null) return Icon(_iconData);
+      if (!content.isFile) return const Icon(Iconsax.folder_open5);
+      var iconData = Iconsax.document_1;
+      if (content.fileType == null) return Icon(iconData);
 
       switch (content.fileType!) {
         case 'image':
-          _iconData = Icons.photo;
+          iconData = Iconsax.gallery;
           break;
         case 'video':
-          _iconData = Icons.play_arrow_rounded;
+          iconData = Iconsax.play;
           break;
         case 'archive':
-          _iconData = Icons.archive;
+          iconData = Iconsax.archive;
           break;
         case 'audio':
-          _iconData = Icons.audio_file;
+          iconData = Iconsax.music;
           break;
         case 'code':
-          _iconData = Icons.code;
+          iconData = Icons.code;
           break;
         case 'book':
-          _iconData = Icons.menu_book_rounded;
+          iconData = Iconsax.book_1;
           break;
         case 'exec':
-          _iconData = Icons.computer;
+          iconData = Iconsax.code;
           break;
         case 'web':
-          _iconData = LineIcons.chrome;
+          iconData = Iconsax.chrome;
           break;
         case 'sheet':
-          _iconData = LineIcons.excelFile;
+          iconData = Iconsax.document_text;
           break;
         case 'text':
-          _iconData = Icons.drive_file_rename_outline_rounded;
+          iconData = Iconsax.document;
           break;
         case 'font':
-          _iconData = Icons.font_download;
+          iconData = Iconsax.text_block;
           break;
       }
 
-      return Icon(_iconData);
+      return Icon(iconData);
     }
 
     void _askToDownload() {
-      final _content = Text('Save "${content.maskedName}" to local disk?');
+      final dialogContent = Text('Save "${content.maskedName}" to local disk?');
 
       Get.dialog(AlertDialog(
         title: const Text('Download'),
         content: Utils.isDrawerExpandable
-            ? _content
-            : SizedBox(width: 600, child: _content),
+            ? dialogContent
+            : SizedBox(width: 600, child: dialogContent),
         actions: [
           TextButton(
-            child: Text('cancel'.tr),
             onPressed: Get.back,
+            child: Text('cancel'.tr),
           ),
           TextButton(
             child: const Text('Download'),
@@ -95,13 +96,13 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
       if (content.isVaultFile) ...[
         ContextMenuItem(
           title: 'Restore',
-          leading: const Icon(LineIcons.trashRestore),
+          leading: const Icon(Iconsax.import_1),
           onSelected: () => controller.restore(content),
         ),
         if (!controller.currentPath.value.contains('Backups/')) ...[
           ContextMenuItem(
             title: 'Backup',
-            leading: const Icon(LineIcons.fileDownload),
+            leading: const Icon(Iconsax.document_copy),
             onSelected: () => controller.backup(content),
           ),
         ]
@@ -109,13 +110,13 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
         if (content.isFile) ...[
           ContextMenuItem(
             title: 'Download',
-            leading: const Icon(LineIcons.download),
+            leading: const Icon(Iconsax.import_1),
             onSelected: _askToDownload,
           ),
         ],
         ContextMenuItem(
           title: 'Delete',
-          leading: const Icon(LineIcons.trash),
+          leading: const Icon(Iconsax.trash),
           onSelected: () => controller.confirmDelete(content),
         ),
       ],
@@ -167,8 +168,8 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
             ),
       actions: [
         TextButton(
-          child: Text('cancel'.tr),
           onPressed: Get.back,
+          child: Text('cancel'.tr),
         ),
         TextButton(
           child: Text('proceed'.tr),

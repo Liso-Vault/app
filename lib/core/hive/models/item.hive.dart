@@ -108,180 +108,180 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       LisoItemCategory.values.byName(category);
 
   String get subTitle {
-    String _identifier = '';
+    String identifier = '';
 
     switch (categoryObject) {
       case LisoItemCategory.cryptoWallet:
-        _identifier = 'address';
+        identifier = 'address';
         break;
       case LisoItemCategory.login:
-        _identifier = 'website';
+        identifier = 'website';
         break;
       case LisoItemCategory.password:
-        _identifier = 'website';
+        identifier = 'website';
         break;
       case LisoItemCategory.identity:
-        _identifier = 'first_name';
+        identifier = 'first_name';
         break;
       case LisoItemCategory.note:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.cashCard:
-        _identifier = 'holder_name';
+        identifier = 'holder_name';
         break;
       case LisoItemCategory.bankAccount:
-        _identifier = 'account_name';
+        identifier = 'account_name';
         break;
       case LisoItemCategory.medicalRecord:
-        _identifier = 'healthcare_professional';
+        identifier = 'healthcare_professional';
         break;
       case LisoItemCategory.passport:
-        _identifier = 'full_name';
+        identifier = 'full_name';
         break;
       case LisoItemCategory.server:
-        _identifier = 'url';
+        identifier = 'url';
         break;
       case LisoItemCategory.softwareLicense:
-        _identifier = 'publisher';
+        identifier = 'publisher';
         break;
       case LisoItemCategory.apiCredential:
-        _identifier = 'host_name';
+        identifier = 'host_name';
         break;
       case LisoItemCategory.database:
-        _identifier = 'database';
+        identifier = 'database';
         break;
       case LisoItemCategory.driversLicense:
-        _identifier = 'full_name';
+        identifier = 'full_name';
         break;
       case LisoItemCategory.email:
-        _identifier = 'username';
+        identifier = 'username';
         break;
       case LisoItemCategory.membership:
-        _identifier = 'website';
+        identifier = 'website';
         break;
       case LisoItemCategory.outdoorLicense:
-        _identifier = 'approved_wildlife';
+        identifier = 'approved_wildlife';
         break;
       case LisoItemCategory.rewardsProgram:
-        _identifier = 'company_name';
+        identifier = 'company_name';
         break;
       case LisoItemCategory.socialSecurity:
-        _identifier = 'name';
+        identifier = 'name';
         break;
       case LisoItemCategory.wirelessRouter:
-        _identifier = 'base_station_name';
+        identifier = 'base_station_name';
         break;
       case LisoItemCategory.encryption:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       default:
-        throw 'item identifier: $_identifier not found while obtaining sub title';
+        throw 'item identifier: $identifier not found while obtaining sub title';
     }
 
-    final _field = fields.firstWhere((e) => e.identifier == _identifier);
-    String _value = _field.data.value!;
+    final field = fields.firstWhere((e) => e.identifier == identifier);
+    String value = field.data.value!;
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {
       try {
-        _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+        value = Document.fromJson(jsonDecode(value)).toPlainText();
       } catch (e) {
         console.error('error decoding rich text: $e');
-        _value = 'failed to decode';
+        value = 'failed to decode';
       }
     }
 
-    return _value;
+    return value;
   }
 
   // TODO: bind corresponding significant data
   Map<String, String> get significant {
-    String _identifier = '';
+    String identifier = '';
 
     switch (categoryObject) {
       case LisoItemCategory.cryptoWallet:
-        _identifier = 'address';
+        identifier = 'address';
         break;
       case LisoItemCategory.login:
-        _identifier = 'website';
+        identifier = 'website';
         break;
       case LisoItemCategory.password:
-        _identifier = 'website';
+        identifier = 'website';
         break;
       case LisoItemCategory.identity:
-        _identifier = 'first_name';
+        identifier = 'first_name';
         break;
       case LisoItemCategory.note:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.cashCard:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.bankAccount:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.medicalRecord:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.passport:
-        _identifier = 'full_name';
+        identifier = 'full_name';
         break;
       case LisoItemCategory.server:
-        _identifier = 'url';
+        identifier = 'url';
         break;
       case LisoItemCategory.softwareLicense:
-        _identifier = 'publisher';
+        identifier = 'publisher';
         break;
       case LisoItemCategory.apiCredential:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.database:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.driversLicense:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.email:
-        _identifier = 'username';
+        identifier = 'username';
         break;
       case LisoItemCategory.membership:
-        _identifier = 'group';
+        identifier = 'group';
         break;
       case LisoItemCategory.outdoorLicense:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.rewardsProgram:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.socialSecurity:
-        _identifier = 'name';
+        identifier = 'name';
         break;
       case LisoItemCategory.wirelessRouter:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       case LisoItemCategory.encryption:
-        _identifier = 'note';
+        identifier = 'note';
         break;
       default:
-        throw 'item identifier: $_identifier not found while obtaining sub title';
+        throw 'item identifier: $identifier not found while obtaining sub title';
     }
 
-    final _field = fields.firstWhere((e) => e.identifier == _identifier);
+    final field = fields.firstWhere((e) => e.identifier == identifier);
     // convert Map keys to human readable format
-    _identifier = GetUtils.capitalize(_identifier.replaceAll('_', ' '))!;
-    var _value = _field.data.value!;
+    identifier = GetUtils.capitalize(identifier.replaceAll('_', ' '))!;
+    var value = field.data.value!;
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {
       try {
-        _value = Document.fromJson(jsonDecode(_value)).toPlainText();
+        value = Document.fromJson(jsonDecode(value)).toPlainText();
       } catch (e) {
         console.error('error decoding rich text: $e');
-        _value = 'failed to decode';
+        value = 'failed to decode';
       }
     }
 
-    return {_identifier: _value};
+    return {identifier: value};
   }
 
   @override

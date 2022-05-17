@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:intl/intl.dart';
 import 'package:web3dart/credentials.dart';
 
 // HIVE DATABASE
@@ -32,6 +33,8 @@ final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
+
+final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
 const kS3MetadataVersion = '1';
 

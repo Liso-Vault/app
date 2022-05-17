@@ -68,7 +68,7 @@ class S3ExplorerScreenController extends GetxController
 
   Future<void> reload() async => await load(path: currentPath.value);
 
-  Future<void> up() async => await load(path: dirname(currentPath.value) + '/');
+  Future<void> up() async => await load(path: '${dirname(currentPath.value)}/');
 
   Future<void> load({
     required String path,
@@ -146,24 +146,25 @@ class S3ExplorerScreenController extends GetxController
       await reload();
     }
 
-    final _content = Text('Are you sure you want to delete "${content.name}"?');
+    final dialogContent =
+        Text('Are you sure you want to delete "${content.name}"?');
 
     Get.dialog(AlertDialog(
       title: Text('delete_file'.tr),
       content: Utils.isDrawerExpandable
-          ? _content
+          ? dialogContent
           : SizedBox(
               width: 600,
-              child: _content,
+              child: dialogContent,
             ),
       actions: [
         TextButton(
-          child: Text('cancel'.tr),
           onPressed: Get.back,
+          child: Text('cancel'.tr),
         ),
         TextButton(
-          child: Text('confirm_delete'.tr),
           onPressed: _delete,
+          child: Text('confirm_delete'.tr),
         ),
       ],
     ));
@@ -361,8 +362,8 @@ class S3ExplorerScreenController extends GetxController
       ),
       actions: [
         TextButton(
-          child: Text('cancel'.tr),
           onPressed: Get.back,
+          child: Text('cancel'.tr),
         ),
         TextButton(
           child: Text('create'.tr),

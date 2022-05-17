@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -17,10 +17,10 @@ class ResetScreen extends GetView<ResetScreenController> {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.exclamationTriangle, size: 100, color: Colors.red),
+        const Icon(Iconsax.warning_2, size: 100, color: Colors.red),
         const SizedBox(height: 20),
         Text(
-          'reset'.tr + ' ${ConfigService.to.appName}',
+          '${'reset'.tr} ${ConfigService.to.appName}',
           style: const TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 20),
@@ -41,13 +41,13 @@ class ResetScreen extends GetView<ResetScreenController> {
             ElevatedButton.icon(
               onPressed: Get.back,
               label: Text('cancel'.tr),
-              icon: const Icon(LineIcons.times),
+              icon: const Icon(Iconsax.slash),
             ),
             const SizedBox(width: 20),
             TextButton.icon(
               onPressed: controller.reset,
               label: Text('reset'.tr),
-              icon: const Icon(LineIcons.trash),
+              icon: const Icon(Iconsax.refresh),
               style: TextButton.styleFrom(primary: Colors.red),
             ),
           ],

@@ -1,10 +1,9 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/services/wallet.service.dart';
 import 'package:liso/core/translations/data.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:path/path.dart';
 
 class PersistenceService extends GetxService with ConsoleMixin {
@@ -50,11 +49,16 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final groups = 'Personal,Work,Family,Other'.val('groups');
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
+  // PRICES
+  final lastMaticBalance = 0.0.val('last matic balance');
+  final lastLisoBalance = 0.0.val('last liso balance');
+
+  final lastMaticUsdPrice = 0.0.val('last matic usd price');
+  final lastLisoUsdPrice = 0.0.val('last liso usd price');
 
   // GETTERS
 
-  bool get canSync =>
-      sync.val && syncConfirmed.val && WalletService.to.address.isNotEmpty;
+  bool get canSync => sync.val && syncConfirmed.val;
 
   String get ipfsServerUrl =>
       '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';

@@ -1,9 +1,9 @@
 import 'package:blur/blur.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/custom_chip.widget.dart';
 
@@ -63,7 +63,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
                 ),
               ),
               IconButton(
-                icon: const Icon(LineIcons.eye),
+                icon: const Icon(Iconsax.eye),
                 onPressed: () => controller.passphraseIndexedStack.value = 1,
               ),
             ],
@@ -76,7 +76,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.key, size: 100, color: kAppColor),
+        const Icon(Iconsax.key_square, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
           'Master Seed Phrase',
@@ -96,11 +96,11 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
             children: {
               MnemonicMode.generate: SegmentedControlItem(
                 text: 'generate'.tr,
-                iconData: LineIcons.flask,
+                iconData: Iconsax.chart_3,
               ),
               MnemonicMode.restore: SegmentedControlItem(
                 text: 'existing'.tr,
-                iconData: LineIcons.pen,
+                iconData: Iconsax.import,
               ),
             },
           ),
@@ -109,7 +109,6 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
         Obx(
           () => Visibility(
             visible: controller.mode.value == MnemonicMode.generate,
-            child: seedPhrase,
             replacement: Form(
               key: controller.formKey,
               child: PassphraseCard(
@@ -117,6 +116,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
                 onFieldSubmitted: (text) => controller.continuePressed,
               ),
             ),
+            child: seedPhrase,
           ),
         ),
         const SizedBox(height: 20),
@@ -145,7 +145,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
               onPressed:
                   controller.canProceed ? controller.continuePressed : null,
               label: Text('continue'.tr),
-              icon: const Icon(LineIcons.arrowCircleRight),
+              icon: const Icon(Iconsax.arrow_circle_right),
             ),
           ),
         ),

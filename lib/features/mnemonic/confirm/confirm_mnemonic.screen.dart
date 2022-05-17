@@ -1,7 +1,7 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/passphrase.card.dart';
 
@@ -17,7 +17,7 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.doubleCheck, size: 100, color: kAppColor),
+        const Icon(Iconsax.key_square, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
           'Confirm Seed',
@@ -40,7 +40,7 @@ class ConfirmMnemonicScreen extends GetView<ConfirmMnemonicScreenController>
           child: ElevatedButton.icon(
             onPressed: controller.continuePressed,
             label: Text('continue'.tr),
-            icon: const Icon(LineIcons.arrowCircleRight),
+            icon: const Icon(Iconsax.arrow_circle_right),
           ),
         ),
       ],

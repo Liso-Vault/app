@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -37,8 +37,8 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
               (e) => e.title.toLowerCase() == controller.theme.value,
             ),
             child: ListTile(
-              leading: const Icon(LineIcons.adjust),
-              trailing: const Icon(LineIcons.angleRight),
+              leading: const Icon(Iconsax.color_swatch),
+              trailing: const Icon(Iconsax.arrow_right_3),
               title: Text('theme'.tr),
               subtitle: Obx(() => Text(controller.theme().tr)),
             ),
@@ -52,7 +52,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
                 CheckboxListTile(
                   title: Text('${config.appName} Cloud Sync'),
                   subtitle: const Text("Keep in sync with all your devices"),
-                  secondary: const Icon(LineIcons.cloud),
+                  secondary: const Icon(Iconsax.cloud),
                   value: persistence.sync.val,
                   onChanged: (value) => persistence.sync.val = value!,
                 ),
@@ -60,7 +60,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
                 CheckboxListTile(
                   title: const Text('Errors & Crashes'),
                   subtitle: const Text("Send anonymous crash & error reports"),
-                  secondary: const Icon(LineIcons.bug),
+                  secondary: const Icon(Iconsax.cpu),
                   value: persistence.crashReporting.val,
                   onChanged: (value) => persistence.crashReporting.val = value!,
                 ),
@@ -68,7 +68,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
                 CheckboxListTile(
                   title: const Text('Usage Statistics'),
                   subtitle: const Text('Send anonymous usage statistics'),
-                  secondary: const Icon(Icons.analytics),
+                  secondary: const Icon(Iconsax.chart_square),
                   value: persistence.analytics.val,
                   onChanged: (value) => persistence.analytics.val = value!,
                 ),
@@ -80,8 +80,8 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ListTile(
           title: Text('time_machine'.tr),
           subtitle: const Text('Go back in time to undo your changes'),
-          leading: const Icon(LineIcons.clock),
-          trailing: const Icon(LineIcons.angleRight),
+          leading: const Icon(Iconsax.clock),
+          trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () {
             if (!persistence.sync.val) {
               return UIUtils.showSimpleDialog(
@@ -98,8 +98,8 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.download),
-          trailing: const Icon(LineIcons.angleRight),
+          leading: const Icon(Iconsax.import_1),
+          trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('Import Items'),
           subtitle: const Text('Import items from external sources'),
           // enabled: false,
@@ -112,8 +112,8 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.box),
-          trailing: const Icon(LineIcons.fileUpload),
+          leading: const Icon(Iconsax.box_1),
+          trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('export_vault'.tr),
           subtitle: const Text('Save <vault>.liso to an external source'),
           onTap: () {
@@ -129,33 +129,33 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.wallet),
-          trailing: const Icon(LineIcons.fileUpload),
+          leading: const Icon(Iconsax.wallet_1),
+          trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('export_wallet'.tr),
           subtitle: const Text('Save <wallet>.json to an external source'),
           onTap: controller.exportWallet,
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.key),
-          trailing: const Icon(LineIcons.exclamationTriangle),
+          leading: const Icon(Iconsax.key),
+          trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('Show Seed Phrase'),
           subtitle: const Text('Make sure you are in a safe location'),
           onTap: controller.showSeed,
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.lock),
-          trailing: const Icon(LineIcons.doorOpen),
-          title: Text('lock'.tr + ' ${config.appName}'),
+          leading: const Icon(Iconsax.lock),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: Text('${'lock'.tr} ${config.appName}'),
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(LineIcons.trashRestore),
-          trailing: const Icon(LineIcons.exclamationTriangle),
-          title: Text('reset'.tr + ' ${config.appName}'),
+          leading: const Icon(Iconsax.refresh5),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: Text('${'reset'.tr} ${config.appName}'),
           subtitle: const Text('Delete local vault and start over'),
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),

@@ -7,7 +7,7 @@ import 'package:hex/hex.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -39,10 +39,6 @@ class ImportScreenController extends GetxController
   final seedController = TextEditingController();
   final filePathController = TextEditingController();
 
-  final ipfsUrlController = TextEditingController(
-    text: PersistenceService.to.ipfsServerUrl,
-  );
-
   // PROPERTIES
   final importMode = ImportMode.liso.obs;
   final busy = false.obs;
@@ -70,13 +66,13 @@ class ImportScreenController extends GetxController
   // FUNCTIONS
 
   Future<bool> _downloadVault() async {
-    final privateKey =
-        WalletService.to.mnemonicToPrivateKey(seedController.text);
-    final address = privateKey.address.hexEip55;
-    final fileName = '$address.$kVaultExtension';
+    final privateKey = WalletService.to.mnemonicToPrivateKey(
+      seedController.text,
+    );
 
+    final address = privateKey.address.hexEip55;
     final result = await S3Service.to.downloadFile(
-      s3Path: join(address, fileName).replaceAll('\\', '/'),
+      s3Path: join(address, '$address.$kVaultExtension').replaceAll('\\', '/'),
       filePath: LisoManager.tempVaultFilePath,
       force: true,
     );
@@ -93,7 +89,7 @@ class ImportScreenController extends GetxController
     } else {
       UIUtils.showSimpleDialog(
         'Error Downloading',
-        '${result.left} > _downloadVault()',
+        '${result.left} > _downloadVault(), ${S3Service.to.client!.accessKey} | ${S3Service.to.client!.endPoint} | ${S3Service.to.client!.secretKey}',
       );
     }
 

@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
@@ -27,7 +27,7 @@ class LisoManager {
   static String get tempPath => LisoPaths.temp!.path;
 
   static String get vaultFilename =>
-      '${WalletService.to.address}.$kVaultExtension';
+      '${WalletService.to.longAddress}.$kVaultExtension';
   static String get tempVaultFilePath => join(tempPath, kTempVaultFileName);
   static String get exportVaultFilePath => join(tempPath, vaultFilename);
 

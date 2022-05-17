@@ -1,9 +1,9 @@
 import 'package:chips_input/chips_input.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/utils/globals.dart';
@@ -105,7 +105,7 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
               textCapitalization: TextCapitalization.words,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
               decoration: InputDecoration(
-                labelText: 'title'.tr + ' *',
+                labelText: '${'title'.tr} *',
               ),
             ),
           ),
@@ -130,13 +130,13 @@ class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
       DropdownButtonFormField<int>(
         isExpanded: true,
         value: controller.groupIndex.value,
-        onChanged: (_value) => controller.groupIndex.value = _value!,
+        onChanged: (value) => controller.groupIndex.value = value!,
         decoration: const InputDecoration(labelText: 'Vault'),
         items: [
           ...PersistenceService.to.groupsMap
               .map((e) => DropdownMenuItem<int>(
-                    child: Text(e['name']),
                     value: e['index'],
+                    child: Text(e['name']),
                   ))
               .toList()
         ],

@@ -1,16 +1,22 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/wallet.service.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 import 'package:liso/features/wallet/assets/assets.screen.dart';
+import 'package:liso/features/wallet/transactions/transactions.screen.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../resources/resources.dart';
+import '../menu/menu.button.dart';
+import 'nfts/nfts.screen.dart';
 import 'wallet_screen.controller.dart';
 
-class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
+class WalletScreen extends GetWidget<WalletScreenController> with ConsoleMixin {
   const WalletScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,22 +27,22 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          TextButton.icon(
-            label: Row(
-              mainAxisSize: MainAxisSize.max,
-              children: const [
-                Text('Ethereum'),
-                SizedBox(width: 5),
-                Icon(LineIcons.caretDown, size: 15),
-              ],
+          ContextMenuButton(
+            controller.networkMenuItems,
+            useMouseRegion: true,
+            padding: EdgeInsets.zero,
+            child: TextButton.icon(
+              onPressed: () {},
+              icon: Image.asset(Images.polygon, height: 18, color: kAppColor),
+              label: Row(
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Obx(() => Text(WalletService.to.network.value)),
+                  const SizedBox(width: 5),
+                  const Icon(LineIcons.caretDown, size: 15),
+                ],
+              ),
             ),
-            icon: const Icon(LineIcons.ethereum),
-            onPressed: () {
-              UIUtils.showSnackBar(
-                title: 'Switch Networks',
-                message: 'Coming soon...',
-              );
-            },
           ),
           Card(
             elevation: 2.0,
@@ -44,21 +50,26 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
               padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    '\$1,955',
+                children: [
+                  SimpleBuilder(builder: (_) {
+                    final totalUsd = currencyFormatter
+                        .format(WalletService.to.totalUsdBalance);
+
+                    return Text(
+                      '\$$totalUsd',
+                      style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    );
+                  }),
+                  const Text(
+                    'TOTAL BALANCE',
                     style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
+                      color: Colors.grey,
+                      fontSize: 10,
                     ),
                   ),
-                  Text(
-                    '1,232,645.23 LISO',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
                 ],
               ),
             ),
@@ -72,23 +83,27 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
                 children: [
                   CardButton(
                     text: 'Send',
-                    iconData: LineIcons.arrowCircleUp,
-                    onPressed: () {},
+                    iconData: Iconsax.send_sqaure_2,
+                    onPressed: () {
+                      UIUtils.showSimpleDialog('Send', 'Coming soon...');
+                    },
                   ),
                   CardButton(
                     text: 'Receive',
-                    iconData: LineIcons.arrowCircleDown,
-                    onPressed: () {},
+                    iconData: Iconsax.receive_square_2,
+                    onPressed: controller.showQRCode,
                   ),
                   CardButton(
                     text: 'Swap',
-                    iconData: LineIcons.syncIcon,
-                    onPressed: () {},
+                    iconData: Iconsax.arrow_swap_horizontal,
+                    onPressed: () =>
+                        UIUtils.showSimpleDialog('Swap', 'Coming soon...'),
                   ),
                   CardButton(
                     text: 'Buy',
-                    iconData: LineIcons.addToShoppingCart,
-                    onPressed: () {},
+                    iconData: Iconsax.shopping_cart,
+                    onPressed: () => UIUtils.showSimpleDialog(
+                        'Buy Crypto', 'Coming soon...'),
                   ),
                 ],
               ),
@@ -103,7 +118,8 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
             ),
             tabs: const [
               Tab(text: 'Assets'),
-              Tab(text: 'Transactions'),
+              Tab(text: 'NFTs'),
+              Tab(text: 'Activity'),
             ],
           ),
           const SizedBox(height: 10),
@@ -111,7 +127,8 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
             child: TabBarView(
               children: [
                 AssetsScreen(),
-                Icon(Icons.directions_transit),
+                NFTsScreen(),
+                TransactionsScreen(),
               ],
             ),
           ),
@@ -125,74 +142,67 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
       leading: const AppBarLeadingButton(),
       actions: [
         IconButton(
-          icon: const Icon(LineIcons.qrcode),
-          onPressed: () {},
+          icon: const Icon(Iconsax.scan_barcode),
+          onPressed: () {
+            UIUtils.showSimpleDialog('Scan QR', 'Coming soon...');
+          },
         ),
-        // IconButton(
-        //   icon: const Icon(LineIcons.userCircle),
-        //   onPressed: () {},
-        // ),
         const SizedBox(width: 5),
       ],
     );
 
-    // final fab = FloatingActionButton(
-    //   child: const Icon(LineIcons.paperPlane),
-    //   onPressed: () {
-    //     UIUtils.showSnackBar(
-    //       title: 'Send',
-    //       message: 'Coming soon...',
-    //     );
-    //   },
-    // );
-
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: appBar,
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.all(10),
-          child: InkWell(
-            onTap: () {},
-            child: Card(
-              elevation: 2.0,
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        DiceBearAvatar(
-                          seed: WalletService.to.address,
-                          size: 30,
-                        ),
-                        const SizedBox(width: 10),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              'Account 1',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                            Text(
-                              WalletService.to.shortAddress,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    const Icon(LineIcons.caretDown, size: 15),
-                  ],
-                ),
-              ),
+    final bottomContent = Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            DiceBearAvatar(
+              seed: WalletService.to.longAddress,
+              size: 30,
             ),
+            const SizedBox(width: 10),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Account 1',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  WalletService.to.shortAddress,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            )
+          ],
+        ),
+        const Icon(LineIcons.caretDown, size: 15),
+      ],
+    );
+
+    final bottomBar = InkWell(
+      onTap: controller.switchAccounts,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Card(
+          elevation: 2.0,
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: bottomContent,
           ),
         ),
+      ),
+    );
+
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+        appBar: appBar,
+        bottomNavigationBar: bottomBar,
         body: content,
       ),
     );
@@ -215,18 +225,18 @@ class CardButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          vertical: 20,
+          horizontal: 15,
+        ),
+      ),
       child: Column(
         children: [
           Icon(iconData, size: 30),
           const SizedBox(height: 5),
           Text(text),
         ],
-      ),
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 15,
-        ),
       ),
     );
   }

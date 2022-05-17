@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -41,7 +42,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final addItemButton = ContextMenuButton(
       controller.menuItemsCategory,
       child: TextButton.icon(
-        icon: const Icon(LineIcons.plus),
+        icon: const Icon(Iconsax.add_circle),
         onPressed: () {},
         label: Text(
           'add_item'.tr,
@@ -66,7 +67,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       onLoading: const BusyIndicator(),
       onEmpty: Obx(
         () => CenteredPlaceholder(
-          iconData: LineIcons.seedling,
+          iconData: Iconsax.document,
           message: 'no_items'.tr,
           child: S3Service.to.syncing.value ||
                   DrawerMenuController.to.filterTrashed.value
@@ -79,8 +80,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     // enable pull to refresh if mobile
     if (GetPlatform.isMobile) {
       childContent = RefreshIndicator(
-        child: childContent,
         onRefresh: controller.pulledRefresh,
+        child: childContent,
       );
     }
 
@@ -100,15 +101,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final appBarActions = [
-      // IconButton(
-      //   icon: const Icon(LineIcons.bug),
-      //   onPressed: () {
-      //     WalletService.to.sign();
-      //   },
-      // ),
       Obx(
         () => IconButton(
-          icon: const Icon(LineIcons.search),
+          icon: const Icon(Iconsax.search_normal),
           onPressed: !S3Service.to.syncing.value ? controller.search : null,
         ),
       ),
@@ -122,7 +117,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 .contains(e.title.toLowerCase().replaceAll(' ', '')),
           ),
           child: IconButton(
-            icon: const Icon(LineIcons.sort),
+            icon: const Icon(Iconsax.sort),
             onPressed: controller.data.isNotEmpty && !S3Service.to.syncing.value
                 ? () {}
                 : null,
@@ -135,7 +130,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           final changeCount = PersistenceService.to.changes.val;
 
           final syncButton = IconButton(
-            icon: const Icon(LineIcons.syncIcon),
+            icon: const Icon(Iconsax.cloud_change),
             onPressed: controller.sync,
           );
 
@@ -160,10 +155,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             () => Visibility(
               visible: !S3Service.to.syncing.value &&
                   ConnectivityService.to.connected(),
-              child: changeCount > 0 ? syncBadge : syncButton,
               replacement: S3Service.to.syncing.value
                   ? progressIndicator
                   : const SizedBox(),
+              child: changeCount > 0 ? syncBadge : syncButton,
             ),
           );
         },
@@ -176,8 +171,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       children: [
         RemoteImage(
           url: ConfigService.to.general.app.image,
-          height: 17,
-          placeholder: Image.asset(Images.logo, height: 17),
+          height: 20,
+          placeholder: Image.asset(Images.logo, height: 20),
         ),
         const SizedBox(width: 10),
         Text(ConfigService.to.appName, style: const TextStyle(fontSize: 20)),
@@ -198,9 +193,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               controller.menuItemsCategory,
               child: FloatingActionButton(
                 child: const Icon(LineIcons.plus),
-                onPressed: () {
-                  console.wtf('floating');
-                },
+                onPressed: () {},
               ),
             ),
     );
@@ -208,7 +201,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     if (screen.isDesktop) {
       return Row(
         children: [
-          const SizedBox(width: 240.0, child: DrawerMenu()),
+          const SizedBox(width: 280.0, child: DrawerMenu()),
           Container(width: 0.5, color: Colors.black),
           Expanded(
             child: Scaffold(

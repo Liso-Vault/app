@@ -54,6 +54,7 @@ class CipherScreenController extends GetxController
 
     try {
       result = await FilePicker.platform.pickFiles(
+        dialogTitle: 'Encrypt a File',
         type: FileType.any,
       );
     } catch (e) {
@@ -136,7 +137,11 @@ class CipherScreenController extends GetxController
     FilePickerResult? result;
 
     try {
-      result = await FilePicker.platform.pickFiles(type: FileType.any);
+      result = await FilePicker.platform.pickFiles(
+        dialogTitle: 'Decrypt a <file>$kEncryptedExtensionExtra file',
+        allowedExtensions: [kEncryptedExtensionExtra],
+        type: FileType.any,
+      );
     } catch (e) {
       Globals.timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');

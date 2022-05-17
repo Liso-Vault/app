@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 // ignore: must_be_immutable
@@ -31,8 +31,8 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
                 onPressed: controller.obscureText.toggle,
                 icon: Icon(
                   controller.obscureText.value
-                      ? LineIcons.eye
-                      : LineIcons.eyeSlash,
+                      ? Iconsax.eye
+                      : Iconsax.eye_slash,
                 ),
               ),
             ),

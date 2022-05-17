@@ -2,7 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../services/persistence.service.dart';
@@ -36,7 +36,8 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       PersistenceService.to.crashReporting.val,
     );
 
-    FirebaseCrashlytics.instance.setUserIdentifier(WalletService.to.address);
+    FirebaseCrashlytics.instance
+        .setUserIdentifier(WalletService.to.longAddress);
   }
 
   void record(FlutterErrorDetails details, {bool fatal = false}) =>

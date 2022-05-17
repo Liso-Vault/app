@@ -15,7 +15,7 @@ class TextFieldForm extends StatelessWidget {
 
     return TextFormField(
       controller: _fieldController,
-      // textCapitalization: TextCapitalization.sentences,
+      textCapitalization: TextCapitalization.words,
       decoration: InputDecoration(
         labelText: field.data.label,
         hintText: field.data.hint,

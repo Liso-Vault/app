@@ -1,9 +1,9 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
 
-import 'package:console_mixin/console_mixin.dart';
 import '../../core/utils/globals.dart';
 
 class CustomInputDateField extends StatelessWidget with ConsoleMixin {
@@ -48,15 +48,15 @@ class CustomInputDateField extends StatelessWidget with ConsoleMixin {
         hintText: hint,
         suffixIcon: IconButton(
           padding: const EdgeInsets.only(right: 10),
-          icon: const Icon(LineIcons.calendar),
+          icon: const Icon(Iconsax.calendar),
           onPressed: () async {
-            final _initialDate = DateTime.tryParse(controller!.text) ??
+            final newInitialDate = DateTime.tryParse(controller!.text) ??
                 initialDate ??
                 DateTime.now();
 
             final pickedDate = await showDatePicker(
               context: context,
-              initialDate: _initialDate,
+              initialDate: newInitialDate,
               firstDate: firstDate,
               lastDate: lastDate,
             );

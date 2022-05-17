@@ -64,7 +64,7 @@ class NotificationsManager {
   }
 
   static void onBackgroundPayload(String? payload) async {
-    console.info('onBackgroundPayload payload: ' + payload!);
+    console.info('onBackgroundPayload payload: ${payload!}');
   }
 
   static void onForegroundPayload(
@@ -73,6 +73,6 @@ class NotificationsManager {
     String? body,
     String? payload,
   ) async {
-    console.info('onForegroundPayload payload: ' + payload!);
+    console.info('onForegroundPayload payload: ${payload!}');
   }
 }

@@ -1,8 +1,8 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
@@ -22,19 +22,19 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(LineIcons.fileImport, size: 100, color: kAppColor),
+          const Icon(Iconsax.import_1, size: 100, color: kAppColor),
           const SizedBox(height: 20),
           Text(
             'import_vault'.tr,
             style: const TextStyle(fontSize: 20),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           const Text(
             "Import your vault and enter your master seed phrase to decrypt it.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           Obx(
             () => CupertinoSegmentedControl<ImportMode>(
               groupValue: controller.importMode.value,
@@ -42,11 +42,11 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               children: {
                 ImportMode.liso: SegmentedControlItem(
                   text: '${ConfigService.to.appName} Cloud',
-                  iconData: LineIcons.cloud,
+                  iconData: Iconsax.cloud,
                 ),
                 ImportMode.file: const SegmentedControlItem(
                   text: 'File',
-                  iconData: LineIcons.archiveFile,
+                  iconData: Iconsax.document_code,
                 ),
                 // ImportMode.s3: SegmentedControlItem(
                 //   text: 'S3',
@@ -71,12 +71,12 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                           text!.isEmpty ? 'Import your vault file' : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
-                        hintText: 'Path to your vault file',
+                        hintText: 'Path to your <vault>.$kVaultExtension file',
                       ),
                     ),
                   ),
                   IconButton(
-                    icon: const Icon(LineIcons.download),
+                    icon: const Icon(Iconsax.import_1),
                     onPressed: controller.importFile,
                   ),
                 ],
@@ -102,7 +102,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             child: ElevatedButton.icon(
               onPressed: controller.continuePressed,
               label: Text('continue'.tr),
-              icon: const Icon(LineIcons.arrowCircleRight),
+              icon: const Icon(Iconsax.arrow_circle_right),
             ),
           ),
         ],

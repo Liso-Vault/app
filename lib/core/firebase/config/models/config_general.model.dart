@@ -43,11 +43,11 @@ class ConfigGeneralApp {
 
   factory ConfigGeneralApp.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralApp(
-        name: json["name"],
-        image: json["image"],
-        shortDescription: json["short_description"],
-        longDescription: json["long_description"],
-        shareText: json["share_text"],
+        name: json["name"] ?? '',
+        image: json["image"] ?? '',
+        shortDescription: json["short_description"] ?? '',
+        longDescription: json["long_description"] ?? '',
+        shareText: json["share_text"] ?? '',
         emails: ConfigGeneralAppEmails.fromJson(json["emails"]),
         links: ConfigGeneralAppLinks.fromJson(json["links"]),
       );
@@ -78,10 +78,10 @@ class ConfigGeneralAppEmails {
 
   factory ConfigGeneralAppEmails.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralAppEmails(
-        support: json["support"],
-        issues: json["issues"],
-        translations: json["translations"],
-        premium: json["premium"],
+        support: json["support"] ?? '',
+        issues: json["issues"] ?? '',
+        translations: json["translations"] ?? '',
+        premium: json["premium"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -106,6 +106,7 @@ class ConfigGeneralAppLinks {
     this.terms = '',
     this.faqs = '',
     this.roadmap = '',
+    this.productHunt = '',
     this.forum = '',
     this.store = const ConfigGeneralStore(),
   });
@@ -122,24 +123,26 @@ class ConfigGeneralAppLinks {
   final String terms;
   final String faqs;
   final String roadmap;
+  final String productHunt;
   final String forum;
   final ConfigGeneralStore store;
 
   factory ConfigGeneralAppLinks.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralAppLinks(
-        website: json["website"],
-        twitter: json["twitter"],
-        facebook: json["facebook"],
-        instagram: json["instagram"],
-        discord: json["discord"],
-        github: json["github"],
-        privacy: json["privacy"],
-        telegram: json["telegram"],
-        matrix: json["matrix"],
-        terms: json["terms"],
-        faqs: json["faqs"],
-        roadmap: json["roadmap"],
-        forum: json["forum"],
+        website: json["website"] ?? '',
+        twitter: json["twitter"] ?? '',
+        facebook: json["facebook"] ?? '',
+        instagram: json["instagram"] ?? '',
+        discord: json["discord"] ?? '',
+        github: json["github"] ?? '',
+        privacy: json["privacy"] ?? '',
+        telegram: json["telegram"] ?? '',
+        matrix: json["matrix"] ?? '',
+        terms: json["terms"] ?? '',
+        faqs: json["faqs"] ?? '',
+        roadmap: json["roadmap"] ?? '',
+        productHunt: json["product_hunt"] ?? '',
+        forum: json["forum"] ?? '',
         store: ConfigGeneralStore.fromJson(json["store"]),
       );
 
@@ -156,6 +159,7 @@ class ConfigGeneralAppLinks {
         "terms": terms,
         "faqs": faqs,
         "roadmap": roadmap,
+        "product_hunt": productHunt,
         "forum": forum,
         "store": store.toJson(),
       };
@@ -178,11 +182,11 @@ class ConfigGeneralStore {
 
   factory ConfigGeneralStore.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralStore(
-        google: json["google"],
-        apple: json["apple"],
-        amazon: json["amazon"],
-        samsung: json["samsung"],
-        huawei: json["huawei"],
+        google: json["google"] ?? '',
+        apple: json["apple"] ?? '',
+        amazon: json["amazon"] ?? '',
+        samsung: json["samsung"] ?? '',
+        huawei: json["huawei"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -215,10 +219,10 @@ class ConfigGeneralDeveloper {
 
   factory ConfigGeneralDeveloper.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralDeveloper(
-        name: json["name"],
-        image: json["image"],
-        shortDescription: json["short_description"],
-        longDescription: json["long_description"],
+        name: json["name"] ?? '',
+        image: json["image"] ?? '',
+        shortDescription: json["short_description"] ?? '',
+        longDescription: json["long_description"] ?? '',
         address: ConfigGeneralDeveloperAddress.fromJson(json["address"]),
         emails: ConfigGeneralDeveloperEmails.fromJson(json["emails"]),
         links: ConfigGeneralDeveloperLinks.fromJson(json["links"]),
@@ -254,12 +258,12 @@ class ConfigGeneralDeveloperAddress {
 
   factory ConfigGeneralDeveloperAddress.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralDeveloperAddress(
-        street1: json["street1"],
-        street2: json["street2"],
-        city: json["city"],
-        state: json["state"],
-        postal: json["postal"],
-        country: json["country"],
+        street1: json["street1"] ?? '',
+        street2: json["street2"] ?? '',
+        city: json["city"] ?? '',
+        state: json["state"] ?? '',
+        postal: json["postal"] ?? '',
+        country: json["country"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -285,9 +289,9 @@ class ConfigGeneralDeveloperEmails {
 
   factory ConfigGeneralDeveloperEmails.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralDeveloperEmails(
-        support: json["support"],
-        marketing: json["marketing"],
-        business: json["business"],
+        support: json["support"] ?? '',
+        marketing: json["marketing"] ?? '',
+        business: json["business"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -322,14 +326,14 @@ class ConfigGeneralDeveloperLinks {
 
   factory ConfigGeneralDeveloperLinks.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralDeveloperLinks(
-        website: json["website"],
-        twitter: json["twitter"],
-        facebook: json["facebook"],
-        instagram: json["instagram"],
-        linkedin: json["linkedin"],
-        discord: json["discord"],
-        github: json["github"],
-        privacy: json["privacy"],
+        website: json["website"] ?? '',
+        twitter: json["twitter"] ?? '',
+        facebook: json["facebook"] ?? '',
+        instagram: json["instagram"] ?? '',
+        linkedin: json["linkedin"] ?? '',
+        discord: json["discord"] ?? '',
+        github: json["github"] ?? '',
+        privacy: json["privacy"] ?? '',
         store: ConfigGeneralStore.fromJson(json["store"]),
       );
 

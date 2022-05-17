@@ -5,12 +5,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/features/s3/s3.service.dart';
 
 import '../../hive/models/field.hive.dart';
 import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
-import 'models/config_global.model.dart';
+import 'models/config_general.model.dart';
 import 'models/config_s3.model.dart';
 
 class ConfigService extends GetxService with ConsoleMixin {
@@ -20,6 +21,7 @@ class ConfigService extends GetxService with ConsoleMixin {
   var general = const ConfigGeneral();
   var app = const ConfigApp();
   var s3 = const ConfigS3();
+  var web3 = const ConfigWeb3();
 
   List<HiveLisoFieldChoices> choicesCountry = [];
   List<HiveLisoField> templateAPICredential = [];
@@ -48,6 +50,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     'general_config',
     'app_config',
     's3_config',
+    'web3_config',
     'choices_country',
     'template_api_credential',
     'template_bank_account',
@@ -88,36 +91,32 @@ class ConfigService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   void _init() async {
-    // pre-populate top configs
-    _populateTopConfigs(local: true);
-
-    if (!isFirebaseSupported) {
-      _populate(local: true);
-      return console.warning('Not Supported');
-    }
+    // pre-populate with local as defaults
+    await _populate(local: true);
+    if (!isFirebaseSupported) return console.warning('Not Supported');
 
     // SETTINGS
     await instance.setConfigSettings(RemoteConfigSettings(
       fetchTimeout: 10.seconds,
-      minimumFetchInterval: kDebugMode ? 0.seconds : 1.minutes,
+      minimumFetchInterval: kDebugMode ? 0.seconds : 5.minutes,
     ));
 
-    // DEFAULTS
-    Map<String, dynamic> parametersMap = {};
+    // // DEFAULTS
+    // Map<String, dynamic> parametersMap = {};
 
-    for (var e in parameters) {
-      parametersMap.addAll({e: await _obtainLocalParameter(e)});
-    }
+    // for (var e in parameters) {
+    //   parametersMap.addAll({e: await _obtainLocalParameter(e)});
+    // }
 
-    await instance.setDefaults(parametersMap);
-    // pre-populate to make sure
-    _populate();
+    // await instance.setDefaults(parametersMap);
+    // // pre-populate with defaults we have preset
+    // await _populate();
     // workaround for https://github.com/firebase/flutterfire/issues/6196
     await Future.delayed(3.seconds);
     fetch();
   }
 
-  Future<void> _populateTopConfigs({bool local = false}) async {
+  Future<void> _populate({bool local = false}) async {
     general = ConfigGeneral.fromJson(jsonDecode(await _getString(
       'general_config',
       local: local,
@@ -132,10 +131,11 @@ class ConfigService extends GetxService with ConsoleMixin {
       's3_config',
       local: local,
     )));
-  }
 
-  void _populate({bool local = false}) async {
-    _populateTopConfigs(local: local);
+    web3 = ConfigWeb3.fromJson(jsonDecode(await _getString(
+      'web3_config',
+      local: local,
+    )));
 
     choicesCountry = List<HiveLisoFieldChoices>.from(
       jsonDecode(await _getString('choices_country', local: local)).map(
@@ -250,7 +250,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     );
 
     S3Service.to.init();
-    console.info('populated');
+    console.info('populated! local: $local');
   }
 
   Future<void> fetch() async {
@@ -260,7 +260,7 @@ class ConfigService extends GetxService with ConsoleMixin {
     try {
       final updated = await instance.fetchAndActivate();
       console.info('fetched! updated: $updated');
-      _populate();
+      await _populate();
     } catch (e) {
       console.error('fetch error: $e');
     }
@@ -285,12 +285,12 @@ class ConfigService extends GetxService with ConsoleMixin {
     // we don't use 'path' lib because of a bug for windows
     final string = await rootBundle.loadString('assets/json/config/$key.json');
     if (string.isEmpty) throw 'empty local config parameter: $key';
-    return string; // TODO: error handling
+    return string;
   }
 
   String _obtainServerParameter(String key) {
     final string = instance.getString(key);
     if (string.isEmpty) throw 'empty server config parameter: $key';
-    return string; // TODO: error handling
+    return string;
   }
 }

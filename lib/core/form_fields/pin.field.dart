@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../utils/globals.dart';
@@ -37,7 +37,7 @@ class PINFormField extends GetWidget<PINFormFieldController> {
             onPressed: controller.obscureText.toggle,
             icon: Obx(
               () => Icon(
-                controller.obscureText() ? LineIcons.eye : LineIcons.eyeSlash,
+                controller.obscureText() ? Iconsax.eye : Iconsax.eye_slash,
               ),
             ),
           ),

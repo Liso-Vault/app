@@ -88,11 +88,11 @@ class HiveManager {
 
   // check if encryption key is correct
   static Future<bool> isEncryptionKeyCorrect(List<int> key) async {
-    Box<HiveLisoItem>? _items;
+    Box<HiveLisoItem>? items;
 
     try {
       // initialize as a temporary hive box
-      _items = await Hive.openBox(
+      items = await Hive.openBox(
         kHiveBoxItems,
         encryptionCipher: HiveAesCipher(key),
         path: LisoManager.tempPath,
@@ -103,7 +103,7 @@ class HiveManager {
       return false;
     }
 
-    _items.close();
+    items.close();
     return true;
   }
 

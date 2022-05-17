@@ -1,17 +1,15 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
-import '../../core/firebase/firestore.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/services/persistence.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
-import '../s3/s3.service.dart';
 
 enum HiveBoxFilter {
   all,
@@ -50,28 +48,28 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   // Obtain used categories distinctly
   Set<String> get categories {
-    final Set<String> _categories = {};
+    final Set<String> categories = {};
 
     for (var e in groupedItems) {
-      _categories.add(e.category);
+      categories.add(e.category);
     }
 
-    return _categories;
+    return categories;
   }
 
   // Obtain used tags distinctly
   Set<String> get tags {
-    final _usedTags = groupedItems
+    final usedTags = groupedItems
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
 
-    final Set<String> _tags = {};
+    final Set<String> tags = {};
 
-    if (_usedTags.isNotEmpty) {
-      _tags.addAll(_usedTags.reduce((a, b) => a + b).toSet());
+    if (usedTags.isNotEmpty) {
+      tags.addAll(usedTags.reduce((a, b) => a + b).toSet());
     }
 
-    return _tags;
+    return tags;
   }
 
   int get itemsCount =>
@@ -96,7 +94,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       persistence.groupsMap.map((Map<String, dynamic> e) {
         return ListTile(
           title: Text(e['name']),
-          leading: const Icon(LineIcons.dotCircle),
+          leading: const Icon(Iconsax.briefcase),
           selected: e['index'] == filterGroupIndex.value,
           onTap: () {
             filterGroupIndex.value = e['index'];
@@ -139,10 +137,11 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void filterByCategory(String category) {
-    final _category = LisoItemCategory.values.byName(category);
+    final categoryEnum = LisoItemCategory.values.byName(category);
     // if already selected, deselect
-    filterCategory.value =
-        _category == filterCategory.value ? LisoItemCategory.none : _category;
+    filterCategory.value = categoryEnum == filterCategory.value
+        ? LisoItemCategory.none
+        : categoryEnum;
     filterTag.value = '';
     done();
   }

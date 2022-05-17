@@ -40,8 +40,8 @@ class UIUtils {
               ),
         actions: [
           TextButton(
-            child: Text('okay'.tr),
             onPressed: Get.back,
+            child: Text('okay'.tr),
           ),
         ],
       ),

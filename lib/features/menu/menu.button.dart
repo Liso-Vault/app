@@ -34,13 +34,13 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     // if mobile / small screen
     if (Utils.isDrawerExpandable) {
       return InkWell(
-        child: AbsorbPointer(child: wrappedChild),
         onTap: enabled
             ? () => ContextMenuSheet(
                   contextItems,
                   initialItem: initialItem,
                 ).show()
             : null,
+        child: AbsorbPointer(child: wrappedChild),
       );
     }
 
@@ -68,9 +68,9 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       return PopupMenuButton(
         onSelected: (ContextMenuItem menu) => menu.onSelected?.call(),
         itemBuilder: (context) => popupItems,
-        child: AbsorbPointer(child: wrappedChild),
         initialValue: initialItem,
         enabled: enabled,
+        child: AbsorbPointer(child: wrappedChild),
       );
     }
 
@@ -96,8 +96,8 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     return MouseRegion(
       onHover: (event) => position = event.position,
       child: InkWell(
-        child: AbsorbPointer(child: wrappedChild),
         onTap: enabled ? _showMenu : null,
+        child: AbsorbPointer(child: wrappedChild),
       ),
     );
   }

@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/section.widget.dart';
 
@@ -24,20 +24,20 @@ class SyncSettingScreen extends StatelessWidget with ConsoleMixin {
       child: SingleChildScrollView(
         child: Container(
           constraints: Styles.containerConstraints,
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.symmetric(vertical: 50),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 20),
-              const Icon(LineIcons.cog, size: 100, color: kAppColor),
+              const Icon(Iconsax.setting_3, size: 100, color: kAppColor),
               const SizedBox(height: 10),
               const Text(
-                'Settings',
+                'Configuration',
                 style: TextStyle(fontSize: 20),
               ),
               const SizedBox(height: 10),
               const Text(
-                "Choose your preferred settings",
+                "Choose your preferred configuration",
                 textAlign: TextAlign.center,
                 style: TextStyle(color: Colors.grey),
               ),
@@ -53,11 +53,12 @@ class SyncSettingScreen extends StatelessWidget with ConsoleMixin {
                   return Column(
                     children: <Widget>[
                       RadioListTile<bool>(
+                        dense: true,
                         title: Text('synchronize'.tr),
                         subtitle: const Text(
                           "Keep multiple devices in sync using our Secure Decentralized Cloud Storage powered by Sia",
                         ),
-                        secondary: const Icon(LineIcons.cloud),
+                        secondary: const Icon(Iconsax.cloud_change),
                         value: true,
                         groupValue: PersistenceService.to.sync.val,
                         onChanged: (value) =>
@@ -65,6 +66,7 @@ class SyncSettingScreen extends StatelessWidget with ConsoleMixin {
                       ),
                       const Divider(),
                       RadioListTile<bool>(
+                        dense: true,
                         title: Text('offline'.tr),
                         subtitle: const Text(
                           'Manually import/export offline vaults across your devices',
@@ -91,23 +93,25 @@ class SyncSettingScreen extends StatelessWidget with ConsoleMixin {
                   return Column(
                     children: <Widget>[
                       CheckboxListTile(
+                        dense: true,
                         title: const Text('Errors & Crashes'),
+                        secondary: const Icon(Iconsax.cpu),
+                        value: PersistenceService.to.crashReporting.val,
                         subtitle: const Text(
                           "Help us by sending anonymous crash reports so we can crush those pesky bugs and improve your experience",
                         ),
-                        secondary: const Icon(LineIcons.bug),
-                        value: PersistenceService.to.crashReporting.val,
                         onChanged: (value) =>
                             PersistenceService.to.crashReporting.val = value!,
                       ),
                       const Divider(),
                       CheckboxListTile(
+                        dense: true,
                         title: const Text('Usage Statistics'),
+                        secondary: const Icon(Iconsax.chart_square),
+                        value: PersistenceService.to.analytics.val,
                         subtitle: const Text(
                           'Help us understand how you use the app so we can improve the app without compromising your privacy.',
                         ),
-                        secondary: const Icon(Icons.analytics),
-                        value: PersistenceService.to.analytics.val,
                         onChanged: (value) =>
                             PersistenceService.to.analytics.val = value!,
                       ),
@@ -122,7 +126,7 @@ class SyncSettingScreen extends StatelessWidget with ConsoleMixin {
                 child: ElevatedButton.icon(
                   onPressed: save,
                   label: Text('continue'.tr),
-                  icon: const Icon(LineIcons.arrowCircleRight),
+                  icon: const Icon(Iconsax.arrow_circle_right),
                 ),
               ),
             ],

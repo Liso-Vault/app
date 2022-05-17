@@ -1,9 +1,9 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:uuid/uuid.dart';
@@ -50,20 +50,20 @@ class ItemScreenController extends GetxController
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: 'copy'.tr + ' ${item!.significant.keys.first}',
-        leading: const Icon(LineIcons.copy),
+        title: '${'copy'.tr} ${item!.significant.keys.first}',
+        leading: const Icon(Iconsax.copy),
         onSelected: () => Utils.copyToClipboard(item!.significant.values.first),
       ),
       if (item!.categoryObject == LisoItemCategory.cryptoWallet) ...[
         // TODO: export wallet and generate qr code
         ContextMenuItem(
           title: 'export_wallet'.tr,
-          leading: const Icon(LineIcons.fileExport),
+          leading: const Icon(Iconsax.export_1),
           onSelected: () {},
         ),
         ContextMenuItem(
           title: 'QR Code',
-          leading: const Icon(LineIcons.qrcode),
+          leading: const Icon(Iconsax.barcode),
           onSelected: () {},
         ),
       ]
@@ -74,13 +74,13 @@ class ItemScreenController extends GetxController
     return [
       ContextMenuItem(
         title: 'change'.tr,
-        leading: const Icon(LineIcons.image),
+        leading: const Icon(Iconsax.gallery),
         onSelected: _pickIcon,
       ),
       if (iconUrl.value.isNotEmpty) ...[
         ContextMenuItem(
           title: 'remove'.tr,
-          leading: const Icon(LineIcons.trash),
+          leading: const Icon(Iconsax.trash),
           onSelected: () => iconUrl.value = '',
         ),
       ]
@@ -134,13 +134,13 @@ class ItemScreenController extends GetxController
     protected.value = drawerController.filterProtected.value ||
         protectedCategories.contains(LisoItemCategory.values.byName(category));
 
-    final _fields = TemplateParser.parse(category);
+    final fields = TemplateParser.parse(category);
 
     item = HiveLisoItem(
       identifier: const Uuid().v4(),
       category: category,
       title: '',
-      fields: _fields,
+      fields: fields,
       tags: [],
       favorite: favorite.value,
       protected: protected.value,
@@ -151,7 +151,7 @@ class ItemScreenController extends GetxController
 
   void add() async {
     if (!formKey.currentState!.validate()) return;
-    final _fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
+    final fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
 
     final newItem = HiveLisoItem(
       identifier: const Uuid().v4(),
@@ -159,7 +159,7 @@ class ItemScreenController extends GetxController
       iconUrl: iconUrl.value,
       title: titleController.text,
       tags: tags,
-      fields: _fields,
+      fields: fields,
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
@@ -190,18 +190,18 @@ class ItemScreenController extends GetxController
   List<String> querySuggestions(String query) {
     if (query.isEmpty) return [];
 
-    final _usedTags = HiveManager.items!.values
+    final usedTags = HiveManager.items!.values
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
 
     // include query as a suggested tag
-    final Set<String> _tags = {query};
+    final Set<String> tags = {query};
 
-    if (_usedTags.isNotEmpty) {
-      _tags.addAll(_usedTags.reduce((a, b) => a + b).toSet());
+    if (usedTags.isNotEmpty) {
+      tags.addAll(usedTags.reduce((a, b) => a + b).toSet());
     }
 
-    final filteredTags = _tags.where((e) => e.contains(query));
+    final filteredTags = tags.where((e) => e.contains(query));
     return filteredTags.toList();
   }
 
@@ -243,12 +243,12 @@ class ItemScreenController extends GetxController
       ),
       actions: [
         TextButton(
-          child: Text('cancel'.tr),
           onPressed: Get.back,
+          child: Text('cancel'.tr),
         ),
         TextButton(
-          child: Text('save'.tr),
           onPressed: _save,
+          child: Text('save'.tr),
         ),
       ],
     ));

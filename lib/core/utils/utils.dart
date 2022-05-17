@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
@@ -58,9 +59,9 @@ class Utils {
   }
 
   static String timeAgo(DateTime dateTime, {bool short = true}) {
-    final _locale =
+    final locale =
         (Get.locale?.languageCode ?? 'en_US') + (short ? "_short" : "");
-    return timeago.format(dateTime, locale: _locale).replaceFirst("~", "");
+    return timeago.format(dateTime, locale: locale).replaceFirst("~", "");
   }
 
   // support higher refresh rate
@@ -96,78 +97,78 @@ class Utils {
   }
 
   static Icon categoryIcon(LisoItemCategory category, {Color? color}) {
-    IconData? _iconData;
+    IconData? iconData;
 
     switch (category) {
       case LisoItemCategory.cryptoWallet:
-        _iconData = LineIcons.wallet;
+        iconData = Iconsax.wallet;
         break;
       case LisoItemCategory.login:
-        _iconData = LineIcons.desktop;
+        iconData = Iconsax.login;
         break;
       case LisoItemCategory.password:
-        _iconData = LineIcons.fingerprint;
+        iconData = Iconsax.password_check;
         break;
       case LisoItemCategory.identity:
-        _iconData = LineIcons.identificationBadge;
+        iconData = Iconsax.user;
         break;
       case LisoItemCategory.note:
-        _iconData = LineIcons.stickyNote;
+        iconData = Iconsax.note_text;
         break;
       case LisoItemCategory.cashCard:
-        _iconData = LineIcons.creditCard;
+        iconData = Iconsax.card;
         break;
       case LisoItemCategory.bankAccount:
-        _iconData = LineIcons.landmark;
+        iconData = Iconsax.bank;
         break;
       case LisoItemCategory.medicalRecord:
-        _iconData = LineIcons.medicalFile;
+        iconData = Iconsax.health;
         break;
       case LisoItemCategory.passport:
-        _iconData = LineIcons.passport;
+        iconData = Iconsax.airplane_square;
         break;
       case LisoItemCategory.server:
-        _iconData = LineIcons.server;
+        iconData = Iconsax.cloud;
         break;
       case LisoItemCategory.softwareLicense:
-        _iconData = LineIcons.laptopCode;
+        iconData = Iconsax.code_1;
         break;
       case LisoItemCategory.apiCredential:
-        _iconData = LineIcons.memory;
+        iconData = Iconsax.code;
         break;
       case LisoItemCategory.database:
-        _iconData = LineIcons.database;
+        iconData = Iconsax.document;
         break;
       case LisoItemCategory.driversLicense:
-        _iconData = LineIcons.car;
+        iconData = Iconsax.car;
         break;
       case LisoItemCategory.email:
-        _iconData = LineIcons.envelope;
+        iconData = Iconsax.message;
         break;
       case LisoItemCategory.membership:
-        _iconData = LineIcons.identificationCard;
+        iconData = Iconsax.personalcard;
         break;
       case LisoItemCategory.outdoorLicense:
-        _iconData = LineIcons.running;
+        iconData = Iconsax.activity;
         break;
       case LisoItemCategory.rewardsProgram:
-        _iconData = LineIcons.award;
+        iconData = Iconsax.award;
         break;
       case LisoItemCategory.socialSecurity:
-        _iconData = LineIcons.moneyBill;
+        iconData = Iconsax.security_card;
         break;
       case LisoItemCategory.wirelessRouter:
-        _iconData = LineIcons.wifi;
+        iconData = Iconsax.home_wifi;
         break;
       case LisoItemCategory.encryption:
-        _iconData = LineIcons.key;
+        iconData = Iconsax.key;
         break;
       default:
-        _iconData = LineIcons.exclamationCircle; // not found
+        iconData = Iconsax.warning_2; // not found
         break;
     }
 
-    return Icon(_iconData, color: color);
+    return Icon(iconData, color: color);
   }
 
   static Future<dynamic>? adaptiveRouteOpen({

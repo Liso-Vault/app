@@ -1,7 +1,7 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -17,15 +17,15 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(LineIcons.fileExport, size: 100, color: kAppColor),
+        const Icon(Iconsax.box_1, size: 100, color: kAppColor),
         const SizedBox(height: 20),
         const Text(
-          'Export Vault File',
+          'Export Vault',
           style: TextStyle(fontSize: 20),
         ),
         const SizedBox(height: 15),
         const Text(
-          "You'll be prompted to save a (xxx.$kVaultExtension) file. Please store it offline or in a secure digital cloud storage",
+          "You'll be prompted to save a <vault>.$kVaultExtension file. Please store it offline or in a secure digital cloud storage",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
@@ -33,20 +33,21 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
         const Text(
           "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file",
           textAlign: TextAlign.center,
+          style: TextStyle(color: Colors.redAccent),
         ),
         const SizedBox(height: 20),
         SizedBox(
           width: 200,
           child: ElevatedButton.icon(
             label: Text('export'.tr),
-            icon: const Icon(LineIcons.upload),
+            icon: const Icon(Iconsax.export_1),
             onPressed: controller.unlock,
           ),
         ),
         const SizedBox(height: 10),
         Obx(
           () => Text(
-            '${controller.attemptsLeft()} ' + 'attempts_left'.tr,
+            '${controller.attemptsLeft()} ${'attempts_left'.tr}',
             style: const TextStyle(color: Colors.grey, fontSize: 10),
           ),
         ),
@@ -60,8 +61,8 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
           constraints: Styles.containerConstraints,
           child: controller.obx(
             (_) => SingleChildScrollView(
-              child: content,
               padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: content,
             ),
             onLoading: Obx(
               () => BusyIndicator(

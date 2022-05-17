@@ -123,4 +123,6 @@ final en = {
   "duplicate": "Duplicate",
   "encrypt_file": "Encrypt File",
   "decrypt_file": "Decrypt File",
+  "retry": "Retry",
+  "refresh": "Refresh",
 };

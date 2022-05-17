@@ -1,3 +1,4 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
@@ -16,7 +17,7 @@ class AboutScreenBinding extends Bindings {
   }
 }
 
-class AboutScreenController extends GetxController {
+class AboutScreenController extends GetxController with ConsoleMixin {
   // VARIABLES
 
   // PROPERTIES
@@ -24,7 +25,7 @@ class AboutScreenController extends GetxController {
 
   // GETTERS
   String get appVersion =>
-      '${packageInfo()?.version}+${packageInfo()?.buildNumber}';
+      '${packageInfo.value?.version}+${packageInfo.value?.buildNumber}';
 
   List<ContextMenuItem> get communityMenuItems {
     final links = ConfigService.to.general.app.links;
@@ -128,6 +129,7 @@ class AboutScreenController extends GetxController {
   @override
   void onInit() async {
     packageInfo.value = await PackageInfo.fromPlatform();
+    console.info('onInit');
     super.onInit();
   }
 

@@ -131,7 +131,7 @@ flutter run
 * More Cloud Sync Options - Google Drive, DropBox, Box, WLAN, FTP, etc.
 * Liso Token
 * Liso DAO
-* Liso Card - NFC Card to securely store your Wallet File
+* Liso Keycard - NFC Card to securely store your Wallet File
 * Yubi Key Support
 * Secure File Sharing
 * E2EE Secure Messenger

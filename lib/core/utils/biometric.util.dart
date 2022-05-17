@@ -59,7 +59,7 @@ class BiometricUtils {
     String? title,
   }) async {
     title = title ?? 'Unlock ${ConfigService.to.appName}';
-    final preSubTitle = 'securely access ${ConfigService.to.appName}';
+    final preSubTitle = 'Securely Access ${ConfigService.to.appName}';
 
     // TODO: localize
     final applePrompt = IosPromptInfo(

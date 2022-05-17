@@ -1,8 +1,8 @@
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 
@@ -23,7 +23,7 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   List<ContextMenuItem> get menuItems => [
         ContextMenuItem(
           title: 'Copy Mnemonic Phrase',
-          leading: const Icon(LineIcons.exclamationTriangle, color: Colors.red),
+          leading: const Icon(Iconsax.warning_2, color: Colors.red),
           onSelected: () => Utils.copyToClipboard(mnemonic()),
         )
       ];
@@ -48,16 +48,16 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
-    String _mnemonic = mnemonic();
+    String seed = mnemonic.value;
 
     if (mode.value == MnemonicMode.restore) {
       if (!formKey.currentState!.validate()) return;
-      _mnemonic = seedController.text;
+      seed = seedController.text;
     }
 
     Get.toNamed(
       Routes.confirmMnemonic,
-      parameters: {'mnemonic': _mnemonic},
+      parameters: {'mnemonic': seed},
     );
   }
 

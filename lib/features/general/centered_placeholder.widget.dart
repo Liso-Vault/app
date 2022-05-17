@@ -24,7 +24,7 @@ class CenteredPlaceholder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Icon(iconData, size: 100, color: Colors.grey.withOpacity(0.5)),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Text(
                 message,
                 textAlign: TextAlign.center,

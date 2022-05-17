@@ -7,10 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/services/wallet.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/ipfs/ipfs.service.dart';
 import 'package:liso/firebase_options.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -41,27 +40,27 @@ void main() async {
       );
     }
 
-    // initialize firebase and crashlytics before anything else to catch & report errors
+    // initialize first to catch errors
     Get.put(CrashlyticsService());
+    await LisoPaths.init();
+    // GetX services
+    Get.lazyPut(() => WalletService());
+    Get.lazyPut(() => ConnectivityService());
+    Get.lazyPut(() => CipherService());
+    Get.lazyPut(() => FirestoreService());
+    Get.lazyPut(() => PersistenceService());
+    Get.lazyPut(() => S3Service());
     Get.put(ConfigService());
 
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       await windowManager.ensureInitialized();
     }
     // init
-    await LisoPaths.init();
     await HiveManager.init();
     await GetStorage.init();
     NotificationsManager.init();
     BiometricUtils.init();
-    // GetX services
-    Get.put(WalletService());
-    Get.put(PersistenceService());
-    Get.put(S3Service());
-    Get.put(IPFSService());
-    Get.put(ConnectivityService());
-    Get.put(CipherService());
-    Get.put(FirestoreService());
+
     // utils
     Utils.setDisplayMode(); // refresh rate
     await Utils.setWindowSize(); // for desktop
