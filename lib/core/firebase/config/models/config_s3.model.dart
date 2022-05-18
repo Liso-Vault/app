@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:liso/core/services/persistence.service.dart';
+
 class ConfigS3 {
   const ConfigS3({
     this.key = '',
@@ -28,4 +30,7 @@ class ConfigS3 {
       };
 
   String toJsonString() => jsonEncode(toJson());
+
+  String get preferredBucket =>
+      'liso-${PersistenceService.to.syncProvider.val}';
 }

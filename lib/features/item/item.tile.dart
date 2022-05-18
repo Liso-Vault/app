@@ -9,6 +9,7 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -35,14 +36,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.save();
   }
 
-  // void _protect() async {
-  //   if (item.protected && !(await _unlock())) return;
-  //   item.protected = !item.protected;
-  //   item.metadata = await item.metadata.getUpdated();
-  //   item.save();
-  //   _reloadSearchDelegate();
-  // }
-
   void _delete() {
     item.delete();
     MainScreenController.to.load();
@@ -52,14 +45,20 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.trashed = true;
     item.metadata = await item.metadata.getUpdated();
     item.save();
-    // _reloadSearchDelegate();
   }
 
   void _restore() async {
     item.trashed = false;
     item.metadata = await item.metadata.getUpdated();
     item.save();
-    // // _reloadSearchDelegate();
+  }
+
+  void _duplicate() async {
+    final copy = HiveLisoItem.fromJson(item.toJson());
+    copy.identifier = const Uuid().v4();
+    copy.title = '${copy.title} Copy';
+    copy.metadata = await copy.metadata.getUpdated();
+    HiveManager.items!.add(copy);
   }
 
   void _open() async {
@@ -91,13 +90,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     return unlocked;
   }
 
-  void _duplicate() async {
-    final copy = HiveLisoItem.fromJson(item.toJson());
-    copy.title = '${copy.title} Copy';
-    copy.metadata = await copy.metadata.getUpdated();
-    HiveManager.items!.add(copy);
-  }
-
   @override
   Widget build(BuildContext context) {
     final isLargeScreen = !Utils.isDrawerExpandable;
@@ -119,7 +111,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
           leading: FaIcon(
             item.favorite ? Iconsax.heart_remove : Iconsax.heart_add,
-            color: item.favorite ? Colors.pink : null,
+            color: item.favorite ? Colors.pink : themeColor,
           ),
           onSelected: _favorite,
         ),
@@ -174,11 +166,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
               const SizedBox(width: 5),
             ],
             if (item.protected) ...[
-              const Padding(
-                padding: EdgeInsets.only(top: 3),
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
                 child: FaIcon(
                   FontAwesomeIcons.shield,
-                  color: kAppColor,
+                  color: themeColor,
                   size: 10,
                 ),
               ),
@@ -199,18 +191,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             ],
             Text(
               item.updatedTimeAgo,
-              style: const TextStyle(
-                fontSize: 10,
-                color: Colors.grey,
-              ),
+              style: const TextStyle(fontSize: 10, color: Colors.grey),
             ),
             if (item.trashed) ...[
               Text(
                 ' 🗑  ${item.daysLeftToDelete} days left',
-                style: const TextStyle(
-                  fontSize: 10,
-                  color: Colors.red,
-                ),
+                style: const TextStyle(fontSize: 10, color: Colors.red),
               ),
             ]
           ],
@@ -226,9 +212,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           )
         : Utils.categoryIcon(
             LisoItemCategory.values.byName(item.category),
+            color: themeColor,
           );
 
-    Widget tile = ListTile(
+    var tile = ListTile(
       leading: leading,
       title: title,
       subtitle: subTitle,
@@ -249,8 +236,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         color: Colors.pink,
         widthSpace: 100,
         performsFirstActionWithFullSwipe: true,
-        icon: Icon(item.favorite ? Iconsax.heart5 : Iconsax.heart),
-        style: const TextStyle(fontSize: 15),
+        icon: Icon(
+          item.favorite ? Iconsax.heart5 : Iconsax.heart,
+          color: Colors.white,
+        ),
+        style: const TextStyle(fontSize: 15, color: Colors.white),
         onTap: (CompletionHandler handler) async {
           await handler(false);
           _favorite();
@@ -259,9 +249,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       if (item.trashed) ...[
         SwipeAction(
           title: 'restore'.tr,
-          color: kAppColorDarker,
-          icon: const Icon(Iconsax.refresh),
-          style: const TextStyle(fontSize: 15),
+          color: themeColor,
+          icon: const Icon(
+            Iconsax.refresh,
+            color: Colors.white,
+          ),
+          style: const TextStyle(fontSize: 15, color: Colors.white),
           onTap: (CompletionHandler handler) async {
             await handler(true);
             _restore();
@@ -274,17 +267,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       SwipeAction(
         title: item.trashed ? 'delete_permanently'.tr : 'trash'.tr,
         color: Colors.red,
-        icon: const Icon(Iconsax.trash),
-        style: const TextStyle(fontSize: 15),
+        icon: const Icon(Iconsax.trash, color: Colors.white),
+        style: const TextStyle(fontSize: 15, color: Colors.white),
         performsFirstActionWithFullSwipe: true,
         onTap: (CompletionHandler handler) async {
           await handler(true);
-
-          if (item.trashed) {
-            _delete();
-          } else {
-            _trash();
-          }
+          item.trashed ? _delete() : _trash();
         },
       ),
     ];

@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
@@ -42,6 +43,7 @@ class ImportScreenController extends GetxController
   // PROPERTIES
   final importMode = ImportMode.liso.obs;
   final busy = false.obs;
+  final syncProvider = LisoSyncProvider.sia.name.obs;
 
   // GETTERS
   String get archiveFilePath => importMode() == ImportMode.file
@@ -84,7 +86,7 @@ class ImportScreenController extends GetxController
     if (newUser) {
       UIUtils.showSimpleDialog(
         'Vault Not Found',
-        "It looks like you're a new user. Consider creating a vault instead and start securing your data.",
+        "Please make sure you selected the right provider. Or if you're new to ${ConfigService.to.appName}, consider creating a vault and start securing your data.",
       );
     } else {
       UIUtils.showSimpleDialog(

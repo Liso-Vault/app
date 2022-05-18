@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.3.1+17
+version: 0.3.2+18
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -14,9 +14,6 @@ dependencies:
   get: ^4.6.3
 
   # CRYTPOGRAPHY + SECURITY
-  # alchemy_web3: ^0.0.1 # Alchemy Platform
-  # alchemy_web3:
-  #   path: /Users/nemoryoliver/Desktop/Projects/Flutter/Packages/alchemy
   alchemy_web3:
     git: https://github.com/oliverbytes/alchemy_web3.git
   web3dart: ^2.4.0 # Ethereum
@@ -39,7 +36,7 @@ dependencies:
   # firebase_app_check: ^0.0.6+9
 
   # IO
-  hive: ^2.1.0 # database
+  hive: ^2.2.1 # database
   hive_flutter: ^1.1.0
   get_storage: ^2.0.3 # persistence
   path_provider: ^2.0.10
@@ -61,12 +58,8 @@ dependencies:
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^3.0.0
-  # flutter_quill:
-  #   path: /Users/nemoryoliver/Desktop/Projects/Flutter/Others/flutter-quill
-  # flutter_quill: ^4.2.0 # rich text editor # migrate to superlist
   flutter_quill: 
     git: https://github.com/oliverbytes/flutter-quill.git
-  # super_editor: ^0.2.0 # rich text editor
   badges: ^2.0.2 # pending changes indicator
   cached_network_image: ^3.2.1 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
@@ -98,7 +91,7 @@ dev_dependencies:
   #   sdk: flutter
 
   flutter_lints: ^2.0.1
-  hive_generator: ^1.1.2 # hive database
+  hive_generator: ^1.1.3 # hive database
   build_runner: ^2.1.11
   flutter_native_splash: ^2.2.0+1
   dart_code_metrics: ^4.15.2 # checking unused stuffs

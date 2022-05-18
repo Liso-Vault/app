@@ -24,14 +24,14 @@ import 'package:liso/features/welcome/welcome_screen.controller.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../Cipher/cipher_screen.controller.dart';
 import '../cipher/cipher.screen.dart';
+import '../configuration/configuration.screen.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
-import '../sync/sync_setting.screen.dart';
-import '../sync/syncing/syncing.screen.dart';
-import '../sync/syncing/syncing_screen.controller.dart';
+import '../sync/syncing.screen.dart';
+import '../sync/syncing_screen.controller.dart';
 import '../wallet/wallet.screen.dart';
 import '../wallet/wallet_screen.controller.dart';
 import 'routes.dart';
@@ -107,8 +107,8 @@ class AppPages {
       binding: AboutScreenBinding(),
     ),
     GetPage(
-      name: Routes.syncSettings,
-      page: () => const SyncSettingScreen(),
+      name: Routes.configuration,
+      page: () => const ConfigurationScreen(),
     ),
     GetPage(
       name: Routes.syncing,

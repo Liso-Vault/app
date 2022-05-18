@@ -6,6 +6,8 @@ import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:path/path.dart';
 
+import '../utils/globals.dart';
+
 class PersistenceService extends GetxService with ConsoleMixin {
   static PersistenceService get to => Get.find();
 
@@ -37,6 +39,7 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // SYNC
   final sync = true.val('sync');
   final syncConfirmed = false.val('sync confirmed');
+  final syncProvider = LisoSyncProvider.sia.name.val('sync provider');
   // IPFS
   final ipfsSync = false.val('ipfs sync');
   final ipfsInstantSync = false.val('ipfs instant sync');

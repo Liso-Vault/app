@@ -45,14 +45,11 @@ class WalletService extends GetxService with ConsoleMixin {
 
   @override
   void onInit() {
-    load();
+    loadPrices();
     super.onInit();
   }
 
   // FUNCTIONS
-  void load() {
-    loadPrices();
-  }
 
   void loadPrices() async {
     final result = await gecko.simple.listPrices(

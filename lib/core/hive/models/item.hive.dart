@@ -20,7 +20,7 @@ part 'item.hive.g.dart';
 @HiveType(typeId: 1)
 class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(0)
-  final String identifier;
+  String identifier;
   @HiveField(1)
   final String category;
   @HiveField(2)

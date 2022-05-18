@@ -21,7 +21,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LineIcon(Iconsax.password_check, size: 100, color: kAppColor),
+          LineIcon(Iconsax.password_check, size: 100, color: themeColor),
           const SizedBox(height: 20),
           Text(
             'master_password'.tr,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -27,7 +28,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const Divider(),
+        const SizedBox(height: 20),
         Obx(
           () => ContextMenuButton(
             controller.menuItemsTheme,
@@ -37,7 +38,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
               (e) => e.title.toLowerCase() == controller.theme.value,
             ),
             child: ListTile(
-              leading: const Icon(Iconsax.color_swatch),
+              leading: Icon(Iconsax.color_swatch, color: themeColor),
               trailing: const Icon(Iconsax.arrow_right_3),
               title: Text('theme'.tr),
               subtitle: Obx(() => Text(controller.theme().tr)),
@@ -45,42 +46,21 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           ),
         ),
         const Divider(),
-        SimpleBuilder(
-          builder: (context) {
-            return Column(
-              children: <Widget>[
-                CheckboxListTile(
-                  title: Text('${config.appName} Cloud Sync'),
-                  subtitle: const Text("Keep in sync with all your devices"),
-                  secondary: const Icon(Iconsax.cloud),
-                  value: persistence.sync.val,
-                  onChanged: (value) => persistence.sync.val = value!,
-                ),
-                const Divider(),
-                CheckboxListTile(
-                  title: const Text('Errors & Crashes'),
-                  subtitle: const Text("Send anonymous crash & error reports"),
-                  secondary: const Icon(Iconsax.cpu),
-                  value: persistence.crashReporting.val,
-                  onChanged: (value) => persistence.crashReporting.val = value!,
-                ),
-                const Divider(),
-                CheckboxListTile(
-                  title: const Text('Usage Statistics'),
-                  subtitle: const Text('Send anonymous usage statistics'),
-                  secondary: const Icon(Iconsax.chart_square),
-                  value: persistence.analytics.val,
-                  onChanged: (value) => persistence.analytics.val = value!,
-                ),
-              ],
-            );
-          },
+        ListTile(
+          leading: Icon(Iconsax.setting_3, color: themeColor),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: Text('configuration'.tr),
+          subtitle: const Text('Cloud Sync & Anonymous Reporting'),
+          onTap: () => Utils.adaptiveRouteOpen(
+            name: Routes.configuration,
+            parameters: {'from': 'settings'},
+          ),
         ),
         const Divider(),
         ListTile(
           title: Text('time_machine'.tr),
           subtitle: const Text('Go back in time to undo your changes'),
-          leading: const Icon(Iconsax.clock),
+          leading: Icon(Iconsax.clock, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () {
             if (!persistence.sync.val) {
@@ -98,7 +78,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Iconsax.import_1),
+          leading: Icon(Iconsax.import_1, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('Import Items'),
           subtitle: const Text('Import items from external sources'),
@@ -112,7 +92,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Iconsax.box_1),
+          leading: Icon(Iconsax.box_1, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('export_vault'.tr),
           subtitle: const Text('Save <vault>.liso to an external source'),
@@ -129,7 +109,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Iconsax.wallet_1),
+          leading: Icon(Iconsax.wallet_1, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('export_wallet'.tr),
           subtitle: const Text('Save <wallet>.json to an external source'),
@@ -137,7 +117,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Iconsax.key),
+          leading: Icon(Iconsax.key, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('Show Seed Phrase'),
           subtitle: const Text('Make sure you are in a safe location'),
@@ -145,7 +125,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Iconsax.lock),
+          leading: Icon(Iconsax.lock, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${'lock'.tr} ${config.appName}'),
           subtitle: const Text('Exit and lock the app'),
@@ -153,7 +133,7 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
-          leading: const Icon(Iconsax.refresh5),
+          leading: Icon(Iconsax.refresh5, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${'reset'.tr} ${config.appName}'),
           subtitle: const Text('Delete local vault and start over'),

@@ -189,7 +189,6 @@ class S3ExplorerScreenController extends GetxController
     }
 
     // encrypt file before uploading
-
     final file = await CipherService.to.decryptFile(result.right);
     final fileName = basename(file.path);
 
@@ -233,7 +232,6 @@ class S3ExplorerScreenController extends GetxController
     change(false, status: RxStatus.success());
   }
 
-  // TODO: max upload size
   void pickFile() async {
     change(true, status: RxStatus.loading());
     Globals.timeLockEnabled = false; // disable
@@ -258,11 +256,23 @@ class S3ExplorerScreenController extends GetxController
     }
 
     Globals.timeLockEnabled = true; // re-enable
-
-    console.info('picked: ${result.files.single.path!}');
     final file = File(result.files.single.path!);
+    console.info('picked: ${file.path}');
 
-    if (await file.length() > ConfigService.to.app.settings.maxUploadSize) {
+    int fileSize = 0;
+
+    try {
+      fileSize = await file.length();
+    } catch (e) {
+      change(false, status: RxStatus.success());
+
+      return UIUtils.showSimpleDialog(
+        'File Size Error',
+        'Cannot retrieve file size: $e',
+      );
+    }
+
+    if (fileSize > ConfigService.to.app.settings.maxUploadSize) {
       change(false, status: RxStatus.success());
 
       return UIUtils.showSimpleDialog(
@@ -271,10 +281,23 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
+    change(false, status: RxStatus.success());
     _upload(file);
   }
 
   void _upload(File file) async {
+    final assumedTotal = S3Service.to.storageSize.value + await file.length();
+    console.wtf(
+      'assumedTotal: ${filesize(assumedTotal)}, max: ${filesize(ConfigService.to.app.settings.maxStorageSize)}',
+    );
+
+    if (assumedTotal >= ConfigService.to.app.settings.maxStorageSize) {
+      return UIUtils.showSimpleDialog(
+        'Need More Storage',
+        'We will introduce ways you can increase your storage soon. Either just by holding a certain amount of Liso Token / Subscribing to a plan paid using Liso Tokens',
+      );
+    }
+
     change(true, status: RxStatus.loading());
     // encrypt file before uploading
     file = await CipherService.to.encryptFile(file);

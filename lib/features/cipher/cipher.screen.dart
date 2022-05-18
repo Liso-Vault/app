@@ -25,7 +25,7 @@ class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
         ),
         child: Column(
           children: [
-            const Icon(Iconsax.convert_3d_cube, size: 150, color: kAppColor),
+            Icon(Iconsax.convert_3d_cube, size: 150, color: themeColor),
             const SizedBox(height: 20),
             const Text(
               'Cipher Tool',
@@ -40,7 +40,7 @@ class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
             const SizedBox(height: 50),
             const Divider(),
             ListTile(
-              leading: const Icon(Iconsax.lock),
+              leading: Icon(Iconsax.lock, color: themeColor),
               trailing: const Icon(Iconsax.arrow_right_3),
               title: Text('encrypt_file'.tr),
               subtitle: const Text('Choose a file to encrypt'),
@@ -49,7 +49,7 @@ class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
             const Divider(),
             ListTile(
               onTap: controller.decrypt,
-              leading: const Icon(Iconsax.lock_slash),
+              leading: Icon(Iconsax.lock_slash, color: themeColor),
               trailing: const Icon(Iconsax.arrow_right_3),
               title: Text('decrypt_file'.tr),
               subtitle: const Text(

@@ -1,3 +1,9 @@
+## 0.3.2
+- New! Support for IPFS, Storj, and SkyNet Cloud Providers
+- Fixed max storage upload check! Thanks to Shizzle026
+- Fixed overriden duplicate item on sync! Thanks to Jayb
+- Improved Icon Colors
+
 ## 0.3.1
 - View Wallet Balance, Assets, NFTs, Activity, 
 - Switch Networks

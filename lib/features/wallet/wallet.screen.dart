@@ -33,7 +33,7 @@ class WalletScreen extends GetWidget<WalletScreenController> with ConsoleMixin {
             padding: EdgeInsets.zero,
             child: TextButton.icon(
               onPressed: () {},
-              icon: Image.asset(Images.polygon, height: 18, color: kAppColor),
+              icon: Image.asset(Images.polygon, height: 18, color: themeColor),
               label: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [

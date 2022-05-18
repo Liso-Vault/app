@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
+import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -27,7 +28,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     if (!PersistenceService.to.syncConfirmed.val) {
-      return const RouteSettings(name: Routes.syncSettings);
+      return const RouteSettings(name: Routes.configuration);
     }
 
     if (!ignoreSync &&
@@ -38,6 +39,8 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
     CrashlyticsService.to.init();
     MainScreenController.to.load();
+    AlchemyService.to.init();
+    AlchemyService.to.load();
 
     // record metadata
     S3Service.to.fetchStorageSize().then((info) {

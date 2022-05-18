@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/utils/globals.dart';
 
 import '../../core/animations/animations.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -29,6 +30,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
       final item = contextItems[index];
 
       final tile = ListTile(
+        iconColor: themeColor,
         title: Text(item.title),
         leading: item.leading,
         trailing: item.trailing,

@@ -107,6 +107,6 @@ class CreatePasswordScreenController extends GetxController
       body: ConfigService.to.general.app.shortDescription,
     );
 
-    Get.offAllNamed(Routes.syncSettings);
+    Get.offAllNamed(Routes.configuration);
   }
 }

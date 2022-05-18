@@ -293,7 +293,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       final result = await client!.copyObject(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         content.path,
         backupsPath,
         // CopyConditions(),
@@ -312,7 +312,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       final result = await client!.statObject(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         content.path,
       );
 
@@ -329,7 +329,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       await client!.removeObject(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         content.path,
       );
     } catch (e) {
@@ -351,7 +351,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       result = await client!.listAllObjectsV2(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         prefix: path,
       );
     } catch (e) {
@@ -409,7 +409,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       result = await client!.listAllObjectsV2(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         prefix: s3Path,
         recursive: true,
       );
@@ -442,16 +442,18 @@ class S3Service extends GetxService with ConsoleMixin {
   }) async {
     if (!ready) init();
     if (!persistence.canSync && ready && !force) return const Left('offline');
-    console.info('downloading: ${ConfigService.to.s3.bucket} -> $s3Path');
+    console
+        .info('downloading: ${ConfigService.to.s3.preferredBucket} -> $s3Path');
     MinioByteStream? stream;
 
     try {
-      stream = await client!.getObject(ConfigService.to.s3.bucket, s3Path);
-    } catch (e, s) {
-      CrashlyticsService.to.record(FlutterErrorDetails(
-        exception: e,
-        stack: s,
-      ));
+      stream =
+          await client!.getObject(ConfigService.to.s3.preferredBucket, s3Path);
+    } catch (e) {
+      // CrashlyticsService.to.record(FlutterErrorDetails(
+      //   exception: e,
+      //   stack: s,
+      // ));
 
       return Left(e);
     }
@@ -476,7 +478,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       eTag = await client!.putObject(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         s3Path,
         Stream<Uint8List>.value(file.readAsBytesSync()),
         onProgress: (size) => uploadedSize.value = size,
@@ -508,7 +510,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       eTag = await client!.putObject(
-        config.s3.bucket,
+        config.s3.preferredBucket,
         join(s3Path, '$name/').replaceAll('\\', '/'),
         Stream<Uint8List>.value(Uint8List(0)),
         metadata: {

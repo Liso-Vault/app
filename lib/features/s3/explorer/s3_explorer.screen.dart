@@ -114,9 +114,9 @@ class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
               () => Text(
                 controller.currentPath.value
                     .replaceAll(S3Service.to.rootPath, 'Root/'),
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: kAppColor,
+                  color: themeColor,
                 ),
               ),
             ),

@@ -262,7 +262,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 title: Text('settings'.tr),
-                leading: const Icon(Iconsax.setting_3),
+                leading: const Icon(Iconsax.setting_2),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.settings,
                   method: 'offAndToNamed',

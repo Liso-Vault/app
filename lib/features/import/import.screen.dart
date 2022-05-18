@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
@@ -17,12 +18,67 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
+    final persistence = Get.find<PersistenceService>();
+
+    // TODO: reuse from configuration screen
+    final syncOptions = SimpleBuilder(
+      builder: (_) {
+        final isSia = persistence.syncProvider.val == LisoSyncProvider.sia.name;
+        final isIPFS =
+            persistence.syncProvider.val == LisoSyncProvider.ipfs.name;
+        final isStorj =
+            persistence.syncProvider.val == LisoSyncProvider.storj.name;
+        final isSkyNet =
+            persistence.syncProvider.val == LisoSyncProvider.skynet.name;
+
+        return Wrap(
+          children: [
+            ChoiceChip(
+              label: const Text('Sia'),
+              selected: isSia,
+              avatar: isSia ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                persistence.syncProvider.val = LisoSyncProvider.sia.name;
+              },
+            ),
+            const SizedBox(width: 10),
+            ChoiceChip(
+              label: const Text('IPFS'),
+              selected: isIPFS,
+              avatar: isIPFS ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
+              },
+            ),
+            const SizedBox(width: 10),
+            ChoiceChip(
+              label: const Text('Storj'),
+              selected: isStorj,
+              avatar: isStorj ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                persistence.syncProvider.val = LisoSyncProvider.storj.name;
+              },
+            ),
+            const SizedBox(width: 10),
+            ChoiceChip(
+              label: const Text('SkyNet'),
+              selected: isSkyNet,
+              avatar: isSkyNet ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                persistence.syncProvider.val = LisoSyncProvider.skynet.name;
+              },
+            ),
+          ],
+        );
+      },
+    );
+
     final content = Form(
       key: controller.formKey,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Iconsax.import_1, size: 100, color: kAppColor),
+          Icon(Iconsax.import_1, size: 100, color: themeColor),
           const SizedBox(height: 20),
           Text(
             'import_vault'.tr,
@@ -45,7 +101,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                   iconData: Iconsax.cloud,
                 ),
                 ImportMode.file: const SegmentedControlItem(
-                  text: 'File',
+                  text: 'Liso File',
                   iconData: Iconsax.document_code,
                 ),
                 // ImportMode.s3: SegmentedControlItem(
@@ -59,7 +115,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               },
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
           Obx(() {
             if (controller.importMode() == ImportMode.file) {
               return Row(
@@ -82,11 +138,13 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 ],
               );
             } else if (controller.importMode() == ImportMode.liso) {
-              // return Text(
-              //   'Enter the seed phrase you used to sync to ${ConfigService.to.appName} Cloud',
-              //   textAlign: TextAlign.center,
-              // );
-              return const SizedBox.shrink();
+              return Column(
+                children: [
+                  const Text('Select your provider'),
+                  const SizedBox(height: 10),
+                  syncOptions,
+                ],
+              );
             } else {
               return const SizedBox.shrink();
             }

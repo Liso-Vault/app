@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/firebase_options.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -50,6 +51,7 @@ void main() async {
     Get.lazyPut(() => FirestoreService());
     Get.lazyPut(() => PersistenceService());
     Get.lazyPut(() => S3Service());
+    Get.lazyPut(() => AlchemyService());
     Get.put(ConfigService());
 
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {

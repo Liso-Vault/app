@@ -1,3 +1,4 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,7 +6,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
 
-import 'package:console_mixin/console_mixin.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';
@@ -114,6 +114,19 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
             onSelected: _askToDownload,
           ),
         ],
+        // if (PersistenceService.to.syncProvider.val ==
+        //     LisoSyncProvider.ipfs.name) ...[
+        //   ContextMenuItem(
+        //     title: 'Copy IPFS CID',
+        //     leading: const Icon(Iconsax.copy),
+        //     onSelected: () => Utils.copyToClipboard(content.object?.eTag),
+        //   ),
+        //   ContextMenuItem(
+        //     title: 'Copy IPFS URL',
+        //     leading: const Icon(Iconsax.copy),
+        //     onSelected: () => Utils.copyToClipboard(content.object?.eTag),
+        //   ),
+        // ],
         ContextMenuItem(
           title: 'Delete',
           leading: const Icon(Iconsax.trash),
@@ -133,7 +146,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
               ],
             )
           : null,
-      iconColor: content.isFile ? kAppColor : null,
+      iconColor: content.isFile ? themeColor : null,
       leading: _leadingIcon(),
       trailing: ContextMenuButton(
         menuItems,

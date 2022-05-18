@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:web3dart/credentials.dart';
 
@@ -37,6 +37,8 @@ final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
 const kS3MetadataVersion = '1';
+
+Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 // ENUMS
 enum LisoItemSortOrder {
@@ -77,6 +79,13 @@ enum LisoItemCategory {
   wirelessRouter,
   encryption,
   none,
+}
+
+enum LisoSyncProvider {
+  sia,
+  ipfs,
+  storj,
+  skynet,
 }
 
 class Globals {

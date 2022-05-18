@@ -16,7 +16,7 @@ abstract class Routes {
   static const unlock = '/unlock';
 
   // SYNC
-  static const syncSettings = '/sync_settings';
+  static const configuration = '/configuration';
   static const syncing = '/syncing';
 
   // IPFS

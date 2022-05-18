@@ -3,10 +3,10 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/s3/s3.service.dart';
-import 'package:liso/features/sync/syncing/syncing_screen.controller.dart';
+import 'package:liso/features/sync/syncing_screen.controller.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
-import '../../general/centered_placeholder.widget.dart';
+import '../general/centered_placeholder.widget.dart';
 
 class SyncingScreen extends GetView<SyncingScreenController> {
   const SyncingScreen({Key? key}) : super(key: key);

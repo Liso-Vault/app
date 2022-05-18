@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/contracts/liso.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/wallet/nfts/nfts_screen.controller.dart';
 import 'package:liso/features/wallet/transactions/transactions_screen.controller.dart';
@@ -63,38 +63,12 @@ class WalletScreenController extends GetxController with ConsoleMixin {
     Get.put(AssetsScreenController());
     Get.put(NFTsScreenController());
     Get.put(TransactionsScreenController());
-
-    init();
     super.onInit();
   }
 
-  @override
-  void onClose() async {
-    await alchemy.stop();
-    super.onClose();
-  }
-
   // FUNCTIONS
-  void init() {
-    final http = WalletService.to.network.value == 'Polygon Testnet'
-        ? ConfigService.to.web3.chains.first.test.http
-        : ConfigService.to.web3.chains.first.main.http;
-
-    final ws = WalletService.to.network.value == 'Polygon Testnet'
-        ? ConfigService.to.web3.chains.first.test.ws
-        : ConfigService.to.web3.chains.first.main.ws;
-
-    // Configuration
-    alchemy.init(
-      httpRpcUrl: http,
-      wsRpcUrl: ws,
-      verbose: false,
-    );
-  }
-
   void reInit() async {
-    await alchemy.stop();
-    init();
+    await AlchemyService.to.reInit();
     load();
   }
 

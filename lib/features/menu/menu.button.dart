@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/menu/context.menu.dart';
 
 import '../../core/utils/utils.dart';
@@ -45,24 +46,33 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     }
 
     // if desktop / large screen
-    final popupItems = contextItems
-        .map(
-          (e) => PopupMenuItem<ContextMenuItem>(
-            value: e,
-            child: Row(
-              children: [
-                e.leading!,
-                const SizedBox(width: 15),
-                Text(e.title),
-                if (e.trailing != null) ...[
-                  const Spacer(),
-                  e.trailing!,
-                ]
-              ],
-            ),
+    final popupItems = contextItems.map(
+      (e) {
+        var leading = e.leading!;
+
+        if (e.leading is Icon) {
+          final icon = e.leading as Icon;
+          if (icon.color == null) {
+            leading = Icon(icon.icon, color: themeColor, size: icon.size);
+          }
+        }
+
+        return PopupMenuItem<ContextMenuItem>(
+          value: e,
+          child: Row(
+            children: [
+              leading,
+              const SizedBox(width: 15),
+              Text(e.title),
+              if (e.trailing != null) ...[
+                const Spacer(),
+                e.trailing!,
+              ]
+            ],
           ),
-        )
-        .toList();
+        );
+      },
+    ).toList();
 
     if (!useMouseRegion) {
       return PopupMenuButton(

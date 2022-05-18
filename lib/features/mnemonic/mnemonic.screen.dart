@@ -76,7 +76,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Iconsax.key_square, size: 100, color: kAppColor),
+        Icon(Iconsax.key_square, size: 100, color: themeColor),
         const SizedBox(height: 20),
         const Text(
           'Master Seed Phrase',

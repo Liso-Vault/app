@@ -26,9 +26,7 @@ class ContextMenuItem extends Equatable {
       ];
 
   @override
-  int get hashCode {
-    return title.hashCode;
-  }
+  int get hashCode => title.hashCode;
 
   @override
   bool operator ==(Object other) {

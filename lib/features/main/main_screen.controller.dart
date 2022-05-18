@@ -61,7 +61,10 @@ class MainScreenController extends GetxController
         .map(
           (e) => ContextMenuItem(
             title: e.name.tr,
-            leading: Utils.categoryIcon(LisoItemCategory.values.byName(e.name)),
+            leading: Utils.categoryIcon(
+              LisoItemCategory.values.byName(e.name),
+              color: themeColor,
+            ),
             onSelected: () {
               Utils.adaptiveRouteOpen(
                 name: Routes.item,

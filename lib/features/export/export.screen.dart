@@ -17,7 +17,7 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Iconsax.box_1, size: 100, color: kAppColor),
+        Icon(Iconsax.box_1, size: 100, color: themeColor),
         const SizedBox(height: 20),
         const Text(
           'Export Vault',
