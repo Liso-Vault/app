@@ -31,7 +31,7 @@
   </p>
   
   <h3 align="center">Decentralized & Open Source Password Manager</h3>
-  <p align="center">An open-source data management application that focuses mainly on securely storing private information and files. Think of 1Password, in a decentralized fashion. Combined with Metamask!</p>
+  <p align="center">An open-source data management application that focuses mainly on securely storing private information and files. Think of 1Password, in a decentralized manner. Combined with a Crypto Wallet!</p>
 </p>
 
 
@@ -53,14 +53,14 @@
 
 
 ## About The Project
-Liso uses a powerful decentralized network of computers (Sia) to route your vault & files, making it impossible for anyone to leak your data. And with Sia's protocols, your files are broken into 30 pieces, each of which is encrypted and only you can decrypt them.
+Liso uses a powerful decentralized network of computers to route your files, making it impossible for anyone to leak or sell your data. You have the option to choose your provider: IPFS, Sia, Storj, and Skynet.
 
 Zero-Knowledge: No phone number or email is needed to create a Liso Vault
 Decentralized: Makes data breaches and central point of failures a thing of the past
 No-Logging: Liso doesn't store, track, or log your data
 Open-source: Check Liso's code yourself
 Offline Mode: You have the choice to use the app 100% offline
-Cross Platform: Supports most platforms
+
 
 Features
 * Biometric Authentication
@@ -125,10 +125,7 @@ flutter run
 * Password Health
 * OTP/MFA Generator
 * Web3 Browser
-* Web3 Wallet
-* NFTs
 * DeFi (Swap)
-* More Cloud Sync Options - Google Drive, DropBox, Box, WLAN, FTP, etc.
 * Liso Token
 * Liso DAO
 * Liso Keycard - NFC Card to securely store your Wallet File
