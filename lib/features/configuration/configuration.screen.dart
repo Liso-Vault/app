@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
@@ -10,6 +11,7 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/services/persistence.service.dart';
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 
 class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
@@ -34,6 +36,8 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
             persistence.syncProvider.val == LisoSyncProvider.storj.name;
         final isSkyNet =
             persistence.syncProvider.val == LisoSyncProvider.skynet.name;
+        final isCustom =
+            persistence.syncProvider.val == LisoSyncProvider.custom.name;
 
         String providerName = '', providerDescription = '', providerUrl = '';
 
@@ -57,107 +61,119 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
           providerDescription =
               'Skynet is a decentralized storage platform that leverages the Sia network. This technology is built for high availability, scalability, and easy file sharing.';
           providerUrl = 'https://skynetlabs.com/';
+        } else if (isCustom) {
+          providerName = 'Custom';
+          providerDescription =
+              'Configure using your own S3 compatible cloud storage provider.';
+          // TODO: change to Custom Sync Provider guide page
+          providerUrl = ConfigService.to.general.app.links.website;
         }
+
+        final syncChild = Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            RichText(
+              text: TextSpan(
+                text: 'Keep multiple devices in sync',
+                style:
+                    DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
+                children: [
+                  const TextSpan(
+                    text: ' via a secure & decentralized cloud storage',
+                  ),
+                  if (fromSettings) ...[
+                    TextSpan(
+                      text: ': $providerName',
+                      style: TextStyle(color: themeColor),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => launchUrlString(providerUrl),
+                    ),
+                  ]
+                ],
+              ),
+            ),
+            if (persistence.sync.val) ...[
+              const Divider(),
+              const Text('Choose a provider'),
+              const SizedBox(height: 10),
+              Wrap(
+                spacing: 5,
+                children: [
+                  ChoiceChip(
+                    label: const Text(
+                      'Sia',
+                    ),
+                    selected: isSia,
+                    avatar: isSia ? const Icon(Icons.check) : null,
+                    onSelected: (value) {
+                      persistence.syncProvider.val = LisoSyncProvider.sia.name;
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('IPFS'),
+                    selected: isIPFS,
+                    avatar: isIPFS ? const Icon(Icons.check) : null,
+                    onSelected: (value) {
+                      persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('Storj'),
+                    selected: isStorj,
+                    avatar: isStorj ? const Icon(Icons.check) : null,
+                    onSelected: (value) {
+                      persistence.syncProvider.val =
+                          LisoSyncProvider.storj.name;
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('SkyNet'),
+                    selected: isSkyNet,
+                    avatar: isSkyNet ? const Icon(Icons.check) : null,
+                    onSelected: (value) {
+                      persistence.syncProvider.val =
+                          LisoSyncProvider.skynet.name;
+                    },
+                  ),
+                  ChoiceChip(
+                    label: const Text('Custom'),
+                    selected: isCustom,
+                    avatar: isCustom ? const Icon(Icons.check) : null,
+                    onSelected: (value) {
+                      Utils.adaptiveRouteOpen(
+                        name: Routes.syncProvider,
+                        parameters: {'from': 'settings'},
+                      );
+                    },
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              RichText(
+                text: TextSpan(
+                  text: providerDescription,
+                  style:
+                      DefaultTextStyle.of(context).style.copyWith(fontSize: 12),
+                  children: [
+                    TextSpan(
+                      text: ' Learn more',
+                      style: TextStyle(color: themeColor),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () => launchUrlString(providerUrl),
+                    ),
+                  ],
+                ),
+              ),
+            ]
+          ],
+        );
 
         return Column(
           children: <Widget>[
             RadioListTile<bool>(
               dense: true,
               title: Text('synchronize'.tr),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      text: 'Keep multiple devices in sync',
-                      style: DefaultTextStyle.of(context)
-                          .style
-                          .copyWith(fontSize: 12),
-                      children: [
-                        const TextSpan(
-                          text: ' via a secure & decentralized cloud storage',
-                        ),
-                        if (fromSettings) ...[
-                          TextSpan(
-                            text: ': $providerName',
-                            style: TextStyle(color: themeColor),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => launchUrlString(providerUrl),
-                          ),
-                        ]
-                      ],
-                    ),
-                  ),
-                  // Text(
-                  //   "Keep multiple devices in sync ${fromSettings ? 'via $providerName decentralized cloud storage' : 'in a secure & decentralized cloud storage'}",
-                  // ),
-                  if (persistence.sync.val && !fromSettings) ...[
-                    const Divider(),
-                    const Text('Choose a provider'),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 5,
-                      children: [
-                        ChoiceChip(
-                          label: const Text(
-                            'Sia',
-                          ),
-                          selected: isSia,
-                          avatar: isSia ? const Icon(Icons.check) : null,
-                          onSelected: (value) {
-                            persistence.syncProvider.val =
-                                LisoSyncProvider.sia.name;
-                          },
-                        ),
-                        ChoiceChip(
-                          label: const Text('IPFS'),
-                          selected: isIPFS,
-                          avatar: isIPFS ? const Icon(Icons.check) : null,
-                          onSelected: (value) {
-                            persistence.syncProvider.val =
-                                LisoSyncProvider.ipfs.name;
-                          },
-                        ),
-                        ChoiceChip(
-                          label: const Text('Storj'),
-                          selected: isStorj,
-                          avatar: isStorj ? const Icon(Icons.check) : null,
-                          onSelected: (value) {
-                            persistence.syncProvider.val =
-                                LisoSyncProvider.storj.name;
-                          },
-                        ),
-                        ChoiceChip(
-                          label: const Text('SkyNet'),
-                          selected: isSkyNet,
-                          avatar: isSkyNet ? const Icon(Icons.check) : null,
-                          onSelected: (value) {
-                            persistence.syncProvider.val =
-                                LisoSyncProvider.skynet.name;
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    RichText(
-                      text: TextSpan(
-                        text: providerDescription,
-                        style: DefaultTextStyle.of(context)
-                            .style
-                            .copyWith(fontSize: 12),
-                        children: [
-                          TextSpan(
-                            text: ' Learn more',
-                            style: TextStyle(color: themeColor),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () => launchUrlString(providerUrl),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ]
-                ],
-              ),
+              subtitle: syncChild,
               secondary: const Icon(Iconsax.cloud_change),
               value: true,
               groupValue: persistence.sync.val,
@@ -220,7 +236,7 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                 builder: (context) {
                   return Column(
                     children: <Widget>[
-                      CheckboxListTile(
+                      SwitchListTile(
                         dense: true,
                         title: const Text('Errors & Crashes'),
                         secondary: Icon(
@@ -232,10 +248,10 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                           "Help us by sending anonymous crash reports so we can crush those pesky bugs and improve your experience",
                         ),
                         onChanged: (value) =>
-                            persistence.crashReporting.val = value!,
+                            persistence.crashReporting.val = value,
                       ),
                       const Divider(),
-                      CheckboxListTile(
+                      SwitchListTile(
                         dense: true,
                         title: const Text('Usage Statistics'),
                         secondary: Icon(
@@ -246,8 +262,7 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                         subtitle: const Text(
                           'Help us understand how you use the app so we can improve the app without compromising your privacy.',
                         ),
-                        onChanged: (value) =>
-                            persistence.analytics.val = value!,
+                        onChanged: (value) => persistence.analytics.val = value,
                       ),
                     ],
                   );

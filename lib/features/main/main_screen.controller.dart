@@ -13,6 +13,7 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../core/firebase/config/config.service.dart';
@@ -192,6 +193,7 @@ class MainScreenController extends GetxController
   void onReady() {
     _initAppLifeCycleEvents();
     sortOrder.listen((order) => load());
+    Future.delayed(5.seconds).then((value) => _updateBuildNumber());
     console.info('onReady');
     super.onReady();
   }
@@ -433,6 +435,7 @@ class MainScreenController extends GetxController
           final timeLock = persistence.timeLockDuration.val.seconds;
           timeLockTimer = Timer.periodic(timeLock, (timer) {
             Globals.wallet = null;
+            Globals.init();
             timer.cancel();
           });
         }
@@ -440,5 +443,10 @@ class MainScreenController extends GetxController
 
       return Future.value(msg);
     });
+  }
+
+  void _updateBuildNumber() async {
+    final packageInfo = await PackageInfo.fromPlatform();
+    persistence.lastBuildNumber.val = int.parse(packageInfo.buildNumber);
   }
 }

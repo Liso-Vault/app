@@ -173,7 +173,9 @@ class WalletScreen extends GetWidget<WalletScreenController> with ConsoleMixin {
                   ),
                 ),
                 Text(
-                  WalletService.to.shortAddress,
+                  GetPlatform.isMobile
+                      ? WalletService.to.shortAddress
+                      : WalletService.to.longAddress,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

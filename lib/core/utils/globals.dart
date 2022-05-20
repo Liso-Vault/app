@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:web3dart/credentials.dart';
 
 // HIVE DATABASE
@@ -36,6 +37,7 @@ final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
+const kSignatureMessage = 'liso';
 const kS3MetadataVersion = '1';
 
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
@@ -86,13 +88,22 @@ enum LisoSyncProvider {
   ipfs,
   storj,
   skynet,
+  custom,
 }
 
 class Globals {
   // VARIABLES
   static bool timeLockEnabled = true;
   static Wallet? wallet;
+  static Uint8List? encryptionKey;
 
   // GETTERS
-  static Uint8List get encryptionKey => wallet!.privateKey.privateKey;
+
+  // FUNCTIONS
+  static Future<void> init() async {
+    if (wallet == null) return encryptionKey = null;
+
+    final signature = await WalletService.to.sign(kSignatureMessage);
+    encryptionKey = Uint8List.fromList(signature.codeUnits).sublist(0, 32);
+  }
 }

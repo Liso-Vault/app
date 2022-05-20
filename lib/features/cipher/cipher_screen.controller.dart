@@ -42,7 +42,7 @@ class CipherScreenController extends GetxController
 
   @override
   void change(newState, {RxStatus? status}) {
-    if (newState != null) busy.value = newState;
+    busy.value = status?.isLoading ?? false;
     super.change(newState, status: status);
   }
 

@@ -37,7 +37,7 @@ class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 15),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 30),
             const Divider(),
             ListTile(
               leading: Icon(Iconsax.lock, color: themeColor),
@@ -56,27 +56,7 @@ class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
                 'Decrypt a <file>$kEncryptedExtensionExtra file',
               ),
             ),
-            // const Text('Select a file to encrypt'),
-            // const SizedBox(height: 10),
-            // SizedBox(
-            //   width: 200,
-            //   child: ElevatedButton.icon(
-            //     icon: const Icon(Iconsax.eye_slash),
-            //     label: Text('encrypt_file'.tr),
-            //     onPressed: controller.encrypt,
-            //   ),
-            // ),
-            // const Divider(height: 50),
-            // const Text('Select a file to decrypt'),
-            // const SizedBox(height: 10),
-            // SizedBox(
-            //   width: 200,
-            //   child: ElevatedButton.icon(
-            //     icon: const Icon(Iconsax.eye),
-            //     label: Text('decrypt_file'.tr),
-            //     onPressed: controller.decrypt,
-            //   ),
-            // ),
+            const Divider(),
           ],
         ),
       ),

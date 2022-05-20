@@ -25,6 +25,7 @@ dependencies:
   encrypt: ^5.0.1
   biometric_storage: ^4.1.1 # secure storage with biometrics
   local_auth: ^2.0.2 # check biometric availability
+  walletconnect_dart: ^0.0.10
 
   # FIREBASE
   firebase_core: 1.17.0

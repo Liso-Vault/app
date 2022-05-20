@@ -3,6 +3,7 @@ import 'package:liso/features/about/about.screen.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/create_password/create_password_screen.controller.dart';
+import 'package:liso/features/debug/debug.screen.dart';
 import 'package:liso/features/export/export.screen.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
@@ -30,8 +31,10 @@ import '../item/item_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
-import '../sync/syncing.screen.dart';
-import '../sync/syncing_screen.controller.dart';
+import '../s3/provider/sync_provider_screen.controller.dart';
+import '../s3/provider/sync_provider_screen.dart';
+import '../syncing/syncing.screen.dart';
+import '../syncing/syncing_screen.controller.dart';
 import '../wallet/wallet.screen.dart';
 import '../wallet/wallet_screen.controller.dart';
 import 'routes.dart';
@@ -111,6 +114,11 @@ class AppPages {
       page: () => const ConfigurationScreen(),
     ),
     GetPage(
+      name: Routes.syncProvider,
+      page: () => const SyncProviderScreen(),
+      binding: SyncProviderScreenBinding(),
+    ),
+    GetPage(
       name: Routes.syncing,
       page: () => const SyncingScreen(),
       binding: SyncingScreenBinding(),
@@ -129,6 +137,10 @@ class AppPages {
       name: Routes.cipher,
       page: () => const CipherScreen(),
       binding: CipherScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.debug,
+      page: () => const DebugScreen(),
     ),
   ];
 }

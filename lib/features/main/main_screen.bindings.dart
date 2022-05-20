@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:liso/features/cipher/cipher_screen.controller.dart';
+import 'package:liso/features/s3/provider/sync_provider_screen.controller.dart';
 import 'package:liso/features/wallet/wallet_screen.controller.dart';
 
 import '../../core/form_fields/password.field.dart';
@@ -19,19 +20,20 @@ class MainScreenBinding extends Bindings {
     Get.put(MainScreenController(), permanent: true);
     Get.put(DrawerMenuController(), permanent: true);
     // WIDGETS
-    Get.create(() => PasswordFormFieldController());
-    Get.create(() => PINFormFieldController());
+    Get.lazyPut(() => PasswordFormFieldController(), fenix: true);
+    Get.lazyPut(() => PINFormFieldController(), fenix: true);
     // SCREENS
-    Get.create(() => ItemScreenController());
-    Get.create(() => SettingsScreenController());
-    Get.create(() => AboutScreenController());
-    Get.create(() => ExportScreenController());
-    Get.create(() => ResetScreenController());
+    Get.lazyPut(() => ItemScreenController(), fenix: true);
+    Get.lazyPut(() => SettingsScreenController(), fenix: true);
+    Get.lazyPut(() => AboutScreenController(), fenix: true);
+    Get.lazyPut(() => ExportScreenController(), fenix: true);
+    Get.lazyPut(() => ResetScreenController(), fenix: true);
     // S3
-    Get.create(() => S3ExplorerScreenController());
+    Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
+    Get.lazyPut(() => SyncProviderScreenController(), fenix: true);
     // WALLET
-    Get.create(() => WalletScreenController());
+    Get.lazyPut(() => WalletScreenController(), fenix: true);
     // CIPHER
-    Get.create(() => CipherScreenController());
+    Get.lazyPut(() => CipherScreenController(), fenix: true);
   }
 }

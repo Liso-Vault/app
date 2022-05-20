@@ -7,9 +7,12 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
+import 'package:liso/features/s3/s3.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/segmented_item.widget.dart';
 import 'import_screen.controller.dart';
 
@@ -30,6 +33,8 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             persistence.syncProvider.val == LisoSyncProvider.storj.name;
         final isSkyNet =
             persistence.syncProvider.val == LisoSyncProvider.skynet.name;
+        final isCustom =
+            persistence.syncProvider.val == LisoSyncProvider.custom.name;
 
         return Wrap(
           children: [
@@ -39,6 +44,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               avatar: isSia ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.sia.name;
+                S3Service.to.init();
               },
             ),
             const SizedBox(width: 10),
@@ -48,6 +54,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               avatar: isIPFS ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
+                S3Service.to.init();
               },
             ),
             const SizedBox(width: 10),
@@ -57,6 +64,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               avatar: isStorj ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.storj.name;
+                S3Service.to.init();
               },
             ),
             const SizedBox(width: 10),
@@ -66,6 +74,19 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
               avatar: isSkyNet ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.skynet.name;
+                S3Service.to.init();
+              },
+            ),
+            const SizedBox(width: 10),
+            ChoiceChip(
+              label: const Text('Custom'),
+              selected: isCustom,
+              avatar: isCustom ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                Utils.adaptiveRouteOpen(
+                  name: Routes.syncProvider,
+                  parameters: {'from': 'import'},
+                );
               },
             ),
           ],

@@ -4,9 +4,11 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
@@ -57,7 +59,7 @@ class S3ExplorerScreenController extends GetxController
 
   @override
   void change(newState, {RxStatus? status}) {
-    if (newState != null) busy.value = newState;
+    busy.value = status?.isLoading ?? false;
     super.change(newState, status: status);
   }
 
@@ -170,7 +172,31 @@ class S3ExplorerScreenController extends GetxController
     ));
   }
 
-  void download(S3Content content) async {
+  void askToDownload(S3Content content) {
+    final dialogContent = Text('Save "${content.maskedName}" to local disk?');
+
+    Get.dialog(AlertDialog(
+      title: const Text('Download'),
+      content: Utils.isDrawerExpandable
+          ? dialogContent
+          : SizedBox(width: 600, child: dialogContent),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          child: const Text('Download'),
+          onPressed: () {
+            Get.back();
+            _download(content);
+          },
+        ),
+      ],
+    ));
+  }
+
+  void _download(S3Content content) async {
     change(true, status: RxStatus.loading());
     final downloadPath = join(LisoPaths.temp!.path, content.name);
 
@@ -188,10 +214,14 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    // encrypt file before uploading
-    final file = await CipherService.to.decryptFile(result.right);
-    final fileName = basename(file.path);
+    // decrypt file after downloading
+    File file = result.right;
 
+    if (content.isEncrypted) {
+      file = await CipherService.to.decryptFile(file);
+    }
+
+    final fileName = basename(file.path);
     Globals.timeLockEnabled = false; // temporarily disable
 
     if (GetPlatform.isMobile) {
@@ -300,7 +330,9 @@ class S3ExplorerScreenController extends GetxController
 
     change(true, status: RxStatus.loading());
     // encrypt file before uploading
-    file = await CipherService.to.encryptFile(file);
+    if (PersistenceService.to.fileEncryption.val) {
+      file = await CipherService.to.encryptFile(file);
+    }
 
     final result = await S3Service.to.uploadFile(
       file,
@@ -405,6 +437,123 @@ class S3ExplorerScreenController extends GetxController
               );
             }
           },
+        ),
+      ],
+    ));
+  }
+
+  void share(S3Content content) async {
+    change(true, status: RxStatus.loading());
+    final result = await S3Service.to.getPreSignedUrl(content.path);
+    change(false, status: RxStatus.success());
+
+    if (result.isLeft) {
+      return UIUtils.showSimpleDialog(
+        'Create Folder Failed',
+        'Error: ${result.left}',
+      );
+    }
+
+    final dialogContent = Text(
+      '${content.name} will only be available to download for 1 hour from now.',
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Share Securely'),
+      content: Utils.isDrawerExpandable
+          ? dialogContent
+          : SizedBox(width: 600, child: dialogContent),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        if (GetPlatform.isMobile) ...[
+          TextButton(
+            child: const Text('Share URL'),
+            onPressed: () {
+              Get.back();
+              Share.share(result.right);
+            },
+          ),
+        ] else ...[
+          TextButton(
+            child: const Text('Copy URL'),
+            onPressed: () {
+              Get.back();
+              Utils.copyToClipboard(result.right);
+            },
+          ),
+        ]
+      ],
+    ));
+  }
+
+  Widget leadingIcon(S3Content content) {
+    if (!content.isFile) return const Icon(Iconsax.folder_open5);
+    var iconData = Iconsax.document_1;
+    if (content.fileType == null) return Icon(iconData);
+
+    switch (content.fileType!) {
+      case 'image':
+        iconData = Iconsax.gallery;
+        break;
+      case 'video':
+        iconData = Iconsax.play;
+        break;
+      case 'archive':
+        iconData = Iconsax.archive;
+        break;
+      case 'audio':
+        iconData = Iconsax.music;
+        break;
+      case 'code':
+        iconData = Icons.code;
+        break;
+      case 'book':
+        iconData = Iconsax.book_1;
+        break;
+      case 'exec':
+        iconData = Iconsax.code;
+        break;
+      case 'web':
+        iconData = Iconsax.chrome;
+        break;
+      case 'sheet':
+        iconData = Iconsax.document_text;
+        break;
+      case 'text':
+        iconData = Iconsax.document;
+        break;
+      case 'font':
+        iconData = Iconsax.text_block;
+        break;
+    }
+
+    return Icon(iconData);
+  }
+
+  void askToImport(S3Content s3content) {
+    const content = Text(
+      'Are you sure you want to restore from this vault? \nYour current vault will be overwritten.',
+    );
+
+    Get.dialog(AlertDialog(
+      title: Text('restore'.tr),
+      content: Utils.isDrawerExpandable
+          ? content
+          : const SizedBox(
+              width: 600,
+              child: content,
+            ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          child: Text('proceed'.tr),
+          onPressed: () => restore(s3content),
         ),
       ],
     ));

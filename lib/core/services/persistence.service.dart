@@ -8,16 +8,13 @@ import 'package:path/path.dart';
 
 import '../utils/globals.dart';
 
+final persistencePath = join(LisoPaths.main!.path, 'get_storage');
+
 class PersistenceService extends GetxService with ConsoleMixin {
   static PersistenceService get to => Get.find();
 
   // BOX
-  final box = GetPlatform.isWeb
-      ? GetStorage('persistence')
-      : GetStorage(
-          'persistence',
-          join(LisoPaths.main!.path, 'get_storage'),
-        );
+  final box = GetStorage();
 
   // WALLET
   final wallet = ''.val('wallet');
@@ -26,6 +23,8 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final crashReporting = true.val('crash reporting');
   final analytics = true.val('analytics');
   final proTester = true.val('pro tester');
+  final lastBuildNumber = 0.val('last build number');
+  final newEncryption = false.val('use new encryption');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window width');
   final windowHeight = 800.0.val('window height');
@@ -40,13 +39,17 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final sync = true.val('sync');
   final syncConfirmed = false.val('sync confirmed');
   final syncProvider = LisoSyncProvider.sia.name.val('sync provider');
-  // IPFS
-  final ipfsSync = false.val('ipfs sync');
-  final ipfsInstantSync = false.val('ipfs instant sync');
-  final ipfsScheme = 'http'.val('ipfs scheme');
-  final ipfsHost = '127.0.0.1'.val('ipfs host');
-  final ipfsPort = 5001.val('ipfs port');
-  final ipfsLocalStat = ''.val('ipfs local vault stat');
+  final fileEncryption = false.val('file encryption');
+  // CUSTOM SYNC PROVIDER
+  final s3Endpoint = ''.val('s3 endpoint');
+  final s3AccessKey = ''.val('s3 access key');
+  final s3SecretKey = ''.val('s3 secret key');
+  final s3Bucket = ''.val('s3 bucket');
+  final s3Port = ''.val('s3 port');
+  final s3Region = ''.val('s3 region');
+  final s3SessionToken = ''.val('s3 session token');
+  final s3UseSsl = true.val('s3 use ssl');
+  final s3EnableTrace = false.val('s3 enable trace');
   // VAULT
   final groupIndex = 0.val('group index');
   final groups = 'Personal,Work,Family,Other'.val('groups');
@@ -55,16 +58,14 @@ class PersistenceService extends GetxService with ConsoleMixin {
   // PRICES
   final lastMaticBalance = 0.0.val('last matic balance');
   final lastLisoBalance = 0.0.val('last liso balance');
-
   final lastMaticUsdPrice = 0.0.val('last matic usd price');
   final lastLisoUsdPrice = 0.0.val('last liso usd price');
 
   // GETTERS
 
-  bool get canSync => sync.val && syncConfirmed.val;
+  // GetStorage get box => _box!;
 
-  String get ipfsServerUrl =>
-      '${ipfsScheme.val}://${ipfsHost.val}:${ipfsPort.val}';
+  bool get canSync => sync.val && syncConfirmed.val;
 
   List<Map<String, dynamic>> get groupsMap => groups.val
       .split(',')
@@ -73,11 +74,14 @@ class PersistenceService extends GetxService with ConsoleMixin {
       .map((e) => {'index': e.key, 'name': e.value})
       .toList();
 
+  // INIT
   @override
   void onInit() {
     _initLocale();
     super.onInit();
   }
+
+  // FUNCTIONS
 
   void _initLocale() {
     final deviceLanguage = Get.deviceLocale?.languageCode;

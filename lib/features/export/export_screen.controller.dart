@@ -4,11 +4,13 @@ import 'package:archive/archive_io.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -63,11 +65,22 @@ class ExportScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
 
+    final dateFormat = DateFormat('MMM-dd-yyyy_hh-mm_aaa');
+    final exportFileName =
+        '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.$kVaultExtension';
+
+    final exportFilePath = join(
+      LisoManager.tempPath,
+      exportFileName,
+    );
+
+    console.info('export path: $exportFilePath');
+
     await HiveManager.closeBoxes();
     final encoder = ZipFileEncoder();
 
     try {
-      encoder.create(LisoManager.exportVaultFilePath);
+      encoder.create(exportFilePath);
       await encoder.addDirectory(Directory(LisoManager.hivePath));
       encoder.close();
     } catch (e) {
@@ -77,18 +90,15 @@ class ExportScreenController extends GetxController
     }
 
     await HiveManager.openBoxes();
-    final tempVaultFile = File(LisoManager.exportVaultFilePath);
-    console.info('path: ${tempVaultFile.path}');
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
-        [tempVaultFile.path],
-        subject: LisoManager.vaultFilename,
+        [exportFilePath],
+        subject: exportFileName,
         text: GetPlatform.isIOS ? null : '${ConfigService.to.appName} Vault',
       );
 
       console.info('done');
-      // tempVaultFile.delete();
       return _done();
     }
 
@@ -110,13 +120,13 @@ class ExportScreenController extends GetxController
     await Future.delayed(1.seconds); // just for style
 
     await FileUtils.move(
-      tempVaultFile,
-      join(exportPath, LisoManager.vaultFilename),
+      File(exportFilePath),
+      join(exportPath, exportFileName),
     );
 
     NotificationsManager.notify(
-      title: 'Successfully Exported Vault',
-      body: LisoManager.vaultFilename,
+      title: 'Exported Vault',
+      body: exportFileName,
     );
 
     _done();

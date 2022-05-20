@@ -17,7 +17,7 @@ class CipherService extends GetxService with ConsoleMixin {
   final iv = IV.fromLength(16);
 
   // GETTERS
-  Key get key => Key.fromBase64(base64Encode(Globals.encryptionKey));
+  Key get key => Key.fromBase64(base64Encode(Globals.encryptionKey!));
   Encrypter get encrypter => Encrypter(AES(key));
 
   // FUNCTIONS

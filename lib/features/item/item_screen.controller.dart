@@ -201,7 +201,10 @@ class ItemScreenController extends GetxController
       tags.addAll(usedTags.reduce((a, b) => a + b).toSet());
     }
 
-    final filteredTags = tags.where((e) => e.contains(query));
+    final filteredTags = tags.where(
+      (e) => e.toLowerCase().contains(query.toLowerCase()),
+    );
+
     return filteredTags.toList();
   }
 

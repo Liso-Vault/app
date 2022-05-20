@@ -14,10 +14,12 @@ abstract class Routes {
   static const item = '/item';
   static const reset = '/reset';
   static const unlock = '/unlock';
+  static const debug = '/debug';
 
   // SYNC
   static const configuration = '/configuration';
   static const syncing = '/syncing';
+  static const syncProvider = '/sync_provider';
 
   // IPFS
   static const ipfs = '/ipfs';

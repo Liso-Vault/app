@@ -16,6 +16,7 @@ import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
+import 'package:supercharged/supercharged.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/item.hive.dart';
@@ -70,13 +71,30 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
 
-  void init() async {
+  void init() {
     try {
-      client = Minio(
-        endPoint: config.s3.endpoint,
-        accessKey: config.s3.key,
-        secretKey: config.s3.secret,
-      );
+      if (persistence.syncProvider.val == LisoSyncProvider.custom.name) {
+        client = Minio(
+          endPoint: persistence.s3Endpoint.val,
+          accessKey: persistence.s3AccessKey.val,
+          secretKey: persistence.s3SecretKey.val,
+          port: int.tryParse(persistence.s3Port.val),
+          region: persistence.s3Region.val.isEmpty
+              ? null
+              : persistence.s3Region.val,
+          sessionToken: persistence.s3SessionToken.val.isEmpty
+              ? null
+              : persistence.s3SessionToken.val,
+          enableTrace: persistence.s3EnableTrace.val,
+          useSSL: persistence.s3UseSsl.val,
+        );
+      } else {
+        client = Minio(
+          endPoint: config.s3.endpoint,
+          accessKey: config.s3.key,
+          secretKey: config.s3.secret,
+        );
+      }
 
       ready = true;
       console.info('init');
@@ -189,7 +207,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     final tempItems = await Hive.openBox<HiveLisoItem>(
       'temp_$kHiveBoxItems',
-      encryptionCipher: HiveAesCipher(Globals.encryptionKey),
+      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
       path: LisoManager.tempPath,
     );
 
@@ -308,7 +326,8 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, StatObjectResult>> stat(S3Content content) async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
-    console.info('stat: ${basename(content.path)}...');
+    console.info(
+        'stat: ${config.s3.preferredBucket}->${basename(content.path)}...');
 
     try {
       final result = await client!.statObject(
@@ -433,6 +452,26 @@ class S3Service extends GetxService with ConsoleMixin {
       objects: result.objects.length,
       totalSize: totalSize,
     ));
+  }
+
+  Future<Either<dynamic, String>> getPreSignedUrl(String s3Path) async {
+    if (!ready) init();
+    if (!persistence.canSync && ready) return const Left('offline');
+    console.info('pre signing: $s3Path...');
+    String? result;
+
+    try {
+      result = await client!.presignedGetObject(
+        config.s3.preferredBucket,
+        s3Path,
+        expires: 1.hours.inSeconds,
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    console.info('presigned url: $result');
+    return Right(result);
   }
 
   Future<Either<dynamic, File>> downloadFile({

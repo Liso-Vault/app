@@ -25,6 +25,8 @@ class S3Content with ConsoleMixin {
 
   bool get isFile => type == S3ContentType.file;
 
+  bool get isEncrypted => name.contains(kEncryptedExtensionExtra);
+
   String get fileExtension => extension(maskedName).replaceAll('.', '');
 
   String get updatedTimeAgo =>

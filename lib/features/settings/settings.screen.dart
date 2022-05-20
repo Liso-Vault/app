@@ -1,4 +1,5 @@
 import 'package:console_mixin/console_mixin.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -54,6 +55,20 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           onTap: () => Utils.adaptiveRouteOpen(
             name: Routes.configuration,
             parameters: {'from': 'settings'},
+          ),
+        ),
+        const Divider(),
+        SimpleBuilder(
+          builder: (_) => SwitchListTile(
+            title: const Text('File Encryption'),
+            secondary: Icon(
+              Iconsax.shield_tick,
+              color: themeColor,
+            ),
+            value: persistence.fileEncryption.val,
+            subtitle: const Text(
+                "Automatic client-side file encryption when you upload files"),
+            onChanged: (value) => persistence.fileEncryption.val = value,
           ),
         ),
         const Divider(),
@@ -140,6 +155,15 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
           onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
         ),
         const Divider(),
+        if (kDebugMode) ...[
+          ListTile(
+            leading: Icon(Iconsax.code, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3),
+            title: const Text('Debugging'),
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.debug),
+          ),
+          const Divider(),
+        ]
       ],
     );
 

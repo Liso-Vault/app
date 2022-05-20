@@ -9,6 +9,15 @@
         }
     },
     {
+        "identifier": "private_key",
+        "type": "password",
+        "reserved": true,
+        "required": false,
+        "data": {
+            "label": "Private Key"
+        }
+    },
+    {
         "identifier": "password",
         "type": "password",
         "reserved": true,

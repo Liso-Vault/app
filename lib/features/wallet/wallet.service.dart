@@ -5,6 +5,8 @@ import 'dart:typed_data';
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:coingecko_api/coingecko_api.dart';
+import 'package:coingecko_api/coingecko_result.dart';
+import 'package:coingecko_api/data/price_info.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
@@ -52,10 +54,16 @@ class WalletService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   void loadPrices() async {
-    final result = await gecko.simple.listPrices(
-      ids: ['matic-network'],
-      vsCurrencies: ['usd'],
-    );
+    CoinGeckoResult<List<PriceInfo>>? result;
+
+    try {
+      result = await gecko.simple.listPrices(
+        ids: ['matic-network'],
+        vsCurrencies: ['usd'],
+      );
+    } catch (e) {
+      return console.error('Gecko Error: ${e.runtimeType}');
+    }
 
     if (result.isError) {
       return console.error(
@@ -97,28 +105,46 @@ class WalletService extends GetxService with ConsoleMixin {
     return HEX.encode(path.privateKey!);
   }
 
-  void sign(String message) async {
+  Future<String> sign(String message, {bool personal = true}) async {
     final messageBytes = Uint8List.fromList(utf8.encode(message));
 
     final privateKey = Globals.wallet!.privateKey;
     final privateKeyHex = HEX.encode(privateKey.privateKey);
 
-    final signedMessage = await privateKey.sign(messageBytes);
-    final signedMessageHex = HEX.encode(signedMessage);
+    // final signedMessage = await privateKey.sign(messageBytes);
+    // final signedMessageHex = HEX.encode(signedMessage);
+
+    console.info('message: $message');
+    console.warning('privateKeyHex: $privateKeyHex');
 
     final signature = EthSigUtil.signMessage(
       privateKey: privateKeyHex,
       message: messageBytes,
     );
 
-    final recoveredAddress = EthSigUtil.ecRecover(
+    final recovered = EthSigUtil.ecRecover(
       signature: signature,
       message: messageBytes,
     );
 
-    console.info('message: $message');
-    console.info('signature: $signature');
-    console.info('recoveredAddress: $recoveredAddress');
-    console.wtf('signedMessageHex: $signedMessageHex');
+    console.info('EthSigUtil signature: $signature');
+    console.wtf('EthSigUtil recovered: $recovered');
+
+    final personalSignature = EthSigUtil.signPersonalMessage(
+      privateKey: privateKeyHex,
+      message: messageBytes,
+    );
+
+    final personalRecovered = EthSigUtil.ecRecover(
+      signature: personalSignature,
+      message: messageBytes,
+    );
+
+    console.info('EthSigUtil personalSignature: $personalSignature');
+    console.wtf('EthSigUtil personalRecovered: $personalRecovered');
+
+    // console.info('signedMessageHex: $signedMessageHex');
+
+    return personal ? personalSignature : signature;
   }
 }

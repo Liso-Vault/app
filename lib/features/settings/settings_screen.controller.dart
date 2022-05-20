@@ -56,16 +56,12 @@ class SettingsScreenController extends GetxController
   // PROPERTIES
   final busyMessage = ''.obs;
   final theme = PersistenceService.to.theme.val.obs;
-  final ipfsServerUrl = ''.obs;
 
   // GETTERS
 
   // INIT
   @override
   void onInit() {
-    final persistence = Get.find<PersistenceService>();
-    ipfsServerUrl.value =
-        '${persistence.ipfsScheme.val}://${persistence.ipfsHost.val}:${persistence.ipfsPort.val}';
     change(null, status: RxStatus.success());
     super.onInit();
   }

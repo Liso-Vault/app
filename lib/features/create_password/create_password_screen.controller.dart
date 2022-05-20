@@ -81,6 +81,8 @@ class CreatePasswordScreenController extends GetxController
       password: passwordController.text,
     );
 
+    await Globals.init();
+
     // just to make sure the Wallet is ready before proceeding
     await Future.delayed(200.milliseconds);
 

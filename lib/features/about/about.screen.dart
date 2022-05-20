@@ -84,6 +84,14 @@ class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
           onTap: () => launchUrlString(config.general.app.links.productHunt),
         ),
         const Divider(),
+        // TODO: Add GitCoin link
+        // ListTile(
+        //   leading: Icon(LineIcons.git, color: themeColor),
+        //   title: Text('${config.appName} GitCoin'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () => launchUrlString(config.general.app.links.gitcoin),
+        // ),
+        // const Divider(),
         ListTile(
           leading: Icon(LineIcons.github, color: themeColor),
           title: Text('${config.appName} GitHub'),

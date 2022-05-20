@@ -72,6 +72,8 @@ class UnlockScreenController extends GetxController
         PersistenceService.to.wallet.val,
         passwordController.text,
       );
+
+      await Globals.init();
     } catch (e) {
       console.error('load wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());

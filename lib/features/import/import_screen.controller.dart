@@ -61,7 +61,7 @@ class ImportScreenController extends GetxController
 
   @override
   void change(newState, {RxStatus? status}) {
-    busy.value = status == RxStatus.loading();
+    busy.value = status?.isLoading ?? false;
     super.change(newState, status: status);
   }
 

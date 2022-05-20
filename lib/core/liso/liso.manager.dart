@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -29,7 +30,6 @@ class LisoManager {
   static String get vaultFilename =>
       '${WalletService.to.longAddress}.$kVaultExtension';
   static String get tempVaultFilePath => join(tempPath, kTempVaultFileName);
-  static String get exportVaultFilePath => join(tempPath, vaultFilename);
 
   // FUNCTIONS
   static Future<Either<dynamic, File>> createArchive(
@@ -133,19 +133,19 @@ class LisoManager {
     // delete biometric storage
     await BiometricUtils.delete(kBiometricPasswordKey);
     await BiometricUtils.delete(kBiometricSeedKey);
-    // nullify wallet
-    Globals.wallet = null;
-    // clear wallet persistence
-    PersistenceService.to.wallet.val = '';
     // reset hive
     await HiveManager.reset();
-    // persistence
+    // nullify wallet
+    Globals.wallet = null;
+    await Globals.init();
     await PersistenceService.to.box.erase();
     // delete FilePicker caches
     if (GetPlatform.isMobile) {
       await FilePicker.platform.clearTemporaryFiles();
     }
 
+    // reset s3 minio client
+    S3Service.to.init();
     console.info('reset!');
   }
 }

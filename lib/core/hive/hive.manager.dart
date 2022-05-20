@@ -40,7 +40,7 @@ class HiveManager {
   }
 
   static Future<void> openBoxes() async {
-    final cipher = HiveAesCipher(Globals.encryptionKey);
+    final cipher = HiveAesCipher(Globals.encryptionKey!);
 
     items = await Hive.openBox(
       kHiveBoxItems,

@@ -4,19 +4,21 @@ import 'package:liso/core/utils/globals.dart';
 class Section extends StatelessWidget {
   final String text;
   final double fontSize;
-  final Color color;
+  final Color? color;
   final CrossAxisAlignment alignment;
 
   const Section({
     Key? key,
     required this.text,
     this.fontSize = 10,
-    this.color = kAppColor,
+    this.color,
     this.alignment = CrossAxisAlignment.start,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final color = this.color ?? themeColor;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Opacity(
