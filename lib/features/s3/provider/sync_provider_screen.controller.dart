@@ -6,10 +6,12 @@ import 'package:get/get.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:minio/minio.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
+import '../../app/routes.dart';
 
 class SyncProviderScreenBinding extends Bindings {
   @override
@@ -64,6 +66,16 @@ class SyncProviderScreenController extends GetxController
 
   // FUNCTIONS
   void save() {
+    if (!WalletService.to.limits.customSyncProvider &&
+        !endpointController.text.contains('filebase')) {
+      Utils.adaptiveRouteOpen(name: Routes.upgrade, parameters: {
+        'title': 'Title',
+        'body': 'Use your own S3 Provider',
+      });
+
+      return;
+    }
+
     persistence.syncProvider.val = LisoSyncProvider.custom.name;
 
     persistence.s3Endpoint.val = endpointController.text;

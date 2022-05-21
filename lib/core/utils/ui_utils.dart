@@ -28,15 +28,32 @@ class UIUtils {
     );
   }
 
-  static void showSimpleDialog(String title, String message) {
+  static void showSimpleDialog(String title, String body, {Widget? image}) {
+    final hasImage = image != null;
+
+    final titleContent = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment:
+          hasImage ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        if (hasImage) ...[
+          image,
+          const SizedBox(height: 20),
+        ],
+        Text(title),
+      ],
+    );
+
+    final bodyContent = Text(body, textAlign: TextAlign.center);
+
     Get.dialog(
       AlertDialog(
-        title: Text(title),
+        title: titleContent,
         content: Utils.isDrawerExpandable
-            ? Text(message)
+            ? bodyContent
             : SizedBox(
-                width: 600,
-                child: Text(message),
+                width: 450,
+                child: bodyContent,
               ),
         actions: [
           TextButton(

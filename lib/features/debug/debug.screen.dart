@@ -1,6 +1,8 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
@@ -88,6 +90,17 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Wallet Connect'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: _walletConnect,
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Dialog'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => UIUtils.showSimpleDialog(
+            'The Title',
+            'This is the message to be shown',
+            image: Icon(LineIcons.rocket, size: 100, color: themeColor),
+          ),
         ),
         const Divider(),
         ListTile(

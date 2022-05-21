@@ -76,41 +76,6 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
           providerUrl = ConfigService.to.general.app.links.website;
         }
 
-        void enableProvider(String id) {
-          if (!WalletService.to.limits.syncProviders.contains(id)) {
-            Utils.adaptiveRouteOpen(
-              name: Routes.upgrade,
-              parameters: {
-                'title': 'Title',
-                'body': 'More sync providers',
-              },
-            );
-
-            return;
-          }
-
-          persistence.syncProvider.val = id;
-        }
-
-        void enableCustomProvider() {
-          if (!WalletService.to.limits.customSyncProvider) {
-            Utils.adaptiveRouteOpen(
-              name: Routes.upgrade,
-              parameters: {
-                'title': 'Title',
-                'body': 'Set a custom S3 Configuration',
-              },
-            );
-
-            return;
-          }
-
-          Utils.adaptiveRouteOpen(
-            name: Routes.syncProvider,
-            parameters: {'from': 'settings'},
-          );
-        }
-
         final syncChild = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -146,37 +111,38 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                     label: const Text('IPFS'),
                     selected: isIPFS,
                     avatar: isIPFS ? const Icon(Icons.check) : null,
-                    onSelected: (value) =>
-                        enableProvider(LisoSyncProvider.ipfs.name),
+                    onSelected: (value) => persistence.syncProvider.val =
+                        LisoSyncProvider.ipfs.name,
                   ),
                   ChoiceChip(
                     label: const Text('SkyNet'),
                     selected: isSkyNet,
                     avatar: isSkyNet ? const Icon(Icons.check) : null,
-                    onSelected: (value) =>
-                        enableProvider(LisoSyncProvider.skynet.name),
+                    onSelected: (value) => persistence.syncProvider.val =
+                        LisoSyncProvider.skynet.name,
                   ),
                   ChoiceChip(
-                    label: const Text(
-                      'Sia',
-                    ),
+                    label: const Text('Sia'),
                     selected: isSia,
                     avatar: isSia ? const Icon(Icons.check) : null,
-                    onSelected: (value) =>
-                        enableProvider(LisoSyncProvider.sia.name),
+                    onSelected: (value) => persistence.syncProvider.val =
+                        LisoSyncProvider.sia.name,
                   ),
                   ChoiceChip(
                     label: const Text('Storj'),
                     selected: isStorj,
                     avatar: isStorj ? const Icon(Icons.check) : null,
-                    onSelected: (value) =>
-                        enableProvider(LisoSyncProvider.storj.name),
+                    onSelected: (value) => persistence.syncProvider.val =
+                        LisoSyncProvider.storj.name,
                   ),
                   ChoiceChip(
                     label: const Text('Custom'),
                     selected: isCustom,
                     avatar: isCustom ? const Icon(Icons.check) : null,
-                    onSelected: (value) => enableCustomProvider(),
+                    onSelected: (value) => Utils.adaptiveRouteOpen(
+                      name: Routes.syncProvider,
+                      parameters: {'from': 'settings'},
+                    ),
                   ),
                 ],
               ),
