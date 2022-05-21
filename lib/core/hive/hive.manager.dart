@@ -1,13 +1,18 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../liso/liso.manager.dart';
+import '../liso/liso_paths.dart';
 import '../utils/globals.dart';
 import 'models/field.hive.dart';
 import 'models/item.hive.dart';
@@ -21,11 +26,16 @@ class HiveManager {
   static StreamSubscription? itemsStream;
 
   // GETTERS
+  static bool get itemLimitReached =>
+      items!.length >= WalletService.to.limits.items;
+
+  static bool get protectedItemLimitReached =>
+      items!.length >= WalletService.to.limits.items;
 
   // INIT
   static Future<void> init() async {
     // PATH
-    if (!GetPlatform.isWeb) Hive.init(LisoManager.hivePath);
+    if (!GetPlatform.isWeb) Hive.init(LisoPaths.hivePath);
     // REGISTER ADAPTERS
     // liso
     Hive.registerAdapter(HiveLisoItemAdapter());
@@ -39,23 +49,19 @@ class HiveManager {
     console.info("init");
   }
 
-  static Future<void> openBoxes() async {
-    final cipher = HiveAesCipher(Globals.encryptionKey!);
-
+  static Future<void> open({Uint8List? cipherKey}) async {
     items = await Hive.openBox(
       kHiveBoxItems,
-      encryptionCipher: cipher,
-      path: LisoManager.hivePath,
+      encryptionCipher: HiveAesCipher(cipherKey ?? WalletService.to.cipherKey!),
+      path: LisoPaths.hivePath,
     );
 
-    _deleteDueTrashItems();
-    watchBoxes();
     console.info('openBoxes');
   }
 
-  static Future<void> closeBoxes() async {
+  static Future<void> close() async {
     if (items?.isOpen == true) await items?.close();
-    unwatchBoxes();
+    await unwatchBoxes();
     console.info('closeBoxes');
   }
 
@@ -69,46 +75,43 @@ class HiveManager {
     console.info('unwatchBoxes');
   }
 
-  static Future<void> deleteBoxes() async {
-    await items?.deleteFromDisk();
-    console.info('deleteBoxes');
+  static Future<File> export({required String path}) async {
+    // TODO: isolate
+    final jsonString = jsonEncode(items!.values.toList());
+    final file = File(path);
+    await file.writeAsString(jsonString);
+    return await CipherService.to.encryptFile(file);
   }
 
-  static Future<void> _deleteDueTrashItems() async {
-    // DELETE DUE TRASH ITEMS
-    final itemsToDelete = items!.values.where(
-      (e) => e.daysLeftToDelete <= 0,
+  static Future<List<HiveLisoItem>> parseVaultFile(File file,
+      {Uint8List? cipherKey}) async {
+    final decryptedFile = await CipherService.to.decryptFile(
+      file,
+      cipherKey: cipherKey,
     );
 
-    if (itemsToDelete.isNotEmpty) {
-      console.error('itemsToDelete: ${itemsToDelete.length}');
-      await items!.deleteAll(itemsToDelete);
-    }
+    final jsonString = await decryptedFile.readAsString();
+    // TODO: isolate
+    final jsonMap = jsonDecode(jsonString);
+
+    final importedItems = List<HiveLisoItem>.from(
+      jsonMap.map((x) => HiveLisoItem.fromJson(x)),
+    );
+
+    return importedItems;
   }
 
-  // check if encryption key is correct
-  static Future<bool> isEncryptionKeyCorrect(List<int> key) async {
-    Box<HiveLisoItem>? items;
-
-    try {
-      // initialize as a temporary hive box
-      items = await Hive.openBox(
-        kHiveBoxItems,
-        encryptionCipher: HiveAesCipher(key),
-        path: LisoManager.tempPath,
-        crashRecovery: false, // throw error if wrong encryption key
-      );
-    } catch (e) {
-      console.error('incorrect encryption key');
-      return false;
-    }
-
-    items.close();
-    return true;
+  static Future<void> importVaultFile(File file, {Uint8List? cipherKey}) async {
+    // parse vault to items
+    final items_ = await parseVaultFile(file, cipherKey: cipherKey);
+    // open database
+    await open(cipherKey: cipherKey!);
+    // populate database
+    items!.addAll(items_);
   }
 
   static Future<void> reset() async {
-    await deleteBoxes();
+    await items?.deleteFromDisk();
     items = null;
     console.info('reset');
   }

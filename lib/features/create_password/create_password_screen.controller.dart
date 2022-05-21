@@ -3,15 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/biometric.util.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
@@ -76,18 +74,16 @@ class CreatePasswordScreenController extends GetxController
     // TODO: use a global variable instead to prevent lost
     final privateKeyHex = Get.parameters['privateKeyHex']!;
 
-    Globals.wallet = WalletService.to.privateKeyHexToWallet(
+    await WalletService.to.initPrivateKeyHex(
       privateKeyHex,
       password: passwordController.text,
     );
 
-    await Globals.init();
-
+    // save to persistence
+    PersistenceService.to.wallet.val = WalletService.to.wallet!.toJson();
     // just to make sure the Wallet is ready before proceeding
     await Future.delayed(200.milliseconds);
 
-    // save wallet to persistence
-    PersistenceService.to.wallet.val = Globals.wallet!.toJson();
     // save password to biometric storage
     await BiometricUtils.save(
       passwordController.text,
@@ -95,20 +91,11 @@ class CreatePasswordScreenController extends GetxController
     );
 
     final seed = Get.parameters['seed']!;
-    await BiometricUtils.save(
-      seed,
-      key: kBiometricSeedKey,
-    );
+    await BiometricUtils.save(seed, key: kBiometricSeedKey);
 
     // open Hive Boxes
-    await HiveManager.openBoxes();
+    await HiveManager.open();
     change(null, status: RxStatus.success());
-
-    NotificationsManager.notify(
-      title: 'Welcome to ${ConfigService.to.appName}', // TODO: localize
-      body: ConfigService.to.general.app.shortDescription,
-    );
-
     Get.offAllNamed(Routes.configuration);
   }
 }

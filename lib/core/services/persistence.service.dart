@@ -24,7 +24,6 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final analytics = true.val('analytics');
   final proTester = true.val('pro tester');
   final lastBuildNumber = 0.val('last build number');
-  final newEncryption = false.val('use new encryption');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window width');
   final windowHeight = 800.0.val('window height');

@@ -1,16 +1,16 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/app/routes.dart';
-import '../utils/globals.dart';
+import '../hive/hive.manager.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   static bool ignoreSync = false;
@@ -19,13 +19,17 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   RouteSettings? redirect(String? route) {
     console.wtf('redirect(): $route');
 
-    if (!WalletService.to.exists) {
+    if (!WalletService.to.saved) {
       return const RouteSettings(name: Routes.welcome);
     }
 
-    if (Globals.wallet == null) {
+    if (WalletService.to.wallet == null) {
       return const RouteSettings(name: Routes.unlock);
     }
+
+    // load balances
+    AlchemyService.to.init();
+    AlchemyService.to.load();
 
     if (!PersistenceService.to.syncConfirmed.val) {
       return const RouteSettings(name: Routes.configuration);
@@ -39,8 +43,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
     CrashlyticsService.to.init();
     MainScreenController.to.load();
-    AlchemyService.to.init();
-    AlchemyService.to.load();
+    HiveManager.watchBoxes();
 
     // record metadata
     S3Service.to.fetchStorageSize().then((info) {

@@ -12,6 +12,7 @@ import '../item/item_screen.controller.dart';
 import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../settings/settings_screen.controller.dart';
+import '../upgrade/upgrade_screen.controller.dart';
 import 'main_screen.controller.dart';
 
 class MainScreenBinding extends Bindings {
@@ -28,6 +29,7 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => AboutScreenController(), fenix: true);
     Get.lazyPut(() => ExportScreenController(), fenix: true);
     Get.lazyPut(() => ResetScreenController(), fenix: true);
+    Get.lazyPut(() => UpgradeScreenController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
     Get.lazyPut(() => SyncProviderScreenController(), fenix: true);

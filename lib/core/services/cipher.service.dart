@@ -6,6 +6,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/liso/liso_paths.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
 import '../utils/globals.dart';
@@ -17,22 +18,30 @@ class CipherService extends GetxService with ConsoleMixin {
   final iv = IV.fromLength(16);
 
   // GETTERS
-  Key get key => Key.fromBase64(base64Encode(Globals.encryptionKey!));
+  Key get key => Key.fromBase64(base64Encode(WalletService.to.cipherKey!));
   Encrypter get encrypter => Encrypter(AES(key));
 
   // FUNCTIONS
-  // Cipher Bytes
-  Uint8List encrypt(List<int> bytes) {
-    return encrypter.encryptBytes(bytes, iv: iv).bytes;
+  Uint8List encrypt(List<int> bytes, {Uint8List? cipherKey}) {
+    if (cipherKey == null) {
+      return encrypter.encryptBytes(bytes, iv: iv).bytes;
+    } else {
+      final key_ = Key.fromBase64(base64Encode(cipherKey));
+      return Encrypter(AES(key_)).encryptBytes(bytes, iv: iv).bytes;
+    }
   }
 
-  List<int> decrypt(Uint8List bytes) {
-    return encrypter.decryptBytes(Encrypted(bytes), iv: iv);
+  List<int> decrypt(Uint8List bytes, {Uint8List? cipherKey}) {
+    if (cipherKey == null) {
+      return encrypter.decryptBytes(Encrypted(bytes), iv: iv);
+    } else {
+      final key_ = Key.fromBase64(base64Encode(cipherKey));
+      return Encrypter(AES(key_)).decryptBytes(Encrypted(bytes), iv: iv);
+    }
   }
 
-  // Cipher Files
-  Future<File> encryptFile(File file) async {
-    final output = encrypt(await file.readAsBytes());
+  Future<File> encryptFile(File file, {Uint8List? cipherKey}) async {
+    final output = encrypt(await file.readAsBytes(), cipherKey: cipherKey);
 
     final outputFile = File(join(
       LisoPaths.temp!.path,
@@ -42,8 +51,8 @@ class CipherService extends GetxService with ConsoleMixin {
     return await outputFile.writeAsBytes(output);
   }
 
-  Future<File> decryptFile(File file) async {
-    final output = decrypt(await file.readAsBytes());
+  Future<File> decryptFile(File file, {Uint8List? cipherKey}) async {
+    final output = decrypt(await file.readAsBytes(), cipherKey: cipherKey);
 
     final outputFile = File(join(
       LisoPaths.temp!.path,
@@ -51,5 +60,21 @@ class CipherService extends GetxService with ConsoleMixin {
     ));
 
     return await outputFile.writeAsBytes(output);
+  }
+
+  // Checks
+  Future<bool> canDecrypt(File file, Uint8List cipherKey) async {
+    final key_ = Key.fromBase64(base64Encode(cipherKey));
+    final encrypter_ = Encrypter(AES(key_));
+    final bytes = await file.readAsBytes();
+
+    try {
+      encrypter_.decryptBytes(Encrypted(bytes), iv: iv);
+    } catch (e) {
+      console.error('Error Decrypting: $e');
+      return false;
+    }
+
+    return true;
   }
 }

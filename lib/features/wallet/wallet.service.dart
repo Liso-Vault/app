@@ -11,9 +11,11 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../core/firebase/config/models/config_limits.model.dart';
 import '../../core/utils/globals.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
@@ -26,14 +28,19 @@ class WalletService extends GetxService with ConsoleMixin {
   final network = 'Polygon Testnet'.obs;
 
   // GETTERS
-  EthereumAddress get address => Globals.wallet!.privateKey.address;
+  Wallet? wallet;
+  Uint8List? cipherKey;
+
+  Uint8List get privateKey => wallet!.privateKey.privateKey;
+
+  EthereumAddress get address => wallet!.privateKey.address;
 
   String get longAddress => address.hexEip55;
 
   String get shortAddress =>
       '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
 
-  bool get exists => PersistenceService.to.wallet.val.isNotEmpty;
+  bool get saved => PersistenceService.to.wallet.val.isNotEmpty;
 
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
@@ -44,6 +51,39 @@ class WalletService extends GetxService with ConsoleMixin {
   double get lisoUsdBalance =>
       PersistenceService.to.lastLisoBalance.val *
       PersistenceService.to.lastLisoUsdPrice.val;
+
+  LimitConfig get limits {
+    final limits_ = ConfigService.to.limits;
+
+    // check if user is subscribed to premium
+    // check if user is a staker
+
+    // check if user is whitelisted
+    final users = ConfigService.to.users.users.where(
+      (e) => e.address == WalletService.to.longAddress,
+    );
+
+    if (users.isNotEmpty) {
+      final user = users.first;
+
+      if (user.limits == 'holder') {
+        return limits_.holder;
+      } else if (user.limits == 'staker') {
+        return limits_.staker;
+      } else if (user.limits == 'premium') {
+        return limits_.premium;
+      }
+    }
+
+    // check if user is a holder
+    if (PersistenceService.to.lastLisoBalance.val >
+        limits_.holder.tokenThreshold) {
+      return limits_.holder;
+    }
+
+    // a regular user
+    return limits_.regular;
+  }
 
   @override
   void onInit() {
@@ -88,8 +128,8 @@ class WalletService extends GetxService with ConsoleMixin {
     String privateKeyHex, {
     required String password,
   }) {
-    final privateKey = EthPrivateKey.fromHex(privateKeyHex);
-    return Wallet.createNew(privateKey, password, Random.secure());
+    final privateKey_ = EthPrivateKey.fromHex(privateKeyHex);
+    return Wallet.createNew(privateKey_, password, Random.secure());
   }
 
   EthPrivateKey mnemonicToPrivateKey(String mnemonic, {int index = 0}) {
@@ -105,11 +145,23 @@ class WalletService extends GetxService with ConsoleMixin {
     return HEX.encode(path.privateKey!);
   }
 
-  Future<String> sign(String message, {bool personal = true}) async {
-    final messageBytes = Uint8List.fromList(utf8.encode(message));
+  Future<Uint8List> credentialsToCipherKey(EthPrivateKey privateKey_) async {
+    final signature = await sign(
+      kSignatureMessage,
+      privateKey_: privateKey_.privateKey,
+    );
 
-    final privateKey = Globals.wallet!.privateKey;
-    final privateKeyHex = HEX.encode(privateKey.privateKey);
+    // from the first 32 bits of the signature
+    return Uint8List.fromList(signature.codeUnits.sublist(0, 32));
+  }
+
+  Future<String> sign(
+    String message, {
+    bool personal = true,
+    Uint8List? privateKey_,
+  }) async {
+    final messageBytes = Uint8List.fromList(utf8.encode(message));
+    final privateKeyHex = HEX.encode(privateKey_ ?? privateKey);
 
     // final signedMessage = await privateKey.sign(messageBytes);
     // final signedMessageHex = HEX.encode(signedMessage);
@@ -146,5 +198,28 @@ class WalletService extends GetxService with ConsoleMixin {
     // console.info('signedMessageHex: $signedMessageHex');
 
     return personal ? personalSignature : signature;
+  }
+
+  Future<void> initJson(String data, {required String password}) async {
+    wallet = Wallet.fromJson(data, password);
+    _init();
+  }
+
+  Future<void> initPrivateKeyHex(String data,
+      {required String password}) async {
+    wallet = privateKeyHexToWallet(data, password: password);
+    _init();
+  }
+
+  Future<void> _init() async {
+    // generate cipher key
+    final signature = await sign(kSignatureMessage, privateKey_: privateKey);
+    // from the first 32 bits of the signature
+    cipherKey = Uint8List.fromList(signature.codeUnits.sublist(0, 32));
+  }
+
+  void reset() {
+    wallet = null;
+    cipherKey = null;
   }
 }

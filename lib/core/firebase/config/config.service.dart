@@ -12,7 +12,9 @@ import '../../hive/models/field.hive.dart';
 import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
 import 'models/config_general.model.dart';
+import 'models/config_limits.model.dart';
 import 'models/config_s3.model.dart';
+import 'models/config_users.model.dart';
 
 class ConfigService extends GetxService with ConsoleMixin {
   static ConfigService get to => Get.find();
@@ -22,6 +24,8 @@ class ConfigService extends GetxService with ConsoleMixin {
   var app = const ConfigApp();
   var s3 = const ConfigS3();
   var web3 = const ConfigWeb3();
+  var limits = const ConfigLimits();
+  var users = const ConfigUsers();
 
   List<HiveLisoFieldChoices> choicesCountry = [];
   List<HiveLisoField> templateAPICredential = [];
@@ -51,6 +55,8 @@ class ConfigService extends GetxService with ConsoleMixin {
     'app_config',
     's3_config',
     'web3_config',
+    'limits_config',
+    "users_config",
     'choices_country',
     'template_api_credential',
     'template_bank_account',
@@ -134,6 +140,16 @@ class ConfigService extends GetxService with ConsoleMixin {
 
     web3 = ConfigWeb3.fromJson(jsonDecode(await _getString(
       'web3_config',
+      local: local,
+    )));
+
+    limits = ConfigLimits.fromJson(jsonDecode(await _getString(
+      'limits_config',
+      local: local,
+    )));
+
+    users = ConfigUsers.fromJson(jsonDecode(await _getString(
+      'users_config',
       local: local,
     )));
 

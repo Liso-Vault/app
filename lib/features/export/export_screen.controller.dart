@@ -1,21 +1,17 @@
-import 'dart:io';
-
-import 'package:archive/archive_io.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/file.util.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/hive/hive.manager.dart';
-import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
 import '../app/routes.dart';
@@ -69,31 +65,18 @@ class ExportScreenController extends GetxController
     final exportFileName =
         '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.$kVaultExtension';
 
-    final exportFilePath = join(
-      LisoManager.tempPath,
-      exportFileName,
+    final vaultFile = await HiveManager.export(
+      path: join(
+        LisoPaths.tempPath,
+        exportFileName,
+      ),
     );
 
-    console.info('export path: $exportFilePath');
-
-    await HiveManager.closeBoxes();
-    final encoder = ZipFileEncoder();
-
-    try {
-      encoder.create(exportFilePath);
-      await encoder.addDirectory(Directory(LisoManager.hivePath));
-      encoder.close();
-    } catch (e) {
-      await HiveManager.openBoxes();
-      UIUtils.showSimpleDialog('File System Error', e.toString());
-      return change(null, status: RxStatus.success());
-    }
-
-    await HiveManager.openBoxes();
+    console.info('export path: ${vaultFile.path}');
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
-        [exportFilePath],
+        [vaultFile.path],
         subject: exportFileName,
         text: GetPlatform.isIOS ? null : '${ConfigService.to.appName} Vault',
       );
@@ -118,16 +101,8 @@ class ExportScreenController extends GetxController
     console.info('export path: $exportPath');
     change('Exporting to: $exportPath', status: RxStatus.loading());
     await Future.delayed(1.seconds); // just for style
-
-    await FileUtils.move(
-      File(exportFilePath),
-      join(exportPath, exportFileName),
-    );
-
-    NotificationsManager.notify(
-      title: 'Exported Vault',
-      body: exportFileName,
-    );
+    await FileUtils.move(vaultFile, join(exportPath, exportFileName));
+    NotificationsManager.notify(title: 'Exported Vault', body: exportFileName);
 
     _done();
   }

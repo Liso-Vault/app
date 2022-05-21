@@ -161,7 +161,8 @@ class CipherScreenController extends GetxController
     final name = basename(path);
     console.info('$name, path: $path');
 
-    if (!name.contains(kEncryptedExtensionExtra)) {
+    if (!name.contains('.$kVaultExtension') &&
+        !name.contains(kEncryptedExtensionExtra)) {
       Globals.timeLockEnabled = true; // re-enable
       change(null, status: RxStatus.success());
       return UIUtils.showSimpleDialog(

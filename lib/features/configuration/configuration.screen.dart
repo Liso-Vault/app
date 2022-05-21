@@ -7,8 +7,10 @@ import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/persistence.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -22,7 +24,12 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
     final fromSettings = Get.parameters['from'] == 'settings';
     final persistence = Get.find<PersistenceService>();
 
-    void save() {
+    void _continue() {
+      NotificationsManager.notify(
+        title: 'Welcome to ${ConfigService.to.appName}', // TODO: localize
+        body: ConfigService.to.general.app.shortDescription,
+      );
+
       persistence.syncConfirmed.val = true;
       Get.offNamedUntil(Routes.main, (route) => false);
     }
@@ -69,6 +76,41 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
           providerUrl = ConfigService.to.general.app.links.website;
         }
 
+        void enableProvider(String id) {
+          if (!WalletService.to.limits.syncProviders.contains(id)) {
+            Utils.adaptiveRouteOpen(
+              name: Routes.upgrade,
+              parameters: {
+                'title': 'Title',
+                'body': 'More sync providers',
+              },
+            );
+
+            return;
+          }
+
+          persistence.syncProvider.val = id;
+        }
+
+        void enableCustomProvider() {
+          if (!WalletService.to.limits.customSyncProvider) {
+            Utils.adaptiveRouteOpen(
+              name: Routes.upgrade,
+              parameters: {
+                'title': 'Title',
+                'body': 'Set a custom S3 Configuration',
+              },
+            );
+
+            return;
+          }
+
+          Utils.adaptiveRouteOpen(
+            name: Routes.syncProvider,
+            parameters: {'from': 'settings'},
+          );
+        }
+
         final syncChild = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -98,53 +140,43 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
               const SizedBox(height: 10),
               Wrap(
                 spacing: 5,
+                runSpacing: 5,
                 children: [
+                  ChoiceChip(
+                    label: const Text('IPFS'),
+                    selected: isIPFS,
+                    avatar: isIPFS ? const Icon(Icons.check) : null,
+                    onSelected: (value) =>
+                        enableProvider(LisoSyncProvider.ipfs.name),
+                  ),
+                  ChoiceChip(
+                    label: const Text('SkyNet'),
+                    selected: isSkyNet,
+                    avatar: isSkyNet ? const Icon(Icons.check) : null,
+                    onSelected: (value) =>
+                        enableProvider(LisoSyncProvider.skynet.name),
+                  ),
                   ChoiceChip(
                     label: const Text(
                       'Sia',
                     ),
                     selected: isSia,
                     avatar: isSia ? const Icon(Icons.check) : null,
-                    onSelected: (value) {
-                      persistence.syncProvider.val = LisoSyncProvider.sia.name;
-                    },
-                  ),
-                  ChoiceChip(
-                    label: const Text('IPFS'),
-                    selected: isIPFS,
-                    avatar: isIPFS ? const Icon(Icons.check) : null,
-                    onSelected: (value) {
-                      persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
-                    },
+                    onSelected: (value) =>
+                        enableProvider(LisoSyncProvider.sia.name),
                   ),
                   ChoiceChip(
                     label: const Text('Storj'),
                     selected: isStorj,
                     avatar: isStorj ? const Icon(Icons.check) : null,
-                    onSelected: (value) {
-                      persistence.syncProvider.val =
-                          LisoSyncProvider.storj.name;
-                    },
-                  ),
-                  ChoiceChip(
-                    label: const Text('SkyNet'),
-                    selected: isSkyNet,
-                    avatar: isSkyNet ? const Icon(Icons.check) : null,
-                    onSelected: (value) {
-                      persistence.syncProvider.val =
-                          LisoSyncProvider.skynet.name;
-                    },
+                    onSelected: (value) =>
+                        enableProvider(LisoSyncProvider.storj.name),
                   ),
                   ChoiceChip(
                     label: const Text('Custom'),
                     selected: isCustom,
                     avatar: isCustom ? const Icon(Icons.check) : null,
-                    onSelected: (value) {
-                      Utils.adaptiveRouteOpen(
-                        name: Routes.syncProvider,
-                        parameters: {'from': 'settings'},
-                      );
-                    },
+                    onSelected: (value) => enableCustomProvider(),
                   ),
                 ],
               ),
@@ -274,7 +306,7 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                 SizedBox(
                   width: 200,
                   child: ElevatedButton.icon(
-                    onPressed: save,
+                    onPressed: _continue,
                     label: Text('continue'.tr),
                     icon: const Icon(Iconsax.arrow_circle_right),
                   ),

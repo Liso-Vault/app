@@ -1,28 +1,23 @@
 import 'dart:convert';
 
-import 'package:liso/core/services/persistence.service.dart';
-
 class ConfigApp {
   const ConfigApp({
     this.id = '',
     this.package = '',
     this.enabled = true,
     this.build = const ConfigAppBuild(),
-    this.settings = const ConfigAppSettings(),
   });
 
   final String id;
   final String package;
   final bool enabled;
   final ConfigAppBuild build;
-  final ConfigAppSettings settings;
 
   factory ConfigApp.fromJson(Map<String, dynamic> json) => ConfigApp(
         id: json["id"],
         package: json["package"],
         enabled: json["enabled"],
         build: ConfigAppBuild.fromJson(json["build"]),
-        settings: ConfigAppSettings.fromJson(json["settings"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -30,7 +25,6 @@ class ConfigApp {
         "package": package,
         "enabled": enabled,
         "build": build.toJson(),
-        "settings": settings.toJson(),
       };
 
   String toJsonString() => jsonEncode(toJson());
@@ -57,118 +51,5 @@ class ConfigAppBuild {
         "latest": latest,
         "min": min,
         "disabled": List<dynamic>.from(disabled.map((x) => x)),
-      };
-}
-
-class ConfigAppSettings {
-  const ConfigAppSettings({
-    this.theme = 'system',
-    this.maxUnlock = 0,
-    this.autoLock = 0,
-    this.sync = true,
-    this.regularSetting = const ConfigAppDynamicSetting(),
-    this.holderSetting = const ConfigAppDynamicSetting(),
-    this.stakerSetting = const ConfigAppDynamicSetting(),
-    this.premiumSetting = const ConfigAppDynamicSetting(),
-  });
-
-  final String theme;
-  final int maxUnlock;
-  final int autoLock;
-  final bool sync;
-  final ConfigAppDynamicSetting regularSetting;
-  final ConfigAppDynamicSetting holderSetting;
-  final ConfigAppDynamicSetting stakerSetting;
-  final ConfigAppDynamicSetting premiumSetting;
-
-  factory ConfigAppSettings.fromJson(Map<String, dynamic> json) =>
-      ConfigAppSettings(
-        theme: json["theme"],
-        maxUnlock: json["max_unlock"],
-        autoLock: json["auto_lock"],
-        sync: json["sync"],
-        regularSetting: ConfigAppDynamicSetting.fromJson(json["regular"]),
-        holderSetting: ConfigAppDynamicSetting.fromJson(json["holder"]),
-        stakerSetting: ConfigAppDynamicSetting.fromJson(json["staker"]),
-        premiumSetting: ConfigAppDynamicSetting.fromJson(json["premium"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "theme": theme,
-        "max_unlock": maxUnlock,
-        "auto_lock": autoLock,
-        "sync": sync,
-        "regular": regularSetting.toJson(),
-        "holder": holderSetting.toJson(),
-        "staker": stakerSetting.toJson(),
-        "premium": premiumSetting.toJson(),
-      };
-
-  // GETTERS
-  int get maxStorageSize {
-    // // premium
-    // if (PersistenceService.to.premium.val) {
-    //   return premiumSetting.maxStorageSize;
-    // }
-
-    // // staker
-    // if (PersistenceService.to.lastLisoBalance.val >
-    //     stakerSetting.tokenThreshold) {
-    //   return stakerSetting.maxStorageSize;
-    // }
-
-    // holder
-    if (PersistenceService.to.lastLisoBalance.val >
-        holderSetting.tokenThreshold) {
-      return holderSetting.maxStorageSize;
-    }
-
-    return regularSetting.maxStorageSize;
-  }
-
-  int get maxUploadSize {
-    // // premium
-    // if (PersistenceService.to.premium.val) {
-    //   return premiumSetting.maxStorageSize;
-    // }
-
-    // // staker
-    // if (PersistenceService.to.lastLisoBalance.val >
-    //     stakerSetting.tokenThreshold) {
-    //   return stakerSetting.maxUploadSize;
-    // }
-
-    // holder
-    if (PersistenceService.to.lastLisoBalance.val >
-        holderSetting.tokenThreshold) {
-      return holderSetting.maxUploadSize;
-    }
-
-    return regularSetting.maxUploadSize;
-  }
-}
-
-class ConfigAppDynamicSetting {
-  const ConfigAppDynamicSetting({
-    this.tokenThreshold = 0,
-    this.maxStorageSize = 0,
-    this.maxUploadSize = 0,
-  });
-
-  final int tokenThreshold;
-  final int maxStorageSize;
-  final int maxUploadSize;
-
-  factory ConfigAppDynamicSetting.fromJson(Map<String, dynamic> json) =>
-      ConfigAppDynamicSetting(
-        tokenThreshold: json["token_threshold"],
-        maxStorageSize: json["max_storage_size"],
-        maxUploadSize: json["max_upload_size"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "token_threshold": tokenThreshold,
-        "max_storage_size": maxStorageSize,
-        "max_upload_size": maxUploadSize,
       };
 }

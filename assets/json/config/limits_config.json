@@ -1,0 +1,64 @@
+{
+    "regular": {
+        "token_threshold": 0,
+        "storage_size": 104857600,
+        "upload_size": 83886080,
+        "items": 20,
+        "files": 5,
+        "backups": 2,
+        "trash_days": 1,
+        "add_vaults": false,
+        "protected_items": 5,
+        "file_encryption": false,
+        "custom_sync_provider": false,
+        "sync_providers": [
+            "ipfs",
+            "skynet"
+        ]
+    },
+    "holder": {
+        "token_threshold": 1000,
+        "storage_size": 209715200,
+        "upload_size": 167772160,
+        "items": 100,
+        "files": 20,
+        "backups": 10,
+        "trash_days": 5,
+        "add_vaults": false,
+        "protected_items": 20,
+        "file_encryption": false,
+        "custom_sync_provider": false,
+        "sync_providers": [
+            "ipfs",
+            "skynet"
+        ]
+    },
+    "staker": {
+        "token_threshold": 20000,
+        "storage_size": 419430400,
+        "upload_size": 335544320,
+        "items": 150,
+        "files": 100,
+        "backups": 50,
+        "trash_days": 30,
+        "add_vaults": true,
+        "protected_items": 100,
+        "file_encryption": true,
+        "custom_sync_provider": true,
+        "sync_providers": []
+    },
+    "premium": {
+        "token_threshold": 0,
+        "storage_size": 1048576000,
+        "upload_size": 838860800,
+        "items": 1000000,
+        "files": 1000000,
+        "backups": 200,
+        "trash_days": 365,
+        "add_vaults": true,
+        "protected_items": 0,
+        "file_encryption": true,
+        "custom_sync_provider": true,
+        "sync_providers": []
+    }
+}

@@ -6,6 +6,8 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 
 class DebugScreen extends StatelessWidget with ConsoleMixin {
   const DebugScreen({Key? key}) : super(key: key);
@@ -86,6 +88,19 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Wallet Connect'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: _walletConnect,
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Upgrade Screen'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => Utils.adaptiveRouteOpen(
+            name: Routes.upgrade,
+            parameters: {
+              'title': 'Title',
+              'body': 'Custom Message',
+            },
+          ),
         ),
       ],
     );

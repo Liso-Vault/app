@@ -13,7 +13,7 @@ import '../s3.service.dart';
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
 
-class S3ExplorerScreen extends GetWidget<S3ExplorerScreenController>
+class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
     with ConsoleMixin {
   const S3ExplorerScreen({Key? key}) : super(key: key);
 

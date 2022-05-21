@@ -9,7 +9,7 @@ import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'cipher_screen.controller.dart';
 
-class CipherScreen extends GetWidget<CipherScreenController> with ConsoleMixin {
+class CipherScreen extends GetView<CipherScreenController> with ConsoleMixin {
   const CipherScreen({Key? key}) : super(key: key);
 
   @override

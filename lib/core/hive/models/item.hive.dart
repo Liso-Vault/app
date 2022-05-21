@@ -9,6 +9,7 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:supercharged/supercharged.dart';
 
 import '../../utils/utils.dart';
@@ -67,7 +68,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         favorite: json["favorite"],
         protected: json["protected"],
         trashed: json["trashed"],
-        tags: json["tags"],
+        tags: List<String>.from(json["tags"].map((x) => x)),
         metadata: HiveMetadata.fromJson(json["metadata"]),
         group: json["group"],
       );
@@ -82,7 +83,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "favorite": favorite,
       "protected": protected,
       "trashed": trashed,
-      "tags": tags,
+      "tags": List<dynamic>.from(tags.map((x) => x)),
       "metadata": metadata.toJson(),
       "group": group,
     };
@@ -102,7 +103,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   int get daysLeftToDelete =>
       metadata.updatedTime.duration().inDays -
       DateTime.now().duration().inDays +
-      10;
+      WalletService.to.limits.trashDays;
 
   LisoItemCategory get categoryObject =>
       LisoItemCategory.values.byName(category);

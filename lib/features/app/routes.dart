@@ -14,6 +14,7 @@ abstract class Routes {
   static const item = '/item';
   static const reset = '/reset';
   static const unlock = '/unlock';
+  static const upgrade = '/upgrade';
   static const debug = '/debug';
 
   // SYNC

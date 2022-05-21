@@ -129,7 +129,10 @@ class SyncProviderScreen extends GetView<SyncProviderScreenController>
       child: SingleChildScrollView(
         child: Container(
           constraints: Styles.containerConstraints,
-          padding: const EdgeInsets.symmetric(vertical: 50),
+          padding: const EdgeInsets.symmetric(
+            vertical: 50,
+            horizontal: 20,
+          ),
           child: form,
         ),
       ),

@@ -37,6 +37,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             persistence.syncProvider.val == LisoSyncProvider.custom.name;
 
         return Wrap(
+          runSpacing: 5,
           children: [
             ChoiceChip(
               label: const Text('Sia'),
@@ -190,16 +191,13 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
 
     final scaffold = Scaffold(
       appBar: AppBar(centerTitle: false),
-      body: Padding(
-        padding: const EdgeInsets.all(15),
-        child: Center(
-          child: Container(
-            constraints: Styles.containerConstraints,
-            padding: const EdgeInsets.all(20),
-            child: controller.obx(
-              (_) => SingleChildScrollView(child: content),
-              onLoading: const BusyIndicator(),
-            ),
+      body: Center(
+        child: Container(
+          constraints: Styles.containerConstraints,
+          padding: const EdgeInsets.all(20),
+          child: controller.obx(
+            (_) => SingleChildScrollView(child: content),
+            onLoading: const BusyIndicator(),
           ),
         ),
       ),

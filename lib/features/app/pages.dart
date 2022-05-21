@@ -19,6 +19,7 @@ import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
 import 'package:liso/features/unlock/unlock_screen.controller.dart';
+import 'package:liso/features/upgrade/upgrade_screen.controller.dart';
 import 'package:liso/features/welcome/welcome.screen.dart';
 import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
@@ -35,6 +36,7 @@ import '../s3/provider/sync_provider_screen.controller.dart';
 import '../s3/provider/sync_provider_screen.dart';
 import '../syncing/syncing.screen.dart';
 import '../syncing/syncing_screen.controller.dart';
+import '../upgrade/upgrade.screen.dart';
 import '../wallet/wallet.screen.dart';
 import '../wallet/wallet_screen.controller.dart';
 import 'routes.dart';
@@ -137,6 +139,11 @@ class AppPages {
       name: Routes.cipher,
       page: () => const CipherScreen(),
       binding: CipherScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.upgrade,
+      page: () => const UpgradeScreen(),
+      binding: UpgradeScreenBinding(),
     ),
     GetPage(
       name: Routes.debug,

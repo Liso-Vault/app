@@ -13,7 +13,7 @@ import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
 import 'item_screen.controller.dart';
 
-class ItemScreen extends GetWidget<ItemScreenController> with ConsoleMixin {
+class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
   const ItemScreen({Key? key}) : super(key: key);
 
   @override

@@ -1,13 +1,9 @@
 // COMPANY
 
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:web3dart/credentials.dart';
 
 // HIVE DATABASE
 const kHiveBoxItems = 'items';
@@ -20,7 +16,7 @@ const kWalletExtension = 'json';
 const kEncryptedExtensionExtra = '.liso.enc';
 // FILE NAMES
 const kMetadataFileName = 'metadata.json';
-const kTempVaultFileName = 'temp_vault.liso';
+const kVaultFileName = 'vault.$kVaultExtension';
 // DESKTOP
 const kMinWindowSize = Size(400, 850);
 const kDesktopChangePoint = 800.0; // responsive setting
@@ -94,16 +90,8 @@ enum LisoSyncProvider {
 class Globals {
   // VARIABLES
   static bool timeLockEnabled = true;
-  static Wallet? wallet;
-  static Uint8List? encryptionKey;
 
   // GETTERS
 
   // FUNCTIONS
-  static Future<void> init() async {
-    if (wallet == null) return encryptionKey = null;
-
-    final signature = await WalletService.to.sign(kSignatureMessage);
-    encryptionKey = Uint8List.fromList(signature.codeUnits).sublist(0, 32);
-  }
 }

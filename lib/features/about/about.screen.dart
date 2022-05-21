@@ -16,7 +16,7 @@ import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import 'about_screen.controller.dart';
 
-class AboutScreen extends GetWidget<AboutScreenController> with ConsoleMixin {
+class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
   const AboutScreen({Key? key}) : super(key: key);
 
   @override

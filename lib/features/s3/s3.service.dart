@@ -2,15 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';
@@ -21,10 +20,9 @@ import 'package:supercharged/supercharged.dart';
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
-import '../../core/liso/liso.manager.dart';
-import '../wallet/wallet.service.dart';
-import '../../core/utils/file.util.dart';
+import '../../core/liso/liso_paths.dart';
 import '../../core/utils/globals.dart';
+import '../wallet/wallet.service.dart';
 import 'model/s3_content.model.dart';
 import 'model/s3_folder_info.model.dart';
 
@@ -41,6 +39,7 @@ class S3Service extends GetxService with ConsoleMixin {
   final syncing = false.obs;
   final inSync = false.obs;
   final storageSize = 0.obs;
+  final objectsCount = 0.obs;
   final downloadTotalSize = 0.obs;
   final downloadedSize = 0.obs;
   final uploadTotalSize = 0.obs;
@@ -49,9 +48,12 @@ class S3Service extends GetxService with ConsoleMixin {
   final progressText = 'Syncing...'.obs;
 
   // GETTERS
+  S3Content get lisoContent => S3Content(path: vaultPath);
+
   String get rootPath => '${WalletService.to.longAddress}/';
   String get backupsPath => join(rootPath, 'Backups').replaceAll('\\', '/');
   String get historyPath => join(rootPath, 'History').replaceAll('\\', '/');
+  String get vaultPath => join(rootPath, kVaultFileName).replaceAll('\\', '/');
 
   String get filesPath => ('${join(
         rootPath,
@@ -59,13 +61,6 @@ class S3Service extends GetxService with ConsoleMixin {
         DrawerMenuController.to.filterGroupIndex.value.toString(),
       )}/')
           .replaceAll('\\', '/');
-
-  S3Content get lisoContent => S3Content(path: vaultPath);
-
-  String get vaultPath => join(
-        WalletService.to.longAddress,
-        LisoManager.vaultFilename,
-      ).replaceAll('\\', '/');
 
   // INIT
 
@@ -177,51 +172,27 @@ class S3Service extends GetxService with ConsoleMixin {
 
     final downloadResult = await downloadFile(
       s3Path: vaultPath,
-      filePath: LisoManager.tempVaultFilePath,
+      filePath: LisoPaths.tempVaultFilePath,
     );
 
     if (downloadResult.isLeft) return Left(downloadResult.left);
     _syncProgress(0.3, null);
-    final vaultFile = downloadResult.right;
-    final readResult = LisoManager.readArchive(vaultFile.path);
-    FileUtils.delete(vaultFile.path); // delete temporary vault file
-    if (readResult.isLeft) return Left(readResult.left);
-
-    // extract boxes
-    final extractResult = await LisoManager.extractArchive(
-      readResult.right,
-      path: LisoManager.tempPath,
-      fileNamePrefix: 'temp_',
-    );
-
-    if (extractResult.isLeft) return Left(extractResult.left);
-    await HiveManager.unwatchBoxes();
+    final items = await HiveManager.parseVaultFile(downloadResult.right);
     _syncProgress(0.4, null);
-    await _mergeItems();
+    HiveManager.unwatchBoxes();
+    await _mergeItems(items);
     HiveManager.watchBoxes();
     return const Right(true);
   }
 
-  Future<void> _mergeItems() async {
+  Future<void> _mergeItems(List<HiveLisoItem> serverItems) async {
     var localItems = HiveManager.items!;
 
-    final tempItems = await Hive.openBox<HiveLisoItem>(
-      'temp_$kHiveBoxItems',
-      encryptionCipher: HiveAesCipher(Globals.encryptionKey!),
-      path: LisoManager.tempPath,
-    );
-
-    if (tempItems.isEmpty) {
-      await tempItems.clear();
-      await tempItems.deleteFromDisk();
-      return console.warning('temp items is empty');
-    }
-
-    console.warning('server items: ${tempItems.length}');
+    console.warning('server items: ${serverItems.length}');
     console.warning('local items: ${localItems.length}');
 
     // MERGED
-    final mergedItems = {...tempItems.values, ...localItems.values};
+    final mergedItems = {...serverItems, ...localItems.values};
     console.info('merged: ${mergedItems.length}');
     final leastUpdatedDuplicates = <HiveLisoItem>[];
 
@@ -249,9 +220,6 @@ class S3Service extends GetxService with ConsoleMixin {
       (e) => leastUpdatedDuplicates.contains(e),
     );
 
-    // delete temp items
-    await tempItems.clear();
-    await tempItems.deleteFromDisk();
     // clear and reload updated items
     await localItems.clear();
     await localItems.addAll(mergedItems);
@@ -276,26 +244,21 @@ class S3Service extends GetxService with ConsoleMixin {
       );
     }
 
-    // temporarily close boxes to exclude hive .lock files
-    await HiveManager.closeBoxes();
-    final archiveResult = await LisoManager.createArchive(
-      Directory(LisoManager.hivePath),
-      filePath: LisoManager.tempVaultFilePath,
+    final vaultFile = await HiveManager.export(
+      path: LisoPaths.tempVaultFilePath,
     );
-    // reopen boxes
-    await HiveManager.openBoxes();
-    if (archiveResult.isLeft) return Left(archiveResult.left);
+
     // UPLOAD
     _syncProgress(0.7, null);
     final metadataString = await updatedLocalMetadata();
 
     final uploadResult = await uploadFile(
-      archiveResult.right,
+      vaultFile,
       s3Path: vaultPath,
       metadata: metadataString,
     );
 
-    archiveResult.right.delete(); // delete temp vault file
+    await vaultFile.delete(); // delete temp vault file
     persistence.metadata.val = metadataString;
     _syncProgress(0.9, null);
     if (uploadResult.isLeft) return Left(uploadResult.left);
@@ -417,6 +380,7 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     storageSize.value = result.right.totalSize;
+    objectsCount.value = result.right.objects;
     return result.right;
   }
 

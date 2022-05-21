@@ -7,10 +7,10 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:web3dart/credentials.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/utils/biometric.util.dart';
+import '../wallet/wallet.service.dart';
 
 class UnlockScreenBinding extends Bindings {
   @override
@@ -68,12 +68,10 @@ class UnlockScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     try {
-      Globals.wallet = Wallet.fromJson(
+      await WalletService.to.initJson(
         PersistenceService.to.wallet.val,
-        passwordController.text,
+        password: passwordController.text,
       );
-
-      await Globals.init();
     } catch (e) {
       console.error('load wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
@@ -101,7 +99,7 @@ class UnlockScreenController extends GetxController
     }
 
     if (passwordMode) return Get.back(result: true);
-    await HiveManager.openBoxes();
+    await HiveManager.open();
     change(null, status: RxStatus.success());
     return Get.offNamedUntil(Routes.main, (route) => false);
   }

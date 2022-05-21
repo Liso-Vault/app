@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
@@ -7,18 +8,18 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../../core/firebase/config/config.service.dart';
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
+import '../../app/routes.dart';
+import '../../wallet/wallet.service.dart';
 import '../model/s3_content.model.dart';
 
 class S3ExplorerScreenBinding extends Bindings {
@@ -263,6 +264,16 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void pickFile() async {
+    if (S3Service.to.objectsCount >= WalletService.to.limits.files) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Title',
+          'body': 'Maximum files limit reached',
+        }, // TODO: add message
+      );
+    }
+
     change(true, status: RxStatus.loading());
     Globals.timeLockEnabled = false; // disable
     FilePickerResult? result;
@@ -302,12 +313,14 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    if (fileSize > ConfigService.to.app.settings.maxUploadSize) {
+    if (fileSize > WalletService.to.limits.uploadSize) {
       change(false, status: RxStatus.success());
 
-      return UIUtils.showSimpleDialog(
-        'File Too Large',
-        'Upload size limit is ${filesize(ConfigService.to.app.settings.maxUploadSize)} per file',
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'message': 'Upload Size Limit Reached'
+        }, // TODO: add message
       );
     }
 
@@ -318,13 +331,16 @@ class S3ExplorerScreenController extends GetxController
   void _upload(File file) async {
     final assumedTotal = S3Service.to.storageSize.value + await file.length();
     console.wtf(
-      'assumedTotal: ${filesize(assumedTotal)}, max: ${filesize(ConfigService.to.app.settings.maxStorageSize)}',
+      'assumedTotal: ${filesize(assumedTotal)}, max: ${filesize(WalletService.to.limits.uploadSize)}',
     );
 
-    if (assumedTotal >= ConfigService.to.app.settings.maxStorageSize) {
-      return UIUtils.showSimpleDialog(
-        'Need More Storage',
-        'We will introduce ways you can increase your storage soon. Either just by holding a certain amount of Liso Token / Subscribing to a plan paid using Liso Tokens',
+    if (assumedTotal >= WalletService.to.limits.uploadSize) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Title',
+          'body': 'Storage size limit reached',
+        }, // TODO: add message
       );
     }
 

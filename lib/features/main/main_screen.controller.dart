@@ -288,6 +288,16 @@ class MainScreenController extends GetxController
     final drawerController = DrawerMenuController.to;
     var items = HiveManager.items!.values.toList();
 
+    // DELETE DUE TRASH ITEMS
+    final itemsToDelete = items.where(
+      (e) => e.daysLeftToDelete <= 0,
+    );
+
+    if (itemsToDelete.isNotEmpty) {
+      console.error('itemsToDelete: ${itemsToDelete.length}');
+      await HiveManager.items!.deleteAll(itemsToDelete);
+    }
+
     // FILTER GROUP
     items = items
         .where((e) => e.group == drawerController.filterGroupIndex.value)
@@ -426,7 +436,7 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timeLockTimer?.cancel();
 
-        if (WalletService.to.exists && Globals.wallet == null) {
+        if (WalletService.to.saved && WalletService.to.wallet == null) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
@@ -434,8 +444,7 @@ class MainScreenController extends GetxController
         if (Globals.timeLockEnabled) {
           final timeLock = persistence.timeLockDuration.val.seconds;
           timeLockTimer = Timer.periodic(timeLock, (timer) {
-            Globals.wallet = null;
-            Globals.init();
+            WalletService.to.reset();
             timer.cancel();
           });
         }

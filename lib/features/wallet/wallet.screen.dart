@@ -16,7 +16,7 @@ import '../menu/menu.button.dart';
 import 'nfts/nfts.screen.dart';
 import 'wallet_screen.controller.dart';
 
-class WalletScreen extends GetWidget<WalletScreenController> with ConsoleMixin {
+class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
   const WalletScreen({Key? key}) : super(key: key);
 
   @override

@@ -8,6 +8,7 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../../core/utils/utils.dart';
 import 'drawer_widget.controller.dart';
@@ -217,7 +218,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                             Chip(
                               label: Obx(
                                 () => Text(
-                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(ConfigService.to.app.settings.maxStorageSize, 0)}',
+                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(WalletService.to.limits.storageSize, 0)}',
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               ),
@@ -229,7 +230,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           child: Obx(
                             () => LinearProgressIndicator(
                               value: S3Service.to.storageSize.value.toDouble() /
-                                  ConfigService.to.app.settings.maxStorageSize,
+                                  WalletService.to.limits.storageSize,
                               backgroundColor: Colors.grey.withOpacity(0.1),
                             ),
                           ),

@@ -9,6 +9,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/hive.manager.dart';
@@ -16,7 +17,7 @@ import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'settings_screen.controller.dart';
 
-class SettingsScreen extends GetWidget<SettingsScreenController>
+class SettingsScreen extends GetView<SettingsScreenController>
     with ConsoleMixin {
   const SettingsScreen({Key? key}) : super(key: key);
 
@@ -60,16 +61,28 @@ class SettingsScreen extends GetWidget<SettingsScreenController>
         const Divider(),
         SimpleBuilder(
           builder: (_) => SwitchListTile(
-            title: const Text('File Encryption'),
-            secondary: Icon(
-              Iconsax.shield_tick,
-              color: themeColor,
-            ),
-            value: persistence.fileEncryption.val,
-            subtitle: const Text(
-                "Automatic client-side file encryption when you upload files"),
-            onChanged: (value) => persistence.fileEncryption.val = value,
-          ),
+              title: const Text('File Encryption'),
+              secondary: Icon(
+                Iconsax.shield_tick,
+                color: themeColor,
+              ),
+              value: persistence.fileEncryption.val,
+              subtitle: const Text(
+                  "Automatic client-side file encryption when you upload files"),
+              onChanged: (value) {
+                if (WalletService.to.limits.fileEncryption) {
+                  persistence.fileEncryption.val = value;
+                  return;
+                }
+
+                Utils.adaptiveRouteOpen(
+                  name: Routes.upgrade,
+                  parameters: {
+                    'title': 'Title',
+                    'body': 'Upgrade to enable file encryption',
+                  }, // TODO: add message
+                );
+              }),
         ),
         const Divider(),
         ListTile(

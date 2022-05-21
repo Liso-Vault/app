@@ -6,12 +6,14 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/hive.manager.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.item.dart';
 
@@ -151,6 +153,28 @@ class ItemScreenController extends GetxController
 
   void add() async {
     if (!formKey.currentState!.validate()) return;
+    // items limit
+    if (HiveManager.itemLimitReached) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Title',
+          'body': 'Maximum items limit reached',
+        }, // TODO: add message
+      );
+    }
+
+    // protected items limit
+    if (protected.value && HiveManager.protectedItemLimitReached) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Title',
+          'body': 'Maximum protected items limit reached',
+        }, // TODO: add message
+      );
+    }
+
     final fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
 
     final newItem = HiveLisoItem(
@@ -173,6 +197,17 @@ class ItemScreenController extends GetxController
   void edit() async {
     if (!formKey.currentState!.validate()) return;
     if (item == null) return;
+
+    // protected items limit
+    if (protected.value && HiveManager.protectedItemLimitReached) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Title',
+          'body': 'Maximum protected items limit reached',
+        }, // TODO: add message
+      );
+    }
 
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;

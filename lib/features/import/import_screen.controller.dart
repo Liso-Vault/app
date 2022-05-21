@@ -1,20 +1,21 @@
 import 'dart:io';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 
+import '../../core/liso/liso_paths.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/ui_utils.dart';
 import '../app/routes.dart';
@@ -46,9 +47,9 @@ class ImportScreenController extends GetxController
   final syncProvider = LisoSyncProvider.sia.name.obs;
 
   // GETTERS
-  String get archiveFilePath => importMode() == ImportMode.file
+  String get vaultFilePath => importMode() == ImportMode.file
       ? filePathController.text
-      : LisoManager.tempVaultFilePath;
+      : LisoPaths.tempVaultFilePath;
 
   Future<bool> get canPop async => !busy.value;
 
@@ -73,9 +74,11 @@ class ImportScreenController extends GetxController
     );
 
     final address = privateKey.address.hexEip55;
+    final s3VaultPath = join(address, kVaultFileName).replaceAll('\\', '/');
+
     final result = await S3Service.to.downloadFile(
-      s3Path: join(address, '$address.$kVaultExtension').replaceAll('\\', '/'),
-      filePath: LisoManager.tempVaultFilePath,
+      s3Path: s3VaultPath,
+      filePath: LisoPaths.tempVaultFilePath,
       force: true,
     );
 
@@ -96,7 +99,7 @@ class ImportScreenController extends GetxController
     }
 
     // delete temp downloaded vault
-    FileUtils.delete(archiveFilePath);
+    FileUtils.delete(vaultFilePath);
     return false;
   }
 
@@ -112,56 +115,35 @@ class ImportScreenController extends GetxController
       }
     }
 
-    // read archive
-    final result = LisoManager.readArchive(archiveFilePath);
-    FileUtils.delete(archiveFilePath); // delete temp downloaded vault
-
-    if (result.isLeft) {
-      UIUtils.showSimpleDialog(
-        'Error Extracting',
-        '${result.left} > continuePressed()',
-      );
-
-      return change(null, status: RxStatus.success());
-    }
-
-    final archive = result.right;
-    // extract to temp directory for verification
-    await LisoManager.extractArchive(
-      archive,
-      path: LisoManager.tempPath,
-    );
-
-    // check if encryption key is correct
     final credentials = WalletService.to.mnemonicToPrivateKey(
       seedController.text,
     );
 
-    final isCorrect = await HiveManager.isEncryptionKeyCorrect(
-      credentials.privateKey,
+    final cipherKey = await WalletService.to.credentialsToCipherKey(
+      credentials,
     );
 
-    if (!isCorrect) {
-      UIUtils.showSimpleDialog(
-        'Incorrect Seed Phrase',
-        'Please enter the mnemonic seed phrase you backed up to secure your vault.',
-      );
+    final vaultFile = File(vaultFilePath);
+    final canDecrypt = await CipherService.to.canDecrypt(
+      vaultFile,
+      cipherKey,
+    );
 
-      return change(null, status: RxStatus.success());
+    if (!canDecrypt) {
+      change(null, status: RxStatus.success());
+
+      return UIUtils.showSimpleDialog(
+        'Failed Decrypting Vault',
+        'Please check your seed phrase',
+      );
     }
 
-    // move temporarily extracted hive files to main hive directory
-    final tempItemsFile = File(join(
-      LisoManager.tempPath,
-      '$kHiveBoxItems.hive',
-    ));
-
-    final destinationItemsPath = join(
-      LisoManager.hivePath,
-      '$kHiveBoxItems.hive',
+    // parse vault file to items
+    await HiveManager.importVaultFile(
+      vaultFile,
+      cipherKey: cipherKey,
     );
 
-    await FileUtils.move(tempItemsFile, destinationItemsPath);
     // ignore syncing screen if we just imported
     AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud
