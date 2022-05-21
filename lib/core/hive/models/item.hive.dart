@@ -89,6 +89,37 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     };
   }
 
+  HiveLisoItem copy() {
+    return HiveLisoItem(
+      identifier: identifier,
+      category: category,
+      iconUrl: iconUrl,
+      title: title,
+      fields: List.unmodifiable(fields),
+      favorite: favorite,
+      protected: protected,
+      trashed: trashed,
+      tags: tags,
+      metadata: metadata,
+      group: group,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        identifier,
+        category,
+        iconUrl,
+        title,
+        fields,
+        favorite,
+        protected,
+        trashed,
+        tags,
+        metadata,
+        group,
+      ];
+
   List<Widget> get widgets => fields.map((e) => e.widget).toList();
 
   String get updatedDateTimeFormatted =>
@@ -284,7 +315,4 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
 
     return {identifier: value};
   }
-
-  @override
-  List<Object?> get props => [identifier, metadata.updatedTime];
 }

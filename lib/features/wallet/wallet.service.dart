@@ -52,7 +52,7 @@ class WalletService extends GetxService with ConsoleMixin {
       PersistenceService.to.lastLisoBalance.val *
       PersistenceService.to.lastLisoUsdPrice.val;
 
-  LimitConfig get limits {
+  ConfigLimitsSetting get limits {
     final limits_ = ConfigService.to.limits;
 
     // check if user is subscribed to premium
@@ -66,23 +66,34 @@ class WalletService extends GetxService with ConsoleMixin {
     if (users.isNotEmpty) {
       final user = users.first;
 
-      if (user.limits == 'holder') {
-        return limits_.holder;
-      } else if (user.limits == 'staker') {
-        return limits_.staker;
-      } else if (user.limits == 'premium') {
-        return limits_.premium;
+      if (user.limits == 'tier2') {
+        return limits_.tier2;
+      } else if (user.limits == 'tier3') {
+        return limits_.tier3;
+      } else if (user.limits == 'tier4') {
+        return limits_.tier4;
       }
     }
 
-    // check if user is a holder
-    if (PersistenceService.to.lastLisoBalance.val >
-        limits_.holder.tokenThreshold) {
-      return limits_.holder;
+    final balance = PersistenceService.to.lastLisoBalance.val;
+
+    // check if user is a tier2 holder
+    if (balance > limits_.tier2.tokenThreshold) {
+      return limits_.tier2;
     }
 
-    // a regular user
-    return limits_.regular;
+    // check if user is a tier3 holder
+    if (balance > limits_.tier3.tokenThreshold) {
+      return limits_.tier3;
+    }
+
+    // check if user is a tier4 holder
+    if (balance > limits_.tier4.tokenThreshold) {
+      return limits_.tier4;
+    }
+
+    // a tier1 user
+    return limits_.tier1;
   }
 
   @override

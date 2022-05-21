@@ -109,7 +109,7 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(left: 10, top: 10, right: 10),
+            padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
             child: Obx(
               () => Text(
                 controller.currentPath.value

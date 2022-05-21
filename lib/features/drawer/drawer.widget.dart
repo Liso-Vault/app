@@ -3,7 +3,6 @@ import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
@@ -22,44 +21,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          // header,
-          // ExpansionTile(
-          //   maintainState: true,
-          //   title: const Text(
-          //     'Networks',
-          //     style: TextStyle(fontSize: 13),
-          //   ),
-          //   onExpansionChanged: (expanded) =>
-          //       controller.networksExpanded = expanded,
-          //   initiallyExpanded: controller.networksExpanded,
-          //   children: const [
-          //     ListTile(
-          //       title: Text('Ethereum'),
-          //       leading: Icon(LineIcons.ethereum),
-          //       enabled: false,
-          //     ),
-          //     ListTile(
-          //       title: Text('Polygon'),
-          //       leading: Icon(LineIcons.ethereum),
-          //       enabled: false,
-          //     ),
-          //     ListTile(
-          //       title: Text('Binance Chain'),
-          //       leading: Icon(LineIcons.ethereum),
-          //       enabled: false,
-          //     ),
-          //     ListTile(
-          //       title: Text('Solana'),
-          //       leading: Icon(LineIcons.ethereum),
-          //       enabled: false,
-          //     ),
-          //     ListTile(
-          //       title: Text('Avalanche'),
-          //       leading: Icon(LineIcons.ethereum),
-          //       enabled: false,
-          //     ),
-          //   ],
-          // ),
           SimpleBuilder(
             builder: (_) => ExpansionTile(
               maintainState: true,
@@ -147,7 +108,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
             ],
           ),
-
           ExpansionTile(
             initiallyExpanded: controller.categoriesExpanded,
             title: Text(

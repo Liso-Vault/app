@@ -7,7 +7,6 @@ import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/notifications/notifications.manager.dart';

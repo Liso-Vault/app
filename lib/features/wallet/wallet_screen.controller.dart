@@ -114,7 +114,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
       title: const Text('Receive'),
       content: Utils.isDrawerExpandable
           ? content
-          : SizedBox(width: 600, child: content),
+          : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,

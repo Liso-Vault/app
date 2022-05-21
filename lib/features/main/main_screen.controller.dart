@@ -4,15 +4,14 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -226,7 +225,7 @@ class MainScreenController extends GetxController
       title: const Text('Unsynced Changes'),
       content: Utils.isDrawerExpandable
           ? content
-          : SizedBox(width: 600, child: content),
+          : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -255,8 +254,9 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  Future<void> pulledRefresh() async {
-    await sync();
+  void onItemsUpdated() {
+    persistence.changes.val++;
+    load();
   }
 
   Future<void> sync() async {
@@ -294,7 +294,6 @@ class MainScreenController extends GetxController
     );
 
     if (itemsToDelete.isNotEmpty) {
-      console.error('itemsToDelete: ${itemsToDelete.length}');
       await HiveManager.items!.deleteAll(itemsToDelete);
     }
 
@@ -416,16 +415,6 @@ class MainScreenController extends GetxController
     searchDelegate?.reload(Get.context!);
     drawerController.refresh(); // update drawer state
     console.info('_load()');
-  }
-
-  void onBoxChanged(BoxEvent event) async {
-    console.info('box changed');
-    // add change only if not a deleted event to prevent duplicates
-    if (!event.deleted) {
-      persistence.changes.val++;
-      // use the static getter to avoid not reloading bug
-      load();
-    }
   }
 
   void _initAppLifeCycleEvents() {

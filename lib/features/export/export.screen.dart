@@ -44,13 +44,6 @@ class ExportScreen extends GetView<ExportScreenController> with ConsoleMixin {
             onPressed: controller.unlock,
           ),
         ),
-        const SizedBox(height: 10),
-        Obx(
-          () => Text(
-            '${controller.attemptsLeft()} ${'attempts_left'.tr}',
-            style: const TextStyle(color: Colors.grey, fontSize: 10),
-          ),
-        ),
       ],
     );
 

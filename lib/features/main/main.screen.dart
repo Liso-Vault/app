@@ -80,7 +80,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     // enable pull to refresh if mobile
     if (GetPlatform.isMobile) {
       childContent = RefreshIndicator(
-        onRefresh: controller.pulledRefresh,
+        onRefresh: controller.sync,
         child: childContent,
       );
     }

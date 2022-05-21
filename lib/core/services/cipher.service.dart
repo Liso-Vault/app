@@ -40,12 +40,16 @@ class CipherService extends GetxService with ConsoleMixin {
     }
   }
 
-  Future<File> encryptFile(File file, {Uint8List? cipherKey}) async {
+  Future<File> encryptFile(
+    File file, {
+    Uint8List? cipherKey,
+    bool addExtensionExtra = true,
+  }) async {
     final output = encrypt(await file.readAsBytes(), cipherKey: cipherKey);
 
     final outputFile = File(join(
       LisoPaths.temp!.path,
-      basename(file.path) + kEncryptedExtensionExtra,
+      basename(file.path) + (addExtensionExtra ? kEncryptedExtensionExtra : ''),
     ));
 
     return await outputFile.writeAsBytes(output);

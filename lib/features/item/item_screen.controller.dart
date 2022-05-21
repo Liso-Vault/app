@@ -6,7 +6,7 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/hive.manager.dart';
@@ -27,7 +27,7 @@ class ItemScreenBinding extends Bindings {
 class ItemScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   // VARIABLES
-  HiveLisoItem? item;
+  HiveLisoItem? item, originalItem;
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
@@ -98,6 +98,7 @@ class ItemScreenController extends GetxController
       _populateItem();
     }
 
+    originalItem = HiveLisoItem.fromJson(item!.toJson());
     widgets.value = item!.widgets;
     change(null, status: RxStatus.success());
     super.onInit();
@@ -191,6 +192,7 @@ class ItemScreenController extends GetxController
     );
 
     await HiveManager.items!.add(newItem);
+    MainScreenController.to.onItemsUpdated();
     Get.back();
   }
 
@@ -215,10 +217,11 @@ class ItemScreenController extends GetxController
     item!.tags = tags;
     item!.favorite = favorite.value;
     item!.protected = protected.value;
-    item!.metadata = await item!.metadata.getUpdated();
     item!.group = groupIndex.value;
+    item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
 
+    MainScreenController.to.onItemsUpdated();
     Get.back();
   }
 
@@ -266,29 +269,71 @@ class ItemScreenController extends GetxController
           data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
       autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: const InputDecoration(
-        labelText: 'Name',
+        labelText: 'Icon URL',
         hintText: 'https://images.com/icon.png',
       ),
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Icon URL'),
+      title: const Text('Custom Icon'),
       content: Form(
         key: formKey,
         child: Utils.isDrawerExpandable
             ? content
-            : SizedBox(width: 600, child: content),
+            : SizedBox(width: 450, child: content),
       ),
       actions: [
-        TextButton(
-          onPressed: Get.back,
-          child: Text('cancel'.tr),
-        ),
-        TextButton(
-          onPressed: _save,
-          child: Text('save'.tr),
-        ),
+        TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
+        TextButton(onPressed: _save, child: Text('save'.tr)),
       ],
     ));
+  }
+
+  Future<bool> canPop() async {
+    // TODO: improve equality check
+    final updatedItem = HiveLisoItem(
+      identifier: item!.identifier,
+      metadata: originalItem!.metadata,
+      trashed: originalItem!.trashed,
+      category: category,
+      title: titleController.text,
+      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      group: groupIndex.value,
+      favorite: favorite.value,
+      iconUrl: iconUrl.value,
+      protected: protected.value,
+      tags: tags,
+    );
+
+    bool hasChanges = updatedItem != originalItem!;
+
+    if (hasChanges) {
+      const dialogContent = Text('You have unsaved changes');
+
+      await Get.dialog(AlertDialog(
+        title: const Text('Unsaved Changes'),
+        content: Utils.isDrawerExpandable
+            ? dialogContent
+            : const SizedBox(
+                width: 450,
+                child: dialogContent,
+              ),
+        actions: [
+          TextButton(
+            onPressed: Get.back,
+            child: Text('cancel'.tr),
+          ),
+          TextButton(
+            onPressed: () {
+              hasChanges = false;
+              Get.back();
+            },
+            child: const Text('Discard'),
+          ),
+        ],
+      ));
+    }
+
+    return !hasChanges;
   }
 }

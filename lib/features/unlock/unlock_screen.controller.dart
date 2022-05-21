@@ -89,8 +89,9 @@ class UnlockScreenController extends GetxController
       }
 
       UIUtils.showSnackBar(
-        title: 'Incorrect password',
-        message: 'Please enter your vault password',
+        title: 'Incorrect Master Password',
+        message:
+            '${attemptsLeft.value} ${'attempts_left'.tr} until your vault resets',
         icon: const Icon(Iconsax.warning_2, color: Colors.red),
         seconds: 4,
       );

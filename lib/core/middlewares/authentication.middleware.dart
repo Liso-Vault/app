@@ -10,7 +10,6 @@ import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/app/routes.dart';
-import '../hive/hive.manager.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   static bool ignoreSync = false;
@@ -43,7 +42,6 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
     CrashlyticsService.to.init();
     MainScreenController.to.load();
-    HiveManager.watchBoxes();
 
     // record metadata
     S3Service.to.fetchStorageSize().then((info) {

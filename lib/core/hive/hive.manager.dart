@@ -9,7 +9,6 @@ import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../liso/liso_paths.dart';
@@ -61,18 +60,7 @@ class HiveManager {
 
   static Future<void> close() async {
     if (items?.isOpen == true) await items?.close();
-    await unwatchBoxes();
     console.info('closeBoxes');
-  }
-
-  static void watchBoxes() {
-    itemsStream = items?.watch().listen(MainScreenController.to.onBoxChanged);
-    console.info('watchBoxes');
-  }
-
-  static Future<void> unwatchBoxes() async {
-    await itemsStream?.cancel();
-    console.info('unwatchBoxes');
   }
 
   static Future<File> export({required String path}) async {
@@ -80,7 +68,7 @@ class HiveManager {
     final jsonString = jsonEncode(items!.values.toList());
     final file = File(path);
     await file.writeAsString(jsonString);
-    return await CipherService.to.encryptFile(file);
+    return await CipherService.to.encryptFile(file, addExtensionExtra: false);
   }
 
   static Future<List<HiveLisoItem>> parseVaultFile(File file,

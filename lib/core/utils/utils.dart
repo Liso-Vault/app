@@ -211,7 +211,7 @@ class Utils {
     const max = 100;
 
     if (text == null || text.isEmpty) {
-      return 'Enter your strong password';
+      return 'Enter your password';
     } else if (text.length < min) {
       return 'Vault password must be at least $min characters';
     } else if (text.length > max) {

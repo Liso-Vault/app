@@ -1,45 +1,49 @@
 class ConfigLimits {
   const ConfigLimits({
-    this.regular = const LimitConfig(),
-    this.holder = const LimitConfig(),
-    this.staker = const LimitConfig(),
-    this.premium = const LimitConfig(),
+    this.tier1 = const ConfigLimitsSetting(),
+    this.tier2 = const ConfigLimitsSetting(),
+    this.tier3 = const ConfigLimitsSetting(),
+    this.tier4 = const ConfigLimitsSetting(),
   });
 
-  final LimitConfig regular;
-  final LimitConfig holder;
-  final LimitConfig staker;
-  final LimitConfig premium;
+  final ConfigLimitsSetting tier1;
+  final ConfigLimitsSetting tier2;
+  final ConfigLimitsSetting tier3;
+  final ConfigLimitsSetting tier4;
 
   factory ConfigLimits.fromJson(Map<String, dynamic> json) => ConfigLimits(
-        regular: LimitConfig.fromJson(json["regular"]),
-        holder: LimitConfig.fromJson(json["holder"]),
-        staker: LimitConfig.fromJson(json["staker"]),
-        premium: LimitConfig.fromJson(json["premium"]),
+        tier1: ConfigLimitsSetting.fromJson(json["tier1"]),
+        tier2: ConfigLimitsSetting.fromJson(json["tier2"]),
+        tier3: ConfigLimitsSetting.fromJson(json["tier3"]),
+        tier4: ConfigLimitsSetting.fromJson(json["tier4"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "regular": regular.toJson(),
-        "holder": holder.toJson(),
-        "staker": staker.toJson(),
-        "premium": premium.toJson(),
+        "tier1": tier1.toJson(),
+        "tier2": tier2.toJson(),
+        "tier3": tier3.toJson(),
+        "tier4": tier4.toJson(),
       };
 }
 
-class LimitConfig {
-  const LimitConfig({
+class ConfigLimitsSetting {
+  const ConfigLimitsSetting({
     this.tokenThreshold = 0,
     this.storageSize = 0,
     this.uploadSize = 0,
     this.items = 0,
     this.files = 0,
     this.backups = 0,
+    this.devices = 0,
     this.trashDays = 0,
-    this.addVaults = false,
     this.protectedItems = 0,
+    this.sharedDevices = 0,
+    this.addVaults = false,
     this.fileEncryption = false,
-    this.customSyncProvider = false,
-    this.syncProviders = const [],
+    this.breachScanner = false,
+    this.passwordHealth = false,
+    this.nfcKeycard = false,
+    this.prioritySupport = false,
   });
 
   final int tokenThreshold;
@@ -48,26 +52,35 @@ class LimitConfig {
   final int items;
   final int files;
   final int backups;
+  final int devices;
   final int trashDays;
-  final bool addVaults;
   final int protectedItems;
+  final int sharedDevices;
+  final bool addVaults;
   final bool fileEncryption;
-  final bool customSyncProvider;
-  final List<String> syncProviders;
+  final bool breachScanner;
+  final bool passwordHealth;
+  final bool nfcKeycard;
+  final bool prioritySupport;
 
-  factory LimitConfig.fromJson(Map<String, dynamic> json) => LimitConfig(
+  factory ConfigLimitsSetting.fromJson(Map<String, dynamic> json) =>
+      ConfigLimitsSetting(
         tokenThreshold: json["token_threshold"],
         storageSize: json["storage_size"],
         uploadSize: json["upload_size"],
         items: json["items"],
         files: json["files"],
         backups: json["backups"],
+        devices: json["devices"],
         trashDays: json["trash_days"],
-        addVaults: json["add_vaults"],
         protectedItems: json["protected_items"],
+        sharedDevices: json["shared_devices"],
+        addVaults: json["add_vaults"],
         fileEncryption: json["file_encryption"],
-        customSyncProvider: json["custom_sync_provider"],
-        syncProviders: List<String>.from(json["sync_providers"].map((x) => x)),
+        breachScanner: json["breach_scanner"],
+        passwordHealth: json["password_health"],
+        nfcKeycard: json["nfc_keycard"],
+        prioritySupport: json["priority_support"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -77,11 +90,15 @@ class LimitConfig {
         "items": items,
         "files": files,
         "backups": backups,
+        "devices": devices,
         "trash_days": trashDays,
-        "add_vaults": addVaults,
         "protected_items": protectedItems,
+        "shared_devices": sharedDevices,
+        "add_vaults": addVaults,
         "file_encryption": fileEncryption,
-        "custom_sync_provider": customSyncProvider,
-        "sync_providers": List<dynamic>.from(syncProviders.map((x) => x)),
+        "breach_scanner": breachScanner,
+        "password_health": passwordHealth,
+        "nfc_keycard": nfcKeycard,
+        "priority_support": prioritySupport,
       };
 }

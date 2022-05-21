@@ -1,64 +1,78 @@
 {
-    "regular": {
+    "tier0": {
         "token_threshold": 0,
         "storage_size": 104857600,
         "upload_size": 83886080,
         "items": 20,
         "files": 5,
         "backups": 2,
+        "devices": 1,
         "trash_days": 1,
-        "add_vaults": false,
         "protected_items": 5,
+        "shared_devices": 0,
+        "add_vaults": false,
         "file_encryption": false,
-        "custom_sync_provider": false,
-        "sync_providers": [
-            "ipfs",
-            "skynet"
-        ]
+        "breach_scanner": false,
+        "password_health": false,
+        "nfc_keycard": false,
+        "cipher_tool": false,
+        "priority_support": false
     },
-    "holder": {
+    "tier1": {
         "token_threshold": 1000,
         "storage_size": 209715200,
         "upload_size": 167772160,
         "items": 100,
         "files": 20,
         "backups": 10,
+        "devices": 2,
         "trash_days": 5,
-        "add_vaults": false,
         "protected_items": 20,
+        "shared_devices": 1,
+        "add_vaults": false,
         "file_encryption": false,
-        "custom_sync_provider": false,
-        "sync_providers": [
-            "ipfs",
-            "skynet"
-        ]
+        "breach_scanner": false,
+        "password_health": false,
+        "nfc_keycard": false,
+        "cipher_tool": false,
+        "priority_support": false
     },
-    "staker": {
+    "tier2": {
         "token_threshold": 20000,
         "storage_size": 419430400,
         "upload_size": 335544320,
         "items": 150,
         "files": 100,
         "backups": 50,
+        "devices": 10,
         "trash_days": 30,
-        "add_vaults": true,
         "protected_items": 100,
+        "shared_devices": 10,
+        "add_vaults": true,
         "file_encryption": true,
-        "custom_sync_provider": true,
-        "sync_providers": []
+        "breach_scanner": true,
+        "password_health": true,
+        "nfc_keycard": true,
+        "cipher_tool": true,
+        "priority_support": true
     },
-    "premium": {
+    "tier3": {
         "token_threshold": 0,
         "storage_size": 1048576000,
         "upload_size": 838860800,
         "items": 1000000,
         "files": 1000000,
         "backups": 200,
+        "devices": 1000,
         "trash_days": 365,
-        "add_vaults": true,
         "protected_items": 0,
+        "shared_devices": 1000,
+        "add_vaults": true,
         "file_encryption": true,
-        "custom_sync_provider": true,
-        "sync_providers": []
+        "breach_scanner": true,
+        "password_health": true,
+        "nfc_keycard": true,
+        "cipher_tool": true,
+        "priority_support": true
     }
 }

@@ -34,23 +34,26 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.favorite = !item.favorite;
     item.metadata = await item.metadata.getUpdated();
     item.save();
+    MainScreenController.to.onItemsUpdated();
   }
 
   void _delete() {
     item.delete();
-    MainScreenController.to.load();
+    MainScreenController.to.onItemsUpdated();
   }
 
   void _trash() async {
     item.trashed = true;
     item.metadata = await item.metadata.getUpdated();
     item.save();
+    MainScreenController.to.onItemsUpdated();
   }
 
   void _restore() async {
     item.trashed = false;
     item.metadata = await item.metadata.getUpdated();
     item.save();
+    MainScreenController.to.onItemsUpdated();
   }
 
   void _duplicate() async {
@@ -59,6 +62,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
     HiveManager.items!.add(copy);
+    MainScreenController.to.onItemsUpdated();
   }
 
   void _open() async {
@@ -84,8 +88,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           parameters: {'mode': 'password_prompt'},
         ) ??
         false;
-
-    if (!unlocked) console.warning('failed to unlock');
 
     return unlocked;
   }

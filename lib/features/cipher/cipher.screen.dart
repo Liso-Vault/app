@@ -29,7 +29,7 @@ class CipherScreen extends GetView<CipherScreenController> with ConsoleMixin {
             const SizedBox(height: 20),
             const Text(
               'Cipher Tool',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 30),
             ),
             const SizedBox(height: 15),
             Text(

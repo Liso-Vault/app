@@ -2,13 +2,13 @@ import 'package:chips_input/chips_input.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
-import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
 import 'item_screen.controller.dart';
@@ -152,6 +152,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         ),
         controller.favorite,
       ),
+      const Divider(),
       ObxValue(
         (RxBool data) => CheckboxListTile(
           title: Text('protected'.tr),
@@ -164,6 +165,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
 
       if (mode == 'update') ...[
         const Divider(),
+        const SizedBox(height: 20),
         Text(
           'Modified ${controller.item?.updatedDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
@@ -182,7 +184,15 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
     final appBar = AppBar(
       centerTitle: false,
       title: Text(category.tr),
-      leading: const AppBarLeadingButton(),
+      leading: IconButton(
+        onPressed: () async {
+          final canPop = await controller.canPop();
+          if (canPop) Get.back();
+        },
+        icon: Icon(
+          Utils.isDrawerExpandable ? Iconsax.arrow_left_2 : LineIcons.times,
+        ),
+      ),
       actions: [
         IconButton(
           onPressed: mode == 'update' ? controller.edit : controller.add,
@@ -213,9 +223,12 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       onLoading: const BusyIndicator(),
     );
 
-    return Scaffold(
-      appBar: appBar,
-      body: content,
+    return WillPopScope(
+      onWillPop: controller.canPop,
+      child: Scaffold(
+        appBar: appBar,
+        body: content,
+      ),
     );
   }
 }

@@ -157,7 +157,7 @@ class S3ExplorerScreenController extends GetxController
       content: Utils.isDrawerExpandable
           ? dialogContent
           : SizedBox(
-              width: 600,
+              width: 450,
               child: dialogContent,
             ),
       actions: [
@@ -180,7 +180,7 @@ class S3ExplorerScreenController extends GetxController
       title: const Text('Download'),
       content: Utils.isDrawerExpandable
           ? dialogContent
-          : SizedBox(width: 600, child: dialogContent),
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -429,7 +429,7 @@ class S3ExplorerScreenController extends GetxController
         key: formKey,
         child: Utils.isDrawerExpandable
             ? content
-            : SizedBox(width: 600, child: content),
+            : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(
@@ -478,7 +478,7 @@ class S3ExplorerScreenController extends GetxController
       title: const Text('Share Securely'),
       content: Utils.isDrawerExpandable
           ? dialogContent
-          : SizedBox(width: 600, child: dialogContent),
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -559,7 +559,7 @@ class S3ExplorerScreenController extends GetxController
       content: Utils.isDrawerExpandable
           ? content
           : const SizedBox(
-              width: 600,
+              width: 450,
               child: content,
             ),
       actions: [

@@ -38,12 +38,13 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 17),
             ),
+            const SizedBox(height: 10),
             Text(
               body,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             SizedBox(
               width: 200,
               child: ElevatedButton(
@@ -62,8 +63,6 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: const Text('Upgrade'),
-      centerTitle: false,
       leading: const AppBarLeadingButton(),
     );
 

@@ -1,3 +1,4 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
@@ -6,7 +7,7 @@ import '../../parsers/field.parser.dart';
 part 'field.hive.g.dart';
 
 @HiveType(typeId: 2)
-class HiveLisoField extends HiveObject {
+class HiveLisoField extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String identifier; // identifier
   @HiveField(1)
@@ -45,10 +46,13 @@ class HiveLisoField extends HiveObject {
   }
 
   Widget get widget => FieldParser.parse(this);
+
+  @override
+  List<Object?> get props => [identifier, type, reserved, required, data];
 }
 
 @HiveType(typeId: 3)
-class HiveLisoFieldData extends HiveObject {
+class HiveLisoFieldData extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String? label;
   @HiveField(1)
@@ -91,6 +95,9 @@ class HiveLisoFieldData extends HiveObject {
       "extra": extra,
     };
   }
+
+  @override
+  List<Object?> get props => [value];
 }
 
 @HiveType(typeId: 4)

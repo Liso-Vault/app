@@ -94,12 +94,28 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Dialog'),
+          title: const Text('Image Dialog'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => UIUtils.showImageDialog(
+            Icon(LineIcons.rocket, size: 100, color: themeColor),
+            title: 'The Title',
+            body:
+                'This is the message to be shown. This is the message to be shown. This is the message to be shown. ',
+            closeText: 'Close',
+            actionText: 'Action',
+            action: () {
+              console.info('action');
+            },
+          ),
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Simple Dialog'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => UIUtils.showSimpleDialog(
             'The Title',
-            'This is the message to be shown',
-            image: Icon(LineIcons.rocket, size: 100, color: themeColor),
+            'This is the message to be shown. This is the message to be shown. ',
           ),
         ),
         const Divider(),

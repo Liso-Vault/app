@@ -66,13 +66,10 @@ class ExportScreenController extends GetxController
         '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.$kVaultExtension';
 
     final vaultFile = await HiveManager.export(
-      path: join(
-        LisoPaths.tempPath,
-        exportFileName,
-      ),
+      path: join(LisoPaths.tempPath, exportFileName),
     );
 
-    console.info('export path: ${vaultFile.path}');
+    console.info('vault file path: ${vaultFile.path}');
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(

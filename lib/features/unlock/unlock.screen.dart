@@ -85,15 +85,6 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             ]
           ],
         ),
-        if (!controller.passwordMode) ...[
-          const SizedBox(height: 10),
-          Obx(
-            () => Text(
-              '${controller.attemptsLeft()} ${'attempts_left'.tr}',
-              style: const TextStyle(color: Colors.grey, fontSize: 10),
-            ),
-          ),
-        ]
       ],
     );
 

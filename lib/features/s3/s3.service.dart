@@ -179,9 +179,7 @@ class S3Service extends GetxService with ConsoleMixin {
     _syncProgress(0.3, null);
     final items = await HiveManager.parseVaultFile(downloadResult.right);
     _syncProgress(0.4, null);
-    HiveManager.unwatchBoxes();
     await _mergeItems(items);
-    HiveManager.watchBoxes();
     return const Right(true);
   }
 
@@ -233,7 +231,7 @@ class S3Service extends GetxService with ConsoleMixin {
       return const Left('not in sync with server');
     }
 
-    console.info('syncing...');
+    console.info('up syncing...');
     final backupResult = await backup(lisoContent);
     // ignore backup error and continue
     if (backupResult.isLeft) {

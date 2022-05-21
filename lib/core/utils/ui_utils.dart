@@ -28,37 +28,68 @@ class UIUtils {
     );
   }
 
-  static void showSimpleDialog(String title, String body, {Widget? image}) {
-    final hasImage = image != null;
-
-    final titleContent = Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment:
-          hasImage ? CrossAxisAlignment.center : CrossAxisAlignment.start,
-      children: [
-        if (hasImage) ...[
-          image,
-          const SizedBox(height: 20),
-        ],
-        Text(title),
-      ],
-    );
-
-    final bodyContent = Text(body, textAlign: TextAlign.center);
+  static void showSimpleDialog(String title, String body) {
+    final bodyContent = Text(body);
 
     Get.dialog(
       AlertDialog(
-        title: titleContent,
+        title: Text(title),
         content: Utils.isDrawerExpandable
             ? bodyContent
             : SizedBox(
-                width: 450,
+                width: 400,
                 child: bodyContent,
               ),
         actions: [
           TextButton(
             onPressed: Get.back,
             child: Text('okay'.tr),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static void showImageDialog(
+    Widget image, {
+    required String title,
+    required String body,
+    String? closeText,
+    Function()? action,
+    String? actionText,
+  }) {
+    final bodyContent = Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        image,
+        const SizedBox(height: 30),
+        Text(title, style: const TextStyle(fontSize: 25)),
+        const SizedBox(height: 10),
+        Text(body, textAlign: TextAlign.center),
+      ],
+    );
+
+    Get.dialog(
+      AlertDialog(
+        title: null,
+        actionsAlignment: MainAxisAlignment.center,
+        content: Utils.isDrawerExpandable
+            ? bodyContent
+            : SizedBox(
+                width: 400,
+                child: bodyContent,
+              ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: SizedBox(
+              width: 200,
+              child: ElevatedButton(
+                onPressed: action ?? Get.back,
+                child: Text(actionText ?? 'okay'.tr),
+              ),
+            ),
           ),
         ],
       ),

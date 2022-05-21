@@ -190,7 +190,7 @@ class SettingsScreenController extends GetxController
       content: Utils.isDrawerExpandable
           ? content
           : SizedBox(
-              width: 600,
+              width: 450,
               child: content,
             ),
       actions: [
