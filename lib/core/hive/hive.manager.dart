@@ -45,6 +45,7 @@ class HiveManager {
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());
     Hive.registerAdapter(HiveMetadataDeviceAdapter());
+
     console.info("init");
   }
 
@@ -95,12 +96,21 @@ class HiveManager {
     // open database
     await open(cipherKey: cipherKey!);
     // populate database
+    items!.clear();
     items!.addAll(items_);
   }
 
   static Future<void> reset() async {
     await items?.deleteFromDisk();
+    // Hive.deleteFromDisk();
     items = null;
     console.info('reset');
+  }
+
+  static Future<void> hidelete(Iterable<HiveLisoItem> items_) async {
+    for (var e in items_) {
+      e.deleted = true;
+      await e.save();
+    }
   }
 }

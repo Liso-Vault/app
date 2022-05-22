@@ -36,10 +36,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterFavorites = false.obs;
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
+  final filterDeleted = false.obs;
   final filterCategory = LisoItemCategory.none.obs;
   final filterTag = ''.obs;
 
   // GETTERS
+
   Iterable<HiveLisoItem> get groupedItems => HiveManager.items == null
       ? []
       : HiveManager.items!.values.where(
@@ -73,7 +75,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   int get itemsCount =>
-      groupedItems.where((e) => !e.trashed && !e.trashed).length;
+      groupedItems.where((e) => !e.trashed && !e.deleted).length;
 
   int get favoriteCount =>
       groupedItems.where((e) => e.favorite && !e.trashed).length;
@@ -81,12 +83,16 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   int get protectedCount =>
       groupedItems.where((e) => e.protected && !e.trashed).length;
 
-  int get trashedCount => groupedItems.where((e) => e.trashed).length;
+  int get trashedCount =>
+      groupedItems.where((e) => e.trashed && !e.deleted).length;
+
+  int get deletedCount => groupedItems.where((e) => e.deleted).length;
 
   bool get filterAll =>
       !filterFavorites.value &&
       !filterProtected.value &&
       !filterTrashed.value &&
+      !filterDeleted.value &&
       filterTag.isEmpty &&
       filterCategory.value == LisoItemCategory.none;
 
@@ -111,6 +117,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.toggle();
     filterProtected.value = false;
     filterTrashed.value = false;
+    filterDeleted.value = false;
     filterTag.value = '';
     done();
   }
@@ -119,6 +126,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.toggle();
     filterFavorites.value = false;
     filterTrashed.value = false;
+    filterDeleted.value = false;
     filterTag.value = '';
     done();
   }
@@ -127,6 +135,16 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterTrashed.toggle();
     filterFavorites.value = false;
     filterProtected.value = false;
+    filterDeleted.value = false;
+    filterTag.value = '';
+    done();
+  }
+
+  void filterDeletedItems() async {
+    filterDeleted.toggle();
+    filterFavorites.value = false;
+    filterProtected.value = false;
+    filterTrashed.value = false;
     filterTag.value = '';
     done();
   }
@@ -159,6 +177,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;
+    filterDeleted.value = false;
   }
 
   void files() async {

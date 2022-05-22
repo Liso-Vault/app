@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
+import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
@@ -71,7 +72,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            //
+            S3Service.to.fetchStorageSize();
           },
         ),
         const Divider(),

@@ -47,7 +47,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     S3Service.to.fetchStorageSize().then((info) {
       if (info == null) return;
       FirestoreService.to.record(
-        objects: info.objects,
+        objects: info.objects.length,
         totalSize: info.totalSize,
       );
     });

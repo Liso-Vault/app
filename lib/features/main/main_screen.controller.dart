@@ -294,30 +294,13 @@ class MainScreenController extends GetxController
     );
 
     if (itemsToDelete.isNotEmpty) {
-      await HiveManager.items!.deleteAll(itemsToDelete);
+      await HiveManager.hidelete(itemsToDelete);
     }
 
     // FILTER GROUP
     items = items
         .where((e) => e.group == drawerController.filterGroupIndex.value)
         .toList();
-
-    // FILTER FAVORITES
-    if (drawerController.filterFavorites.value) {
-      items = items.where((e) => e.favorite).toList();
-    }
-
-    // FILTER PROTECTED
-    if (drawerController.filterProtected.value) {
-      items = items.where((e) => e.protected).toList();
-    }
-
-    // FILTER TRASHED
-    if (drawerController.filterTrashed.value) {
-      items = items.where((e) => e.trashed).toList();
-    } else {
-      items = items.where((e) => !e.trashed).toList();
-    }
 
     // FILTER BY CATEGORY
     if (drawerController.filterCategory() != LisoItemCategory.none) {
@@ -331,6 +314,28 @@ class MainScreenController extends GetxController
       items = items
           .where((e) => e.tags.contains(drawerController.filterTag()))
           .toList();
+    }
+
+    // FILTER FAVORITES
+    if (drawerController.filterFavorites.value) {
+      items = items.where((e) => e.favorite).toList();
+    }
+
+    // FILTER PROTECTED
+    if (drawerController.filterProtected.value) {
+      items = items.where((e) => e.protected).toList();
+    }
+
+    // FILTER TRASHED
+    if (drawerController.filterTrashed.value) {
+      items = items.where((e) => e.trashed && !e.deleted).toList();
+    } else {
+      // FILTER DELETED
+      if (drawerController.filterDeleted.value) {
+        items = items.where((e) => e.deleted).toList();
+      } else {
+        items = items.where((e) => !e.trashed && !e.deleted).toList();
+      }
     }
 
     // --- SORT BY TITLE ---- //
@@ -446,5 +451,43 @@ class MainScreenController extends GetxController
   void _updateBuildNumber() async {
     final packageInfo = await PackageInfo.fromPlatform();
     persistence.lastBuildNumber.val = int.parse(packageInfo.buildNumber);
+  }
+
+  void emptyTrash() {
+    void _empty() async {
+      Get.back();
+      final trashedKeys = HiveManager.items!.values.where((e) => e.trashed);
+      await HiveManager.hidelete(trashedKeys);
+      load();
+
+      UIUtils.showSnackBar(
+        title: 'Empty Trash',
+        message: 'Your trash is now emptied',
+      );
+    }
+
+    const dialogContent = Text(
+      'Are you sure you want to empty the trash?',
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Empty Trash'),
+      content: Utils.isDrawerExpandable
+          ? dialogContent
+          : const SizedBox(
+              width: 450,
+              child: dialogContent,
+            ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _empty,
+          child: const Text('Empty Trash'),
+        ),
+      ],
+    ));
   }
 }

@@ -170,10 +170,12 @@ class SettingsScreen extends GetView<SettingsScreenController>
         const Divider(),
         if (kDebugMode) ...[
           ListTile(
-            leading: Icon(Iconsax.code, color: themeColor),
+            leading: const Icon(Iconsax.code),
             trailing: const Icon(Iconsax.arrow_right_3),
             title: const Text('Debugging'),
             onTap: () => Utils.adaptiveRouteOpen(name: Routes.debug),
+            selected: true,
+            selectedColor: Colors.red,
           ),
           const Divider(),
         ]

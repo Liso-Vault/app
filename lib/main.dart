@@ -12,6 +12,7 @@ import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/firebase_options.dart';
+import 'package:path/path.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'core/firebase/config/config.service.dart';
@@ -44,6 +45,8 @@ void main() async {
     // initialize first to catch errors
     Get.put(CrashlyticsService());
     await LisoPaths.init();
+    await PersistenceService.init();
+
     // GetX services
     Get.lazyPut(() => WalletService());
     Get.lazyPut(() => ConnectivityService());

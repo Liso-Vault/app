@@ -19,10 +19,14 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
 
   @override
   Widget build(BuildContext context) {
-    Widget itemBuilder(context, index) => S3ContentTile(
-          content: controller.data[index],
-          controller: controller,
-        );
+    Widget itemBuilder(context, index) {
+      final content = controller.data[index];
+
+      return S3ContentTile(
+        // key: ValueKey(content),
+        content,
+      );
+    }
 
     final listView = Obx(
       () => RefreshIndicator(
@@ -61,7 +65,9 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
 
     final appBar = AppBar(
       title: Text(
-        controller.isTimeMachine ? 'Time Machine' : 'file_explorer'.tr,
+        controller.isTimeMachine
+            ? 'Time Machine'
+            : (controller.isPicker ? 'File Picker' : 'file_explorer'.tr),
       ),
       centerTitle: false,
       leading: const AppBarLeadingButton(),

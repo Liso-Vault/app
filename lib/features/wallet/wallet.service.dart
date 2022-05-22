@@ -54,6 +54,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   ConfigLimitsSetting get limits {
     final limits_ = ConfigService.to.limits;
+    if (wallet == null) return limits_.tier0;
 
     // check if user is subscribed to premium
     // check if user is a staker
@@ -66,34 +67,34 @@ class WalletService extends GetxService with ConsoleMixin {
     if (users.isNotEmpty) {
       final user = users.first;
 
-      if (user.limits == 'tier2') {
+      if (user.limits == 'tier1') {
+        return limits_.tier1;
+      } else if (user.limits == 'tier2') {
         return limits_.tier2;
       } else if (user.limits == 'tier3') {
         return limits_.tier3;
-      } else if (user.limits == 'tier4') {
-        return limits_.tier4;
       }
     }
 
     final balance = PersistenceService.to.lastLisoBalance.val;
 
     // check if user is a tier2 holder
+    if (balance > limits_.tier1.tokenThreshold) {
+      return limits_.tier1;
+    }
+
+    // check if user is a tier3 holder
     if (balance > limits_.tier2.tokenThreshold) {
       return limits_.tier2;
     }
 
-    // check if user is a tier3 holder
+    // check if user is a tier4 holder
     if (balance > limits_.tier3.tokenThreshold) {
       return limits_.tier3;
     }
 
-    // check if user is a tier4 holder
-    if (balance > limits_.tier4.tokenThreshold) {
-      return limits_.tier4;
-    }
-
     // a tier1 user
-    return limits_.tier1;
+    return limits_.tier0;
   }
 
   @override
@@ -177,34 +178,34 @@ class WalletService extends GetxService with ConsoleMixin {
     // final signedMessage = await privateKey.sign(messageBytes);
     // final signedMessageHex = HEX.encode(signedMessage);
 
-    console.info('message: $message');
-    console.warning('privateKeyHex: $privateKeyHex');
+    // console.info('message: $message');
+    // console.warning('privateKeyHex: $privateKeyHex');
 
     final signature = EthSigUtil.signMessage(
       privateKey: privateKeyHex,
       message: messageBytes,
     );
 
-    final recovered = EthSigUtil.ecRecover(
-      signature: signature,
-      message: messageBytes,
-    );
+    // final recovered = EthSigUtil.ecRecover(
+    //   signature: signature,
+    //   message: messageBytes,
+    // );
 
-    console.info('EthSigUtil signature: $signature');
-    console.wtf('EthSigUtil recovered: $recovered');
+    // console.info('EthSigUtil signature: $signature');
+    // console.wtf('EthSigUtil recovered: $recovered');
 
     final personalSignature = EthSigUtil.signPersonalMessage(
       privateKey: privateKeyHex,
       message: messageBytes,
     );
 
-    final personalRecovered = EthSigUtil.ecRecover(
-      signature: personalSignature,
-      message: messageBytes,
-    );
+    // final personalRecovered = EthSigUtil.ecRecover(
+    //   signature: personalSignature,
+    //   message: messageBytes,
+    // );
 
-    console.info('EthSigUtil personalSignature: $personalSignature');
-    console.wtf('EthSigUtil personalRecovered: $personalRecovered');
+    // console.info('EthSigUtil personalSignature: $personalSignature');
+    // console.wtf('EthSigUtil personalRecovered: $personalRecovered');
 
     // console.info('signedMessageHex: $signedMessageHex');
 

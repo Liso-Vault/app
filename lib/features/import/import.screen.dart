@@ -38,27 +38,8 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
 
         return Wrap(
           runSpacing: 5,
+          spacing: 5,
           children: [
-            ChoiceChip(
-              label: const Text('IPFS'),
-              selected: isIPFS,
-              avatar: isIPFS ? const Icon(Icons.check) : null,
-              onSelected: (value) {
-                persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
-                S3Service.to.init();
-              },
-            ),
-            const SizedBox(width: 10),
-            const SizedBox(width: 10),
-            ChoiceChip(
-              label: const Text('SkyNet'),
-              selected: isSkyNet,
-              avatar: isSkyNet ? const Icon(Icons.check) : null,
-              onSelected: (value) {
-                persistence.syncProvider.val = LisoSyncProvider.skynet.name;
-                S3Service.to.init();
-              },
-            ),
             ChoiceChip(
               label: const Text('Sia'),
               selected: isSia,
@@ -68,7 +49,6 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 S3Service.to.init();
               },
             ),
-            const SizedBox(width: 10),
             ChoiceChip(
               label: const Text('Storj'),
               selected: isStorj,
@@ -78,7 +58,24 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 S3Service.to.init();
               },
             ),
-            const SizedBox(width: 10),
+            ChoiceChip(
+              label: const Text('IPFS'),
+              selected: isIPFS,
+              avatar: isIPFS ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
+                S3Service.to.init();
+              },
+            ),
+            ChoiceChip(
+              label: const Text('SkyNet'),
+              selected: isSkyNet,
+              avatar: isSkyNet ? const Icon(Icons.check) : null,
+              onSelected: (value) {
+                persistence.syncProvider.val = LisoSyncProvider.skynet.name;
+                S3Service.to.init();
+              },
+            ),
             ChoiceChip(
               label: const Text('Custom'),
               selected: isCustom,

@@ -25,6 +25,8 @@ import 'package:liso/features/welcome/welcome_screen.controller.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
 import '../Cipher/cipher_screen.controller.dart';
+import '../attachments/attachments.screen.dart';
+import '../attachments/attachments_screen.controller.dart';
 import '../cipher/cipher.screen.dart';
 import '../configuration/configuration.screen.dart';
 import '../item/item.screen.dart';
@@ -129,6 +131,11 @@ class AppPages {
       name: Routes.s3Explorer,
       page: () => const S3ExplorerScreen(),
       binding: S3ExplorerScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.attachments,
+      page: () => const AttachmentsScreen(),
+      binding: AttachmentsScreenBinding(),
     ),
     GetPage(
       name: Routes.wallet,

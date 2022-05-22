@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -12,6 +13,8 @@ import '../../core/services/cipher.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 
 class CipherScreenBinding extends Bindings {
   @override
@@ -49,6 +52,16 @@ class CipherScreenController extends GetxController
   // FUNCTIONS
 
   void encrypt() async {
+    if (!WalletService.to.limits.cipherTool) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Cipher Tool',
+          'body': 'Upgrade to use Cipher Tool',
+        }, // TODO: add message
+      );
+    }
+
     Globals.timeLockEnabled = false; // temporarily disable
     FilePickerResult? result;
 

@@ -37,10 +37,14 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(7)
   bool trashed;
   @HiveField(8)
-  List<String> tags;
+  bool deleted;
   @HiveField(9)
-  HiveMetadata metadata;
+  List<String> tags;
   @HiveField(10)
+  List<String> attachments;
+  @HiveField(11)
+  HiveMetadata metadata;
+  @HiveField(12)
   int group;
 
   HiveLisoItem({
@@ -52,7 +56,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.favorite = false,
     this.protected = false,
     this.trashed = false,
+    this.deleted = false,
     this.tags = const [],
+    this.attachments = const [],
     required this.metadata,
     required this.group,
   });
@@ -68,7 +74,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         favorite: json["favorite"],
         protected: json["protected"],
         trashed: json["trashed"],
+        deleted: json["deleted"],
         tags: List<String>.from(json["tags"].map((x) => x)),
+        attachments: List<String>.from(json["attachments"].map((x) => x)),
         metadata: HiveMetadata.fromJson(json["metadata"]),
         group: json["group"],
       );
@@ -83,7 +91,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "favorite": favorite,
       "protected": protected,
       "trashed": trashed,
+      "deleted": deleted,
       "tags": List<dynamic>.from(tags.map((x) => x)),
+      "attachments": List<dynamic>.from(attachments.map((x) => x)),
       "metadata": metadata.toJson(),
       "group": group,
     };
@@ -100,6 +110,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       protected: protected,
       trashed: trashed,
       tags: tags,
+      attachments: attachments,
       metadata: metadata,
       group: group,
     );
@@ -115,7 +126,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         favorite,
         protected,
         trashed,
+        deleted,
         tags,
+        attachments,
         metadata,
         group,
       ];

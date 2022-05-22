@@ -1,9 +1,9 @@
 class S3FolderInfo {
-  final int objects;
+  List<Object> objects;
   final int totalSize;
 
   S3FolderInfo({
-    this.objects = 0,
+    this.objects = const [],
     this.totalSize = 0,
   });
 }

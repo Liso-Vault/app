@@ -107,20 +107,6 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                 runSpacing: 5,
                 children: [
                   ChoiceChip(
-                    label: const Text('IPFS'),
-                    selected: isIPFS,
-                    avatar: isIPFS ? const Icon(Icons.check) : null,
-                    onSelected: (value) => persistence.syncProvider.val =
-                        LisoSyncProvider.ipfs.name,
-                  ),
-                  ChoiceChip(
-                    label: const Text('SkyNet'),
-                    selected: isSkyNet,
-                    avatar: isSkyNet ? const Icon(Icons.check) : null,
-                    onSelected: (value) => persistence.syncProvider.val =
-                        LisoSyncProvider.skynet.name,
-                  ),
-                  ChoiceChip(
                     label: const Text('Sia'),
                     selected: isSia,
                     avatar: isSia ? const Icon(Icons.check) : null,
@@ -133,6 +119,20 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                     avatar: isStorj ? const Icon(Icons.check) : null,
                     onSelected: (value) => persistence.syncProvider.val =
                         LisoSyncProvider.storj.name,
+                  ),
+                  ChoiceChip(
+                    label: const Text('IPFS'),
+                    selected: isIPFS,
+                    avatar: isIPFS ? const Icon(Icons.check) : null,
+                    onSelected: (value) => persistence.syncProvider.val =
+                        LisoSyncProvider.ipfs.name,
+                  ),
+                  ChoiceChip(
+                    label: const Text('SkyNet'),
+                    selected: isSkyNet,
+                    avatar: isSkyNet ? const Icon(Icons.check) : null,
+                    onSelected: (value) => persistence.syncProvider.val =
+                        LisoSyncProvider.skynet.name,
                   ),
                   ChoiceChip(
                     label: const Text('Custom'),

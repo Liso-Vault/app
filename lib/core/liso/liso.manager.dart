@@ -27,9 +27,10 @@ class LisoManager {
     await BiometricUtils.delete(kBiometricSeedKey);
     // reset hive
     await HiveManager.reset();
-    // nullify wallet
+    // reset wallet
     WalletService.to.reset();
-    await PersistenceService.to.box.erase();
+    // reset persistence
+    await PersistenceService.reset();
     // delete FilePicker caches
     if (GetPlatform.isMobile) {
       await FilePicker.platform.clearTemporaryFiles();

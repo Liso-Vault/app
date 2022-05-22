@@ -26,6 +26,8 @@ class ItemScreenBinding extends Bindings {
 
 class ItemScreenController extends GetxController
     with ConsoleMixin, StateMixin {
+  static ItemScreenController get to => Get.find();
+
   // VARIABLES
   HiveLisoItem? item, originalItem;
 
@@ -37,15 +39,14 @@ class ItemScreenController extends GetxController
   final tagsController = TextEditingController();
 
   List<String> tags = [];
-
-  // parse fields to actual widgets
-  final widgets = <Widget>[].obs;
   final iconUrl = ''.obs;
+  final widgets = <Widget>[].obs;
 
   // PROPERTIES
   final favorite = false.obs;
   final protected = false.obs;
   final groupIndex = PersistenceService.to.groupIndex.val.obs;
+  final attachments = <String>[].obs;
 
   // GETTERS
   // MENU ITEMS
@@ -114,6 +115,7 @@ class ItemScreenController extends GetxController
     protected.value = item!.protected;
     groupIndex.value = item!.group;
     tags = item!.tags;
+    attachments.value = item!.attachments;
   }
 
   Future<void> _loadTemplate() async {
@@ -145,6 +147,7 @@ class ItemScreenController extends GetxController
       title: '',
       fields: fields,
       tags: [],
+      attachments: [],
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
@@ -176,15 +179,14 @@ class ItemScreenController extends GetxController
       );
     }
 
-    final fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
-
     final newItem = HiveLisoItem(
       identifier: const Uuid().v4(),
       category: category,
       iconUrl: iconUrl.value,
       title: titleController.text,
       tags: tags,
-      fields: fields,
+      attachments: attachments,
+      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
@@ -215,6 +217,7 @@ class ItemScreenController extends GetxController
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
     item!.tags = tags;
+    item!.attachments = attachments;
     item!.favorite = favorite.value;
     item!.protected = protected.value;
     item!.group = groupIndex.value;
@@ -292,17 +295,18 @@ class ItemScreenController extends GetxController
   Future<bool> canPop() async {
     // TODO: improve equality check
     final updatedItem = HiveLisoItem(
-      identifier: item!.identifier,
+      identifier: originalItem!.identifier,
       metadata: originalItem!.metadata,
       trashed: originalItem!.trashed,
       category: category,
       title: titleController.text,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      attachments: attachments,
+      tags: tags,
       group: groupIndex.value,
       favorite: favorite.value,
       iconUrl: iconUrl.value,
       protected: protected.value,
-      tags: tags,
     );
 
     bool hasChanges = updatedItem != originalItem!;
@@ -314,15 +318,9 @@ class ItemScreenController extends GetxController
         title: const Text('Unsaved Changes'),
         content: Utils.isDrawerExpandable
             ? dialogContent
-            : const SizedBox(
-                width: 450,
-                child: dialogContent,
-              ),
+            : const SizedBox(width: 450, child: dialogContent),
         actions: [
-          TextButton(
-            onPressed: Get.back,
-            child: Text('cancel'.tr),
-          ),
+          TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
           TextButton(
             onPressed: () {
               hasChanges = false;
@@ -335,5 +333,15 @@ class ItemScreenController extends GetxController
     }
 
     return !hasChanges;
+  }
+
+  void attach() async {
+    final attachments_ = await Utils.adaptiveRouteOpen(
+      name: Routes.attachments,
+      parameters: {'attachments': attachments.join(',')},
+    );
+
+    if (attachments_ == null) return;
+    attachments.value = attachments_;
   }
 }

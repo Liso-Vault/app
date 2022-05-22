@@ -13,7 +13,7 @@ import 'package:liso/core/services/persistence.service.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';
-import 'package:minio/models.dart';
+import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
 import 'package:supercharged/supercharged.dart';
 
@@ -34,6 +34,7 @@ class S3Service extends GetxService with ConsoleMixin {
   bool ready = false;
   final config = Get.find<ConfigService>();
   final persistence = Get.find<PersistenceService>();
+  List<S3Content> contentsCache = [];
 
   // PROPERTIES
   final syncing = false.obs;
@@ -265,7 +266,8 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   // currently doesn't work on Filebase
-  Future<Either<dynamic, CopyObjectResult>> backup(S3Content content) async {
+  Future<Either<dynamic, minio.CopyObjectResult>> backup(
+      S3Content content) async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
     console.info('backup: ${content.path}...');
@@ -284,7 +286,8 @@ class S3Service extends GetxService with ConsoleMixin {
     }
   }
 
-  Future<Either<dynamic, StatObjectResult>> stat(S3Content content) async {
+  Future<Either<dynamic, minio.StatObjectResult>> stat(
+      S3Content content) async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
     console.info(
@@ -327,7 +330,7 @@ class S3Service extends GetxService with ConsoleMixin {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
     console.info('fetch: $path...');
-    ListObjectsResult? result;
+    minio.ListObjectsResult? result;
 
     try {
       result = await client!.listAllObjectsV2(
@@ -369,24 +372,11 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(contents);
   }
 
-  Future<S3FolderInfo?> fetchStorageSize() async {
-    final result = await folderInfo(S3Service.to.rootPath);
-
-    if (result.isLeft) {
-      console.error('fetchStorageSize: ${result.left}');
-      return null;
-    }
-
-    storageSize.value = result.right.totalSize;
-    objectsCount.value = result.right.objects;
-    return result.right;
-  }
-
   Future<Either<dynamic, S3FolderInfo>> folderInfo(String s3Path) async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
     console.info('folder size: $s3Path...');
-    ListObjectsResult? result;
+    minio.ListObjectsResult? result;
 
     try {
       result = await client!.listAllObjectsV2(
@@ -411,7 +401,7 @@ class S3Service extends GetxService with ConsoleMixin {
     console.info('total size: $totalSize');
 
     return Right(S3FolderInfo(
-      objects: result.objects.length,
+      objects: result.objects,
       totalSize: totalSize,
     ));
   }
@@ -526,7 +516,28 @@ class S3Service extends GetxService with ConsoleMixin {
     return Right(eTag);
   }
 
-  List<S3Content> _objectsToContents(List<Object> objects) {
+  Future<S3FolderInfo?> fetchStorageSize() async {
+    final result = await folderInfo(S3Service.to.rootPath);
+
+    if (result.isLeft) {
+      console.error('fetchStorageSize: ${result.left}');
+      return null;
+    }
+
+    final info = result.right;
+
+    storageSize.value = info.totalSize;
+    objectsCount.value = info.objects.length;
+
+    // cache objects
+    contentsCache = _objectsToContents(info.objects as List<minio.Object>);
+
+    return info;
+  }
+
+  // UTILS
+
+  List<S3Content> _objectsToContents(List<minio.Object> objects) {
     return objects
         .map(
           (e) => S3Content(

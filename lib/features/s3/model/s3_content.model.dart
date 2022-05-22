@@ -3,6 +3,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:minio/models.dart';
 import 'package:path/path.dart';
 
+import '../../../core/utils/minio.util.dart';
 import '../../../core/utils/utils.dart';
 import '../explorer/file_extensions.dart';
 
@@ -20,6 +21,24 @@ class S3Content with ConsoleMixin {
     this.type = S3ContentType.directory,
     this.object,
   });
+
+  factory S3Content.fromJson(Map<String, dynamic> json) => S3Content(
+        name: json["name"],
+        path: json["path"],
+        size: json["size"],
+        type: S3ContentType.values.byName(json["type"]),
+        object: MinioUtil.objectFromJson(json["object"]),
+      );
+
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "path": path,
+      "size": size,
+      "type": type.name,
+      "object": MinioUtil.objectToJson(object),
+    };
+  }
 
   bool get isVaultFile => fileExtension == kVaultExtension;
 

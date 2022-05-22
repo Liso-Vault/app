@@ -37,8 +37,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     MainScreenController.to.onItemsUpdated();
   }
 
-  void _delete() {
-    item.delete();
+  void _delete() async {
+    item.deleted = true;
+    item.metadata = await item.metadata.getUpdated();
+    item.save();
     MainScreenController.to.onItemsUpdated();
   }
 
@@ -51,6 +53,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   void _restore() async {
     item.trashed = false;
+    item.deleted = false;
     item.metadata = await item.metadata.getUpdated();
     item.save();
     MainScreenController.to.onItemsUpdated();
@@ -103,11 +106,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           leading: const Icon(Iconsax.refresh),
           onSelected: _restore,
         ),
-        ContextMenuItem(
-          title: 'delete_permanently'.tr,
-          leading: const Icon(Iconsax.trash),
-          onSelected: _delete,
-        ),
+        if (!item.deleted) ...[
+          ContextMenuItem(
+            title: 'delete'.tr,
+            leading: const Icon(Iconsax.trash),
+            onSelected: _delete,
+          ),
+        ]
       ] else ...[
         ContextMenuItem(
           title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
@@ -136,73 +141,68 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ),
     ];
 
-    final title = Text(
-      item.title,
-      overflow: TextOverflow.ellipsis,
-      maxLines: 1,
+    final bottomSubTitle = Wrap(
+      runSpacing: 5,
+      children: [
+        if (item.favorite) ...[
+          const Padding(
+            padding: EdgeInsets.only(top: 3),
+            child: Icon(Iconsax.heart, color: Colors.pink, size: 10),
+          ),
+          const SizedBox(width: 5),
+        ],
+        if (item.protected) ...[
+          Padding(
+            padding: const EdgeInsets.only(top: 3),
+            child: Icon(Iconsax.shield_tick, color: themeColor, size: 10),
+          ),
+          const SizedBox(width: 5),
+        ],
+        if (item.attachments.isNotEmpty) ...[
+          const Padding(
+            padding: EdgeInsets.only(top: 3),
+            child: Icon(Iconsax.attach_circle, color: null, size: 10),
+          ),
+          const SizedBox(width: 5),
+        ],
+        if (item.tags.isNotEmpty) ...[
+          ...item.tags
+              .map(
+                (e) => CustomChip(
+                  label: Text(
+                    e,
+                    style: const TextStyle(fontSize: 10),
+                  ),
+                ),
+              )
+              .toList(),
+        ],
+        Text(
+          item.updatedTimeAgo,
+          style: const TextStyle(fontSize: 10, color: Colors.grey),
+        ),
+        if (item.trashed) ...[
+          const SizedBox(width: 5),
+          Text(
+            '${item.daysLeftToDelete} days left till ',
+            style: const TextStyle(fontSize: 10, color: Colors.red),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 3),
+            child: Icon(Iconsax.trash, color: Colors.red, size: 10),
+          ),
+        ]
+      ],
     );
 
     final subTitle = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (item.subTitle.isNotEmpty) ...[
-          Text(
-            item.subTitle,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-          ),
+        if (item.subTitle.trim().isNotEmpty) ...[
+          Text(item.subTitle, overflow: TextOverflow.ellipsis, maxLines: 1),
           const SizedBox(height: 5),
         ],
-        Wrap(
-          runSpacing: 5,
-          children: [
-            if (item.favorite) ...[
-              const Padding(
-                padding: EdgeInsets.only(top: 3),
-                child: FaIcon(
-                  FontAwesomeIcons.solidHeart,
-                  color: Colors.pink,
-                  size: 10,
-                ),
-              ),
-              const SizedBox(width: 5),
-            ],
-            if (item.protected) ...[
-              Padding(
-                padding: const EdgeInsets.only(top: 3),
-                child: FaIcon(
-                  FontAwesomeIcons.shield,
-                  color: themeColor,
-                  size: 10,
-                ),
-              ),
-              const SizedBox(width: 5),
-            ],
-            if (item.tags.isNotEmpty) ...[
-              ...item.tags
-                  .map(
-                    (e) => CustomChip(
-                      label: Text(
-                        e,
-                        style: const TextStyle(fontSize: 10),
-                      ),
-                    ),
-                  )
-                  .toList(),
-              const SizedBox(width: 5),
-            ],
-            Text(
-              item.updatedTimeAgo,
-              style: const TextStyle(fontSize: 10, color: Colors.grey),
-            ),
-            if (item.trashed) ...[
-              Text(
-                ' 🗑  ${item.daysLeftToDelete} days left',
-                style: const TextStyle(fontSize: 10, color: Colors.red),
-              ),
-            ]
-          ],
-        )
+        bottomSubTitle,
       ],
     );
 
@@ -218,9 +218,15 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           );
 
     var tile = ListTile(
+      selected: item.deleted,
+      selectedColor: item.deleted ? Colors.red : null,
       leading: leading,
-      title: title,
       subtitle: subTitle,
+      title: Text(
+        item.title,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
       trailing: ContextMenuButton(
         menuItems,
         child: const Icon(LineIcons.verticalEllipsis),
@@ -230,8 +236,9 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       onTap: _open,
     );
 
-    // if large screen
     if (isLargeScreen) return tile;
+
+    // if small screen, add swipe actions
     final leadingActions = <SwipeAction>[
       SwipeAction(
         title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
@@ -279,13 +286,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ),
     ];
 
-    final swipeAction = SwipeActionCell(
+    return SwipeActionCell(
       key: ObjectKey(item),
       leadingActions: leadingActions,
       trailingActions: trailingActions,
       child: tile,
     );
-
-    return swipeAction;
   }
 }

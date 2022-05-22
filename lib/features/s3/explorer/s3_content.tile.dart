@@ -1,35 +1,40 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/features/s3/explorer/s3_content_tile.controller.dart';
 import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
 
 import '../../../core/utils/globals.dart';
+import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';
 import '../../menu/menu.item.dart';
 import '../model/s3_content.model.dart';
 
-class S3ContentTile extends StatelessWidget with ConsoleMixin {
+class S3ContentTile extends GetWidget<S3ContentTileController>
+    with ConsoleMixin {
   final S3Content content;
-  final S3ExplorerScreenController controller;
 
-  const S3ContentTile({
+  const S3ContentTile(
+    this.content, {
     Key? key,
-    required this.content,
-    required this.controller,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final isPicker = Get.parameters['type'] == 'picker';
+    final explorerController = Get.find<S3ExplorerScreenController>();
+
     final menuItems = [
-      if (content.isVaultFile) ...[
+      if (content.isVaultFile && !isPicker) ...[
         ContextMenuItem(
           title: 'Restore',
           leading: const Icon(Iconsax.import_1),
           onSelected: () => controller.restore(content),
         ),
-        if (!controller.currentPath.value.contains('Backups/')) ...[
+        if (!explorerController.currentPath.value.contains('Backups/')) ...[
           ContextMenuItem(
             title: 'Backup',
             leading: const Icon(Iconsax.document_copy),
@@ -37,7 +42,7 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
           ),
         ]
       ] else ...[
-        if (content.isFile) ...[
+        if (content.isFile && !isPicker) ...[
           ContextMenuItem(
             title: 'Download',
             leading: const Icon(Iconsax.import_1),
@@ -92,20 +97,24 @@ class S3ContentTile extends StatelessWidget with ConsoleMixin {
       title: Text(content.maskedName),
       subtitle: subTitle,
       iconColor: themeColor,
-      leading: controller.leadingIcon(content),
+      leading: Utils.s3ContentIcon(content),
       trailing: ContextMenuButton(
         menuItems,
         child: const Icon(LineIcons.verticalEllipsis),
       ),
       onTap: () {
         if (content.isFile) {
+          if (isPicker) {
+            return Get.back(result: content.object!.eTag);
+          }
+
           if (content.isVaultFile) {
             controller.askToImport(content);
           } else {
             controller.askToDownload(content);
           }
         } else {
-          controller.load(path: content.path);
+          explorerController.load(path: content.path);
         }
       },
     );

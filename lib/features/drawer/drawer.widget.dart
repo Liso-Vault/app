@@ -1,5 +1,6 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -106,6 +107,25 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   selected: controller.filterTrashed(),
                 ),
               ),
+              if (kDebugMode) ...[
+                Obx(
+                  () => ListTile(
+                    selected: controller.filterDeleted(),
+                    selectedColor: Colors.red,
+                    leading: const Icon(Iconsax.slash),
+                    onTap: controller.filterDeletedItems,
+                    title: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Deleted'),
+                        if (controller.deletedCount > 0) ...[
+                          Chip(label: Text(controller.deletedCount.toString())),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ]
             ],
           ),
           ExpansionTile(

@@ -17,12 +17,12 @@ dependencies:
   alchemy_web3:
     git: https://github.com/oliverbytes/alchemy_web3.git
   web3dart: ^2.4.0 # Ethereum
-  eth_sig_util: ^0.0.7
+  eth_sig_util: ^0.0.7 # Ethereum signature
   bip39: ^1.0.6 # Mnemonic Seed Phrases
-  bip32: ^2.0.0 #
-  hex: ^0.2.0
-  cryptography: ^2.0.5 # Cipher & Decipher
-  encrypt: ^5.0.1
+  bip32: ^2.0.0 # Derive Path
+  hex: ^0.2.0 # Hex encoding & decoding
+  # cryptography: ^2.0.5 # Cipher & Decipher
+  encrypt: ^5.0.1 # File Encryption
   biometric_storage: ^4.1.1 # secure storage with biometrics
   local_auth: ^2.0.2 # check biometric availability
   walletconnect_dart: ^0.0.10
@@ -38,15 +38,14 @@ dependencies:
 
   # IO
   hive: ^2.2.1 # database
-  hive_flutter: ^1.1.0
   get_storage: ^2.0.3 # persistence
   path_provider: ^2.0.10
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
   file_picker: ^4.5.1 # exporting + importing
   archive: ^3.3.0 # archiving hive boxes
-  http: ^0.13.4
-  minio: ^3.5.0 # Filebase API
+  http: ^0.13.4 # web3dart client
+  minio: ^3.5.0 # S3 API
   coingecko_api: ^1.0.2+2 # Coingecko API
 
   # UI
@@ -59,12 +58,12 @@ dependencies:
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
   flutter_swipe_action_cell: ^3.0.0
-  flutter_quill: 
+  flutter_quill:
     git: https://github.com/oliverbytes/flutter-quill.git
   badges: ^2.0.2 # pending changes indicator
   cached_network_image: ^3.2.1 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
-  flutter_svg: ^1.0.3
+  flutter_svg: ^1.0.3 # dice bear avatars
   qr_flutter: ^4.0.0 # generate QR Codes
 
   # TOOLS
@@ -76,7 +75,6 @@ dependencies:
   intl: ^0.17.0 # date formatting
   share_plus: ^4.0.4 # exporting files and sharing texts
   equatable: ^2.0.3
-  connectivity_plus: ^2.3.0 # internet connectivity checking
   app_settings: ^4.1.6
   uuid: ^3.0.6 # unique identifiers for items
   window_manager: ^0.2.3 # set desktop window size
@@ -86,6 +84,7 @@ dependencies:
   # INFO
   device_info_plus: ^3.2.3
   package_info_plus: ^1.4.2
+  connectivity_plus: ^2.3.0 # internet connectivity checking
 
 dev_dependencies:
   # flutter_test:
@@ -96,7 +95,6 @@ dev_dependencies:
   build_runner: ^2.1.11
   flutter_native_splash: ^2.2.0+1
   dart_code_metrics: ^4.15.2 # checking unused stuffs
-  msix: ^3.6.2 # windows installer packager
 
 flutter:
   uses-material-design: true

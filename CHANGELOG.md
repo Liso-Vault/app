@@ -6,6 +6,7 @@
 - New! Liso vault file format
 - Added! Private Key Field for Crypto Wallet Template
 - New! Share file download url valid for 1 hour
+- New! Add file attachments to items
 - New! Configure a custom Sync Provider
 - New! Use your custom Sync Provider Configuration
 - New! Setting for automatic client-side file encryption

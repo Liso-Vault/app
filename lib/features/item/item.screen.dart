@@ -124,8 +124,15 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      // TAGS
-      tagsInput,
+      tagsInput, // TAGS
+      const SizedBox(height: 10),
+      ListTile(
+        title: Obx(() => Text('${controller.attachments.length} Attachments')),
+        trailing: Icon(Iconsax.attach_circle, color: themeColor),
+        contentPadding: EdgeInsets.zero,
+        onTap: controller.attach,
+      ),
+      const Divider(),
       const SizedBox(height: 10),
       DropdownButtonFormField<int>(
         isExpanded: true,
@@ -162,7 +169,6 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         ),
         controller.protected,
       ),
-
       if (mode == 'update') ...[
         const Divider(),
         const SizedBox(height: 20),
@@ -211,10 +217,10 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
     final form = Form(
       key: controller.formKey,
       child: ListView.builder(
-        itemCount: items.length,
         shrinkWrap: true,
-        itemBuilder: (context, index) => items[index],
+        itemCount: items.length,
         padding: const EdgeInsets.all(30),
+        itemBuilder: (context, index) => items[index],
       ),
     );
 

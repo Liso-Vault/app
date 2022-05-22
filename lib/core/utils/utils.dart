@@ -11,6 +11,7 @@ import 'package:liso/features/app/pages.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:window_manager/window_manager.dart';
 
+import '../../features/s3/model/s3_content.model.dart';
 import '../services/persistence.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'globals.dart';
@@ -252,5 +253,49 @@ class Utils {
   static String? validateFolderName(String name) {
     if (name.isNotEmpty) return null;
     return 'Invalid Folder Name';
+  }
+
+  static Widget s3ContentIcon(S3Content content) {
+    if (!content.isFile) return const Icon(Iconsax.folder_open5);
+    var iconData = Iconsax.document_1;
+    if (content.fileType == null) return Icon(iconData);
+
+    switch (content.fileType!) {
+      case 'image':
+        iconData = Iconsax.gallery;
+        break;
+      case 'video':
+        iconData = Iconsax.play;
+        break;
+      case 'archive':
+        iconData = Iconsax.archive;
+        break;
+      case 'audio':
+        iconData = Iconsax.music;
+        break;
+      case 'code':
+        iconData = Icons.code;
+        break;
+      case 'book':
+        iconData = Iconsax.book_1;
+        break;
+      case 'exec':
+        iconData = Iconsax.code;
+        break;
+      case 'web':
+        iconData = Iconsax.chrome;
+        break;
+      case 'sheet':
+        iconData = Iconsax.document_text;
+        break;
+      case 'text':
+        iconData = Iconsax.document;
+        break;
+      case 'font':
+        iconData = Iconsax.text_block;
+        break;
+    }
+
+    return Icon(iconData);
   }
 }

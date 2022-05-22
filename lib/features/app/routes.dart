@@ -22,12 +22,9 @@ abstract class Routes {
   static const syncing = '/syncing';
   static const syncProvider = '/sync_provider';
 
-  // IPFS
-  static const ipfs = '/ipfs';
-  static const ipfsExplorer = '/ipfs_explorer';
-
   // S3
   static const s3Explorer = '/s3_explorer';
+  static const attachments = '/attachments';
 
   // CRYPTO
   static const wallet = '/wallet';

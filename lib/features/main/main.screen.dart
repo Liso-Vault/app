@@ -1,10 +1,10 @@
 import 'package:badges/badges.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/services/persistence.service.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -185,17 +185,32 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       actions: appBarActions,
     );
 
+    // TODO: show only if there are trash items
+    final clearTrashFab = FloatingActionButton(
+      onPressed: controller.emptyTrash,
+      child: const Icon(Iconsax.trash),
+    );
+
     final floatingActionButton = Obx(
-      () => S3Service.to.syncing.value ||
-              DrawerMenuController.to.filterTrashed.value
-          ? const SizedBox.shrink()
-          : ContextMenuButton(
-              controller.menuItemsCategory,
-              child: FloatingActionButton(
-                child: const Icon(LineIcons.plus),
-                onPressed: () {},
-              ),
-            ),
+      () {
+        if (S3Service.to.syncing.value) return const SizedBox.shrink();
+
+        if (DrawerMenuController.to.filterTrashed.value) {
+          if (DrawerMenuController.to.trashedCount > 0) {
+            return clearTrashFab;
+          } else {
+            return const SizedBox.shrink();
+          }
+        }
+
+        return ContextMenuButton(
+          controller.menuItemsCategory,
+          child: FloatingActionButton(
+            child: const Icon(LineIcons.plus),
+            onPressed: () {},
+          ),
+        );
+      },
     );
 
     if (screen.isDesktop) {
@@ -207,11 +222,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             child: Scaffold(
               appBar: appBar,
               body: content,
-              floatingActionButton: Obx(
-                () => !DrawerMenuController.to.filterTrashed.value
-                    ? floatingActionButton
-                    : const SizedBox.shrink(),
-              ),
+              floatingActionButton: floatingActionButton,
             ),
           ),
         ],
@@ -220,8 +231,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       return Scaffold(
         appBar: appBar,
         body: content,
-        floatingActionButton: floatingActionButton,
         drawer: const DrawerMenu(),
+        floatingActionButton: floatingActionButton,
       );
     }
   }
