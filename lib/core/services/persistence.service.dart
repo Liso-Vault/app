@@ -27,11 +27,8 @@ class PersistenceService extends GetxService with ConsoleMixin {
     await box_!.erase();
   }
 
-  // TODO: use secure storage
+  // WALLET JSON
   final wallet = ''.val('wallet', getBox: box);
-  final s3AccessKey = ''.val('s3 access key', getBox: box);
-  final s3SecretKey = ''.val('s3 secret key', getBox: box);
-
   // GENERAL
   final localeCode = 'en'.val('locale code', getBox: box);
   final crashReporting = true.val('crash reporting', getBox: box);
@@ -58,6 +55,8 @@ class PersistenceService extends GetxService with ConsoleMixin {
   final s3ObjectsCache = ''.val('s3 objects cache', getBox: box);
   // CUSTOM SYNC PROVIDER
   final s3Endpoint = ''.val('s3 endpoint', getBox: box);
+  final s3AccessKey = ''.val('s3 access key', getBox: box);
+  final s3SecretKey = ''.val('s3 secret key', getBox: box);
   final s3Bucket = ''.val('s3 bucket', getBox: box);
   final s3Port = ''.val('s3 port', getBox: box);
   final s3Region = ''.val('s3 region', getBox: box);

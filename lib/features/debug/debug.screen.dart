@@ -7,13 +7,14 @@ import 'package:get/state_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive.persistence.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
+import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -129,10 +130,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Persistence'),
-          subtitle: GetBuilder<Persistence>(
-            init: Persistence.to,
-            builder: (_) => Text(_.test.val),
-          ),
+          subtitle: PersistenceBuilder((p) => Text(p.test.val)),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () {
             console.warning('before: ${Persistence.to.test.val}');
