@@ -3,7 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/persistence/persistence_builder.widget.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/passphrase.card.dart';
@@ -21,11 +22,11 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final persistence = Get.find<PersistenceService>();
+    final persistence = Get.find<Persistence>();
 
     // TODO: reuse from configuration screen
-    final syncOptions = SimpleBuilder(
-      builder: (_) {
+    final syncOptions = PersistenceBuilder(
+      builder: (p, context) {
         final isSia = persistence.syncProvider.val == LisoSyncProvider.sia.name;
         final isIPFS =
             persistence.syncProvider.val == LisoSyncProvider.ipfs.name;

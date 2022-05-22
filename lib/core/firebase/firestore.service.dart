@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
 
@@ -39,7 +39,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // data will be used for airdrops, and other promotions
   void record({required int objects, required int totalSize}) async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
-    if (!PersistenceService.to.analytics.val) return;
+    if (!Persistence.to.analytics.val) return;
 
     // TODO: calculate vault size for web
     final vaultFile = File(join(
@@ -59,8 +59,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'files': objects,
         },
         'settings': {
-          'sync': PersistenceService.to.canSync,
-          'theme': PersistenceService.to.theme.val,
+          'sync': Persistence.to.canSync,
+          'theme': Persistence.to.theme.val,
         }
       },
     };

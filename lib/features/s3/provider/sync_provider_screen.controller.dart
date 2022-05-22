@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:minio/minio.dart';
@@ -22,7 +22,7 @@ class SyncProviderScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();
-  final persistence = Get.find<PersistenceService>();
+  final persistence = Get.find<Persistence>();
 
   final endpointController = TextEditingController();
   final accessKeyController = TextEditingController();

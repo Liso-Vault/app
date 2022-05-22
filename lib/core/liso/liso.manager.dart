@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/biometric.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
@@ -30,7 +30,7 @@ class LisoManager {
     // reset wallet
     WalletService.to.reset();
     // reset persistence
-    await PersistenceService.reset();
+    await Persistence.reset();
     // delete FilePicker caches
     if (GetPlatform.isMobile) {
       await FilePicker.platform.clearTemporaryFiles();

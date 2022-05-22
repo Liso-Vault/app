@@ -54,7 +54,7 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
             onSelected: () => controller.share(content),
           ),
         ],
-        // if (PersistenceService.to.syncProvider.val ==
+        // if (Persistence.to.syncProvider.val ==
         //     LisoSyncProvider.ipfs.name) ...[
         //   ContextMenuItem(
         //     title: 'Copy IPFS CID',

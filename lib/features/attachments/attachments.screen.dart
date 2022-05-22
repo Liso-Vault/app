@@ -6,7 +6,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/attachments/attachment.tile.dart';
 
 import '../general/appbar_leading.widget.dart';
-import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../s3/s3.service.dart';
 import 'attachments_screen.controller.dart';

@@ -8,7 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -46,7 +46,7 @@ class MainScreenController extends GetxController
   Timer? timeLockTimer;
   ItemsSearchDelegate? searchDelegate;
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
-  final persistence = Get.find<PersistenceService>();
+  final persistence = Get.find<Persistence>();
 
   List<ContextMenuItem> get menuItemsCategory {
     return LisoItemCategory.values
@@ -54,8 +54,7 @@ class MainScreenController extends GetxController
           if (e.name == 'none') return false;
           if (!GetPlatform.isIOS) return true;
           // allow only notes category for iOS
-          return e == LisoItemCategory.note ||
-              PersistenceService.to.proTester.val;
+          return e == LisoItemCategory.note || Persistence.to.proTester.val;
         })
         .toList()
         .map(
@@ -171,14 +170,14 @@ class MainScreenController extends GetxController
     //     return;
     //   }
 
-    //   if (!PersistenceService.to.syncConfirmed.val) {
+    //   if (!Persistence.to.syncConfirmed.val) {
     //     Get.toNamed(Routes.syncSettings);
     //     return;
     //   }
 
     //   if (!AuthenticationMiddleware.ignoreSync &&
     //       !S3Service.to.inSync.value &&
-    //       PersistenceService.to.sync.val) {
+    //       Persistence.to.sync.val) {
     //     Get.toNamed(Routes.syncing);
     //     return;
     //   }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
@@ -14,6 +14,7 @@ import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/persistence/persistence_builder.widget.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -124,10 +125,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
         ),
       ),
-      SimpleBuilder(
-        builder: (_) {
-          if (!PersistenceService.to.sync.val) return const SizedBox.shrink();
-          final changeCount = PersistenceService.to.changes.val;
+      PersistenceBuilder(
+        builder: (p, context) {
+          if (!Persistence.to.sync.val) return const SizedBox.shrink();
+          final changeCount = Persistence.to.changes.val;
 
           final syncButton = IconButton(
             icon: const Icon(Iconsax.cloud_change),

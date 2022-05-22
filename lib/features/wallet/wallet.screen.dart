@@ -11,6 +11,7 @@ import 'package:liso/features/wallet/assets/assets.screen.dart';
 import 'package:liso/features/wallet/transactions/transactions.screen.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../core/persistence/persistence_builder.widget.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.button.dart';
 import 'nfts/nfts.screen.dart';
@@ -51,18 +52,20 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SimpleBuilder(builder: (_) {
-                    final totalUsd = currencyFormatter
-                        .format(WalletService.to.totalUsdBalance);
+                  PersistenceBuilder(
+                    builder: (p, context) {
+                      final totalUsd = currencyFormatter
+                          .format(WalletService.to.totalUsdBalance);
 
-                    return Text(
-                      '\$$totalUsd',
-                      style: const TextStyle(
-                        fontSize: 40,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    );
-                  }),
+                      return Text(
+                        '\$$totalUsd',
+                        style: const TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      );
+                    },
+                  ),
                   const Text(
                     'TOTAL BALANCE',
                     style: TextStyle(

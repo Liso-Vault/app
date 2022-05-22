@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive.manager.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -80,7 +80,7 @@ class CreatePasswordScreenController extends GetxController
     );
 
     // save to persistence
-    PersistenceService.to.wallet.val = WalletService.to.wallet!.toJson();
+    Persistence.to.wallet.val = WalletService.to.wallet!.toJson();
     // just to make sure the Wallet is ready before proceeding
     await Future.delayed(200.milliseconds);
 

@@ -6,7 +6,7 @@ import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 
@@ -185,7 +185,7 @@ class S3ExplorerScreenController extends GetxController
 
     change(true, status: RxStatus.loading());
     // encrypt file before uploading
-    if (PersistenceService.to.fileEncryption.val) {
+    if (Persistence.to.fileEncryption.val) {
       file = await CipherService.to.encryptFile(file);
     }
 

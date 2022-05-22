@@ -10,7 +10,8 @@ import 'package:liso/features/general/section.widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/services/persistence.service.dart';
+import '../../core/persistence/persistence.dart';
+import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -21,7 +22,7 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final fromSettings = Get.parameters['from'] == 'settings';
-    final persistence = Get.find<PersistenceService>();
+    final persistence = Get.find<Persistence>();
 
     void _continue() {
       NotificationsManager.notify(
@@ -33,8 +34,8 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
       Get.offNamedUntil(Routes.main, (route) => false);
     }
 
-    final syncOptions = SimpleBuilder(
-      builder: (context) {
+    final syncOptions = PersistenceBuilder(
+      builder: (_, context) {
         final isSia = persistence.syncProvider.val == LisoSyncProvider.sia.name;
         final isIPFS =
             persistence.syncProvider.val == LisoSyncProvider.ipfs.name;
@@ -229,8 +230,8 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                 alignment: CrossAxisAlignment.center,
               ),
               const SizedBox(height: 20),
-              SimpleBuilder(
-                builder: (context) {
+              PersistenceBuilder(
+                builder: (p, context) {
                   return Column(
                     children: <Widget>[
                       SwitchListTile(

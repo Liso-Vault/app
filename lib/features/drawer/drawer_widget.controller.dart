@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
 import '../../core/hive/models/item.hive.dart';
-import '../../core/services/persistence.service.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
@@ -22,7 +22,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   static DrawerMenuController get to => Get.find();
 
   // VARIABLES
-  final persistence = Get.find<PersistenceService>();
+  final persistence = Get.find<Persistence>();
 
   // maintain expansion tile state
   bool networksExpanded = false,

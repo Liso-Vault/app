@@ -8,7 +8,7 @@ import 'package:hex/hex.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -147,7 +147,7 @@ class ImportScreenController extends GetxController
     // ignore syncing screen if we just imported
     AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud
-    PersistenceService.to.sync.val =
+    Persistence.to.sync.val =
         importMode.value == ImportMode.liso ? true : false;
     change(null, status: RxStatus.success());
 

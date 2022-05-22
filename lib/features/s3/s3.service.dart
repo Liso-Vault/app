@@ -9,7 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:minio/minio.dart';
@@ -33,7 +33,7 @@ class S3Service extends GetxService with ConsoleMixin {
   Minio? client;
   bool ready = false;
   final config = Get.find<ConfigService>();
-  final persistence = Get.find<PersistenceService>();
+  final persistence = Get.find<Persistence>();
   List<S3Content> contentsCache = [];
 
   // PROPERTIES
@@ -153,7 +153,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
-    PersistenceService.to.changes.val = 0;
+    Persistence.to.changes.val = 0;
     persistence.metadata.val = serverMetadata.toJsonString();
 
     // up sync local changes with server

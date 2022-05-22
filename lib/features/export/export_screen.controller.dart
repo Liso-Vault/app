@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
@@ -29,7 +29,7 @@ class ExportScreenController extends GetxController
   final passwordController = TextEditingController();
 
   // PROPERTIES
-  final attemptsLeft = PersistenceService.to.maxUnlockAttempts.val.obs;
+  final attemptsLeft = Persistence.to.maxUnlockAttempts.val.obs;
   final busyMessage = ''.obs;
 
   // GETTERS

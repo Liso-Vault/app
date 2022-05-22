@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 
 class ConfigS3 {
@@ -33,11 +33,10 @@ class ConfigS3 {
   String toJsonString() => jsonEncode(toJson());
 
   String get preferredBucket {
-    if (PersistenceService.to.syncProvider.val ==
-        LisoSyncProvider.custom.name) {
-      return PersistenceService.to.s3Bucket.val;
+    if (Persistence.to.syncProvider.val == LisoSyncProvider.custom.name) {
+      return Persistence.to.s3Bucket.val;
     } else {
-      return 'liso-${PersistenceService.to.syncProvider.val}';
+      return 'liso-${Persistence.to.syncProvider.val}';
     }
   }
 }

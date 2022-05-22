@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -55,7 +55,7 @@ class SettingsScreenController extends GetxController
 
   // PROPERTIES
   final busyMessage = ''.obs;
-  final theme = PersistenceService.to.theme.val.obs;
+  final theme = Persistence.to.theme.val.obs;
 
   // GETTERS
 
@@ -74,8 +74,8 @@ class SettingsScreenController extends GetxController
 
   // FUNCTIONS
   void changeTheme(ThemeMode mode) async {
-    if (mode.name == PersistenceService.to.theme.val) return;
-    PersistenceService.to.theme.val = mode.name;
+    if (mode.name == Persistence.to.theme.val) return;
+    Persistence.to.theme.val = mode.name;
     theme.value = mode.name;
     if (GetPlatform.isDesktop) Get.back();
     Get.changeThemeMode(mode);
@@ -106,7 +106,7 @@ class SettingsScreenController extends GetxController
       exportFileName,
     ));
 
-    await tempFile.writeAsString(PersistenceService.to.wallet.val);
+    await tempFile.writeAsString(Persistence.to.wallet.val);
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(

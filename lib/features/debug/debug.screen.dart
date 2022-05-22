@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/state_manager.dart';
 import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
@@ -130,7 +128,9 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Persistence'),
-          subtitle: PersistenceBuilder((p) => Text(p.test.val)),
+          subtitle: PersistenceBuilder(
+            builder: (p, context) => Text(Persistence.to.test.val),
+          ),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () {
             console.warning('before: ${Persistence.to.test.val}');

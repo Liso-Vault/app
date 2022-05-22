@@ -11,8 +11,11 @@ import 'package:liso/features/app/pages.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:window_manager/window_manager.dart';
 
+import '../../features/general/remote_image.widget.dart';
 import '../../features/s3/model/s3_content.model.dart';
-import '../services/persistence.service.dart';
+import '../../resources/resources.dart';
+import '../firebase/config/config.service.dart';
+import '../persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'globals.dart';
 
@@ -88,7 +91,7 @@ class Utils {
   static Future<void> setWindowSize() async {
     if (!GetPlatform.isDesktop || GetPlatform.isWeb) return;
     await windowManager.setMinimumSize(kMinWindowSize);
-    final persistence = PersistenceService.to;
+    final persistence = Persistence.to;
 
     // set preferred size
     windowManager.setSize(Size(
@@ -261,6 +264,12 @@ class Utils {
     if (content.fileType == null) return Icon(iconData);
 
     switch (content.fileType!) {
+      case 'liso':
+        return RemoteImage(
+          url: ConfigService.to.general.app.image,
+          height: 25,
+          placeholder: Image.asset(Images.logo, height: 25),
+        );
       case 'image':
         iconData = Iconsax.gallery;
         break;

@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -30,13 +30,11 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     AlchemyService.to.init();
     AlchemyService.to.load();
 
-    if (!PersistenceService.to.syncConfirmed.val) {
+    if (!Persistence.to.syncConfirmed.val) {
       return const RouteSettings(name: Routes.configuration);
     }
 
-    if (!ignoreSync &&
-        !S3Service.to.inSync.value &&
-        PersistenceService.to.sync.val) {
+    if (!ignoreSync && !S3Service.to.inSync.value && Persistence.to.sync.val) {
       return const RouteSettings(name: Routes.syncing);
     }
 

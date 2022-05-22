@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -45,7 +45,7 @@ class ItemScreenController extends GetxController
   // PROPERTIES
   final favorite = false.obs;
   final protected = false.obs;
-  final groupIndex = PersistenceService.to.groupIndex.val.obs;
+  final groupIndex = Persistence.to.groupIndex.val.obs;
   final attachments = <String>[].obs;
 
   // GETTERS

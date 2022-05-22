@@ -12,7 +12,7 @@ import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../core/firebase/config/models/config_limits.model.dart';
@@ -40,17 +40,16 @@ class WalletService extends GetxService with ConsoleMixin {
   String get shortAddress =>
       '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
 
-  bool get saved => PersistenceService.to.wallet.val.isNotEmpty;
+  bool get saved => Persistence.to.wallet.val.isNotEmpty;
 
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
   double get maticUsdBalance =>
-      PersistenceService.to.lastMaticBalance.val *
-      PersistenceService.to.lastMaticUsdPrice.val;
+      Persistence.to.lastMaticBalance.val *
+      Persistence.to.lastMaticUsdPrice.val;
 
   double get lisoUsdBalance =>
-      PersistenceService.to.lastLisoBalance.val *
-      PersistenceService.to.lastLisoUsdPrice.val;
+      Persistence.to.lastLisoBalance.val * Persistence.to.lastLisoUsdPrice.val;
 
   ConfigLimitsSetting get limits {
     final limits_ = ConfigService.to.limits;
@@ -76,7 +75,7 @@ class WalletService extends GetxService with ConsoleMixin {
       }
     }
 
-    final balance = PersistenceService.to.lastLisoBalance.val;
+    final balance = Persistence.to.lastLisoBalance.val;
 
     // check if user is a tier2 holder
     if (balance > limits_.tier1.tokenThreshold) {
@@ -123,8 +122,7 @@ class WalletService extends GetxService with ConsoleMixin {
       );
     }
 
-    PersistenceService.to.lastMaticUsdPrice.val =
-        result.data.first.getPriceIn('usd')!;
+    Persistence.to.lastMaticUsdPrice.val = result.data.first.getPriceIn('usd')!;
   }
 
   Wallet mnemonicToWallet(

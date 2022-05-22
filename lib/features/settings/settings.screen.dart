@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -13,6 +13,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/hive.manager.dart';
+import '../../core/persistence/persistence_builder.widget.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'settings_screen.controller.dart';
@@ -23,7 +24,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
 
   @override
   Widget build(BuildContext context) {
-    final persistence = Get.find<PersistenceService>();
+    final persistence = Get.find<Persistence>();
     final config = Get.find<ConfigService>();
 
     final listView = ListView(
@@ -59,8 +60,8 @@ class SettingsScreen extends GetView<SettingsScreenController>
           ),
         ),
         const Divider(),
-        SimpleBuilder(
-          builder: (_) => SwitchListTile(
+        PersistenceBuilder(
+          builder: (p, context) => SwitchListTile(
               title: const Text('File Encryption'),
               secondary: Icon(
                 Iconsax.shield_tick,

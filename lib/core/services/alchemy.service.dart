@@ -1,7 +1,7 @@
 import 'package:alchemy_web3/alchemy_web3.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../contracts/liso.dart';
@@ -14,7 +14,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
 
   // VARIABLES
   final alchemy = Alchemy();
-  final persistence = Get.find<PersistenceService>();
+  final persistence = Get.find<Persistence>();
   final config = Get.find<ConfigService>();
   final wallet = Get.find<WalletService>();
 

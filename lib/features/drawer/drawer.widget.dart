@@ -4,13 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../../core/utils/utils.dart';
+import '../../core/persistence/persistence_builder.widget.dart';
 import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends StatelessWidget with ConsoleMixin {
@@ -22,8 +23,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          SimpleBuilder(
-            builder: (_) => ExpansionTile(
+          PersistenceBuilder(
+            builder: (p, context) => ExpansionTile(
               maintainState: true,
               title: Text(
                 'vaults'.tr.toUpperCase(),
@@ -184,10 +185,9 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
-              SimpleBuilder(
-                builder: (_) => PersistenceService.to.sync.val &&
-                        (!GetPlatform.isIOS ||
-                            PersistenceService.to.proTester.val)
+              PersistenceBuilder(
+                builder: (p, context) => Persistence.to.sync.val &&
+                        (!GetPlatform.isIOS || Persistence.to.proTester.val)
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),
                         onTap: controller.files,
@@ -218,11 +218,10 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       )
                     : const SizedBox.shrink(),
               ),
-              SimpleBuilder(
-                builder: (_) => Column(
+              PersistenceBuilder(
+                builder: (p, context) => Column(
                   children: [
-                    if (!GetPlatform.isIOS ||
-                        PersistenceService.to.proTester.val) ...[
+                    if (!GetPlatform.isIOS || Persistence.to.proTester.val) ...[
                       ListTile(
                         title: Text('wallet'.tr),
                         leading: const Icon(Iconsax.wallet_1),

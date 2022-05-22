@@ -1,4 +1,5 @@
 const kFileExtensionsMap = {
+  "liso": ["liso"],
   "3dm": ["image"],
   "3ds": ["image"],
   "3g2": ["video"],

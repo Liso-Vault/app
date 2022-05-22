@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/core/utils/globals.dart';
 
-import '../services/persistence.service.dart';
+import '../persistence/persistence.dart';
 
 class CrashlyticsService extends GetxService with ConsoleMixin {
   static CrashlyticsService get to => Get.find();
@@ -33,7 +33,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
-      PersistenceService.to.crashReporting.val,
+      Persistence.to.crashReporting.val,
     );
 
     FirebaseCrashlytics.instance

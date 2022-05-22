@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/provider/sync_provider_screen.controller.dart';
 
+import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
 
 class SyncProviderScreen extends GetView<SyncProviderScreenController>
@@ -102,21 +103,20 @@ class SyncProviderScreen extends GetView<SyncProviderScreenController>
               labelText: 'Session Token',
             ),
           ),
-          SimpleBuilder(
-            builder: (_) => SwitchListTile(
+          PersistenceBuilder(
+            builder: (p, context) => SwitchListTile(
               title: const Text('Enable Trace'),
-              value: PersistenceService.to.s3EnableTrace.val,
-              onChanged: (value) =>
-                  PersistenceService.to.s3EnableTrace.val = value,
+              value: Persistence.to.s3EnableTrace.val,
+              onChanged: (value) => Persistence.to.s3EnableTrace.val = value,
               contentPadding: EdgeInsets.zero,
             ),
           ),
           const Divider(),
-          SimpleBuilder(
-            builder: (_) => SwitchListTile(
+          PersistenceBuilder(
+            builder: (p, context) => SwitchListTile(
               title: const Text('Use SSL'),
-              value: PersistenceService.to.s3UseSsl.val,
-              onChanged: (value) => PersistenceService.to.s3UseSsl.val = value,
+              value: Persistence.to.s3UseSsl.val,
+              onChanged: (value) => Persistence.to.s3UseSsl.val = value,
               contentPadding: EdgeInsets.zero,
             ),
           ),

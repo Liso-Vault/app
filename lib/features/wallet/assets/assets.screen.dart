@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/features/general/keep_alive.widget.dart';
 
-import '../../../core/services/persistence.service.dart';
+import '../../../core/persistence/persistence.dart';
+import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
 import '../../../resources/resources.dart';
 import '../../general/busy_indicator.widget.dart';
@@ -17,11 +18,11 @@ class AssetsScreen extends GetView<AssetsScreenController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final persistence = Get.find<PersistenceService>();
+    final persistence = Get.find<Persistence>();
     final wallet = Get.find<WalletService>();
 
-    final listView = SimpleBuilder(
-      builder: (_) {
+    final listView = PersistenceBuilder(
+      builder: (p, context) {
         final liso = currencyFormatter.format(persistence.lastLisoBalance.val);
         final lisoUsd = currencyFormatter.format(wallet.lisoUsdBalance);
 

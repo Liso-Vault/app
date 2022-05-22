@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/utils/globals.dart';
@@ -140,7 +140,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         onChanged: (value) => controller.groupIndex.value = value!,
         decoration: const InputDecoration(labelText: 'Vault'),
         items: [
-          ...PersistenceService.to.groupsMap
+          ...Persistence.to.groupsMap
               .map((e) => DropdownMenuItem<int>(
                     value: e['index'],
                     child: Text(e['name']),

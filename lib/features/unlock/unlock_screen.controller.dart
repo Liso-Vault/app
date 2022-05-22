@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -26,7 +26,7 @@ class UnlockScreenController extends GetxController
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
 
   // PROPERTIES
-  final attemptsLeft = PersistenceService.to.maxUnlockAttempts.val.obs;
+  final attemptsLeft = Persistence.to.maxUnlockAttempts.val.obs;
   final canProceed = false.obs;
   final obscurePassword = true.obs;
 
@@ -69,7 +69,7 @@ class UnlockScreenController extends GetxController
 
     try {
       await WalletService.to.initJson(
-        PersistenceService.to.wallet.val,
+        Persistence.to.wallet.val,
         password: passwordController.text,
       );
     } catch (e) {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/persistence.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -22,7 +22,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final config = Get.find<ConfigService>();
-    final persistence = Get.find<PersistenceService>();
+    final persistence = Get.find<Persistence>();
 
     final content = ListView(
       shrinkWrap: true,
