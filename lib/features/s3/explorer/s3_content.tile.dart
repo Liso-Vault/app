@@ -94,7 +94,11 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
         : null;
 
     return ListTile(
-      title: Text(content.maskedName),
+      title: Text(
+        content.maskedName,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
       subtitle: subTitle,
       iconColor: themeColor,
       leading: Utils.s3ContentIcon(content),

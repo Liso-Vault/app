@@ -14,6 +14,7 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../general/custom_choice_chip.widget.dart';
 import '../general/segmented_item.widget.dart';
 import 'import_screen.controller.dart';
 
@@ -41,46 +42,41 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           runSpacing: 5,
           spacing: 5,
           children: [
-            ChoiceChip(
-              label: const Text('Sia'),
+            CustomChoiceChip(
+              label: 'Sia',
               selected: isSia,
-              avatar: isSia ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.sia.name;
                 S3Service.to.init();
               },
             ),
-            ChoiceChip(
-              label: const Text('Storj'),
+            CustomChoiceChip(
+              label: 'Storj',
               selected: isStorj,
-              avatar: isStorj ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.storj.name;
                 S3Service.to.init();
               },
             ),
-            ChoiceChip(
-              label: const Text('IPFS'),
+            CustomChoiceChip(
+              label: 'IPFS',
               selected: isIPFS,
-              avatar: isIPFS ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
                 S3Service.to.init();
               },
             ),
-            ChoiceChip(
-              label: const Text('SkyNet'),
+            CustomChoiceChip(
+              label: 'SkyNet',
               selected: isSkyNet,
-              avatar: isSkyNet ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 persistence.syncProvider.val = LisoSyncProvider.skynet.name;
                 S3Service.to.init();
               },
             ),
-            ChoiceChip(
-              label: const Text('Custom'),
+            CustomChoiceChip(
+              label: 'Custom',
               selected: isCustom,
-              avatar: isCustom ? const Icon(Icons.check) : null,
               onSelected: (value) {
                 Utils.adaptiveRouteOpen(
                   name: Routes.syncProvider,
@@ -124,10 +120,6 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                   text: 'Liso File',
                   iconData: Iconsax.document_code,
                 ),
-                // ImportMode.s3: SegmentedControlItem(
-                //   text: 'S3',
-                //   iconData: LineIcons.amazonWebServicesAws,
-                // ),
                 // ImportMode.ipfs: SegmentedControlItem(
                 //   text: 'IPFS',
                 //   iconData: LineIcons.cube,

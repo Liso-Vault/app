@@ -286,6 +286,7 @@ class MainScreenController extends GetxController
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
     var items = HiveManager.items!.values.toList();
+    console.info('items: ${items.length}');
 
     // DELETE DUE TRASH ITEMS
     final itemsToDelete = items.where(

@@ -106,6 +106,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         () => IconButton(
           icon: const Icon(Iconsax.search_normal),
           onPressed: !S3Service.to.syncing.value ? controller.search : null,
+          // onPressed: controller.load,
         ),
       ),
       Obx(

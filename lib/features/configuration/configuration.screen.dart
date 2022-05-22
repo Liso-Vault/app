@@ -15,6 +15,7 @@ import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../general/custom_choice_chip.widget.dart';
 
 class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
   const ConfigurationScreen({Key? key}) : super(key: key);
@@ -107,38 +108,33 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                 spacing: 5,
                 runSpacing: 5,
                 children: [
-                  ChoiceChip(
-                    label: const Text('Sia'),
+                  CustomChoiceChip(
+                    label: 'Sia',
                     selected: isSia,
-                    avatar: isSia ? const Icon(Icons.check) : null,
                     onSelected: (value) => persistence.syncProvider.val =
                         LisoSyncProvider.sia.name,
                   ),
-                  ChoiceChip(
-                    label: const Text('Storj'),
+                  CustomChoiceChip(
+                    label: 'Storj',
                     selected: isStorj,
-                    avatar: isStorj ? const Icon(Icons.check) : null,
                     onSelected: (value) => persistence.syncProvider.val =
                         LisoSyncProvider.storj.name,
                   ),
-                  ChoiceChip(
-                    label: const Text('IPFS'),
+                  CustomChoiceChip(
+                    label: 'IPFS',
                     selected: isIPFS,
-                    avatar: isIPFS ? const Icon(Icons.check) : null,
                     onSelected: (value) => persistence.syncProvider.val =
                         LisoSyncProvider.ipfs.name,
                   ),
-                  ChoiceChip(
-                    label: const Text('SkyNet'),
+                  CustomChoiceChip(
+                    label: 'SkyNet',
                     selected: isSkyNet,
-                    avatar: isSkyNet ? const Icon(Icons.check) : null,
                     onSelected: (value) => persistence.syncProvider.val =
                         LisoSyncProvider.skynet.name,
                   ),
-                  ChoiceChip(
-                    label: const Text('Custom'),
+                  CustomChoiceChip(
+                    label: 'Custom',
                     selected: isCustom,
-                    avatar: isCustom ? const Icon(Icons.check) : null,
                     onSelected: (value) => Utils.adaptiveRouteOpen(
                       name: Routes.syncProvider,
                       parameters: {'from': 'settings'},

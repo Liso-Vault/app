@@ -56,12 +56,12 @@ class HiveManager {
       path: LisoPaths.hivePath,
     );
 
-    console.info('openBoxes');
+    console.info('open');
   }
 
   static Future<void> close() async {
     if (items?.isOpen == true) await items?.close();
-    console.info('closeBoxes');
+    console.info('close');
   }
 
   static Future<File> export({required String path}) async {
@@ -96,8 +96,8 @@ class HiveManager {
     // open database
     await open(cipherKey: cipherKey!);
     // populate database
-    items!.clear();
-    items!.addAll(items_);
+    await items!.clear();
+    await items!.addAll(items_);
   }
 
   static Future<void> reset() async {

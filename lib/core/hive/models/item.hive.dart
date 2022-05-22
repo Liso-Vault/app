@@ -226,14 +226,26 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     final field = fields.firstWhere((e) => e.identifier == identifier);
     String value = field.data.value!;
 
-    // decode rich text back to plain text
-    if (categoryObject == LisoItemCategory.note) {
-      try {
-        value = Document.fromJson(jsonDecode(value)).toPlainText();
-      } catch (e) {
-        console.error('error decoding rich text: $e');
-        value = 'failed to decode';
+    // // decode rich text back to plain text
+    // if (categoryObject == LisoItemCategory.note) {
+    //   try {
+    //     value = Document.fromJson(jsonDecode(value)).toPlainText();
+    //   } catch (e) {
+    //     console.error('error decoding rich text: $e');
+    //     value = 'failed to decode';
+    //   }
+    // }
+
+    // obscure characters
+    if (categoryObject == LisoItemCategory.encryption ||
+        categoryObject == LisoItemCategory.note) {
+      final obscuredCharacters = <String>[];
+
+      for (var i = 0; i < (value.length < 100 ? value.length : 100); i++) {
+        obscuredCharacters.add('*');
       }
+
+      return obscuredCharacters.join();
     }
 
     return value;

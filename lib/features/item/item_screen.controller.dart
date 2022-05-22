@@ -57,19 +57,19 @@ class ItemScreenController extends GetxController
         leading: const Icon(Iconsax.copy),
         onSelected: () => Utils.copyToClipboard(item!.significant.values.first),
       ),
-      if (item!.categoryObject == LisoItemCategory.cryptoWallet) ...[
-        // TODO: export wallet and generate qr code
-        ContextMenuItem(
-          title: 'export_wallet'.tr,
-          leading: const Icon(Iconsax.export_1),
-          onSelected: () {},
-        ),
-        ContextMenuItem(
-          title: 'QR Code',
-          leading: const Icon(Iconsax.barcode),
-          onSelected: () {},
-        ),
-      ]
+      // if (item!.categoryObject == LisoItemCategory.cryptoWallet) ...[
+      //   // TODO: export wallet and generate qr code
+      //   ContextMenuItem(
+      //     title: 'export_wallet'.tr,
+      //     leading: const Icon(Iconsax.export_1),
+      //     onSelected: () {},
+      //   ),
+      //   ContextMenuItem(
+      //     title: 'QR Code',
+      //     leading: const Icon(Iconsax.barcode),
+      //     onSelected: () {},
+      //   ),
+      // ]
     ];
   }
 
