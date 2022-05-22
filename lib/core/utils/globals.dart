@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 // HIVE DATABASE
 const kHiveBoxItems = 'items';
+const kHivePersistence = 'persistence';
 // BIOMETRIC STORAGE
 const kBiometricPasswordKey = 'biometric_password';
 const kBiometricSeedKey = 'biometric_seed';

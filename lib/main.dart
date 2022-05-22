@@ -18,6 +18,7 @@ import 'package:window_manager/window_manager.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/hive/hive.manager.dart';
+import 'core/hive/hive.persistence.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/services/persistence.service.dart';
@@ -46,6 +47,9 @@ void main() async {
     Get.put(CrashlyticsService());
     await LisoPaths.init();
     await PersistenceService.init();
+
+    await Persistence.init();
+    Get.put(Persistence());
 
     // GetX services
     Get.lazyPut(() => WalletService());

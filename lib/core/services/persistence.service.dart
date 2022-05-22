@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +16,6 @@ class PersistenceService extends GetxService with ConsoleMixin {
   static GetStorage? box_;
 
   static Future<void> init() async {
-    final console = Console(name: 'PersistenceService');
     const container = 'persistence';
     final path = join(LisoPaths.main!.path, 'get_storage');
 

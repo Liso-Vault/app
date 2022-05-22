@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/state_manager.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/hive/hive.persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -118,6 +124,21 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             'The Title',
             'This is the message to be shown. This is the message to be shown. ',
           ),
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Persistence'),
+          subtitle: GetBuilder<Persistence>(
+            init: Persistence.to,
+            builder: (_) => Text(_.test.val),
+          ),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () {
+            console.warning('before: ${Persistence.to.test.val}');
+            Persistence.to.test.val = base64Encode(Hive.generateSecureKey());
+            console.info('after: ${Persistence.to.test.val}');
+          },
         ),
         const Divider(),
         ListTile(
