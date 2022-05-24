@@ -270,21 +270,20 @@ class MainScreenController extends GetxController
   }
 
   void search() async {
-    // searchDelegate = ItemsSearchDelegate();
+    searchDelegate = ItemsSearchDelegate();
 
-    // await showSearch(
-    //   context: Get.context!,
-    //   delegate: searchDelegate!,
-    // );
+    await showSearch(
+      context: Get.context!,
+      delegate: searchDelegate!,
+    );
 
-    // searchDelegate = null;
-    load();
+    searchDelegate = null;
   }
 
   Future<void> load() async {
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
-    var items = HiveManager.items!.values.toList();
+    var items = HiveManager.itemValues;
 
     // FILTER GROUP
     items = items
@@ -454,7 +453,7 @@ class MainScreenController extends GetxController
   void emptyTrash() {
     void _empty() async {
       Get.back();
-      final trashedKeys = HiveManager.items!.values.where((e) => e.trashed);
+      final trashedKeys = HiveManager.itemValues.where((e) => e.trashed);
       await HiveManager.hidelete(trashedKeys);
       load();
 

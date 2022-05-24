@@ -35,6 +35,7 @@ class S3Service extends GetxService with ConsoleMixin {
   final config = Get.find<ConfigService>();
   final persistence = Get.find<Persistence>();
   List<S3Content> contentsCache = [];
+  final syncTimeoutDuration = 20.seconds;
 
   // PROPERTIES
   final syncing = false.obs;
@@ -121,14 +122,16 @@ class S3Service extends GetxService with ConsoleMixin {
     console.info('syncing...');
     syncing.value = true;
     _syncProgress(0.1, 'Syncing...');
-    final statResult = await stat(lisoContent);
+    final statResult = await stat(lisoContent)
+        .timeout(syncTimeoutDuration, onTimeout: () => const Left('Timed Out'));
 
     if (statResult.isLeft) {
       if (statResult.left is MinioError &&
           statResult.left.message!.contains('Not Found')) {
         inSync.value = true;
         _syncProgress(0.5, 'Initializing...');
-        final upsyncResult = await upSync();
+        final upsyncResult = await upSync().timeout(syncTimeoutDuration,
+            onTimeout: () => const Left('Timed Out'));
         _syncProgress(1, '');
         syncing.value = false;
 
@@ -147,7 +150,8 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     _syncProgress(0.2, 'Fetching...');
-    final downResult = await _downSync();
+    final downResult = await _downSync()
+        .timeout(syncTimeoutDuration, onTimeout: () => const Left('Timed Out'));
     if (downResult.isLeft) return Left(downResult.left);
 
     // we are now ready to upSync because we are not in sync with server

@@ -8,7 +8,7 @@ import '../../core/firebase/config/models/config_limits.model.dart';
 class UpgradeScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => UpgradeScreenController());
+    Get.lazyPut(() => UpgradeScreenController(), fenix: true);
   }
 }
 

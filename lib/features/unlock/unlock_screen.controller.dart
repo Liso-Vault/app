@@ -15,7 +15,7 @@ import '../wallet/wallet.service.dart';
 class UnlockScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => UnlockScreenController());
+    Get.lazyPut(() => UnlockScreenController(), fenix: true);
   }
 }
 
@@ -51,13 +51,11 @@ class UnlockScreenController extends GetxController
   // biometric storage
   void authenticateBiometrics() async {
     if (!GetPlatform.isMobile) return; // mobile only
-    final biometricPassword = await BiometricUtils.obtain(
-      kBiometricPasswordKey,
-    );
-
-    if (biometricPassword == null) return;
+    if (!(await BiometricUtils.authenticate())) {
+      return console.error('Failed Biometrics');
+    }
     // set the password then programmatically unlock
-    passwordController.text = biometricPassword;
+    passwordController.text = Persistence.to.walletPassword.val;
     // delay to show that password has been inserted
     await Future.delayed(100.milliseconds);
     unlock();

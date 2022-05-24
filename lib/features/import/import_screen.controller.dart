@@ -24,7 +24,7 @@ import '../s3/s3.service.dart';
 class ImportScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ImportScreenController());
+    Get.lazyPut(() => ImportScreenController(), fenix: true);
   }
 }
 

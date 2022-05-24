@@ -5,7 +5,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 class WelcomeScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => WelcomeScreenController());
+    Get.lazyPut(() => WelcomeScreenController(), fenix: true);
   }
 }
 

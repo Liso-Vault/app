@@ -9,7 +9,7 @@ import '../s3/s3.service.dart';
 class AttachmentsScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => AttachmentsScreenController());
+    Get.lazyPut(() => AttachmentsScreenController(), fenix: true);
   }
 }
 

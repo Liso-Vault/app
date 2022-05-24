@@ -2,7 +2,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
@@ -43,11 +42,9 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   // GETTERS
 
-  Iterable<HiveLisoItem> get groupedItems => HiveManager.items == null
-      ? []
-      : HiveManager.items!.values.where(
-          (e) => e.group == filterGroupIndex.value,
-        );
+  Iterable<HiveLisoItem> get groupedItems => HiveManager.itemValues.where(
+        (e) => e.group == filterGroupIndex.value,
+      );
 
   // Obtain used categories distinctly
   Set<String> get categories {

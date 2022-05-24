@@ -55,7 +55,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'vault': await vaultFile.length(),
         },
         'count': {
-          'items': HiveManager.items!.length,
+          'items': HiveManager.itemValues.length,
           'files': objects,
         },
         'settings': {

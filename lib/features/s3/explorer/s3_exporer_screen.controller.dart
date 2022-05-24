@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -21,7 +20,7 @@ import '../model/s3_content.model.dart';
 class S3ExplorerScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => S3ExplorerScreenController());
+    Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
   }
 }
 

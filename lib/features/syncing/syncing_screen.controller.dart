@@ -8,7 +8,7 @@ import '../s3/s3.service.dart';
 class SyncingScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SyncingScreenController());
+    Get.lazyPut(() => SyncingScreenController(), fenix: true);
   }
 }
 

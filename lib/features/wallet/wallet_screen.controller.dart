@@ -19,7 +19,7 @@ import 'assets/assets_screen.controller.dart';
 class WalletScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => WalletScreenController());
+    Get.lazyPut(() => WalletScreenController(), fenix: true);
   }
 }
 

@@ -6,7 +6,7 @@ import 'package:otp/otp.dart';
 class OTPScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => OTPScreenController());
+    Get.lazyPut(() => OTPScreenController(), fenix: true);
   }
 }
 

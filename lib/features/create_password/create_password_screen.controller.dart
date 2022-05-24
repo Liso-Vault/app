@@ -4,18 +4,15 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../core/utils/biometric.util.dart';
-
 class CreatePasswordScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => CreatePasswordScreenController());
+    Get.lazyPut(() => CreatePasswordScreenController(), fenix: true);
   }
 }
 
@@ -85,16 +82,9 @@ class CreatePasswordScreenController extends GetxController
     await Future.delayed(200.milliseconds);
 
     // save password to biometric storage
-    await BiometricUtils.save(
-      passwordController.text,
-      key: kBiometricPasswordKey,
-    );
-
+    Persistence.to.walletPassword.val = passwordController.text;
     // save seed to biometric storage
-    await BiometricUtils.save(
-      Get.parameters['seed']!,
-      key: kBiometricSeedKey,
-    );
+    Persistence.to.mnemonicSeedPhrase.val = Get.parameters['seed']!;
 
     // open Hive Boxes
     await HiveManager.open();

@@ -10,7 +10,7 @@ import '../../wallet/wallet.service.dart';
 class ConfirmMnemonicScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ConfirmMnemonicScreenController());
+    Get.lazyPut(() => ConfirmMnemonicScreenController(), fenix: true);
   }
 }
 

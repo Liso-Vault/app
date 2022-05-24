@@ -20,7 +20,7 @@ import '../menu/menu.item.dart';
 class ItemScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ItemScreenController());
+    Get.lazyPut(() => ItemScreenController(), fenix: true);
   }
 }
 

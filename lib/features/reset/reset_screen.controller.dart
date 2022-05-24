@@ -7,7 +7,7 @@ import 'package:liso/features/app/routes.dart';
 class ResetScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ResetScreenController());
+    Get.lazyPut(() => ResetScreenController(), fenix: true);
   }
 }
 

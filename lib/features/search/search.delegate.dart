@@ -39,7 +39,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
       return const Center(child: Text("Search items by title."));
     }
 
-    final items = HiveManager.items!.values
+    final items = HiveManager.itemValues
         .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
 

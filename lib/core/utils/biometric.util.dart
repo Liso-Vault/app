@@ -6,52 +6,13 @@ import 'package:local_auth/local_auth.dart';
 
 class BiometricUtils {
   static final console = Console(name: 'BiometricUtils');
-  static bool touchFaceIdSupported = false;
+  static final auth = LocalAuthentication();
+  static bool supported = false;
 
   static Future<void> init() async {
-    if (GetPlatform.isMobile) {
-      touchFaceIdSupported = await LocalAuthentication().canCheckBiometrics;
-    }
-
+    if (!GetPlatform.isMobile) return;
+    supported = await auth.canCheckBiometrics && await auth.isDeviceSupported();
     console.info('init');
-  }
-
-  static Future<bool> save(
-    String password, {
-    required String key,
-  }) async {
-    if (!await canAuthenticate()) return false;
-
-    final storage = await getStorage(
-      key,
-      title: 'Secure ${ConfigService.to.appName}',
-    );
-
-    try {
-      await storage.write(password);
-      return true;
-    } catch (e) {
-      console.error('biometric storage error: $e');
-      return false;
-    }
-  }
-
-  static Future<String?> obtain(String key) async {
-    if (!await canAuthenticate()) return null;
-    final storage = await getStorage(key);
-
-    try {
-      return await storage.read();
-    } catch (e) {
-      console.error('biometric storage error: $e');
-      return null;
-    }
-  }
-
-  static Future<void> delete(String key) async {
-    if (!await canAuthenticate()) return;
-    final storage = await getStorage(key);
-    await storage.delete();
   }
 
   static Future<BiometricStorageFile> getStorage(
@@ -86,8 +47,24 @@ class BiometricUtils {
     return passwordStorage;
   }
 
-  static Future<bool> canAuthenticate() async {
-    final response = await BiometricStorage().canAuthenticate();
-    return response == CanAuthenticateResponse.success;
+  static Future<bool> authenticate() async {
+    if (!supported) {
+      console.error('cannot authenticate via biometrics');
+      return false;
+    }
+
+    return await auth.authenticate(
+      localizedReason: 'Unlock ${ConfigService.to.appName}',
+      options: const AuthenticationOptions(biometricOnly: true),
+      // authMessages: const [
+      //   AndroidAuthMessages(
+      //     signInTitle: 'Oops! Biometric authentication required!',
+      //     cancelButton: 'No thanks',
+      //   ),
+      //   IOSAuthMessages(
+      //     cancelButton: 'No thanks',
+      //   ),
+      // ],
+    );
   }
 }

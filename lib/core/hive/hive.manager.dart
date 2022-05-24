@@ -25,6 +25,8 @@ class HiveManager {
   static StreamSubscription? itemsStream;
 
   // GETTERS
+  static List<HiveLisoItem> get itemValues => items?.values.toList() ?? [];
+
   static bool get itemLimitReached =>
       items!.length >= WalletService.to.limits.items;
 
@@ -64,7 +66,7 @@ class HiveManager {
 
   static Future<File> export({required String path}) async {
     // TODO: isolate
-    final jsonString = jsonEncode(items!.values.toList());
+    final jsonString = jsonEncode(itemValues);
     final file = File(path);
     await file.writeAsString(jsonString);
     return await CipherService.to.encryptFile(file, addExtensionExtra: false);

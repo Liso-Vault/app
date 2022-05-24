@@ -14,7 +14,7 @@ import '../../../core/utils/utils.dart';
 class SyncProviderScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SyncProviderScreenController());
+    Get.lazyPut(() => SyncProviderScreenController(), fenix: true);
   }
 }
 

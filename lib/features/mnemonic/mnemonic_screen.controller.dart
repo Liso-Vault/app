@@ -11,7 +11,7 @@ import '../menu/menu.item.dart';
 class MnemonicScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => MnemonicScreenController());
+    Get.lazyPut(() => MnemonicScreenController(), fenix: true);
   }
 }
 

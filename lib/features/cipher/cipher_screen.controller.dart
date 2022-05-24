@@ -19,7 +19,7 @@ import '../app/routes.dart';
 class CipherScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => CipherScreenController());
+    Get.lazyPut(() => CipherScreenController(), fenix: true);
   }
 }
 

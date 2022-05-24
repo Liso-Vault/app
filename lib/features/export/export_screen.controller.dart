@@ -19,7 +19,7 @@ import '../app/routes.dart';
 class ExportScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ExportScreenController());
+    Get.lazyPut(() => ExportScreenController(), fenix: true);
   }
 }
 

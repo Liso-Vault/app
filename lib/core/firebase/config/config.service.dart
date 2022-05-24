@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/features/s3/s3.service.dart';

@@ -126,7 +126,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           title: Text('export_vault'.tr),
           subtitle: const Text('Save <vault>.liso to an external source'),
           onTap: () {
-            if (HiveManager.items == null || HiveManager.items!.isEmpty) {
+            if (HiveManager.itemValues.isEmpty) {
               return UIUtils.showSimpleDialog(
                 'Empty Vault',
                 'Cannot export an empty vault.',

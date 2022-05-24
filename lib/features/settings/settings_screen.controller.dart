@@ -14,17 +14,16 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/notifications/notifications.manager.dart';
-import '../wallet/wallet.service.dart';
-import '../../core/utils/biometric.util.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/custom_chip.widget.dart';
 import '../menu/menu.item.dart';
+import '../wallet/wallet.service.dart';
 
 class SettingsScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SettingsScreenController());
+    Get.lazyPut(() => SettingsScreenController(), fenix: true);
   }
 }
 
@@ -144,8 +143,7 @@ class SettingsScreenController extends GetxController
   }
 
   void showSeed() async {
-    final seed = await BiometricUtils.obtain(kBiometricSeedKey);
-    if (seed == null) return console.error('seed is null');
+    final seed = Persistence.to.mnemonicSeedPhrase.val;
 
     final phraseChips = GestureDetector(
       onLongPress: () => Utils.copyToClipboard(seed),
