@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 
 import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
@@ -78,10 +79,10 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       groupedItems.where((e) => !e.trashed && !e.deleted).length;
 
   int get favoriteCount =>
-      groupedItems.where((e) => e.favorite && !e.trashed).length;
+      groupedItems.where((e) => e.favorite && !e.trashed && !e.deleted).length;
 
   int get protectedCount =>
-      groupedItems.where((e) => e.protected && !e.trashed).length;
+      groupedItems.where((e) => e.protected && !e.trashed && !e.deleted).length;
 
   int get trashedCount =>
       groupedItems.where((e) => e.trashed && !e.deleted).length;

@@ -16,7 +16,7 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
     try {
       return jsonEncode(_fieldController!.document.toDelta().toJson());
     } catch (e) {
-      console.error('message');
+      console.error('value error: $e');
       return '';
     }
   }

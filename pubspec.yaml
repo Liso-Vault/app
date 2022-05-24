@@ -14,6 +14,8 @@ dependencies:
   get: ^4.6.3
 
   # CRYTPOGRAPHY + SECURITY
+  secrets:
+    path: ../secrets
   alchemy_web3:
     git: https://github.com/oliverbytes/alchemy_web3.git
   web3dart: ^2.4.0 # Ethereum
@@ -21,11 +23,11 @@ dependencies:
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
-  # cryptography: ^2.0.5 # Cipher & Decipher
   encrypt: ^5.0.1 # File Encryption
   biometric_storage: ^4.1.1 # secure storage with biometrics
   local_auth: ^2.0.2 # check biometric availability
   walletconnect_dart: ^0.0.10
+  otp: ^3.0.4
 
   # FIREBASE
   firebase_core: 1.17.0
@@ -38,7 +40,6 @@ dependencies:
 
   # IO
   hive: ^2.2.1 # database
-  get_storage: ^2.0.3 # persistence
   path_provider: ^2.0.10
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
@@ -102,8 +103,6 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - assets/json/
-    - assets/json/config/
 
   fonts:
     - family: RobotoFlex

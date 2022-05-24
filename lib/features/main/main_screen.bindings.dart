@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:liso/features/cipher/cipher_screen.controller.dart';
+import 'package:liso/features/otp/otp_screen.controller.dart';
 import 'package:liso/features/s3/provider/sync_provider_screen.controller.dart';
 import 'package:liso/features/wallet/wallet_screen.controller.dart';
 
@@ -33,6 +34,7 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => ExportScreenController(), fenix: true);
     Get.lazyPut(() => ResetScreenController(), fenix: true);
     Get.lazyPut(() => UpgradeScreenController(), fenix: true);
+    Get.lazyPut(() => OTPScreenController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
     Get.lazyPut(() => SyncProviderScreenController(), fenix: true);

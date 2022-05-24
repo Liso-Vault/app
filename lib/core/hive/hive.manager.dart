@@ -32,7 +32,7 @@ class HiveManager {
       items!.length >= WalletService.to.limits.items;
 
   // INIT
-  static Future<void> init() async {
+  static void init() {
     // PATH
     if (!GetPlatform.isWeb) Hive.init(LisoPaths.hivePath);
     // REGISTER ADAPTERS
@@ -55,8 +55,6 @@ class HiveManager {
       encryptionCipher: HiveAesCipher(cipherKey ?? WalletService.to.cipherKey!),
       path: LisoPaths.hivePath,
     );
-
-    console.info('open');
   }
 
   static Future<void> close() async {
@@ -96,13 +94,11 @@ class HiveManager {
     // open database
     await open(cipherKey: cipherKey!);
     // populate database
-    await items!.clear();
     await items!.addAll(items_);
   }
 
   static Future<void> reset() async {
     await items?.deleteFromDisk();
-    // Hive.deleteFromDisk();
     items = null;
     console.info('reset');
   }

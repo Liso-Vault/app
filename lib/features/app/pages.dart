@@ -32,6 +32,8 @@ import '../configuration/configuration.screen.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
+import '../otp/otp.screen.dart';
+import '../otp/otp_screen.controller.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../s3/provider/sync_provider_screen.controller.dart';
@@ -151,6 +153,11 @@ class AppPages {
       name: Routes.upgrade,
       page: () => const UpgradeScreen(),
       binding: UpgradeScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.otp,
+      page: () => const OTPScreen(),
+      binding: OTPScreenBinding(),
     ),
     GetPage(
       name: Routes.debug,

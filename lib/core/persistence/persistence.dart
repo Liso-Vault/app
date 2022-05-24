@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/persistence/mutable_value.dart';
-import 'package:liso/core/utils/secrets.dart';
+import 'package:secrets/secrets.dart';
 
 import '../liso/liso_paths.dart';
 import '../translations/data.dart';
@@ -20,6 +20,8 @@ class Persistence extends GetxController with ConsoleMixin {
   final test = 'default'.val('test');
   // WALLET JSON
   final wallet = ''.val('wallet');
+  final walletPassword = ''.val('wallet password');
+  final mnemonicSeedPhrase = ''.val('mnemonic seed phrase');
   // GENERAL
   final localeCode = 'en'.val('locale code');
   final crashReporting = true.val('crash reporting');
@@ -78,7 +80,7 @@ class Persistence extends GetxController with ConsoleMixin {
   static Future<void> init() async {
     box = await Hive.openBox(
       kHivePersistence,
-      encryptionCipher: HiveAesCipher(base64Decode(kHivePersistenceCipherKey)),
+      encryptionCipher: HiveAesCipher(base64Decode(Secrets.persistenceKey)),
       path: LisoPaths.hivePath,
     );
 

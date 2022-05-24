@@ -126,7 +126,6 @@ class S3Service extends GetxService with ConsoleMixin {
     if (statResult.isLeft) {
       if (statResult.left is MinioError &&
           statResult.left.message!.contains('Not Found')) {
-        console.error('New cloud user: upsync current vault');
         inSync.value = true;
         _syncProgress(0.5, 'Initializing...');
         final upsyncResult = await upSync();
@@ -186,17 +185,12 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<void> _mergeItems(List<HiveLisoItem> serverItems) async {
     var localItems = HiveManager.items!;
-
-    console.warning('server items: ${serverItems.length}');
-    console.warning('local items: ${localItems.length}');
-
     // MERGED
     final mergedItems = {...serverItems, ...localItems.values};
     console.info('merged: ${mergedItems.length}');
     final leastUpdatedDuplicates = <HiveLisoItem>[];
 
     for (var x in mergedItems) {
-      // console.warning('${x.identifier} - ${x.metadata.updatedTime}');
       // skip if item already added to least updated item list
       if (leastUpdatedDuplicates
           .where((e) => e.identifier == x.identifier)
@@ -291,7 +285,8 @@ class S3Service extends GetxService with ConsoleMixin {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
     console.info(
-        'stat: ${config.s3.preferredBucket}->${basename(content.path)}...');
+      'stat: ${config.s3.preferredBucket}->${basename(content.path)}...',
+    );
 
     try {
       final result = await client!.statObject(

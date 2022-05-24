@@ -15,21 +15,18 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   // GETTERS
 
   // INIT
-  @override
-  void onInit() {
+
+  // FUNCTIONS
+
+  void init() {
     // CAPTURE FLUTTER ERRORS
     FlutterError.onError = (details) {
       console.error("FLUTTER_ERROR");
       record(details);
     };
-
-    console.info('onInit');
-    super.onInit();
   }
 
-  // FUNCTIONS
-
-  void init() {
+  void configure() {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
@@ -40,8 +37,9 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
         .setUserIdentifier(WalletService.to.longAddress);
   }
 
-  void record(FlutterErrorDetails details, {bool fatal = false}) =>
-      CrashlyticsService.recordStatic(details);
+  void record(FlutterErrorDetails details, {bool fatal = false}) {
+    return CrashlyticsService.recordStatic(details);
+  }
 
   static void recordStatic(FlutterErrorDetails details) {
     final console = Console(name: 'CrashlyticsService');

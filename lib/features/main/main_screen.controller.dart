@@ -270,37 +270,40 @@ class MainScreenController extends GetxController
   }
 
   void search() async {
-    searchDelegate = ItemsSearchDelegate();
+    // searchDelegate = ItemsSearchDelegate();
 
-    await showSearch(
-      context: Get.context!,
-      delegate: searchDelegate!,
-    );
+    // await showSearch(
+    //   context: Get.context!,
+    //   delegate: searchDelegate!,
+    // );
 
-    searchDelegate = null;
+    // searchDelegate = null;
+    load();
   }
 
   Future<void> load() async {
-    final boxIsOpen = HiveManager.items?.isOpen ?? false;
-    if (!boxIsOpen) return console.warning('box is not open');
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
     var items = HiveManager.items!.values.toList();
-    console.info('items: ${items.length}');
+
+    // FILTER GROUP
+    items = items
+        .where((e) => e.group == drawerController.filterGroupIndex.value)
+        .toList();
 
     // DELETE DUE TRASH ITEMS
     final itemsToDelete = items.where(
-      (e) => e.daysLeftToDelete <= 0,
+      (e) => e.daysLeftToDelete <= 0 && e.trashed,
     );
 
     if (itemsToDelete.isNotEmpty) {
       await HiveManager.hidelete(itemsToDelete);
     }
 
-    // FILTER GROUP
-    items = items
-        .where((e) => e.group == drawerController.filterGroupIndex.value)
-        .toList();
+    // FILTER ALL
+    if (drawerController.filterAll) {
+      items = items.where((e) => !e.trashed && !e.deleted).toList();
+    }
 
     // FILTER BY CATEGORY
     if (drawerController.filterCategory() != LisoItemCategory.none) {
@@ -329,13 +332,9 @@ class MainScreenController extends GetxController
     // FILTER TRASHED
     if (drawerController.filterTrashed.value) {
       items = items.where((e) => e.trashed && !e.deleted).toList();
-    } else {
       // FILTER DELETED
-      if (drawerController.filterDeleted.value) {
-        items = items.where((e) => e.deleted).toList();
-      } else {
-        items = items.where((e) => !e.trashed && !e.deleted).toList();
-      }
+    } else if (drawerController.filterDeleted.value) {
+      items = items.where((e) => e.deleted).toList();
     }
 
     // --- SORT BY TITLE ---- //
@@ -419,7 +418,6 @@ class MainScreenController extends GetxController
     // reload SearchDelegate to reflect
     searchDelegate?.reload(Get.context!);
     drawerController.refresh(); // update drawer state
-    console.info('_load()');
   }
 
   void _initAppLifeCycleEvents() {

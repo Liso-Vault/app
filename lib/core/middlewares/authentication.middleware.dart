@@ -16,8 +16,6 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
   @override
   RouteSettings? redirect(String? route) {
-    console.wtf('redirect(): $route');
-
     if (!WalletService.to.saved) {
       return const RouteSettings(name: Routes.welcome);
     }
@@ -38,7 +36,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.syncing);
     }
 
-    CrashlyticsService.to.init();
+    CrashlyticsService.to.configure();
     MainScreenController.to.load();
 
     // record metadata

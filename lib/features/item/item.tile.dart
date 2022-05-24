@@ -30,44 +30,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     this.searchMode = false,
   }) : super(key: key);
 
-  void _favorite() async {
-    item.favorite = !item.favorite;
-    item.metadata = await item.metadata.getUpdated();
-    item.save();
-    MainScreenController.to.onItemsUpdated();
-  }
-
-  void _delete() async {
-    item.deleted = true;
-    item.metadata = await item.metadata.getUpdated();
-    item.save();
-    MainScreenController.to.onItemsUpdated();
-  }
-
-  void _trash() async {
-    item.trashed = true;
-    item.metadata = await item.metadata.getUpdated();
-    item.save();
-    MainScreenController.to.onItemsUpdated();
-  }
-
-  void _restore() async {
-    item.trashed = false;
-    item.deleted = false;
-    item.metadata = await item.metadata.getUpdated();
-    item.save();
-    MainScreenController.to.onItemsUpdated();
-  }
-
-  void _duplicate() async {
-    final copy = HiveLisoItem.fromJson(item.toJson());
-    copy.identifier = const Uuid().v4();
-    copy.title = '${copy.title} Copy';
-    copy.metadata = await copy.metadata.getUpdated();
-    HiveManager.items!.add(copy);
-    MainScreenController.to.onItemsUpdated();
-  }
-
   void _open() async {
     if (item.protected && !(await _unlock())) return;
 
@@ -82,6 +44,47 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       name: Routes.item,
       parameters: parameters,
     );
+  }
+
+  void _favorite() async {
+    item.favorite = !item.favorite;
+    item.metadata = await item.metadata.getUpdated();
+    item.save();
+    MainScreenController.to.onItemsUpdated();
+  }
+
+  void _duplicate() async {
+    final copy = HiveLisoItem.fromJson(item.toJson());
+    copy.identifier = const Uuid().v4();
+    copy.title = '${copy.title} Copy';
+    copy.metadata = await copy.metadata.getUpdated();
+    HiveManager.items!.add(copy);
+    MainScreenController.to.onItemsUpdated();
+  }
+
+  void _restore() async {
+    item.trashed = false;
+    item.deleted = false;
+    item.metadata = await item.metadata.getUpdated();
+    item.save();
+    MainScreenController.to.onItemsUpdated();
+  }
+
+  void _trash() async {
+    item.trashed = true;
+    item.metadata = await item.metadata.getUpdated();
+    // final m = await item.metadata.getUpdated();
+    // m.updatedTime = DateTime.now().subtract(31.days);
+    // item.metadata = m;
+    item.save();
+    MainScreenController.to.onItemsUpdated();
+  }
+
+  void _delete() async {
+    item.deleted = true;
+    item.metadata = await item.metadata.getUpdated();
+    item.save();
+    MainScreenController.to.onItemsUpdated();
   }
 
   // show lock screen if item is protected

@@ -16,6 +16,7 @@ abstract class Routes {
   static const unlock = '/unlock';
   static const upgrade = '/upgrade';
   static const debug = '/debug';
+  static const otp = '/otp';
 
   // SYNC
   static const configuration = '/configuration';

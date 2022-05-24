@@ -90,8 +90,11 @@ class CreatePasswordScreenController extends GetxController
       key: kBiometricPasswordKey,
     );
 
-    final seed = Get.parameters['seed']!;
-    await BiometricUtils.save(seed, key: kBiometricSeedKey);
+    // save seed to biometric storage
+    await BiometricUtils.save(
+      Get.parameters['seed']!,
+      key: kBiometricSeedKey,
+    );
 
     // open Hive Boxes
     await HiveManager.open();

@@ -46,7 +46,6 @@ class AttachmentsScreenController extends GetxController
 
     if (eTag == null) return;
     final exists = data.contains(eTag);
-    console.info('picked eTag: $eTag, exists: $exists');
 
     if (exists) {
       final content = S3Service.to.contentsCache.firstWhere(

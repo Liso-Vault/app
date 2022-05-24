@@ -104,7 +104,7 @@ class S3ContentTileController extends GetxController
         'Error Backup',
         error,
       ),
-      (response) => console.info('success: $response'),
+      (response) => console.info('backup success: $response'),
     );
   }
 
@@ -114,8 +114,6 @@ class S3ContentTileController extends GetxController
 
   // TODO: confirmation dialog
   void confirmDelete(S3Content content) async {
-    console.info('explorerType: $explorerType');
-
     if (explorerType == 'picker') {
       AttachmentsScreenController.to.data.remove(content.object!.eTag);
       return;

@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 
 import '../hive/models/field.hive.dart';
@@ -5,89 +6,91 @@ import '../utils/globals.dart';
 
 class TemplateParser {
   static List<HiveLisoField> parse(String template) {
+    final config = Get.find<ConfigService>();
+
     // CRYPTO WALLET
     if (template == LisoItemCategory.cryptoWallet.name) {
-      return ConfigService.to.templateCryptoWallet;
+      return config.templateCryptoWallet;
     }
     // LOGIN
     else if (template == LisoItemCategory.login.name) {
-      return ConfigService.to.templateLogin;
+      return config.templateLogin;
     }
     // PASSWORD
     else if (template == LisoItemCategory.password.name) {
-      return ConfigService.to.templatePassword;
+      return config.templatePassword;
     }
     // IDENTITY
     else if (template == LisoItemCategory.identity.name) {
-      return ConfigService.to.templateIdentity;
+      return config.templateIdentity;
     }
     // NOTE
     else if (template == LisoItemCategory.note.name) {
-      return ConfigService.to.templateNote;
+      return config.templateNote;
     }
     // CASH CARD
     else if (template == LisoItemCategory.cashCard.name) {
-      return ConfigService.to.templateCashCard;
+      return config.templateCashCard;
     }
     // BANK ACCOUNT
     else if (template == LisoItemCategory.bankAccount.name) {
-      return ConfigService.to.templateBankAccount;
+      return config.templateBankAccount;
     }
     // MEDICAL RECORDS
     else if (template == LisoItemCategory.medicalRecord.name) {
-      return ConfigService.to.templateMedicalRecord;
+      return config.templateMedicalRecord;
     }
     // PASSPORT
     else if (template == LisoItemCategory.passport.name) {
-      return ConfigService.to.templatePassport;
+      return config.templatePassport;
     }
     // SERVER
     else if (template == LisoItemCategory.server.name) {
-      return ConfigService.to.templateServer;
+      return config.templateServer;
     }
     // SOFTWARE LICENSE
     else if (template == LisoItemCategory.softwareLicense.name) {
-      return ConfigService.to.templateSoftwareLicense;
+      return config.templateSoftwareLicense;
     }
     // API CREDENTIAL
     else if (template == LisoItemCategory.apiCredential.name) {
-      return ConfigService.to.templateAPICredential;
+      return config.templateAPICredential;
     }
     // DATABASE
     else if (template == LisoItemCategory.database.name) {
-      return ConfigService.to.templateDatabase;
+      return config.templateDatabase;
     }
     // DRIVER'S LICENSE
     else if (template == LisoItemCategory.driversLicense.name) {
-      return ConfigService.to.templateDriversLicense;
+      return config.templateDriversLicense;
     }
     // EMAIL
     else if (template == LisoItemCategory.email.name) {
-      return ConfigService.to.templateEmailAccount;
+      return config.templateEmailAccount;
     }
     // MEMBERSHIP
     else if (template == LisoItemCategory.membership.name) {
-      return ConfigService.to.templateMembership;
+      return config.templateMembership;
     }
     // OUTDOOR LICENSE
     else if (template == LisoItemCategory.outdoorLicense.name) {
-      return ConfigService.to.templateOutdoorLicense;
+      return config.templateOutdoorLicense;
     }
     // REWARDS PROGRAM
     else if (template == LisoItemCategory.rewardsProgram.name) {
-      return ConfigService.to.templateRewardsProgram;
+      return config.templateRewardsProgram;
     }
     // SOCIAL SECURITY
     else if (template == LisoItemCategory.socialSecurity.name) {
-      return ConfigService.to.templateSocialSecurity;
+      return config.templateSocialSecurity;
     }
     // WIRELESS ROUTER
     else if (template == LisoItemCategory.wirelessRouter.name) {
-      return ConfigService.to.templateWirelessRouter;
+      return config.templateWirelessRouter;
     }
     // ENCRYPTION
     else if (template == LisoItemCategory.encryption.name) {
-      return ConfigService.to.templateEncryption;
+      return config.templateEncryption;
     }
 
     // UNKNOWN TEMPLATE

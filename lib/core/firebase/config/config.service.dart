@@ -1,12 +1,13 @@
 import 'dart:convert';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/features/s3/s3.service.dart';
+import 'package:secrets/secrets.dart';
 
 import '../../hive/models/field.hive.dart';
 import '../../utils/globals.dart';
@@ -50,53 +51,15 @@ class ConfigService extends GetxService with ConsoleMixin {
   List<HiveLisoField> templateSoftwareLicense = [];
   List<HiveLisoField> templateWirelessRouter = [];
 
-  final parameters = [
-    'general_config',
-    'app_config',
-    's3_config',
-    'web3_config',
-    'limits_config',
-    "users_config",
-    'choices_country',
-    'template_api_credential',
-    'template_bank_account',
-    'template_cash_card',
-    'template_crypto_wallet',
-    'template_database',
-    'template_drivers_license',
-    'template_email_account',
-    'template_encryption',
-    'template_identity',
-    'template_login',
-    'template_medical_record',
-    'template_membership',
-    'template_note',
-    'template_outdoor_license',
-    'template_passport',
-    'template_password',
-    'template_rewards_program',
-    'template_server',
-    'template_social_security',
-    'template_software_license',
-    'template_wireless_router',
-  ];
-
   // GETTERS
   FirebaseRemoteConfig get instance => FirebaseRemoteConfig.instance;
   String get appName => general.app.name;
   String get devName => general.developer.name;
 
   // INIT
-  @override
-  void onInit() {
-    _init();
-    console.info('onInit');
-    super.onInit();
-  }
 
   // FUNCTIONS
-
-  void _init() async {
+  Future<void> init() async {
     // pre-populate with local as defaults
     await _populate(local: true);
     if (!isFirebaseSupported) return console.warning('Not Supported');
@@ -107,166 +70,9 @@ class ConfigService extends GetxService with ConsoleMixin {
       minimumFetchInterval: kDebugMode ? 0.seconds : 5.minutes,
     ));
 
-    // // DEFAULTS
-    // Map<String, dynamic> parametersMap = {};
-
-    // for (var e in parameters) {
-    //   parametersMap.addAll({e: await _obtainLocalParameter(e)});
-    // }
-
-    // await instance.setDefaults(parametersMap);
-    // // pre-populate with defaults we have preset
-    // await _populate();
     // workaround for https://github.com/firebase/flutterfire/issues/6196
-    await Future.delayed(3.seconds);
+    // Future.delayed(1.seconds).then((_) => fetch());
     fetch();
-  }
-
-  Future<void> _populate({bool local = false}) async {
-    general = ConfigGeneral.fromJson(jsonDecode(await _getString(
-      'general_config',
-      local: local,
-    )));
-
-    app = ConfigApp.fromJson(jsonDecode(await _getString(
-      'app_config',
-      local: local,
-    )));
-
-    s3 = ConfigS3.fromJson(jsonDecode(await _getString(
-      's3_config',
-      local: local,
-    )));
-
-    web3 = ConfigWeb3.fromJson(jsonDecode(await _getString(
-      'web3_config',
-      local: local,
-    )));
-
-    limits = ConfigLimits.fromJson(jsonDecode(await _getString(
-      'limits_config',
-      local: local,
-    )));
-
-    users = ConfigUsers.fromJson(jsonDecode(await _getString(
-      'users_config',
-      local: local,
-    )));
-
-    choicesCountry = List<HiveLisoFieldChoices>.from(
-      jsonDecode(await _getString('choices_country', local: local)).map(
-        (x) => HiveLisoFieldChoices.fromJson(x),
-      ),
-    );
-
-    // TEMPLATES
-    templateAPICredential = await _parseTemplate(
-      'template_api_credential',
-      local: local,
-    );
-
-    templateBankAccount = await _parseTemplate(
-      'template_bank_account',
-      local: local,
-    );
-
-    templateCashCard = await _parseTemplate(
-      'template_cash_card',
-      local: local,
-    );
-
-    templateCryptoWallet = await _parseTemplate(
-      'template_crypto_wallet',
-      local: local,
-    );
-
-    templateDatabase = await _parseTemplate(
-      'template_database',
-      local: local,
-    );
-
-    templateDriversLicense = await _parseTemplate(
-      'template_drivers_license',
-      local: local,
-    );
-
-    templateEmailAccount = await _parseTemplate(
-      'template_email_account',
-      local: local,
-    );
-
-    templateEncryption = await _parseTemplate(
-      'template_encryption',
-      local: local,
-    );
-
-    templateIdentity = await _parseTemplate(
-      'template_identity',
-      local: local,
-    );
-
-    templateLogin = await _parseTemplate(
-      'template_login',
-      local: local,
-    );
-
-    templateMedicalRecord = await _parseTemplate(
-      'template_medical_record',
-      local: local,
-    );
-
-    templateMembership = await _parseTemplate(
-      'template_membership',
-      local: local,
-    );
-
-    templateNote = await _parseTemplate(
-      'template_note',
-      local: local,
-    );
-
-    templateOutdoorLicense = await _parseTemplate(
-      'template_outdoor_license',
-      local: local,
-    );
-
-    templatePassport = await _parseTemplate(
-      'template_passport',
-      local: local,
-    );
-
-    templatePassword = await _parseTemplate(
-      'template_password',
-      local: local,
-    );
-
-    templateRewardsProgram = await _parseTemplate(
-      'template_rewards_program',
-      local: local,
-    );
-
-    templateServer = await _parseTemplate(
-      'template_server',
-      local: local,
-    );
-
-    templateSocialSecurity = await _parseTemplate(
-      'template_social_security',
-      local: local,
-    );
-
-    templateSoftwareLicense = await _parseTemplate(
-      'template_software_license',
-      local: local,
-    );
-
-    templateWirelessRouter = await _parseTemplate(
-      'template_wireless_router',
-      local: local,
-    );
-
-    S3Service.to.init();
-    console.info('populated! local: $local');
   }
 
   Future<void> fetch() async {
@@ -275,38 +81,151 @@ class ConfigService extends GetxService with ConsoleMixin {
 
     try {
       final updated = await instance.fetchAndActivate();
-      console.info('fetched! updated: $updated');
+      console.info('fetch updated: $updated');
       await _populate();
     } catch (e) {
       console.error('fetch error: $e');
     }
   }
 
-  Future<List<HiveLisoField>> _parseTemplate(String key,
-      {bool local = false}) async {
-    final string = await _getString(key, local: local);
+  Future<void> _populate({bool local = false}) async {
+    app = ConfigApp.fromJson(local
+        ? Secrets.configs.app
+        : jsonDecode(instance.getString('app_config')));
 
-    return List<HiveLisoField>.from(
-      jsonDecode(string).map((e) => HiveLisoField.fromJson(e)),
-    );
-  }
+    s3 = ConfigS3.fromJson(local
+        ? Secrets.configs.s3
+        : jsonDecode(instance.getString('s3_config')));
 
-  Future<String> _getString(String key, {bool local = false}) async {
-    return local
-        ? await _obtainLocalParameter(key)
-        : _obtainServerParameter(key);
-  }
+    web3 = ConfigWeb3.fromJson(local
+        ? Secrets.configs.web3
+        : jsonDecode(instance.getString('web3_config')));
 
-  Future<String> _obtainLocalParameter(String key) async {
-    // we don't use 'path' lib because of a bug for windows
-    final string = await rootBundle.loadString('assets/json/config/$key.json');
-    if (string.isEmpty) throw 'empty local config parameter: $key';
-    return string;
-  }
+    limits = ConfigLimits.fromJson(local
+        ? Secrets.configs.limits
+        : jsonDecode(instance.getString('limits_config')));
 
-  String _obtainServerParameter(String key) {
-    final string = instance.getString(key);
-    if (string.isEmpty) throw 'empty server config parameter: $key';
-    return string;
+    users = ConfigUsers.fromJson(local
+        ? Secrets.configs.users
+        : jsonDecode(instance.getString('users_config')));
+
+    general = ConfigGeneral.fromJson(local
+        ? Secrets.configs.general
+        : jsonDecode(instance.getString('general_config')));
+
+    choicesCountry = List<HiveLisoFieldChoices>.from((local
+            ? Secrets.countries
+            : jsonDecode(instance.getString('choices_country')))
+        .map((x) => HiveLisoFieldChoices.fromJson(x)));
+
+    // TEMPLATES
+    templateAPICredential = List<HiveLisoField>.from((local
+            ? Secrets.templates.apiCredential
+            : jsonDecode(instance.getString('template_api_credential')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateBankAccount = List<HiveLisoField>.from((local
+            ? Secrets.templates.bankAccount
+            : jsonDecode(instance.getString('template_bank_account')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateCashCard = List<HiveLisoField>.from((local
+            ? Secrets.templates.cashCard
+            : jsonDecode(instance.getString('template_cash_card')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateCryptoWallet = List<HiveLisoField>.from((local
+            ? Secrets.templates.cryptoWallet
+            : jsonDecode(instance.getString('template_crypto_wallet')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateDatabase = List<HiveLisoField>.from((local
+            ? Secrets.templates.database
+            : jsonDecode(instance.getString('template_database')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateDriversLicense = List<HiveLisoField>.from((local
+            ? Secrets.templates.driversLicense
+            : jsonDecode(instance.getString('template_drivers_license')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateEmailAccount = List<HiveLisoField>.from((local
+            ? Secrets.templates.emailAccount
+            : jsonDecode(instance.getString('template_email_account')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateEncryption = List<HiveLisoField>.from((local
+            ? Secrets.templates.encryption
+            : jsonDecode(instance.getString('template_encryption')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateIdentity = List<HiveLisoField>.from((local
+            ? Secrets.templates.identity
+            : jsonDecode(instance.getString('template_identity')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateLogin = List<HiveLisoField>.from((local
+            ? Secrets.templates.login
+            : jsonDecode(instance.getString('template_login')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateMedicalRecord = List<HiveLisoField>.from((local
+            ? Secrets.templates.medicalRecord
+            : jsonDecode(instance.getString('template_medical_record')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateMembership = List<HiveLisoField>.from((local
+            ? Secrets.templates.membership
+            : jsonDecode(instance.getString('template_membership')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateNote = List<HiveLisoField>.from((local
+            ? Secrets.templates.note
+            : jsonDecode(instance.getString('template_note')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateOutdoorLicense = List<HiveLisoField>.from((local
+            ? Secrets.templates.outdoorLicense
+            : jsonDecode(instance.getString('template_outdoor_license')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templatePassport = List<HiveLisoField>.from((local
+            ? Secrets.templates.passport
+            : jsonDecode(instance.getString('template_passport')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templatePassword = List<HiveLisoField>.from((local
+            ? Secrets.templates.password
+            : jsonDecode(instance.getString('template_password')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateRewardsProgram = List<HiveLisoField>.from((local
+            ? Secrets.templates.rewardsProgram
+            : jsonDecode(instance.getString('template_rewards_program')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateServer = List<HiveLisoField>.from((local
+            ? Secrets.templates.server
+            : jsonDecode(instance.getString('template_server')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateSocialSecurity = List<HiveLisoField>.from((local
+            ? Secrets.templates.socialSecurity
+            : jsonDecode(instance.getString('template_social_security')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateSoftwareLicense = List<HiveLisoField>.from((local
+            ? Secrets.templates.softwareLicense
+            : jsonDecode(instance.getString('template_software_license')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    templateWirelessRouter = List<HiveLisoField>.from((local
+            ? Secrets.templates.wirelessRouter
+            : jsonDecode(instance.getString('template_wireless_router')))
+        .map((x) => HiveLisoField.fromJson(x)));
+
+    console.info('populated! local: $local');
+    // re-init s3 minio client
+    S3Service.to.init();
   }
 }

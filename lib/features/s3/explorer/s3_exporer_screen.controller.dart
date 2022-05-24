@@ -169,9 +169,6 @@ class S3ExplorerScreenController extends GetxController
 
   void _upload(File file) async {
     final assumedTotal = S3Service.to.storageSize.value + await file.length();
-    console.wtf(
-      'assumedTotal: ${filesize(assumedTotal)}, max: ${filesize(WalletService.to.limits.uploadSize)}',
-    );
 
     if (assumedTotal >= WalletService.to.limits.uploadSize) {
       return Utils.adaptiveRouteOpen(

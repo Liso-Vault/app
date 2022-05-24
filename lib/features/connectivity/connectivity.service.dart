@@ -37,8 +37,5 @@ class ConnectivityService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-  void cancel() {
-    console.info('cancelConnectivityStream');
-    connectivitySubscription?.cancel();
-  }
+  void cancel() => connectivitySubscription?.cancel();
 }

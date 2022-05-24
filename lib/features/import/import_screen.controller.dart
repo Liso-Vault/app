@@ -138,12 +138,8 @@ class ImportScreenController extends GetxController
       );
     }
 
-    // parse vault file to items
-    await HiveManager.importVaultFile(
-      vaultFile,
-      cipherKey: cipherKey,
-    );
-
+    // parse and import vault file
+    await HiveManager.importVaultFile(vaultFile, cipherKey: cipherKey);
     // ignore syncing screen if we just imported
     AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud

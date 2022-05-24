@@ -27,9 +27,10 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
-    if (seedController.text.isEmpty) return console.error('invalid mnemonic');
+    final seed = seedController.text;
+    if (seed.isEmpty) return console.error('invalid mnemonic');
 
-    if (seedController.text != Get.parameters['mnemonic']) {
+    if (seed != Get.parameters['mnemonic']) {
       UIUtils.showSnackBar(
         title: 'Incorrect Mnemonic Phrase',
         message: "Please re-enter your backed up mnemonic seed phrase",
@@ -40,16 +41,11 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
       return;
     }
 
-    final privateKeyHex = WalletService.to.mnemonicToPrivateKeyHex(
-      seedController.text,
-    );
+    final privateKeyHex = WalletService.to.mnemonicToPrivateKeyHex(seed);
 
     Get.offAllNamed(
       Routes.createPassword,
-      parameters: {
-        'privateKeyHex': privateKeyHex,
-        'seed': seedController.text,
-      },
+      parameters: {'privateKeyHex': privateKeyHex, 'seed': seed},
     );
   }
 }

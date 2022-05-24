@@ -5,13 +5,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:liso/firebase_options.dart';
+import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
 
 import 'core/firebase/config/config.service.dart';
@@ -34,45 +33,41 @@ void main() async {
     WidgetsFlutterBinding.ensureInitialized();
     // improve performance
     GestureBinding.instance.resamplingEnabled = true;
-
+    // init firebase
     if (isFirebaseSupported) {
-      await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform,
-      );
+      await Firebase.initializeApp(options: Secrets.firebaseOptions);
     }
 
-    // initialize first to catch errors
-    Get.put(CrashlyticsService());
-    await LisoPaths.init();
-    await Persistence.init();
-    Get.put(Persistence());
-
     // GetX services
+    Get.lazyPut(() => CrashlyticsService());
+    Get.lazyPut(() => Persistence());
     Get.lazyPut(() => WalletService());
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => CipherService());
     Get.lazyPut(() => FirestoreService());
-    Get.lazyPut(() => S3Service());
     Get.lazyPut(() => AlchemyService());
-    Get.put(ConfigService());
+    Get.lazyPut(() => S3Service());
+    Get.lazyPut(() => ConfigService());
+
+    CrashlyticsService.to.init();
+    await LisoPaths.init();
+    await Persistence.init();
+    await ConfigService.to.init();
+
+    // init
+    HiveManager.init();
+    NotificationsManager.init();
+    BiometricUtils.init();
+    Utils.setDisplayMode(); // refresh rate
 
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       await windowManager.ensureInitialized();
+      await Utils.setWindowSize(); // for desktop
     }
-    // init
-    await HiveManager.init();
-    await GetStorage.init();
-    NotificationsManager.init();
-    BiometricUtils.init();
 
-    // utils
-    Utils.setDisplayMode(); // refresh rate
-    await Utils.setWindowSize(); // for desktop
-    // run main app
-    runApp(const App());
+    runApp(const App()); // run
   }, (Object exception, StackTrace stackTrace) {
-    console.error("DART_ERROR");
-    console.error('$exception');
+    console.error("DART_ERROR\n$exception");
 
     final details = FlutterErrorDetails(
       exception: exception,
