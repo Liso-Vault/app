@@ -88,7 +88,6 @@ class BiometricUtils {
 
   static Future<bool> canAuthenticate() async {
     final response = await BiometricStorage().canAuthenticate();
-    console.warning('biometric: $response');
     return response == CanAuthenticateResponse.success;
   }
 }
