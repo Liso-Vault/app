@@ -13,6 +13,7 @@
 - New! Setting for automatic client-side file encryption
 - New! Upgrade Screen
 - New! Shared Vault / Group Section
+- New! Filters indicator
 - Improved! Syncing screen
 - Improved! Exported File Name now includes Date and Time
 - Improved! File Explorer shows encrypted icon indicator

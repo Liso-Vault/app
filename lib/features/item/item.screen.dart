@@ -62,6 +62,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       optionsViewBuilder: (context, onSelected, options) {
         return Material(
           child: ListView.separated(
+            shrinkWrap: true,
             itemCount: options.length,
             separatorBuilder: (context, index) => const Divider(height: 0),
             itemBuilder: (context, index) {

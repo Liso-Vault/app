@@ -299,9 +299,17 @@ class MainScreenController extends GetxController
       await HiveManager.hidelete(itemsToDelete);
     }
 
-    // FILTER ALL
+    // FILTER TOGGLE
     if (drawerController.filterAll) {
       items = items.where((e) => !e.trashed && !e.deleted).toList();
+    } else if (drawerController.filterFavorites.value) {
+      items = items.where((e) => e.favorite && !e.deleted).toList();
+    } else if (drawerController.filterProtected.value) {
+      items = items.where((e) => e.protected && !e.deleted).toList();
+    } else if (drawerController.filterTrashed.value) {
+      items = items.where((e) => e.trashed && !e.deleted).toList();
+    } else if (drawerController.filterDeleted.value) {
+      items = items.where((e) => e.deleted).toList();
     }
 
     // FILTER BY CATEGORY
@@ -316,24 +324,6 @@ class MainScreenController extends GetxController
       items = items
           .where((e) => e.tags.contains(drawerController.filterTag()))
           .toList();
-    }
-
-    // FILTER FAVORITES
-    if (drawerController.filterFavorites.value) {
-      items = items.where((e) => e.favorite).toList();
-    }
-
-    // FILTER PROTECTED
-    if (drawerController.filterProtected.value) {
-      items = items.where((e) => e.protected).toList();
-    }
-
-    // FILTER TRASHED
-    if (drawerController.filterTrashed.value) {
-      items = items.where((e) => e.trashed && !e.deleted).toList();
-      // FILTER DELETED
-    } else if (drawerController.filterDeleted.value) {
-      items = items.where((e) => e.deleted).toList();
     }
 
     // --- SORT BY TITLE ---- //

@@ -90,9 +90,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterFavorites.value &&
       !filterProtected.value &&
       !filterTrashed.value &&
-      !filterDeleted.value &&
-      filterTag.isEmpty &&
-      filterCategory.value == LisoItemCategory.none;
+      !filterDeleted.value;
 
   List<Widget> get groupTiles =>
       persistence.groupsMap.map((Map<String, dynamic> e) {
@@ -107,6 +105,22 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
         );
       }).toList();
 
+  String get filterToggleLabel {
+    if (filterAll) return 'All';
+    if (filterFavorites.value) return 'Favorites';
+    if (filterProtected.value) return 'Protected';
+    if (filterTrashed.value) return 'Trashed';
+    if (filterDeleted.value) return 'Deleted';
+    return 'Unknown';
+  }
+
+  String get filterTagLabel => filterTag.value;
+
+  String get filterCategoryLabel =>
+      filterCategory.value != LisoItemCategory.none
+          ? GetUtils.capitalizeFirst(filterCategory.value.name)!
+          : '';
+
   // INIT
 
   // FUNCTIONS
@@ -116,7 +130,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
-    filterTag.value = '';
     done();
   }
 
@@ -125,7 +138,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
-    filterTag.value = '';
     done();
   }
 
@@ -134,7 +146,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterDeleted.value = false;
-    filterTag.value = '';
     done();
   }
 
@@ -143,7 +154,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;
-    filterTag.value = '';
     done();
   }
 
@@ -158,7 +168,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterCategory.value = categoryEnum == filterCategory.value
         ? LisoItemCategory.none
         : categoryEnum;
-    filterTag.value = '';
     done();
   }
 

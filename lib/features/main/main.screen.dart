@@ -18,6 +18,7 @@ import '../../core/persistence/persistence_builder.widget.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../s3/s3.service.dart';
 import 'main_screen.controller.dart';
@@ -86,6 +87,40 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       );
     }
 
+    final filters = Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text(
+          'Filters: ',
+          style: TextStyle(fontSize: 9, color: Colors.grey),
+        ),
+        Obx(
+          () => CustomChip(
+            label: Text(
+              DrawerMenuController.to.filterToggleLabel,
+              style: const TextStyle(fontSize: 9),
+            ),
+          ),
+        ),
+        Obx(
+          () => CustomChip(
+            label: Text(
+              DrawerMenuController.to.filterCategoryLabel,
+              style: const TextStyle(fontSize: 9),
+            ),
+          ),
+        ),
+        Obx(
+          () => CustomChip(
+            label: Text(
+              DrawerMenuController.to.filterTagLabel,
+              style: const TextStyle(fontSize: 9),
+            ),
+          ),
+        ),
+      ],
+    );
+
     final content = Obx(
       () => Opacity(
         opacity: S3Service.to.syncing.value ? 0.5 : 1,
@@ -95,6 +130,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             children: [
               const ConnectivityBar(),
               Expanded(child: childContent),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(7),
+                  child: filters,
+                ),
+              ),
             ],
           ),
         ),
