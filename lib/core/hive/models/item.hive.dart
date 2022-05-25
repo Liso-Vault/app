@@ -99,22 +99,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     };
   }
 
-  HiveLisoItem copy() {
-    return HiveLisoItem(
-      identifier: identifier,
-      category: category,
-      iconUrl: iconUrl,
-      title: title,
-      fields: List.unmodifiable(fields),
-      favorite: favorite,
-      protected: protected,
-      trashed: trashed,
-      tags: tags,
-      attachments: attachments,
-      metadata: metadata,
-      group: group,
-    );
-  }
+  String toJsonString() => jsonEncode(toJson());
 
   @override
   List<Object?> get props => [

@@ -84,7 +84,7 @@ class FormFieldUtils {
         if (formField.value is Map<String, dynamic>) {
           field.data.extra = formField.value;
         } else {
-          field.data.value = formField.value;
+          field.data.value = formField.value ?? '';
         }
       }
 

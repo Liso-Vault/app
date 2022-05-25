@@ -86,9 +86,9 @@ class HiveLisoFieldData extends HiveObject with EquatableMixin {
 
   Map<String, dynamic> toJson() {
     return {
-      "label": label,
-      "hint": hint,
-      "value": value,
+      "label": label ?? '',
+      "hint": hint ?? '',
+      "value": value ?? '',
       "choices": choices == null
           ? null
           : List<dynamic>.from(choices!.map((x) => x.toJson())),

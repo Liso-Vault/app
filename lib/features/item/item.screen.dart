@@ -89,7 +89,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
               controller.menuItemsChangeIcon,
               child: controller.iconUrl().isEmpty
                   ? Utils.categoryIcon(
-                      LisoItemCategory.values.byName(controller.item!.category),
+                      LisoItemCategory.values.byName(controller.item.category),
                     )
                   : RemoteImage(
                       url: controller.iconUrl(),
@@ -174,13 +174,13 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         const Divider(),
         const SizedBox(height: 20),
         Text(
-          'Modified ${controller.item?.updatedDateTimeFormatted}',
+          'Modified ${controller.item.updatedDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 5),
         Text(
-          'Created ${controller.item?.createdDateTimeFormatted}',
+          'Created ${controller.item.createdDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),

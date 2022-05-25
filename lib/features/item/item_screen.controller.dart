@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +31,7 @@ class ItemScreenController extends GetxController
   static ItemScreenController get to => Get.find();
 
   // VARIABLES
-  HiveLisoItem? item, originalItem;
+  late HiveLisoItem item, originalItem;
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
@@ -53,11 +55,11 @@ class ItemScreenController extends GetxController
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: '${'copy'.tr} ${item!.significant.keys.first}',
+        title: '${'copy'.tr} ${item.significant.keys.first}',
         leading: const Icon(Iconsax.copy),
-        onSelected: () => Utils.copyToClipboard(item!.significant.values.first),
+        onSelected: () => Utils.copyToClipboard(item.significant.values.first),
       ),
-      // if (item!.categoryObject == LisoItemCategory.cryptoWallet) ...[
+      // if (item.categoryObject == LisoItemCategory.cryptoWallet) ...[
       //   // TODO: export wallet and generate qr code
       //   ContextMenuItem(
       //     title: 'export_wallet'.tr,
@@ -99,8 +101,8 @@ class ItemScreenController extends GetxController
       _populateItem();
     }
 
-    originalItem = HiveLisoItem.fromJson(item!.toJson());
-    widgets.value = item!.widgets;
+    originalItem = HiveLisoItem.fromJson(item.toJson());
+    widgets.value = item.widgets;
     change(null, status: RxStatus.success());
     super.onInit();
   }
@@ -108,14 +110,14 @@ class ItemScreenController extends GetxController
   // FUNCTIONS
   void _populateItem() {
     final hiveKey = Get.parameters['hiveKey'].toString();
-    item = HiveManager.items!.get(int.parse(hiveKey));
-    iconUrl.value = item!.iconUrl;
-    titleController.text = item!.title;
-    favorite.value = item!.favorite;
-    protected.value = item!.protected;
-    groupIndex.value = item!.group;
-    tags = item!.tags;
-    attachments.value = item!.attachments;
+    item = HiveManager.items!.get(int.parse(hiveKey))!;
+    iconUrl.value = item.iconUrl;
+    titleController.text = item.title;
+    favorite.value = item.favorite;
+    protected.value = item.protected;
+    groupIndex.value = item.group;
+    tags = item.tags;
+    attachments.value = item.attachments;
   }
 
   Future<void> _loadTemplate() async {
@@ -186,7 +188,7 @@ class ItemScreenController extends GetxController
       title: titleController.text,
       tags: tags,
       attachments: attachments,
-      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
@@ -213,16 +215,16 @@ class ItemScreenController extends GetxController
       );
     }
 
-    item!.iconUrl = iconUrl.value;
-    item!.title = titleController.text;
-    item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
-    item!.tags = tags;
-    item!.attachments = attachments;
-    item!.favorite = favorite.value;
-    item!.protected = protected.value;
-    item!.group = groupIndex.value;
-    item!.metadata = await item!.metadata.getUpdated();
-    await item!.save();
+    item.iconUrl = iconUrl.value;
+    item.title = titleController.text;
+    item.fields = FormFieldUtils.obtainFields(item, widgets: widgets);
+    item.tags = tags;
+    item.attachments = attachments;
+    item.favorite = favorite.value;
+    item.protected = protected.value;
+    item.group = groupIndex.value;
+    item.metadata = await item.metadata.getUpdated();
+    await item.save();
 
     MainScreenController.to.onItemsUpdated();
     Get.back();
@@ -295,12 +297,13 @@ class ItemScreenController extends GetxController
   Future<bool> canPop() async {
     // TODO: improve equality check
     final updatedItem = HiveLisoItem(
-      identifier: originalItem!.identifier,
-      metadata: originalItem!.metadata,
-      trashed: originalItem!.trashed,
+      identifier: item.identifier,
+      metadata: item.metadata,
+      trashed: item.trashed,
+      deleted: item.deleted,
       category: category,
       title: titleController.text,
-      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       attachments: attachments,
       tags: tags,
       group: groupIndex.value,
@@ -309,7 +312,8 @@ class ItemScreenController extends GetxController
       protected: protected.value,
     );
 
-    bool hasChanges = updatedItem != originalItem!;
+    // convert to json string for absolute equality check
+    bool hasChanges = updatedItem.toJsonString() != originalItem.toJsonString();
 
     if (hasChanges) {
       const dialogContent = Text('You have unsaved changes');
