@@ -69,7 +69,8 @@ class SettingsScreen extends GetView<SettingsScreenController>
               ),
               value: persistence.fileEncryption.val,
               subtitle: const Text(
-                  "Automatic client-side file encryption when you upload files"),
+                "Automatic client-side file encryption when you upload files",
+              ),
               onChanged: (value) {
                 if (WalletService.to.limits.fileEncryption) {
                   persistence.fileEncryption.val = value;

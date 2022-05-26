@@ -47,7 +47,6 @@ class HiveManager {
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());
     Hive.registerAdapter(HiveMetadataDeviceAdapter());
-
     console.info("init");
   }
 
@@ -65,8 +64,7 @@ class HiveManager {
   }
 
   static Future<File> export({required String path}) async {
-    // TODO: isolate
-    final jsonString = jsonEncode(itemValues);
+    final jsonString = jsonEncode(itemValues); // TODO: isolate
     final file = File(path);
     await file.writeAsString(jsonString);
     return await CipherService.to.encryptFile(file, addExtensionExtra: false);
@@ -80,8 +78,7 @@ class HiveManager {
     );
 
     final jsonString = await decryptedFile.readAsString();
-    // TODO: isolate
-    final jsonMap = jsonDecode(jsonString);
+    final jsonMap = jsonDecode(jsonString); // TODO: isolate
 
     final importedItems = List<HiveLisoItem>.from(
       jsonMap.map((x) => HiveLisoItem.fromJson(x)),
@@ -93,10 +90,8 @@ class HiveManager {
   static Future<void> importVaultFile(File file, {Uint8List? cipherKey}) async {
     // parse vault to items
     final items_ = await parseVaultFile(file, cipherKey: cipherKey);
-    // open database
-    await open(cipherKey: cipherKey!);
-    // populate database
-    await items!.addAll(items_);
+    await open(cipherKey: cipherKey!); // open database
+    await items!.addAll(items_); // populate database
   }
 
   static Future<void> reset() async {

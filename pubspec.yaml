@@ -18,7 +18,7 @@ dependencies:
     path: ../secrets
   alchemy_web3:
     git: https://github.com/oliverbytes/alchemy_web3.git
-  web3dart: ^2.4.0 # Ethereum
+  web3dart: ^2.3.5 # Ethereum
   eth_sig_util: ^0.0.7 # Ethereum signature
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 # Derive Path

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -202,7 +200,6 @@ class ItemScreenController extends GetxController
 
   void edit() async {
     if (!formKey.currentState!.validate()) return;
-    if (item == null) return;
 
     // protected items limit
     if (protected.value && HiveManager.protectedItemLimitReached) {

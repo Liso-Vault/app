@@ -77,19 +77,13 @@ class WalletService extends GetxService with ConsoleMixin {
 
     final balance = Persistence.to.lastLisoBalance.val;
 
-    // check if user is a tier2 holder
-    if (balance > limits_.tier1.tokenThreshold) {
-      return limits_.tier1;
-    }
-
-    // check if user is a tier3 holder
-    if (balance > limits_.tier2.tokenThreshold) {
-      return limits_.tier2;
-    }
-
-    // check if user is a tier4 holder
+    // set the limit corresponding to the token threshold
     if (balance > limits_.tier3.tokenThreshold) {
       return limits_.tier3;
+    } else if (balance > limits_.tier2.tokenThreshold) {
+      return limits_.tier2;
+    } else if (balance > limits_.tier1.tokenThreshold) {
+      return limits_.tier1;
     }
 
     // a tier1 user
