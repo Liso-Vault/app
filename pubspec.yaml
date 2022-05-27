@@ -4,14 +4,14 @@ publish_to: "none"
 version: 0.4.0+19
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ">=2.17.1 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
   # STATE MANAGEMENT
-  get: ^4.6.3
+  get: ^4.6.5
 
   # CRYTPOGRAPHY + SECURITY
   secrets:
@@ -30,12 +30,12 @@ dependencies:
   otp: ^3.0.4
 
   # FIREBASE
-  firebase_core: 1.17.0
-  firebase_analytics: 9.1.8
-  firebase_crashlytics: 2.8.0
-  firebase_performance: 0.8.0+12
-  firebase_remote_config: 2.0.7
-  cloud_firestore: ^3.1.15
+  firebase_core: 1.17.1
+  firebase_analytics: 9.1.9
+  firebase_crashlytics: 2.8.1
+  firebase_performance: 0.8.0+13
+  firebase_remote_config: 2.0.8
+  cloud_firestore: ^3.1.17
   # firebase_app_check: ^0.0.6+9
 
   # IO
@@ -43,7 +43,7 @@ dependencies:
   path_provider: ^2.0.10
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
-  file_picker: ^4.5.1 # exporting + importing
+  file_picker: ^4.6.0 # exporting + importing
   archive: ^3.3.0 # archiving hive boxes
   http: ^0.13.4 # web3dart client
   minio: ^3.5.0 # S3 API
@@ -58,7 +58,7 @@ dependencies:
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
-  flutter_swipe_action_cell: ^3.0.0
+  flutter_swipe_action_cell: ^3.0.2
   flutter_quill:
     git: https://github.com/oliverbytes/flutter-quill.git
   badges: ^2.0.2 # pending changes indicator
