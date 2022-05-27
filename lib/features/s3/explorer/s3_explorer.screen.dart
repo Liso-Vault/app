@@ -1,11 +1,10 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
 
-import '../../../core/firebase/config/config.service.dart';
 import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
@@ -42,16 +41,13 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
       ),
     );
 
-    const emptyTimeMachine = 'No backed up vaults';
-    final emptyExplorer =
-        'Start uploading your private files on ${ConfigService.to.appName} Cloud! With double AES-256 Military-Grade Encryption, worrying is a thing of the past.';
-
     var content = controller.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
         iconData: Iconsax.document_cloud,
-        message: controller.isTimeMachine ? emptyTimeMachine : emptyExplorer,
+        message:
+            controller.isTimeMachine ? 'No backed up vaults' : 'no_files'.tr,
       ),
     );
 
@@ -74,8 +70,9 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
       actions: [
         Obx(
           () => IconButton(
-            onPressed:
-                controller.canUp && !controller.busy() ? controller.up : null,
+            onPressed: !controller.isInRoot && !controller.busy()
+                ? controller.up
+                : null,
             icon: const Icon(LineIcons.alternateLevelUp),
           ),
         ),

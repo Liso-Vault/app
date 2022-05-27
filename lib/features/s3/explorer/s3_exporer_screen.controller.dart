@@ -38,7 +38,7 @@ class S3ExplorerScreenController extends GetxController
   // PROPERTIES
 
   // GETTERS
-  bool get canUp => currentPath.value != rootPath;
+  bool get isInRoot => currentPath.value == rootPath;
   bool get isTimeMachine => Get.parameters['type'] == 'time_machine';
   bool get isPicker => Get.parameters['type'] == 'picker';
 
