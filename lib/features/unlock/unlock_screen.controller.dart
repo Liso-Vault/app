@@ -7,7 +7,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
-import '../../core/hive/hive.manager.dart';
+import '../../core/hive/hive.service.dart';
 import '../../core/services/biometric.service.dart';
 import '../wallet/wallet.service.dart';
 
@@ -94,7 +94,7 @@ class UnlockScreenController extends GetxController
     }
 
     if (passwordMode) return Get.back(result: true);
-    await HiveManager.open();
+    await HiveService.to.open();
     change(null, status: RxStatus.success());
     return Get.offNamedUntil(Routes.main, (route) => false);
   }

@@ -18,39 +18,40 @@ import 'metadata/metadata.hive.dart';
 
 part 'item.hive.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: 0)
 class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(0)
   String identifier;
   @HiveField(1)
-  final String category;
+  String groupId;
   @HiveField(2)
-  String title;
+  final String category;
   @HiveField(3)
-  String iconUrl;
+  String title;
   @HiveField(4)
-  List<HiveLisoField> fields;
+  String iconUrl;
   @HiveField(5)
-  bool favorite;
+  List<HiveLisoField> fields;
   @HiveField(6)
-  bool protected;
+  bool favorite;
   @HiveField(7)
-  bool trashed;
+  bool protected;
   @HiveField(8)
-  bool deleted;
+  bool trashed;
   @HiveField(9)
-  List<String> tags;
+  bool deleted;
   @HiveField(10)
-  List<String> sharedTags;
+  List<String> tags;
   @HiveField(11)
-  List<String> attachments;
+  List<String> sharedTags;
   @HiveField(12)
-  HiveMetadata metadata;
+  List<String> attachments;
   @HiveField(13)
-  int group;
+  HiveMetadata metadata;
 
   HiveLisoItem({
     required this.identifier,
+    required this.groupId,
     required this.category,
     required this.title,
     this.iconUrl = '',
@@ -63,11 +64,11 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.sharedTags = const [],
     this.attachments = const [],
     required this.metadata,
-    required this.group,
   });
 
   factory HiveLisoItem.fromJson(Map<String, dynamic> json) => HiveLisoItem(
         identifier: json["identifier"],
+        groupId: json["group_id"],
         category: json["category"],
         iconUrl: json["icon_url"],
         title: json["title"],
@@ -82,12 +83,12 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         sharedTags: List<String>.from(json["shared_tags"].map((x) => x)),
         attachments: List<String>.from(json["attachments"].map((x) => x)),
         metadata: HiveMetadata.fromJson(json["metadata"]),
-        group: json["group"],
       );
 
   Map<String, dynamic> toJson() {
     return {
       "identifier": identifier,
+      "group_id": groupId,
       "category": category,
       "icon_url": iconUrl,
       "title": title,
@@ -100,7 +101,6 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "shared_tags": List<dynamic>.from(sharedTags.map((x) => x)),
       "attachments": List<dynamic>.from(attachments.map((x) => x)),
       "metadata": metadata.toJson(),
-      "group": group,
     };
   }
 
@@ -109,6 +109,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @override
   List<Object?> get props => [
         identifier,
+        groupId,
         category,
         iconUrl,
         title,
@@ -121,7 +122,6 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         sharedTags,
         attachments,
         metadata,
-        group,
       ];
 
   List<Widget> get widgets => fields.map((e) => e.widget).toList();

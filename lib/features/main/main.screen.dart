@@ -97,6 +97,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         Obx(
           () => CustomChip(
             label: Text(
+              DrawerMenuController.to.filterGroupLabel,
+              style: const TextStyle(fontSize: 9),
+            ),
+          ),
+        ),
+        Obx(
+          () => CustomChip(
+            label: Text(
               DrawerMenuController.to.filterToggleLabel,
               style: const TextStyle(fontSize: 9),
             ),

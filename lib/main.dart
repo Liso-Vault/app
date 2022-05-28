@@ -6,6 +6,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
+import 'package:liso/core/hive/hive.service.dart';
+import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -16,7 +18,8 @@ import 'package:window_manager/window_manager.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
-import 'core/hive/hive.manager.dart';
+import 'core/hive/hive_items.service.dart';
+import 'core/hive/hive_shared_vaults.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
@@ -51,14 +54,18 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => S3Service());
     Get.lazyPut(() => ConfigService());
     Get.lazyPut(() => BiometricService());
+    Get.lazyPut(() => HiveService());
+    Get.lazyPut(() => HiveItemsService());
+    Get.lazyPut(() => HiveSharedVaultsService());
+    Get.lazyPut(() => HiveGroupsService());
 
     CrashlyticsService.to.init();
     await LisoPaths.init();
-    await Persistence.init();
+    await Persistence.open();
+    HiveService.init();
     await ConfigService.to.init();
 
     // init
-    HiveManager.init();
     NotificationsManager.init();
     Utils.setDisplayMode(); // refresh rate
 

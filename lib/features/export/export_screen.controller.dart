@@ -11,7 +11,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/hive/hive.manager.dart';
+import '../../core/hive/hive_items.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/globals.dart';
 import '../app/routes.dart';
@@ -65,7 +65,7 @@ class ExportScreenController extends GetxController
     final exportFileName =
         '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.$kVaultExtension';
 
-    final vaultFile = await HiveManager.export(
+    final vaultFile = await HiveItemsService.to.export(
       path: join(LisoPaths.tempPath, exportFileName),
     );
 

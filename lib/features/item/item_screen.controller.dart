@@ -9,7 +9,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../core/hive/hive.manager.dart';
+import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/utils.dart';
@@ -45,7 +45,7 @@ class ItemScreenController extends GetxController
   // PROPERTIES
   final favorite = false.obs;
   final protected = false.obs;
-  final groupIndex = Persistence.to.groupIndex.val.obs;
+  final groupId = Persistence.to.groupId.val.obs;
   final attachments = <String>[].obs;
 
   // GETTERS
@@ -108,19 +108,19 @@ class ItemScreenController extends GetxController
   // FUNCTIONS
   void _populateItem() {
     final hiveKey = Get.parameters['hiveKey'].toString();
-    item = HiveManager.items!.get(int.parse(hiveKey))!;
+    item = HiveItemsService.to.box.get(int.parse(hiveKey))!;
     iconUrl.value = item.iconUrl;
     titleController.text = item.title;
     favorite.value = item.favorite;
     protected.value = item.protected;
-    groupIndex.value = item.group;
+    groupId.value = item.groupId;
     tags = item.tags;
     attachments.value = item.attachments;
   }
 
   Future<void> _loadTemplate() async {
     final drawerController = Get.find<DrawerMenuController>();
-    groupIndex.value = drawerController.filterGroupIndex.value;
+    groupId.value = drawerController.filterGroupId.value;
     favorite.value = drawerController.filterFavorites.value;
 
     // protected templates by default
@@ -151,14 +151,14 @@ class ItemScreenController extends GetxController
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
-      group: groupIndex.value,
+      groupId: groupId.value,
     );
   }
 
   void add() async {
     if (!formKey.currentState!.validate()) return;
     // items limit
-    if (HiveManager.itemLimitReached) {
+    if (HiveItemsService.to.itemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -169,7 +169,7 @@ class ItemScreenController extends GetxController
     }
 
     // protected items limit
-    if (protected.value && HiveManager.protectedItemLimitReached) {
+    if (protected.value && HiveItemsService.to.protectedItemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -190,10 +190,10 @@ class ItemScreenController extends GetxController
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
-      group: groupIndex.value,
+      groupId: groupId.value,
     );
 
-    await HiveManager.items!.add(newItem);
+    await HiveItemsService.to.box.add(newItem);
     MainScreenController.to.onItemsUpdated();
     Get.back();
   }
@@ -202,7 +202,7 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
 
     // protected items limit
-    if (protected.value && HiveManager.protectedItemLimitReached) {
+    if (protected.value && HiveItemsService.to.protectedItemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -219,7 +219,7 @@ class ItemScreenController extends GetxController
     item.attachments = attachments;
     item.favorite = favorite.value;
     item.protected = protected.value;
-    item.group = groupIndex.value;
+    item.groupId = groupId.value;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
 
@@ -230,7 +230,7 @@ class ItemScreenController extends GetxController
   List<String> querySuggestions(String query) {
     if (query.isEmpty) return [];
 
-    final usedTags = HiveManager.items!.values
+    final usedTags = HiveItemsService.to.data
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
 
@@ -303,7 +303,7 @@ class ItemScreenController extends GetxController
       fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       attachments: attachments,
       tags: tags,
-      group: groupIndex.value,
+      groupId: groupId.value,
       favorite: favorite.value,
       iconUrl: iconUrl.value,
       protected: protected.value,

@@ -3,7 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 part 'app.hive.g.dart';
 
-@HiveType(typeId: 11)
+@HiveType(typeId: 221)
 class HiveMetadataApp extends HiveObject {
   @HiveField(0)
   String appName;

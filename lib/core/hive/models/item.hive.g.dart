@@ -8,7 +8,7 @@ part of 'item.hive.dart';
 
 class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
   HiveLisoItem read(BinaryReader reader) {
@@ -18,19 +18,19 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
     };
     return HiveLisoItem(
       identifier: fields[0] as String,
-      category: fields[1] as String,
-      title: fields[2] as String,
-      iconUrl: fields[3] as String,
-      fields: (fields[4] as List).cast<HiveLisoField>(),
-      favorite: fields[5] as bool,
-      protected: fields[6] as bool,
-      trashed: fields[7] as bool,
-      deleted: fields[8] as bool,
-      tags: (fields[9] as List).cast<String>(),
-      sharedTags: (fields[10] as List).cast<String>(),
-      attachments: (fields[11] as List).cast<String>(),
-      metadata: fields[12] as HiveMetadata,
-      group: fields[13] as int,
+      groupId: fields[1] as String,
+      category: fields[2] as String,
+      title: fields[3] as String,
+      iconUrl: fields[4] as String,
+      fields: (fields[5] as List).cast<HiveLisoField>(),
+      favorite: fields[6] as bool,
+      protected: fields[7] as bool,
+      trashed: fields[8] as bool,
+      deleted: fields[9] as bool,
+      tags: (fields[10] as List).cast<String>(),
+      sharedTags: (fields[11] as List).cast<String>(),
+      attachments: (fields[12] as List).cast<String>(),
+      metadata: fields[13] as HiveMetadata,
     );
   }
 
@@ -41,31 +41,31 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       ..writeByte(0)
       ..write(obj.identifier)
       ..writeByte(1)
-      ..write(obj.category)
+      ..write(obj.groupId)
       ..writeByte(2)
-      ..write(obj.title)
+      ..write(obj.category)
       ..writeByte(3)
-      ..write(obj.iconUrl)
+      ..write(obj.title)
       ..writeByte(4)
-      ..write(obj.fields)
+      ..write(obj.iconUrl)
       ..writeByte(5)
-      ..write(obj.favorite)
+      ..write(obj.fields)
       ..writeByte(6)
-      ..write(obj.protected)
+      ..write(obj.favorite)
       ..writeByte(7)
-      ..write(obj.trashed)
+      ..write(obj.protected)
       ..writeByte(8)
-      ..write(obj.deleted)
+      ..write(obj.trashed)
       ..writeByte(9)
-      ..write(obj.tags)
+      ..write(obj.deleted)
       ..writeByte(10)
-      ..write(obj.sharedTags)
+      ..write(obj.tags)
       ..writeByte(11)
-      ..write(obj.attachments)
+      ..write(obj.sharedTags)
       ..writeByte(12)
-      ..write(obj.metadata)
+      ..write(obj.attachments)
       ..writeByte(13)
-      ..write(obj.group);
+      ..write(obj.metadata);
   }
 
   @override

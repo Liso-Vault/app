@@ -16,8 +16,6 @@ class Persistence extends GetxController with ConsoleMixin {
   static Persistence get to => Get.find();
   static late Box box;
 
-  // VARIABLES
-  final test = 'default'.val('test');
   // WALLET JSON
   final wallet = ''.val('wallet');
   final walletPassword = ''.val('wallet password');
@@ -55,8 +53,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final s3UseSsl = true.val('s3 use ssl');
   final s3EnableTrace = false.val('s3 enable trace');
   // VAULT
-  final groupIndex = 0.val('group index');
-  final groups = 'Personal,Shared,Work,Family,Other'.val('groups');
+  final groupId = ''.val('group id');
   final metadata = ''.val('vault metadata');
   final changes = 0.val('vault changes count');
   // PRICES
@@ -69,17 +66,10 @@ class Persistence extends GetxController with ConsoleMixin {
 
   bool get canSync => sync.val && syncConfirmed.val;
 
-  List<Map<String, dynamic>> get groupsMap => groups.val
-      .split(',')
-      .asMap()
-      .entries
-      .map((e) => {'index': e.key, 'name': e.value})
-      .toList();
-
   // FUNCTIONS
-  static Future<void> init() async {
+  static Future<void> open() async {
     box = await Hive.openBox(
-      kHivePersistence,
+      kHiveBoxPersistence,
       encryptionCipher: HiveAesCipher(base64Decode(Secrets.persistenceKey)),
       path: LisoPaths.hivePath,
     );
@@ -89,7 +79,7 @@ class Persistence extends GetxController with ConsoleMixin {
 
   static Future<void> reset() async {
     await box.deleteFromDisk();
-    await init();
+    await open();
   }
 
   static void _initLocale() {

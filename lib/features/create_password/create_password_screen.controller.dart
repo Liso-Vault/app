@@ -2,7 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -87,7 +87,7 @@ class CreatePasswordScreenController extends GetxController
     Persistence.to.mnemonicSeedPhrase.val = Get.parameters['seed']!;
 
     // open Hive Boxes
-    await HiveManager.open();
+    await HiveService.to.open();
     change(null, status: RxStatus.success());
     Get.offAllNamed(Routes.configuration);
   }

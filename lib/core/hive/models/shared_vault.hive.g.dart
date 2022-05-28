@@ -1,47 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'device.hive.dart';
+part of 'shared_vault.hive.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveMetadataDeviceAdapter extends TypeAdapter<HiveMetadataDevice> {
+class HiveSharedVaultAdapter extends TypeAdapter<HiveSharedVault> {
   @override
-  final int typeId = 222;
+  final int typeId = 30;
 
   @override
-  HiveMetadataDevice read(BinaryReader reader) {
+  HiveSharedVault read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveMetadataDevice(
+    return HiveSharedVault(
       id: fields[0] as String,
-      model: fields[1] as String,
-      unit: fields[2] as String,
-      platform: fields[3] as String,
-      osVersion: fields[4] as String,
-      info: (fields[5] as Map).cast<String, dynamic>(),
+      cipherKey: fields[1] as Uint8List,
     );
   }
 
   @override
-  void write(BinaryWriter writer, HiveMetadataDevice obj) {
+  void write(BinaryWriter writer, HiveSharedVault obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.model)
-      ..writeByte(2)
-      ..write(obj.unit)
-      ..writeByte(3)
-      ..write(obj.platform)
-      ..writeByte(4)
-      ..write(obj.osVersion)
-      ..writeByte(5)
-      ..write(obj.info);
+      ..write(obj.cipherKey);
   }
 
   @override
@@ -50,7 +38,7 @@ class HiveMetadataDeviceAdapter extends TypeAdapter<HiveMetadataDevice> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveMetadataDeviceAdapter &&
+      other is HiveSharedVaultAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

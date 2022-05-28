@@ -2,9 +2,10 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/hive/hive_groups.service.dart';
 
-import '../../../core/hive/hive.manager.dart';
 import '../../../core/utils/globals.dart';
+import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
@@ -27,12 +28,13 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   // maintain expansion tile state
   bool networksExpanded = false,
       groupsExpanded = false,
+      sharedVaultsExpanded = false,
       tagsExpanded = false,
       categoriesExpanded = false,
       toolsExpanded = false;
 
   // PROPERTIES
-  final filterGroupIndex = 0.obs;
+  final filterGroupId = 'personal'.obs;
   final filterFavorites = false.obs;
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
@@ -42,8 +44,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   // GETTERS
 
-  Iterable<HiveLisoItem> get groupedItems => HiveManager.itemValues.where(
-        (e) => e.group == filterGroupIndex.value,
+  Iterable<HiveLisoItem> get groupedItems => HiveItemsService.to.data.where(
+        (e) => e.groupId == filterGroupId.value,
       );
 
   // Obtain used categories distinctly
@@ -92,18 +94,24 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterTrashed.value &&
       !filterDeleted.value;
 
-  List<Widget> get groupTiles =>
-      persistence.groupsMap.map((Map<String, dynamic> e) {
-        return ListTile(
-          title: Text(e['name']),
-          leading: const Icon(Iconsax.briefcase),
-          selected: e['index'] == filterGroupIndex.value,
-          onTap: () {
-            filterGroupIndex.value = e['index'];
-            done();
-          },
-        );
-      }).toList();
+  List<Widget> get groupTiles => HiveGroupsService.to.data
+      .map((e) => ListTile(
+            title: Text(e.reservedName),
+            leading: const Icon(Iconsax.briefcase),
+            selected: e.id == filterGroupId.value,
+            onTap: () {
+              filterGroupId.value = e.id;
+              done();
+            },
+          ))
+      .toList();
+
+  String get filterGroupLabel {
+    final groups =
+        HiveGroupsService.to.data.where((e) => e.id == filterGroupId.value);
+    if (groups.isEmpty) return 'Error';
+    return groups.first.reservedName;
+  }
 
   String get filterToggleLabel {
     if (filterAll) return 'All';

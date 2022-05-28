@@ -125,4 +125,13 @@ final en = {
   "decrypt_file": "Decrypt File",
   "retry": "Retry",
   "refresh": "Refresh",
+  "personal": "Personal",
+  "personal_desc": "Personal Description",
+  "work": "Work",
+  "work_desc": "Work Description",
+  "family": "Family",
+  "family_desc": "Family Description",
+  "other": "Other",
+  "other_desc": "Other Description",
+  "shared_tags": "Shared Tags",
 };

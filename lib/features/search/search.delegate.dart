@@ -1,7 +1,7 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/hive.manager.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/features/item/item.tile.dart';
 
 class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
@@ -39,7 +39,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
       return const Center(child: Text("Search items by title."));
     }
 
-    final items = HiveManager.itemValues
+    final items = HiveItemsService.to.data
         .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
 

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -283,11 +283,11 @@ class MainScreenController extends GetxController
   Future<void> load() async {
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
-    var items = HiveManager.itemValues;
+    var items = HiveItemsService.to.data;
 
     // FILTER GROUP
     items = items
-        .where((e) => e.group == drawerController.filterGroupIndex.value)
+        .where((e) => e.groupId == drawerController.filterGroupId.value)
         .toList();
 
     // DELETE DUE TRASH ITEMS
@@ -296,7 +296,7 @@ class MainScreenController extends GetxController
     );
 
     if (itemsToDelete.isNotEmpty) {
-      await HiveManager.hidelete(itemsToDelete);
+      await HiveItemsService.to.hidelete(itemsToDelete);
     }
 
     // FILTER TOGGLE
@@ -443,8 +443,8 @@ class MainScreenController extends GetxController
   void emptyTrash() {
     void _empty() async {
       Get.back();
-      final trashedKeys = HiveManager.itemValues.where((e) => e.trashed);
-      await HiveManager.hidelete(trashedKeys);
+      final trashedKeys = HiveItemsService.to.data.where((e) => e.trashed);
+      await HiveItemsService.to.hidelete(trashedKeys);
       load();
 
       UIUtils.showSnackBar(

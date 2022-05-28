@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -58,7 +58,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     copy.identifier = const Uuid().v4();
     copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
-    HiveManager.items!.add(copy);
+    await HiveItemsService.to.box.add(copy);
     MainScreenController.to.onItemsUpdated();
   }
 

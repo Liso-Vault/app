@@ -8,7 +8,7 @@ part of 'app.hive.dart';
 
 class HiveMetadataAppAdapter extends TypeAdapter<HiveMetadataApp> {
   @override
-  final int typeId = 11;
+  final int typeId = 221;
 
   @override
   HiveMetadataApp read(BinaryReader reader) {

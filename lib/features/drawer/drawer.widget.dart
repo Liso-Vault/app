@@ -155,11 +155,14 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 controller.categoriesExpanded = expanded,
           ),
           ExpansionTile(
-            initiallyExpanded: controller.tagsExpanded,
+            maintainState: true,
             title: Text(
               'tags'.tr.toUpperCase(),
               style: const TextStyle(fontSize: 13),
             ),
+            initiallyExpanded: controller.tagsExpanded,
+            onExpansionChanged: (expanded) =>
+                controller.tagsExpanded = expanded,
             children: [
               ...controller.tags
                   .map(
@@ -174,8 +177,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   )
                   .toList(),
             ],
-            onExpansionChanged: (expanded) =>
-                controller.tagsExpanded = expanded,
           ),
           ExpansionTile(
             maintainState: true,

@@ -6,7 +6,7 @@ import '../../parsers/field.parser.dart';
 
 part 'field.hive.g.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: 20)
 class HiveLisoField extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String identifier; // identifier
@@ -51,7 +51,7 @@ class HiveLisoField extends HiveObject with EquatableMixin {
   List<Object?> get props => [identifier, type, reserved, required, data];
 }
 
-@HiveType(typeId: 3)
+@HiveType(typeId: 21)
 class HiveLisoFieldData extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String? label;
@@ -100,7 +100,7 @@ class HiveLisoFieldData extends HiveObject with EquatableMixin {
   List<Object?> get props => [value];
 }
 
-@HiveType(typeId: 4)
+@HiveType(typeId: 22)
 class HiveLisoFieldChoices extends HiveObject {
   @HiveField(0)
   final String name;

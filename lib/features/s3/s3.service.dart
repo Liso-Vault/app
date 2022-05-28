@@ -17,7 +17,7 @@ import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
 import 'package:supercharged/supercharged.dart';
 
-import '../../core/hive/hive.manager.dart';
+import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso_paths.dart';
@@ -53,14 +53,17 @@ class S3Service extends GetxService with ConsoleMixin {
   S3Content get lisoContent => S3Content(path: vaultPath);
 
   String get rootPath => '${WalletService.to.longAddress}/';
+  String get vaultPath => join(rootPath, kVaultFileName).replaceAll('\\', '/');
   String get backupsPath => join(rootPath, 'Backups').replaceAll('\\', '/');
   String get historyPath => join(rootPath, 'History').replaceAll('\\', '/');
-  String get vaultPath => join(rootPath, kVaultFileName).replaceAll('\\', '/');
+  String get sharedPath => join(rootPath, 'Shared').replaceAll('\\', '/');
+  String get sharedVaultsPath =>
+      join(sharedPath, 'Vaults').replaceAll('\\', '/');
 
   String get filesPath => ('${join(
         rootPath,
         'Files',
-        DrawerMenuController.to.filterGroupIndex.value.toString(),
+        DrawerMenuController.to.filterGroupId.value.toString(),
       )}/')
           .replaceAll('\\', '/');
 
@@ -181,14 +184,15 @@ class S3Service extends GetxService with ConsoleMixin {
 
     if (downloadResult.isLeft) return Left(downloadResult.left);
     _syncProgress(0.3, null);
-    final items = await HiveManager.parseVaultFile(downloadResult.right);
+    final items =
+        await HiveItemsService.to.parseVaultFile(downloadResult.right);
     _syncProgress(0.4, null);
     await _mergeItems(items);
     return const Right(true);
   }
 
   Future<void> _mergeItems(List<HiveLisoItem> serverItems) async {
-    var localItems = HiveManager.items!;
+    var localItems = HiveItemsService.to.box;
     // MERGED
     final mergedItems = {...serverItems, ...localItems.values};
     console.info('merged: ${mergedItems.length}');
@@ -241,7 +245,7 @@ class S3Service extends GetxService with ConsoleMixin {
       );
     }
 
-    final vaultFile = await HiveManager.export(
+    final vaultFile = await HiveItemsService.to.export(
       path: LisoPaths.tempVaultFilePath,
     );
 

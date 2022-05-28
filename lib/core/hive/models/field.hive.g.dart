@@ -8,7 +8,7 @@ part of 'field.hive.dart';
 
 class HiveLisoFieldAdapter extends TypeAdapter<HiveLisoField> {
   @override
-  final int typeId = 2;
+  final int typeId = 20;
 
   @override
   HiveLisoField read(BinaryReader reader) {
@@ -54,7 +54,7 @@ class HiveLisoFieldAdapter extends TypeAdapter<HiveLisoField> {
 
 class HiveLisoFieldDataAdapter extends TypeAdapter<HiveLisoFieldData> {
   @override
-  final int typeId = 3;
+  final int typeId = 21;
 
   @override
   HiveLisoFieldData read(BinaryReader reader) {
@@ -100,7 +100,7 @@ class HiveLisoFieldDataAdapter extends TypeAdapter<HiveLisoFieldData> {
 
 class HiveLisoFieldChoicesAdapter extends TypeAdapter<HiveLisoFieldChoices> {
   @override
-  final int typeId = 4;
+  final int typeId = 22;
 
   @override
   HiveLisoFieldChoices read(BinaryReader reader) {

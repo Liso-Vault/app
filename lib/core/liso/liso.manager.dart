@@ -1,12 +1,11 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-
-import '../hive/hive.manager.dart';
 
 class LisoManager {
   // VARIABLES
@@ -21,7 +20,7 @@ class LisoManager {
     // clear filters
     DrawerMenuController.to.clearFilters();
     // reset hive
-    await HiveManager.reset();
+    await HiveService.to.clear();
     // reset wallet
     WalletService.to.reset();
     // reset persistence

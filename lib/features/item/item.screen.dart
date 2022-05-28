@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../../core/hive/hive_groups.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
@@ -135,16 +135,16 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ),
       const Divider(),
       const SizedBox(height: 10),
-      DropdownButtonFormField<int>(
+      DropdownButtonFormField<String>(
         isExpanded: true,
-        value: controller.groupIndex.value,
-        onChanged: (value) => controller.groupIndex.value = value!,
+        value: controller.groupId.value,
+        onChanged: (value) => controller.groupId.value = value!,
         decoration: const InputDecoration(labelText: 'Vault'),
         items: [
-          ...Persistence.to.groupsMap
-              .map((e) => DropdownMenuItem<int>(
-                    value: e['index'],
-                    child: Text(e['name']),
+          ...HiveGroupsService.to.data
+              .map((e) => DropdownMenuItem<String>(
+                    value: e.id,
+                    child: Text(e.reservedName),
                   ))
               .toList()
         ],

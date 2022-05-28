@@ -18,18 +18,20 @@ class BiometricService extends GetxService with ConsoleMixin {
 
   @override
   void onInit() async {
-    supported.value = GetPlatform.isMobile &&
-        await auth.canCheckBiometrics &&
-        await auth.isDeviceSupported();
-
     console.info('init');
     super.onInit();
   }
 
   Future<bool> authenticate() async {
     if (!supported.value) {
-      console.warning('biometrics is not supported');
-      return false;
+      supported.value = GetPlatform.isMobile &&
+          await auth.canCheckBiometrics &&
+          await auth.isDeviceSupported();
+
+      if (!supported.value) {
+        console.warning('biometrics is not supported');
+        return false;
+      }
     }
 
     // TODO: localize

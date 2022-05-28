@@ -4,13 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/core/hive/hive_shared_vaults.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
 
 import '../../features/wallet/wallet.service.dart';
+import '../hive/models/metadata/app.hive.dart';
+import '../hive/models/metadata/device.hive.dart';
 import 'crashlytics.service.dart';
 
 class FirestoreService extends GetxService with ConsoleMixin {
@@ -29,8 +33,14 @@ class FirestoreService extends GetxService with ConsoleMixin {
   DocumentReference<Map<String, dynamic>> get userRef =>
       usersRef.doc(WalletService.to.longAddress);
 
-  DocumentReference<Map<String, dynamic>> get userStatsRef =>
+  DocumentReference<Map<String, dynamic>> get usersStatsRef =>
       usersRef.doc('---stats---');
+
+  CollectionReference<Map<String, dynamic>> get vaultsRef =>
+      instance.collection('shared_vaults');
+
+  DocumentReference<Map<String, dynamic>> get vaultsStatsRef =>
+      vaultsRef.doc('---stats---');
 
   // INIT
 
@@ -50,18 +60,22 @@ class FirestoreService extends GetxService with ConsoleMixin {
     final data = {
       'updatedTime': FieldValue.serverTimestamp(),
       'metadata': {
+        'app': await HiveMetadataApp.getJson(),
+        'device': await HiveMetadataDevice.getJson(),
         "size": {
           'storage': totalSize,
           'vault': await vaultFile.length(),
         },
         'count': {
-          'items': HiveManager.itemValues.length,
+          'items': HiveItemsService.to.data.length,
+          'groups': HiveGroupsService.to.data.length,
           'files': objects,
+          'shared_vaults': HiveSharedVaultsService.to.data.length,
         },
         'settings': {
           'sync': Persistence.to.canSync,
           'theme': Persistence.to.theme.val,
-        }
+        },
       },
     };
 
@@ -73,8 +87,11 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
       // update users collection stats counter
       batch.set(
-        userStatsRef,
-        {'count': FieldValue.increment(1)},
+        usersStatsRef,
+        {
+          'count': FieldValue.increment(1),
+          'updatedTime': FieldValue.serverTimestamp(),
+        },
         SetOptions(merge: true),
       );
     }

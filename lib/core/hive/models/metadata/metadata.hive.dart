@@ -7,7 +7,7 @@ import 'device.hive.dart';
 
 part 'metadata.hive.g.dart';
 
-@HiveType(typeId: 10)
+@HiveType(typeId: 220)
 class HiveMetadata extends HiveObject {
   @HiveField(0)
   HiveMetadataDevice device;

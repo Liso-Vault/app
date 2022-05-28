@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
-import 'package:liso/core/hive/hive.manager.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -139,7 +139,7 @@ class ImportScreenController extends GetxController
     }
 
     // parse and import vault file
-    await HiveManager.importVaultFile(vaultFile, cipherKey: cipherKey);
+    await HiveItemsService.to.importVaultFile(vaultFile, cipherKey: cipherKey);
     // ignore syncing screen if we just imported
     AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud

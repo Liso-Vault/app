@@ -12,7 +12,7 @@ import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/hive/hive.manager.dart';
+import '../../core/hive/hive_items.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
@@ -127,7 +127,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           title: Text('export_vault'.tr),
           subtitle: const Text('Save <vault>.liso to an external source'),
           onTap: () {
-            if (HiveManager.itemValues.isEmpty) {
+            if (HiveItemsService.to.data.isEmpty) {
               return UIUtils.showSimpleDialog(
                 'Empty Vault',
                 'Cannot export an empty vault.',
