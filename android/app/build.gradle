@@ -77,6 +77,23 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    // FLAVORS
+    flavorDimensions "app"
+    
+    productFlavors {
+        development {
+            dimension "app"
+            applicationId "com.liso.app.debug"
+            resValue "string", "app_name", "Liso Debug"
+        }
+
+        production {
+            dimension "app"
+            applicationId "com.liso.app"
+            resValue "string", "app_name", "Liso"
+        }
+    }
 }
 
 flutter {

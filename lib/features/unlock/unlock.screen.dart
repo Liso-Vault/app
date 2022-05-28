@@ -7,7 +7,7 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/utils/biometric.util.dart';
+import '../../core/services/biometric.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
@@ -76,13 +76,16 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
                 ),
               ),
             ),
-            if (BiometricUtils.supported) ...[
-              const SizedBox(width: 15),
-              IconButton(
-                icon: const Icon(Iconsax.finger_scan),
-                onPressed: controller.authenticateBiometrics,
+            Obx(
+              () => Visibility(
+                visible: BiometricService.to.supported.value,
+                child: IconButton(
+                  padding: const EdgeInsets.only(left: 15),
+                  icon: const Icon(Iconsax.finger_scan),
+                  onPressed: controller.authenticateBiometrics,
+                ),
               ),
-            ]
+            ),
           ],
         ),
       ],

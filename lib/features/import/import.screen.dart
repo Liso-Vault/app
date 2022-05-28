@@ -39,7 +39,6 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
             persistence.syncProvider.val == LisoSyncProvider.custom.name;
 
         return Wrap(
-          runSpacing: 5,
           spacing: 5,
           children: [
             CustomChoiceChip(

@@ -18,10 +18,6 @@ class HiveMetadata extends HiveObject {
   @HiveField(3)
   DateTime updatedTime;
 
-  // TODO: format time
-
-  // GETTERS
-
   HiveMetadata({
     required this.device,
     required this.app,
@@ -42,6 +38,11 @@ class HiveMetadata extends HiveObject {
         "createdTime": createdTime.toIso8601String(),
         "updatedTime": updatedTime.toIso8601String(),
       };
+
+  // GETTERS
+
+  // FUNCTIONS
+  // TODO: format time
 
   String toJsonString() => jsonEncode(toJson());
 

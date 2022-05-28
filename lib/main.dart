@@ -15,17 +15,19 @@ import 'package:window_manager/window_manager.dart';
 
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
+import 'core/flavors/flavors.dart';
 import 'core/hive/hive.manager.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
-import 'core/utils/biometric.util.dart';
+import 'core/services/biometric.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/connectivity/connectivity.service.dart';
 import 'features/s3/s3.service.dart';
 
-void main() async {
+void init(Flavor flavor) async {
+  Flavors.flavor = flavor;
   final console = Console(name: 'Main');
 
   // CAPTURE DART ERRORS
@@ -48,6 +50,7 @@ void main() async {
     Get.lazyPut(() => AlchemyService());
     Get.lazyPut(() => S3Service());
     Get.lazyPut(() => ConfigService());
+    Get.lazyPut(() => BiometricService());
 
     CrashlyticsService.to.init();
     await LisoPaths.init();
@@ -57,7 +60,6 @@ void main() async {
     // init
     HiveManager.init();
     NotificationsManager.init();
-    BiometricUtils.init();
     Utils.setDisplayMode(); // refresh rate
 
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {

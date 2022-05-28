@@ -8,7 +8,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
 import '../../core/hive/hive.manager.dart';
-import '../../core/utils/biometric.util.dart';
+import '../../core/services/biometric.service.dart';
 import '../wallet/wallet.service.dart';
 
 class UnlockScreenBinding extends Bindings {
@@ -49,10 +49,7 @@ class UnlockScreenController extends GetxController
 
   // biometric storage
   void authenticateBiometrics() async {
-    if (!GetPlatform.isMobile) return; // mobile only
-    if (!(await BiometricUtils.authenticate())) {
-      return console.error('Failed Biometrics');
-    }
+    if (!(await BiometricService.to.authenticate())) return;
     // set the password then programmatically unlock
     passwordController.text = Persistence.to.walletPassword.val;
     // delay to show that password has been inserted
