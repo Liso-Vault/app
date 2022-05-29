@@ -216,7 +216,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     }
 
     final field = fields.firstWhere((e) => e.identifier == identifier);
-    String value = field.data.value!;
+    if (field.data.value == null) console.error('null value here');
+    String value = field.data.value ?? '';
 
     // // decode rich text back to plain text
     // if (categoryObject == LisoItemCategory.note) {
@@ -318,7 +319,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     final field = fields.firstWhere((e) => e.identifier == identifier);
     // convert Map keys to human readable format
     identifier = GetUtils.capitalize(identifier.replaceAll('_', ' '))!;
-    var value = field.data.value!;
+    if (field.data.value == null) console.error('null value here');
+    var value = field.data.value ?? '';
 
     // decode rich text back to plain text
     if (categoryObject == LisoItemCategory.note) {

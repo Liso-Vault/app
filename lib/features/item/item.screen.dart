@@ -29,6 +29,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       maxChips: 5,
       initialValue: controller.tags,
       textCapitalization: TextCapitalization.words,
+      maxLength: 40,
       decoration: InputDecoration(labelText: 'tags'.tr),
       findSuggestions: controller.querySuggestions,
       onChanged: (data) => controller.tags = data,

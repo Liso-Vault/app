@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/form_field.util.dart';
@@ -17,6 +18,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_choice_chip.widget.dart';
+import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
@@ -49,6 +51,7 @@ class ItemScreenController extends GetxController
   final favorite = false.obs;
   final protected = false.obs;
   final groupId = Persistence.to.groupId.val.obs;
+  // TODO: convert to Sets
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
 
@@ -95,22 +98,93 @@ class ItemScreenController extends GetxController
   }
 
   List<Widget> get sharedVaultChips {
-    return SharedVaultsController.to.data.map((e) {
-      final vault = e.data();
-      final selected = sharedVaultIds.contains(vault.docId);
+    // return SharedVaultsController.to.data.map((e) {
+    //   final vault = e.data();
+    //   final selected = sharedVaultIds.contains(vault.docId);
 
-      return CustomChoiceChip(
-        label: vault.name,
-        selected: selected,
-        onSelected: (value) {
-          if (selected) {
-            sharedVaultIds.remove(vault.docId);
-          } else {
-            sharedVaultIds.add(vault.docId);
-          }
+    //   return CustomChoiceChip(
+    //     label: vault.name,
+    //     selected: selected,
+    //     onSelected: (value) {
+    //       if (selected) {
+    //         sharedVaultIds.remove(vault.docId);
+    //       } else {
+    //         sharedVaultIds.add(vault.docId);
+    //       }
+    //     },
+    //   );
+    // }).toList();
+
+    List<Widget> chips = sharedVaultIds.map<Widget>((vaultId) {
+      final results = SharedVaultsController.to.data
+          .where((vault) => vault.data().docId == vaultId);
+
+      String name = vaultId;
+
+      if (results.isNotEmpty) {
+        name = results.first.data().name;
+      }
+
+      return ActionChip(
+        label: Text(name),
+        onPressed: () => sharedVaultIds.remove(vaultId),
+      );
+    }).toList();
+
+    //   List<ContextMenuItem> get menuItemsCategory {
+    //   return LisoItemCategory.values
+    //       .where((e) {
+    //         if (e.name == 'none') return false;
+    //         if (!GetPlatform.isIOS) return true;
+    //         // allow only notes category for iOS
+    //         return e == LisoItemCategory.note || Persistence.to.proTester.val;
+    //       })
+    //       .toList()
+    //       .map(
+    //         (e) => ContextMenuItem(
+    //           title: e.name.tr,
+    //           leading: Utils.categoryIcon(
+    //             LisoItemCategory.values.byName(e.name),
+    //             color: themeColor,
+    //           ),
+    //           onSelected: () {
+    //             Utils.adaptiveRouteOpen(
+    //               name: Routes.item,
+    //               parameters: {'mode': 'add', 'category': e.name},
+    //             );
+    //           },
+    //         ),
+    //       )
+    //       .toList();
+    // }
+
+    final menuItems = SharedVaultsController.to.data
+        .where((e) => !sharedVaultIds.contains(e.data().docId))
+        .map((e) {
+      final vault = e.data();
+      return ContextMenuItem(
+        title: vault.name,
+        value: e.id,
+        leading: const Icon(Iconsax.share), // TODO: RemoteImage
+        onSelected: () {
+          if (sharedVaultIds.contains(vault.docId)) return;
+          sharedVaultIds.add(vault.docId);
         },
       );
     }).toList();
+
+    if (menuItems.isNotEmpty) {
+      chips.add(ContextMenuButton(
+        menuItems,
+        padding: EdgeInsets.zero,
+        child: const Chip(
+          label: Text('Assign'),
+          avatar: Icon(Iconsax.add),
+        ),
+      ));
+    }
+
+    return chips;
   }
 
   // INIT

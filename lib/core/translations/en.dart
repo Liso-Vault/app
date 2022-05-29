@@ -140,4 +140,6 @@ final en = {
   "custom_vaults": "Custom Vaults",
   "no_custom_vaults": "No custom vaults",
   "no_shared_vaults": "No shared vaults",
+  "new_shared_vault": "New Shared Vault",
+  "new_custom_vault": "New Custom Vault",
 };

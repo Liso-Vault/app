@@ -112,12 +112,9 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Simple Dialog'),
+          title: const Text('Sync Shared Vaults'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => UIUtils.showSimpleDialog(
-            'The Title',
-            'This is the message to be shown. This is the message to be shown. ',
-          ),
+          onTap: () => S3Service.to.syncSharedVaults(),
         ),
         const Divider(),
         ListTile(

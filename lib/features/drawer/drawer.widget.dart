@@ -317,10 +317,15 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
             ],
           ),
-          ListTile(
-            title: const Text('Clear Filters'),
-            leading: const Icon(Iconsax.slash),
-            onTap: controller.clearFilters,
+          Obx(
+            () => Visibility(
+              visible: !controller.filterAll,
+              child: ListTile(
+                title: const Text('Clear Filters'),
+                leading: const Icon(Iconsax.slash),
+                onTap: controller.clearFilters,
+              ),
+            ),
           ),
         ];
 

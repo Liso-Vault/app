@@ -7,11 +7,16 @@ import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
+import 'package:liso/core/hive/hive_shared_vaults.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/services/cipher.service.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
@@ -39,6 +44,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // PROPERTIES
   final syncing = false.obs;
+  final syncingSharedVaults = false.obs;
   final inSync = false.obs;
   final storageSize = 0.obs;
   final objectsCount = 0.obs;
@@ -166,6 +172,7 @@ class S3Service extends GetxService with ConsoleMixin {
     syncing.value = false;
     _syncProgress(1, '');
     MainScreenController.to.load();
+    syncSharedVaults();
     return Right(downResult.right);
   }
 
@@ -262,6 +269,103 @@ class S3Service extends GetxService with ConsoleMixin {
     _syncProgress(0.9, null);
     if (uploadResult.isLeft) return Left(uploadResult.left);
     console.info('uploaded! eTag: ${uploadResult.right}');
+    return const Right(true);
+  }
+
+  Future<Either<dynamic, String>> createBlankFile(String s3path) async {
+    if (!ready) init();
+    if (!persistence.canSync && ready) return const Left('offline');
+
+    console.warning('creating blank file: $s3path');
+    String eTag = '';
+
+    try {
+      eTag = await client!.putObject(
+        config.s3.preferredBucket,
+        s3path,
+        Stream<Uint8List>.value(Uint8List(0)),
+        onProgress: (size) => uploadedSize.value = size,
+        metadata: {
+          'client': await updatedLocalMetadata(),
+          'version': kS3MetadataVersion,
+        },
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    console.info('uploaded: $eTag');
+    return Right(eTag);
+  }
+
+  Future<Either<dynamic, bool>> syncSharedVaults() async {
+    if (!ready) init();
+    if (!persistence.canSync && ready) return const Left('offline');
+
+    if (SharedVaultsController.to.data.isEmpty) {
+      return const Left('nothing to sync');
+    }
+
+    if (syncingSharedVaults.value) {
+      return const Left('still syncing shared vaults');
+    }
+
+    console.info(
+      'syncing ${SharedVaultsController.to.data.length} shared vaults...',
+    );
+
+    final metadataString = await updatedLocalMetadata();
+
+    for (final doc in SharedVaultsController.to.data) {
+      final sharedVault = doc.data();
+
+      final sharedItems = HiveItemsService.to.data
+          .where((item) => item.sharedVaultIds.contains(sharedVault.docId))
+          .toList();
+
+      final sharedItemsJson =
+          List<dynamic>.from(sharedItems.map((x) => x.toJson()));
+
+      final sharedItemsJsonString = jsonEncode(sharedItemsJson);
+      final bytes = Uint8List.fromList(sharedItemsJsonString.codeUnits);
+      final sharedVaultResults =
+          HiveSharedVaultsService.to.data.where((e) => e.id == doc.id);
+
+      // just incase cipher key is not found
+      if (sharedVaultResults.isEmpty) {
+        UIUtils.showSimpleDialog(
+          'Error Syncing Shared Vault',
+          'Cannot find saved Cipher Key. Please report to the developer.',
+        );
+
+        return const Left('value');
+      }
+
+      final encryptedBytes = CipherService.to.encrypt(
+        bytes,
+        cipherKey: sharedVaultResults.first.cipherKey,
+      );
+
+      String eTag = '';
+      final s3path = join(sharedPath, '${sharedVault.docId}.$kVaultExtension');
+      console.warning('uploading: $s3path');
+
+      try {
+        eTag = await client!.putObject(
+          config.s3.preferredBucket,
+          s3path,
+          Stream<Uint8List>.value(encryptedBytes),
+          onProgress: (size) => uploadedSize.value = size,
+          metadata: {'client': metadataString, 'version': kS3MetadataVersion},
+        );
+      } catch (e) {
+        return Left(e);
+      }
+
+      console.info('uploaded: $eTag');
+    }
+
+    console.wtf('done');
     return const Right(true);
   }
 

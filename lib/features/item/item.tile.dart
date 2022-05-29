@@ -146,6 +146,51 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ),
     ];
 
+    final tags = item.tags
+        .map(
+          (e) => CustomChip(
+            icon: const Icon(Iconsax.tag, size: 10),
+            label: Text(
+              e,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontSize: 10),
+            ),
+          ),
+        )
+        .toList();
+
+    final sharedVaults = item.sharedVaultIds.map(
+      (e) {
+        final results = SharedVaultsController.to.data.where((x) => x.id == e);
+
+        SharedVault? vault;
+
+        if (results.isNotEmpty) {
+          vault = results.first.data();
+        }
+
+        Widget icon = const Icon(Iconsax.share, size: 10);
+
+        if (vault?.iconUrl != null && vault!.iconUrl.isNotEmpty) {
+          icon = RemoteImage(
+            url: vault.iconUrl,
+            width: 10,
+            alignment: Alignment.centerLeft,
+          );
+        }
+
+        return CustomChip(
+          icon: icon,
+          color: Colors.amber.withOpacity(0.3),
+          label: Text(
+            vault?.name ?? e,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(fontSize: 10),
+          ),
+        );
+      },
+    ).toList();
+
     final bottomSubTitle = Wrap(
       runSpacing: 5,
       children: [
@@ -171,50 +216,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           const SizedBox(width: 5),
         ],
         if (item.tags.isNotEmpty) ...[
-          ...item.tags
-              .map(
-                (e) => CustomChip(
-                  icon: const Icon(Iconsax.tag, size: 10),
-                  label: Text(
-                    e,
-                    style: const TextStyle(fontSize: 10),
-                  ),
-                ),
-              )
-              .toList(),
+          ...tags,
         ],
         if (item.sharedVaultIds.isNotEmpty) ...[
-          ...item.sharedVaultIds.map(
-            (e) {
-              final results =
-                  SharedVaultsController.to.data.where((x) => x.id == e);
-
-              SharedVault? vault;
-
-              if (results.isNotEmpty) {
-                vault = results.first.data();
-              }
-
-              Widget icon = const Icon(Iconsax.share, size: 10);
-
-              if (vault?.iconUrl != null && vault!.iconUrl.isNotEmpty) {
-                icon = RemoteImage(
-                  url: vault.iconUrl,
-                  width: 10,
-                  alignment: Alignment.centerLeft,
-                );
-              }
-
-              return CustomChip(
-                icon: icon,
-                color: Colors.amber.withOpacity(0.3),
-                label: Text(
-                  vault?.name ?? e,
-                  style: const TextStyle(fontSize: 10),
-                ),
-              );
-            },
-          ).toList(),
+          ...sharedVaults,
         ],
         Text(
           item.updatedTimeAgo,

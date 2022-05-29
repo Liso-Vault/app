@@ -4,7 +4,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
+import 'package:liso/features/s3/model/s3_content.model.dart';
+import 'package:liso/features/s3/s3.service.dart';
+import 'package:path/path.dart';
 
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
@@ -23,14 +27,25 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
   Widget build(BuildContext context) {
     final sharedVaultsController = Get.find<SharedVaultsController>();
 
+    console.info('vaults: ${sharedVaultsController.data.length}');
+
     Widget itemBuilder(context, index) {
       final vault = sharedVaultsController.data[index].data();
 
       void _confirmDelete() async {
         void _delete() async {
           Get.back();
+
           await FirestoreService.to.vaults.doc(vault.docId).delete();
-          console.info('deleted');
+          console.info('deleted in firestore');
+
+          await S3Service.to.remove(S3Content(
+              path: join(
+            S3Service.to.sharedPath,
+            '${vault.docId}.$kVaultExtension',
+          )));
+
+          console.info('deleted in s3');
         }
 
         final dialogContent = Text(

@@ -16,7 +16,6 @@ import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_content_tile.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../settings/settings_screen.controller.dart';
-import '../shared_vaults/shared_vault.controller.dart';
 import '../upgrade/upgrade_screen.controller.dart';
 import '../vaults/vaults.controller.dart';
 import '../vaults/vaults_screen.controller.dart';
@@ -42,7 +41,6 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => OTPScreenController(), fenix: true);
     Get.lazyPut(() => VaultsScreenController(), fenix: true);
     Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
-    Get.lazyPut(() => SharedVaultsController(), fenix: true);
     Get.lazyPut(() => VaultsController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);

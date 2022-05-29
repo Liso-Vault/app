@@ -38,6 +38,8 @@ class VaultsScreenController extends GetxController with ConsoleMixin {
     final descriptionController = TextEditingController();
 
     void _create(String name, String description) async {
+      if (!formKey.currentState!.validate()) return;
+
       await HiveGroupsService.to.box.add(HiveLisoGroup(
         id: const Uuid().v4(),
         name: name,

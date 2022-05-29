@@ -67,9 +67,8 @@ class UnlockScreenController extends GetxController
         password: passwordController.text,
       );
     } catch (e) {
-      console.error('load wallet failed: ${e.toString()}');
       change(null, status: RxStatus.success());
-
+      console.error('load wallet failed: ${e.toString()}');
       passwordController.clear();
       canProceed.value = false;
 

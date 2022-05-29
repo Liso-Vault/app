@@ -25,11 +25,6 @@ class SharedVaultsController extends GetxController
   // GETTERS
 
   // INIT
-  @override
-  void onInit() {
-    start();
-    super.onInit();
-  }
 
   @override
   void change(newState, {RxStatus? status}) {
@@ -38,14 +33,10 @@ class SharedVaultsController extends GetxController
   }
 
   // FUNCTIONS
-
-  void load() {
-    //
-  }
-
   void restart() {
     _stream.cancel();
     start();
+    console.info('restarted');
   }
 
   void start() async {
@@ -60,6 +51,8 @@ class SharedVaultsController extends GetxController
           _onData,
           onError: _onError,
         );
+
+    console.info('started');
   }
 
   void _onData(QuerySnapshot<SharedVault>? snapshot) {

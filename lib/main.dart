@@ -29,6 +29,7 @@ import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/connectivity/connectivity.service.dart';
 import 'features/s3/s3.service.dart';
+import 'features/shared_vaults/shared_vault.controller.dart';
 
 void init(Flavor flavor) async {
   Flavors.flavor = flavor;
@@ -60,6 +61,8 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => HiveItemsService());
     Get.lazyPut(() => HiveSharedVaultsService());
     Get.lazyPut(() => HiveGroupsService());
+
+    Get.put(SharedVaultsController());
 
     CrashlyticsService.to.init();
     await LisoPaths.init();

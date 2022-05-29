@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/features/vaults/vaults.controller.dart';
 
@@ -128,36 +129,45 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
         );
       }).toList();
 
-  List<Widget> get sharedVaultsTiles => SharedVaultsController.to.data.map(
-        (e) {
-          final vault = e.data();
+  List<Widget> get sharedVaultsTiles =>
+      SharedVaultsController.to.data.isNotEmpty
+          ? SharedVaultsController.to.data.map(
+              (e) {
+                final vault = e.data();
 
-          final count = groupedItems
-              .where((item) => item.sharedVaultIds.contains(vault.docId))
-              .length;
+                final count = groupedItems
+                    .where((item) => item.sharedVaultIds.contains(vault.docId))
+                    .length;
 
-          return ListTile(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(vault.name),
-                if (count > 0) ...[
-                  Chip(label: Text(count.toString())),
-                ],
-              ],
-            ),
-            leading: vault.iconUrl.isEmpty
-                ? const Icon(Iconsax.share)
-                : RemoteImage(
-                    url: vault.iconUrl,
-                    width: 35,
-                    alignment: Alignment.centerLeft,
+                return ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(vault.name),
+                      if (count > 0) ...[
+                        Chip(label: Text(count.toString())),
+                      ],
+                    ],
                   ),
-            selected: vault.docId == filterSharedVaultId.value,
-            onTap: () => filterBySharedVaultId(e.id),
-          );
-        },
-      ).toList();
+                  leading: vault.iconUrl.isEmpty
+                      ? const Icon(Iconsax.share)
+                      : RemoteImage(
+                          url: vault.iconUrl,
+                          width: 35,
+                          alignment: Alignment.centerLeft,
+                        ),
+                  selected: vault.docId == filterSharedVaultId.value,
+                  onTap: () => filterBySharedVaultId(e.id),
+                );
+              },
+            ).toList()
+          : [
+              ListTile(
+                title: const Text('Create'),
+                leading: const Icon(LineIcons.plus),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+              ),
+            ];
 
   String get filterSharedVaultLabel {
     final vaults = SharedVaultsController.to.data
