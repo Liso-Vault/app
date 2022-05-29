@@ -34,9 +34,12 @@ final inputFormatterNumericOnly =
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 
+const kReservedVaultIds = 'personal,work,family,other';
+
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
-const kSignatureMessage = 'liso';
+const kCipherKeySignatureMessage = 'liso';
+const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';
 
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;

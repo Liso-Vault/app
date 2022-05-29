@@ -17,6 +17,8 @@ abstract class Routes {
   static const upgrade = '/upgrade';
   static const debug = '/debug';
   static const otp = '/otp';
+  static const vaults = '/vaults';
+  static const sharedVaults = '/shared_vaults';
 
   // SYNC
   static const configuration = '/configuration';

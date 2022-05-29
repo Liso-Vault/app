@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/features/vaults/vaults.controller.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../core/hive/hive_items.service.dart';
@@ -10,7 +11,9 @@ import '../../core/hive/models/item.hive.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../general/remote_image.widget.dart';
 import '../main/main_screen.controller.dart';
+import '../shared_vaults/shared_vault.controller.dart';
 
 enum HiveBoxFilter {
   all,
@@ -41,11 +44,21 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterDeleted = false.obs;
   final filterCategory = LisoItemCategory.none.obs;
   final filterTag = ''.obs;
+  final filterSharedVaultId = ''.obs;
 
   // GETTERS
 
   Iterable<HiveLisoItem> get groupedItems => HiveItemsService.to.data.where(
-        (e) => e.groupId == filterGroupId.value,
+        (e) {
+          if (filterGroupId.value.isNotEmpty) {
+            return e.groupId == filterGroupId.value;
+          } else if (filterSharedVaultId.value.isNotEmpty) {
+            return e.sharedVaultIds.contains(filterSharedVaultId.value);
+          } else {
+            console.error('error query');
+            return false;
+          }
+        },
       );
 
   // Obtain used categories distinctly
@@ -94,17 +107,40 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterTrashed.value &&
       !filterDeleted.value;
 
-  List<Widget> get groupTiles => HiveGroupsService.to.data
+  List<Widget> get groupTiles => VaultsController.to.data
       .map((e) => ListTile(
             title: Text(e.reservedName),
             leading: const Icon(Iconsax.briefcase),
             selected: e.id == filterGroupId.value,
             onTap: () {
+              filterSharedVaultId.value = '';
               filterGroupId.value = e.id;
               done();
             },
           ))
       .toList();
+
+  List<Widget> get sharedVaultsTiles => SharedVaultsController.to.data.map(
+        (e) {
+          final vault = e.data();
+
+          return ListTile(
+            title: Text(vault.name),
+            leading: vault.iconUrl.isEmpty
+                ? const Icon(Iconsax.briefcase)
+                : RemoteImage(
+                    url: vault.iconUrl,
+                    width: 35,
+                    alignment: Alignment.centerLeft,
+                  ),
+            onTap: () {
+              filterGroupId.value = '';
+              filterSharedVaultId.value = e.id;
+              done();
+            },
+          );
+        },
+      ).toList();
 
   String get filterGroupLabel {
     final groups =
@@ -186,9 +222,17 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     done();
   }
 
+  void filterBySharedVaultId(String vaultId) {
+    // if already selected, deselect
+    if (vaultId == filterSharedVaultId.value) vaultId = '';
+    filterSharedVaultId.value = vaultId;
+    done();
+  }
+
   void clearFilters() {
     filterCategory.value = LisoItemCategory.none;
     filterTag.value = '';
+    filterSharedVaultId.value = '';
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;

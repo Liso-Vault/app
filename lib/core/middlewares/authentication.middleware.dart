@@ -1,10 +1,11 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -13,6 +14,7 @@ import '../../features/app/routes.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   static bool ignoreSync = false;
+  static bool initialized = false;
 
   @override
   RouteSettings? redirect(String? route) {
@@ -36,8 +38,12 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.syncing);
     }
 
-    CrashlyticsService.to.configure();
-    MainScreenController.to.load();
+    // first time initialization
+    if (!initialized) {
+      CrashlyticsService.to.configure();
+      MainScreenController.to.load();
+      AuthService.to.signIn();
+    }
 
     // record metadata
     S3Service.to.fetchStorageSize().then((info) {
@@ -48,6 +54,8 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       );
     });
 
+    initialized = true;
+    console.wtf('welcome');
     return super.redirect(route);
   }
 }

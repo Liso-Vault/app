@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
+import '../../utils/globals.dart';
+
 part 'group.hive.g.dart';
 
 @HiveType(typeId: 10)
@@ -42,6 +44,9 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
   List<Object?> get props => [id, name, description];
 
   // GETTERS
-  String get reservedName => id.tr;
-  String get reservedDescription => '${id}_desc'.tr;
+  String get reservedName => kReservedVaultIds.contains(id) ? id.tr : name;
+  String get reservedDescription =>
+      kReservedVaultIds.contains(id) ? '${id}_desc'.tr : description;
+
+  bool get isReserved => kReservedVaultIds.contains(id);
 }

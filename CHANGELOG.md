@@ -12,8 +12,9 @@
 - New! Use your custom Sync Provider Configuration
 - New! Setting for automatic client-side file encryption
 - New! Upgrade Screen
-- New! Shared Vault / Group Section
+- New! Shared Vaults
 - New! Filters indicator
+- New! Add custom vaults
 - Improved! Syncing screen
 - Improved! Exported File Name now includes Date and Time
 - Improved! File Explorer shows encrypted icon indicator

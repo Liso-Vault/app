@@ -285,10 +285,18 @@ class MainScreenController extends GetxController
     final drawerController = DrawerMenuController.to;
     var items = HiveItemsService.to.data;
 
-    // FILTER GROUP
-    items = items
-        .where((e) => e.groupId == drawerController.filterGroupId.value)
-        .toList();
+    if (drawerController.filterGroupId.value.isNotEmpty) {
+      // FILTER BY GROUP
+      items = items
+          .where((e) => e.groupId == drawerController.filterGroupId.value)
+          .toList();
+    } else if (drawerController.filterSharedVaultId.value.isNotEmpty) {
+      // FILTER BY SHARED VAULT
+      items = items
+          .where((e) => e.sharedVaultIds
+              .contains(drawerController.filterSharedVaultId.value))
+          .toList();
+    }
 
     // DELETE DUE TRASH ITEMS
     final itemsToDelete = items.where(
@@ -299,7 +307,7 @@ class MainScreenController extends GetxController
       await HiveItemsService.to.hidelete(itemsToDelete);
     }
 
-    // FILTER TOGGLE
+    // FILTER BY TOGGLE
     if (drawerController.filterAll) {
       items = items.where((e) => !e.trashed && !e.deleted).toList();
     } else if (drawerController.filterFavorites.value) {

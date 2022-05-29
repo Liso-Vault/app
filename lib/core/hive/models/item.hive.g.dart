@@ -28,7 +28,7 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       trashed: fields[8] as bool,
       deleted: fields[9] as bool,
       tags: (fields[10] as List).cast<String>(),
-      sharedTags: (fields[11] as List).cast<String>(),
+      sharedVaultIds: (fields[11] as List).cast<String>(),
       attachments: (fields[12] as List).cast<String>(),
       metadata: fields[13] as HiveMetadata,
     );
@@ -61,7 +61,7 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       ..writeByte(10)
       ..write(obj.tags)
       ..writeByte(11)
-      ..write(obj.sharedTags)
+      ..write(obj.sharedVaultIds)
       ..writeByte(12)
       ..write(obj.attachments)
       ..writeByte(13)

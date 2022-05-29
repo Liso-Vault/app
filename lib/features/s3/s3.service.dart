@@ -138,9 +138,7 @@ class S3Service extends GetxService with ConsoleMixin {
         _syncProgress(1, '');
         syncing.value = false;
 
-        return Right(
-          upsyncResult.isLeft ? upsyncResult.left : upsyncResult.right,
-        );
+        return upsyncResult;
       }
 
       syncing.value = false;

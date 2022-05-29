@@ -23,8 +23,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          PersistenceBuilder(
-            builder: (p, context) => ExpansionTile(
+          Obx(
+            () => ExpansionTile(
               maintainState: true,
               title: Text(
                 'vaults'.tr.toUpperCase(),
@@ -33,9 +33,41 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               onExpansionChanged: (expanded) =>
                   controller.groupsExpanded = expanded,
               initiallyExpanded: controller.groupsExpanded,
-              children: controller.groupTiles,
+              children: [
+                ...controller.groupTiles,
+                const Divider(),
+                ListTile(
+                  title: const Text('Manage'),
+                  leading: const Icon(Iconsax.setting_3),
+                  onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
+                ),
+              ],
             ),
           ),
+          if (isFirebaseSupported) ...[
+            Obx(
+              () => ExpansionTile(
+                maintainState: true,
+                title: Text(
+                  'shared_vaults'.tr.toUpperCase(),
+                  style: const TextStyle(fontSize: 13),
+                ),
+                onExpansionChanged: (expanded) =>
+                    controller.sharedVaultsExpanded = expanded,
+                initiallyExpanded: controller.sharedVaultsExpanded,
+                children: [
+                  ...controller.sharedVaultsTiles,
+                  const Divider(),
+                  ListTile(
+                    title: const Text('Manage'),
+                    leading: const Icon(Iconsax.setting_3),
+                    onTap: () =>
+                        Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+                  ),
+                ],
+              ),
+            ),
+          ],
           ExpansionTile(
             maintainState: true,
             title: Text(

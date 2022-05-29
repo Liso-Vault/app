@@ -151,7 +151,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   Future<Uint8List> credentialsToCipherKey(EthPrivateKey privateKey_) async {
     final signature = await sign(
-      kSignatureMessage,
+      kCipherKeySignatureMessage,
       privateKey_: privateKey_.privateKey,
     );
 
@@ -217,7 +217,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   Future<void> _init() async {
     // generate cipher key
-    final signature = await sign(kSignatureMessage, privateKey_: privateKey);
+    final signature = await sign(kCipherKeySignatureMessage);
     // from the first 32 bits of the signature
     cipherKey = Uint8List.fromList(signature.codeUnits.sublist(0, 32));
   }

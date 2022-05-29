@@ -15,6 +15,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'core/firebase/auth.service.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
@@ -50,6 +51,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => CipherService());
     Get.lazyPut(() => FirestoreService());
+    Get.lazyPut(() => AuthService());
     Get.lazyPut(() => AlchemyService());
     Get.lazyPut(() => S3Service());
     Get.lazyPut(() => ConfigService());

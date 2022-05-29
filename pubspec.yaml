@@ -34,7 +34,8 @@ dependencies:
   firebase_crashlytics: 2.8.1
   firebase_performance: 0.8.0+13
   firebase_remote_config: 2.0.8
-  cloud_firestore: ^3.1.17
+  firebase_auth: 3.3.19
+  cloud_firestore: 3.1.17
   # firebase_app_check: ^0.0.6+9
 
   # IO

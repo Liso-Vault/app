@@ -17,6 +17,8 @@ import 'package:liso/features/reset/reset.screen.dart';
 import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
+import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
+import 'package:liso/features/shared_vaults/shared_vaults_screen.controller.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
 import 'package:liso/features/unlock/unlock_screen.controller.dart';
 import 'package:liso/features/upgrade/upgrade_screen.controller.dart';
@@ -41,6 +43,8 @@ import '../s3/provider/sync_provider_screen.dart';
 import '../syncing/syncing.screen.dart';
 import '../syncing/syncing_screen.controller.dart';
 import '../upgrade/upgrade.screen.dart';
+import '../vaults/vaults.screen.dart';
+import '../vaults/vaults_screen.controller.dart';
 import '../wallet/wallet.screen.dart';
 import '../wallet/wallet_screen.controller.dart';
 import 'routes.dart';
@@ -158,6 +162,16 @@ class AppPages {
       name: Routes.otp,
       page: () => const OTPScreen(),
       binding: OTPScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.vaults,
+      page: () => const VaultsScreen(),
+      binding: VaultsScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.sharedVaults,
+      page: () => const SharedVaultsScreen(),
+      binding: SharedVaultsScreenBinding(),
     ),
     GetPage(
       name: Routes.debug,

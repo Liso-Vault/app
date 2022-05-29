@@ -4,12 +4,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/hive/hive_shared_vaults.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:path/path.dart';
 
 import '../../features/wallet/wallet.service.dart';
@@ -21,28 +23,41 @@ class FirestoreService extends GetxService with ConsoleMixin {
   static FirestoreService get to => Get.find();
 
   // VARIABLES
+  final vaultsCol = FirebaseFirestore.instance.collection(
+    'shared_vaults',
+  );
+
+  final usersCol = FirebaseFirestore.instance.collection(
+    'users',
+  );
+
+  late CollectionReference<SharedVault> vaults;
 
   // PROPERTIES
 
   // GETTERS
   FirebaseFirestore get instance => FirebaseFirestore.instance;
 
-  CollectionReference<Map<String, dynamic>> get usersRef =>
-      instance.collection('users');
+  DocumentReference<Map<String, dynamic>> get userDoc =>
+      usersCol.doc(AuthService.to.user!.uid);
 
-  DocumentReference<Map<String, dynamic>> get userRef =>
-      usersRef.doc(WalletService.to.longAddress);
+  DocumentReference<Map<String, dynamic>> get usersStatsDoc =>
+      usersCol.doc('---stats---');
 
-  DocumentReference<Map<String, dynamic>> get usersStatsRef =>
-      usersRef.doc('---stats---');
-
-  CollectionReference<Map<String, dynamic>> get vaultsRef =>
-      instance.collection('shared_vaults');
-
-  DocumentReference<Map<String, dynamic>> get vaultsStatsRef =>
-      vaultsRef.doc('---stats---');
+  DocumentReference<Map<String, dynamic>> get vaultsStatsDoc =>
+      vaultsCol.doc('---stats---');
 
   // INIT
+
+  @override
+  void onInit() {
+    vaults = vaultsCol.withConverter<SharedVault>(
+      fromFirestore: (snapshot, _) => SharedVault.fromSnapshot(snapshot),
+      toFirestore: (object, _) => object.toJson(),
+    );
+
+    super.onInit();
+  }
 
   // FUNCTIONS
   // record the some metadata: created time and updated time, items count and files count
@@ -58,6 +73,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
     ));
 
     final data = {
+      'userId': AuthService.to.user!.uid,
+      'address': WalletService.to.longAddress,
       'updatedTime': FieldValue.serverTimestamp(),
       'metadata': {
         'app': await HiveMetadataApp.getJson(),
@@ -70,7 +87,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'items': HiveItemsService.to.data.length,
           'groups': HiveGroupsService.to.data.length,
           'files': objects,
-          'shared_vaults': HiveSharedVaultsService.to.data.length,
+          'sharedVaults': HiveSharedVaultsService.to.data.length,
         },
         'settings': {
           'sync': Persistence.to.canSync,
@@ -82,12 +99,12 @@ class FirestoreService extends GetxService with ConsoleMixin {
     final batch = instance.batch();
 
     // add createdTime if it's the first time this user is recorded
-    if (!(await userRef.get()).exists) {
+    if (!(await userDoc.get()).exists) {
       data['createdTime'] = FieldValue.serverTimestamp();
 
       // update users collection stats counter
       batch.set(
-        usersStatsRef,
+        usersStatsDoc,
         {
           'count': FieldValue.increment(1),
           'updatedTime': FieldValue.serverTimestamp(),
@@ -98,7 +115,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
     // update user doc
     batch.set(
-      userRef,
+      userDoc,
       data,
       SetOptions(merge: true),
     );

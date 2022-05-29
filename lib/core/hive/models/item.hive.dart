@@ -43,7 +43,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(10)
   List<String> tags;
   @HiveField(11)
-  List<String> sharedTags;
+  List<String> sharedVaultIds;
   @HiveField(12)
   List<String> attachments;
   @HiveField(13)
@@ -61,7 +61,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.trashed = false,
     this.deleted = false,
     this.tags = const [],
-    this.sharedTags = const [],
+    this.sharedVaultIds = const [],
     this.attachments = const [],
     required this.metadata,
   });
@@ -80,7 +80,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         trashed: json["trashed"],
         deleted: json["deleted"],
         tags: List<String>.from(json["tags"].map((x) => x)),
-        sharedTags: List<String>.from(json["shared_tags"].map((x) => x)),
+        sharedVaultIds:
+            List<String>.from(json["shared_vault_ids"].map((x) => x)),
         attachments: List<String>.from(json["attachments"].map((x) => x)),
         metadata: HiveMetadata.fromJson(json["metadata"]),
       );
@@ -98,7 +99,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "trashed": trashed,
       "deleted": deleted,
       "tags": List<dynamic>.from(tags.map((x) => x)),
-      "shared_tags": List<dynamic>.from(sharedTags.map((x) => x)),
+      "shared_vault_ids": List<dynamic>.from(sharedVaultIds.map((x) => x)),
       "attachments": List<dynamic>.from(attachments.map((x) => x)),
       "metadata": metadata.toJson(),
     };
@@ -119,7 +120,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         trashed,
         deleted,
         tags,
-        sharedTags,
+        sharedVaultIds,
         attachments,
         metadata,
       ];
