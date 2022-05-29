@@ -66,6 +66,8 @@ class Persistence extends GetxController with ConsoleMixin {
 
   bool get canSync => sync.val && syncConfirmed.val;
 
+  bool get canShare => canSync && isFirebaseSupported;
+
   // FUNCTIONS
   static Future<void> open() async {
     box = await Hive.openBox(

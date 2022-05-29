@@ -8,7 +8,6 @@ class SharedVault {
     this.description = '',
     this.address = '',
     this.iconUrl = '',
-    this.eTag = '',
     this.createdTime,
     this.updatedTime,
     this.enabled = true,
@@ -20,7 +19,6 @@ class SharedVault {
   final String description;
   final String address;
   final String iconUrl;
-  final String eTag;
   final Timestamp? createdTime;
   final Timestamp? updatedTime;
   final bool enabled;
@@ -36,7 +34,6 @@ class SharedVault {
       description: json["description"],
       address: json["address"],
       iconUrl: json["iconUrl"],
-      eTag: json["eTag"],
       createdTime: json["createdTime"],
       updatedTime: json["updatedTime"],
       enabled: json["enabled"],
@@ -49,7 +46,6 @@ class SharedVault {
         "description": description,
         "address": address,
         "iconUrl": iconUrl,
-        "eTag": eTag,
         if (createdTime == null) "createdTime": FieldValue.serverTimestamp(),
         "updatedTime": FieldValue.serverTimestamp(),
         "enabled": enabled,

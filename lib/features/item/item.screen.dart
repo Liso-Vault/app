@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
@@ -27,12 +28,12 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       key: chipsKey,
       controller: controller.tagsController,
       maxChips: 5,
-      initialValue: controller.tags,
+      initialValue: controller.tags.toList(),
       textCapitalization: TextCapitalization.words,
       maxLength: 40,
       decoration: InputDecoration(labelText: 'tags'.tr),
       findSuggestions: controller.querySuggestions,
-      onChanged: (data) => controller.tags = data,
+      onChanged: (data) => controller.tags = data.toSet(),
       // onEditingComplete: controller.querySubmitted,
       // onEditingComplete: () async {
       //   console.info('completed: ${controller.tagsController.text}');
@@ -170,7 +171,8 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         ),
         controller.protected,
       ),
-      if (controller.sharedVaultChips.isNotEmpty) ...[
+      if (controller.sharedVaultChips.isNotEmpty &&
+          Persistence.to.canShare) ...[
         const Divider(),
         Section(text: 'shared_vaults'.tr.toUpperCase()),
         Obx(

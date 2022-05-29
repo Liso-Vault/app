@@ -2,7 +2,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/form_field.util.dart';
@@ -17,7 +16,6 @@ import '../../core/parsers/template.parser.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../general/custom_choice_chip.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/shared_vault.controller.dart';
@@ -43,7 +41,7 @@ class ItemScreenController extends GetxController
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
 
-  List<String> tags = [];
+  Set<String> tags = {};
   final iconUrl = ''.obs;
   final widgets = <Widget>[].obs;
 
@@ -215,7 +213,7 @@ class ItemScreenController extends GetxController
     favorite.value = item.favorite;
     protected.value = item.protected;
     groupId.value = item.groupId;
-    tags = List.from(item.tags);
+    tags = item.tags.toSet();
     attachments.value = List.from(item.attachments);
     sharedVaultIds.value = List.from(item.sharedVaultIds);
   }
@@ -287,7 +285,7 @@ class ItemScreenController extends GetxController
       category: category,
       iconUrl: iconUrl.value,
       title: titleController.text,
-      tags: tags,
+      tags: tags.toList(),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
       fields: FormFieldUtils.obtainFields(item, widgets: widgets),
@@ -319,7 +317,7 @@ class ItemScreenController extends GetxController
     item.iconUrl = iconUrl.value;
     item.title = titleController.text;
     item.fields = FormFieldUtils.obtainFields(item, widgets: widgets);
-    item.tags = tags;
+    item.tags = tags.toList();
     item.attachments = attachments;
     item.sharedVaultIds = sharedVaultIds;
     item.favorite = favorite.value;
@@ -408,7 +406,7 @@ class ItemScreenController extends GetxController
       fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
-      tags: tags,
+      tags: tags.toList(),
       groupId: groupId.value,
       favorite: favorite.value,
       iconUrl: iconUrl.value,

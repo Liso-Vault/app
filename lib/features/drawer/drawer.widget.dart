@@ -37,22 +37,21 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
           ),
           PersistenceBuilder(
-            builder: (p, context) =>
-                Persistence.to.sync.val && isFirebaseSupported
-                    ? Obx(
-                        () => ExpansionTile(
-                          maintainState: true,
-                          title: Text(
-                            'shared_vaults'.tr.toUpperCase(),
-                            style: const TextStyle(fontSize: 13),
-                          ),
-                          onExpansionChanged: (expanded) =>
-                              controller.sharedVaultsExpanded = expanded,
-                          initiallyExpanded: controller.sharedVaultsExpanded,
-                          children: [...controller.sharedVaultsTiles],
-                        ),
-                      )
-                    : const SizedBox.shrink(),
+            builder: (p, context) => Persistence.to.canShare
+                ? Obx(
+                    () => ExpansionTile(
+                      maintainState: true,
+                      title: Text(
+                        'shared_vaults'.tr.toUpperCase(),
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      onExpansionChanged: (expanded) =>
+                          controller.sharedVaultsExpanded = expanded,
+                      initiallyExpanded: controller.sharedVaultsExpanded,
+                      children: [...controller.sharedVaultsTiles],
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ),
           ExpansionTile(
             maintainState: true,
@@ -205,7 +204,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               PersistenceBuilder(
-                builder: (p, context) => Persistence.to.sync.val &&
+                builder: (p, context) => Persistence.to.canSync &&
                         (!GetPlatform.isIOS || Persistence.to.proTester.val)
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),

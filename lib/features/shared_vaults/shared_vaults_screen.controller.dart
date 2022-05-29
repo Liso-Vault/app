@@ -59,6 +59,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
     void _create() async {
       if (!formKey.currentState!.validate()) return;
 
+      // check if name already exists
       final exists =
           await SharedVaultsController.to.exists(nameController.text);
 
@@ -69,8 +70,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      Get.back();
+      Get.back(); // close dialog
 
+      // add to firestore
       final vault = SharedVault(
         userId: AuthService.to.user!.uid,
         address: WalletService.to.longAddress,
@@ -81,28 +83,10 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       final doc = await FirestoreService.to.vaults.add(vault);
       console.wtf('created shared vault: ${doc.id}');
 
-      final result = await S3Service.to.createBlankFile(join(
-        S3Service.to.sharedPath,
-        '${doc.id}.$kVaultExtension',
-      ));
-
-      if (result.isLeft) {
-        // abort creation
-        await doc.delete();
-
-        return UIUtils.showSimpleDialog(
-          'Failed Creating Shared Vault',
-          '${result.left}',
-        );
-      }
-
-      await doc.update({'eTag': result.right});
-      console.info('updated with eTag: ${result.right}');
-
+      // inject cipher key to fields
       const category = LisoItemCategory.encryption;
       var fields = TemplateParser.parse(category.name);
 
-      // inject cipher key to fields
       fields = fields.map((e) {
         if (e.identifier == 'key') {
           e.data.value = cipherKeyController.text;
@@ -124,17 +108,23 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         tags: ['cipher'],
       ));
 
+      console.wtf('created liso item');
+
       // save cipher key
       await HiveSharedVaultsService.to.box.add(HiveSharedVault(
         id: doc.id,
         cipherKey: base64Decode(cipherKeyController.text),
       ));
 
+      console.wtf('saved cipher key');
+
+      // send notification
       NotificationsManager.notify(
         title: 'Shared Vault Created',
         body: nameController.text,
       );
 
+      // reload main screen
       MainScreenController.to.load();
     }
 

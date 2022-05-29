@@ -7,7 +7,6 @@ import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/hive/hive_shared_vaults.service.dart';
@@ -80,6 +79,7 @@ class S3Service extends GetxService with ConsoleMixin {
   void init() {
     try {
       if (persistence.syncProvider.val == LisoSyncProvider.custom.name) {
+        // CUSTOM SYNC PROVIDER
         client = Minio(
           endPoint: persistence.s3Endpoint.val,
           accessKey: persistence.s3AccessKey.val,
@@ -95,6 +95,7 @@ class S3Service extends GetxService with ConsoleMixin {
           useSSL: persistence.s3UseSsl.val,
         );
       } else {
+        // DEFAULT SYNC PROVIDER
         client = Minio(
           endPoint: config.s3.endpoint,
           accessKey: config.s3.key,

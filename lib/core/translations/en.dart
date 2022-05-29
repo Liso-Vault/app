@@ -135,6 +135,7 @@ final en = {
   "other": "Other",
   "other_desc": "Other Description",
   "shared_vaults": "Shared Vaults",
+  "share": "Share",
   "vaults": "Vaults",
   "new_vault": "New Vault",
   "custom_vaults": "Custom Vaults",
