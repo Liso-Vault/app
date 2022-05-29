@@ -9,6 +9,7 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/utils/globals.dart';
@@ -19,6 +20,7 @@ import '../general/remote_image.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
 import '../menu/context.menu.dart';
 import '../menu/menu.item.dart';
+import '../shared_vaults/model/shared_vault.model.dart';
 
 class ItemTile extends StatelessWidget with ConsoleMixin {
   final HiveLisoItem item;
@@ -172,6 +174,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           ...item.tags
               .map(
                 (e) => CustomChip(
+                  icon: const Icon(Iconsax.tag, size: 10),
                   label: Text(
                     e,
                     style: const TextStyle(fontSize: 10),
@@ -179,6 +182,39 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
                 ),
               )
               .toList(),
+        ],
+        if (item.sharedVaultIds.isNotEmpty) ...[
+          ...item.sharedVaultIds.map(
+            (e) {
+              final results =
+                  SharedVaultsController.to.data.where((x) => x.id == e);
+
+              SharedVault? vault;
+
+              if (results.isNotEmpty) {
+                vault = results.first.data();
+              }
+
+              Widget icon = const Icon(Iconsax.share, size: 10);
+
+              if (vault?.iconUrl != null && vault!.iconUrl.isNotEmpty) {
+                icon = RemoteImage(
+                  url: vault.iconUrl,
+                  width: 10,
+                  alignment: Alignment.centerLeft,
+                );
+              }
+
+              return CustomChip(
+                icon: icon,
+                color: Colors.amber.withOpacity(0.3),
+                label: Text(
+                  vault?.name ?? e,
+                  style: const TextStyle(fontSize: 10),
+                ),
+              );
+            },
+          ).toList(),
         ],
         Text(
           item.updatedTimeAgo,

@@ -9,13 +9,16 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../core/hive/hive_groups.service.dart';
 import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../general/custom_choice_chip.widget.dart';
 import '../menu/menu.item.dart';
+import '../shared_vaults/shared_vault.controller.dart';
 
 class ItemScreenBinding extends Bindings {
   @override
@@ -47,6 +50,7 @@ class ItemScreenController extends GetxController
   final protected = false.obs;
   final groupId = Persistence.to.groupId.val.obs;
   final attachments = <String>[].obs;
+  final sharedVaultIds = <String>[].obs;
 
   // GETTERS
   // MENU ITEMS
@@ -90,9 +94,32 @@ class ItemScreenController extends GetxController
     ];
   }
 
+  List<Widget> get sharedVaultChips {
+    return SharedVaultsController.to.data.map((e) {
+      final vault = e.data();
+      final selected = sharedVaultIds.contains(vault.docId);
+
+      return CustomChoiceChip(
+        label: vault.name,
+        selected: selected,
+        onSelected: (value) {
+          if (selected) {
+            sharedVaultIds.remove(vault.docId);
+          } else {
+            sharedVaultIds.add(vault.docId);
+          }
+        },
+      );
+    }).toList();
+  }
+
   // INIT
   @override
   void onInit() async {
+    for (final e in HiveGroupsService.to.data) {
+      console.warning('group: ${e.id}');
+    }
+
     if (mode == 'add') {
       await _loadTemplate();
     } else if (mode == 'update') {
@@ -114,8 +141,9 @@ class ItemScreenController extends GetxController
     favorite.value = item.favorite;
     protected.value = item.protected;
     groupId.value = item.groupId;
-    tags = item.tags;
-    attachments.value = item.attachments;
+    tags = List.from(item.tags);
+    attachments.value = List.from(item.attachments);
+    sharedVaultIds.value = List.from(item.sharedVaultIds);
   }
 
   Future<void> _loadTemplate() async {
@@ -148,6 +176,7 @@ class ItemScreenController extends GetxController
       fields: fields,
       tags: [],
       attachments: [],
+      sharedVaultIds: [],
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
@@ -186,6 +215,7 @@ class ItemScreenController extends GetxController
       title: titleController.text,
       tags: tags,
       attachments: attachments,
+      sharedVaultIds: sharedVaultIds,
       fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       favorite: favorite.value,
       protected: protected.value,
@@ -217,6 +247,7 @@ class ItemScreenController extends GetxController
     item.fields = FormFieldUtils.obtainFields(item, widgets: widgets);
     item.tags = tags;
     item.attachments = attachments;
+    item.sharedVaultIds = sharedVaultIds;
     item.favorite = favorite.value;
     item.protected = protected.value;
     item.groupId = groupId.value;
@@ -302,6 +333,7 @@ class ItemScreenController extends GetxController
       title: titleController.text,
       fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       attachments: attachments,
+      sharedVaultIds: sharedVaultIds,
       tags: tags,
       groupId: groupId.value,
       favorite: favorite.value,

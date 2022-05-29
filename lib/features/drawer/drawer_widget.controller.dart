@@ -107,40 +107,64 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterTrashed.value &&
       !filterDeleted.value;
 
-  List<Widget> get groupTiles => VaultsController.to.data
-      .map((e) => ListTile(
-            title: Text(e.reservedName),
-            leading: const Icon(Iconsax.briefcase),
-            selected: e.id == filterGroupId.value,
-            onTap: () {
-              filterSharedVaultId.value = '';
-              filterGroupId.value = e.id;
-              done();
-            },
-          ))
-      .toList();
+  List<Widget> get groupTiles => VaultsController.to.data.map((group) {
+        final count = HiveItemsService.to.data
+            .where((item) => item.groupId == group.id)
+            .length;
+
+        return ListTile(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(group.reservedName),
+              if (count > 0) ...[
+                Chip(label: Text(count.toString())),
+              ],
+            ],
+          ),
+          leading: const Icon(Iconsax.briefcase),
+          selected: group.id == filterGroupId.value,
+          onTap: () => filterByGroupId(group.id),
+        );
+      }).toList();
 
   List<Widget> get sharedVaultsTiles => SharedVaultsController.to.data.map(
         (e) {
           final vault = e.data();
 
+          final count = groupedItems
+              .where((item) => item.sharedVaultIds.contains(vault.docId))
+              .length;
+
           return ListTile(
-            title: Text(vault.name),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(vault.name),
+                if (count > 0) ...[
+                  Chip(label: Text(count.toString())),
+                ],
+              ],
+            ),
             leading: vault.iconUrl.isEmpty
-                ? const Icon(Iconsax.briefcase)
+                ? const Icon(Iconsax.share)
                 : RemoteImage(
                     url: vault.iconUrl,
                     width: 35,
                     alignment: Alignment.centerLeft,
                   ),
-            onTap: () {
-              filterGroupId.value = '';
-              filterSharedVaultId.value = e.id;
-              done();
-            },
+            selected: vault.docId == filterSharedVaultId.value,
+            onTap: () => filterBySharedVaultId(e.id),
           );
         },
       ).toList();
+
+  String get filterSharedVaultLabel {
+    final vaults = SharedVaultsController.to.data
+        .where((e) => e.id == filterSharedVaultId.value);
+    if (vaults.isEmpty) return '';
+    return vaults.first.data().name;
+  }
 
   String get filterGroupLabel {
     final groups =
@@ -168,6 +192,39 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   // INIT
 
   // FUNCTIONS
+
+  void filterAllItems() {
+    clearFilters();
+    done();
+  }
+
+  void filterByGroupId(String groupId) {
+    filterGroupId.value = groupId;
+    done();
+  }
+
+  void filterBySharedVaultId(String vaultId) {
+    // if already selected, deselect
+    if (vaultId == filterSharedVaultId.value) vaultId = '';
+    filterSharedVaultId.value = vaultId;
+    done();
+  }
+
+  void filterByCategory(String category) {
+    final categoryEnum = LisoItemCategory.values.byName(category);
+    // if already selected, deselect
+    filterCategory.value = categoryEnum == filterCategory.value
+        ? LisoItemCategory.none
+        : categoryEnum;
+    done();
+  }
+
+  void filterByTag(String tag) {
+    // if already selected, deselect
+    if (tag == filterTag.value) tag = '';
+    filterTag.value = tag;
+    done();
+  }
 
   void filterFavoriteItems() async {
     filterFavorites.toggle();
@@ -198,34 +255,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;
-    done();
-  }
-
-  void filterAllItems() {
-    clearFilters();
-    done();
-  }
-
-  void filterByCategory(String category) {
-    final categoryEnum = LisoItemCategory.values.byName(category);
-    // if already selected, deselect
-    filterCategory.value = categoryEnum == filterCategory.value
-        ? LisoItemCategory.none
-        : categoryEnum;
-    done();
-  }
-
-  void filterByTag(String tag) {
-    // if already selected, deselect
-    if (tag == filterTag.value) tag = '';
-    filterTag.value = tag;
-    done();
-  }
-
-  void filterBySharedVaultId(String vaultId) {
-    // if already selected, deselect
-    if (vaultId == filterSharedVaultId.value) vaultId = '';
-    filterSharedVaultId.value = vaultId;
     done();
   }
 

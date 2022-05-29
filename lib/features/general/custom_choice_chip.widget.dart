@@ -15,22 +15,27 @@ class CustomChoiceChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color? color;
+    Color? textColor;
 
     if (Get.isDarkMode && selected) {
-      color = Colors.white;
+      textColor = Colors.white;
     } else if (!Get.isDarkMode && selected) {
-      color = Colors.black;
+      textColor = Colors.black;
     }
 
-    return ChoiceChip(
-      label: Text(
-        label,
-        style: TextStyle(color: color),
+    return Theme(
+      data: Get.theme.copyWith(
+        chipTheme: Get.theme.chipTheme.copyWith(
+          selectedColor: Colors.amber.withOpacity(0.5),
+          backgroundColor: Colors.amber.withOpacity(0.2),
+          checkmarkColor: textColor,
+        ),
       ),
-      selected: selected,
-      avatar: selected ? Icon(Icons.check, color: color) : null,
-      onSelected: onSelected,
+      child: FilterChip(
+        label: Text(label, style: TextStyle(color: textColor)),
+        selected: selected,
+        onSelected: onSelected,
+      ),
     );
   }
 }

@@ -33,41 +33,27 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               onExpansionChanged: (expanded) =>
                   controller.groupsExpanded = expanded,
               initiallyExpanded: controller.groupsExpanded,
-              children: [
-                ...controller.groupTiles,
-                const Divider(),
-                ListTile(
-                  title: const Text('Manage'),
-                  leading: const Icon(Iconsax.setting_3),
-                  onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
-                ),
-              ],
+              children: [...controller.groupTiles],
             ),
           ),
-          if (isFirebaseSupported) ...[
-            Obx(
-              () => ExpansionTile(
-                maintainState: true,
-                title: Text(
-                  'shared_vaults'.tr.toUpperCase(),
-                  style: const TextStyle(fontSize: 13),
-                ),
-                onExpansionChanged: (expanded) =>
-                    controller.sharedVaultsExpanded = expanded,
-                initiallyExpanded: controller.sharedVaultsExpanded,
-                children: [
-                  ...controller.sharedVaultsTiles,
-                  const Divider(),
-                  ListTile(
-                    title: const Text('Manage'),
-                    leading: const Icon(Iconsax.setting_3),
-                    onTap: () =>
-                        Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          PersistenceBuilder(
+            builder: (p, context) =>
+                Persistence.to.sync.val && isFirebaseSupported
+                    ? Obx(
+                        () => ExpansionTile(
+                          maintainState: true,
+                          title: Text(
+                            'shared_vaults'.tr.toUpperCase(),
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          onExpansionChanged: (expanded) =>
+                              controller.sharedVaultsExpanded = expanded,
+                          initiallyExpanded: controller.sharedVaultsExpanded,
+                          children: [...controller.sharedVaultsTiles],
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+          ),
           ExpansionTile(
             maintainState: true,
             title: Text(
@@ -330,7 +316,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 // onTap: controller.files,
               ),
             ],
-          )
+          ),
+          ListTile(
+            title: const Text('Clear Filters'),
+            leading: const Icon(Iconsax.slash),
+            onTap: controller.clearFilters,
+          ),
         ];
 
         return Drawer(

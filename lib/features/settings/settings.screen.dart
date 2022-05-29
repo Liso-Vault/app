@@ -108,6 +108,22 @@ class SettingsScreen extends GetView<SettingsScreenController>
         ),
         const Divider(),
         ListTile(
+          leading: Icon(Iconsax.briefcase, color: themeColor),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: const Text('Custom Vaults'),
+          subtitle: const Text('Manage your own custom vaults'),
+          onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.share, color: themeColor),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: const Text('Shared Vaults'),
+          subtitle: const Text('Manage your shared vaults'),
+          onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+        ),
+        const Divider(),
+        ListTile(
           leading: Icon(Iconsax.import_1, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('Import Items'),

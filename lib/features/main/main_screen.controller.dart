@@ -285,12 +285,12 @@ class MainScreenController extends GetxController
     final drawerController = DrawerMenuController.to;
     var items = HiveItemsService.to.data;
 
-    if (drawerController.filterGroupId.value.isNotEmpty) {
-      // FILTER BY GROUP
-      items = items
-          .where((e) => e.groupId == drawerController.filterGroupId.value)
-          .toList();
-    } else if (drawerController.filterSharedVaultId.value.isNotEmpty) {
+    // FILTER BY GROUP
+    items = items
+        .where((e) => e.groupId == drawerController.filterGroupId.value)
+        .toList();
+
+    if (drawerController.filterSharedVaultId.value.isNotEmpty) {
       // FILTER BY SHARED VAULT
       items = items
           .where((e) => e.sharedVaultIds

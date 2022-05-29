@@ -15,6 +15,7 @@
 - New! Shared Vaults
 - New! Filters indicator
 - New! Add custom vaults
+- Improved! Vaults now show count
 - Improved! Syncing screen
 - Improved! Exported File Name now includes Date and Time
 - Improved! File Explorer shows encrypted icon indicator

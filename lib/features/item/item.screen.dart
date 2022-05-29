@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/hive/hive_groups.service.dart';
@@ -28,9 +29,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       maxChips: 5,
       initialValue: controller.tags,
       textCapitalization: TextCapitalization.words,
-      decoration: InputDecoration(
-        labelText: 'tags'.tr,
-      ),
+      decoration: InputDecoration(labelText: 'tags'.tr),
       findSuggestions: controller.querySuggestions,
       onChanged: (data) => controller.tags = data,
       // onEditingComplete: controller.querySubmitted,
@@ -170,6 +169,18 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         ),
         controller.protected,
       ),
+      if (controller.sharedVaultChips.isNotEmpty) ...[
+        const Divider(),
+        Section(text: 'shared_vaults'.tr.toUpperCase()),
+        Obx(
+          () => Wrap(
+            spacing: 5,
+            children: [
+              ...controller.sharedVaultChips,
+            ],
+          ),
+        ),
+      ],
       if (mode == 'update') ...[
         const Divider(),
         const SizedBox(height: 20),

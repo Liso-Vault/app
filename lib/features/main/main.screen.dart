@@ -96,6 +96,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
+            icon: const Icon(Iconsax.briefcase, size: 10),
             label: Text(
               DrawerMenuController.to.filterGroupLabel,
               style: const TextStyle(fontSize: 9),
@@ -104,6 +105,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
+            icon: const Icon(Iconsax.share, size: 10),
+            label: Text(
+              DrawerMenuController.to.filterSharedVaultLabel,
+              style: const TextStyle(fontSize: 9),
+            ),
+          ),
+        ),
+        Obx(
+          () => CustomChip(
+            icon: const Icon(Iconsax.filter, size: 10),
             label: Text(
               DrawerMenuController.to.filterToggleLabel,
               style: const TextStyle(fontSize: 9),
@@ -112,6 +123,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
+            icon: const Icon(Iconsax.category, size: 10),
             label: Text(
               DrawerMenuController.to.filterCategoryLabel,
               style: const TextStyle(fontSize: 9),
@@ -120,6 +132,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
+            icon: const Icon(Iconsax.tag, size: 10),
             label: Text(
               DrawerMenuController.to.filterTagLabel,
               style: const TextStyle(fontSize: 9),
