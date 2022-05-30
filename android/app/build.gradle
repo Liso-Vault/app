@@ -51,6 +51,11 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    lintOptions {
+        // fix flavor build release issue
+        checkReleaseBuilds false
+    }
+
     defaultConfig {
         applicationId "com.liso.app"
         minSdkVersion 23 // biometrics requirement

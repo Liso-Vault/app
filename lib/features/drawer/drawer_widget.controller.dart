@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
-import 'package:liso/features/vaults/vaults.controller.dart';
+import 'package:liso/features/groups/groups.controller.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../core/hive/hive_items.service.dart';
@@ -108,7 +108,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterTrashed.value &&
       !filterDeleted.value;
 
-  List<Widget> get groupTiles => VaultsController.to.data.map((group) {
+  List<Widget> get groupTiles => GroupsController.to.data.map((group) {
         final count = HiveItemsService.to.data
             .where((item) => item.groupId == group.id)
             .length;
@@ -130,8 +130,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       }).toList();
 
   List<Widget> get sharedVaultsTiles =>
-      SharedVaultsController.to.data.isNotEmpty
-          ? SharedVaultsController.to.data.map(
+      SharedGroupsController.to.data.isNotEmpty
+          ? SharedGroupsController.to.data.map(
               (e) {
                 final vault = e.data();
 
@@ -170,7 +170,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
             ];
 
   String get filterSharedVaultLabel {
-    final vaults = SharedVaultsController.to.data
+    final vaults = SharedGroupsController.to.data
         .where((e) => e.id == filterSharedVaultId.value);
     if (vaults.isEmpty) return '';
     return vaults.first.data().name;

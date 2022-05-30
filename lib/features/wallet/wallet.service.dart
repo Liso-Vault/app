@@ -31,6 +31,8 @@ class WalletService extends GetxService with ConsoleMixin {
   Wallet? wallet;
   Uint8List? cipherKey;
 
+  bool get isReady => wallet != null;
+
   Uint8List get privateKey => wallet!.privateKey.privateKey;
 
   EthereumAddress get address => wallet!.privateKey.address;

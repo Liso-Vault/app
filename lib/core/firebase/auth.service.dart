@@ -4,32 +4,35 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../features/s3/s3.service.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
+import 'firestore.service.dart';
 
 class AuthService extends GetxService with ConsoleMixin {
   static AuthService get to => Get.find();
 
   // VARIABLES
   FirebaseAuth get instance => FirebaseAuth.instance;
-  User? user;
 
   // PROPERTIES
 
   // GETTERS
+  bool get isSignedIn => instance.currentUser != null;
 
   // INIT
   @override
   void onInit() {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
-    instance.authStateChanges().listen((user_) {
-      user = user_;
-
-      if (user == null) {
+    instance.authStateChanges().listen((user_) async {
+      if (user_ == null) {
         console.warning('signed out');
       } else {
-        console.info('signed in: ${user!.uid}');
-        SharedVaultsController.to.start();
+        console.info('signed in: ${user_.uid}');
+        SharedGroupsController.to.start();
+        // delay just to make sure everything is ready before we record
+        await Future.delayed(2.seconds);
+        _record();
       }
     });
 
@@ -37,10 +40,30 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
+  void _record() async {
+    if (!WalletService.to.isReady) {
+      return console.error('Cannot record because of null wallet');
+    }
+
+    final info = await S3Service.to.fetchStorageSize();
+    if (info == null) return console.error('error storage info');
+
+    await FirestoreService.to.record(
+      objects: info.objects.length,
+      totalSize: info.totalSize,
+    );
+  }
+
+  Future<void> signOut() async {
+    await instance.signOut();
+    console.info('signOut');
+  }
+
   Future<void> signIn() async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     if (instance.currentUser != null) {
+      _record();
       return console.warning('Already Signed In');
     }
 

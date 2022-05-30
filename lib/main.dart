@@ -20,7 +20,6 @@ import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/hive/hive_items.service.dart';
-import 'core/hive/hive_shared_vaults.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
@@ -59,10 +58,9 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => BiometricService());
     Get.lazyPut(() => HiveService());
     Get.lazyPut(() => HiveItemsService());
-    Get.lazyPut(() => HiveSharedVaultsService());
     Get.lazyPut(() => HiveGroupsService());
 
-    Get.put(SharedVaultsController());
+    Get.put(SharedGroupsController());
 
     CrashlyticsService.to.init();
     await LisoPaths.init();

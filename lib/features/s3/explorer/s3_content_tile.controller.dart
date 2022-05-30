@@ -134,7 +134,7 @@ class S3ContentTileController extends GetxController
       }
 
       NotificationsManager.notify(
-        title: 'Deleted File',
+        title: 'Deleted',
         body: content.name,
       );
 
@@ -147,7 +147,7 @@ class S3ContentTileController extends GetxController
     );
 
     Get.dialog(AlertDialog(
-      title: Text('delete_file'.tr),
+      title: Text('delete'.tr),
       content: Utils.isDrawerExpandable
           ? dialogContent
           : SizedBox(

@@ -309,11 +309,14 @@ class MainScreenController extends GetxController
 
     // FILTER BY TOGGLE
     if (drawerController.filterAll) {
-      items = items.where((e) => !e.trashed && !e.deleted).toList();
+      items =
+          items.where((e) => !e.trashed && !e.deleted && !e.trashed).toList();
     } else if (drawerController.filterFavorites.value) {
-      items = items.where((e) => e.favorite && !e.deleted).toList();
+      items =
+          items.where((e) => e.favorite && !e.deleted && !e.trashed).toList();
     } else if (drawerController.filterProtected.value) {
-      items = items.where((e) => e.protected && !e.deleted).toList();
+      items =
+          items.where((e) => e.protected && !e.deleted && !e.trashed).toList();
     } else if (drawerController.filterTrashed.value) {
       items = items.where((e) => e.trashed && !e.deleted).toList();
     } else if (drawerController.filterDeleted.value) {
@@ -425,7 +428,7 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timeLockTimer?.cancel();
 
-        if (WalletService.to.saved && WalletService.to.wallet == null) {
+        if (WalletService.to.saved && !WalletService.to.isReady) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {

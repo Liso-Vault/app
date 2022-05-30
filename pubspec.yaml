@@ -66,6 +66,7 @@ dependencies:
   percent_indicator: ^4.2.2 # circular progress indicator
   flutter_svg: ^1.0.3 # dice bear avatars
   qr_flutter: ^4.0.0 # generate QR Codes
+  shimmer: ^2.0.0
 
   # TOOLS
   url_launcher: ^6.1.2

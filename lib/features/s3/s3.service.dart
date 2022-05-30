@@ -9,11 +9,12 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/hive/hive_shared_vaults.service.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
+import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:minio/minio.dart';
@@ -21,10 +22,13 @@ import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
 import 'package:supercharged/supercharged.dart';
 
+import '../../core/hive/hive_groups.service.dart';
 import '../../core/hive/hive_items.service.dart';
+import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso_paths.dart';
+import '../../core/liso/vault.model.dart';
 import '../../core/utils/globals.dart';
 import '../wallet/wallet.service.dart';
 import 'model/s3_content.model.dart';
@@ -132,16 +136,23 @@ class S3Service extends GetxService with ConsoleMixin {
     console.info('syncing...');
     syncing.value = true;
     _syncProgress(0.1, 'Syncing...');
-    final statResult = await stat(lisoContent)
-        .timeout(syncTimeoutDuration, onTimeout: () => const Left('Timed Out'));
+
+    final statResult = await stat(lisoContent).timeout(
+      syncTimeoutDuration,
+      onTimeout: () => const Left('Timed Out'),
+    );
 
     if (statResult.isLeft) {
       if (statResult.left is MinioError &&
           statResult.left.message!.contains('Not Found')) {
         inSync.value = true;
         _syncProgress(0.5, 'Initializing...');
-        final upsyncResult = await upSync().timeout(syncTimeoutDuration,
-            onTimeout: () => const Left('Timed Out'));
+
+        final upsyncResult = await upSync().timeout(
+          syncTimeoutDuration,
+          onTimeout: () => const Left('Timed Out'),
+        );
+
         _syncProgress(1, '');
         syncing.value = false;
 
@@ -158,8 +169,12 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     _syncProgress(0.2, 'Fetching...');
-    final downResult = await _downSync()
-        .timeout(syncTimeoutDuration, onTimeout: () => const Left('Timed Out'));
+
+    final downResult = await _downSync().timeout(
+      syncTimeoutDuration,
+      onTimeout: () => const Left('Timed Out'),
+    );
+
     if (downResult.isLeft) return Left(downResult.left);
 
     // we are now ready to upSync because we are not in sync with server
@@ -173,6 +188,7 @@ class S3Service extends GetxService with ConsoleMixin {
     syncing.value = false;
     _syncProgress(1, '');
     MainScreenController.to.load();
+    GroupsController.to.load();
     syncSharedVaults();
     return Right(downResult.right);
   }
@@ -190,46 +206,89 @@ class S3Service extends GetxService with ConsoleMixin {
 
     if (downloadResult.isLeft) return Left(downloadResult.left);
     _syncProgress(0.3, null);
-    final items =
-        await HiveItemsService.to.parseVaultFile(downloadResult.right);
+
+    final decryptedBytes = CipherService.to.decrypt(
+      await downloadResult.right.readAsBytes(),
+    );
+
+    final decryptedJson = String.fromCharCodes(decryptedBytes);
+    final jsonMap = jsonDecode(decryptedJson); // TODO: isolate
+    final vault = LisoVault.fromJson(jsonMap);
     _syncProgress(0.4, null);
-    await _mergeItems(items);
+    await _mergeGroups(vault.groups);
+    await _mergeItems(vault.items);
     return const Right(true);
   }
 
-  Future<void> _mergeItems(List<HiveLisoItem> serverItems) async {
-    var localItems = HiveItemsService.to.box;
+  Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
+    var local = HiveGroupsService.to.box;
     // MERGED
-    final mergedItems = {...serverItems, ...localItems.values};
-    console.info('merged: ${mergedItems.length}');
-    final leastUpdatedDuplicates = <HiveLisoItem>[];
+    final merged = {...server, ...local.values};
+    console.info('merged: ${merged.length}');
+    final leastUpdatedDuplicates = <HiveLisoGroup>[];
 
-    for (var x in mergedItems) {
+    for (var x in merged) {
       // skip if item already added to least updated item list
-      if (leastUpdatedDuplicates
-          .where((e) => e.identifier == x.identifier)
-          .isNotEmpty) continue;
+      if (x.reserved ||
+          leastUpdatedDuplicates.where((e) => e.id == x.id).isNotEmpty) {
+        continue;
+      }
       // find duplicates
-      final duplicate = mergedItems.where((y) => y.identifier == x.identifier);
-      // return the least updated item in duplicate
+      final duplicate = merged.where((y) => y.id == x.id);
+      // return the least updated item of a duplicate
       if (duplicate.length > 1) {
-        final leastUpdatedItem = duplicate.first.metadata.updatedTime
-                .isBefore(duplicate.last.metadata.updatedTime)
+        final leastUpdated = duplicate.first.metadata!.updatedTime
+                .isBefore(duplicate.last.metadata!.updatedTime)
             ? duplicate.first
             : duplicate.last;
-        leastUpdatedDuplicates.add(leastUpdatedItem);
+        leastUpdatedDuplicates.add(leastUpdated);
       }
     }
 
     console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
     // remove duplicate + least updated item
-    mergedItems.removeWhere(
+    merged.removeWhere(
       (e) => leastUpdatedDuplicates.contains(e),
     );
 
     // clear and reload updated items
-    await localItems.clear();
-    await localItems.addAll(mergedItems);
+    await local.clear();
+    await local.addAll(merged);
+  }
+
+  Future<void> _mergeItems(List<HiveLisoItem> server) async {
+    var local = HiveItemsService.to.box;
+    // MERGED
+    final merged = {...server, ...local.values};
+    console.info('merged: ${merged.length}');
+    final leastUpdatedDuplicates = <HiveLisoItem>[];
+
+    for (var x in merged) {
+      // skip if item already added to least updated item list
+      if (leastUpdatedDuplicates
+          .where((e) => e.identifier == x.identifier)
+          .isNotEmpty) continue;
+      // find duplicates
+      final duplicate = merged.where((y) => y.identifier == x.identifier);
+      // return the least updated item in duplicate
+      if (duplicate.length > 1) {
+        final leastUpdated = duplicate.first.metadata.updatedTime
+                .isBefore(duplicate.last.metadata.updatedTime)
+            ? duplicate.first
+            : duplicate.last;
+        leastUpdatedDuplicates.add(leastUpdated);
+      }
+    }
+
+    console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
+    // remove duplicate + least updated item
+    merged.removeWhere(
+      (e) => leastUpdatedDuplicates.contains(e),
+    );
+
+    // clear and reload updated items
+    await local.clear();
+    await local.addAll(merged);
   }
 
   // UP SYNC
@@ -251,59 +310,38 @@ class S3Service extends GetxService with ConsoleMixin {
       );
     }
 
-    final vaultFile = await HiveItemsService.to.export(
-      path: LisoPaths.tempVaultFilePath,
-    );
-
     // UPLOAD
     _syncProgress(0.7, null);
     final metadataString = await updatedLocalMetadata();
+    final vaultJsonString = await LisoManager.compactJson();
+    final encryptedBytes = CipherService.to.encrypt(vaultJsonString.codeUnits);
 
-    final uploadResult = await uploadFile(
-      vaultFile,
-      s3Path: vaultPath,
-      metadata: metadataString,
-    );
-
-    await vaultFile.delete(); // delete temp vault file
-    persistence.metadata.val = metadataString;
-    _syncProgress(0.9, null);
-    if (uploadResult.isLeft) return Left(uploadResult.left);
-    console.info('uploaded! eTag: ${uploadResult.right}');
-    return const Right(true);
-  }
-
-  Future<Either<dynamic, String>> createBlankFile(String s3path) async {
-    if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
-
-    console.warning('creating blank file: $s3path');
     String eTag = '';
 
     try {
       eTag = await client!.putObject(
         config.s3.preferredBucket,
-        s3path,
-        Stream<Uint8List>.value(Uint8List(0)),
+        vaultPath,
+        Stream<Uint8List>.value(encryptedBytes),
         onProgress: (size) => uploadedSize.value = size,
-        metadata: {
-          'client': await updatedLocalMetadata(),
-          'version': kS3MetadataVersion,
-        },
+        metadata: {'client': metadataString, 'version': kS3MetadataVersion},
       );
     } catch (e) {
       return Left(e);
     }
 
+    _syncProgress(0.9, null);
     console.info('uploaded: $eTag');
-    return Right(eTag);
+    persistence.metadata.val = metadataString;
+    console.info('uploaded! eTag: $eTag');
+    return const Right(true);
   }
 
   Future<Either<dynamic, bool>> syncSharedVaults() async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
 
-    if (SharedVaultsController.to.data.isEmpty) {
+    if (SharedGroupsController.to.data.isEmpty) {
       return const Left('nothing to sync');
     }
 
@@ -312,12 +350,12 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     console.info(
-      'syncing ${SharedVaultsController.to.data.length} shared vaults...',
+      'syncing ${SharedGroupsController.to.data.length} shared vaults...',
     );
 
     final metadataString = await updatedLocalMetadata();
 
-    for (final doc in SharedVaultsController.to.data) {
+    for (final doc in SharedGroupsController.to.data) {
       final sharedVault = doc.data();
 
       final sharedItems = HiveItemsService.to.data
@@ -329,14 +367,16 @@ class S3Service extends GetxService with ConsoleMixin {
 
       final sharedItemsJsonString = jsonEncode(sharedItemsJson);
       final bytes = Uint8List.fromList(sharedItemsJsonString.codeUnits);
-      final sharedVaultResults =
-          HiveSharedVaultsService.to.data.where((e) => e.id == doc.id);
 
-      // just incase cipher key is not found
-      if (sharedVaultResults.isEmpty) {
+      final cipherKeyResult = await HiveItemsService.to.obtainFieldValue(
+        itemId: doc.id,
+        fieldId: 'key',
+      );
+
+      if (cipherKeyResult.isLeft) {
         UIUtils.showSimpleDialog(
-          'Error Syncing Shared Vault',
-          'Cannot find saved Cipher Key. Please report to the developer.',
+          'Cipher Key Not Found',
+          cipherKeyResult.left,
         );
 
         return const Left('value');
@@ -344,7 +384,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
       final encryptedBytes = CipherService.to.encrypt(
         bytes,
-        cipherKey: sharedVaultResults.first.cipherKey,
+        cipherKey: base64Decode(cipherKeyResult.right),
       );
 
       String eTag = '';
@@ -631,10 +671,8 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     final info = result.right;
-
     storageSize.value = info.totalSize;
     objectsCount.value = info.objects.length;
-
     // cache objects
     contentsCache = _objectsToContents(info.objects as List<minio.Object>);
 

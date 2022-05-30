@@ -9,18 +9,13 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
-import 'package:liso/core/hive/hive_shared_vaults.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:liso/core/hive/models/shared_vault.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:path/path.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/notifications/notifications.manager.dart';
@@ -28,15 +23,15 @@ import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 
-class SharedVaultsScreenBinding extends Bindings {
+class SharedGroupsScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
+    Get.lazyPut(() => SharedGroupsScreenController(), fenix: true);
   }
 }
 
-class SharedVaultsScreenController extends GetxController with ConsoleMixin {
-  static SharedVaultsScreenController get to => Get.find();
+class SharedGroupsScreenController extends GetxController with ConsoleMixin {
+  static SharedGroupsScreenController get to => Get.find();
 
   // VARIABLES
 
@@ -61,11 +56,11 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
       // check if name already exists
       final exists =
-          await SharedVaultsController.to.exists(nameController.text);
+          await SharedGroupsController.to.exists(nameController.text);
 
       if (exists) {
         return UIUtils.showSimpleDialog(
-          'Shared Vault Already Exists',
+          'Already Exists',
           '"${nameController.text}" already exists.',
         );
       }
@@ -74,7 +69,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
       // add to firestore
       final vault = SharedVault(
-        userId: AuthService.to.user!.uid,
+        userId: AuthService.to.instance.currentUser!.uid,
         address: WalletService.to.longAddress,
         name: nameController.text,
         description: descriptionController.text,
@@ -91,6 +86,10 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         if (e.identifier == 'key') {
           e.data.value = cipherKeyController.text;
           return e;
+        } else if (e.identifier == 'note') {
+          e.data.value =
+              'Please share this safely to those you want to access the shared vault. It is recommended you keep this item.';
+          return e;
         } else {
           return e;
         }
@@ -98,25 +97,18 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
       // save cipher key as a liso item
       await HiveItemsService.to.box.add(HiveLisoItem(
-        identifier: const Uuid().v4(),
-        groupId: 'personal',
+        identifier: doc.id,
+        groupId: 'secrets', // TODO: use enums for reserved groups
         category: category.name,
         title: '${nameController.text} Shared Vault Cipher Key',
         fields: fields,
         metadata: await HiveMetadata.get(),
         protected: true,
-        tags: ['cipher'],
+        reserved: true,
+        tags: ['secret'],
       ));
 
       console.wtf('created liso item');
-
-      // save cipher key
-      await HiveSharedVaultsService.to.box.add(HiveSharedVault(
-        id: doc.id,
-        cipherKey: base64Decode(cipherKeyController.text),
-      ));
-
-      console.wtf('saved cipher key');
 
       // send notification
       NotificationsManager.notify(

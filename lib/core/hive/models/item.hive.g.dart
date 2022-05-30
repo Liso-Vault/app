@@ -27,17 +27,19 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       protected: fields[7] as bool,
       trashed: fields[8] as bool,
       deleted: fields[9] as bool,
-      tags: (fields[10] as List).cast<String>(),
-      sharedVaultIds: (fields[11] as List).cast<String>(),
-      attachments: (fields[12] as List).cast<String>(),
-      metadata: fields[13] as HiveMetadata,
+      reserved: fields[10] as bool,
+      hidden: fields[11] as bool,
+      tags: (fields[12] as List).cast<String>(),
+      sharedVaultIds: (fields[13] as List).cast<String>(),
+      attachments: (fields[14] as List).cast<String>(),
+      metadata: fields[15] as HiveMetadata,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveLisoItem obj) {
     writer
-      ..writeByte(14)
+      ..writeByte(16)
       ..writeByte(0)
       ..write(obj.identifier)
       ..writeByte(1)
@@ -59,12 +61,16 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       ..writeByte(9)
       ..write(obj.deleted)
       ..writeByte(10)
-      ..write(obj.tags)
+      ..write(obj.reserved)
       ..writeByte(11)
-      ..write(obj.sharedVaultIds)
+      ..write(obj.hidden)
       ..writeByte(12)
-      ..write(obj.attachments)
+      ..write(obj.tags)
       ..writeByte(13)
+      ..write(obj.sharedVaultIds)
+      ..writeByte(14)
+      ..write(obj.attachments)
+      ..writeByte(15)
       ..write(obj.metadata);
   }
 

@@ -5,10 +5,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
@@ -143,7 +145,19 @@ class SettingsScreenController extends GetxController
   }
 
   void showSeed() async {
-    final seed = Persistence.to.mnemonicSeedPhrase.val;
+    final result = await HiveItemsService.to.obtainFieldValue(
+      itemId: 'seed',
+      fieldId: 'seed',
+    );
+
+    if (result.isLeft) {
+      return UIUtils.showSimpleDialog(
+        'Seed Not Found',
+        'Cannot find your saved seed',
+      );
+    }
+
+    final seed = result.right;
 
     final phraseChips = GestureDetector(
       onLongPress: () => Utils.copyToClipboard(seed),
@@ -187,10 +201,7 @@ class SettingsScreenController extends GetxController
       title: const Text('Your Seed Phrase'),
       content: Utils.isDrawerExpandable
           ? content
-          : SizedBox(
-              width: 450,
-              child: content,
-            ),
+          : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,

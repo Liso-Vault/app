@@ -162,7 +162,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           }),
           const SizedBox(height: 20),
           PassphraseCard(
-            controller: controller.seedController,
+            seedController: controller.seedController,
             onFieldSubmitted: (text) => controller.continuePressed,
           ),
           const SizedBox(height: 20),

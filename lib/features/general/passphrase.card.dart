@@ -1,13 +1,20 @@
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
-class PassphraseCard extends StatelessWidget with ConsoleMixin {
+class SeedFormFieldController extends GetxController {
+  final obscureText = true.obs;
+}
+
+class PassphraseCard extends GetWidget<SeedFormFieldController>
+    with ConsoleMixin {
   final PassphraseMode mode;
   final String initialValue;
   final bool required;
-  final TextEditingController controller;
+  final TextEditingController seedController;
   final Function(String)? onFieldSubmitted;
 
   const PassphraseCard({
@@ -15,40 +22,50 @@ class PassphraseCard extends StatelessWidget with ConsoleMixin {
     this.mode = PassphraseMode.none,
     this.initialValue = '',
     this.required = true,
-    required this.controller,
+    required this.seedController,
     this.onFieldSubmitted,
   }) : super(key: key);
 
   String? get value =>
-      bip39.validateMnemonic(controller.text) ? controller.text : null;
+      bip39.validateMnemonic(seedController.text) ? seedController.text : null;
 
   @override
   Widget build(BuildContext context) {
     _init();
 
-    return TextFormField(
-      controller: controller,
-      minLines: 1,
-      maxLines: 5,
-      textInputAction: TextInputAction.next,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (text) => _validateSeed(text!),
-      onFieldSubmitted: onFieldSubmitted,
-      inputFormatters: [
-        // don't allow new lines
-        FilteringTextInputFormatter.deny(RegExp(r'\n')),
-      ],
-      decoration: const InputDecoration(
-        labelText: 'Mnemonic Seed Phrase',
+    return Obx(
+      () => TextFormField(
+        controller: seedController,
+        minLines: 1,
+        // maxLines: 5,
+        obscureText: controller.obscureText.value,
+        textInputAction: TextInputAction.next,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (text) => _validateSeed(text!),
+        onFieldSubmitted: onFieldSubmitted,
+        inputFormatters: [
+          // don't allow new lines
+          FilteringTextInputFormatter.deny(RegExp(r'\n')),
+        ],
+        decoration: InputDecoration(
+          labelText: 'Mnemonic Seed Phrase',
+          suffixIcon: IconButton(
+            padding: const EdgeInsets.only(right: 10),
+            onPressed: controller.obscureText.toggle,
+            icon: Icon(
+              controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
+            ),
+          ),
+        ),
       ),
     );
   }
 
   void _init() {
-    controller.text = initialValue;
+    seedController.text = initialValue;
 
     if (mode == PassphraseMode.create) {
-      controller.text = bip39.generateMnemonic(strength: 256);
+      seedController.text = bip39.generateMnemonic(strength: 256);
     } else if (mode == PassphraseMode.confirm) {
       //
     } else if (mode == PassphraseMode.import) {

@@ -8,6 +8,7 @@ import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
+import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -112,9 +113,12 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Sync Shared Vaults'),
+          title: const Text('Export Vault JSON'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => S3Service.to.syncSharedVaults(),
+          onTap: () async {
+            final json = await LisoManager.compactJson();
+            console.warning(json);
+          },
         ),
         const Divider(),
         ListTile(

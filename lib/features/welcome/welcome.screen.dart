@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
@@ -81,7 +82,9 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
                 const Text('and'),
                 TextButton(
                   onPressed: () => launchUrlString(
-                      ConfigService.to.general.app.links.privacy),
+                    ConfigService.to.general.app.links.privacy,
+                  ),
+                  onLongPress: AuthService.to.signOut,
                   child: const Text('Privacy Policy'),
                 ),
               ],

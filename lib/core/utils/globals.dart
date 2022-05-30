@@ -8,7 +8,7 @@ import 'package:intl/intl.dart';
 // HIVE DATABASE
 const kHiveBoxItems = 'items';
 const kHiveBoxPersistence = 'persistence';
-const kHiveBoxSharedVaultItems = 'shared_vaults';
+// const kHiveBoxSharedVaultCredentials = 'shared_vaults';
 const kHiveBoxGroups = 'groups';
 // BIOMETRIC STORAGE
 const kBiometricPasswordKey = 'biometric_password';
@@ -34,13 +34,14 @@ final inputFormatterNumericOnly =
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 
-const kReservedVaultIds = 'personal,work,family,other';
+const kReservedVaultIds = 'personal,work,family,others,secrets';
 
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
 const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';
+const kVaultFormatVersion = 1;
 
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 

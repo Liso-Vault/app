@@ -41,12 +41,16 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(9)
   bool deleted;
   @HiveField(10)
-  List<String> tags;
+  bool reserved;
   @HiveField(11)
-  List<String> sharedVaultIds;
+  bool hidden;
   @HiveField(12)
-  List<String> attachments;
+  List<String> tags;
   @HiveField(13)
+  List<String> sharedVaultIds;
+  @HiveField(14)
+  List<String> attachments;
+  @HiveField(15)
   HiveMetadata metadata;
 
   HiveLisoItem({
@@ -60,6 +64,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.protected = false,
     this.trashed = false,
     this.deleted = false,
+    this.reserved = false,
+    this.hidden = false,
     this.tags = const [],
     this.sharedVaultIds = const [],
     this.attachments = const [],
@@ -79,6 +85,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         protected: json["protected"],
         trashed: json["trashed"],
         deleted: json["deleted"],
+        reserved: json["reserved"],
+        hidden: json["hidden"],
         tags: List<String>.from(json["tags"].map((x) => x)),
         sharedVaultIds:
             List<String>.from(json["shared_vault_ids"].map((x) => x)),
@@ -98,6 +106,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "protected": protected,
       "trashed": trashed,
       "deleted": deleted,
+      "reserved": reserved,
+      "hidden": hidden,
       "tags": List<dynamic>.from(tags.map((x) => x)),
       "shared_vault_ids": List<dynamic>.from(sharedVaultIds.map((x) => x)),
       "attachments": List<dynamic>.from(attachments.map((x) => x)),
@@ -119,6 +129,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         protected,
         trashed,
         deleted,
+        reserved,
+        hidden,
         tags,
         sharedVaultIds,
         attachments,

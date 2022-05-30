@@ -5,8 +5,8 @@ import 'package:liso/core/utils/globals.dart';
 
 import '../../core/hive/models/group.hive.dart';
 
-class VaultsController extends GetxController with ConsoleMixin, StateMixin {
-  static VaultsController get to => Get.find();
+class GroupsController extends GetxController with ConsoleMixin, StateMixin {
+  static GroupsController get to => Get.find();
 
   // VARIABLES
 
@@ -29,10 +29,10 @@ class VaultsController extends GetxController with ConsoleMixin, StateMixin {
 
   void load() {
     data.value = HiveGroupsService.to.data;
+    console.wtf('length: ${data.length}');
 
-    filtered.value = HiveGroupsService.to.data
-        .where((e) => !kReservedVaultIds.contains(e.id))
-        .toList();
+    filtered.value =
+        data.where((e) => !kReservedVaultIds.contains(e.id)).toList();
 
     change(
       null,

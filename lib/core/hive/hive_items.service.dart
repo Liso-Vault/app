@@ -4,11 +4,13 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
+import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../features/main/main_screen.controller.dart';
 import '../liso/liso_paths.dart';
 import '../utils/globals.dart';
 import 'models/item.hive.dart';
@@ -20,12 +22,12 @@ class HiveItemsService extends GetxService with ConsoleMixin {
   late Box<HiveLisoItem> box;
 
   // GETTERS
-  List<HiveLisoItem> get data => box.values.toList();
+  List<HiveLisoItem> get data => box.isOpen ? box.values.toList() : [];
 
-  bool get itemLimitReached => box.length >= WalletService.to.limits.items;
+  bool get itemLimitReached => data.length >= WalletService.to.limits.items;
 
   bool get protectedItemLimitReached =>
-      box.length >= WalletService.to.limits.items;
+      data.where((e) => e.protected).length >= WalletService.to.limits.items;
 
   // FUNCTIONS
 
@@ -43,8 +45,11 @@ class HiveItemsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    await box.clear();
+    // refresh main listview
+    await MainScreenController.to.load();
     await box.deleteFromDisk();
-    console.info('reset');
+    console.info('clear');
   }
 
   Future<void> hidelete(Iterable<HiveLisoItem> items_) async {
@@ -54,6 +59,11 @@ class HiveItemsService extends GetxService with ConsoleMixin {
     }
   }
 
+  Future<void> import(List<HiveLisoItem> data, {Uint8List? cipherKey}) async {
+    await open(cipherKey: cipherKey);
+    box.addAll(data);
+  }
+
   Future<File> export({required String path}) async {
     final jsonString = jsonEncode(data); // TODO: isolate
     final file = File(path);
@@ -61,27 +71,18 @@ class HiveItemsService extends GetxService with ConsoleMixin {
     return await CipherService.to.encryptFile(file, addExtensionExtra: false);
   }
 
-  Future<void> importVaultFile(File file, {Uint8List? cipherKey}) async {
-    // parse vault to items
-    final items_ = await parseVaultFile(file, cipherKey: cipherKey);
-    await open(cipherKey: cipherKey!); // open database
-    await box.addAll(items_); // populate database
-  }
+  Future<Either<dynamic, String>> obtainFieldValue(
+      {required String itemId, required String fieldId}) async {
+    final results = data.where((e) => e.identifier == itemId).toList();
 
-  Future<List<HiveLisoItem>> parseVaultFile(File file,
-      {Uint8List? cipherKey}) async {
-    final decryptedFile = await CipherService.to.decryptFile(
-      file,
-      cipherKey: cipherKey,
+    if (results.isEmpty) {
+      return const Left('Field not found');
+    }
+
+    final field = results.first.fields.firstWhere(
+      (e) => e.identifier == fieldId,
     );
 
-    final jsonString = await decryptedFile.readAsString();
-    final jsonMap = jsonDecode(jsonString); // TODO: isolate
-
-    final importedItems = List<HiveLisoItem>.from(
-      jsonMap.map((x) => HiveLisoItem.fromJson(x)),
-    );
-
-    return importedItems;
+    return Right(field.data.value!);
   }
 }

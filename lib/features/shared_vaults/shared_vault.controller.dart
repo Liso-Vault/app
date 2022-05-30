@@ -9,9 +9,9 @@ import 'package:liso/core/utils/globals.dart';
 import '../../core/firebase/firestore.service.dart';
 import 'model/shared_vault.model.dart';
 
-class SharedVaultsController extends GetxController
+class SharedGroupsController extends GetxController
     with ConsoleMixin, StateMixin {
-  static SharedVaultsController get to => Get.find();
+  static SharedGroupsController get to => Get.find();
 
   // VARIABLES
   late StreamSubscription _stream;
@@ -43,7 +43,7 @@ class SharedVaultsController extends GetxController
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     _stream = FirestoreService.to.vaults
-        .where('userId', isEqualTo: AuthService.to.user!.uid)
+        .where('userId', isEqualTo: AuthService.to.instance.currentUser!.uid)
         .orderBy('createdTime', descending: true)
         // .limit(_limit)
         .snapshots()

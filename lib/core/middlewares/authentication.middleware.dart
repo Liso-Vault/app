@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -22,7 +21,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.welcome);
     }
 
-    if (WalletService.to.wallet == null) {
+    if (!WalletService.to.isReady) {
       return const RouteSettings(name: Routes.unlock);
     }
 
@@ -39,21 +38,9 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     // first time initialization
-    if (!initialized) {
-      CrashlyticsService.to.configure();
-      MainScreenController.to.load();
-      AuthService.to.signIn();
-    }
-
-    // record metadata
-    S3Service.to.fetchStorageSize().then((info) {
-      if (info == null) return;
-      FirestoreService.to.record(
-        objects: info.objects.length,
-        totalSize: info.totalSize,
-      );
-    });
-
+    if (!initialized) CrashlyticsService.to.configure();
+    MainScreenController.to.load();
+    AuthService.to.signIn();
     initialized = true;
     console.wtf('welcome');
     return super.redirect(route);

@@ -7,6 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/secrets.dart';
 
+import '../../features/groups/groups.controller.dart';
 import '../liso/liso_paths.dart';
 import '../utils/globals.dart';
 import 'models/group.hive.dart';
@@ -18,25 +19,27 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
   late Box<HiveLisoGroup> box;
 
   // GETTERS
-  List<HiveLisoGroup> get data => box.values.toList();
+  List<HiveLisoGroup> get data => box.isOpen ? box.values.toList() : [];
 
   // FUNCTIONS
 
-  Future<void> open({Uint8List? cipherKey}) async {
+  Future<void> open({Uint8List? cipherKey, bool initialize = true}) async {
     box = await Hive.openBox(
       kHiveBoxGroups,
       encryptionCipher: HiveAesCipher(cipherKey ?? WalletService.to.cipherKey!),
       path: LisoPaths.hivePath,
     );
 
-    if (box.isEmpty) {
+    console.wtf('length open: ${box.length}');
+
+    if (box.isEmpty && initialize) {
       // initial groups
       final groups = List<HiveLisoGroup>.from(
         Secrets.groups.map((x) => HiveLisoGroup.fromJson(x)),
       );
 
       await box.addAll(groups);
-      console.info('added initial groups');
+      console.wtf('added initial groups: ${box.length}');
     }
   }
 
@@ -46,7 +49,16 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    await box.clear();
+    console.wtf('length clear: ${box.length}');
+    // refresh cusom vaults
+    GroupsController.to.load();
     await box.deleteFromDisk();
-    console.info('reset');
+    console.info('clear');
+  }
+
+  Future<void> import(List<HiveLisoGroup> data, {Uint8List? cipherKey}) async {
+    await open(cipherKey: cipherKey, initialize: false);
+    box.addAll(data);
   }
 }

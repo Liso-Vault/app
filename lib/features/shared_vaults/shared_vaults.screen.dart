@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/hive_shared_vaults.service.dart';
+import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/s3/model/s3_content.model.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -25,18 +23,18 @@ import '../menu/menu.item.dart';
 import 'shared_vault.controller.dart';
 import 'shared_vaults_screen.controller.dart';
 
-class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
+class SharedGroupsScreen extends GetView<SharedGroupsScreenController>
     with ConsoleMixin {
-  const SharedVaultsScreen({Key? key}) : super(key: key);
+  const SharedGroupsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sharedVaultsController = Get.find<SharedVaultsController>();
+    final sharedGroupsController = Get.find<SharedGroupsController>();
 
     Widget itemBuilder(context, index) {
-      final vault = sharedVaultsController.data[index].data();
+      final vault = sharedGroupsController.data[index].data();
 
-      void _confirmDelete() async {
+      void _confirmDelete() {
         void _delete() async {
           Get.back();
 
@@ -53,11 +51,11 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
         }
 
         final dialogContent = Text(
-          'Are you sure you want to delete the shared vault: "${vault.name}"?',
+          'Are you sure you want to delete the shared vault "${vault.name}"?',
         );
 
         Get.dialog(AlertDialog(
-          title: Text('delete'.tr),
+          title: const Text('Delete Shared Vault'),
           content: Utils.isDrawerExpandable
               ? dialogContent
               : SizedBox(
@@ -78,18 +76,19 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
       }
 
       void shareDialog() async {
-        final results = HiveSharedVaultsService.to.data
-            .where((e) => e.id == vault.docId)
-            .toList();
+        final result = await HiveItemsService.to.obtainFieldValue(
+          itemId: vault.docId,
+          fieldId: 'key',
+        );
 
-        if (results.isEmpty) {
+        if (result.isLeft) {
           return UIUtils.showSimpleDialog(
             'Cipher Key Not Found',
-            'Please report to the developer.',
+            result.left,
           );
         }
 
-        final cipherKey = base64Encode(results.first.cipherKey);
+        final cipherKey = result.right;
         final obscureText = true.obs;
 
         final passwordDecoration = InputDecoration(
@@ -199,14 +198,14 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
     final listView = Obx(
       () => ListView.separated(
         shrinkWrap: true,
-        itemCount: sharedVaultsController.data.length,
+        itemCount: sharedGroupsController.data.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
         separatorBuilder: (context, index) => const Divider(height: 0),
       ),
     );
 
-    final content = sharedVaultsController.obx(
+    final content = sharedGroupsController.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
@@ -217,7 +216,7 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
         iconData: Iconsax.warning_2,
         message: message!,
         child: TextButton(
-          onPressed: sharedVaultsController.restart,
+          onPressed: sharedGroupsController.restart,
           child: Text('try_again'.tr),
         ),
       ),

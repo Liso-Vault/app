@@ -12,32 +12,35 @@ import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
-import 'vaults.controller.dart';
-import 'vaults_screen.controller.dart';
+import 'groups.controller.dart';
+import 'groups_screen.controller.dart';
 
-class VaultsScreen extends GetView<VaultsScreenController> with ConsoleMixin {
-  const VaultsScreen({Key? key}) : super(key: key);
+class GroupsScreen extends GetView<GroupsScreenController> with ConsoleMixin {
+  const GroupsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final vaultsController = Get.find<VaultsController>();
+    final vaultsController = Get.find<GroupsController>();
 
     Widget itemBuilder(context, index) {
       final vault = vaultsController.filtered[index];
 
       void _confirmDelete() async {
         void _delete() async {
+          // TODO: show the items binded to this group
+          // TODO: if user proceeds, these items will also be deleted
+
           Get.back();
           await HiveGroupsService.to.box.delete(vault.key);
           vaultsController.load();
         }
 
         final dialogContent = Text(
-          'Are you sure you want to delete the custom vault: "${vault.name}"?',
+          'Are you sure you want to delete the custom vault "${vault.name}"?',
         );
 
         Get.dialog(AlertDialog(
-          title: Text('delete'.tr),
+          title: const Text('Delete Custom Vault'),
           content: Utils.isDrawerExpandable
               ? dialogContent
               : SizedBox(

@@ -45,7 +45,11 @@ class ConfirmMnemonicScreenController extends GetxController with ConsoleMixin {
 
     Get.offAllNamed(
       Routes.createPassword,
-      parameters: {'privateKeyHex': privateKeyHex, 'seed': seed},
+      parameters: {
+        'privateKeyHex': privateKeyHex,
+        'seed': seed,
+        'from': 'mnemonic_screen',
+      },
     );
   }
 }

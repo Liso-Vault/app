@@ -16,6 +16,7 @@
 - New! Filters indicator
 - New! Add custom vaults
 - New! Clear Filters button
+- Improved! Newly created vaults will automatically save master seed phrase as a Liso Item
 - Improved! Vaults now show count
 - Improved! Syncing screen
 - Improved! Exported File Name now includes Date and Time

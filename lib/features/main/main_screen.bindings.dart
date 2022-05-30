@@ -11,14 +11,15 @@ import '../about/about_screen.controller.dart';
 import '../attachments/attachments_screen.controller.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../export/export_screen.controller.dart';
+import '../general/passphrase.card.dart';
 import '../item/item_screen.controller.dart';
 import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_content_tile.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../settings/settings_screen.controller.dart';
 import '../upgrade/upgrade_screen.controller.dart';
-import '../vaults/vaults.controller.dart';
-import '../vaults/vaults_screen.controller.dart';
+import '../groups/groups.controller.dart';
+import '../groups/groups_screen.controller.dart';
 import 'main_screen.controller.dart';
 
 class MainScreenBinding extends Bindings {
@@ -27,8 +28,9 @@ class MainScreenBinding extends Bindings {
     Get.put(MainScreenController(), permanent: true);
     Get.put(DrawerMenuController(), permanent: true);
     // WIDGETS
-    Get.lazyPut(() => PasswordFormFieldController(), fenix: true);
-    Get.lazyPut(() => PINFormFieldController(), fenix: true);
+    Get.create(() => SeedFormFieldController());
+    Get.create(() => PasswordFormFieldController());
+    Get.create(() => PINFormFieldController());
     // Re-inject controllers when in Desktop
     // SCREENS
     Get.lazyPut(() => ItemScreenController(), fenix: true);
@@ -39,9 +41,9 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => ResetScreenController(), fenix: true);
     Get.lazyPut(() => UpgradeScreenController(), fenix: true);
     Get.lazyPut(() => OTPScreenController(), fenix: true);
-    Get.lazyPut(() => VaultsScreenController(), fenix: true);
-    Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
-    Get.lazyPut(() => VaultsController(), fenix: true);
+    Get.lazyPut(() => GroupsScreenController(), fenix: true);
+    Get.lazyPut(() => SharedGroupsScreenController(), fenix: true);
+    Get.lazyPut(() => GroupsController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
     Get.lazyPut(() => SyncProviderScreenController(), fenix: true);

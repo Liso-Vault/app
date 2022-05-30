@@ -82,6 +82,39 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     MainScreenController.to.onItemsUpdated();
   }
 
+  void _confirmTrash() async {
+    if (item.reserved) {
+      const dialogContent = Text(
+        'Are you sure you want to trash this reserved item?',
+      );
+
+      return Get.dialog(AlertDialog(
+        title: Text('move_to_trash'.tr),
+        content: Utils.isDrawerExpandable
+            ? dialogContent
+            : const SizedBox(
+                width: 450,
+                child: dialogContent,
+              ),
+        actions: [
+          TextButton(
+            onPressed: Get.back,
+            child: Text('cancel'.tr),
+          ),
+          TextButton(
+            onPressed: () {
+              Get.back();
+              _trash();
+            },
+            child: Text('move_to_trash'.tr),
+          ),
+        ],
+      ));
+    }
+
+    _trash();
+  }
+
   void _delete() async {
     item.deleted = true;
     item.metadata = await item.metadata.getUpdated();
@@ -130,7 +163,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: 'move_to_trash'.tr,
           leading: const Icon(Iconsax.trash),
-          onSelected: _trash,
+          onSelected: _confirmTrash,
         ),
         ContextMenuItem(
           title: 'duplicate'.tr,
@@ -161,7 +194,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     final sharedVaults = item.sharedVaultIds.map(
       (e) {
-        final results = SharedVaultsController.to.data.where((x) => x.id == e);
+        final results = SharedGroupsController.to.data.where((x) => x.id == e);
 
         SharedVault? vault;
 
@@ -212,6 +245,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           const Padding(
             padding: EdgeInsets.only(top: 3),
             child: Icon(Iconsax.attach_circle, color: null, size: 10),
+          ),
+          const SizedBox(width: 5),
+        ],
+        if (item.reserved) ...[
+          const Padding(
+            padding: EdgeInsets.only(top: 3),
+            child: Icon(Iconsax.key, color: Colors.lightBlue, size: 10),
           ),
           const SizedBox(width: 5),
         ],
@@ -325,7 +365,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         performsFirstActionWithFullSwipe: true,
         onTap: (CompletionHandler handler) async {
           await handler(true);
-          item.trashed ? _delete() : _trash();
+          item.trashed ? _delete() : _confirmTrash();
         },
       ),
     ];

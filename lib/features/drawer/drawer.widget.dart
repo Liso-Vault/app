@@ -23,6 +23,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
+          // ListTile(
+          //   title: const Text('Debug'),
+          //   onTap: () {
+          //     GroupsController.to.load();
+          //   },
+          // ),
           Obx(
             () => ExpansionTile(
               maintainState: true,

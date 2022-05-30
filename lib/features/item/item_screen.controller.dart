@@ -96,25 +96,8 @@ class ItemScreenController extends GetxController
   }
 
   List<Widget> get sharedVaultChips {
-    // return SharedVaultsController.to.data.map((e) {
-    //   final vault = e.data();
-    //   final selected = sharedVaultIds.contains(vault.docId);
-
-    //   return CustomChoiceChip(
-    //     label: vault.name,
-    //     selected: selected,
-    //     onSelected: (value) {
-    //       if (selected) {
-    //         sharedVaultIds.remove(vault.docId);
-    //       } else {
-    //         sharedVaultIds.add(vault.docId);
-    //       }
-    //     },
-    //   );
-    // }).toList();
-
     List<Widget> chips = sharedVaultIds.map<Widget>((vaultId) {
-      final results = SharedVaultsController.to.data
+      final results = SharedGroupsController.to.data
           .where((vault) => vault.data().docId == vaultId);
 
       String name = vaultId;
@@ -129,34 +112,7 @@ class ItemScreenController extends GetxController
       );
     }).toList();
 
-    //   List<ContextMenuItem> get menuItemsCategory {
-    //   return LisoItemCategory.values
-    //       .where((e) {
-    //         if (e.name == 'none') return false;
-    //         if (!GetPlatform.isIOS) return true;
-    //         // allow only notes category for iOS
-    //         return e == LisoItemCategory.note || Persistence.to.proTester.val;
-    //       })
-    //       .toList()
-    //       .map(
-    //         (e) => ContextMenuItem(
-    //           title: e.name.tr,
-    //           leading: Utils.categoryIcon(
-    //             LisoItemCategory.values.byName(e.name),
-    //             color: themeColor,
-    //           ),
-    //           onSelected: () {
-    //             Utils.adaptiveRouteOpen(
-    //               name: Routes.item,
-    //               parameters: {'mode': 'add', 'category': e.name},
-    //             );
-    //           },
-    //         ),
-    //       )
-    //       .toList();
-    // }
-
-    final menuItems = SharedVaultsController.to.data
+    final menuItems = SharedGroupsController.to.data
         .where((e) => !sharedVaultIds.contains(e.data().docId))
         .map((e) {
       final vault = e.data();

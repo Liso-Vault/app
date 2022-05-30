@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 
 import '../../utils/globals.dart';
+import 'metadata/metadata.hive.dart';
 
 part 'group.hive.g.dart';
 
@@ -16,12 +17,18 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
   final String name;
   @HiveField(3)
   final String description;
+  @HiveField(4)
+  bool reserved;
+  @HiveField(5)
+  HiveMetadata? metadata;
 
   HiveLisoGroup({
     required this.id,
     this.iconUrl = '',
     required this.name,
     this.description = '',
+    this.reserved = false,
+    required this.metadata,
   });
 
   factory HiveLisoGroup.fromJson(Map<String, dynamic> json) => HiveLisoGroup(
@@ -29,6 +36,10 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
         iconUrl: json["icon_url"],
         name: json["name"],
         description: json["description"],
+        reserved: json["reserved"],
+        metadata: json["metadata"] == null
+            ? null
+            : HiveMetadata.fromJson(json["metadata"]),
       );
 
   Map<String, dynamic> toJson() {
@@ -37,6 +48,8 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
       "icon_url": iconUrl,
       "name": name,
       "description": description,
+      "reserved": reserved,
+      "metadata": metadata?.toJson(),
     };
   }
 

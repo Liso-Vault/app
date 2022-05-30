@@ -43,8 +43,8 @@ import '../s3/provider/sync_provider_screen.dart';
 import '../syncing/syncing.screen.dart';
 import '../syncing/syncing_screen.controller.dart';
 import '../upgrade/upgrade.screen.dart';
-import '../vaults/vaults.screen.dart';
-import '../vaults/vaults_screen.controller.dart';
+import '../groups/groups.screen.dart';
+import '../groups/groups_screen.controller.dart';
 import '../wallet/wallet.screen.dart';
 import '../wallet/wallet_screen.controller.dart';
 import 'routes.dart';
@@ -165,13 +165,13 @@ class AppPages {
     ),
     GetPage(
       name: Routes.vaults,
-      page: () => const VaultsScreen(),
-      binding: VaultsScreenBinding(),
+      page: () => const GroupsScreen(),
+      binding: GroupsScreenBinding(),
     ),
     GetPage(
       name: Routes.sharedVaults,
-      page: () => const SharedVaultsScreen(),
-      binding: SharedVaultsScreenBinding(),
+      page: () => const SharedGroupsScreen(),
+      binding: SharedGroupsScreenBinding(),
     ),
     GetPage(
       name: Routes.debug,

@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
-import 'package:liso/core/hive/hive_shared_vaults.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -39,7 +38,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   FirebaseFirestore get instance => FirebaseFirestore.instance;
 
   DocumentReference<Map<String, dynamic>> get userDoc =>
-      usersCol.doc(AuthService.to.user!.uid);
+      usersCol.doc(AuthService.to.instance.currentUser!.uid);
 
   DocumentReference<Map<String, dynamic>> get usersStatsDoc =>
       usersCol.doc('---stats---');
@@ -62,7 +61,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   // record the some metadata: created time and updated time, items count and files count
   // data will be used for airdrops, and other promotions
-  void record({required int objects, required int totalSize}) async {
+  Future<void> record({required int objects, required int totalSize}) async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
     if (!Persistence.to.analytics.val) return;
 
@@ -73,7 +72,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     ));
 
     final data = {
-      'userId': AuthService.to.user!.uid,
+      'userId': AuthService.to.instance.currentUser!.uid,
       'address': WalletService.to.longAddress,
       'updatedTime': FieldValue.serverTimestamp(),
       'metadata': {
@@ -87,7 +86,6 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'items': HiveItemsService.to.data.length,
           'groups': HiveGroupsService.to.data.length,
           'files': objects,
-          'sharedVaults': HiveSharedVaultsService.to.data.length,
         },
         'settings': {
           'sync': Persistence.to.canSync,
@@ -121,7 +119,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     );
 
     try {
-      batch.commit();
+      await batch.commit();
     } catch (e, s) {
       CrashlyticsService.to.record(FlutterErrorDetails(
         exception: e,
@@ -131,6 +129,6 @@ class FirestoreService extends GetxService with ConsoleMixin {
       return console.error("error batch commit: $e");
     }
 
-    console.info('recorded');
+    console.wtf('recorded');
   }
 }

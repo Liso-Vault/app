@@ -2,23 +2,25 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/group.hive.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
-import 'vaults.controller.dart';
+import 'groups.controller.dart';
 
-class VaultsScreenBinding extends Bindings {
+class GroupsScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => VaultsScreenController(), fenix: true);
+    Get.lazyPut(() => GroupsScreenController(), fenix: true);
   }
 }
 
-class VaultsScreenController extends GetxController with ConsoleMixin {
-  static VaultsScreenController get to => Get.find();
+class GroupsScreenController extends GetxController with ConsoleMixin {
+  static GroupsScreenController get to => Get.find();
 
   // VARIABLES
 
@@ -44,6 +46,7 @@ class VaultsScreenController extends GetxController with ConsoleMixin {
         id: const Uuid().v4(),
         name: name,
         description: description,
+        metadata: await HiveMetadata.get(),
       ));
 
       NotificationsManager.notify(
@@ -51,7 +54,8 @@ class VaultsScreenController extends GetxController with ConsoleMixin {
         body: nameController.text,
       );
 
-      VaultsController.to.load();
+      GroupsController.to.load();
+      MainScreenController.to.onItemsUpdated();
     }
 
     final content = Column(
@@ -101,7 +105,7 @@ class VaultsScreenController extends GetxController with ConsoleMixin {
         TextButton(
           child: Text('create'.tr),
           onPressed: () {
-            final exists = VaultsController.to.data
+            final exists = GroupsController.to.data
                 .where((e) => e.name == nameController.text)
                 .isNotEmpty;
 
