@@ -16,10 +16,11 @@ class PassportFormField extends StatelessWidget {
 
     return TextFormField(
       controller: _fieldController,
+      readOnly: field.readOnly,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (data) => data!.isEmpty || GetUtils.isPassport(data)
           ? null
           : 'Invalid Passport',
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: field.data.label,
         hintText: field.data.hint,

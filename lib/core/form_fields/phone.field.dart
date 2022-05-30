@@ -20,6 +20,7 @@ class PhoneFormField extends StatelessWidget {
     return TextFormField(
       controller: _fieldController,
       keyboardType: TextInputType.phone,
+      readOnly: field.readOnly,
       inputFormatters: [inputFormatterRestrictSpaces],
       validator: (data) => data!.isEmpty || GetUtils.isPhoneNumber(data)
           ? null

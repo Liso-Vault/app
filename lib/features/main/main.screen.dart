@@ -12,6 +12,7 @@ import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
@@ -142,23 +143,30 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ],
     );
 
+    final content_ = Column(
+      children: [
+        const ConnectivityBar(),
+        Expanded(child: childContent),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(7),
+            child: filters,
+          ),
+        ),
+      ],
+    );
+
     final content = Obx(
-      () => Opacity(
-        opacity: S3Service.to.syncing.value ? 0.5 : 1,
-        child: AbsorbPointer(
-          absorbing: S3Service.to.syncing.value,
-          child: Column(
-            children: [
-              const ConnectivityBar(),
-              Expanded(child: childContent),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(7),
-                  child: filters,
-                ),
-              ),
-            ],
+      () => Visibility(
+        visible: S3Service.to.syncing.value,
+        replacement: content_,
+        child: Shimmer.fromColors(
+          baseColor: Colors.grey,
+          highlightColor: kAppColor,
+          child: AbsorbPointer(
+            absorbing: true,
+            child: content_,
           ),
         ),
       ),

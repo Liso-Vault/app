@@ -23,6 +23,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController> {
             controller: _fieldController,
             keyboardType: TextInputType.visiblePassword,
             obscureText: controller.obscureText.value,
+            readOnly: field.readOnly,
             decoration: InputDecoration(
               labelText: field.data.label,
               hintText: field.data.hint,

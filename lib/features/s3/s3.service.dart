@@ -212,7 +212,13 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     final decryptedJson = String.fromCharCodes(decryptedBytes);
-    final jsonMap = jsonDecode(decryptedJson); // TODO: isolate
+
+    // fix decoding with double quotes
+    final jsonMap = jsonDecode(decryptedJson.replaceAll(
+      r'\"',
+      r'\"',
+    )); // TODO: isolate
+
     final vault = LisoVault.fromJson(jsonMap);
     _syncProgress(0.4, null);
     await _mergeGroups(vault.groups);

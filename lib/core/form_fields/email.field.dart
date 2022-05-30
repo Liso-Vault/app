@@ -24,6 +24,7 @@ class EmailFormField extends StatelessWidget {
           data!.isEmpty || GetUtils.isEmail(data) ? null : 'Invalid Email',
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [inputFormatterRestrictSpaces],
+      readOnly: field.readOnly,
       decoration: InputDecoration(
         labelText: field.data.label,
         hintText: field.data.hint,

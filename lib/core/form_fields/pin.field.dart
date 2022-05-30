@@ -22,6 +22,7 @@ class PINFormField extends GetWidget<PINFormFieldController> {
         controller: _fieldController,
         keyboardType: TextInputType.number,
         obscureText: controller.obscureText(),
+        readOnly: field.readOnly,
         inputFormatters: [
           inputFormatterRestrictSpaces,
           inputFormatterNumericOnly,

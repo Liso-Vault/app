@@ -20,6 +20,7 @@ class NumberFormField extends StatelessWidget {
     return TextFormField(
       controller: _fieldController,
       keyboardType: TextInputType.number,
+      readOnly: field.readOnly,
       inputFormatters: [
         inputFormatterRestrictSpaces,
         FilteringTextInputFormatter.allow(RegExp("[0-9]")),

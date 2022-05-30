@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/foundation.dart';
@@ -23,12 +25,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          // ListTile(
-          //   title: const Text('Debug'),
-          //   onTap: () {
-          //     GroupsController.to.load();
-          //   },
-          // ),
+          ListTile(
+            title: const Text('Debug'),
+            onTap: () {
+              //
+            },
+          ),
           Obx(
             () => ExpansionTile(
               maintainState: true,

@@ -85,6 +85,7 @@ class SharedGroupsScreenController extends GetxController with ConsoleMixin {
       fields = fields.map((e) {
         if (e.identifier == 'key') {
           e.data.value = cipherKeyController.text;
+          e.readOnly = true;
           return e;
         } else if (e.identifier == 'note') {
           e.data.value =

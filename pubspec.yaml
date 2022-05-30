@@ -44,7 +44,6 @@ dependencies:
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
   file_picker: ^4.6.0 # exporting + importing
-  archive: ^3.3.0 # archiving hive boxes
   http: ^0.13.4 # web3dart client
   minio: ^3.5.0 # S3 API
   coingecko_api: ^1.0.2+2 # Coingecko API

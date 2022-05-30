@@ -103,15 +103,19 @@ class CreatePasswordScreenController extends GetxController
       fields = fields.map((e) {
         if (e.identifier == 'seed') {
           e.data.value = Get.parameters['seed']!;
+          e.readOnly = true;
           return e;
         } else if (e.identifier == 'password') {
           e.data.value = passwordController.text;
+          e.readOnly = true;
           return e;
         } else if (e.identifier == 'private_key') {
           e.data.value = privateKeyHex;
+          e.readOnly = true;
           return e;
         } else if (e.identifier == 'address') {
           e.data.value = WalletService.to.longAddress;
+          e.readOnly = true;
           return e;
         } else if (e.identifier == 'note') {
           e.data.value =

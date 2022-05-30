@@ -17,10 +17,11 @@ class URLFormField extends StatelessWidget {
 
     return TextFormField(
       controller: _fieldController,
+      readOnly: field.readOnly,
       keyboardType: TextInputType.url,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (data) =>
           data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
-      autovalidateMode: AutovalidateMode.onUserInteraction,
       decoration: InputDecoration(
         labelText: field.data.label,
         hintText: field.data.hint,

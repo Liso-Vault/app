@@ -17,6 +17,8 @@ class HiveLisoField extends HiveObject with EquatableMixin {
   @HiveField(3)
   final bool required;
   @HiveField(4)
+  bool readOnly; // editable or not
+  @HiveField(5)
   HiveLisoFieldData data; // map that holds the value and/or parameters
 
   HiveLisoField({
@@ -24,6 +26,7 @@ class HiveLisoField extends HiveObject with EquatableMixin {
     required this.type,
     this.reserved = true,
     this.required = false,
+    this.readOnly = false,
     required this.data,
   });
 
@@ -32,6 +35,7 @@ class HiveLisoField extends HiveObject with EquatableMixin {
         type: json["type"],
         reserved: json["reserved"],
         required: json["required"],
+        readOnly: json["read_only"] ?? false,
         data: HiveLisoFieldData.fromJson(json["data"]),
       );
 
@@ -41,6 +45,7 @@ class HiveLisoField extends HiveObject with EquatableMixin {
       "type": type,
       "reserved": reserved,
       "required": required,
+      "read_only": readOnly,
       "data": data.toJson(),
     };
   }
@@ -74,9 +79,9 @@ class HiveLisoFieldData extends HiveObject with EquatableMixin {
 
   factory HiveLisoFieldData.fromJson(Map<String, dynamic> json) =>
       HiveLisoFieldData(
-        label: json["label"],
-        hint: json["hint"],
-        value: json["value"],
+        label: json["label"] ?? '',
+        hint: json["hint"] ?? '',
+        value: json["value"] ?? '',
         choices: json["choices"] == null
             ? null
             : List<HiveLisoFieldChoices>.from(
@@ -86,9 +91,9 @@ class HiveLisoFieldData extends HiveObject with EquatableMixin {
 
   Map<String, dynamic> toJson() {
     return {
-      "label": label ?? '',
-      "hint": hint ?? '',
-      "value": value ?? '',
+      "label": label,
+      "hint": hint,
+      "value": value,
       "choices": choices == null
           ? null
           : List<dynamic>.from(choices!.map((x) => x.toJson())),

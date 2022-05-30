@@ -65,11 +65,13 @@ class FirestoreService extends GetxService with ConsoleMixin {
     if (!isFirebaseSupported) return console.warning('Not Supported');
     if (!Persistence.to.analytics.val) return;
 
-    // TODO: calculate vault size for web
+    // TODO: calculate whole size
     final vaultFile = File(join(
       LisoPaths.hive!.path,
       '$kHiveBoxItems.hive',
     ));
+
+    console.wtf('Doc ID: ${userDoc.id}');
 
     final data = {
       'userId': AuthService.to.instance.currentUser!.uid,
