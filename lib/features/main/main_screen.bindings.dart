@@ -13,6 +13,7 @@ import '../drawer/drawer_widget.controller.dart';
 import '../export/export_screen.controller.dart';
 import '../general/passphrase.card.dart';
 import '../item/item_screen.controller.dart';
+import '../joined_vaults/joined_vaults_screen.controller.dart';
 import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_content_tile.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
@@ -43,6 +44,7 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => OTPScreenController(), fenix: true);
     Get.lazyPut(() => GroupsScreenController(), fenix: true);
     Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
+    Get.lazyPut(() => JoinedVaultsScreenController(), fenix: true);
     Get.lazyPut(() => GroupsController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);

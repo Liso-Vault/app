@@ -27,6 +27,7 @@ import 'core/services/biometric.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/connectivity/connectivity.service.dart';
+import 'features/joined_vaults/joined_vault.controller.dart';
 import 'features/s3/s3.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
 
@@ -61,6 +62,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => HiveGroupsService());
 
     Get.put(SharedVaultsController());
+    Get.put(JoinedVaultsController());
 
     CrashlyticsService.to.init();
     await LisoPaths.init();

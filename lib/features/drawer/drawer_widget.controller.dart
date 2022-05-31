@@ -14,6 +14,7 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/remote_image.widget.dart';
+import '../joined_vaults/joined_vault.controller.dart';
 import '../main/main_screen.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
@@ -172,8 +173,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
             ];
 
   List<Widget> get joinedVaultsTiles =>
-      SharedVaultsController.to.joinedData.isNotEmpty
-          ? SharedVaultsController.to.joinedData.map(
+      JoinedVaultsController.to.data.isNotEmpty
+          ? JoinedVaultsController.to.data.map(
               (e) {
                 final vault = e.data();
                 // TODO: extract vault and count items
@@ -196,7 +197,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
                           width: 35,
                           alignment: Alignment.centerLeft,
                         ),
-                  selected: vault.docId == filterSharedVaultId.value,
                   onTap: () {
                     // TODO: open in a new screen
                     UIUtils.showSimpleDialog(
@@ -211,7 +211,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
               ListTile(
                 title: const Text('Join'),
                 leading: const Icon(LineIcons.plus),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
               ),
             ];
 

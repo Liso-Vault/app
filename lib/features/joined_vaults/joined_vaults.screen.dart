@@ -3,16 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/s3/model/s3_content.model.dart';
-import 'package:liso/features/s3/s3.service.dart';
-import 'package:path/path.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.dart';
-import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
@@ -20,42 +15,44 @@ import '../general/centered_placeholder.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
-import 'shared_vault.controller.dart';
-import 'shared_vaults_screen.controller.dart';
+import 'joined_vault.controller.dart';
+import 'joined_vaults_screen.controller.dart';
 
-class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
+class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
     with ConsoleMixin {
-  const SharedVaultsScreen({Key? key}) : super(key: key);
+  const JoinedVaultsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sharedController = Get.find<SharedVaultsController>();
+    final joinedController = Get.find<JoinedVaultsController>();
 
     Widget itemBuilder(context, index) {
-      final vault = sharedController.data[index].data();
+      final vault = joinedController.data[index].data();
 
-      void _confirmDelete() {
-        void _delete() async {
+      void _confirmLeave() {
+        void _leave() async {
           Get.back();
 
-          await FirestoreService.to.sharedVaults.doc(vault.docId).delete();
-          console.info('deleted in firestore');
+          // TODO: delete self as member
 
-          await S3Service.to.remove(S3Content(
-              path: join(
-            S3Service.to.sharedPath,
-            '${vault.docId}.$kVaultExtension',
-          )));
+          // await FirestoreService.to.sharedVaults.doc(vault.docId).delete();
+          // console.info('deleted in firestore');
 
-          console.info('deleted in s3');
+          // TODO: delete local vault
+
+          // await S3Service.to.remove(S3Content(
+          //     path: join(
+          //   S3Service.to.sharedPath,
+          //   '${vault.docId}.$kVaultExtension',
+          // )));
         }
 
         final dialogContent = Text(
-          'Are you sure you want to delete the shared vault "${vault.name}"?',
+          'Are you sure you want to leave the shared vault "${vault.name}"?',
         );
 
         Get.dialog(AlertDialog(
-          title: const Text('Delete Shared Vault'),
+          title: const Text('Leave Shared Vault'),
           content: Utils.isDrawerExpandable
               ? dialogContent
               : SizedBox(
@@ -68,8 +65,8 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
               child: Text('cancel'.tr),
             ),
             TextButton(
-              onPressed: _delete,
-              child: Text('confirm_delete'.tr),
+              onPressed: _leave,
+              child: Text('leave'.tr),
             ),
           ],
         ));
@@ -172,9 +169,9 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
           ),
         ],
         ContextMenuItem(
-          title: 'delete'.tr,
+          title: 'leave'.tr,
           leading: const Icon(Iconsax.trash),
-          onSelected: _confirmDelete,
+          onSelected: _confirmLeave,
         ),
       ];
 
@@ -198,38 +195,38 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
     final listView = Obx(
       () => ListView.separated(
         shrinkWrap: true,
-        itemCount: sharedController.data.length,
+        itemCount: joinedController.data.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
         separatorBuilder: (context, index) => const Divider(height: 0),
       ),
     );
 
-    final content = sharedController.obx(
+    final content = joinedController.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
         iconData: Iconsax.briefcase,
-        message: 'no_shared_vaults'.tr,
+        message: 'no_joined_vaults'.tr,
       ),
       onError: (message) => CenteredPlaceholder(
         iconData: Iconsax.warning_2,
         message: message!,
         child: TextButton(
-          onPressed: sharedController.restart,
+          onPressed: joinedController.restart,
           child: Text('try_again'.tr),
         ),
       ),
     );
 
     final appBar = AppBar(
-      title: Text('shared_vaults'.tr),
+      title: Text('joined_vaults'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );
 
     final floatingActionButton = FloatingActionButton(
-      onPressed: controller.create,
+      onPressed: controller.joinDialog,
       child: const Icon(LineIcons.plus),
     );
 

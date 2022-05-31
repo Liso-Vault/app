@@ -130,7 +130,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
             trailing: const Icon(Iconsax.arrow_right_3),
             title: const Text('Joined Vaults'),
             subtitle: const Text('Manage your joined vaults'),
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
           ),
         ],
         const Divider(),

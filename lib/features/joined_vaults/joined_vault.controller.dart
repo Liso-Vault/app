@@ -7,11 +7,12 @@ import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../core/firebase/firestore.service.dart';
-import 'model/shared_vault.model.dart';
+import '../shared_vaults/model/shared_vault.model.dart';
+import 'model/member.model.dart';
 
-class SharedVaultsController extends GetxController
+class JoinedVaultsController extends GetxController
     with ConsoleMixin, StateMixin {
-  static SharedVaultsController get to => Get.find();
+  static JoinedVaultsController get to => Get.find();
 
   // VARIABLES
   late StreamSubscription _stream;
@@ -42,8 +43,8 @@ class SharedVaultsController extends GetxController
   void start() async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
-    _stream = FirestoreService.to.sharedVaults
-        .where('userId', isEqualTo: AuthService.to.instance.currentUser!.uid)
+    _stream = FirestoreService.to.vaultMembers
+        .where('userId', isEqualTo: AuthService.to.userId)
         .orderBy('createdTime', descending: true)
         // .limit(_limit)
         .snapshots()
@@ -55,15 +56,21 @@ class SharedVaultsController extends GetxController
     console.info('started');
   }
 
-  void _onData(QuerySnapshot<SharedVault>? snapshot) {
+  void _onData(QuerySnapshot<VaultMember>? snapshot) async {
     if (snapshot == null || snapshot.docs.isEmpty) {
       change(null, status: RxStatus.empty());
       return data.clear();
     }
 
-    data.value = snapshot.docs;
+    final vaultIds = snapshot.docs.map((e) => e.reference.parent.parent!.id);
+
+    final snapshots = await FirestoreService.to.sharedVaults
+        .where(FieldPath.documentId, whereIn: vaultIds.toList())
+        .get();
+
+    data.addAll(snapshots.docs);
     change(null, status: RxStatus.success());
-    console.wtf('shared vaults: ${data.length}');
+    console.wtf('joined vaults: ${data.length}');
   }
 
   void _onError(error) {

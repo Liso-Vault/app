@@ -146,4 +146,7 @@ final en = {
   "no_shared_vaults": "No shared vaults",
   "new_shared_vault": "New Shared Vault",
   "new_custom_vault": "New Custom Vault",
+  "leave": "Leave",
+  "join": "Join",
+  "join_shared_vault": "Join Shared Vault",
 };

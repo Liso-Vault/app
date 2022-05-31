@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/s3/s3.service.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import 'firestore.service.dart';
@@ -34,6 +35,7 @@ class AuthService extends GetxService with ConsoleMixin {
       } else {
         console.info('signed in: ${user_.uid}');
         SharedVaultsController.to.start();
+        JoinedVaultsController.to.start();
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
         _record();

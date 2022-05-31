@@ -35,6 +35,8 @@ import '../cipher/cipher.screen.dart';
 import '../configuration/configuration.screen.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
+import '../joined_vaults/joined_vaults.screen.dart';
+import '../joined_vaults/joined_vaults_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
 import '../otp/otp.screen.dart';
 import '../otp/otp_screen.controller.dart';
@@ -174,6 +176,11 @@ class AppPages {
       name: Routes.sharedVaults,
       page: () => const SharedVaultsScreen(),
       binding: SharedVaultsScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.joinedVaults,
+      page: () => const JoinedVaultsScreen(),
+      binding: JoinedVaultsScreenBinding(),
     ),
     GetPage(
       name: Routes.disabledBeta,
