@@ -347,7 +347,7 @@ class S3Service extends GetxService with ConsoleMixin {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
 
-    if (SharedGroupsController.to.data.isEmpty) {
+    if (SharedVaultsController.to.data.isEmpty) {
       return const Left('nothing to sync');
     }
 
@@ -356,12 +356,12 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     console.info(
-      'syncing ${SharedGroupsController.to.data.length} shared vaults...',
+      'syncing ${SharedVaultsController.to.data.length} shared vaults...',
     );
 
     final metadataString = await updatedLocalMetadata();
 
-    for (final doc in SharedGroupsController.to.data) {
+    for (final doc in SharedVaultsController.to.data) {
       final sharedVault = doc.data();
 
       final sharedItems = HiveItemsService.to.data

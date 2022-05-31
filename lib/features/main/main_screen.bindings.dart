@@ -42,7 +42,7 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => UpgradeScreenController(), fenix: true);
     Get.lazyPut(() => OTPScreenController(), fenix: true);
     Get.lazyPut(() => GroupsScreenController(), fenix: true);
-    Get.lazyPut(() => SharedGroupsScreenController(), fenix: true);
+    Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
     Get.lazyPut(() => GroupsController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);

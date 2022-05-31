@@ -136,6 +136,7 @@ final en = {
   "others_desc": "Others Description",
   "secrets": "Secrets",
   "secrets_desc": "Secrets Description",
+  "joined_vaults": "Joined Vaults",
   "shared_vaults": "Shared Vaults",
   "share": "Share",
   "vaults": "Vaults",

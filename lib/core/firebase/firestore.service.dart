@@ -10,9 +10,11 @@ import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/shared_vaults/model/member.model.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:path/path.dart';
 
+import '../../features/shared_vaults/shared_vault.controller.dart';
 import '../../features/wallet/wallet.service.dart';
 import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
@@ -26,11 +28,17 @@ class FirestoreService extends GetxService with ConsoleMixin {
     'shared_vaults',
   );
 
+  final vaultMembersCol = FirebaseFirestore.instance.collectionGroup(
+    'members',
+  );
+
   final usersCol = FirebaseFirestore.instance.collection(
     'users',
   );
 
-  late CollectionReference<SharedVault> vaults;
+  late CollectionReference<SharedVault> sharedVaults;
+
+  late Query<VaultMember> vaultMembers;
 
   // PROPERTIES
 
@@ -50,8 +58,13 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
   @override
   void onInit() {
-    vaults = vaultsCol.withConverter<SharedVault>(
+    sharedVaults = vaultsCol.withConverter<SharedVault>(
       fromFirestore: (snapshot, _) => SharedVault.fromSnapshot(snapshot),
+      toFirestore: (object, _) => object.toJson(),
+    );
+
+    vaultMembers = vaultMembersCol.withConverter<VaultMember>(
+      fromFirestore: (snapshot, _) => VaultMember.fromSnapshot(snapshot),
       toFirestore: (object, _) => object.toJson(),
     );
 
@@ -88,6 +101,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'items': HiveItemsService.to.data.length,
           'groups': HiveGroupsService.to.data.length,
           'files': objects,
+          'shared_vaults': SharedVaultsController.to.data.length,
+          'joined_shared_vaults': 0,
         },
         'settings': {
           'sync': Persistence.to.canSync,

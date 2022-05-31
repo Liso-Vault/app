@@ -108,6 +108,12 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
                     onPressed: () => UIUtils.showSimpleDialog(
                         'Buy Crypto', 'Coming soon...'),
                   ),
+                  CardButton(
+                    text: 'Signer',
+                    iconData: Iconsax.pen_add,
+                    onPressed: () => UIUtils.showSimpleDialog(
+                        'Sign Messages', 'Coming soon...'),
+                  ),
                 ],
               ),
             ),

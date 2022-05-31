@@ -5,19 +5,21 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/shared_vaults/model/member.model.dart';
 
 import '../../core/firebase/firestore.service.dart';
 import 'model/shared_vault.model.dart';
 
-class SharedGroupsController extends GetxController
+class SharedVaultsController extends GetxController
     with ConsoleMixin, StateMixin {
-  static SharedGroupsController get to => Get.find();
+  static SharedVaultsController get to => Get.find();
 
   // VARIABLES
-  late StreamSubscription _stream;
+  late StreamSubscription _streamShared, _streamJoined;
 
   // PROPERTIES
   final data = <QueryDocumentSnapshot<SharedVault>>[].obs;
+  final joinedData = <QueryDocumentSnapshot<SharedVault>>[].obs;
   final busy = false.obs;
 
   // PROPERTIES
@@ -34,7 +36,8 @@ class SharedGroupsController extends GetxController
 
   // FUNCTIONS
   void restart() {
-    _stream.cancel();
+    _streamShared.cancel();
+    _streamJoined.cancel();
     start();
     console.info('restarted');
   }
@@ -42,29 +45,54 @@ class SharedGroupsController extends GetxController
   void start() async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
-    _stream = FirestoreService.to.vaults
+    _streamShared = FirestoreService.to.sharedVaults
         .where('userId', isEqualTo: AuthService.to.instance.currentUser!.uid)
         .orderBy('createdTime', descending: true)
         // .limit(_limit)
         .snapshots()
         .listen(
-          _onData,
+          _onDataShared,
+          onError: _onError,
+        );
+
+    _streamJoined = FirestoreService.to.vaultMembers
+        .where('userId', isEqualTo: AuthService.to.userId)
+        .orderBy('createdTime', descending: true)
+        // .limit(_limit)
+        .snapshots()
+        .listen(
+          _onDataJoined,
           onError: _onError,
         );
 
     console.info('started');
   }
 
-  void _onData(QuerySnapshot<SharedVault>? snapshot) {
+  void _onDataShared(QuerySnapshot<SharedVault>? snapshot) {
     if (snapshot == null || snapshot.docs.isEmpty) {
       change(null, status: RxStatus.empty());
-      data.clear();
-    } else {
-      data.value = snapshot.docs;
-      change(null, status: RxStatus.success());
+      return data.clear();
     }
 
+    data.value = snapshot.docs;
+    change(null, status: RxStatus.success());
     console.wtf('shared vaults: ${data.length}');
+  }
+
+  void _onDataJoined(QuerySnapshot<VaultMember>? snapshot) async {
+    if (snapshot == null || snapshot.docs.isEmpty) {
+      joinedData.clear();
+      return console.warning('not a member of any shared vaults');
+    }
+
+    final vaultIds = snapshot.docs.map((e) => e.reference.parent.parent!.id);
+
+    final snapshots = await FirestoreService.to.sharedVaults
+        .where(FieldPath.documentId, whereIn: vaultIds.toList())
+        .get();
+
+    joinedData.addAll(snapshots.docs);
+    console.wtf('joined vaults: ${joinedData.length}');
   }
 
   void _onError(error) {
@@ -73,11 +101,8 @@ class SharedGroupsController extends GetxController
   }
 
   Future<bool> exists(String name) async {
-    final doc = await FirestoreService.to.vaults
-        .where(
-          'name',
-          isEqualTo: name,
-        )
+    final doc = await FirestoreService.to.sharedVaults
+        .where('name', isEqualTo: name)
         .get();
 
     return doc.docs.isNotEmpty;

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -57,6 +56,23 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           controller.sharedVaultsExpanded = expanded,
                       initiallyExpanded: controller.sharedVaultsExpanded,
                       children: [...controller.sharedVaultsTiles],
+                    ),
+                  )
+                : const SizedBox.shrink(),
+          ),
+          PersistenceBuilder(
+            builder: (p, context) => Persistence.to.canShare
+                ? Obx(
+                    () => ExpansionTile(
+                      maintainState: true,
+                      title: Text(
+                        'joined_vaults'.tr.toUpperCase(),
+                        style: const TextStyle(fontSize: 13),
+                      ),
+                      onExpansionChanged: (expanded) =>
+                          controller.joinedVaultsExpanded = expanded,
+                      initiallyExpanded: controller.joinedVaultsExpanded,
+                      children: [...controller.joinedVaultsTiles],
                     ),
                   )
                 : const SizedBox.shrink(),

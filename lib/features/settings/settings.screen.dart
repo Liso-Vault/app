@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -121,6 +122,14 @@ class SettingsScreen extends GetView<SettingsScreenController>
             trailing: const Icon(Iconsax.arrow_right_3),
             title: const Text('Shared Vaults'),
             subtitle: const Text('Manage your shared vaults'),
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+          ),
+          const Divider(),
+          ListTile(
+            leading: Icon(LineIcons.plus, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3),
+            title: const Text('Joined Vaults'),
+            subtitle: const Text('Manage your joined vaults'),
             onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
           ),
         ],

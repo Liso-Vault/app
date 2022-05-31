@@ -97,7 +97,7 @@ class ItemScreenController extends GetxController
 
   List<Widget> get sharedVaultChips {
     List<Widget> chips = sharedVaultIds.map<Widget>((vaultId) {
-      final results = SharedGroupsController.to.data
+      final results = SharedVaultsController.to.data
           .where((vault) => vault.data().docId == vaultId);
 
       String name = vaultId;
@@ -112,7 +112,7 @@ class ItemScreenController extends GetxController
       );
     }).toList();
 
-    final menuItems = SharedGroupsController.to.data
+    final menuItems = SharedVaultsController.to.data
         .where((e) => !sharedVaultIds.contains(e.data().docId))
         .map((e) {
       final vault = e.data();

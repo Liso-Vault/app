@@ -60,7 +60,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => HiveItemsService());
     Get.lazyPut(() => HiveGroupsService());
 
-    Get.put(SharedGroupsController());
+    Get.put(SharedVaultsController());
 
     CrashlyticsService.to.init();
     await LisoPaths.init();

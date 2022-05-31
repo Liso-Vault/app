@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 
 import '../../../core/utils/globals.dart';
@@ -33,6 +34,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   bool networksExpanded = false,
       groupsExpanded = false,
       sharedVaultsExpanded = false,
+      joinedVaultsExpanded = false,
       tagsExpanded = false,
       categoriesExpanded = false,
       toolsExpanded = false;
@@ -130,8 +132,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       }).toList();
 
   List<Widget> get sharedVaultsTiles =>
-      SharedGroupsController.to.data.isNotEmpty
-          ? SharedGroupsController.to.data.map(
+      SharedVaultsController.to.data.isNotEmpty
+          ? SharedVaultsController.to.data.map(
               (e) {
                 final vault = e.data();
 
@@ -169,8 +171,52 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
               ),
             ];
 
+  List<Widget> get joinedVaultsTiles =>
+      SharedVaultsController.to.joinedData.isNotEmpty
+          ? SharedVaultsController.to.joinedData.map(
+              (e) {
+                final vault = e.data();
+                // TODO: extract vault and count items
+                const count = 0;
+
+                return ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(vault.name),
+                      if (count > 0) ...[
+                        Chip(label: Text(count.toString())),
+                      ],
+                    ],
+                  ),
+                  leading: vault.iconUrl.isEmpty
+                      ? const Icon(Iconsax.share)
+                      : RemoteImage(
+                          url: vault.iconUrl,
+                          width: 35,
+                          alignment: Alignment.centerLeft,
+                        ),
+                  selected: vault.docId == filterSharedVaultId.value,
+                  onTap: () {
+                    // TODO: open in a new screen
+                    UIUtils.showSimpleDialog(
+                      'Coming soon',
+                      'View items from shared vaults to you',
+                    );
+                  },
+                );
+              },
+            ).toList()
+          : [
+              ListTile(
+                title: const Text('Join'),
+                leading: const Icon(LineIcons.plus),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+              ),
+            ];
+
   String get filterSharedVaultLabel {
-    final vaults = SharedGroupsController.to.data
+    final vaults = SharedVaultsController.to.data
         .where((e) => e.id == filterSharedVaultId.value);
     if (vaults.isEmpty) return '';
     return vaults.first.data().name;

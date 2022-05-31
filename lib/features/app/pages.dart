@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:liso/features/about/about.screen.dart';
 import 'package:liso/features/about/about_screen.controller.dart';
+import 'package:liso/features/beta/disabled_beta.screen.dart';
+import 'package:liso/features/beta/disabled_beta_screen.controller.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/create_password/create_password_screen.controller.dart';
 import 'package:liso/features/debug/debug.screen.dart';
@@ -170,8 +172,13 @@ class AppPages {
     ),
     GetPage(
       name: Routes.sharedVaults,
-      page: () => const SharedGroupsScreen(),
-      binding: SharedGroupsScreenBinding(),
+      page: () => const SharedVaultsScreen(),
+      binding: SharedVaultsScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.disabledBeta,
+      page: () => const DisabledBetaScreen(),
+      binding: DisabledBetaScreenBinding(),
     ),
     GetPage(
       name: Routes.debug,

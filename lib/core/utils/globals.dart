@@ -33,19 +33,25 @@ final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
-
-const kReservedVaultIds = 'personal,work,family,others,secrets';
-
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
+const kReservedVaultIds = 'personal,work,family,others,secrets';
 const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';
 const kVaultFormatVersion = 1;
+const kReleaseMode = ReleaseMode.beta;
+
+bool get isBeta => kReleaseMode == ReleaseMode.beta;
 
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 // ENUMS
+enum ReleaseMode {
+  beta,
+  production,
+}
+
 enum LisoItemSortOrder {
   titleAscending,
   titleDescending,

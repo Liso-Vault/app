@@ -17,7 +17,11 @@ class AuthService extends GetxService with ConsoleMixin {
   // PROPERTIES
 
   // GETTERS
-  bool get isSignedIn => instance.currentUser != null;
+  User? get user => instance.currentUser;
+
+  bool get isSignedIn => user != null;
+
+  String get userId => user!.uid;
 
   // INIT
   @override
@@ -29,7 +33,7 @@ class AuthService extends GetxService with ConsoleMixin {
         console.warning('signed out');
       } else {
         console.info('signed in: ${user_.uid}');
-        SharedGroupsController.to.start();
+        SharedVaultsController.to.start();
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
         _record();

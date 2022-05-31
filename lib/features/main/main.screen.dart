@@ -248,7 +248,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           placeholder: Image.asset(Images.logo, height: 20),
         ),
         const SizedBox(width: 10),
-        Text(ConfigService.to.appName, style: const TextStyle(fontSize: 20)),
+        Text(
+          ConfigService.to.appName,
+          style: const TextStyle(fontSize: 20),
+        ),
+        if (isBeta) ...[
+          const Text(
+            ' Beta',
+            style: TextStyle(fontSize: 12, color: Colors.cyan),
+          ),
+        ]
       ],
     );
 

@@ -23,15 +23,15 @@ import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 
-class SharedGroupsScreenBinding extends Bindings {
+class SharedVaultsScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SharedGroupsScreenController(), fenix: true);
+    Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
   }
 }
 
-class SharedGroupsScreenController extends GetxController with ConsoleMixin {
-  static SharedGroupsScreenController get to => Get.find();
+class SharedVaultsScreenController extends GetxController with ConsoleMixin {
+  static SharedVaultsScreenController get to => Get.find();
 
   // VARIABLES
 
@@ -56,7 +56,7 @@ class SharedGroupsScreenController extends GetxController with ConsoleMixin {
 
       // check if name already exists
       final exists =
-          await SharedGroupsController.to.exists(nameController.text);
+          await SharedVaultsController.to.exists(nameController.text);
 
       if (exists) {
         return UIUtils.showSimpleDialog(
@@ -75,7 +75,7 @@ class SharedGroupsScreenController extends GetxController with ConsoleMixin {
         description: descriptionController.text,
       );
 
-      final doc = await FirestoreService.to.vaults.add(vault);
+      final doc = await FirestoreService.to.sharedVaults.add(vault);
       console.wtf('created shared vault: ${doc.id}');
 
       // inject cipher key to fields

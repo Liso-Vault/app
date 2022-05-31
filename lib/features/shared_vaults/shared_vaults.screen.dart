@@ -23,13 +23,13 @@ import '../menu/menu.item.dart';
 import 'shared_vault.controller.dart';
 import 'shared_vaults_screen.controller.dart';
 
-class SharedGroupsScreen extends GetView<SharedGroupsScreenController>
+class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
     with ConsoleMixin {
-  const SharedGroupsScreen({Key? key}) : super(key: key);
+  const SharedVaultsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final sharedGroupsController = Get.find<SharedGroupsController>();
+    final sharedGroupsController = Get.find<SharedVaultsController>();
 
     Widget itemBuilder(context, index) {
       final vault = sharedGroupsController.data[index].data();
@@ -38,7 +38,7 @@ class SharedGroupsScreen extends GetView<SharedGroupsScreenController>
         void _delete() async {
           Get.back();
 
-          await FirestoreService.to.vaults.doc(vault.docId).delete();
+          await FirestoreService.to.sharedVaults.doc(vault.docId).delete();
           console.info('deleted in firestore');
 
           await S3Service.to.remove(S3Content(

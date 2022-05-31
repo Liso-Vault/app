@@ -194,7 +194,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     final sharedVaults = item.sharedVaultIds.map(
       (e) {
-        final results = SharedGroupsController.to.data.where((x) => x.id == e);
+        final results = SharedVaultsController.to.data.where((x) => x.id == e);
 
         SharedVault? vault;
 

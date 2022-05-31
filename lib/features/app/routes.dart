@@ -15,10 +15,11 @@ abstract class Routes {
   static const reset = '/reset';
   static const unlock = '/unlock';
   static const upgrade = '/upgrade';
-  static const debug = '/debug';
   static const otp = '/otp';
   static const vaults = '/vaults';
   static const sharedVaults = '/shared_vaults';
+  static const disabledBeta = '/disabled_beta';
+  static const debug = '/debug';
 
   // SYNC
   static const configuration = '/configuration';

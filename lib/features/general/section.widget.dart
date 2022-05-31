@@ -6,6 +6,7 @@ class Section extends StatelessWidget {
   final double fontSize;
   final Color? color;
   final CrossAxisAlignment alignment;
+  final EdgeInsets padding;
 
   const Section({
     Key? key,
@@ -13,6 +14,7 @@ class Section extends StatelessWidget {
     this.fontSize = 10,
     this.color,
     this.alignment = CrossAxisAlignment.start,
+    this.padding = const EdgeInsets.symmetric(vertical: 10),
   }) : super(key: key);
 
   @override
@@ -20,7 +22,7 @@ class Section extends StatelessWidget {
     final color = this.color ?? themeColor;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: padding,
       child: Opacity(
         opacity: 0.6,
         child: Column(
