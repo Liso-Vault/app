@@ -178,14 +178,23 @@ class Utils {
     required String name,
     String method = 'toNamed',
     Map<String, String> parameters = const {},
+    dynamic arguments,
   }) {
     // Regular navigation for mobile
     if (isDrawerExpandable) {
       switch (method) {
         case 'toNamed':
-          return Get.toNamed(name, parameters: parameters);
+          return Get.toNamed(
+            name,
+            parameters: parameters,
+            arguments: arguments,
+          );
         case 'offAndToNamed':
-          return Get.offAndToNamed(name, parameters: parameters);
+          return Get.offAndToNamed(
+            name,
+            parameters: parameters,
+            arguments: arguments,
+          );
         default:
       }
     }

@@ -9,12 +9,14 @@ import 'package:liso/core/utils/ui_utils.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
+import 'explorer/vault_explorer_screen.controller.dart';
 import 'joined_vault.controller.dart';
 import 'joined_vaults_screen.controller.dart';
 
@@ -189,6 +191,10 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),
         ),
+        onTap: () {
+          VaultExplorerScreenController.vault = vault;
+          Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
+        },
       );
     }
 

@@ -100,20 +100,13 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       );
     }
 
-    final decryptedFile = await CipherService.to.decryptFile(
-      result.right,
-      cipherKey: cipherKey,
-    );
-
-    // import vault items
-    console.wtf('we are in!');
-
-    // I1apLmilUtBoGMztYKbdx47k8P9ZMollzB3nJTCnwxU=
-
-    // TODO: extract vault and check if cipher key is correct
+    // final decryptedFile = await CipherService.to.decryptFile(
+    //   result.right,
+    //   cipherKey: cipherKey,
+    // );
 
     // add self as a member of the shared vault
-    // TODO: allow user to set permissions
+    // TODO: allow user to set permissions using Choice Chips UI
     final member = VaultMember(
       address: WalletService.to.longAddress,
       userId: AuthService.to.userId,

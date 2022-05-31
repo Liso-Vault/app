@@ -10,6 +10,7 @@ import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:path/path.dart';
 
@@ -102,7 +103,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'groups': HiveGroupsService.to.data.length,
           'files': objects,
           'shared_vaults': SharedVaultsController.to.data.length,
-          'joined_shared_vaults': 0,
+          'joined_vaults': JoinedVaultsController.to.data.length,
         },
         'settings': {
           'sync': Persistence.to.canSync,

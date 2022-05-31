@@ -25,11 +25,13 @@ import '../shared_vaults/model/shared_vault.model.dart';
 class ItemTile extends StatelessWidget with ConsoleMixin {
   final HiveLisoItem item;
   final bool searchMode;
+  final bool joinedVaultItem;
 
   ItemTile(
     this.item, {
     Key? key,
     this.searchMode = false,
+    this.joinedVaultItem = false,
   }) : super(key: key);
 
   void _open() async {
@@ -40,12 +42,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       'mode': 'update',
       'category': item.category,
       'hiveKey': item.key.toString(),
+      'identifier': item.identifier,
+      'joinedVaultItem': joinedVaultItem.toString(),
     };
 
-    Utils.adaptiveRouteOpen(
-      name: Routes.item,
-      parameters: parameters,
-    );
+    Utils.adaptiveRouteOpen(name: Routes.item, parameters: parameters);
   }
 
   void _favorite() async {
@@ -138,38 +139,40 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     final isLargeScreen = !Utils.isDrawerExpandable;
 
     final menuItems = [
-      if (item.trashed) ...[
-        ContextMenuItem(
-          title: 'restore'.tr,
-          leading: const Icon(Iconsax.refresh),
-          onSelected: _restore,
-        ),
-        if (!item.deleted) ...[
+      if (!joinedVaultItem) ...[
+        if (item.trashed) ...[
           ContextMenuItem(
-            title: 'delete'.tr,
+            title: 'restore'.tr,
+            leading: const Icon(Iconsax.refresh),
+            onSelected: _restore,
+          ),
+          if (!item.deleted) ...[
+            ContextMenuItem(
+              title: 'delete'.tr,
+              leading: const Icon(Iconsax.trash),
+              onSelected: _delete,
+            ),
+          ]
+        ] else ...[
+          ContextMenuItem(
+            title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
+            leading: FaIcon(
+              item.favorite ? Iconsax.heart_remove : Iconsax.heart_add,
+              color: item.favorite ? Colors.pink : themeColor,
+            ),
+            onSelected: _favorite,
+          ),
+          ContextMenuItem(
+            title: 'move_to_trash'.tr,
             leading: const Icon(Iconsax.trash),
-            onSelected: _delete,
+            onSelected: _confirmTrash,
           ),
-        ]
-      ] else ...[
-        ContextMenuItem(
-          title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-          leading: FaIcon(
-            item.favorite ? Iconsax.heart_remove : Iconsax.heart_add,
-            color: item.favorite ? Colors.pink : themeColor,
+          ContextMenuItem(
+            title: 'duplicate'.tr,
+            leading: const Icon(Iconsax.copy),
+            onSelected: _duplicate,
           ),
-          onSelected: _favorite,
-        ),
-        ContextMenuItem(
-          title: 'move_to_trash'.tr,
-          leading: const Icon(Iconsax.trash),
-          onSelected: _confirmTrash,
-        ),
-        ContextMenuItem(
-          title: 'duplicate'.tr,
-          leading: const Icon(Iconsax.copy),
-          onSelected: _duplicate,
-        ),
+        ],
       ],
       ContextMenuItem(
         title: 'details'.tr,
@@ -227,19 +230,21 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     final bottomSubTitle = Wrap(
       runSpacing: 5,
       children: [
-        if (item.favorite) ...[
-          const Padding(
-            padding: EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.heart, color: Colors.pink, size: 10),
-          ),
-          const SizedBox(width: 5),
-        ],
-        if (item.protected) ...[
-          Padding(
-            padding: const EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.shield_tick, color: themeColor, size: 10),
-          ),
-          const SizedBox(width: 5),
+        if (!joinedVaultItem) ...[
+          if (item.favorite) ...[
+            const Padding(
+              padding: EdgeInsets.only(top: 3),
+              child: Icon(Iconsax.heart, color: Colors.pink, size: 10),
+            ),
+            const SizedBox(width: 5),
+          ],
+          if (item.protected) ...[
+            Padding(
+              padding: const EdgeInsets.only(top: 3),
+              child: Icon(Iconsax.shield_tick, color: themeColor, size: 10),
+            ),
+            const SizedBox(width: 5),
+          ],
         ],
         if (item.attachments.isNotEmpty) ...[
           const Padding(
@@ -255,11 +260,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           ),
           const SizedBox(width: 5),
         ],
-        if (item.tags.isNotEmpty) ...[
-          ...tags,
-        ],
-        if (item.sharedVaultIds.isNotEmpty) ...[
-          ...sharedVaults,
+        if (!joinedVaultItem) ...[
+          if (item.tags.isNotEmpty) ...[
+            ...tags,
+          ],
+          if (item.sharedVaultIds.isNotEmpty) ...[
+            ...sharedVaults,
+          ],
         ],
         Text(
           item.updatedTimeAgo,

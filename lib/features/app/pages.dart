@@ -35,6 +35,8 @@ import '../cipher/cipher.screen.dart';
 import '../configuration/configuration.screen.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
+import '../joined_vaults/explorer/vault_explorer.screen.dart';
+import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import '../joined_vaults/joined_vaults.screen.dart';
 import '../joined_vaults/joined_vaults_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
@@ -181,6 +183,11 @@ class AppPages {
       name: Routes.joinedVaults,
       page: () => const JoinedVaultsScreen(),
       binding: JoinedVaultsScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.vaultExplorer,
+      page: () => const VaultExplorerScreen(),
+      binding: VaultExplorerScreenBinding(),
     ),
     GetPage(
       name: Routes.disabledBeta,

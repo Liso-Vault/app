@@ -6,6 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/groups/groups.controller.dart';
+import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../core/hive/hive_items.service.dart';
@@ -198,11 +199,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
                           alignment: Alignment.centerLeft,
                         ),
                   onTap: () {
-                    // TODO: open in a new screen
-                    UIUtils.showSimpleDialog(
-                      'Coming soon',
-                      'View items from shared vaults to you',
-                    );
+                    VaultExplorerScreenController.vault = vault;
+                    Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
                   },
                 );
               },

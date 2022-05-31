@@ -7,7 +7,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -24,12 +23,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          ListTile(
-            title: const Text('Debug'),
-            onTap: () {
-              //
-            },
-          ),
+          // ListTile(
+          //   title: const Text('Debug'),
+          //   onTap: () {
+          //     //
+          //   },
+          // ),
           Obx(
             () => ExpansionTile(
               maintainState: true,

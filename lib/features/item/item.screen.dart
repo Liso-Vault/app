@@ -34,6 +34,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       decoration: InputDecoration(labelText: 'tags'.tr),
       findSuggestions: controller.querySuggestions,
       onChanged: (data) => controller.tags = data.toSet(),
+      readOnly: controller.joinedVaultItem,
       // onEditingComplete: controller.querySubmitted,
       // onEditingComplete: () async {
       //   console.info('completed: ${controller.tagsController.text}');
@@ -216,7 +217,11 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ),
       actions: [
         IconButton(
-          onPressed: mode == 'update' ? controller.edit : controller.add,
+          onPressed: controller.joinedVaultItem
+              ? null
+              : mode == 'update'
+                  ? controller.edit
+                  : controller.add,
           icon: const Icon(LineIcons.check),
         ),
         if (mode == 'update') ...[

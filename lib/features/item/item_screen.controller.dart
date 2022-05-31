@@ -6,6 +6,7 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
@@ -38,6 +39,7 @@ class ItemScreenController extends GetxController
   final menuKey = GlobalKey<FormState>();
   final mode = Get.parameters['mode'] as String;
   final category = Get.parameters['category'] as String;
+  final joinedVaultItem = Get.parameters['joinedVaultItem'] == 'true';
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
 
@@ -108,7 +110,8 @@ class ItemScreenController extends GetxController
 
       return ActionChip(
         label: Text(name),
-        onPressed: () => sharedVaultIds.remove(vaultId),
+        onPressed: () =>
+            joinedVaultItem ? null : sharedVaultIds.remove(vaultId),
       );
     }).toList();
 
@@ -127,7 +130,7 @@ class ItemScreenController extends GetxController
       );
     }).toList();
 
-    if (menuItems.isNotEmpty) {
+    if (menuItems.isNotEmpty && !joinedVaultItem) {
       chips.add(ContextMenuButton(
         menuItems,
         padding: EdgeInsets.zero,
@@ -162,8 +165,16 @@ class ItemScreenController extends GetxController
 
   // FUNCTIONS
   void _populateItem() {
-    final hiveKey = Get.parameters['hiveKey'].toString();
-    item = HiveItemsService.to.box.get(int.parse(hiveKey))!;
+    if (!joinedVaultItem) {
+      final hiveKey = Get.parameters['hiveKey'].toString();
+      item = HiveItemsService.to.box.get(int.parse(hiveKey))!;
+    } else {
+      final identifier = Get.parameters['identifier'].toString();
+      item = VaultExplorerScreenController.to.data.firstWhere(
+        (e) => e.identifier == identifier,
+      );
+    }
+
     iconUrl.value = item.iconUrl;
     titleController.text = item.title;
     favorite.value = item.favorite;

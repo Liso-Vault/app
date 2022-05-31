@@ -35,10 +35,12 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
         );
 
-  Widget itemBuilder(context, index) => ItemTile(
-        controller.data[index],
-        key: GlobalKey(), // TODO: do we still need this?
-      );
+  Widget itemBuilder(context, index) {
+    return ItemTile(
+      controller.data[index],
+      key: GlobalKey(), // TODO: do we still need this?
+    );
+  }
 
   @override
   Widget? builder() {
@@ -177,7 +179,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         () => IconButton(
           icon: const Icon(Iconsax.search_normal),
           onPressed: !S3Service.to.syncing.value ? controller.search : null,
-          // onPressed: controller.load,
         ),
       ),
       Obx(
