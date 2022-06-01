@@ -89,6 +89,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
           Obx(
             () => ContextMenuButton(
               controller.menuItemsChangeIcon,
+              enabled: !controller.joinedVaultItem,
               child: controller.iconUrl().isEmpty
                   ? Utils.categoryIcon(
                       LisoItemCategory.values.byName(controller.item.category),
@@ -134,6 +135,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         trailing: Icon(Iconsax.attach_circle, color: themeColor),
         contentPadding: EdgeInsets.zero,
         onTap: controller.attach,
+        enabled: !controller.joinedVaultItem,
       ),
       const Divider(),
       const SizedBox(height: 10),

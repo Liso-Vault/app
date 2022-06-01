@@ -12,6 +12,7 @@ import 'package:liso/features/wallet/transactions/transactions.screen.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/persistence/persistence_builder.widget.dart';
+import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.button.dart';
 import 'nfts/nfts.screen.dart';
@@ -182,7 +183,7 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
                   ),
                 ),
                 Text(
-                  GetPlatform.isMobile
+                  Utils.isDrawerExpandable
                       ? WalletService.to.shortAddress
                       : WalletService.to.longAddress,
                   overflow: TextOverflow.ellipsis,
@@ -239,7 +240,7 @@ class CardButton extends StatelessWidget {
       style: TextButton.styleFrom(
         padding: const EdgeInsets.symmetric(
           vertical: 20,
-          horizontal: 15,
+          horizontal: 10,
         ),
       ),
       child: Column(

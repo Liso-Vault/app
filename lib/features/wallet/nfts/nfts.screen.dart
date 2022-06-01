@@ -24,7 +24,7 @@ class NFTsScreen extends GetView<NFTsScreenController> with ConsoleMixin {
           final data = controller.data[index];
           return ListTile(
             leading: RemoteImage(
-              url: data.imageUrl!,
+              url: data.metadata!.image!,
               width: 50,
               height: 50,
             ),

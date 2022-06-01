@@ -1,13 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/auth.service.dart';
+import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/persistence/persistence.dart';
+import '../../core/firebase/crashlytics.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -33,20 +35,62 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
 
       void _confirmLeave() {
         void _leave() async {
-          Get.back();
-
           // TODO: delete self as member
 
-          // await FirestoreService.to.sharedVaults.doc(vault.docId).delete();
-          // console.info('deleted in firestore');
+          final membersCol = FirestoreService.to.sharedVaults
+              .doc(vault.docId)
+              .collection(kVaultMembersCollection);
 
-          // TODO: delete local vault
+          final snapshot = await membersCol
+              .where('userId', isEqualTo: AuthService.to.userId)
+              .get();
 
-          // await S3Service.to.remove(S3Content(
-          //     path: join(
-          //   S3Service.to.sharedPath,
-          //   '${vault.docId}.$kVaultExtension',
-          // )));
+          if (snapshot.docs.isEmpty) {
+            return UIUtils.showSimpleDialog(
+              'Failed To Leave',
+              'Did not find yourself as a member in this vault',
+            );
+          }
+
+          final batch = FirestoreService.to.instance.batch();
+          // remove from firestore
+          batch.delete(snapshot.docs.first.reference);
+
+          batch.set(
+            membersCol.doc(kStatsDoc),
+            {
+              'count': FieldValue.increment(-1),
+              'updatedTime': FieldValue.serverTimestamp(),
+            },
+            SetOptions(merge: true),
+          );
+
+          try {
+            await batch.commit();
+          } catch (e, s) {
+            CrashlyticsService.to.record(FlutterErrorDetails(
+              exception: e,
+              stack: s,
+            ));
+
+            return UIUtils.showSimpleDialog(
+              'Failed To Leave',
+              'Error leaving in server',
+            );
+          }
+
+          // remove from items
+          final items = HiveItemsService.to.data.where(
+            (e) => e.identifier == vault.docId,
+          );
+
+          if (items.isNotEmpty) {
+            await HiveItemsService.to.box.deleteAll(items.map((e) => e.key));
+            console.wtf('permanently deleted');
+          }
+
+          // close dialog
+          Get.back();
         }
 
         final dialogContent = Text(
@@ -74,105 +118,10 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
         ));
       }
 
-      void shareDialog() async {
-        final result = await HiveItemsService.to.obtainFieldValue(
-          itemId: vault.docId,
-          fieldId: 'key',
-        );
-
-        if (result.isLeft) {
-          return UIUtils.showSimpleDialog(
-            'Cipher Key Not Found',
-            result.left,
-          );
-        }
-
-        final cipherKey = result.right;
-        final obscureText = true.obs;
-
-        final passwordDecoration = InputDecoration(
-          labelText: 'Cipher Key',
-          suffixIcon: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                onPressed: obscureText.toggle,
-                icon: Obx(
-                  () => Icon(
-                    obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
-                  ),
-                ),
-              ),
-              IconButton(
-                onPressed: () => Utils.copyToClipboard(cipherKey),
-                icon: const Icon(Iconsax.copy),
-              )
-            ],
-          ),
-        );
-
-        final content = Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextFormField(
-              initialValue: vault.docId,
-              decoration: InputDecoration(
-                labelText: 'Shared Vault ID',
-                suffixIcon: IconButton(
-                  onPressed: () => Utils.copyToClipboard(vault.docId),
-                  icon: const Icon(Iconsax.copy),
-                ),
-              ),
-            ),
-            const Divider(),
-            Obx(
-              () => TextFormField(
-                initialValue: cipherKey,
-                obscureText: obscureText.value,
-                decoration: passwordDecoration,
-              ),
-            ),
-          ],
-        );
-
-        void _send() {
-          Get.back();
-
-          UIUtils.showSimpleDialog(
-            'E2EE Messenger',
-            "A built-in end to end encryption messenger is coming for ${ConfigService.to.appName} where you can safely send & receive private information",
-          );
-        }
-
-        Get.dialog(AlertDialog(
-          title: const Text('Vault Credentials'),
-          content: Utils.isDrawerExpandable
-              ? content
-              : SizedBox(width: 450, child: content),
-          actions: [
-            TextButton(
-              onPressed: Get.back,
-              child: Text('cancel'.tr),
-            ),
-            TextButton(
-              onPressed: _send,
-              child: const Text('Send'),
-            ),
-          ],
-        ));
-      }
-
       final menuItems = [
-        if (Persistence.to.canShare) ...[
-          ContextMenuItem(
-            title: 'share'.tr,
-            leading: const Icon(Iconsax.share),
-            onSelected: shareDialog,
-          ),
-        ],
         ContextMenuItem(
           title: 'leave'.tr,
-          leading: const Icon(Iconsax.trash),
+          leading: const Icon(Iconsax.logout),
           onSelected: _confirmLeave,
         ),
       ];

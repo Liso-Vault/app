@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -14,6 +15,7 @@ import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
+import '../../menu/menu.item.dart';
 import '../../wallet/wallet.service.dart';
 import '../model/s3_content.model.dart';
 
@@ -44,6 +46,34 @@ class S3ExplorerScreenController extends GetxController
 
   String get rootPath =>
       isTimeMachine ? S3Service.to.historyPath : S3Service.to.filesPath;
+
+  List<ContextMenuItem> get menuItemsUploadType {
+    return [
+      ContextMenuItem(
+        title: 'File',
+        leading: const Icon(Iconsax.document_upload),
+        onSelected: pickFile,
+      ),
+      ContextMenuItem(
+        title: 'Encrypted File',
+        leading: const Icon(Iconsax.shield_tick),
+        onSelected: () {
+          if (S3Service.to.encryptedFiles >=
+              WalletService.to.limits.encryptedFiles) {
+            return Utils.adaptiveRouteOpen(
+              name: Routes.upgrade,
+              parameters: {
+                'title': 'Title',
+                'body': 'Maximum encrypted files limit reached',
+              }, // TODO: add message
+            );
+          }
+
+          pickFile(encryptFile: true);
+        },
+      ),
+    ];
+  }
 
   // INIT
   @override
@@ -101,7 +131,7 @@ class S3ExplorerScreenController extends GetxController
     S3Service.to.fetchStorageSize();
   }
 
-  void pickFile() async {
+  void pickFile({bool encryptFile = false}) async {
     if (S3Service.to.objectsCount >= WalletService.to.limits.files) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
@@ -163,10 +193,10 @@ class S3ExplorerScreenController extends GetxController
     }
 
     change(false, status: RxStatus.success());
-    _upload(file);
+    _upload(file, encryptFile: encryptFile);
   }
 
-  void _upload(File file) async {
+  void _upload(File file, {bool encryptFile = false}) async {
     final assumedTotal = S3Service.to.storageSize.value + await file.length();
 
     if (assumedTotal >= WalletService.to.limits.uploadSize) {
@@ -181,7 +211,7 @@ class S3ExplorerScreenController extends GetxController
 
     change(true, status: RxStatus.loading());
     // encrypt file before uploading
-    if (Persistence.to.fileEncryption.val) {
+    if (encryptFile) {
       file = await CipherService.to.encryptFile(file);
     }
 

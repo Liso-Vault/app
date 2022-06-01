@@ -8,6 +8,7 @@ import 'package:liso/core/utils/globals.dart';
 import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
+import '../../menu/menu.button.dart';
 import '../s3.service.dart';
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
@@ -98,9 +99,12 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
       () => Visibility(
         visible: !controller.isTimeMachine && !controller.busy(),
         replacement: const SizedBox.shrink(),
-        child: FloatingActionButton(
-          onPressed: controller.busy() ? null : controller.pickFile,
-          child: const Icon(Iconsax.export_1),
+        child: ContextMenuButton(
+          controller.menuItemsUploadType,
+          child: FloatingActionButton(
+            onPressed: controller.busy() ? null : controller.pickFile,
+            child: const Icon(Iconsax.export_1),
+          ),
         ),
       ),
     );

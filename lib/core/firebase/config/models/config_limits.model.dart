@@ -37,9 +37,10 @@ class ConfigLimitsSetting {
     this.devices = 0,
     this.trashDays = 0,
     this.protectedItems = 0,
-    this.sharedAddresses = 0,
-    this.addVaults = false,
-    this.fileEncryption = false,
+    this.sharedMembers = 0,
+    this.sharedVaults = 0,
+    this.customVaults = 0,
+    this.encryptedFiles = 0,
     this.breachScanner = false,
     this.passwordHealth = false,
     this.nfcKeycard = false,
@@ -57,9 +58,10 @@ class ConfigLimitsSetting {
   final int devices;
   final int trashDays;
   final int protectedItems;
-  final int sharedAddresses;
-  final bool addVaults;
-  final bool fileEncryption;
+  final int sharedMembers;
+  final int sharedVaults;
+  final int customVaults;
+  final int encryptedFiles;
   final bool breachScanner;
   final bool passwordHealth;
   final bool nfcKeycard;
@@ -78,9 +80,10 @@ class ConfigLimitsSetting {
         devices: json["devices"],
         trashDays: json["trash_days"],
         protectedItems: json["protected_items"],
-        sharedAddresses: json["shared_addresses"],
-        addVaults: json["add_vaults"],
-        fileEncryption: json["file_encryption"],
+        sharedMembers: json["shared_members"],
+        sharedVaults: json["shared_vaults"],
+        customVaults: json["custom_vaults"],
+        encryptedFiles: json["encrypted_files"],
         breachScanner: json["breach_scanner"],
         passwordHealth: json["password_health"],
         nfcKeycard: json["nfc_keycard"],
@@ -99,9 +102,10 @@ class ConfigLimitsSetting {
         "devices": devices,
         "trash_days": trashDays,
         "protected_items": protectedItems,
-        "shared_addresses": sharedAddresses,
-        "add_vaults": addVaults,
-        "file_encryption": fileEncryption,
+        "shared_members": sharedMembers,
+        "shared_vaults": sharedVaults,
+        "custom_vaults": customVaults,
+        "encrypted_files": encryptedFiles,
         "breach_scanner": breachScanner,
         "password_health": passwordHealth,
         "nfc_keycard": nfcKeycard,

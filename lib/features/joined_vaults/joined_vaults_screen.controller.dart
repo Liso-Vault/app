@@ -13,16 +13,19 @@ import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/joined_vaults/model/member.model.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 
 class JoinedVaultsScreenBinding extends Bindings {
   @override
@@ -53,11 +56,38 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     if (!formKey.currentState!.validate()) return;
     Get.back(); // close dialog
 
+    // check if already a member of the vault
+    final alreadyJoined = JoinedVaultsController.to.data
+        .where((e) => e.id == vaultIdController.text);
+
+    if (alreadyJoined.isNotEmpty) {
+      return UIUtils.showSimpleDialog(
+        'Already Joined This Vault',
+        'You are already a member of this vault',
+      );
+    }
+
+    final membersCol = FirestoreService.to.sharedVaults
+        .doc(vaultIdController.text)
+        .collection(kVaultMembersCollection);
+
+    final statsSnapshot = await membersCol.doc(kStatsDoc).get();
+    final existingMembers = statsSnapshot.data()?['count'] ?? 0;
+    console.info('existingMembers: $existingMembers');
+
+    if (existingMembers >= WalletService.to.limits.sharedMembers) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Title',
+          'body': 'Maximum members in shared vault reached',
+        }, // TODO: add message
+      );
+    }
+
+    // obtain vault object
     final snapshot = await FirestoreService.to.sharedVaults
-        .where(
-          FieldPath.documentId,
-          isEqualTo: vaultIdController.text,
-        )
+        .where(FieldPath.documentId, isEqualTo: vaultIdController.text)
         .get();
 
     if (snapshot.docs.isEmpty) {
@@ -69,6 +99,14 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
 
     final vault = snapshot.docs.first.data();
     console.info('${vault.name} -> ${vault.description}');
+
+    // check if we're joining our own vault
+    if (vault.userId == AuthService.to.userId) {
+      return UIUtils.showSimpleDialog(
+        'Cannot Join Own Vault',
+        "It's not allowed to join your own vault",
+      );
+    }
 
     // download vault file
     final s3Path = '${vault.address}/Shared/${vault.docId}.$kVaultExtension';
@@ -100,11 +138,6 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       );
     }
 
-    // final decryptedFile = await CipherService.to.decryptFile(
-    //   result.right,
-    //   cipherKey: cipherKey,
-    // );
-
     // add self as a member of the shared vault
     // TODO: allow user to set permissions using Choice Chips UI
     final member = VaultMember(
@@ -113,13 +146,40 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       permissions: ['update', 'delete'].join(','),
     );
 
-    final memberDoc = await snapshot.docs.first.reference
-        .collection('members')
+    final memberDoc = membersCol
         .withConverter<VaultMember>(
           fromFirestore: (snapshot, _) => VaultMember.fromSnapshot(snapshot),
           toFirestore: (object, _) => object.toJson(),
         )
-        .add(member);
+        .doc();
+
+    final batch = FirestoreService.to.instance.batch();
+
+    // remove from firestore
+    batch.set(memberDoc, member);
+
+    batch.set(
+      membersCol.doc(kStatsDoc),
+      {
+        'count': FieldValue.increment(1),
+        'updatedTime': FieldValue.serverTimestamp(),
+      },
+      SetOptions(merge: true),
+    );
+
+    try {
+      await batch.commit();
+    } catch (e, s) {
+      CrashlyticsService.to.record(FlutterErrorDetails(
+        exception: e,
+        stack: s,
+      ));
+
+      return UIUtils.showSimpleDialog(
+        'Failed To Join',
+        'Error joining in server',
+      );
+    }
 
     console.wtf('member added: ${memberDoc.id}');
 

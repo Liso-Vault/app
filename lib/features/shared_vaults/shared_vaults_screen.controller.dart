@@ -22,6 +22,7 @@ import '../../core/notifications/notifications.manager.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 
 class SharedVaultsScreenBinding extends Bindings {
   @override
@@ -55,8 +56,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       if (!formKey.currentState!.validate()) return;
 
       // check if name already exists
-      final exists =
-          await SharedVaultsController.to.exists(nameController.text);
+      final exists = await SharedVaultsController.to.exists(
+        nameController.text,
+      );
 
       if (exists) {
         return UIUtils.showSimpleDialog(
@@ -66,6 +68,17 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       }
 
       Get.back(); // close dialog
+
+      if (SharedVaultsController.to.data.length >=
+          WalletService.to.limits.sharedVaults) {
+        return Utils.adaptiveRouteOpen(
+          name: Routes.upgrade,
+          parameters: {
+            'title': 'Title',
+            'body': 'Maximum members in shared vault reached',
+          }, // TODO: add message
+        );
+      }
 
       // add to firestore
       final vault = SharedVault(

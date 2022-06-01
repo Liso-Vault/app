@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/s3/model/s3_content.model.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.dart';
@@ -112,9 +115,25 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
           ),
         );
 
+        final qrData = {
+          'vaultId': vault.docId,
+          'cipherKey': cipherKey,
+        };
+
         final content = Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: Center(
+                child: QrImage(
+                  data: jsonEncode(qrData),
+                  backgroundColor: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             TextFormField(
               initialValue: vault.docId,
               decoration: InputDecoration(

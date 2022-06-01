@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
+
+import '../../../core/utils/globals.dart';
 
 class VaultMember {
   const VaultMember({
@@ -8,6 +13,7 @@ class VaultMember {
     this.permissions = '',
     this.createdTime,
     this.updatedTime,
+    this.metadata,
   });
 
   final String docId;
@@ -16,6 +22,7 @@ class VaultMember {
   final String permissions;
   final Timestamp? createdTime;
   final Timestamp? updatedTime;
+  final HiveMetadata? metadata;
 
   factory VaultMember.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc_) {
@@ -28,14 +35,20 @@ class VaultMember {
       permissions: json["permissions"],
       createdTime: json["createdTime"],
       updatedTime: json["updatedTime"],
+      metadata: HiveMetadata.fromJson(json["metadata"]),
     );
   }
 
-  Map<String, dynamic> toJson() => {
-        "userId": userId,
-        "address": address,
-        "permissions": permissions,
-        if (createdTime == null) "createdTime": FieldValue.serverTimestamp(),
-        "updatedTime": FieldValue.serverTimestamp(),
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "userId": userId,
+      "address": address,
+      "permissions": permissions,
+      if (createdTime == null) "createdTime": FieldValue.serverTimestamp(),
+      "updatedTime": FieldValue.serverTimestamp(),
+      "metadata": Globals.metadata.toJson(),
+    };
+  }
+
+  String toJsonString() => jsonEncode(toJson());
 }

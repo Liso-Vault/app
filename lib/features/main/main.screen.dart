@@ -12,7 +12,6 @@ import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:shimmer/shimmer.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
@@ -38,7 +37,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
   Widget itemBuilder(context, index) {
     return ItemTile(
       controller.data[index],
-      key: GlobalKey(), // TODO: do we still need this?
     );
   }
 
@@ -57,13 +55,17 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final listView = Obx(
-      () => ListView.separated(
-        shrinkWrap: true,
-        itemCount: controller.data.length,
-        itemBuilder: itemBuilder,
-        separatorBuilder: (_, index) => const Divider(height: 0),
-        physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 15),
+      () => AnimatedOpacity(
+        opacity: S3Service.to.syncing.value ? 0.3 : 1.0,
+        duration: 300.milliseconds,
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemCount: controller.data.length,
+          itemBuilder: itemBuilder,
+          separatorBuilder: (_, index) => const Divider(height: 0),
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 15),
+        ),
       ),
     );
 
@@ -90,8 +92,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       );
     }
 
-    final filters = Row(
-      mainAxisSize: MainAxisSize.min,
+    final filters = Wrap(
+      runSpacing: 3,
       children: [
         const Text(
           'Filters: ',
@@ -145,7 +147,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ],
     );
 
-    final content_ = Column(
+    final content = Column(
       children: [
         const ConnectivityBar(),
         Expanded(child: childContent),
@@ -159,20 +161,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ],
     );
 
-    final content = Obx(
-      () => Visibility(
-        visible: S3Service.to.syncing.value,
-        replacement: content_,
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey,
-          highlightColor: kAppColor,
-          child: AbsorbPointer(
-            absorbing: true,
-            child: content_,
-          ),
-        ),
-      ),
-    );
+    // final content = Obx(
+    //   () => Visibility(
+    //     visible: !S3Service.to.syncing.value,
+    //     replacement: content_,
+    //     child: AbsorbPointer(
+    //       absorbing: true,
+    //       child: content_,
+    //     ),
+    //   ),
+    // );
 
     final appBarActions = [
       Obx(
@@ -184,7 +182,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       Obx(
         () => ContextMenuButton(
           controller.menuItemsSort,
-          enabled: controller.data.isNotEmpty && !S3Service.to.syncing.value,
+          enabled: !S3Service.to.syncing.value,
           initialItem: controller.menuItemsSort.firstWhere(
             (e) => controller.sortOrder.value.name
                 .toLowerCase()
@@ -192,9 +190,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
           child: IconButton(
             icon: const Icon(Iconsax.sort),
-            onPressed: controller.data.isNotEmpty && !S3Service.to.syncing.value
-                ? () {}
-                : null,
+            onPressed: !S3Service.to.syncing.value ? () {} : null,
           ),
         ),
       ),
@@ -274,7 +270,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       child: const Icon(Iconsax.trash),
     );
 
-    final floatingActionButton = Obx(
+    final fab = Obx(
       () {
         if (S3Service.to.syncing.value) return const SizedBox.shrink();
 
@@ -305,7 +301,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             child: Scaffold(
               appBar: appBar,
               body: content,
-              floatingActionButton: floatingActionButton,
+              floatingActionButton: fab,
             ),
           ),
         ],
@@ -315,7 +311,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         appBar: appBar,
         body: content,
         drawer: const DrawerMenu(),
-        floatingActionButton: floatingActionButton,
+        floatingActionButton: fab,
       );
     }
   }

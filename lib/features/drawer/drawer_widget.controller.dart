@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 

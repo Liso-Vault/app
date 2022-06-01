@@ -63,29 +63,14 @@ class SettingsScreen extends GetView<SettingsScreenController>
         const Divider(),
         PersistenceBuilder(
           builder: (p, context) => SwitchListTile(
-              title: const Text('File Encryption'),
-              secondary: Icon(
-                Iconsax.shield_tick,
-                color: themeColor,
-              ),
-              value: persistence.fileEncryption.val,
-              subtitle: const Text(
-                "Automatic client-side file encryption when you upload files",
-              ),
-              onChanged: (value) {
-                if (WalletService.to.limits.fileEncryption) {
-                  persistence.fileEncryption.val = value;
-                  return;
-                }
-
-                Utils.adaptiveRouteOpen(
-                  name: Routes.upgrade,
-                  parameters: {
-                    'title': 'Title',
-                    'body': 'Upgrade to enable file encryption',
-                  }, // TODO: add message
-                );
-              }),
+            title: const Text('Biometric Authentication'),
+            secondary: Icon(Iconsax.lock, color: themeColor),
+            value: persistence.biometrics.val,
+            subtitle: const Text(
+              "Use Fingerprint / Face ID for authentication",
+            ),
+            onChanged: (value) => persistence.biometrics.val = value,
+          ),
         ),
         const Divider(),
         ListTile(

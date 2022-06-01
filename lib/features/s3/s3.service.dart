@@ -51,6 +51,7 @@ class S3Service extends GetxService with ConsoleMixin {
   final inSync = false.obs;
   final storageSize = 0.obs;
   final objectsCount = 0.obs;
+  final encryptedFiles = 0.obs;
   final downloadTotalSize = 0.obs;
   final downloadedSize = 0.obs;
   final uploadTotalSize = 0.obs;
@@ -545,16 +546,21 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     int totalSize = 0;
+    int encryptedFiles = 0;
 
-    for (var e in result.objects) {
-      totalSize += e.size!;
+    final contents = _objectsToContents(result.objects);
+
+    for (var e in contents) {
+      totalSize += e.size;
+      if (e.isEncrypted) encryptedFiles++;
     }
 
     console.info('total size: $totalSize');
 
     return Right(S3FolderInfo(
-      objects: result.objects,
+      contents: contents,
       totalSize: totalSize,
+      encryptedFiles: encryptedFiles,
     ));
   }
 
@@ -678,9 +684,10 @@ class S3Service extends GetxService with ConsoleMixin {
 
     final info = result.right;
     storageSize.value = info.totalSize;
-    objectsCount.value = info.objects.length;
+    objectsCount.value = info.contents.length;
+    encryptedFiles.value = info.encryptedFiles;
     // cache objects
-    contentsCache = _objectsToContents(info.objects as List<minio.Object>);
+    contentsCache = info.contents;
 
     return info;
   }

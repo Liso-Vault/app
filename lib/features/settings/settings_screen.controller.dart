@@ -13,6 +13,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/notifications/notifications.manager.dart';
@@ -145,6 +146,15 @@ class SettingsScreenController extends GetxController
   }
 
   void showSeed() async {
+    // prompt password from unlock screen
+    final unlocked = await Get.toNamed(
+          Routes.unlock,
+          parameters: {'mode': 'password_prompt'},
+        ) ??
+        false;
+
+    if (!unlocked) return;
+
     final result = await HiveItemsService.to.obtainFieldValue(
       itemId: 'seed',
       fieldId: 'seed',
@@ -175,7 +185,7 @@ class SettingsScreenController extends GetxController
                 label: Text(
                   '${e.key + 1}. ${e.value}',
                   style: TextStyle(
-                    fontSize: GetPlatform.isMobile ? null : 17,
+                    fontSize: Utils.isDrawerExpandable ? null : 17,
                   ),
                 ),
               ),
@@ -188,6 +198,17 @@ class SettingsScreenController extends GetxController
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: Center(
+            child: QrImage(
+              data: seed,
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
         phraseChips,
         const Divider(),
         const Text(

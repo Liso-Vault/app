@@ -68,7 +68,7 @@ class JoinedVaultsController extends GetxController
         .where(FieldPath.documentId, whereIn: vaultIds.toList())
         .get();
 
-    data.addAll(snapshots.docs);
+    data.value = snapshots.docs;
     change(null, status: RxStatus.success());
     console.wtf('joined vaults: ${data.length}');
   }

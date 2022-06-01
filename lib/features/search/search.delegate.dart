@@ -1,10 +1,15 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/features/item/item.tile.dart';
 
+import '../../core/hive/models/item.hive.dart';
+
 class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
+  final bool joinedVaultItem;
+  final List<HiveLisoItem> items;
+  ItemsSearchDelegate(this.items, {this.joinedVaultItem = false});
+
   @override
   // TODO: implement searchFieldLabel
   String? get searchFieldLabel => 'search_by_title'.tr;
@@ -39,13 +44,17 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
       return const Center(child: Text("Search items by title."));
     }
 
-    final items = HiveItemsService.to.data
+    final filteredItems = items
         .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) => ItemTile(items[index], searchMode: true),
+      itemCount: filteredItems.length,
+      itemBuilder: (context, index) => ItemTile(
+        filteredItems[index],
+        searchMode: true,
+        joinedVaultItem: joinedVaultItem,
+      ),
     );
   }
 

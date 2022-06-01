@@ -10,6 +10,8 @@ import '../../core/hive/models/group.hive.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
+import '../wallet/wallet.service.dart';
 import 'groups.controller.dart';
 
 class GroupsScreenBinding extends Bindings {
@@ -41,6 +43,17 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
 
     void _create(String name, String description) async {
       if (!formKey.currentState!.validate()) return;
+
+      if (GroupsController.to.data.length >=
+          WalletService.to.limits.customVaults) {
+        return Utils.adaptiveRouteOpen(
+          name: Routes.upgrade,
+          parameters: {
+            'title': 'Title',
+            'body': 'Maximum encrypted files limit reached',
+          }, // TODO: add message
+        );
+      }
 
       await HiveGroupsService.to.box.add(HiveLisoGroup(
         id: const Uuid().v4(),

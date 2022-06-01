@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 
 // HIVE DATABASE
 const kHiveBoxItems = 'items';
@@ -103,8 +104,12 @@ enum LisoSyncProvider {
 class Globals {
   // VARIABLES
   static bool timeLockEnabled = true;
+  static late HiveMetadata metadata;
 
   // GETTERS
 
   // FUNCTIONS
+  static void init() async {
+    metadata = await HiveMetadata.get();
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:local_auth/local_auth.dart';
 
 import 'package:local_auth_android/local_auth_android.dart';
@@ -16,13 +17,11 @@ class BiometricService extends GetxService with ConsoleMixin {
   // PROPERTIES
   final supported = false.obs;
 
-  @override
-  void onInit() async {
-    console.info('init');
-    super.onInit();
-  }
-
   Future<bool> authenticate() async {
+    if (!Persistence.to.biometrics.val) {
+      return supported.value = false;
+    }
+
     if (!supported.value) {
       supported.value = GetPlatform.isMobile &&
           await auth.canCheckBiometrics &&

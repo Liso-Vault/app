@@ -3,7 +3,9 @@ import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../resources/resources.dart';
@@ -21,47 +23,10 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
     // final body = Get.parameters['body']!;
 
     final content = Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+      padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Icon(LineIcons.rocket, size: 150, color: themeColor),
-          // const SizedBox(height: 10),
-          // Text(
-          //   '${ConfigService.to.appName} Pro',
-          //   style: const TextStyle(fontSize: 30),
-          // ),
-          // const SizedBox(height: 15),
-          // Text(
-          //   title,
-          //   textAlign: TextAlign.center,
-          //   style: const TextStyle(fontSize: 17),
-          // ),
-          // const SizedBox(height: 10),
-          // Text(
-          //   body,
-          //   textAlign: TextAlign.center,
-          //   style: const TextStyle(color: Colors.grey),
-          // ),
-          // const SizedBox(height: 30),
-          // SizedBox(
-          //   width: 200,
-          //   child: ElevatedButton(
-          //     onPressed: () {
-          //       UIUtils.showSimpleDialog(
-          //         'Upgrade to ${ConfigService.to.appName} Pro',
-          //         'This feature is coming soon',
-          //       );
-          //     },
-          //     child: const Text('Subscribe'),
-          //   ),
-          // ),
-
-          Text(
-            'Features',
-            style: TextStyle(fontSize: 20, color: themeColor),
-          ),
-          const SizedBox(height: 20),
           Obx(
             () {
               final tier = controller.tierSetting;
@@ -98,7 +63,7 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
+                      leading: const Icon(Iconsax.document),
                       title: const Text('Max Items'),
                       onTap: () {},
                       trailing: Text(
@@ -107,7 +72,7 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
+                      leading: const Icon(Iconsax.document_1),
                       title: const Text('Max Files'),
                       onTap: () {},
                       trailing: Text(
@@ -116,7 +81,7 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
+                      leading: const Icon(Iconsax.import),
                       title: const Text('Max Backups'),
                       onTap: () {},
                       trailing: Text(
@@ -125,7 +90,7 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
+                      leading: const Icon(Iconsax.cpu),
                       title: const Text('Max Devices'),
                       onTap: () {},
                       trailing: Text(
@@ -134,8 +99,8 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
-                      title: const Text('Trash Due Days'),
+                      leading: const Icon(Iconsax.trash),
+                      title: const Text('Max Trash Due Days'),
                       onTap: () {},
                       trailing: Text(
                         '${tier.trashDays}',
@@ -143,7 +108,7 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
+                      leading: const Icon(Iconsax.shield_tick),
                       title: const Text('Max Protected Items'),
                       onTap: () {},
                       trailing: Text(
@@ -152,61 +117,87 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
                       ),
                     ),
                     ListTile(
-                      leading: const Icon(Iconsax.weight),
-                      title: const Text('Max Shared Users'),
+                      leading: const Icon(Iconsax.people),
+                      title: const Text('Max Shared Vault Members'),
                       onTap: () {},
                       trailing: Text(
-                        '${tier.sharedAddresses}',
+                        '${tier.sharedMembers}',
                         style: TextStyle(color: themeColor, fontSize: 20),
                       ),
                     ),
-                    CheckboxListTile(
-                      value: tier.addVaults,
-                      secondary: const Icon(Iconsax.document_cloud),
+                    ListTile(
+                      leading: const Icon(Iconsax.briefcase),
                       title: const Text('Custom Vaults'),
-                      onChanged: (_) {},
+                      trailing: Text(
+                        '${tier.customVaults}',
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.fileEncryption,
-                      secondary: const Icon(Iconsax.weight),
-                      title: const Text('File Encryption'),
-                      onChanged: (_) {},
+                    ListTile(
+                      leading: const Icon(Iconsax.key),
+                      title: const Text('Encrypted Files'),
+                      trailing: Text(
+                        '${tier.encryptedFiles}',
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.breachScanner,
-                      secondary: const Icon(Iconsax.document_cloud),
+                    ListTile(
+                      trailing: Icon(
+                        tier.breachScanner ? LineIcons.check : LineIcons.times,
+                        color: tier.breachScanner ? themeColor : Colors.red,
+                      ),
+                      leading: const Icon(Iconsax.scan),
                       title: const Text('Breach Scanner'),
-                      onChanged: (_) {},
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.passwordHealth,
-                      secondary: const Icon(Iconsax.weight),
+                    ListTile(
+                      trailing: Icon(
+                        tier.passwordHealth ? LineIcons.check : LineIcons.times,
+                        color: tier.passwordHealth ? themeColor : Colors.red,
+                      ),
+                      leading: const Icon(Iconsax.health),
                       title: const Text('Password Health'),
-                      onChanged: (_) {},
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.nfcKeycard,
-                      secondary: const Icon(Iconsax.document_cloud),
+                    ListTile(
+                      trailing: Icon(
+                        tier.nfcKeycard ? LineIcons.check : LineIcons.times,
+                        color: tier.nfcKeycard ? themeColor : Colors.red,
+                      ),
+                      leading: const Icon(Iconsax.card),
                       title: const Text('NFC Keycard'),
-                      onChanged: (_) {},
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.cipherTool,
-                      secondary: const Icon(Iconsax.weight),
+                    ListTile(
+                      trailing: Icon(
+                        tier.cipherTool ? LineIcons.check : LineIcons.times,
+                        color: tier.cipherTool ? themeColor : Colors.red,
+                      ),
+                      leading: const Icon(Iconsax.security_card),
                       title: const Text('Cipher Tool'),
-                      onChanged: (_) {},
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.otpGenerator,
-                      secondary: const Icon(Iconsax.document_cloud),
+                    ListTile(
+                      trailing: Icon(
+                        tier.otpGenerator ? LineIcons.check : LineIcons.times,
+                        color: tier.otpGenerator ? themeColor : Colors.red,
+                      ),
+                      leading: const Icon(Iconsax.password_check),
                       title: const Text('OTP Generator'),
-                      onChanged: (_) {},
+                      onTap: () {},
                     ),
-                    CheckboxListTile(
-                      value: tier.prioritySupport,
-                      secondary: const Icon(Iconsax.weight),
+                    ListTile(
+                      trailing: Icon(
+                        tier.prioritySupport
+                            ? LineIcons.check
+                            : LineIcons.times,
+                        color: tier.prioritySupport ? themeColor : Colors.red,
+                      ),
+                      leading: const Icon(Iconsax.message_question),
                       title: const Text('Priority Support'),
-                      onChanged: (_) {},
+                      onTap: () {},
                     ),
                   ],
                 ),
@@ -223,9 +214,9 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
             ),
             tabs: const [
               Tab(text: 'Free'),
-              Tab(text: 'Tier 1'),
-              Tab(text: 'Tier 2'),
-              Tab(text: 'Tier 3'),
+              Tab(text: 'Holder'),
+              Tab(text: 'Staker'),
+              Tab(text: 'Pro'),
             ],
           ),
         ],
@@ -233,6 +224,8 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
     );
 
     final appBar = AppBar(
+      leading: const AppBarLeadingButton(),
+      centerTitle: false,
       title: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -242,12 +235,24 @@ class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
             placeholder: Image.asset(Images.logo, height: 20),
           ),
           const SizedBox(width: 10),
-          Text('${ConfigService.to.appName} Pro',
-              style: const TextStyle(fontSize: 20)),
+          Text(
+            '${ConfigService.to.appName} Premium',
+            style: const TextStyle(fontSize: 20),
+          ),
         ],
       ),
-      centerTitle: false,
-      leading: const AppBarLeadingButton(),
+      actions: [
+        TextButton.icon(
+          icon: const Icon(LineIcons.rocket),
+          label: const Text('Upgrade'),
+          onPressed: () {
+            UIUtils.showSimpleDialog(
+              'Upgrade to Pro',
+              'Coming soon...',
+            );
+          },
+        ),
+      ],
     );
 
     return DefaultTabController(

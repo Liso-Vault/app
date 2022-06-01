@@ -270,7 +270,7 @@ class MainScreenController extends GetxController
   }
 
   void search() async {
-    searchDelegate = ItemsSearchDelegate();
+    searchDelegate = ItemsSearchDelegate(HiveItemsService.to.data);
 
     await showSearch(
       context: Get.context!,

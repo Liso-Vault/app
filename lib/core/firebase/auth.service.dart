@@ -55,8 +55,9 @@ class AuthService extends GetxService with ConsoleMixin {
     if (info == null) return console.error('error storage info');
 
     await FirestoreService.to.record(
-      objects: info.objects.length,
+      objects: info.contents.length,
       totalSize: info.totalSize,
+      encryptedFiles: info.encryptedFiles,
     );
   }
 

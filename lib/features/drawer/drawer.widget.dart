@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -39,43 +40,55 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               onExpansionChanged: (expanded) =>
                   controller.groupsExpanded = expanded,
               initiallyExpanded: controller.groupsExpanded,
-              children: [...controller.groupTiles],
+              children: [
+                ...controller.groupTiles,
+                const Section(
+                  text: 'Shared',
+                  padding: EdgeInsets.symmetric(horizontal: 18),
+                ),
+                ...controller.sharedVaultsTiles,
+                const Section(
+                  text: 'Joined',
+                  padding: EdgeInsets.symmetric(horizontal: 18),
+                ),
+                ...controller.joinedVaultsTiles
+              ],
             ),
           ),
-          PersistenceBuilder(
-            builder: (p, context) => Persistence.to.canShare
-                ? Obx(
-                    () => ExpansionTile(
-                      maintainState: true,
-                      title: Text(
-                        'shared_vaults'.tr.toUpperCase(),
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                      onExpansionChanged: (expanded) =>
-                          controller.sharedVaultsExpanded = expanded,
-                      initiallyExpanded: controller.sharedVaultsExpanded,
-                      children: [...controller.sharedVaultsTiles],
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-          PersistenceBuilder(
-            builder: (p, context) => Persistence.to.canShare
-                ? Obx(
-                    () => ExpansionTile(
-                      maintainState: true,
-                      title: Text(
-                        'joined_vaults'.tr.toUpperCase(),
-                        style: const TextStyle(fontSize: 13),
-                      ),
-                      onExpansionChanged: (expanded) =>
-                          controller.joinedVaultsExpanded = expanded,
-                      initiallyExpanded: controller.joinedVaultsExpanded,
-                      children: [...controller.joinedVaultsTiles],
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
+          // PersistenceBuilder(
+          //   builder: (p, context) => Persistence.to.canShare
+          //       ? Obx(
+          //           () => ExpansionTile(
+          //             maintainState: true,
+          //             title: Text(
+          //               'shared_vaults'.tr.toUpperCase(),
+          //               style: const TextStyle(fontSize: 13),
+          //             ),
+          //             onExpansionChanged: (expanded) =>
+          //                 controller.sharedVaultsExpanded = expanded,
+          //             initiallyExpanded: controller.sharedVaultsExpanded,
+          //             children: [...controller.sharedVaultsTiles],
+          //           ),
+          //         )
+          //       : const SizedBox.shrink(),
+          // ),
+          // PersistenceBuilder(
+          //   builder: (p, context) => Persistence.to.canShare
+          //       ? Obx(
+          //           () => ExpansionTile(
+          //             maintainState: true,
+          //             title: Text(
+          //               'joined_vaults'.tr.toUpperCase(),
+          //               style: const TextStyle(fontSize: 13),
+          //             ),
+          //             onExpansionChanged: (expanded) =>
+          //                 controller.joinedVaultsExpanded = expanded,
+          //             initiallyExpanded: controller.joinedVaultsExpanded,
+          //             children: [...controller.joinedVaultsTiles],
+          //           ),
+          //         )
+          //       : const SizedBox.shrink(),
+          // ),
           ExpansionTile(
             maintainState: true,
             title: Text(

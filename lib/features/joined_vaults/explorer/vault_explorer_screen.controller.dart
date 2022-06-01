@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 
 import '../../../core/hive/models/item.hive.dart';
@@ -10,7 +13,9 @@ import '../../../core/liso/liso_paths.dart';
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
+import '../../menu/menu.item.dart';
 import '../../s3/s3.service.dart';
+import '../../search/search.delegate.dart';
 import '../../shared_vaults/model/shared_vault.model.dart';
 
 class VaultExplorerScreenBinding extends Bindings {
@@ -26,6 +31,9 @@ class VaultExplorerScreenController extends GetxController
   static late SharedVault vault;
 
   // VARIABLES
+  List<HiveLisoItem> items = const [];
+  ItemsSearchDelegate? searchDelegate;
+  final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
 
   // PROPERTIES
   final data = <HiveLisoItem>[].obs;
@@ -34,12 +42,79 @@ class VaultExplorerScreenController extends GetxController
   // PROPERTIES
 
   // GETTERS
+  List<ContextMenuItem> get menuItemsSort {
+    final sortName = sortOrder.value.name;
+    final ascending = sortName.contains('Ascending');
+
+    final icon = Icon(
+      ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
+    );
+
+    return [
+      ContextMenuItem(
+        title: 'title'.tr,
+        leading: const Icon(Iconsax.text),
+        trailing: sortName.contains('title') ? icon : null,
+        onSelected: () {
+          sortOrder.value = !sortName.contains('title') || ascending
+              ? LisoItemSortOrder.titleDescending
+              : LisoItemSortOrder.titleAscending;
+        },
+      ),
+      ContextMenuItem(
+        title: 'date_modified'.tr,
+        leading: const Icon(Iconsax.calendar),
+        trailing: sortName.contains('dateModified') ? icon : null,
+        onSelected: () {
+          sortOrder.value = !sortName.contains('dateModified') || ascending
+              ? LisoItemSortOrder.dateModifiedDescending
+              : LisoItemSortOrder.dateModifiedAscending;
+        },
+      ),
+      ContextMenuItem(
+        title: 'date_created'.tr,
+        leading: const Icon(Iconsax.calendar_tick),
+        trailing: sortName.contains('dateCreated') ? icon : null,
+        onSelected: () {
+          sortOrder.value = !sortName.contains('dateCreated') || ascending
+              ? LisoItemSortOrder.dateCreatedDescending
+              : LisoItemSortOrder.dateCreatedAscending;
+        },
+      ),
+      ContextMenuItem(
+        title: 'favorite'.tr,
+        leading: const Icon(Iconsax.heart),
+        trailing: sortName.contains('favorite') ? icon : null,
+        onSelected: () {
+          sortOrder.value = !sortName.contains('favorite') || ascending
+              ? LisoItemSortOrder.favoriteDescending
+              : LisoItemSortOrder.favoriteAscending;
+        },
+      ),
+      ContextMenuItem(
+        title: 'protected'.tr,
+        leading: const Icon(Iconsax.lock),
+        trailing: sortName.contains('protected') ? icon : null,
+        onSelected: () {
+          sortOrder.value = !sortName.contains('protected') || ascending
+              ? LisoItemSortOrder.protectedDescending
+              : LisoItemSortOrder.protectedAscending;
+        },
+      ),
+    ];
+  }
 
   // INIT
   @override
   void onInit() {
     init();
     super.onInit();
+  }
+
+  @override
+  void onReady() {
+    sortOrder.listen((order) => load());
+    super.onReady();
   }
 
   @override
@@ -50,6 +125,7 @@ class VaultExplorerScreenController extends GetxController
 
   // FUNCTIONS
   void init() async {
+    change(null, status: RxStatus.loading());
     // download vault file
     final s3Path = '${vault.address}/Shared/${vault.docId}.$kVaultExtension';
 
@@ -136,19 +212,106 @@ class VaultExplorerScreenController extends GetxController
     final vaultString = await decryptedFile.readAsString();
     final vaultJson = jsonDecode(vaultString);
     // deserialize
-    final importedItems = List<HiveLisoItem>.from(
+    items = List<HiveLisoItem>.from(
       vaultJson.map((x) => HiveLisoItem.fromJson(x)),
     );
 
-    console.info('imported items: ${importedItems.length}');
-    data.value = importedItems;
-
-    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
-
-    // import vault
+    console.info('imported items: ${items.length}');
+    load();
   }
 
-  void search() {
-    //
+  void load() async {
+    // --- SORT BY TITLE ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.titleDescending) {
+      items.sort((a, b) => b.title.compareTo(a.title));
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.titleAscending) {
+      items.sort((a, b) => a.title.compareTo(b.title));
+    }
+
+    // --- SORT BY TITLE ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.categoryDescending) {
+      items.sort((a, b) => b.category.compareTo(a.category));
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.categoryAscending) {
+      items.sort((a, b) => a.category.compareTo(b.category));
+    }
+
+    // --- SORT BY DATE MODIFIED ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.dateModifiedDescending) {
+      items.sort(
+        (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.dateModifiedAscending) {
+      items.sort(
+        (a, b) => a.metadata.updatedTime.compareTo(b.metadata.updatedTime),
+      );
+    }
+
+    // --- SORT BY DATE CREATED ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.dateCreatedDescending) {
+      items.sort(
+        (a, b) => b.metadata.createdTime.compareTo(a.metadata.createdTime),
+      );
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.dateCreatedAscending) {
+      items.sort(
+        (a, b) => a.metadata.createdTime.compareTo(b.metadata.createdTime),
+      );
+    }
+
+    // --- SORT BY FAVORITE ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.favoriteDescending) {
+      items.sort((a, b) => b.favorite ? 1 : -1);
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.favoriteAscending) {
+      items.sort((a, b) => a.favorite ? 1 : -1);
+    }
+
+    // --- SORT BY PROTECTED ---- //
+    // descending
+    if (sortOrder.value == LisoItemSortOrder.protectedDescending) {
+      items.sort((a, b) => b.protected ? 1 : -1);
+    }
+
+    // ascending
+    if (sortOrder.value == LisoItemSortOrder.protectedAscending) {
+      items.sort((a, b) => a.protected ? 1 : -1);
+    }
+
+    data.value = List.from(items);
+    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+    // reload SearchDelegate to reflect
+    searchDelegate?.reload(Get.context!);
+  }
+
+  void search() async {
+    searchDelegate = ItemsSearchDelegate(
+      items,
+      joinedVaultItem: true,
+    );
+
+    await showSearch(
+      context: Get.context!,
+      delegate: searchDelegate!,
+    );
+
+    searchDelegate = null;
   }
 }

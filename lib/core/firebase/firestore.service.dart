@@ -21,20 +21,25 @@ import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
 import 'crashlytics.service.dart';
 
+const kSharedVaultsCollection = 'shared_vaults';
+const kVaultMembersCollection = 'members';
+const kUsersCollection = 'users';
+const kStatsDoc = '---stats---';
+
 class FirestoreService extends GetxService with ConsoleMixin {
   static FirestoreService get to => Get.find();
 
   // VARIABLES
   final vaultsCol = FirebaseFirestore.instance.collection(
-    'shared_vaults',
+    kSharedVaultsCollection,
   );
 
   final vaultMembersCol = FirebaseFirestore.instance.collectionGroup(
-    'members',
+    kVaultMembersCollection,
   );
 
   final usersCol = FirebaseFirestore.instance.collection(
-    'users',
+    kUsersCollection,
   );
 
   late CollectionReference<SharedVault> sharedVaults;
@@ -50,10 +55,10 @@ class FirestoreService extends GetxService with ConsoleMixin {
       usersCol.doc(AuthService.to.instance.currentUser!.uid);
 
   DocumentReference<Map<String, dynamic>> get usersStatsDoc =>
-      usersCol.doc('---stats---');
+      usersCol.doc(kStatsDoc);
 
   DocumentReference<Map<String, dynamic>> get vaultsStatsDoc =>
-      vaultsCol.doc('---stats---');
+      vaultsCol.doc(kStatsDoc);
 
   // INIT
 
@@ -75,7 +80,11 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   // record the some metadata: created time and updated time, items count and files count
   // data will be used for airdrops, and other promotions
-  Future<void> record({required int objects, required int totalSize}) async {
+  Future<void> record({
+    required int objects,
+    required int encryptedFiles,
+    required int totalSize,
+  }) async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
     if (!Persistence.to.analytics.val) return;
 
@@ -91,6 +100,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
       'userId': AuthService.to.instance.currentUser!.uid,
       'address': WalletService.to.longAddress,
       'updatedTime': FieldValue.serverTimestamp(),
+      // TODO: record last sync time
       'metadata': {
         'app': await HiveMetadataApp.getJson(),
         'device': await HiveMetadataDevice.getJson(),
@@ -102,6 +112,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
           'items': HiveItemsService.to.data.length,
           'groups': HiveGroupsService.to.data.length,
           'files': objects,
+          'encrypted_files': encryptedFiles,
           'shared_vaults': SharedVaultsController.to.data.length,
           'joined_vaults': JoinedVaultsController.to.data.length,
         },

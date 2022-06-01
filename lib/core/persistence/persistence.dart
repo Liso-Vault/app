@@ -39,7 +39,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final sync = true.val('sync');
   final syncConfirmed = false.val('sync-confirmed');
   final syncProvider = LisoSyncProvider.sia.name.val('sync-provider');
-  final fileEncryption = false.val('file-encryption');
+  final biometrics = true.val('biometrics');
   final s3ObjectsCache = ''.val('s3-objects-cache');
   // CUSTOM SYNC PROVIDER
   final s3Endpoint = ''.val('s3-endpoint');

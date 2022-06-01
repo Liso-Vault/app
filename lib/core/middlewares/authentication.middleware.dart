@@ -47,6 +47,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     // first time initialization
     if (!initialized) CrashlyticsService.to.configure();
     MainScreenController.to.load();
+    Globals.init();
     AuthService.to.signIn();
     initialized = true;
     console.wtf('welcome');
