@@ -58,7 +58,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
 
     // check if already a member of the vault
     final alreadyJoined = JoinedVaultsController.to.data
-        .where((e) => e.id == vaultIdController.text);
+        .where((e) => e.docId == vaultIdController.text);
 
     if (alreadyJoined.isNotEmpty) {
       return UIUtils.showSimpleDialog(
@@ -154,7 +154,6 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
         .doc();
 
     final batch = FirestoreService.to.instance.batch();
-
     // remove from firestore
     batch.set(memberDoc, member);
 

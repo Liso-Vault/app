@@ -31,7 +31,7 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
     final joinedController = Get.find<JoinedVaultsController>();
 
     Widget itemBuilder(context, index) {
-      final vault = joinedController.data[index].data();
+      final vault = joinedController.data[index];
 
       void _confirmLeave() {
         void _leave() async {

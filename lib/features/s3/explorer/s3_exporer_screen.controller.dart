@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 

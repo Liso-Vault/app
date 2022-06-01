@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
@@ -19,7 +20,10 @@ class HiveMetadataDevice extends HiveObject {
   @HiveField(5)
   Map<String, dynamic> info;
 
+  String docId;
+
   HiveMetadataDevice({
+    this.docId = '',
     this.id = '',
     this.model = '',
     this.unit = '',
@@ -27,6 +31,14 @@ class HiveMetadataDevice extends HiveObject {
     this.osVersion = '',
     this.info = const {},
   });
+
+  factory HiveMetadataDevice.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> doc_) {
+    final json = doc_.data()!;
+    final device = HiveMetadataDevice.fromJson(json);
+    device.docId = doc_.id;
+    return device;
+  }
 
   factory HiveMetadataDevice.fromJson(Map<String, dynamic> json) =>
       HiveMetadataDevice(
@@ -71,28 +83,28 @@ class HiveMetadataDevice extends HiveObject {
 
     if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;
-      // device.info = info.toMap();
+      device.info = info.toMap();
       device.id = info.identifierForVendor!;
       device.osVersion = info.systemVersion!;
       device.model = info.model!;
       device.unit = info.utsname.machine!;
     } else if (GetPlatform.isAndroid) {
       final info = await deviceInfo.androidInfo;
-      // device.info = info.toMap();
+      device.info = info.toMap();
       device.id = info.androidId!;
       device.osVersion = info.version.release!;
       device.model = info.brand!;
       device.unit = info.device!;
     } else if (GetPlatform.isMacOS) {
       final info = await deviceInfo.macOsInfo;
-      // device.info = info.toMap();
+      device.info = info.toMap();
       device.id = info.systemGUID!;
       device.osVersion = info.osRelease;
       device.model = info.model;
       device.unit = info.hostName;
     } else if (GetPlatform.isWindows) {
       final info = await deviceInfo.windowsInfo;
-      // device.info = info.toMap();
+      device.info = info.toMap();
       // generate a usable id
       device.id =
           '${info.computerName}-${info.numberOfCores}-${info.systemMemoryInMegabytes}';
@@ -101,7 +113,7 @@ class HiveMetadataDevice extends HiveObject {
       // device.unit = info.device!;
     } else if (GetPlatform.isLinux) {
       final info = await deviceInfo.linuxInfo;
-      // device.info = info.toMap();
+      device.info = info.toMap();
       device.id = info.machineId!;
       device.osVersion = info.version!;
       // device.model = info.name;

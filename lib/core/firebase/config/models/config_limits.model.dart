@@ -28,6 +28,7 @@ class ConfigLimits {
 
 class ConfigLimitsSetting {
   const ConfigLimitsSetting({
+    this.id = '',
     this.tokenThreshold = 0,
     this.storageSize = 0,
     this.uploadSize = 0,
@@ -49,6 +50,7 @@ class ConfigLimitsSetting {
     this.prioritySupport = false,
   });
 
+  final String id;
   final int tokenThreshold;
   final int storageSize;
   final int uploadSize;
@@ -71,6 +73,7 @@ class ConfigLimitsSetting {
 
   factory ConfigLimitsSetting.fromJson(Map<String, dynamic> json) =>
       ConfigLimitsSetting(
+        id: json["id"],
         tokenThreshold: json["token_threshold"],
         storageSize: json["storage_size"],
         uploadSize: json["upload_size"],
@@ -93,6 +96,7 @@ class ConfigLimitsSetting {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "token_threshold": tokenThreshold,
         "storage_size": storageSize,
         "upload_size": uploadSize,

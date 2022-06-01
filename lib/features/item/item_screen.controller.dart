@@ -100,12 +100,12 @@ class ItemScreenController extends GetxController
   List<Widget> get sharedVaultChips {
     List<Widget> chips = sharedVaultIds.map<Widget>((vaultId) {
       final results = SharedVaultsController.to.data
-          .where((vault) => vault.data().docId == vaultId);
+          .where((vault) => vault.docId == vaultId);
 
       String name = vaultId;
 
       if (results.isNotEmpty) {
-        name = results.first.data().name;
+        name = results.first.name;
       }
 
       return ActionChip(
@@ -116,12 +116,11 @@ class ItemScreenController extends GetxController
     }).toList();
 
     final menuItems = SharedVaultsController.to.data
-        .where((e) => !sharedVaultIds.contains(e.data().docId))
-        .map((e) {
-      final vault = e.data();
+        .where((e) => !sharedVaultIds.contains(e.docId))
+        .map((vault) {
       return ContextMenuItem(
         title: vault.name,
-        value: e.id,
+        value: vault.docId,
         leading: const Icon(Iconsax.share), // TODO: RemoteImage
         onSelected: () {
           if (sharedVaultIds.contains(vault.docId)) return;

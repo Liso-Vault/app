@@ -35,7 +35,7 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
     final sharedController = Get.find<SharedVaultsController>();
 
     Widget itemBuilder(context, index) {
-      final vault = sharedController.data[index].data();
+      final vault = sharedController.data[index];
 
       void _confirmDelete() {
         void _delete() async {

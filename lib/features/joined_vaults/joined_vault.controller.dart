@@ -18,7 +18,7 @@ class JoinedVaultsController extends GetxController
   late StreamSubscription _stream;
 
   // PROPERTIES
-  final data = <QueryDocumentSnapshot<SharedVault>>[].obs;
+  final data = <SharedVault>[].obs;
   final busy = false.obs;
 
   // PROPERTIES
@@ -68,7 +68,7 @@ class JoinedVaultsController extends GetxController
         .where(FieldPath.documentId, whereIn: vaultIds.toList())
         .get();
 
-    data.value = snapshots.docs;
+    data.value = snapshots.docs.map((e) => e.data()).toList();
     change(null, status: RxStatus.success());
     console.wtf('joined vaults: ${data.length}');
   }

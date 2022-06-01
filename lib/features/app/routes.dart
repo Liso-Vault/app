@@ -20,6 +20,7 @@ abstract class Routes {
   static const sharedVaults = '/shared_vaults';
   static const joinedVaults = '/joined_vaults';
   static const vaultExplorer = '/vault_explorer';
+  static const devices = '/devices';
   static const disabledBeta = '/disabled_beta';
   static const debug = '/debug';
 

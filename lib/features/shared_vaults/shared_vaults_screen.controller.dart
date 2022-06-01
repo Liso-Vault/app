@@ -82,7 +82,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
       // add to firestore
       final vault = SharedVault(
-        userId: AuthService.to.instance.currentUser!.uid,
+        userId: AuthService.to.userId,
         address: WalletService.to.longAddress,
         name: nameController.text,
         description: descriptionController.text,

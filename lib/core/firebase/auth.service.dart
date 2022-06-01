@@ -46,7 +46,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-  void _record() async {
+  void _record({bool enforceDevices = false}) async {
     if (!WalletService.to.isReady) {
       return console.error('Cannot record because of null wallet');
     }
@@ -55,9 +55,10 @@ class AuthService extends GetxService with ConsoleMixin {
     if (info == null) return console.error('error storage info');
 
     await FirestoreService.to.record(
-      objects: info.contents.length,
+      filesCount: info.contents.length,
       totalSize: info.totalSize,
-      encryptedFiles: info.encryptedFiles,
+      encryptedFilesCount: info.encryptedFiles,
+      enforceDevices: enforceDevices,
     );
   }
 
@@ -69,8 +70,8 @@ class AuthService extends GetxService with ConsoleMixin {
   Future<void> signIn() async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
-    if (instance.currentUser != null) {
-      _record();
+    if (isSignedIn) {
+      _record(enforceDevices: true);
       return console.warning('Already Signed In');
     }
 

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
@@ -7,18 +5,19 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
-import 'package:liso/core/liso/liso_paths.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
-import 'package:path/path.dart';
 
+import '../../features/app/routes.dart';
 import '../../features/joined_vaults/model/member.model.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import '../../features/wallet/wallet.service.dart';
 import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
+import '../services/cipher.service.dart';
 import 'crashlytics.service.dart';
 
 const kSharedVaultsCollection = 'shared_vaults';
@@ -44,6 +43,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
   late CollectionReference<SharedVault> sharedVaults;
 
+  late CollectionReference<HiveMetadataDevice> userDevices;
+
   late Query<VaultMember> vaultMembers;
 
   // PROPERTIES
@@ -52,7 +53,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   FirebaseFirestore get instance => FirebaseFirestore.instance;
 
   DocumentReference<Map<String, dynamic>> get userDoc =>
-      usersCol.doc(AuthService.to.instance.currentUser!.uid);
+      usersCol.doc(AuthService.to.userId);
 
   DocumentReference<Map<String, dynamic>> get usersStatsDoc =>
       usersCol.doc(kStatsDoc);
@@ -74,6 +75,12 @@ class FirestoreService extends GetxService with ConsoleMixin {
       toFirestore: (object, _) => object.toJson(),
     );
 
+    userDevices = userDoc.collection('devices').withConverter(
+          fromFirestore: (snapshot, _) =>
+              HiveMetadataDevice.fromSnapshot(snapshot),
+          toFirestore: (object, _) => object.toJson(),
+        );
+
     super.onInit();
   }
 
@@ -81,23 +88,38 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // record the some metadata: created time and updated time, items count and files count
   // data will be used for airdrops, and other promotions
   Future<void> record({
-    required int objects,
-    required int encryptedFiles,
+    required int filesCount,
+    required int encryptedFilesCount,
     required int totalSize,
+    bool enforceDevices = false,
   }) async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
     if (!Persistence.to.analytics.val) return;
 
-    // TODO: calculate whole size
-    final vaultFile = File(join(
-      LisoPaths.hive!.path,
-      '$kHiveBoxItems.hive',
-    ));
+    if (enforceDevices) {
+      final devicesSnapshot = await FirestoreService.to.userDevices.get();
+      final devices = devicesSnapshot.docs.map((e) => e.data()).toList();
+      final foundDevices =
+          devices.where((e) => e.id == Globals.metadata.device.id);
+      final totalDevices = devices.length + (foundDevices.isEmpty ? 1 : 0);
+      console.wtf('totalDevices: $totalDevices');
 
-    console.wtf('Doc ID: ${userDoc.id}');
+      if (totalDevices > WalletService.to.limits.devices) {
+        // open a locked page to manage devices and with button to upgrade
+        return Get.toNamed(
+          Routes.devices,
+          parameters: {'enforce': 'true'},
+          preventDuplicates: true,
+        );
+      }
+    }
+
+    // calculate vault byte size
+    final vaultJson = await LisoManager.compactJson();
+    final encryptedVaultBytes = CipherService.to.encrypt(vaultJson.codeUnits);
 
     final data = {
-      'userId': AuthService.to.instance.currentUser!.uid,
+      'userId': AuthService.to.userId,
       'address': WalletService.to.longAddress,
       'updatedTime': FieldValue.serverTimestamp(),
       // TODO: record last sync time
@@ -106,13 +128,13 @@ class FirestoreService extends GetxService with ConsoleMixin {
         'device': await HiveMetadataDevice.getJson(),
         "size": {
           'storage': totalSize,
-          'vault': await vaultFile.length(),
+          'vault': encryptedVaultBytes.length,
         },
         'count': {
           'items': HiveItemsService.to.data.length,
           'groups': HiveGroupsService.to.data.length,
-          'files': objects,
-          'encrypted_files': encryptedFiles,
+          'files': filesCount,
+          'encrypted_files': encryptedFilesCount,
           'shared_vaults': SharedVaultsController.to.data.length,
           'joined_vaults': JoinedVaultsController.to.data.length,
         },
@@ -141,12 +163,13 @@ class FirestoreService extends GetxService with ConsoleMixin {
     }
 
     // update user doc
-    batch.set(
-      userDoc,
-      data,
-      SetOptions(merge: true),
-    );
+    batch.set(userDoc, data, SetOptions(merge: true));
 
+    // record user device
+    final device = await HiveMetadataDevice.get();
+    batch.set(userDevices.doc(device.id), device);
+
+    // commit batch
     try {
       await batch.commit();
     } catch (e, s) {

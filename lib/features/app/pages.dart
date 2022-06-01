@@ -33,6 +33,8 @@ import '../attachments/attachments.screen.dart';
 import '../attachments/attachments_screen.controller.dart';
 import '../cipher/cipher.screen.dart';
 import '../configuration/configuration.screen.dart';
+import '../devices/devices.screen.dart';
+import '../devices/devices_screen.controller.dart';
 import '../item/item.screen.dart';
 import '../item/item_screen.controller.dart';
 import '../joined_vaults/explorer/vault_explorer.screen.dart';
@@ -188,6 +190,11 @@ class AppPages {
       name: Routes.vaultExplorer,
       page: () => const VaultExplorerScreen(),
       binding: VaultExplorerScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.devices,
+      page: () => const DevicesScreen(),
+      binding: DevicesScreenBinding(),
     ),
     GetPage(
       name: Routes.disabledBeta,

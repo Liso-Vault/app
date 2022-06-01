@@ -10,7 +10,6 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/hive_items.service.dart';
@@ -73,49 +72,83 @@ class SettingsScreen extends GetView<SettingsScreenController>
           ),
         ),
         const Divider(),
-        ListTile(
-          title: Text('time_machine'.tr),
-          subtitle: const Text('Go back in time to undo your changes'),
-          leading: Icon(Iconsax.clock, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () {
-            if (!persistence.sync.val) {
-              return UIUtils.showSimpleDialog(
-                'Sync Required',
-                'Please turn on ${config.appName} Cloud Sync to use this feature',
-              );
-            }
-
-            Utils.adaptiveRouteOpen(
-              name: Routes.s3Explorer,
-              parameters: {'type': 'time_machine'},
-            );
-          },
-        ),
-        const Divider(),
-        ListTile(
+        ExpansionTile(
+          title: const Text('Vault Settings'),
+          subtitle: const Text('Manage your vaults'),
           leading: Icon(Iconsax.briefcase, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: const Text('Custom Vaults'),
-          subtitle: const Text('Manage your own custom vaults'),
-          onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
+          children: [
+            ListTile(
+              leading: Icon(Iconsax.briefcase, color: themeColor),
+              trailing: const Icon(Iconsax.arrow_right_3),
+              title: const Text('Custom Vaults'),
+              subtitle: const Text('Manage your own custom vaults'),
+              onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
+            ),
+            if (Persistence.to.canShare) ...[
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.share, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Shared Vaults'),
+                subtitle: const Text('Manage your shared vaults'),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+              ),
+              const Divider(),
+              ListTile(
+                leading: Icon(LineIcons.plus, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Joined Vaults'),
+                subtitle: const Text('Manage your joined vaults'),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
+              ),
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.box_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: Text('export_vault'.tr),
+                subtitle: const Text('Save <vault>.liso to an external source'),
+                onTap: () {
+                  if (HiveItemsService.to.data.isEmpty) {
+                    return UIUtils.showSimpleDialog(
+                      'Empty Vault',
+                      'Cannot export an empty vault.',
+                    );
+                  }
+
+                  Utils.adaptiveRouteOpen(name: Routes.export);
+                },
+              ),
+              const Divider(),
+              ListTile(
+                title: const Text('Backed Up Vaults'),
+                subtitle: const Text('Go back in time and undo your changes'),
+                leading: Icon(Iconsax.clock, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                onTap: () {
+                  if (!persistence.sync.val) {
+                    return UIUtils.showSimpleDialog(
+                      'Sync Required',
+                      'Please turn on ${config.appName} Cloud Sync to use this feature',
+                    );
+                  }
+
+                  Utils.adaptiveRouteOpen(
+                    name: Routes.s3Explorer,
+                    parameters: {'type': 'time_machine'},
+                  );
+                },
+              ),
+            ],
+          ],
         ),
-        if (Persistence.to.canShare) ...[
+        if (Persistence.to.canSync) ...[
           const Divider(),
           ListTile(
-            leading: Icon(Iconsax.share, color: themeColor),
+            leading: Icon(Iconsax.cpu, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3),
-            title: const Text('Shared Vaults'),
-            subtitle: const Text('Manage your shared vaults'),
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
-          ),
-          const Divider(),
-          ListTile(
-            leading: Icon(LineIcons.plus, color: themeColor),
-            trailing: const Icon(Iconsax.arrow_right_3),
-            title: const Text('Joined Vaults'),
-            subtitle: const Text('Manage your joined vaults'),
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
+            title: const Text('Devices'),
+            subtitle: const Text('Manage your synced devices'),
+            onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
           ),
         ],
         const Divider(),
@@ -130,23 +163,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
               'Import Items',
               "Soon, you'll be able to import items from 1Password, LastPass, etc...",
             );
-          },
-        ),
-        const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.box_1, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('export_vault'.tr),
-          subtitle: const Text('Save <vault>.liso to an external source'),
-          onTap: () {
-            if (HiveItemsService.to.data.isEmpty) {
-              return UIUtils.showSimpleDialog(
-                'Empty Vault',
-                'Cannot export an empty vault.',
-              );
-            }
-
-            Utils.adaptiveRouteOpen(name: Routes.export);
           },
         ),
         const Divider(),

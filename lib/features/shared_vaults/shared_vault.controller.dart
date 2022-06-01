@@ -17,7 +17,7 @@ class SharedVaultsController extends GetxController
   late StreamSubscription _stream;
 
   // PROPERTIES
-  final data = <QueryDocumentSnapshot<SharedVault>>[].obs;
+  final data = <SharedVault>[].obs;
   final busy = false.obs;
 
   // PROPERTIES
@@ -43,7 +43,7 @@ class SharedVaultsController extends GetxController
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     _stream = FirestoreService.to.sharedVaults
-        .where('userId', isEqualTo: AuthService.to.instance.currentUser!.uid)
+        .where('userId', isEqualTo: AuthService.to.userId)
         .orderBy('createdTime', descending: true)
         // .limit(_limit)
         .snapshots()
@@ -61,7 +61,7 @@ class SharedVaultsController extends GetxController
       return data.clear();
     }
 
-    data.value = snapshot.docs;
+    data.value = snapshot.docs.map((e) => e.data()).toList();
     change(null, status: RxStatus.success());
     console.wtf('shared vaults: ${data.length}');
   }

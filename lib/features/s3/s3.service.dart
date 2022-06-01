@@ -307,15 +307,16 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     console.info('up syncing...');
-    final backupResult = await backup(lisoContent);
-    // ignore backup error and continue
-    if (backupResult.isLeft) {
-      console.warning('Failed to backup: ${backupResult.left}');
-    } else {
-      console.info(
-        'success! eTag: ${backupResult.right.eTag}, lastModified: ${backupResult.right.lastModified}',
-      );
-    }
+    // TODO: enable when S3 copy method is ready
+    // final backupResult = await backup(lisoContent);
+    // // ignore backup error and continue
+    // if (backupResult.isLeft) {
+    //   console.warning('Failed to backup: ${backupResult.left}');
+    // } else {
+    //   console.info(
+    //     'success! eTag: ${backupResult.right.eTag}, lastModified: ${backupResult.right.lastModified}',
+    //   );
+    // }
 
     // UPLOAD
     _syncProgress(0.7, null);
@@ -362,9 +363,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     final metadataString = await updatedLocalMetadata();
 
-    for (final doc in SharedVaultsController.to.data) {
-      final sharedVault = doc.data();
-
+    for (final sharedVault in SharedVaultsController.to.data) {
       final sharedItems = HiveItemsService.to.data
           .where((item) => item.sharedVaultIds.contains(sharedVault.docId))
           .toList();
@@ -376,7 +375,7 @@ class S3Service extends GetxService with ConsoleMixin {
       final bytes = Uint8List.fromList(sharedItemsJsonString.codeUnits);
 
       final cipherKeyResult = await HiveItemsService.to.obtainFieldValue(
-        itemId: doc.id,
+        itemId: sharedVault.docId,
         fieldId: 'key',
       );
 

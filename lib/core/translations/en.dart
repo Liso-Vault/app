@@ -150,4 +150,8 @@ final en = {
   "leave": "Leave",
   "join": "Join",
   "join_shared_vault": "Join Shared Vault",
+  "devices": "Devices",
+  "synced_devices": "Synced Devices",
+  "unsync": "Unsync",
+  "unsync_device": "Unsync Device"
 };

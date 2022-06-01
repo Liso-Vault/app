@@ -1,18 +1,23 @@
+import 'dart:convert';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/firestore.service.dart';
+import 'package:liso/core/hive/models/metadata/device.hive.dart';
+import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
-import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
-import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:uuid/uuid.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../s3/s3.service.dart';
 
 class DebugScreen extends StatelessWidget with ConsoleMixin {
   const DebugScreen({Key? key}) : super(key: key);
@@ -74,8 +79,34 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            SharedVaultsController.to.restart();
-            JoinedVaultsController.to.restart();
+            // SharedVaultsController.to.restart();
+            // JoinedVaultsController.to.restart();
+
+            // final info = await S3Service.to.fetchStorageSize();
+            // if (info == null) return console.error('error storage info');
+
+            // await FirestoreService.to.record(
+            //   filesCount: info.contents.length,
+            //   totalSize: info.totalSize,
+            //   encryptedFilesCount: info.encryptedFiles,
+            //   enforceDevices: true,
+            // );
+
+            await FirestoreService.to.userDevices.add(HiveMetadataDevice(
+              id: const Uuid().v4(),
+            ));
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Show Limits'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            UIUtils.showSimpleDialog(
+              'Limits',
+              jsonEncode(WalletService.to.limits.toJson()),
+            );
           },
         ),
         const Divider(),

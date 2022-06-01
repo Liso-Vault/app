@@ -135,9 +135,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   List<Widget> get sharedVaultsTiles =>
       SharedVaultsController.to.data.isNotEmpty
           ? SharedVaultsController.to.data.map(
-              (e) {
-                final vault = e.data();
-
+              (vault) {
                 final count = groupedItems
                     .where((item) => item.sharedVaultIds.contains(vault.docId))
                     .length;
@@ -160,7 +158,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
                           alignment: Alignment.centerLeft,
                         ),
                   selected: vault.docId == filterSharedVaultId.value,
-                  onTap: () => filterBySharedVaultId(e.id),
+                  onTap: () => filterBySharedVaultId(vault.docId),
                 );
               },
             ).toList()
@@ -175,8 +173,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   List<Widget> get joinedVaultsTiles =>
       JoinedVaultsController.to.data.isNotEmpty
           ? JoinedVaultsController.to.data.map(
-              (e) {
-                final vault = e.data();
+              (vault) {
                 // TODO: extract vault and count items
                 const count = 0;
 
@@ -214,9 +211,9 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   String get filterSharedVaultLabel {
     final vaults = SharedVaultsController.to.data
-        .where((e) => e.id == filterSharedVaultId.value);
+        .where((e) => e.docId == filterSharedVaultId.value);
     if (vaults.isEmpty) return '';
-    return vaults.first.data().name;
+    return vaults.first.name;
   }
 
   String get filterGroupLabel {

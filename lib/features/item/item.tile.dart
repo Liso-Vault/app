@@ -226,12 +226,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     final sharedVaults = item.sharedVaultIds.map(
       (e) {
-        final results = SharedVaultsController.to.data.where((x) => x.id == e);
+        final results =
+            SharedVaultsController.to.data.where((x) => x.docId == e);
 
         SharedVault? vault;
 
         if (results.isNotEmpty) {
-          vault = results.first.data();
+          vault = results.first;
         }
 
         Widget icon = const Icon(Iconsax.share, size: 10);
