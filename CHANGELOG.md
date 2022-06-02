@@ -44,3 +44,7 @@
 
 ## 0.3.0
 - First Beta
+
+An open-source data management application that focuses mainly on securely storing private information and files
+
+Liso uses a powerful decentralized network of computers to route your files, making it impossible for anyone to leak or sell your data.
