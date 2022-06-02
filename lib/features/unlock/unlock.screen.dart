@@ -78,7 +78,8 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
             ),
             Obx(
               () => Visibility(
-                visible: BiometricService.to.supported.value,
+                visible: BiometricService.to.supported.value &&
+                    controller.useBiometrics,
                 child: IconButton(
                   padding: const EdgeInsets.only(left: 15),
                   icon: const Icon(Iconsax.finger_scan),

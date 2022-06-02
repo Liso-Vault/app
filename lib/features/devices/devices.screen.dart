@@ -47,7 +47,10 @@ class DevicesScreen extends GetView<DevicesScreenController> with ConsoleMixin {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(device.id),
+            Text(
+              device.id,
+              style: const TextStyle(fontSize: 12),
+            ),
             if (isThisDevice) ...[
               Row(
                 children: [
@@ -90,14 +93,16 @@ class DevicesScreen extends GetView<DevicesScreenController> with ConsoleMixin {
         iconData: Iconsax.warning_2,
         message: message!,
         child: TextButton(
-          onPressed: controller.load,
+          onPressed: controller.restart,
           child: Text('try_again'.tr),
         ),
       ),
     );
 
     final appBar = AppBar(
-      title: Text('devices'.tr),
+      title: Obx(
+        () => Text('${controller.data.length} ${'devices'.tr}'),
+      ),
       centerTitle: controller.enforce,
       leading: controller.enforce
           ? const SizedBox.shrink()

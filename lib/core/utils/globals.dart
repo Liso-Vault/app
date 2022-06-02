@@ -7,10 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 
 // HIVE DATABASE
+const kHiveBoxGroups = 'groups';
 const kHiveBoxItems = 'items';
 const kHiveBoxPersistence = 'persistence';
-// const kHiveBoxSharedVaultCredentials = 'shared_vaults';
-const kHiveBoxGroups = 'groups';
 // BIOMETRIC STORAGE
 const kBiometricPasswordKey = 'biometric_password';
 const kBiometricSeedKey = 'biometric_seed';

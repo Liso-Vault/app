@@ -6,6 +6,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
+import 'package:liso/core/firebase/config/models/config_limits.model.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
@@ -25,7 +26,6 @@ import '../../core/notifications/notifications.manager.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
-import '../app/routes.dart';
 
 class JoinedVaultsScreenBinding extends Bindings {
   @override
@@ -67,21 +67,38 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       );
     }
 
-    final membersCol = FirestoreService.to.sharedVaults
-        .doc(vaultIdController.text)
-        .collection(kVaultMembersCollection);
+    final sharedVaultDoc = FirestoreService.to.sharedVaults.doc(
+      vaultIdController.text,
+    );
+
+    final membersCol = sharedVaultDoc.collection(kVaultMembersCollection);
 
     final statsSnapshot = await membersCol.doc(kStatsDoc).get();
     final existingMembers = statsSnapshot.data()?['count'] ?? 0;
     console.info('existingMembers: $existingMembers');
 
-    if (existingMembers >= WalletService.to.limits.sharedMembers) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Title',
-          'body': 'Maximum members in shared vault reached',
-        }, // TODO: add message
+    final sharedVaultSnapshot = await sharedVaultDoc.get();
+    final sharedVault = sharedVaultSnapshot.data()!;
+
+    final ownerDoc = FirestoreService.to.users.doc(sharedVault.userId);
+    final ownerSnapshot = await ownerDoc.get();
+    final owner = ownerSnapshot.data()!;
+
+    // obtain owner limits
+    var ownerLimits = ConfigService.to.limits.tier0;
+
+    if (owner.limits == 'tier1') {
+      ownerLimits = ConfigService.to.limits.tier1;
+    } else if (owner.limits == 'tier2') {
+      ownerLimits = ConfigService.to.limits.tier2;
+    } else if (owner.limits == 'tier3') {
+      ownerLimits = ConfigService.to.limits.tier3;
+    }
+
+    if (existingMembers >= ownerLimits.sharedMembers) {
+      return UIUtils.showSimpleDialog(
+        'Unable To Join',
+        'The owner of the shared vault reached the max members limit',
       );
     }
 
@@ -169,10 +186,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     try {
       await batch.commit();
     } catch (e, s) {
-      CrashlyticsService.to.record(FlutterErrorDetails(
-        exception: e,
-        stack: s,
-      ));
+      CrashlyticsService.to.record(e, s);
 
       return UIUtils.showSimpleDialog(
         'Failed To Join',
@@ -232,7 +246,6 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
         TextFormField(
           controller: vaultIdController,
           autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
           maxLength: 30,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (data) {

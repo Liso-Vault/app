@@ -23,6 +23,7 @@ class UnlockScreenController extends GetxController
   // VARIABLES
   final passwordController = TextEditingController();
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
+  final useBiometrics = Get.parameters['biometrics'] != 'false';
 
   // PROPERTIES
   final attemptsLeft = Persistence.to.maxUnlockAttempts.val.obs;
@@ -49,6 +50,7 @@ class UnlockScreenController extends GetxController
 
   // biometric storage
   void authenticateBiometrics() async {
+    if (!useBiometrics) return;
     if (!(await BiometricService.to.authenticate())) return;
     // set the password then programmatically unlock
     passwordController.text = Persistence.to.walletPassword.val;
@@ -61,14 +63,13 @@ class UnlockScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
 
-    try {
-      await WalletService.to.initJson(
-        Persistence.to.wallet.val,
-        password: passwordController.text,
-      );
-    } catch (e) {
+    final wallet_ = await WalletService.to.initJson(
+      Persistence.to.wallet.val,
+      password: passwordController.text,
+    );
+
+    if (wallet_ == null) {
       change(null, status: RxStatus.success());
-      console.error('load wallet failed: ${e.toString()}');
       passwordController.clear();
       canProceed.value = false;
 
@@ -91,6 +92,9 @@ class UnlockScreenController extends GetxController
 
       return;
     }
+
+    WalletService.to.wallet = wallet_;
+    await WalletService.to.init();
 
     if (passwordMode) return Get.back(result: true);
     await HiveService.to.open();

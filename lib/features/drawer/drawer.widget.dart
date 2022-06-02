@@ -30,65 +30,39 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
           //     //
           //   },
           // ),
-          Obx(
-            () => ExpansionTile(
-              maintainState: true,
-              title: Text(
-                'vaults'.tr.toUpperCase(),
-                style: const TextStyle(fontSize: 13),
-              ),
-              onExpansionChanged: (expanded) =>
-                  controller.groupsExpanded = expanded,
-              initiallyExpanded: controller.groupsExpanded,
-              children: [
-                ...controller.groupTiles,
-                const Section(
-                  text: 'Shared',
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                ),
-                ...controller.sharedVaultsTiles,
-                const Section(
-                  text: 'Joined',
-                  padding: EdgeInsets.symmetric(horizontal: 18),
-                ),
-                ...controller.joinedVaultsTiles
-              ],
+          ExpansionTile(
+            maintainState: true,
+            title: Text(
+              'vaults'.tr.toUpperCase(),
+              style: const TextStyle(fontSize: 13),
             ),
+            onExpansionChanged: (expanded) =>
+                controller.groupsExpanded = expanded,
+            initiallyExpanded: controller.groupsExpanded,
+            children: [
+              ...controller.groupTiles,
+              PersistenceBuilder(builder: (_, context) {
+                if (!Persistence.to.canShare) return const SizedBox.shrink();
+
+                return Obx(
+                  () => Column(
+                    children: [
+                      const Section(
+                        text: 'Shared',
+                        padding: EdgeInsets.symmetric(horizontal: 18),
+                      ),
+                      ...controller.sharedVaultsTiles,
+                      const Section(
+                        text: 'Joined',
+                        padding: EdgeInsets.symmetric(horizontal: 18),
+                      ),
+                      ...controller.joinedVaultsTiles
+                    ],
+                  ),
+                );
+              }),
+            ],
           ),
-          // PersistenceBuilder(
-          //   builder: (p, context) => Persistence.to.canShare
-          //       ? Obx(
-          //           () => ExpansionTile(
-          //             maintainState: true,
-          //             title: Text(
-          //               'shared_vaults'.tr.toUpperCase(),
-          //               style: const TextStyle(fontSize: 13),
-          //             ),
-          //             onExpansionChanged: (expanded) =>
-          //                 controller.sharedVaultsExpanded = expanded,
-          //             initiallyExpanded: controller.sharedVaultsExpanded,
-          //             children: [...controller.sharedVaultsTiles],
-          //           ),
-          //         )
-          //       : const SizedBox.shrink(),
-          // ),
-          // PersistenceBuilder(
-          //   builder: (p, context) => Persistence.to.canShare
-          //       ? Obx(
-          //           () => ExpansionTile(
-          //             maintainState: true,
-          //             title: Text(
-          //               'joined_vaults'.tr.toUpperCase(),
-          //               style: const TextStyle(fontSize: 13),
-          //             ),
-          //             onExpansionChanged: (expanded) =>
-          //                 controller.joinedVaultsExpanded = expanded,
-          //             initiallyExpanded: controller.joinedVaultsExpanded,
-          //             children: [...controller.joinedVaultsTiles],
-          //           ),
-          //         )
-          //       : const SizedBox.shrink(),
-          // ),
           ExpansionTile(
             maintainState: true,
             title: Text(

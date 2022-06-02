@@ -51,14 +51,20 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             child: ElevatedButton.icon(
               label: Text('create_vault'.tr),
               icon: const Icon(Iconsax.box_add),
-              onPressed: () => Get.toNamed(Routes.mnemonic),
+              onPressed: () async {
+                await AuthService.to.signOut(); // just to make sure
+                Get.toNamed(Routes.mnemonic);
+              },
             ),
           ),
           const SizedBox(height: 10),
           TextButton.icon(
             label: Text('import_vault'.tr),
             icon: const Icon(Iconsax.import_1),
-            onPressed: () => Get.toNamed(Routes.import),
+            onPressed: () async {
+              await AuthService.to.signOut(); // just to make sure
+              Get.toNamed(Routes.import);
+            },
           ),
         ],
       ),
@@ -75,8 +81,9 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextButton(
-                  onPressed: () =>
-                      launchUrlString(ConfigService.to.general.app.links.terms),
+                  onPressed: () => launchUrlString(
+                    ConfigService.to.general.app.links.terms,
+                  ),
                   child: const Text('Terms of Service'),
                 ),
                 const Text('and'),
@@ -84,7 +91,6 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
                   onPressed: () => launchUrlString(
                     ConfigService.to.general.app.links.privacy,
                   ),
-                  onLongPress: AuthService.to.signOut,
                   child: const Text('Privacy Policy'),
                 ),
               ],

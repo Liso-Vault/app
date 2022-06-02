@@ -24,7 +24,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.disabledBeta);
     }
 
-    if (!WalletService.to.saved) {
+    if (!WalletService.to.isSaved) {
       return const RouteSettings(name: Routes.welcome);
     }
 

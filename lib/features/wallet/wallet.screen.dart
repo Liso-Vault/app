@@ -10,7 +10,9 @@ import 'package:liso/features/general/remote_image.widget.dart';
 import 'package:liso/features/wallet/assets/assets.screen.dart';
 import 'package:liso/features/wallet/transactions/transactions.screen.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
@@ -142,6 +144,15 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
               ],
             ),
           ),
+          if (isBeta) ...[
+            TextButton.icon(
+              icon: const Icon(LineIcons.discord),
+              label: const Text('Need Testnet \$LISO?'),
+              onPressed: () => launchUrlString(
+                ConfigService.to.general.app.links.discord,
+              ),
+            ),
+          ]
         ],
       ),
     );

@@ -43,7 +43,7 @@ dependencies:
   path_provider: ^2.0.10
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
-  file_picker: ^4.6.0 # exporting + importing
+  file_picker: ^4.6.1 # exporting + importing
   http: ^0.13.4 # web3dart client
   minio: ^3.5.0 # S3 API
   coingecko_api: ^1.0.2+2 # Coingecko API
@@ -74,18 +74,19 @@ dependencies:
   flutter_local_notifications: ^9.5.3+1
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
-  share_plus: ^4.0.4 # exporting files and sharing texts
+  share_plus: ^4.0.5 # exporting files and sharing texts
   equatable: ^2.0.3
   app_settings: ^4.1.6
   uuid: ^3.0.6 # unique identifiers for items
   window_manager: ^0.2.3 # set desktop window size
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
   console_mixin: ^0.0.1 # logger
+  random_string: ^2.3.1 # random string generator
 
   # INFO
   device_info_plus: ^3.2.3
   package_info_plus: ^1.4.2
-  connectivity_plus: ^2.3.0 # internet connectivity checking
+  connectivity_plus: ^2.3.2 # internet connectivity checking
 
 dev_dependencies:
   # flutter_test:

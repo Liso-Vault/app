@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -20,6 +23,7 @@ class DevicesScreenController extends GetxController
   static DevicesScreenController get to => Get.find();
 
   // VARIABLES
+  late StreamSubscription _stream;
   final enforce = Get.parameters['enforce'] == 'true';
 
   // PROPERTIES
@@ -32,14 +36,33 @@ class DevicesScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    load();
+    start();
     super.onInit();
   }
 
   // FUNCTIONS
-  void load() async {
-    change(null, status: RxStatus.loading());
-    final snapshot = await FirestoreService.to.userDevices.get();
+  void restart() {
+    _stream.cancel();
+    start();
+    console.info('restarted');
+  }
+
+  void start() async {
+    if (!isFirebaseSupported) return console.warning('Not Supported');
+
+    _stream = FirestoreService.to.userDevices
+        .snapshots()
+        .listen(_onData, onError: _onError);
+
+    console.info('started');
+  }
+
+  void _onData(QuerySnapshot<HiveMetadataDevice>? snapshot) {
+    if (snapshot == null || snapshot.docs.isEmpty) {
+      change(null, status: RxStatus.empty());
+      return data.clear();
+    }
+
     data.value = snapshot.docs.map((e) => e.data()).toList();
 
     final thisDevice = Globals.metadata.device;
@@ -50,6 +73,12 @@ class DevicesScreenController extends GetxController
     }
 
     change(null, status: RxStatus.success());
+    console.wtf('devices: ${data.length}');
+  }
+
+  void _onError(error) {
+    console.error('stream error: $error');
+    change(null, status: RxStatus.error('Failed to load: $error'));
   }
 
   void unsync(HiveMetadataDevice device) {

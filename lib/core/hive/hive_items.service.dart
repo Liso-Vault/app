@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:path/path.dart';
 
 import '../../features/main/main_screen.controller.dart';
 import '../liso/liso_paths.dart';
@@ -20,6 +21,7 @@ class HiveItemsService extends GetxService with ConsoleMixin {
 
   // VARIABLES
   late Box<HiveLisoItem> box;
+  bool boxInitialized = false;
 
   // GETTERS
   List<HiveLisoItem> get data => box.isOpen ? box.values.toList() : [];
@@ -37,6 +39,8 @@ class HiveItemsService extends GetxService with ConsoleMixin {
       encryptionCipher: HiveAesCipher(cipherKey ?? WalletService.to.cipherKey!),
       path: LisoPaths.hivePath,
     );
+
+    boxInitialized = true;
   }
 
   Future<void> close() async {
@@ -45,6 +49,11 @@ class HiveItemsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    if (!boxInitialized) {
+      await File(join(LisoPaths.hivePath, '$kHiveBoxItems.hive')).delete();
+      return;
+    }
+
     await box.clear();
     // refresh main listview
     await MainScreenController.to.load();

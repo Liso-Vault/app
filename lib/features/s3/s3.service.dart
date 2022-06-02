@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
@@ -26,7 +25,6 @@ import '../../core/hive/hive_groups.service.dart';
 import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
-import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/liso/vault.model.dart';
 import '../../core/utils/globals.dart';
@@ -112,11 +110,7 @@ class S3Service extends GetxService with ConsoleMixin {
       console.info('init');
     } catch (e, s) {
       console.error('Exception: $e, Stacktrace: $s');
-
-      CrashlyticsService.to.record(FlutterErrorDetails(
-        exception: e,
-        stack: s,
-      ));
+      CrashlyticsService.to.record(e, s);
     }
   }
 
@@ -165,10 +159,6 @@ class S3Service extends GetxService with ConsoleMixin {
       return Left(statResult.left);
     }
 
-    final serverMetadata = HiveMetadata.fromJson(
-      jsonDecode(statResult.right.metaData!['client']!),
-    );
-
     _syncProgress(0.2, 'Fetching...');
 
     final downResult = await _downSync().timeout(
@@ -181,7 +171,6 @@ class S3Service extends GetxService with ConsoleMixin {
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
     Persistence.to.changes.val = 0;
-    persistence.metadata.val = serverMetadata.toJsonString();
 
     // up sync local changes with server
     _syncProgress(0.5, 'Pushing...');
@@ -212,14 +201,9 @@ class S3Service extends GetxService with ConsoleMixin {
       await downloadResult.right.readAsBytes(),
     );
 
-    final decryptedJson = String.fromCharCodes(decryptedBytes);
-
+    final decryptedJson = utf8.decode(decryptedBytes);
     // fix decoding with double quotes
-    final jsonMap = jsonDecode(decryptedJson.replaceAll(
-      r'\"',
-      r'\"',
-    )); // TODO: isolate
-
+    final jsonMap = jsonDecode(decryptedJson); // TODO: isolate
     final vault = LisoVault.fromJson(jsonMap);
     _syncProgress(0.4, null);
     await _mergeGroups(vault.groups);
@@ -228,74 +212,95 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
-    var local = HiveGroupsService.to.box;
-    // MERGED
-    final merged = {...server, ...local.values};
-    console.info('merged: ${merged.length}');
-    final leastUpdatedDuplicates = <HiveLisoGroup>[];
+    // var local = HiveGroupsService.to.box;
+    // // MERGED
+    // final merged = {...server, ...local.values};
+    // console.info('merged: ${merged.length}');
+    // final leastUpdatedDuplicates = <HiveLisoGroup>[];
 
-    for (var x in merged) {
-      // skip if item already added to least updated item list
-      if (x.reserved ||
-          leastUpdatedDuplicates.where((e) => e.id == x.id).isNotEmpty) {
-        continue;
-      }
-      // find duplicates
-      final duplicate = merged.where((y) => y.id == x.id);
-      // return the least updated item of a duplicate
-      if (duplicate.length > 1) {
-        final leastUpdated = duplicate.first.metadata!.updatedTime
-                .isBefore(duplicate.last.metadata!.updatedTime)
-            ? duplicate.first
-            : duplicate.last;
-        leastUpdatedDuplicates.add(leastUpdated);
-      }
-    }
+    // for (var x in merged) {
+    //   // skip if item already added to least updated item list
+    //   if (x.reserved ||
+    //       leastUpdatedDuplicates.where((e) => e.id == x.id).isNotEmpty) {
+    //     continue;
+    //   }
+    //   // find duplicates
+    //   final duplicate = merged.where((y) => y.id == x.id);
+    //   // return the least updated item of a duplicate
+    //   if (duplicate.length > 1) {
+    //     final leastUpdated = duplicate.first.metadata!.updatedTime
+    //             .isBefore(duplicate.last.metadata!.updatedTime)
+    //         ? duplicate.first
+    //         : duplicate.last;
+    //     leastUpdatedDuplicates.add(leastUpdated);
+    //   }
+    // }
 
-    console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
-    // remove duplicate + least updated item
-    merged.removeWhere(
-      (e) => leastUpdatedDuplicates.contains(e),
+    // console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
+    // // remove duplicate + least updated item
+    // merged.removeWhere(
+    //   (e) => leastUpdatedDuplicates.contains(e),
+    // );
+
+    // // clear and reload updated items
+    // await local.clear();
+    // await local.addAll(merged);
+
+    // console.info('merged groups: ${local.length}');
+
+    final local = HiveGroupsService.to.box;
+    // merge server and local items
+    final merged = [...server, ...local.values];
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) {
+        if (a.reserved ||
+            b.reserved ||
+            a.metadata == null ||
+            b.metadata == null) {
+          return 0;
+        }
+
+        return b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime);
+      },
     );
 
-    // clear and reload updated items
+    // leave only the most updated items
+    final newList = <HiveLisoGroup>[];
+
+    for (final item in merged) {
+      final exists = newList.where((e) => e.id == item.id).isNotEmpty;
+      if (exists) continue;
+      newList.addIf(!newList.contains(item), item);
+    }
+
+    console.wtf('merged groups: ${newList.length}');
     await local.clear();
-    await local.addAll(merged);
+    await local.addAll(newList);
   }
 
   Future<void> _mergeItems(List<HiveLisoItem> server) async {
-    var local = HiveItemsService.to.box;
-    // MERGED
-    final merged = {...server, ...local.values};
-    console.info('merged: ${merged.length}');
-    final leastUpdatedDuplicates = <HiveLisoItem>[];
-
-    for (var x in merged) {
-      // skip if item already added to least updated item list
-      if (leastUpdatedDuplicates
-          .where((e) => e.identifier == x.identifier)
-          .isNotEmpty) continue;
-      // find duplicates
-      final duplicate = merged.where((y) => y.identifier == x.identifier);
-      // return the least updated item in duplicate
-      if (duplicate.length > 1) {
-        final leastUpdated = duplicate.first.metadata.updatedTime
-                .isBefore(duplicate.last.metadata.updatedTime)
-            ? duplicate.first
-            : duplicate.last;
-        leastUpdatedDuplicates.add(leastUpdated);
-      }
-    }
-
-    console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
-    // remove duplicate + least updated item
-    merged.removeWhere(
-      (e) => leastUpdatedDuplicates.contains(e),
+    final local = HiveItemsService.to.box;
+    // merge server and local items
+    final merged = [...server, ...local.values];
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
     );
 
-    // clear and reload updated items
+    // leave only the most updated items
+    final newList = <HiveLisoItem>[];
+
+    for (final item in merged) {
+      final exists =
+          newList.where((e) => e.identifier == item.identifier).isNotEmpty;
+      if (exists) continue;
+      newList.addIf(!newList.contains(item), item);
+    }
+
+    console.wtf('merged items: ${newList.length}');
     await local.clear();
-    await local.addAll(merged);
+    await local.addAll(newList);
   }
 
   // UP SYNC
@@ -320,9 +325,11 @@ class S3Service extends GetxService with ConsoleMixin {
 
     // UPLOAD
     _syncProgress(0.7, null);
-    final metadataString = await updatedLocalMetadata();
     final vaultJsonString = await LisoManager.compactJson();
-    final encryptedBytes = CipherService.to.encrypt(vaultJsonString.codeUnits);
+
+    final encryptedBytes = CipherService.to.encrypt(
+      utf8.encode(vaultJsonString),
+    );
 
     String eTag = '';
 
@@ -332,7 +339,6 @@ class S3Service extends GetxService with ConsoleMixin {
         vaultPath,
         Stream<Uint8List>.value(encryptedBytes),
         onProgress: (size) => uploadedSize.value = size,
-        metadata: {'client': metadataString, 'version': kS3MetadataVersion},
       );
     } catch (e) {
       return Left(e);
@@ -340,8 +346,6 @@ class S3Service extends GetxService with ConsoleMixin {
 
     _syncProgress(0.9, null);
     console.info('uploaded: $eTag');
-    persistence.metadata.val = metadataString;
-    console.info('uploaded! eTag: $eTag');
     return const Right(true);
   }
 
@@ -361,18 +365,10 @@ class S3Service extends GetxService with ConsoleMixin {
       'syncing ${SharedVaultsController.to.data.length} shared vaults...',
     );
 
-    final metadataString = await updatedLocalMetadata();
-
     for (final sharedVault in SharedVaultsController.to.data) {
       final sharedItems = HiveItemsService.to.data
           .where((item) => item.sharedVaultIds.contains(sharedVault.docId))
           .toList();
-
-      final sharedItemsJson =
-          List<dynamic>.from(sharedItems.map((x) => x.toJson()));
-
-      final sharedItemsJsonString = jsonEncode(sharedItemsJson);
-      final bytes = Uint8List.fromList(sharedItemsJsonString.codeUnits);
 
       final cipherKeyResult = await HiveItemsService.to.obtainFieldValue(
         itemId: sharedVault.docId,
@@ -387,6 +383,13 @@ class S3Service extends GetxService with ConsoleMixin {
 
         return const Left('value');
       }
+
+      final sharedItemsJson = List<dynamic>.from(
+        sharedItems.map((x) => x.toJson()),
+      );
+
+      final sharedItemsJsonString = jsonEncode(sharedItemsJson);
+      final bytes = Uint8List.fromList(utf8.encode(sharedItemsJsonString));
 
       final encryptedBytes = CipherService.to.encrypt(
         bytes,
@@ -403,7 +406,6 @@ class S3Service extends GetxService with ConsoleMixin {
           s3path,
           Stream<Uint8List>.value(encryptedBytes),
           onProgress: (size) => uploadedSize.value = size,
-          metadata: {'client': metadataString, 'version': kS3MetadataVersion},
         );
       } catch (e) {
         return Left(e);
@@ -590,19 +592,20 @@ class S3Service extends GetxService with ConsoleMixin {
   }) async {
     if (!ready) init();
     if (!persistence.canSync && ready && !force) return const Left('offline');
-    console
-        .info('downloading: ${ConfigService.to.s3.preferredBucket} -> $s3Path');
+    console.info(
+      'downloading: ${ConfigService.to.s3.preferredBucket} -> $s3Path',
+    );
+
     MinioByteStream? stream;
 
     try {
-      stream =
-          await client!.getObject(ConfigService.to.s3.preferredBucket, s3Path);
-    } catch (e) {
-      // CrashlyticsService.to.record(FlutterErrorDetails(
-      //   exception: e,
-      //   stack: s,
-      // ));
-
+      stream = await client!.getObject(
+        ConfigService.to.s3.preferredBucket,
+        s3Path,
+      );
+    } catch (e, s) {
+      console.error('downloadFile error -> $e');
+      CrashlyticsService.to.record(e, s);
       return Left(e);
     }
 
@@ -616,7 +619,6 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, String>> uploadFile(
     File file, {
     required String s3Path,
-    required String metadata,
   }) async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
@@ -630,10 +632,6 @@ class S3Service extends GetxService with ConsoleMixin {
         s3Path,
         Stream<Uint8List>.value(file.readAsBytesSync()),
         onProgress: (size) => uploadedSize.value = size,
-        metadata: {
-          'client': metadata,
-          'version': kS3MetadataVersion,
-        },
       );
     } catch (e) {
       return Left(e);
@@ -649,7 +647,6 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, String>> createFolder(
     String name, {
     required String s3Path,
-    required String metadata,
   }) async {
     if (!ready) init();
     if (!persistence.canSync && ready) return const Left('offline');
@@ -661,10 +658,6 @@ class S3Service extends GetxService with ConsoleMixin {
         config.s3.preferredBucket,
         join(s3Path, '$name/').replaceAll('\\', '/'),
         Stream<Uint8List>.value(Uint8List(0)),
-        metadata: {
-          'client': metadata,
-          'version': kS3MetadataVersion,
-        },
       );
     } catch (e) {
       return Left(e);
@@ -719,15 +712,5 @@ class S3Service extends GetxService with ConsoleMixin {
           ),
         )
         .toList();
-  }
-
-  HiveMetadata? _localMetadata() {
-    if (persistence.metadata.val.isEmpty) return null;
-    return HiveMetadata.fromJson(jsonDecode(persistence.metadata.val));
-  }
-
-  Future<String> updatedLocalMetadata() async {
-    final metadata = _localMetadata() ?? await HiveMetadata.get();
-    return (await metadata.getUpdated()).toJsonString();
   }
 }

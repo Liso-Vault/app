@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/utils/styles.dart';
+import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -77,6 +78,24 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
           providerUrl = ConfigService.to.general.app.links.website;
         }
 
+        void switchProvider(LisoSyncProvider provider) {
+          if (!fromSettings) {
+            persistence.syncProvider.val = provider.name;
+            return;
+          }
+
+          UIUtils.showSimpleDialog(
+            'Switch Sync Provider',
+            'Are you sure you want to switch to ${GetUtils.capitalizeFirst(provider.name)} as the Sync Provider?\n\nUnexpected side effects might happen like inconsistent files and vault data.',
+            closeText: 'Cancel',
+            actionText: 'Switch',
+            action: () {
+              persistence.syncProvider.val = provider.name;
+              Get.back();
+            },
+          );
+        }
+
         final syncChild = Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -111,26 +130,25 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                   CustomChoiceChip(
                     label: 'Sia',
                     selected: isSia,
-                    onSelected: (value) => persistence.syncProvider.val =
-                        LisoSyncProvider.sia.name,
+                    onSelected: (value) => switchProvider(LisoSyncProvider.sia),
                   ),
                   CustomChoiceChip(
                     label: 'Storj',
                     selected: isStorj,
-                    onSelected: (value) => persistence.syncProvider.val =
-                        LisoSyncProvider.storj.name,
+                    onSelected: (value) =>
+                        switchProvider(LisoSyncProvider.storj),
                   ),
                   CustomChoiceChip(
                     label: 'IPFS',
                     selected: isIPFS,
-                    onSelected: (value) => persistence.syncProvider.val =
-                        LisoSyncProvider.ipfs.name,
+                    onSelected: (value) =>
+                        switchProvider(LisoSyncProvider.ipfs),
                   ),
                   CustomChoiceChip(
                     label: 'SkyNet',
                     selected: isSkyNet,
-                    onSelected: (value) => persistence.syncProvider.val =
-                        LisoSyncProvider.skynet.name,
+                    onSelected: (value) =>
+                        switchProvider(LisoSyncProvider.skynet),
                   ),
                   CustomChoiceChip(
                     label: 'Custom',

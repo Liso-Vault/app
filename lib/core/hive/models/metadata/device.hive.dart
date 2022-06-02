@@ -10,26 +10,26 @@ class HiveMetadataDevice extends HiveObject {
   @HiveField(0)
   String id;
   @HiveField(1)
-  String model;
+  String? name;
   @HiveField(2)
-  String unit;
+  String model;
   @HiveField(3)
   String platform;
   @HiveField(4)
   String osVersion;
   @HiveField(5)
-  Map<String, dynamic> info;
+  Map<String, dynamic>? info;
 
   String docId;
 
   HiveMetadataDevice({
     this.docId = '',
     this.id = '',
+    this.name = '',
     this.model = '',
-    this.unit = '',
     this.platform = '',
     this.osVersion = '',
-    this.info = const {},
+    this.info,
   });
 
   factory HiveMetadataDevice.fromSnapshot(
@@ -43,8 +43,8 @@ class HiveMetadataDevice extends HiveObject {
   factory HiveMetadataDevice.fromJson(Map<String, dynamic> json) =>
       HiveMetadataDevice(
         id: json["id"],
+        name: json["name"],
         model: json["model"],
-        unit: json["unit"],
         platform: json["platform"],
         osVersion: json["osVersion"],
         info: json["info"],
@@ -52,8 +52,8 @@ class HiveMetadataDevice extends HiveObject {
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "name": name,
         "model": model,
-        "unit": unit,
         "platform": platform,
         "osVersion": osVersion,
         "info": info,
@@ -83,41 +83,44 @@ class HiveMetadataDevice extends HiveObject {
 
     if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;
-      device.info = info.toMap();
       device.id = info.identifierForVendor!;
       device.osVersion = info.systemVersion!;
-      device.model = info.model!;
-      device.unit = info.utsname.machine!;
+      device.name = info.name!;
+      device.model = info.utsname.machine!;
+      device.info = info.toMap();
     } else if (GetPlatform.isAndroid) {
       final info = await deviceInfo.androidInfo;
-      device.info = info.toMap();
       device.id = info.androidId!;
       device.osVersion = info.version.release!;
-      device.model = info.brand!;
-      device.unit = info.device!;
+      device.name = info.device!;
+      device.model = info.model!;
+
+      // strip unecessary info
+      final infoMap = info.toMap();
+      infoMap.remove('supportedAbis');
+      infoMap.remove('systemFeatures');
+      infoMap.remove('supported32BitAbis');
+      infoMap.remove('supported64BitAbis');
+      device.info = infoMap;
     } else if (GetPlatform.isMacOS) {
       final info = await deviceInfo.macOsInfo;
-      device.info = info.toMap();
       device.id = info.systemGUID!;
       device.osVersion = info.osRelease;
+      device.name = info.computerName;
       device.model = info.model;
-      device.unit = info.hostName;
+      device.info = info.toMap();
     } else if (GetPlatform.isWindows) {
       final info = await deviceInfo.windowsInfo;
-      device.info = info.toMap();
       // generate a usable id
       device.id =
           '${info.computerName}-${info.numberOfCores}-${info.systemMemoryInMegabytes}';
-      // device.osVersion = info.version.release!;
-      // device.model = info.brand!;
-      // device.unit = info.device!;
+      device.name = info.computerName;
+      device.info = info.toMap();
     } else if (GetPlatform.isLinux) {
       final info = await deviceInfo.linuxInfo;
-      device.info = info.toMap();
       device.id = info.machineId!;
       device.osVersion = info.version!;
-      // device.model = info.name;
-      // device.unit = info.;
+      device.info = info.toMap();
     }
 
     return device;

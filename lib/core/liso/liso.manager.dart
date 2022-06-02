@@ -31,21 +31,20 @@ class LisoManager {
     console.info('resetting...');
     // clear filters
     DrawerMenuController.to.clearFilters();
-    // clear hives
-    await HiveService.to.clear();
     // reset persistence
     await Persistence.reset();
+    // reset s3 minio client
+    S3Service.to.init();
     // reset wallet
     WalletService.to.reset();
     // delete FilePicker caches
     if (GetPlatform.isMobile) {
       await FilePicker.platform.clearTemporaryFiles();
     }
-
     // reset firebase
     await AuthService.to.signOut();
-    // reset s3 minio client
-    S3Service.to.init();
+    // clear hives
+    await HiveService.to.clear();
     console.info('reset!');
   }
 
@@ -68,8 +67,10 @@ class LisoManager {
     await HiveItemsService.to.import(vault.items, cipherKey: cipherKey);
   }
 
-  static Future<LisoVault> parseVaultFile(File file,
-      {Uint8List? cipherKey}) async {
+  static Future<LisoVault> parseVaultFile(
+    File file, {
+    Uint8List? cipherKey,
+  }) async {
     final decryptedFile = await CipherService.to.decryptFile(
       file,
       cipherKey: cipherKey,

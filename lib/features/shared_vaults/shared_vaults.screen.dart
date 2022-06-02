@@ -242,7 +242,9 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
     );
 
     final appBar = AppBar(
-      title: Text('shared_vaults'.tr),
+      title: Obx(
+        () => Text('${sharedController.data.length} ${'shared_vaults'.tr}'),
+      ),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );

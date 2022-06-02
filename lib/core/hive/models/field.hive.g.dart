@@ -21,14 +21,15 @@ class HiveLisoFieldAdapter extends TypeAdapter<HiveLisoField> {
       type: fields[1] as String,
       reserved: fields[2] as bool,
       required: fields[3] as bool,
-      data: fields[4] as HiveLisoFieldData,
+      readOnly: fields[4] as bool,
+      data: fields[5] as HiveLisoFieldData,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveLisoField obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.identifier)
       ..writeByte(1)
@@ -38,6 +39,8 @@ class HiveLisoFieldAdapter extends TypeAdapter<HiveLisoField> {
       ..writeByte(3)
       ..write(obj.required)
       ..writeByte(4)
+      ..write(obj.readOnly)
+      ..writeByte(5)
       ..write(obj.data);
   }
 

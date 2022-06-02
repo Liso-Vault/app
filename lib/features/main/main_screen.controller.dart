@@ -428,7 +428,7 @@ class MainScreenController extends GetxController
       if (msg == AppLifecycleState.resumed.toString()) {
         timeLockTimer?.cancel();
 
-        if (WalletService.to.saved && !WalletService.to.isReady) {
+        if (WalletService.to.isSaved && !WalletService.to.isReady) {
           Get.toNamed(Routes.unlock);
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {

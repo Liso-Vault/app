@@ -28,7 +28,13 @@ class UIUtils {
     );
   }
 
-  static void showSimpleDialog(String title, String body) {
+  static void showSimpleDialog(
+    String title,
+    String body, {
+    String? closeText,
+    Function()? action,
+    String? actionText,
+  }) {
     final bodyContent = Text(body);
 
     Get.dialog(
@@ -43,8 +49,14 @@ class UIUtils {
         actions: [
           TextButton(
             onPressed: Get.back,
-            child: Text('okay'.tr),
+            child: Text(closeText ?? 'okay'.tr),
           ),
+          if (action != null) ...[
+            TextButton(
+              onPressed: action,
+              child: Text(actionText ?? 'okay'.tr),
+            ),
+          ]
         ],
       ),
     );

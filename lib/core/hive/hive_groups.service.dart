@@ -1,10 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:path/path.dart';
 import 'package:secrets/secrets.dart';
 
 import '../../features/groups/groups.controller.dart';
@@ -17,6 +19,7 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
 
   // VARIABLES
   late Box<HiveLisoGroup> box;
+  bool boxInitialized = false;
 
   // GETTERS
   List<HiveLisoGroup> get data => box.isOpen ? box.values.toList() : [];
@@ -30,7 +33,7 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
       path: LisoPaths.hivePath,
     );
 
-    console.wtf('length open: ${box.length}');
+    boxInitialized = true;
 
     if (box.isEmpty && initialize) {
       // initial groups
@@ -39,7 +42,6 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
       );
 
       await box.addAll(groups);
-      console.wtf('added initial groups: ${box.length}');
     }
   }
 
@@ -49,8 +51,12 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    if (!boxInitialized) {
+      await File(join(LisoPaths.hivePath, '$kHiveBoxGroups.hive')).delete();
+      return;
+    }
+
     await box.clear();
-    console.wtf('length clear: ${box.length}');
     // refresh cusom vaults
     GroupsController.to.load();
     await box.deleteFromDisk();

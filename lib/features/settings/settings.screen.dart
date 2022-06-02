@@ -72,52 +72,39 @@ class SettingsScreen extends GetView<SettingsScreenController>
           ),
         ),
         const Divider(),
-        ExpansionTile(
-          title: const Text('Vault Settings'),
-          subtitle: const Text('Manage your vaults'),
-          leading: Icon(Iconsax.briefcase, color: themeColor),
-          children: [
-            ListTile(
-              leading: Icon(Iconsax.briefcase, color: themeColor),
-              trailing: const Icon(Iconsax.arrow_right_3),
-              title: const Text('Custom Vaults'),
-              subtitle: const Text('Manage your own custom vaults'),
-              onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
-            ),
-            if (Persistence.to.canShare) ...[
-              const Divider(),
+        PersistenceBuilder(builder: (_, context) {
+          return ExpansionTile(
+            title: const Text('Vault Settings'),
+            subtitle: const Text('Manage your vaults'),
+            leading: Icon(Iconsax.briefcase, color: themeColor),
+            children: [
               ListTile(
-                leading: Icon(Iconsax.share, color: themeColor),
+                leading: Icon(Iconsax.briefcase, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
-                title: const Text('Shared Vaults'),
-                subtitle: const Text('Manage your shared vaults'),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+                title: const Text('Custom Vaults'),
+                subtitle: const Text('Manage your own custom vaults'),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
               ),
-              const Divider(),
-              ListTile(
-                leading: Icon(LineIcons.plus, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: const Text('Joined Vaults'),
-                subtitle: const Text('Manage your joined vaults'),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
-              ),
-              const Divider(),
-              ListTile(
-                leading: Icon(Iconsax.box_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: Text('export_vault'.tr),
-                subtitle: const Text('Save <vault>.liso to an external source'),
-                onTap: () {
-                  if (HiveItemsService.to.data.isEmpty) {
-                    return UIUtils.showSimpleDialog(
-                      'Empty Vault',
-                      'Cannot export an empty vault.',
-                    );
-                  }
-
-                  Utils.adaptiveRouteOpen(name: Routes.export);
-                },
-              ),
+              if (Persistence.to.canShare) ...[
+                const Divider(),
+                ListTile(
+                  leading: Icon(Iconsax.share, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: const Text('Shared Vaults'),
+                  subtitle: const Text('Manage your shared vaults'),
+                  onTap: () =>
+                      Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: Icon(LineIcons.plus, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: const Text('Joined Vaults'),
+                  subtitle: const Text('Manage your joined vaults'),
+                  onTap: () =>
+                      Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
+                ),
+              ],
               const Divider(),
               ListTile(
                 title: const Text('Backed Up Vaults'),
@@ -138,19 +125,42 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   );
                 },
               ),
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.box_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: Text('export_vault'.tr),
+                subtitle: const Text('Save <vault>.liso to an external source'),
+                onTap: () {
+                  if (HiveItemsService.to.data.isEmpty) {
+                    return UIUtils.showSimpleDialog(
+                      'Empty Vault',
+                      'Cannot export an empty vault.',
+                    );
+                  }
+
+                  Utils.adaptiveRouteOpen(name: Routes.export);
+                },
+              ),
             ],
-          ],
-        ),
-        if (Persistence.to.canSync) ...[
-          const Divider(),
-          ListTile(
-            leading: Icon(Iconsax.cpu, color: themeColor),
-            trailing: const Icon(Iconsax.arrow_right_3),
-            title: const Text('Devices'),
-            subtitle: const Text('Manage your synced devices'),
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
-          ),
-        ],
+          );
+        }),
+        PersistenceBuilder(builder: (_, context) {
+          return Column(
+            children: [
+              if (Persistence.to.canSync) ...[
+                const Divider(),
+                ListTile(
+                  leading: Icon(Iconsax.cpu, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: const Text('Devices'),
+                  subtitle: const Text('Manage your synced devices'),
+                  onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
+                ),
+              ],
+            ],
+          );
+        }),
         const Divider(),
         ListTile(
           leading: Icon(Iconsax.import_1, color: themeColor),

@@ -68,10 +68,7 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
           try {
             await batch.commit();
           } catch (e, s) {
-            CrashlyticsService.to.record(FlutterErrorDetails(
-              exception: e,
-              stack: s,
-            ));
+            CrashlyticsService.to.record(e, s);
 
             return UIUtils.showSimpleDialog(
               'Failed To Leave',
@@ -175,7 +172,9 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
     );
 
     final appBar = AppBar(
-      title: Text('joined_vaults'.tr),
+      title: Obx(
+        () => Text('${joinedController.data.length} ${'joined_vaults'.tr}'),
+      ),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );

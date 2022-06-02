@@ -48,10 +48,7 @@ class JoinedVaultsController extends GetxController
         .orderBy('createdTime', descending: true)
         // .limit(_limit)
         .snapshots()
-        .listen(
-          _onData,
-          onError: _onError,
-        );
+        .listen(_onData, onError: _onError);
 
     console.info('started');
   }
@@ -63,7 +60,6 @@ class JoinedVaultsController extends GetxController
     }
 
     final vaultIds = snapshot.docs.map((e) => e.reference.parent.parent!.id);
-
     final snapshots = await FirestoreService.to.sharedVaults
         .where(FieldPath.documentId, whereIn: vaultIds.toList())
         .get();
@@ -76,13 +72,5 @@ class JoinedVaultsController extends GetxController
   void _onError(error) {
     console.error('stream error: $error');
     change(null, status: RxStatus.error('Failed to load: $error'));
-  }
-
-  Future<bool> exists(String name) async {
-    final doc = await FirestoreService.to.sharedVaults
-        .where('name', isEqualTo: name)
-        .get();
-
-    return doc.docs.isNotEmpty;
   }
 }

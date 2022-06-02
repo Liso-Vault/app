@@ -85,8 +85,8 @@ class Persistence extends GetxController with ConsoleMixin {
 
   static Future<void> reset() async {
     await box.clear();
-    // await box.deleteFromDisk();
-    // await open();
+    await box.deleteFromDisk();
+    await open();
   }
 
   static void _initLocale() {

@@ -22,7 +22,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     // CAPTURE FLUTTER ERRORS
     FlutterError.onError = (details) {
       console.error("FLUTTER_ERROR");
-      record(details);
+      record(details.exception, details.stack);
     };
   }
 
@@ -37,8 +37,11 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
         .setUserIdentifier(WalletService.to.longAddress);
   }
 
-  void record(FlutterErrorDetails details, {bool fatal = false}) {
-    return CrashlyticsService.recordStatic(details);
+  void record(Object e, StackTrace? s, {bool fatal = false}) {
+    return CrashlyticsService.recordStatic(FlutterErrorDetails(
+      exception: e,
+      stack: s,
+    ));
   }
 
   static void recordStatic(FlutterErrorDetails details) {

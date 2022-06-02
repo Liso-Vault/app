@@ -34,7 +34,7 @@ class ResetScreenController extends GetxController
   void reset() async {
     final unlocked = await Get.toNamed(
           Routes.unlock,
-          parameters: {'mode': 'password_prompt'},
+          parameters: {'mode': 'password_prompt', 'biometrics': 'false'},
         ) ??
         false;
 

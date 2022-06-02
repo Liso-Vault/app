@@ -10,6 +10,7 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../core/firebase/auth.service.dart';
 import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
@@ -56,9 +57,9 @@ class CreatePasswordScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
+    await AuthService.to.signOut(); // just to make sure
 
     // TODO: improve password validation
-
     if (passwordController.text != passwordConfirmController.text) {
       change(null, status: RxStatus.success());
 
@@ -77,22 +78,21 @@ class CreatePasswordScreenController extends GetxController
     // TODO: use a global variable instead to prevent lost
     final privateKeyHex = Get.parameters['privateKeyHex']!;
 
-    await WalletService.to.initPrivateKeyHex(
+    WalletService.to.wallet = WalletService.to.privateKeyHexToWallet(
       privateKeyHex,
       password: passwordController.text,
     );
+
+    await WalletService.to.init();
 
     // save to persistence
     Persistence.to.wallet.val = WalletService.to.wallet!.toJson();
     // just to make sure the Wallet is ready before proceeding
     await Future.delayed(200.milliseconds);
-
     // save password
     Persistence.to.walletPassword.val = passwordController.text;
-
     // open Hive Boxes
     await HiveService.to.open();
-
     final isNewVault = Get.parameters['from']! == 'mnemonic_screen';
 
     if (isNewVault) {

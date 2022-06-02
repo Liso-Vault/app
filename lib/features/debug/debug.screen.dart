@@ -6,10 +6,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
-import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:random_string/random_string.dart';
 import 'package:uuid/uuid.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
@@ -17,7 +17,9 @@ import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../joined_vaults/joined_vault.controller.dart';
 import '../s3/s3.service.dart';
+import '../shared_vaults/shared_vault.controller.dart';
 
 class DebugScreen extends StatelessWidget with ConsoleMixin {
   const DebugScreen({Key? key}) : super(key: key);
@@ -79,22 +81,69 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            // SharedVaultsController.to.restart();
-            // JoinedVaultsController.to.restart();
+            // await FirestoreService.to.userDevices.add(HiveMetadataDevice(
+            //   id: const Uuid().v4(),
+            // ));
 
-            // final info = await S3Service.to.fetchStorageSize();
-            // if (info == null) return console.error('error storage info');
-
-            // await FirestoreService.to.record(
-            //   filesCount: info.contents.length,
-            //   totalSize: info.totalSize,
-            //   encryptedFilesCount: info.encryptedFiles,
-            //   enforceDevices: true,
+            // UIUtils.showSimpleDialog(
+            //   'Firebase User',
+            //   AuthService.to.userId,
             // );
 
+            // final deviceInfo = DeviceInfoPlugin();
+            // final info = await deviceInfo.macOsInfo;
+            // final map = info.toMap();
+            // console.info('map: $map');
+
+            // final device = HiveMetadataDevice(
+            //   name: info.computerName,
+            //   info: info.toMap(),
+            // );
+
+            // final encoded = jsonEncode(device.toJson());
+
+            // console.info('encoded: $encoded');
+            // console.info('decoded: ${jsonDecode(encoded)}');
+
+            final info = await S3Service.to.fetchStorageSize();
+            if (info == null) return console.error('error storage info');
+
+            await FirestoreService.to.syncUser(
+              filesCount: info.contents.length,
+              totalSize: info.totalSize,
+              encryptedFilesCount: info.encryptedFiles,
+            );
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Show Console'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            // TODO: show console log
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Add Device'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
             await FirestoreService.to.userDevices.add(HiveMetadataDevice(
               id: const Uuid().v4(),
+              model: randomString(randomBetween(5, 10)),
             ));
+          },
+        ),
+        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Restart Vault Controllers'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            SharedVaultsController.to.restart();
+            JoinedVaultsController.to.restart();
           },
         ),
         const Divider(),

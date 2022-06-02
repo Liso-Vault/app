@@ -116,16 +116,15 @@ class SettingsScreenController extends GetxController
         subject: exportFileName,
         text: GetPlatform.isIOS ? null : 'Liso Wallet',
       );
-
-      // tempFile.delete();
-      return Get.back();
     }
 
     change('Choose export path...', status: RxStatus.loading());
     Globals.timeLockEnabled = false; // temporarily disable
     // choose directory and export file
-    final exportPath = await FilePicker.platform
-        .getDirectoryPath(dialogTitle: 'Choose Export Path');
+    final exportPath = await FilePicker.platform.getDirectoryPath(
+      dialogTitle: 'Choose Export Path',
+    );
+
     Globals.timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
@@ -141,8 +140,6 @@ class SettingsScreenController extends GetxController
       title: 'Successfully Exported Wallet',
       body: exportFileName,
     );
-
-    Get.back();
   }
 
   void showSeed() async {

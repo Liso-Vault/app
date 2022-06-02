@@ -35,6 +35,8 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }) : super(key: key);
 
   void _open() async {
+    console.info('identifier: ${item.identifier}');
+
     if (item.protected && !(await _unlock())) return;
 
     // route parameters

@@ -47,10 +47,7 @@ class SharedVaultsController extends GetxController
         .orderBy('createdTime', descending: true)
         // .limit(_limit)
         .snapshots()
-        .listen(
-          _onData,
-          onError: _onError,
-        );
+        .listen(_onData, onError: _onError);
 
     console.info('started');
   }

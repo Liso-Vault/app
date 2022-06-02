@@ -42,7 +42,7 @@ class WalletService extends GetxService with ConsoleMixin {
   String get shortAddress =>
       '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
 
-  bool get saved => Persistence.to.wallet.val.isNotEmpty;
+  bool get isSaved => Persistence.to.wallet.val.isNotEmpty;
 
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
@@ -158,7 +158,7 @@ class WalletService extends GetxService with ConsoleMixin {
     );
 
     // from the first 32 bits of the signature
-    return Uint8List.fromList(signature.codeUnits.sublist(0, 32));
+    return Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
   }
 
   Future<String> sign(
@@ -206,22 +206,24 @@ class WalletService extends GetxService with ConsoleMixin {
     return personal ? personalSignature : signature;
   }
 
-  Future<void> initJson(String data, {required String password}) async {
-    wallet = Wallet.fromJson(data, password);
-    _init();
+  Future<Wallet?> initJson(String data, {required String password}) async {
+    Wallet? wallet_;
+
+    try {
+      wallet_ = Wallet.fromJson(data, password);
+    } catch (e) {
+      console.error('wallet initJson error: ${e.toString()}');
+      return null;
+    }
+
+    return wallet_;
   }
 
-  Future<void> initPrivateKeyHex(String data,
-      {required String password}) async {
-    wallet = privateKeyHexToWallet(data, password: password);
-    _init();
-  }
-
-  Future<void> _init() async {
+  Future<void> init() async {
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     // from the first 32 bits of the signature
-    cipherKey = Uint8List.fromList(signature.codeUnits.sublist(0, 32));
+    cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
   }
 
   void reset() {

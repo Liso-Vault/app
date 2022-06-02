@@ -13,11 +13,11 @@ class ConnectivityBar extends StatelessWidget {
       onTap: GetPlatform.isMobile ? AppSettings.openWIFISettings : null,
       child: Container(
         height: 20,
-        color: Colors.red,
+        color: Colors.red.withOpacity(0.3),
         child: const Center(
           child: Text(
             'No Internet Connection',
-            style: TextStyle(color: Colors.white, fontSize: 11),
+            style: TextStyle(fontSize: 11),
           ),
         ),
       ),

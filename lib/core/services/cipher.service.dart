@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -18,7 +17,7 @@ class CipherService extends GetxService with ConsoleMixin {
   final iv = IV.fromLength(16);
 
   // GETTERS
-  Key get key => Key.fromBase64(base64Encode(WalletService.to.cipherKey!));
+  Key get key => Key(WalletService.to.cipherKey!);
   Encrypter get encrypter => Encrypter(AES(key));
 
   // FUNCTIONS
@@ -26,18 +25,21 @@ class CipherService extends GetxService with ConsoleMixin {
     if (cipherKey == null) {
       return encrypter.encryptBytes(bytes, iv: iv).bytes;
     } else {
-      final key_ = Key.fromBase64(base64Encode(cipherKey));
+      final key_ = Key(cipherKey);
       return Encrypter(AES(key_)).encryptBytes(bytes, iv: iv).bytes;
     }
   }
 
   List<int> decrypt(Uint8List bytes, {Uint8List? cipherKey}) {
+    late Encrypter encrypter_;
+
     if (cipherKey == null) {
-      return encrypter.decryptBytes(Encrypted(bytes), iv: iv);
+      encrypter_ = encrypter;
     } else {
-      final key_ = Key.fromBase64(base64Encode(cipherKey));
-      return Encrypter(AES(key_)).decryptBytes(Encrypted(bytes), iv: iv);
+      encrypter_ = Encrypter(AES(Key(cipherKey)));
     }
+
+    return encrypter_.decryptBytes(Encrypted(bytes), iv: iv);
   }
 
   Future<File> encryptFile(
@@ -68,7 +70,7 @@ class CipherService extends GetxService with ConsoleMixin {
 
   // Checks
   Future<bool> canDecrypt(File file, Uint8List cipherKey) async {
-    final key_ = Key.fromBase64(base64Encode(cipherKey));
+    final key_ = Key(cipherKey);
     final encrypter_ = Encrypter(AES(key_));
     final bytes = await file.readAsBytes();
 

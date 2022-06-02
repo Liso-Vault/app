@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -54,7 +55,7 @@ class AuthService extends GetxService with ConsoleMixin {
     final info = await S3Service.to.fetchStorageSize();
     if (info == null) return console.error('error storage info');
 
-    await FirestoreService.to.record(
+    await FirestoreService.to.syncUser(
       filesCount: info.contents.length,
       totalSize: info.totalSize,
       encryptedFilesCount: info.encryptedFiles,
@@ -83,8 +84,9 @@ class AuthService extends GetxService with ConsoleMixin {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
-      console.error('FirebaseAuthException: $e');
+    } on FirebaseAuthException catch (e, s) {
+      console.error('FirebaseAuthException: ${e.toString()}');
+      CrashlyticsService.to.record(e, s);
 
       if (e.code == 'email-already-in-use') {
         try {
@@ -92,12 +94,14 @@ class AuthService extends GetxService with ConsoleMixin {
             email: email,
             password: password,
           );
-        } catch (e) {
-          console.error('FirebaseAuth signIn error: $e');
+        } catch (e, s) {
+          console.error('FirebaseAuth signIn error: ${e.toString()}');
+          CrashlyticsService.to.record(e, s);
         }
       }
-    } catch (e) {
-      console.error('FirebaseAuth signUp error: $e');
+    } catch (e, s) {
+      console.error('FirebaseAuth signUp error: ${e.toString()}');
+      CrashlyticsService.to.record(e, s);
     }
   }
 }

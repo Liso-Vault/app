@@ -18,11 +18,11 @@ class HiveMetadataDeviceAdapter extends TypeAdapter<HiveMetadataDevice> {
     };
     return HiveMetadataDevice(
       id: fields[0] as String,
-      model: fields[1] as String,
-      unit: fields[2] as String,
+      name: fields[1] as String?,
+      model: fields[2] as String,
       platform: fields[3] as String,
       osVersion: fields[4] as String,
-      info: (fields[5] as Map).cast<String, dynamic>(),
+      info: (fields[5] as Map?)?.cast<String, dynamic>(),
     );
   }
 
@@ -33,9 +33,9 @@ class HiveMetadataDeviceAdapter extends TypeAdapter<HiveMetadataDevice> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.model)
+      ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.unit)
+      ..write(obj.model)
       ..writeByte(3)
       ..write(obj.platform)
       ..writeByte(4)

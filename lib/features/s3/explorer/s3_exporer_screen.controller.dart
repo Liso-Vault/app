@@ -216,7 +216,6 @@ class S3ExplorerScreenController extends GetxController
 
     final result = await S3Service.to.uploadFile(
       file,
-      metadata: await S3Service.to.updatedLocalMetadata(),
       s3Path: join(
         currentPath.value,
         basename(file.path),
@@ -253,7 +252,6 @@ class S3ExplorerScreenController extends GetxController
       final result = await S3Service.to.createFolder(
         name,
         s3Path: currentPath.value,
-        metadata: await S3Service.to.updatedLocalMetadata(),
       );
 
       if (result.isLeft) {

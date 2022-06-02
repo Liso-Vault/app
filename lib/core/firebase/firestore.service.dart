@@ -1,8 +1,10 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
+import 'package:liso/core/firebase/model/user.model.dart';
 import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/liso/liso.manager.dart';
@@ -29,6 +31,10 @@ class FirestoreService extends GetxService with ConsoleMixin {
   static FirestoreService get to => Get.find();
 
   // VARIABLES
+  final usersCol = FirebaseFirestore.instance.collection(
+    kUsersCollection,
+  );
+
   final vaultsCol = FirebaseFirestore.instance.collection(
     kSharedVaultsCollection,
   );
@@ -37,9 +43,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     kVaultMembersCollection,
   );
 
-  final usersCol = FirebaseFirestore.instance.collection(
-    kUsersCollection,
-  );
+  late CollectionReference<FirebaseUser> users;
 
   late CollectionReference<SharedVault> sharedVaults;
 
@@ -52,8 +56,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // GETTERS
   FirebaseFirestore get instance => FirebaseFirestore.instance;
 
-  DocumentReference<Map<String, dynamic>> get userDoc =>
-      usersCol.doc(AuthService.to.userId);
+  DocumentReference<FirebaseUser> get userDoc =>
+      users.doc(AuthService.to.userId);
 
   DocumentReference<Map<String, dynamic>> get usersStatsDoc =>
       usersCol.doc(kStatsDoc);
@@ -65,6 +69,11 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
   @override
   void onInit() {
+    users = usersCol.withConverter<FirebaseUser>(
+      fromFirestore: (snapshot, _) => FirebaseUser.fromSnapshot(snapshot),
+      toFirestore: (object, _) => object.toJson(),
+    );
+
     sharedVaults = vaultsCol.withConverter<SharedVault>(
       fromFirestore: (snapshot, _) => SharedVault.fromSnapshot(snapshot),
       toFirestore: (object, _) => object.toJson(),
@@ -87,14 +96,15 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   // record the some metadata: created time and updated time, items count and files count
   // data will be used for airdrops, and other promotions
-  Future<void> record({
+  Future<void> syncUser({
     required int filesCount,
     required int encryptedFilesCount,
     required int totalSize,
     bool enforceDevices = false,
   }) async {
     if (!isFirebaseSupported) return console.warning('Not Supported');
-    if (!Persistence.to.analytics.val) return;
+    // just to make sure
+    if (!AuthService.to.isSignedIn) await AuthService.to.signIn();
 
     if (enforceDevices) {
       final devicesSnapshot = await FirestoreService.to.userDevices.get();
@@ -115,42 +125,51 @@ class FirestoreService extends GetxService with ConsoleMixin {
     }
 
     // calculate vault byte size
-    final vaultJson = await LisoManager.compactJson();
-    final encryptedVaultBytes = CipherService.to.encrypt(vaultJson.codeUnits);
+    final encryptedVaultBytes = CipherService.to.encrypt(
+      utf8.encode(await LisoManager.compactJson()),
+    );
 
-    final data = {
-      'userId': AuthService.to.userId,
-      'address': WalletService.to.longAddress,
-      'updatedTime': FieldValue.serverTimestamp(),
-      // TODO: record last sync time
-      'metadata': {
-        'app': await HiveMetadataApp.getJson(),
-        'device': await HiveMetadataDevice.getJson(),
-        "size": {
-          'storage': totalSize,
-          'vault': encryptedVaultBytes.length,
-        },
-        'count': {
-          'items': HiveItemsService.to.data.length,
-          'groups': HiveGroupsService.to.data.length,
-          'files': filesCount,
-          'encrypted_files': encryptedFilesCount,
-          'shared_vaults': SharedVaultsController.to.data.length,
-          'joined_vaults': JoinedVaultsController.to.data.length,
-        },
-        'settings': {
-          'sync': Persistence.to.canSync,
-          'theme': Persistence.to.theme.val,
-        },
-      },
-    };
+    late FirebaseUser user;
+    final fetchedUser = await userDoc.get();
+
+    if (fetchedUser.exists) {
+      user = fetchedUser.data()!;
+    } else {
+      user = FirebaseUser();
+    }
+
+    final device = await HiveMetadataDevice.get();
+
+    final metadata = FirebaseUserMetadata(
+      app: await HiveMetadataApp.get(),
+      deviceId: device.id,
+      size: FirebaseUserSize(
+        storage: totalSize,
+        vault: encryptedVaultBytes.length,
+      ),
+      count: FirebaseUserCount(
+        items: HiveItemsService.to.data.length,
+        groups: HiveGroupsService.to.data.length,
+        files: filesCount,
+        encryptedFiles: encryptedFilesCount,
+        sharedVaults: SharedVaultsController.to.data.length,
+        joinedVaults: JoinedVaultsController.to.data.length,
+      ),
+      settings: FirebaseUserSettings(
+        sync: Persistence.to.canSync,
+        theme: Persistence.to.theme.val,
+      ),
+    );
+
+    user.userId = AuthService.to.userId;
+    user.address = WalletService.to.longAddress;
+    user.limits = WalletService.to.limits.id;
+    user.metadata = metadata;
 
     final batch = instance.batch();
 
-    // add createdTime if it's the first time this user is recorded
-    if (!(await userDoc.get()).exists) {
-      data['createdTime'] = FieldValue.serverTimestamp();
-
+    // if new user
+    if (user.createdTime == null) {
       // update users collection stats counter
       batch.set(
         usersStatsDoc,
@@ -163,21 +182,15 @@ class FirestoreService extends GetxService with ConsoleMixin {
     }
 
     // update user doc
-    batch.set(userDoc, data, SetOptions(merge: true));
-
+    batch.set(userDoc, user, SetOptions(merge: true));
     // record user device
-    final device = await HiveMetadataDevice.get();
     batch.set(userDevices.doc(device.id), device);
 
     // commit batch
     try {
       await batch.commit();
     } catch (e, s) {
-      CrashlyticsService.to.record(FlutterErrorDetails(
-        exception: e,
-        stack: s,
-      ));
-
+      CrashlyticsService.to.record(e, s);
       return console.error("error batch commit: $e");
     }
 

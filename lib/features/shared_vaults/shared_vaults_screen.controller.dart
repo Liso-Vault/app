@@ -140,7 +140,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         TextFormField(
           controller: nameController,
           autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
+          textCapitalization: TextCapitalization.words,
           maxLength: 30,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (data) {
@@ -189,8 +189,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
                 'Cipher Key will be automatically be saved as a ${ConfigService.to.appName} Item',
             suffixIcon: IconButton(
               onPressed: () {
-                cipherKeyController.text =
-                    base64Encode(Hive.generateSecureKey());
+                cipherKeyController.text = base64Encode(
+                  Hive.generateSecureKey(),
+                );
               },
               icon: const Icon(Iconsax.key),
             ),

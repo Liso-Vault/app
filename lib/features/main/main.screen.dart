@@ -55,17 +55,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final listView = Obx(
-      () => AnimatedOpacity(
-        opacity: S3Service.to.syncing.value ? 0.3 : 1.0,
-        duration: 300.milliseconds,
-        child: ListView.separated(
-          shrinkWrap: true,
-          itemCount: controller.data.length,
-          itemBuilder: itemBuilder,
-          separatorBuilder: (_, index) => const Divider(height: 0),
-          physics: const AlwaysScrollableScrollPhysics(),
-          padding: const EdgeInsets.only(bottom: 15),
-        ),
+      () => ListView.separated(
+        shrinkWrap: true,
+        itemCount: controller.data.length,
+        itemBuilder: itemBuilder,
+        separatorBuilder: (_, index) => const Divider(height: 0),
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: const EdgeInsets.only(bottom: 15),
       ),
     );
 
@@ -76,8 +72,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         () => CenteredPlaceholder(
           iconData: Iconsax.document,
           message: 'no_items'.tr,
-          child: S3Service.to.syncing.value ||
-                  DrawerMenuController.to.filterTrashed.value
+          child: DrawerMenuController.to.filterTrashed.value
               ? null
               : addItemButton,
         ),
@@ -161,37 +156,21 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ],
     );
 
-    // final content = Obx(
-    //   () => Visibility(
-    //     visible: !S3Service.to.syncing.value,
-    //     replacement: content_,
-    //     child: AbsorbPointer(
-    //       absorbing: true,
-    //       child: content_,
-    //     ),
-    //   ),
-    // );
-
     final appBarActions = [
-      Obx(
-        () => IconButton(
-          icon: const Icon(Iconsax.search_normal),
-          onPressed: !S3Service.to.syncing.value ? controller.search : null,
-        ),
+      IconButton(
+        icon: const Icon(Iconsax.search_normal),
+        onPressed: controller.search,
       ),
-      Obx(
-        () => ContextMenuButton(
-          controller.menuItemsSort,
-          enabled: !S3Service.to.syncing.value,
-          initialItem: controller.menuItemsSort.firstWhere(
-            (e) => controller.sortOrder.value.name
-                .toLowerCase()
-                .contains(e.title.toLowerCase().replaceAll(' ', '')),
-          ),
-          child: IconButton(
-            icon: const Icon(Iconsax.sort),
-            onPressed: !S3Service.to.syncing.value ? () {} : null,
-          ),
+      ContextMenuButton(
+        controller.menuItemsSort,
+        initialItem: controller.menuItemsSort.firstWhere(
+          (e) => controller.sortOrder.value.name
+              .toLowerCase()
+              .contains(e.title.toLowerCase().replaceAll(' ', '')),
+        ),
+        child: IconButton(
+          icon: const Icon(Iconsax.sort),
+          onPressed: () {},
         ),
       ),
       PersistenceBuilder(
@@ -272,8 +251,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final fab = Obx(
       () {
-        if (S3Service.to.syncing.value) return const SizedBox.shrink();
-
         if (DrawerMenuController.to.filterTrashed.value) {
           if (DrawerMenuController.to.trashedCount > 0) {
             return clearTrashFab;
@@ -309,7 +286,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     } else {
       return Scaffold(
         appBar: appBar,
-        body: content,
+        body: SafeArea(child: content),
         drawer: const DrawerMenu(),
         floatingActionButton: fab,
       );

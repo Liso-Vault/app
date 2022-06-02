@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:liso/features/cipher/cipher_screen.controller.dart';
+import 'package:liso/features/devices/devices_screen.controller.dart';
 import 'package:liso/features/otp/otp_screen.controller.dart';
 import 'package:liso/features/s3/provider/sync_provider_screen.controller.dart';
 import 'package:liso/features/shared_vaults/shared_vaults_screen.controller.dart';
@@ -47,6 +48,7 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
     Get.lazyPut(() => JoinedVaultsScreenController(), fenix: true);
     Get.lazyPut(() => VaultExplorerScreenController(), fenix: true);
+    Get.lazyPut(() => DevicesScreenController(), fenix: true);
     Get.lazyPut(() => GroupsController(), fenix: true);
     // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
