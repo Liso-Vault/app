@@ -6,7 +6,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
-import 'package:liso/core/firebase/config/models/config_limits.model.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
