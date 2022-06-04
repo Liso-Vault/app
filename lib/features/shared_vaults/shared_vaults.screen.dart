@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +15,7 @@ import 'package:path/path.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/firebase/crashlytics.service.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -41,14 +43,38 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
         void _delete() async {
           Get.back();
 
-          await FirestoreService.to.sharedVaults.doc(vault.docId).delete();
-          console.info('deleted in firestore');
+          final batch = FirestoreService.to.instance.batch();
+          final doc = FirestoreService.to.sharedVaults.doc(vault.docId);
+
+          // update user doc
+          batch.delete(doc);
+
+          // update users collection stats counter
+          batch.set(
+            FirestoreService.to.vaultsStatsDoc,
+            {
+              'count': FieldValue.increment(-1),
+              'updatedTime': FieldValue.serverTimestamp(),
+            },
+            SetOptions(merge: true),
+          );
+
+          // commit batch
+          try {
+            await batch.commit();
+          } catch (e, s) {
+            CrashlyticsService.to.record(e, s);
+            return console.error("error batch commit: $e");
+          }
+
+          console.info('deleted: ${doc.id}');
 
           await S3Service.to.remove(S3Content(
-              path: join(
-            S3Service.to.sharedPath,
-            '${vault.docId}.$kVaultExtension',
-          )));
+            path: join(
+              S3Service.to.sharedPath,
+              '${vault.docId}.$kVaultExtension',
+            ),
+          ));
 
           console.info('deleted in s3');
         }

@@ -33,6 +33,8 @@ class AuthService extends GetxService with ConsoleMixin {
     instance.authStateChanges().listen((user_) async {
       if (user_ == null) {
         console.warning('signed out');
+        SharedVaultsController.to.stop();
+        JoinedVaultsController.to.stop();
       } else {
         console.info('signed in: ${user_.uid}');
         SharedVaultsController.to.start();
@@ -80,27 +82,26 @@ class AuthService extends GetxService with ConsoleMixin {
     final password = await WalletService.to.sign(kAuthSignatureMessage);
 
     try {
-      await instance.createUserWithEmailAndPassword(
+      await instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
     } on FirebaseAuthException catch (e, s) {
       console.error('FirebaseAuthException: ${e.toString()}');
-      CrashlyticsService.to.record(e, s);
 
-      if (e.code == 'email-already-in-use') {
+      if (e.code == 'user-not-found') {
         try {
-          await instance.signInWithEmailAndPassword(
+          await instance.createUserWithEmailAndPassword(
             email: email,
             password: password,
           );
-        } catch (e, s) {
-          console.error('FirebaseAuth signIn error: ${e.toString()}');
+        } catch (e) {
+          console.error('FirebaseAuth signUp error: ${e.toString()}');
           CrashlyticsService.to.record(e, s);
         }
       }
     } catch (e, s) {
-      console.error('FirebaseAuth signUp error: ${e.toString()}');
+      console.error('FirebaseAuth signIn error: ${e.toString()}');
       CrashlyticsService.to.record(e, s);
     }
   }

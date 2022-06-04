@@ -55,9 +55,12 @@ class MnemonicScreenController extends GetxController with ConsoleMixin {
       seed = seedController.text;
     }
 
-    Get.toNamed(
-      Routes.confirmMnemonic,
-      parameters: {'mnemonic': seed},
+    Get.offAllNamed(
+      Routes.createPassword,
+      parameters: {
+        'seed': seed,
+        'from': 'mnemonic_screen',
+      },
     );
   }
 

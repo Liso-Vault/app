@@ -65,6 +65,7 @@ class UIUtils {
   static void showImageDialog(
     Widget image, {
     required String title,
+    String? subTitle,
     required String body,
     String? closeText,
     Function()? action,
@@ -72,13 +73,46 @@ class UIUtils {
   }) {
     final bodyContent = Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         image,
         const SizedBox(height: 30),
-        Text(title, style: const TextStyle(fontSize: 25)),
+        Text(
+          title,
+          style: const TextStyle(fontSize: 25),
+          textAlign: TextAlign.center,
+        ),
         const SizedBox(height: 10),
+        if (subTitle != null) ...[
+          Text(
+            subTitle,
+            style: const TextStyle(fontSize: 15, color: Colors.grey),
+            textAlign: TextAlign.center,
+          ),
+          const SizedBox(height: 10),
+        ],
         Text(body, textAlign: TextAlign.center),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: Get.back,
+                child: Text(closeText ?? 'okay'.tr),
+              ),
+            ),
+            if (action != null) ...[
+              const SizedBox(width: 20),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: action,
+                  child: Text(actionText ?? 'okay'.tr),
+                ),
+              ),
+            ]
+          ],
+        ),
       ],
     );
 
@@ -88,22 +122,7 @@ class UIUtils {
         actionsAlignment: MainAxisAlignment.center,
         content: Utils.isDrawerExpandable
             ? bodyContent
-            : SizedBox(
-                width: 400,
-                child: bodyContent,
-              ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 20),
-            child: SizedBox(
-              width: 200,
-              child: ElevatedButton(
-                onPressed: action ?? Get.back,
-                child: Text(actionText ?? 'okay'.tr),
-              ),
-            ),
-          ),
-        ],
+            : SizedBox(width: 400, child: bodyContent),
       ),
     );
   }

@@ -1,17 +1,17 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import 'about_screen.controller.dart';
@@ -51,7 +51,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${config.appName} Website'),
           subtitle: Text(config.general.app.links.website),
-          onTap: () => launchUrlString(
+          onTap: () => Utils.openUrl(
             config.general.app.links.website,
           ),
         ),
@@ -60,7 +60,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           leading: Icon(LineIcons.rocket, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${config.appName} Roadmap'),
-          onTap: () => launchUrlString(
+          onTap: () => Utils.openUrl(
             config.general.app.links.roadmap,
           ),
         ),
@@ -81,7 +81,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           leading: Icon(LineIcons.productHunt, color: themeColor),
           title: Text('${config.appName} Product Hunt'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => launchUrlString(config.general.app.links.productHunt),
+          onTap: () => Utils.openUrl(config.general.app.links.productHunt),
         ),
         const Divider(),
         // TODO: Add GitCoin link
@@ -89,28 +89,28 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
         //   leading: Icon(LineIcons.git, color: themeColor),
         //   title: Text('${config.appName} GitCoin'),
         //   trailing: const Icon(Iconsax.arrow_right_3),
-        //   onTap: () => launchUrlString(config.general.app.links.gitcoin),
+        //   onTap: () => Utils.openUrl(config.general.app.links.gitcoin),
         // ),
         // const Divider(),
         ListTile(
           leading: Icon(LineIcons.github, color: themeColor),
           title: Text('${config.appName} GitHub'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => launchUrlString(config.general.app.links.github),
+          onTap: () => Utils.openUrl(config.general.app.links.github),
         ),
         const Divider(),
         ListTile(
           leading: Icon(Iconsax.security_user, color: themeColor),
           title: Text('${config.appName} Privacy'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => launchUrlString(config.general.app.links.privacy),
+          onTap: () => Utils.openUrl(config.general.app.links.privacy),
         ),
         const Divider(),
         ListTile(
           leading: Icon(Iconsax.book_1, color: themeColor),
           title: Text('${config.appName} Terms'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => launchUrlString(config.general.app.links.terms),
+          onTap: () => Utils.openUrl(config.general.app.links.terms),
         ),
         if (!GetPlatform.isMobile) ...[
           const Divider(),
@@ -128,7 +128,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           //   trailing: const Icon(Iconsax.arrow_right_3),
           //   title: const Text('Check for updates'),
           //   subtitle: Obx(() => Text(controller.appVersion)),
-          //   onTap: () => launchUrlString(kAppGithubReleasesUrl),
+          //   onTap: () => Utils.openUrl(kAppGithubReleasesUrl),
           // ),
         ],
         const Divider(),

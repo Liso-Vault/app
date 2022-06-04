@@ -17,8 +17,7 @@ class MnemonicFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PassphraseCard(
-      seedController: _fieldController,
-      mode: PassphraseMode.none,
+      fieldController: _fieldController,
       initialValue: field.data.value ?? '',
       required: false,
     );

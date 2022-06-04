@@ -23,7 +23,7 @@ class DevicesScreenController extends GetxController
   static DevicesScreenController get to => Get.find();
 
   // VARIABLES
-  late StreamSubscription _stream;
+  StreamSubscription? _stream;
   final enforce = Get.parameters['enforce'] == 'true';
 
   // PROPERTIES
@@ -40,14 +40,25 @@ class DevicesScreenController extends GetxController
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    stop();
+    super.onClose();
+  }
+
   // FUNCTIONS
-  void restart() {
-    _stream.cancel();
+  void restart() async {
+    await stop();
     start();
     console.info('restarted');
   }
 
-  void start() async {
+  Future<void> stop() async {
+    await _stream?.cancel();
+    console.info('stopped');
+  }
+
+  void start() {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     _stream = FirestoreService.to.userDevices

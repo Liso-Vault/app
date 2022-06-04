@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -16,10 +18,14 @@ import 'package:path/path.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/hive/hive_groups.service.dart';
+import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/custom_chip.widget.dart';
+import '../general/segmented_item.widget.dart';
+import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
 import '../wallet/wallet.service.dart';
 
@@ -172,7 +178,7 @@ class SettingsScreenController extends GetxController
       child: Wrap(
         spacing: 5,
         runSpacing: 10,
-        alignment: WrapAlignment.start,
+        alignment: WrapAlignment.center,
         children: seed
             .split(' ')
             .asMap()
@@ -182,7 +188,7 @@ class SettingsScreenController extends GetxController
                 label: Text(
                   '${e.key + 1}. ${e.value}',
                   style: TextStyle(
-                    fontSize: Utils.isDrawerExpandable ? null : 17,
+                    fontSize: Utils.isDrawerExpandable ? 14 : 17,
                   ),
                 ),
               ),
@@ -191,22 +197,47 @@ class SettingsScreenController extends GetxController
       ),
     );
 
+    final mode = 'seed'.obs;
+
+    final qr = SizedBox(
+      height: 200,
+      width: 200,
+      child: Center(
+        child: QrImage(
+          data: seed,
+          backgroundColor: Colors.white,
+        ),
+      ),
+    );
+
     final content = Column(
       mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(
-          height: 200,
-          width: 200,
-          child: Center(
-            child: QrImage(
-              data: seed,
-              backgroundColor: Colors.white,
-            ),
+        Obx(
+          () => CupertinoSegmentedControl<String>(
+            groupValue: mode.value,
+            onValueChanged: (value) => mode.value = value,
+            children: const {
+              'seed': SegmentedControlItem(
+                text: 'Seed',
+                iconData: Iconsax.key,
+              ),
+              'qr': SegmentedControlItem(
+                text: 'QR',
+                iconData: Iconsax.barcode,
+              ),
+            },
           ),
         ),
         const SizedBox(height: 20),
-        phraseChips,
+        Obx(
+          () => Visibility(
+            visible: mode.value == 'seed',
+            replacement: qr,
+            child: phraseChips,
+          ),
+        ),
         const Divider(),
         const Text(
           "Make sure you're in a safe location and free from prying eyes",
@@ -216,7 +247,10 @@ class SettingsScreenController extends GetxController
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Your Seed Phrase'),
+      title: const Text(
+        'Your Seed Phrase',
+        textAlign: TextAlign.center,
+      ),
       content: Utils.isDrawerExpandable
           ? content
           : SizedBox(width: 450, child: content),
@@ -227,5 +261,74 @@ class SettingsScreenController extends GetxController
         ),
       ],
     ));
+  }
+
+  void purge() async {
+    void _reset() async {
+      // prompt password from unlock screen
+      final unlocked = await Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'password_prompt'},
+          ) ??
+          false;
+
+      if (!unlocked) return;
+      // clear database
+      await HiveItemsService.to.purge();
+      await HiveGroupsService.to.purge();
+      // reload lists
+      MainScreenController.to.load();
+
+      NotificationsManager.notify(
+        title: 'Vault Purged',
+        body: 'Your vault has been purged',
+      );
+
+      Get.back();
+    }
+
+    UIUtils.showImageDialog(
+      const Icon(Iconsax.warning_2, size: 100, color: Colors.orange),
+      title: 'Purge Vault?',
+      subTitle: 'All items and custom vaults will be deleted',
+      body: 'Please proceed with caution',
+      closeText: 'Cancel',
+      action: _reset,
+      actionText: 'Purge',
+    );
+  }
+
+  void reset() {
+    void _reset() async {
+      // prompt password from unlock screen
+      final unlocked = await Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'password_prompt'},
+          ) ??
+          false;
+
+      if (!unlocked) return;
+
+      await LisoManager.reset();
+
+      NotificationsManager.notify(
+        title: 'Vault Reset',
+        body: 'Your local vault has been successfully reset',
+      );
+
+      Get.offNamedUntil(Routes.main, (route) => false);
+    }
+
+    UIUtils.showImageDialog(
+      const Icon(Iconsax.warning_2, size: 100, color: Colors.red),
+      title: 'Reset ${ConfigService.to.appName}?',
+      subTitle:
+          'Your local <vault>.$kVaultExtension will be deleted and you will be logged out.',
+      body:
+          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed',
+      closeText: 'Cancel',
+      action: _reset,
+      actionText: 'Reset',
+    );
   }
 }

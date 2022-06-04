@@ -4,9 +4,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/beta/disabled_beta_screen.controller.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 
 class DisabledBetaScreen extends GetView<DisabledBetaScreenController> {
@@ -48,7 +48,7 @@ class DisabledBetaScreen extends GetView<DisabledBetaScreenController> {
             child: ElevatedButton.icon(
               label: const Text('Download'),
               icon: const Icon(Iconsax.document_download),
-              onPressed: () => launchUrlString(
+              onPressed: () => Utils.openUrl(
                 ConfigService.to.general.app.links.website,
               ),
             ),

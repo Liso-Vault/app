@@ -36,13 +36,17 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
     boxInitialized = true;
 
     if (box.isEmpty && initialize) {
-      // initial groups
-      final groups = List<HiveLisoGroup>.from(
-        Secrets.groups.map((x) => HiveLisoGroup.fromJson(x)),
-      );
-
-      await box.addAll(groups);
+      _initialize();
     }
+  }
+
+  Future<void> _initialize() async {
+    // initial groups
+    final groups = List<HiveLisoGroup>.from(
+      Secrets.groups.map((x) => HiveLisoGroup.fromJson(x)),
+    );
+
+    await box.addAll(groups);
   }
 
   Future<void> close() async {
@@ -66,5 +70,10 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
   Future<void> import(List<HiveLisoGroup> data, {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey, initialize: false);
     box.addAll(data);
+  }
+
+  Future<void> purge() async {
+    await box.clear();
+    await _initialize();
   }
 }

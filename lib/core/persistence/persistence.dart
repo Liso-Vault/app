@@ -31,7 +31,7 @@ class Persistence extends GetxController with ConsoleMixin {
   // THEME
   final theme = ThemeMode.system.name.val('theme');
   // SECURITY
-  final maxUnlockAttempts = 5.val('max-unlock-attempts');
+  final maxUnlockAttempts = 10.val('max-unlock-attempts');
   final timeLockDuration = 120.val('time-lock-duration'); // in seconds
   // NOTIFICATION
   final notificationId = 0.val('notification-id');

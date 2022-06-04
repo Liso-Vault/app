@@ -6,9 +6,9 @@ import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import 'welcome_screen.controller.dart';
 
@@ -81,14 +81,14 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextButton(
-                  onPressed: () => launchUrlString(
+                  onPressed: () => Utils.openUrl(
                     ConfigService.to.general.app.links.terms,
                   ),
                   child: const Text('Terms of Service'),
                 ),
                 const Text('and'),
                 TextButton(
-                  onPressed: () => launchUrlString(
+                  onPressed: () => Utils.openUrl(
                     ConfigService.to.general.app.links.privacy,
                   ),
                   child: const Text('Privacy Policy'),

@@ -109,6 +109,8 @@ final en = {
   "breach_scanner": "Breach Scanner",
   "password_health": "Password Health",
   "otp_generator": "OTP Generator",
+  "seed_generator": "Seed Generator",
+  "password_generator": "Password Generator",
   "all": "All",
   "okay": "Okay",
   "community_help": "Community & Help",
@@ -153,5 +155,6 @@ final en = {
   "devices": "Devices",
   "synced_devices": "Synced Devices",
   "unsync": "Unsync",
-  "unsync_device": "Unsync Device"
+  "unsync_device": "Unsync Device",
+  "purge": "Purge",
 };

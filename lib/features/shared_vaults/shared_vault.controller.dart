@@ -14,7 +14,7 @@ class SharedVaultsController extends GetxController
   static SharedVaultsController get to => Get.find();
 
   // VARIABLES
-  late StreamSubscription _stream;
+  StreamSubscription? _stream;
 
   // PROPERTIES
   final data = <SharedVault>[].obs;
@@ -33,13 +33,18 @@ class SharedVaultsController extends GetxController
   }
 
   // FUNCTIONS
-  void restart() {
-    _stream.cancel();
+  void restart() async {
+    await stop();
     start();
     console.info('restarted');
   }
 
-  void start() async {
+  Future<void> stop() async {
+    await _stream?.cancel();
+    console.info('stopped');
+  }
+
+  void start() {
     if (!isFirebaseSupported) return console.warning('Not Supported');
 
     _stream = FirestoreService.to.sharedVaults

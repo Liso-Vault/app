@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hex/hex.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -75,13 +76,15 @@ class CreatePasswordScreenController extends GetxController
     }
 
     // write a local master wallet
-    // TODO: use a global variable instead to prevent lost
-    final privateKeyHex = Get.parameters['privateKeyHex']!;
+    final seed = Get.parameters['seed']!;
 
-    WalletService.to.wallet = WalletService.to.privateKeyHexToWallet(
-      privateKeyHex,
+    WalletService.to.wallet = WalletService.to.mnemonicToWallet(
+      seed,
       password: passwordController.text,
     );
+
+    console.info('1: ${WalletService.to.privateKeyHex}');
+    console.info('2: ${WalletService.to.mnemonicToPrivateKeyHex(seed)}');
 
     await WalletService.to.init();
 
@@ -102,7 +105,7 @@ class CreatePasswordScreenController extends GetxController
 
       fields = fields.map((e) {
         if (e.identifier == 'seed') {
-          e.data.value = Get.parameters['seed']!;
+          e.data.value = seed;
           e.readOnly = true;
           return e;
         } else if (e.identifier == 'password') {
@@ -110,7 +113,7 @@ class CreatePasswordScreenController extends GetxController
           e.readOnly = true;
           return e;
         } else if (e.identifier == 'private_key') {
-          e.data.value = privateKeyHex;
+          e.data.value = WalletService.to.privateKeyHex;
           e.readOnly = true;
           return e;
         } else if (e.identifier == 'address') {

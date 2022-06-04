@@ -94,4 +94,8 @@ class HiveItemsService extends GetxService with ConsoleMixin {
 
     return Right(field.data.value!);
   }
+
+  Future<void> purge() async {
+    await box.clear();
+  }
 }

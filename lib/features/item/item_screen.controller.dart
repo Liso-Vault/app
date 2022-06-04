@@ -10,7 +10,6 @@ import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.contr
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../core/hive/hive_groups.service.dart';
 import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/parsers/template.parser.dart';
@@ -146,10 +145,6 @@ class ItemScreenController extends GetxController
   // INIT
   @override
   void onInit() async {
-    for (final e in HiveGroupsService.to.data) {
-      console.warning('group: ${e.id}');
-    }
-
     if (mode == 'add') {
       await _loadTemplate();
     } else if (mode == 'update') {
@@ -377,6 +372,8 @@ class ItemScreenController extends GetxController
       favorite: favorite.value,
       iconUrl: iconUrl.value,
       protected: protected.value,
+      reserved: item.reserved,
+      hidden: item.hidden,
     );
 
     // convert to json string for absolute equality check

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -9,6 +10,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../features/general/remote_image.widget.dart';
@@ -16,7 +18,6 @@ import '../../features/s3/model/s3_content.model.dart';
 import '../../resources/resources.dart';
 import '../firebase/config/config.service.dart';
 import '../persistence/persistence.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'globals.dart';
 
 class Utils {
@@ -232,8 +233,9 @@ class Utils {
       final hasUppercase = text.contains(RegExp(r'[A-Z]'));
       final hasLowercase = text.contains(RegExp(r'[a-z]'));
       final hasDigits = text.contains(RegExp(r'[0-9]'));
-      final hasSpecialCharacters =
-          text.contains(RegExp(r'[!;*_=@#$%^&*(),.?":{}[]|<>]'));
+      final hasSpecialCharacters = text.contains(
+        RegExp(r'[!;*_=@#$%^&*(),.?":{}[]|<>]'),
+      );
 
       if (!hasUppercase ||
           !hasLowercase ||
@@ -314,5 +316,14 @@ class Utils {
     }
 
     return Icon(iconData);
+  }
+
+  static Future<void> openUrl(
+    String url, {
+    LaunchMode mode = LaunchMode.externalApplication,
+  }) async {
+    final canLaunch = await canLaunchUrlString(url);
+    if (!canLaunch) console.error('cannot launch: $url');
+    launchUrlString(url, mode: mode);
   }
 }

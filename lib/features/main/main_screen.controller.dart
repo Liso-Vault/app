@@ -19,6 +19,7 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
 import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
@@ -281,6 +282,8 @@ class MainScreenController extends GetxController
   }
 
   Future<void> load() async {
+    GroupsController.to.load();
+
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
     var items = HiveItemsService.to.data;

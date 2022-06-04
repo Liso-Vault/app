@@ -1,3 +1,6 @@
+## 0.4.1
+New! Purge Vault
+
 ## 0.4.0
 - New! Shared Vaults
 - New! Joined Vaults

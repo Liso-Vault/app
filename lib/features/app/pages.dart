@@ -11,12 +11,8 @@ import 'package:liso/features/export/export_screen.controller.dart';
 import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/import/import_screen.controller.dart';
 import 'package:liso/features/main/main.screen.dart';
-import 'package:liso/features/mnemonic/confirm/confirm_mnemonic.screen.dart';
-import 'package:liso/features/mnemonic/confirm/confirm_mnemonic_screen.controller.dart';
 import 'package:liso/features/mnemonic/mnemonic.screen.dart';
 import 'package:liso/features/mnemonic/mnemonic_screen.controller.dart';
-import 'package:liso/features/reset/reset.screen.dart';
-import 'package:liso/features/reset/reset_screen.controller.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
@@ -48,8 +44,6 @@ import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../s3/provider/sync_provider_screen.controller.dart';
 import '../s3/provider/sync_provider_screen.dart';
-import '../syncing/syncing.screen.dart';
-import '../syncing/syncing_screen.controller.dart';
 import '../upgrade/upgrade.screen.dart';
 import '../groups/groups.screen.dart';
 import '../groups/groups_screen.controller.dart';
@@ -88,11 +82,6 @@ class AppPages {
       binding: CreatePasswordScreenBinding(),
     ),
     GetPage(
-      name: Routes.reset,
-      page: () => const ResetScreen(),
-      binding: ResetScreenBinding(),
-    ),
-    GetPage(
       name: Routes.item,
       page: () => const ItemScreen(),
       binding: ItemScreenBinding(),
@@ -113,11 +102,6 @@ class AppPages {
       binding: MnemonicScreenBinding(),
     ),
     GetPage(
-      name: Routes.confirmMnemonic,
-      page: () => const ConfirmMnemonicScreen(),
-      binding: ConfirmMnemonicScreenBinding(),
-    ),
-    GetPage(
       name: Routes.settings,
       page: () => const SettingsScreen(),
       binding: SettingsScreenBinding(),
@@ -135,11 +119,6 @@ class AppPages {
       name: Routes.syncProvider,
       page: () => const SyncProviderScreen(),
       binding: SyncProviderScreenBinding(),
-    ),
-    GetPage(
-      name: Routes.syncing,
-      page: () => const SyncingScreen(),
-      binding: SyncingScreenBinding(),
     ),
     GetPage(
       name: Routes.s3Explorer,

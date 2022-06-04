@@ -33,8 +33,9 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       Persistence.to.crashReporting.val,
     );
 
-    FirebaseCrashlytics.instance
-        .setUserIdentifier(WalletService.to.longAddress);
+    FirebaseCrashlytics.instance.setUserIdentifier(
+      WalletService.to.longAddress,
+    );
   }
 
   void record(Object e, StackTrace? s, {bool fatal = false}) {

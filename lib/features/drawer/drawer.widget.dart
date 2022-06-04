@@ -306,11 +306,27 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 title: Text('otp_generator'.tr),
-                leading: const Icon(Iconsax.key),
+                leading: const Icon(Iconsax.code),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.otp,
                   method: 'offAndToNamed',
                 ),
+              ),
+              ListTile(
+                title: Text('password_generator'.tr),
+                leading: const Icon(Iconsax.password_check),
+                // onTap: () => Utils.adaptiveRouteOpen(
+                //   name: Routes.passwordGenerator,
+                //   method: 'offAndToNamed',
+                // ),
+              ),
+              ListTile(
+                title: Text('seed_generator'.tr),
+                leading: const Icon(Iconsax.key),
+                // onTap: () => Utils.adaptiveRouteOpen(
+                //   name: Routes.passwordGenerator,
+                //   method: 'offAndToNamed',
+                // ),
               ),
               ListTile(
                 title: Text('breach_scanner'.tr),
@@ -320,7 +336,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 title: Text('password_health'.tr),
-                leading: const Icon(Iconsax.password_check),
+                leading: const Icon(Iconsax.health),
                 enabled: false,
                 // onTap: controller.files,
               ),

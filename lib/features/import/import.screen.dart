@@ -119,10 +119,6 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                   text: 'Liso File',
                   iconData: Iconsax.document_code,
                 ),
-                // ImportMode.ipfs: SegmentedControlItem(
-                //   text: 'IPFS',
-                //   iconData: LineIcons.cube,
-                // ),
               },
             ),
           ),
@@ -162,7 +158,7 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           }),
           const SizedBox(height: 20),
           PassphraseCard(
-            seedController: controller.seedController,
+            fieldController: controller.seedController,
             onFieldSubmitted: (text) => controller.continuePressed,
           ),
           const SizedBox(height: 20),

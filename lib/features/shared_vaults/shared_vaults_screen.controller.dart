@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,7 @@ import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
@@ -43,6 +45,17 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   // GETTERS
 
   // INIT
+  @override
+  void onReady() {
+    // Fix stuck loading bug
+    Future.delayed(1.seconds).then((value) {
+      if (SharedVaultsController.to.busy.value) {
+        SharedVaultsController.to.restart();
+      }
+    });
+
+    super.onReady();
+  }
 
   // FUNCTIONS
 
@@ -88,7 +101,34 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         description: descriptionController.text,
       );
 
-      final doc = await FirestoreService.to.sharedVaults.add(vault);
+      final batch = FirestoreService.to.instance.batch();
+      final doc = FirestoreService.to.sharedVaults.doc();
+
+      // update user doc
+      batch.set(
+        doc,
+        vault,
+        SetOptions(merge: true),
+      );
+
+      // update users collection stats counter
+      batch.set(
+        FirestoreService.to.vaultsStatsDoc,
+        {
+          'count': FieldValue.increment(1),
+          'updatedTime': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
+
+      // commit batch
+      try {
+        await batch.commit();
+      } catch (e, s) {
+        CrashlyticsService.to.record(e, s);
+        return console.error("error batch commit: $e");
+      }
+
       console.wtf('created shared vault: ${doc.id}');
 
       // inject cipher key to fields

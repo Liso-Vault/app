@@ -16,7 +16,6 @@ import '../general/passphrase.card.dart';
 import '../item/item_screen.controller.dart';
 import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import '../joined_vaults/joined_vaults_screen.controller.dart';
-import '../reset/reset_screen.controller.dart';
 import '../s3/explorer/s3_content_tile.controller.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
 import '../settings/settings_screen.controller.dart';
@@ -41,7 +40,6 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => SettingsScreenController(), fenix: true);
     Get.lazyPut(() => AboutScreenController(), fenix: true);
     Get.lazyPut(() => ExportScreenController(), fenix: true);
-    Get.lazyPut(() => ResetScreenController(), fenix: true);
     Get.lazyPut(() => UpgradeScreenController(), fenix: true);
     Get.lazyPut(() => OTPScreenController(), fenix: true);
     Get.lazyPut(() => GroupsScreenController(), fenix: true);

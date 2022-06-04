@@ -4,6 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:liso/features/menu/menu.button.dart';
+
+import '../../core/utils/utils.dart';
+import '../menu/menu.item.dart';
 
 class SeedFormFieldController extends GetxController {
   final obscureText = true.obs;
@@ -11,68 +16,50 @@ class SeedFormFieldController extends GetxController {
 
 class PassphraseCard extends GetWidget<SeedFormFieldController>
     with ConsoleMixin {
-  final PassphraseMode mode;
   final String initialValue;
   final bool required;
-  final TextEditingController seedController;
+  final TextEditingController fieldController;
   final Function(String)? onFieldSubmitted;
 
   const PassphraseCard({
     Key? key,
-    this.mode = PassphraseMode.none,
     this.initialValue = '',
     this.required = true,
-    required this.seedController,
+    required this.fieldController,
     this.onFieldSubmitted,
   }) : super(key: key);
 
-  String? get value =>
-      bip39.validateMnemonic(seedController.text) ? seedController.text : null;
+  String? get value => bip39.validateMnemonic(fieldController.text)
+      ? fieldController.text
+      : null;
 
   @override
   Widget build(BuildContext context) {
-    _init();
-
-    return Obx(
-      () => TextFormField(
-        controller: seedController,
-        minLines: 1,
-        // maxLines: 5,
-        obscureText: controller.obscureText.value,
-        textInputAction: TextInputAction.next,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (text) => _validateSeed(text!),
-        onFieldSubmitted: onFieldSubmitted,
-        inputFormatters: [
-          // don't allow new lines
-          FilteringTextInputFormatter.deny(RegExp(r'\n')),
-        ],
-        decoration: InputDecoration(
-          labelText: 'Mnemonic Seed Phrase',
-          suffixIcon: IconButton(
-            padding: const EdgeInsets.only(right: 10),
-            onPressed: controller.obscureText.toggle,
-            icon: Icon(
-              controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
-            ),
-          ),
+    return TextFormField(
+      controller: fieldController,
+      minLines: 1,
+      obscureText: controller.obscureText.value,
+      textInputAction: TextInputAction.next,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (text) => _validateSeed(text!),
+      onFieldSubmitted: onFieldSubmitted,
+      inputFormatters: [
+        // don't allow new lines
+        FilteringTextInputFormatter.deny(RegExp(r'\n')),
+      ],
+      decoration: InputDecoration(
+        labelText: 'Mnemonic Seed Phrase',
+        suffixIcon: ContextMenuButton(
+          menuItems,
+          child: const Icon(LineIcons.verticalEllipsis),
         ),
       ),
     );
   }
 
-  void _init() {
-    seedController.text = initialValue;
-
-    if (mode == PassphraseMode.create) {
-      seedController.text = bip39.generateMnemonic(strength: 256);
-    } else if (mode == PassphraseMode.confirm) {
-      //
-    } else if (mode == PassphraseMode.import) {
-      //
-    } else if (mode == PassphraseMode.none) {
-      //
-    }
+  void _generate() {
+    controller.obscureText.value = false;
+    // TODO: show generator dialog
   }
 
   String? _validateSeed(String mnemonic) {
@@ -83,6 +70,28 @@ class PassphraseCard extends GetWidget<SeedFormFieldController>
     } else {
       return null;
     }
+  }
+
+  List<ContextMenuItem> get menuItems {
+    return [
+      ContextMenuItem(
+        title: controller.obscureText.value ? 'Show' : 'Hide',
+        onSelected: controller.obscureText.toggle,
+        leading: Icon(
+          controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
+        ),
+      ),
+      ContextMenuItem(
+        title: 'Generate',
+        leading: const Icon(Iconsax.password_check),
+        onSelected: _generate,
+      ),
+      ContextMenuItem(
+        title: 'Copy',
+        leading: const Icon(Iconsax.copy),
+        onSelected: () => Utils.copyToClipboard(fieldController.text),
+      ),
+    ];
   }
 }
 

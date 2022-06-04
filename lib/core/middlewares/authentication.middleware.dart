@@ -32,23 +32,26 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.unlock);
     }
 
-    // load balances
-    AlchemyService.to.init();
-    AlchemyService.to.load();
+    // first time initialization
+    if (!initialized) CrashlyticsService.to.configure();
 
     if (!Persistence.to.syncConfirmed.val) {
       return const RouteSettings(name: Routes.configuration);
     }
 
+    Globals.init();
+    // load balances
+    AlchemyService.to.init();
+    AlchemyService.to.load();
+    // firebase auth
+    AuthService.to.signIn();
+    // load listview
+    MainScreenController.to.load();
+    // sync vault
     if (!ignoreSync && !S3Service.to.inSync.value && Persistence.to.sync.val) {
-      return const RouteSettings(name: Routes.syncing);
+      S3Service.to.sync();
     }
 
-    // first time initialization
-    if (!initialized) CrashlyticsService.to.configure();
-    MainScreenController.to.load();
-    Globals.init();
-    AuthService.to.signIn();
     initialized = true;
     console.wtf('welcome');
     return super.redirect(route);

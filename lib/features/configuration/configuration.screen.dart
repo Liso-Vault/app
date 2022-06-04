@@ -8,7 +8,6 @@ import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.dart';
@@ -113,7 +112,7 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                       text: ': $providerName',
                       style: TextStyle(color: themeColor),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () => launchUrlString(providerUrl),
+                        ..onTap = () => Utils.openUrl(providerUrl),
                     ),
                   ]
                 ],
@@ -171,7 +170,7 @@ class ConfigurationScreen extends StatelessWidget with ConsoleMixin {
                       text: ' Learn more',
                       style: TextStyle(color: themeColor),
                       recognizer: TapGestureRecognizer()
-                        ..onTap = () => launchUrlString(providerUrl),
+                        ..onTap = () => Utils.openUrl(providerUrl),
                     ),
                   ],
                 ),

@@ -77,6 +77,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
             title: const Text('Vault Settings'),
             subtitle: const Text('Manage your vaults'),
             leading: Icon(Iconsax.briefcase, color: themeColor),
+            childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               ListTile(
                 leading: Icon(Iconsax.briefcase, color: themeColor),
@@ -142,6 +143,14 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   Utils.adaptiveRouteOpen(name: Routes.export);
                 },
               ),
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.refresh, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: Text('${'purge'.tr} Vault'),
+                subtitle: const Text('Delete all items and start over'),
+                onTap: controller.purge,
+              ),
             ],
           );
         }),
@@ -204,8 +213,8 @@ class SettingsScreen extends GetView<SettingsScreenController>
           leading: Icon(Iconsax.refresh5, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${'reset'.tr} ${config.appName}'),
-          subtitle: const Text('Delete local vault and start over'),
-          onTap: () => Utils.adaptiveRouteOpen(name: Routes.reset),
+          subtitle: const Text('Delete local vault and log out'),
+          onTap: controller.reset,
         ),
         const Divider(),
         if (kDebugMode) ...[

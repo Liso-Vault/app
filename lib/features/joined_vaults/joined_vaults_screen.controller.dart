@@ -50,6 +50,17 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   // INIT
 
   // FUNCTIONS
+  @override
+  void onReady() {
+    // Fix stuck loading bug
+    Future.delayed(1.seconds).then((value) {
+      if (JoinedVaultsController.to.busy.value) {
+        JoinedVaultsController.to.restart();
+      }
+    });
+
+    super.onReady();
+  }
 
   void _join() async {
     if (!formKey.currentState!.validate()) return;

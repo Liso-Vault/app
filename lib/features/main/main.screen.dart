@@ -67,7 +67,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     var childContent = controller.obx(
       (_) => listView,
-      onLoading: const BusyIndicator(),
+      // onLoading: const BusyIndicator(),
       onEmpty: Obx(
         () => CenteredPlaceholder(
           iconData: Iconsax.document,

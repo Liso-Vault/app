@@ -112,7 +112,7 @@ class MnemonicScreen extends GetView<MnemonicScreenController>
             replacement: Form(
               key: controller.formKey,
               child: PassphraseCard(
-                seedController: controller.seedController,
+                fieldController: controller.seedController,
                 onFieldSubmitted: (text) => controller.continuePressed,
               ),
             ),

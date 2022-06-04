@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -18,7 +19,6 @@ import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../joined_vaults/joined_vault.controller.dart';
-import '../s3/s3.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
 class DebugScreen extends StatelessWidget with ConsoleMixin {
@@ -81,38 +81,17 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            // await FirestoreService.to.userDevices.add(HiveMetadataDevice(
-            //   id: const Uuid().v4(),
-            // ));
+            await AuthService.to.signOut();
+            AuthService.to.signIn();
 
-            // UIUtils.showSimpleDialog(
-            //   'Firebase User',
-            //   AuthService.to.userId,
+            // final info = await S3Service.to.fetchStorageSize();
+            // if (info == null) return console.error('error storage info');
+
+            // await FirestoreService.to.syncUser(
+            //   filesCount: info.contents.length,
+            //   totalSize: info.totalSize,
+            //   encryptedFilesCount: info.encryptedFiles,
             // );
-
-            // final deviceInfo = DeviceInfoPlugin();
-            // final info = await deviceInfo.macOsInfo;
-            // final map = info.toMap();
-            // console.info('map: $map');
-
-            // final device = HiveMetadataDevice(
-            //   name: info.computerName,
-            //   info: info.toMap(),
-            // );
-
-            // final encoded = jsonEncode(device.toJson());
-
-            // console.info('encoded: $encoded');
-            // console.info('decoded: ${jsonDecode(encoded)}');
-
-            final info = await S3Service.to.fetchStorageSize();
-            if (info == null) return console.error('error storage info');
-
-            await FirestoreService.to.syncUser(
-              filesCount: info.contents.length,
-              totalSize: info.totalSize,
-              encryptedFilesCount: info.encryptedFiles,
-            );
           },
         ),
         const Divider(),
