@@ -2,9 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/styles.dart';
-import 'package:liso/features/app/routes.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
@@ -51,20 +49,14 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             child: ElevatedButton.icon(
               label: Text('create_vault'.tr),
               icon: const Icon(Iconsax.box_add),
-              onPressed: () async {
-                await AuthService.to.signOut(); // just to make sure
-                Get.toNamed(Routes.mnemonic);
-              },
+              onPressed: controller.create,
             ),
           ),
           const SizedBox(height: 10),
           TextButton.icon(
             label: Text('import_vault'.tr),
             icon: const Icon(Iconsax.import_1),
-            onPressed: () async {
-              await AuthService.to.signOut(); // just to make sure
-              Get.toNamed(Routes.import);
-            },
+            onPressed: controller.import,
           ),
         ],
       ),

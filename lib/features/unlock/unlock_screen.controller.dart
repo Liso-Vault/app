@@ -9,6 +9,7 @@ import 'package:liso/features/app/routes.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/services/biometric.service.dart';
+import '../../core/utils/globals.dart';
 import '../wallet/wallet.service.dart';
 
 class UnlockScreenBinding extends Bindings {
@@ -23,7 +24,6 @@ class UnlockScreenController extends GetxController
   // VARIABLES
   final passwordController = TextEditingController();
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
-  final useBiometrics = Get.parameters['biometrics'] != 'false';
 
   // PROPERTIES
   final attemptsLeft = Persistence.to.maxUnlockAttempts.val.obs;
@@ -41,7 +41,7 @@ class UnlockScreenController extends GetxController
 
   @override
   void onReady() async {
-    authenticateBiometrics();
+    authenticate();
     super.onReady();
   }
 
@@ -49,9 +49,9 @@ class UnlockScreenController extends GetxController
   void onChanged(String text) => canProceed.value = text.isNotEmpty;
 
   // biometric storage
-  void authenticateBiometrics() async {
-    if (!useBiometrics) return;
-    if (!(await BiometricService.to.authenticate())) return;
+  void authenticate() async {
+    if (!isLocalAuthSupported) return;
+    if (!(await LocalAuthService.to.authenticate())) return;
     // set the password then programmatically unlock
     passwordController.text = Persistence.to.walletPassword.val;
     // delay to show that password has been inserted

@@ -56,7 +56,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => AlchemyService());
     Get.lazyPut(() => S3Service());
     Get.lazyPut(() => ConfigService());
-    Get.lazyPut(() => BiometricService());
+    Get.lazyPut(() => LocalAuthService());
     Get.lazyPut(() => HiveService());
     Get.lazyPut(() => HiveItemsService());
     Get.lazyPut(() => HiveGroupsService());

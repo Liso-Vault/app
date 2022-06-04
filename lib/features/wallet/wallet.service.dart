@@ -16,7 +16,13 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../core/firebase/config/models/config_limits.model.dart';
+import '../../core/hive/hive.service.dart';
+import '../../core/hive/hive_items.service.dart';
+import '../../core/hive/models/item.hive.dart';
+import '../../core/hive/models/metadata/metadata.hive.dart';
+import '../../core/parsers/template.parser.dart';
 import '../../core/utils/globals.dart';
+import '../app/routes.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
@@ -230,5 +236,67 @@ class WalletService extends GetxService with ConsoleMixin {
   void reset() {
     wallet = null;
     cipherKey = null;
+  }
+
+  Future<void> create(String seed, String password, bool isNew) async {
+    wallet = WalletService.to.mnemonicToWallet(
+      seed,
+      password: password,
+    );
+
+    await init();
+
+    // save to persistence
+    Persistence.to.wallet.val = wallet!.toJson();
+    // just to make sure the Wallet is ready before proceeding
+    await Future.delayed(200.milliseconds);
+    // save password
+    Persistence.to.walletPassword.val = password;
+    // open Hive Boxes
+    await HiveService.to.open();
+    if (!isNew) return;
+
+    // inject cipher key to fields
+    const category = LisoItemCategory.cryptoWallet;
+    var fields = TemplateParser.parse(category.name);
+
+    fields = fields.map((e) {
+      if (e.identifier == 'seed') {
+        e.data.value = seed;
+        e.readOnly = true;
+        return e;
+      } else if (e.identifier == 'password') {
+        e.data.value = password;
+        e.readOnly = true;
+        return e;
+      } else if (e.identifier == 'private_key') {
+        e.data.value = WalletService.to.privateKeyHex;
+        e.readOnly = true;
+        return e;
+      } else if (e.identifier == 'address') {
+        e.data.value = WalletService.to.longAddress;
+        e.readOnly = true;
+        return e;
+      } else if (e.identifier == 'note') {
+        e.data.value =
+            'It is recommended you have a written copy of your master seed phrase on some physical object and store it safely. You are free to delete this item.';
+        return e;
+      } else {
+        return e;
+      }
+    }).toList();
+
+    // save cipher key as a liso item
+    await HiveItemsService.to.box.add(HiveLisoItem(
+      identifier: 'seed',
+      groupId: 'secrets', // TODO: use enums for reserved groups
+      category: category.name,
+      title: 'Liso Master Seed Phrase',
+      fields: fields,
+      metadata: await HiveMetadata.get(),
+      protected: true,
+      reserved: true,
+      tags: ['secret'],
+    ));
   }
 }

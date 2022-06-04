@@ -58,36 +58,17 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           ),
         ),
         const SizedBox(height: 20),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Obx(
-              () => SizedBox(
-                width: 200,
-                child: ElevatedButton.icon(
-                  label: Text(
-                      controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
-                  icon: Icon(
-                    controller.passwordMode
-                        ? Iconsax.arrow_circle_right
-                        : LineIcons.lockOpen,
-                  ),
-                  onPressed: controller.canProceed() ? controller.unlock : null,
-                ),
-              ),
+        SizedBox(
+          width: 200,
+          child: ElevatedButton.icon(
+            label: Text(controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
+            icon: Icon(
+              controller.passwordMode
+                  ? Iconsax.arrow_circle_right
+                  : LineIcons.lockOpen,
             ),
-            Obx(
-              () => Visibility(
-                visible: BiometricService.to.supported.value &&
-                    controller.useBiometrics,
-                child: IconButton(
-                  padding: const EdgeInsets.only(left: 15),
-                  icon: const Icon(Iconsax.finger_scan),
-                  onPressed: controller.authenticateBiometrics,
-                ),
-              ),
-            ),
-          ],
+            onPressed: controller.canProceed() ? controller.unlock : null,
+          ),
         ),
       ],
     );

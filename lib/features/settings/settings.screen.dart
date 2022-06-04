@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/services/biometric.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -60,20 +59,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
             parameters: {'from': 'settings'},
           ),
         ),
-        if (BiometricService.to.supported.value) ...[
-          const Divider(),
-          PersistenceBuilder(
-            builder: (p, context) => SwitchListTile(
-              title: const Text('Biometric Authentication'),
-              secondary: Icon(Iconsax.lock, color: themeColor),
-              value: persistence.biometrics.val,
-              subtitle: const Text(
-                "Use biometrics instead of password",
-              ),
-              onChanged: (value) => persistence.biometrics.val = value,
-            ),
-          ),
-        ],
         const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(

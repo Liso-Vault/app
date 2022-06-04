@@ -1,10 +1,10 @@
 import 'dart:convert';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -81,17 +81,8 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            await AuthService.to.signOut();
-            AuthService.to.signIn();
-
-            // final info = await S3Service.to.fetchStorageSize();
-            // if (info == null) return console.error('error storage info');
-
-            // await FirestoreService.to.syncUser(
-            //   filesCount: info.contents.length,
-            //   totalSize: info.totalSize,
-            //   encryptedFilesCount: info.encryptedFiles,
-            // );
+            AppSettings.openSecuritySettings();
+            // AppSettings.openLockAndPasswordSettings();
           },
         ),
         const Divider(),

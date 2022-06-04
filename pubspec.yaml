@@ -57,10 +57,10 @@ dependencies:
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
-  flutter_swipe_action_cell: ^3.0.2
+  flutter_swipe_action_cell: ^3.0.3
   flutter_quill:
     git: https://github.com/oliverbytes/flutter-quill.git
-  badges: ^2.0.2 # pending changes indicator
+  badges: ^2.0.3 # pending changes indicator
   cached_network_image: ^3.2.1 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
   flutter_svg: ^1.0.3 # dice bear avatars
@@ -74,11 +74,11 @@ dependencies:
   flutter_local_notifications: ^9.5.3+1
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
-  share_plus: ^4.0.5 # exporting files and sharing texts
+  share_plus: ^4.0.6 # exporting files and sharing texts
   equatable: ^2.0.3
   app_settings: ^4.1.6
   uuid: ^3.0.6 # unique identifiers for items
-  window_manager: ^0.2.3 # set desktop window size
+  window_manager: ^0.2.5 # set desktop window size
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
   console_mixin: ^0.0.1 # logger
   random_string: ^2.3.1 # random string generator
