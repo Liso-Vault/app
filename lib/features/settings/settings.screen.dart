@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/services/biometric.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
@@ -59,18 +60,20 @@ class SettingsScreen extends GetView<SettingsScreenController>
             parameters: {'from': 'settings'},
           ),
         ),
-        const Divider(),
-        PersistenceBuilder(
-          builder: (p, context) => SwitchListTile(
-            title: const Text('Biometric Authentication'),
-            secondary: Icon(Iconsax.lock, color: themeColor),
-            value: persistence.biometrics.val,
-            subtitle: const Text(
-              "Use Fingerprint / Face ID for authentication",
+        if (BiometricService.to.supported.value) ...[
+          const Divider(),
+          PersistenceBuilder(
+            builder: (p, context) => SwitchListTile(
+              title: const Text('Biometric Authentication'),
+              secondary: Icon(Iconsax.lock, color: themeColor),
+              value: persistence.biometrics.val,
+              subtitle: const Text(
+                "Use biometrics instead of password",
+              ),
+              onChanged: (value) => persistence.biometrics.val = value,
             ),
-            onChanged: (value) => persistence.biometrics.val = value,
           ),
-        ),
+        ],
         const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(
@@ -151,6 +154,55 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 subtitle: const Text('Delete all items and start over'),
                 onTap: controller.purge,
               ),
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.import_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Import Items'),
+                subtitle: const Text('Import items from external sources'),
+                // enabled: false,
+                onTap: () {
+                  UIUtils.showSimpleDialog(
+                    'Import Items',
+                    "Soon, you'll be able to import items from 1Password, LastPass, etc...",
+                  );
+                },
+              ),
+            ],
+          );
+        }),
+        const Divider(),
+        PersistenceBuilder(builder: (_, context) {
+          return ExpansionTile(
+            title: const Text('Wallet Settings'),
+            subtitle: const Text('Manage your wallet'),
+            leading: Icon(Iconsax.briefcase, color: themeColor),
+            childrenPadding: const EdgeInsets.only(left: 20),
+            children: [
+              ListTile(
+                leading: Icon(Iconsax.wallet_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: Text('export_wallet'.tr),
+                subtitle:
+                    const Text('Save <wallet>.json to an external source'),
+                onTap: controller.exportWallet,
+              ),
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.key, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Show Seed Phrase'),
+                subtitle: const Text('Make sure you are in a safe location'),
+                onTap: controller.showSeed,
+              ),
+              const Divider(),
+              ListTile(
+                leading: Icon(Iconsax.password_check, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Change Password'),
+                subtitle: const Text('Change your wallet password'),
+                // onTap: controller.showSeed,
+              ),
             ],
           );
         }),
@@ -172,36 +224,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
         }),
         const Divider(),
         ListTile(
-          leading: Icon(Iconsax.import_1, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: const Text('Import Items'),
-          subtitle: const Text('Import items from external sources'),
-          // enabled: false,
-          onTap: () {
-            UIUtils.showSimpleDialog(
-              'Import Items',
-              "Soon, you'll be able to import items from 1Password, LastPass, etc...",
-            );
-          },
-        ),
-        const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.wallet_1, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('export_wallet'.tr),
-          subtitle: const Text('Save <wallet>.json to an external source'),
-          onTap: controller.exportWallet,
-        ),
-        const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.key, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: const Text('Show Seed Phrase'),
-          subtitle: const Text('Make sure you are in a safe location'),
-          onTap: controller.showSeed,
-        ),
-        const Divider(),
-        ListTile(
           leading: Icon(Iconsax.lock, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${'lock'.tr} ${config.appName}'),
@@ -213,7 +235,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           leading: Icon(Iconsax.refresh5, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${'reset'.tr} ${config.appName}'),
-          subtitle: const Text('Delete local vault and log out'),
+          subtitle: const Text('Delete local vault and logout'),
           onTap: controller.reset,
         ),
         const Divider(),

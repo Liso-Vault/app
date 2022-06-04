@@ -242,6 +242,7 @@ class SettingsScreenController extends GetxController
         const Text(
           "Make sure you're in a safe location and free from prying eyes",
           style: TextStyle(color: Colors.grey),
+          textAlign: TextAlign.center,
         ),
       ],
     );
