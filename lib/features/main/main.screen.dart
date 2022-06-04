@@ -7,7 +7,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
-import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/features/menu/menu.button.dart';

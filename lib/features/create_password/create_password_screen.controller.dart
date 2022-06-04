@@ -1,7 +1,6 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hex/hex.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.dart';

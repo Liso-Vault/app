@@ -25,7 +25,6 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/segmented_item.widget.dart';
-import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
 import '../wallet/wallet.service.dart';
 
