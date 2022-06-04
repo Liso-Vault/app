@@ -86,7 +86,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 subtitle: const Text('Manage your own custom vaults'),
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
               ),
-              if (Persistence.to.canShare) ...[
+              if (Persistence.to.canShare && isFirebaseSupported) ...[
                 const Divider(),
                 ListTile(
                   leading: Icon(Iconsax.share, color: themeColor),
@@ -157,7 +157,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
         PersistenceBuilder(builder: (_, context) {
           return Column(
             children: [
-              if (Persistence.to.canSync) ...[
+              if (Persistence.to.canSync && isFirebaseSupported) ...[
                 const Divider(),
                 ListTile(
                   leading: Icon(Iconsax.cpu, color: themeColor),

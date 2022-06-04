@@ -66,6 +66,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> signOut() async {
+    if (!isFirebaseSupported) return console.warning('Not Supported');
     await instance.signOut();
     console.info('signOut');
   }

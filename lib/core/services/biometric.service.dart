@@ -6,7 +6,7 @@ import 'package:local_auth/local_auth.dart';
 
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
-import 'package:local_auth_windows/local_auth_windows.dart';
+// import 'package:local_auth_windows/local_auth_windows.dart';
 
 class BiometricService extends GetxService with ConsoleMixin {
   static BiometricService get to => Get.find<BiometricService>();
@@ -46,7 +46,7 @@ class BiometricService extends GetxService with ConsoleMixin {
         const IOSAuthMessages(
           cancelButton: 'Cancel',
         ),
-        const WindowsAuthMessages(),
+        // const WindowsAuthMessages(),
       ],
     );
   }
