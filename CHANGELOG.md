@@ -1,5 +1,8 @@
 ## 0.4.1
 New! Purge Vault
+Simplified! Creation of vault
+Removed! Initial syncing screen
+Improved! Re-organized settings
 
 ## 0.4.0
 - New! Shared Vaults
