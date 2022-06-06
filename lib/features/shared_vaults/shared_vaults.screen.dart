@@ -14,6 +14,7 @@ import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../core/firebase/auth.service.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/persistence/persistence.dart';
@@ -55,6 +56,7 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
             {
               'count': FieldValue.increment(-1),
               'updatedTime': FieldValue.serverTimestamp(),
+              'userId': AuthService.to.userId,
             },
             SetOptions(merge: true),
           );

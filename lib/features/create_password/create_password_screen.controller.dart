@@ -2,19 +2,12 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/hive/hive.service.dart';
-import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/auth.service.dart';
-import '../../core/hive/hive_items.service.dart';
-import '../../core/hive/models/item.hive.dart';
-import '../../core/hive/models/metadata/metadata.hive.dart';
-import '../../core/parsers/template.parser.dart';
 
 class CreatePasswordScreenBinding extends Bindings {
   @override

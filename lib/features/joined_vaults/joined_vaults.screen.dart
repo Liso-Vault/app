@@ -61,6 +61,7 @@ class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
             {
               'count': FieldValue.increment(-1),
               'updatedTime': FieldValue.serverTimestamp(),
+              'userId': AuthService.to.userId,
             },
             SetOptions(merge: true),
           );

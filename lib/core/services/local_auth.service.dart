@@ -21,12 +21,11 @@ class LocalAuthService extends GetxService with ConsoleMixin {
   // INIT
 
   // FUNCTIONS
-
   Future<bool> authenticate() async {
-    // TODO: localize
     bool authenticated = false;
 
     try {
+      // TODO: localize
       authenticated = await auth.authenticate(
         localizedReason: 'Decrypt and access your local vault',
         options: const AuthenticationOptions(),

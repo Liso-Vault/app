@@ -6,7 +6,7 @@ import 'package:random_password_generator/random_password_generator.dart';
 import 'package:bip39/bip39.dart' as bip39;
 
 import '../../core/firebase/auth.service.dart';
-import '../../core/services/biometric.service.dart';
+import '../../core/services/local_auth.service.dart';
 import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
 

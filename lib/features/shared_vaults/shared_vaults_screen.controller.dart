@@ -117,6 +117,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         {
           'count': FieldValue.increment(1),
           'updatedTime': FieldValue.serverTimestamp(),
+          'userId': AuthService.to.userId,
         },
         SetOptions(merge: true),
       );

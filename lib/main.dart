@@ -23,7 +23,7 @@ import 'core/hive/hive_items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
-import 'core/services/biometric.service.dart';
+import 'core/services/local_auth.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/connectivity/connectivity.service.dart';

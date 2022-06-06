@@ -8,7 +8,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
 
 import '../../core/hive/hive.service.dart';
-import '../../core/services/biometric.service.dart';
+import '../../core/services/local_auth.service.dart';
 import '../../core/utils/globals.dart';
 import '../wallet/wallet.service.dart';
 

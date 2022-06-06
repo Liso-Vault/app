@@ -7,7 +7,7 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/services/biometric.service.dart';
+import '../../core/services/local_auth.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
