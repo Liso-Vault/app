@@ -15,7 +15,6 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -80,6 +79,16 @@ class MainScreenController extends GetxController
   final data = <HiveLisoItem>[].obs;
 
   // GETTERS
+  List<ContextMenuItem> get menuItems {
+    return [
+      ContextMenuItem(
+        title: 'sync'.tr,
+        leading: const Icon(Iconsax.cloud_change),
+        onSelected: S3Service.to.sync,
+      ),
+    ];
+  }
+
   List<ContextMenuItem> get menuItemsSort {
     final sortName = sortOrder.value.name;
     final ascending = sortName.contains('Ascending');
@@ -160,30 +169,6 @@ class MainScreenController extends GetxController
       windowManager.setPreventClose(true);
     }
 
-    // if (GetPlatform.isWeb) {
-    //   if (!WalletService.to.exists) {
-    //     Get.toNamed(Routes.welcome);
-    //     return;
-    //   }
-
-    //   if (Globals.wallet == null) {
-    //     Get.toNamed(Routes.unlock);
-    //     return;
-    //   }
-
-    //   if (!Persistence.to.syncConfirmed.val) {
-    //     Get.toNamed(Routes.syncSettings);
-    //     return;
-    //   }
-
-    //   if (!AuthenticationMiddleware.ignoreSync &&
-    //       !S3Service.to.inSync.value &&
-    //       Persistence.to.sync.val) {
-    //     Get.toNamed(Routes.syncing);
-    //     return;
-    //   }
-    // }
-
     console.info('onInit');
     super.onInit();
   }
@@ -254,30 +239,20 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
+  void init() async {
+    load();
+
+    // others
+  }
+
   void onItemsUpdated() {
     persistence.changes.val++;
     load();
   }
 
-  Future<void> sync() async {
-    UIUtils.showSnackBar(
-      title: 'Syncing to ${ConfigService.to.appName} Cloud',
-      message: 'Please wait...',
-      icon: const Icon(Iconsax.cloud_change),
-      seconds: 4,
-    );
-
-    await S3Service.to.sync();
-  }
-
   void search() async {
     searchDelegate = ItemsSearchDelegate(HiveItemsService.to.data);
-
-    await showSearch(
-      context: Get.context!,
-      delegate: searchDelegate!,
-    );
-
+    await showSearch(context: Get.context!, delegate: searchDelegate!);
     searchDelegate = null;
   }
 
@@ -490,5 +465,12 @@ class MainScreenController extends GetxController
         ),
       ],
     ));
+  }
+
+  void showSeed() {
+    Utils.adaptiveRouteOpen(
+      name: Routes.seed,
+      parameters: {'mode': 'display'},
+    );
   }
 }

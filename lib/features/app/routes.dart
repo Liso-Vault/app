@@ -7,9 +7,10 @@ abstract class Routes {
   static const settings = '/settings';
   static const about = '/about';
   static const createPassword = '/create_password';
-  static const mnemonic = '/mnemonic';
-  static const confirmMnemonic = '/verify_mnemonic';
-  static const import = '/import';
+  static const passwordGenerator = '/password_generator';
+  static const seed = '/seed';
+  static const seedGenerator = '/seed_generator';
+  static const restore = '/restore';
   static const export = '/export';
   static const item = '/item';
   static const reset = '/reset';
@@ -25,9 +26,8 @@ abstract class Routes {
   static const debug = '/debug';
 
   // SYNC
-  static const configuration = '/configuration';
-  static const syncing = '/syncing';
   static const syncProvider = '/sync_provider';
+  static const customSyncProvider = '/custom_sync_provider';
 
   // S3
   static const s3Explorer = '/s3_explorer';

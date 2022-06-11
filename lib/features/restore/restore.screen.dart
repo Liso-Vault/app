@@ -3,91 +3,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/persistence/persistence_builder.widget.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
-import 'package:liso/features/general/passphrase.card.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/seed/seed_field.widget.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../general/custom_choice_chip.widget.dart';
 import '../general/segmented_item.widget.dart';
-import 'import_screen.controller.dart';
+import 'restore_screen.controller.dart';
 
-class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
-  const ImportScreen({Key? key}) : super(key: key);
+class RestoreScreen extends GetView<RestoreScreenController> with ConsoleMixin {
+  const RestoreScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final persistence = Get.find<Persistence>();
-
-    // TODO: reuse from configuration screen
-    final syncOptions = PersistenceBuilder(
-      builder: (p, context) {
-        final isSia = persistence.syncProvider.val == LisoSyncProvider.sia.name;
-        final isIPFS =
-            persistence.syncProvider.val == LisoSyncProvider.ipfs.name;
-        final isStorj =
-            persistence.syncProvider.val == LisoSyncProvider.storj.name;
-        final isSkyNet =
-            persistence.syncProvider.val == LisoSyncProvider.skynet.name;
-        final isCustom =
-            persistence.syncProvider.val == LisoSyncProvider.custom.name;
-
-        return Wrap(
-          spacing: 5,
-          children: [
-            CustomChoiceChip(
-              label: 'Sia',
-              selected: isSia,
-              onSelected: (value) {
-                persistence.syncProvider.val = LisoSyncProvider.sia.name;
-                S3Service.to.init();
-              },
-            ),
-            CustomChoiceChip(
-              label: 'Storj',
-              selected: isStorj,
-              onSelected: (value) {
-                persistence.syncProvider.val = LisoSyncProvider.storj.name;
-                S3Service.to.init();
-              },
-            ),
-            CustomChoiceChip(
-              label: 'IPFS',
-              selected: isIPFS,
-              onSelected: (value) {
-                persistence.syncProvider.val = LisoSyncProvider.ipfs.name;
-                S3Service.to.init();
-              },
-            ),
-            CustomChoiceChip(
-              label: 'SkyNet',
-              selected: isSkyNet,
-              onSelected: (value) {
-                persistence.syncProvider.val = LisoSyncProvider.skynet.name;
-                S3Service.to.init();
-              },
-            ),
-            CustomChoiceChip(
-              label: 'Custom',
-              selected: isCustom,
-              onSelected: (value) {
-                Utils.adaptiveRouteOpen(
-                  name: Routes.syncProvider,
-                  parameters: {'from': 'import'},
-                );
-              },
-            ),
-          ],
-        );
-      },
-    );
-
     final content = Form(
       key: controller.formKey,
       child: Column(
@@ -96,12 +28,12 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
           Icon(Iconsax.import_1, size: 100, color: themeColor),
           const SizedBox(height: 20),
           Text(
-            'import_vault'.tr,
+            'restore_vault'.tr,
             style: const TextStyle(fontSize: 20),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 5),
           const Text(
-            "Import your vault and enter your master seed phrase to decrypt it.",
+            "Restore your vault with your master seed phrase to decrypt it.",
             textAlign: TextAlign.center,
             style: TextStyle(color: Colors.grey),
           ),
@@ -145,21 +77,27 @@ class ImportScreen extends GetView<ImportScreenController> with ConsoleMixin {
                 ],
               );
             } else if (controller.importMode() == ImportMode.liso) {
-              return Column(
-                children: [
-                  const Text('Select your provider'),
-                  const SizedBox(height: 10),
-                  syncOptions,
-                ],
-              );
+              return PersistenceBuilder(builder: (_, context) {
+                return Column(
+                  children: [
+                    TextButton(
+                      onPressed: () => Utils.adaptiveRouteOpen(
+                        name: Routes.syncProvider,
+                      ),
+                      child: Text('configure'.tr),
+                    ),
+                    const Divider(),
+                  ],
+                );
+              });
             } else {
               return const SizedBox.shrink();
             }
           }),
-          const SizedBox(height: 20),
-          PassphraseCard(
+          SeedField(
             fieldController: controller.seedController,
             onFieldSubmitted: (text) => controller.continuePressed,
+            showGenerate: false,
           ),
           const SizedBox(height: 20),
           SizedBox(

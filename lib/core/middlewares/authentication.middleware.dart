@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -14,7 +13,6 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import '../../features/app/routes.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
-  static bool ignoreSync = false;
   static bool initialized = false;
 
   @override
@@ -35,22 +33,16 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     // first time initialization
     if (!initialized) CrashlyticsService.to.configure();
 
-    if (!Persistence.to.syncConfirmed.val) {
-      return const RouteSettings(name: Routes.configuration);
-    }
-
     Globals.init();
     // load balances
     AlchemyService.to.init();
     AlchemyService.to.load();
     // firebase auth
     AuthService.to.signIn();
-    // load listview
-    MainScreenController.to.load();
+    // init main screen
+    MainScreenController.to.init();
     // sync vault
-    if (!ignoreSync && !S3Service.to.inSync.value && Persistence.to.sync.val) {
-      S3Service.to.sync();
-    }
+    S3Service.to.sync();
 
     initialized = true;
     console.wtf('welcome');

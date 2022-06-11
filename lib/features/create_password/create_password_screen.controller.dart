@@ -38,12 +38,20 @@ class CreatePasswordScreenController extends GetxController
 
   // FUNCTIONS
 
-  void generate() {
-    final password = Utils.generatePassword();
-    passwordController.text = password;
-    passwordConfirmController.text = password;
+  void generate() async {
+    final password_ = await Utils.adaptiveRouteOpen(
+      name: Routes.passwordGenerator,
+      parameters: {'return': 'true'},
+    );
+
+    if (password_ == null) return;
+    console.wtf('password: $password_');
+    // show
     obscurePassword.value = false;
     obscureConfirmPassword.value = false;
+    // inject
+    passwordController.text = password_;
+    passwordConfirmController.text = password_;
   }
 
   void confirm() async {
@@ -68,7 +76,7 @@ class CreatePasswordScreenController extends GetxController
     }
 
     change(null, status: RxStatus.success());
-    final isNewVault = Get.parameters['from']! == 'mnemonic_screen';
+    final isNewVault = Get.parameters['from'] == 'seed_screen';
 
     await WalletService.to.create(
       Get.parameters['seed']!,
@@ -76,6 +84,6 @@ class CreatePasswordScreenController extends GetxController
       isNewVault,
     );
 
-    Get.offAllNamed(Routes.configuration);
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

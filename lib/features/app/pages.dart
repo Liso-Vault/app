@@ -8,11 +8,11 @@ import 'package:liso/features/create_password/create_password_screen.controller.
 import 'package:liso/features/debug/debug.screen.dart';
 import 'package:liso/features/export/export.screen.dart';
 import 'package:liso/features/export/export_screen.controller.dart';
-import 'package:liso/features/import/import.screen.dart';
-import 'package:liso/features/import/import_screen.controller.dart';
+import 'package:liso/features/restore/restore.screen.dart';
+import 'package:liso/features/restore/restore_screen.controller.dart';
 import 'package:liso/features/main/main.screen.dart';
-import 'package:liso/features/mnemonic/mnemonic.screen.dart';
-import 'package:liso/features/mnemonic/mnemonic_screen.controller.dart';
+import 'package:liso/features/seed/seed.screen.dart';
+import 'package:liso/features/seed/seed_screen.controller.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/settings/settings_screen.controller.dart';
 import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
@@ -28,7 +28,7 @@ import '../Cipher/cipher_screen.controller.dart';
 import '../attachments/attachments.screen.dart';
 import '../attachments/attachments_screen.controller.dart';
 import '../cipher/cipher.screen.dart';
-import '../configuration/configuration.screen.dart';
+import '../s3/provider/sync_provider.screen.dart';
 import '../devices/devices.screen.dart';
 import '../devices/devices_screen.controller.dart';
 import '../item/item.screen.dart';
@@ -40,10 +40,14 @@ import '../joined_vaults/joined_vaults_screen.controller.dart';
 import '../main/main_screen.bindings.dart';
 import '../otp/otp.screen.dart';
 import '../otp/otp_screen.controller.dart';
+import '../password_generator/password_generator.screen.dart';
+import '../password_generator/password_generator_screen.controller.dart';
 import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/explorer/s3_exporer_screen.controller.dart';
-import '../s3/provider/sync_provider_screen.controller.dart';
-import '../s3/provider/sync_provider_screen.dart';
+import '../s3/provider/custom_provider_screen.controller.dart';
+import '../s3/provider/custom_provider_screen.dart';
+import '../seed/generator/seed_generator.screen.dart';
+import '../seed/generator/seed_generator_screen.controller.dart';
 import '../upgrade/upgrade.screen.dart';
 import '../groups/groups.screen.dart';
 import '../groups/groups_screen.controller.dart';
@@ -82,14 +86,19 @@ class AppPages {
       binding: CreatePasswordScreenBinding(),
     ),
     GetPage(
+      name: Routes.passwordGenerator,
+      page: () => const PasswordGeneratorScreen(),
+      binding: PasswordGeneratorScreenBinding(),
+    ),
+    GetPage(
       name: Routes.item,
       page: () => const ItemScreen(),
       binding: ItemScreenBinding(),
     ),
     GetPage(
-      name: Routes.import,
-      page: () => const ImportScreen(),
-      binding: ImportScreenBinding(),
+      name: Routes.restore,
+      page: () => const RestoreScreen(),
+      binding: RestoreScreenBinding(),
     ),
     GetPage(
       name: Routes.export,
@@ -97,9 +106,14 @@ class AppPages {
       binding: ExportScreenBinding(),
     ),
     GetPage(
-      name: Routes.mnemonic,
-      page: () => const MnemonicScreen(),
-      binding: MnemonicScreenBinding(),
+      name: Routes.seed,
+      page: () => const SeedScreen(),
+      binding: SeedScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.seedGenerator,
+      page: () => const SeedGeneratorScreen(),
+      binding: SeedGeneratorScreenBinding(),
     ),
     GetPage(
       name: Routes.settings,
@@ -112,13 +126,13 @@ class AppPages {
       binding: AboutScreenBinding(),
     ),
     GetPage(
-      name: Routes.configuration,
-      page: () => const ConfigurationScreen(),
-    ),
-    GetPage(
       name: Routes.syncProvider,
       page: () => const SyncProviderScreen(),
-      binding: SyncProviderScreenBinding(),
+    ),
+    GetPage(
+      name: Routes.customSyncProvider,
+      page: () => const CustomSyncProviderScreen(),
+      binding: CustomSyncProviderScreenBinding(),
     ),
     GetPage(
       name: Routes.s3Explorer,

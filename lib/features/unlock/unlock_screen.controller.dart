@@ -26,7 +26,7 @@ class UnlockScreenController extends GetxController
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
 
   // PROPERTIES
-  final attemptsLeft = Persistence.to.maxUnlockAttempts.val.obs;
+  int attemptsLeft = Persistence.to.maxUnlockAttempts.val;
   final canProceed = false.obs;
   final obscurePassword = true.obs;
 
@@ -74,19 +74,22 @@ class UnlockScreenController extends GetxController
       passwordController.clear();
       canProceed.value = false;
 
-      if (!passwordMode) {
-        attemptsLeft.value--;
+      String message = 'Please enter your master password';
 
-        if (attemptsLeft() <= 0) {
+      if (!passwordMode) {
+        attemptsLeft--;
+
+        if (attemptsLeft <= 0) {
           await LisoManager.reset();
           return Get.offNamedUntil(Routes.main, (route) => false);
         }
+
+        message = '$attemptsLeft ${'attempts_left'.tr} until your vault resets';
       }
 
       UIUtils.showSnackBar(
         title: 'Incorrect Master Password',
-        message:
-            '${attemptsLeft.value} ${'attempts_left'.tr} until your vault resets',
+        message: message,
         icon: const Icon(Iconsax.warning_2, color: Colors.red),
         seconds: 4,
       );

@@ -112,7 +112,6 @@ class FirestoreService extends GetxService with ConsoleMixin {
       final foundDevices =
           devices.where((e) => e.id == Globals.metadata.device.id);
       final totalDevices = devices.length + (foundDevices.isEmpty ? 1 : 0);
-      console.wtf('totalDevices: $totalDevices');
 
       if (totalDevices > WalletService.to.limits.devices) {
         // open a locked page to manage devices and with button to upgrade
@@ -156,8 +155,9 @@ class FirestoreService extends GetxService with ConsoleMixin {
         joinedVaults: JoinedVaultsController.to.data.length,
       ),
       settings: FirebaseUserSettings(
-        sync: Persistence.to.canSync,
+        sync: Persistence.to.sync.val,
         theme: Persistence.to.theme.val,
+        syncProvider: Persistence.to.syncProvider.val,
       ),
     );
 

@@ -29,7 +29,6 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
 
   void load() {
     data.value = HiveGroupsService.to.data;
-    console.wtf('length: ${data.length}');
 
     filtered.value =
         data.where((e) => !kReservedVaultIds.contains(e.id)).toList();

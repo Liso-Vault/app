@@ -49,16 +49,43 @@ class SettingsScreen extends GetView<SettingsScreenController>
           ),
         ),
         const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.setting_3, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('configuration'.tr),
-          subtitle: const Text('Cloud Sync & Anonymous Reporting'),
-          onTap: () => Utils.adaptiveRouteOpen(
-            name: Routes.configuration,
-            parameters: {'from': 'settings'},
-          ),
-        ),
+        PersistenceBuilder(builder: (_, context) {
+          return ExpansionTile(
+            title: const Text('Sync Settings'),
+            subtitle: const Text('Vault synchronization settings'),
+            leading: Icon(Iconsax.cloud_change, color: themeColor),
+            childrenPadding: const EdgeInsets.only(left: 20),
+            children: [
+              SwitchListTile(
+                title: const Text('Enabled'),
+                secondary: Icon(Iconsax.cloud, color: themeColor),
+                value: persistence.sync.val,
+                subtitle: const Text("Keep multiple devices in sync"),
+                onChanged: (value) => persistence.sync.val = value,
+              ),
+              if (persistence.sync.val && isFirebaseSupported) ...[
+                const Divider(),
+                ListTile(
+                  leading: Icon(Iconsax.cpu, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: const Text('Devices'),
+                  subtitle: const Text('Manage your synced devices'),
+                  onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
+                ),
+                const Divider(),
+                ListTile(
+                  leading: Icon(Iconsax.setting, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: const Text('Configuration'),
+                  subtitle: const Text('Manage your sync configuration'),
+                  onTap: () => Utils.adaptiveRouteOpen(
+                    name: Routes.syncProvider,
+                  ),
+                ),
+              ],
+            ],
+          );
+        }),
         const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(
@@ -161,7 +188,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
           return ExpansionTile(
             title: const Text('Wallet Settings'),
             subtitle: const Text('Manage your wallet'),
-            leading: Icon(Iconsax.briefcase, color: themeColor),
+            leading: Icon(Iconsax.wallet, color: themeColor),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               ListTile(
@@ -191,19 +218,39 @@ class SettingsScreen extends GetView<SettingsScreenController>
             ],
           );
         }),
+        const Divider(),
         PersistenceBuilder(builder: (_, context) {
-          return Column(
+          return ExpansionTile(
+            title: const Text('Other Settings'),
+            subtitle: const Text('Anonymous reporting settings'),
+            leading: Icon(Iconsax.chart_2, color: themeColor),
+            childrenPadding: const EdgeInsets.only(left: 20),
             children: [
-              if (Persistence.to.canSync && isFirebaseSupported) ...[
-                const Divider(),
-                ListTile(
-                  leading: Icon(Iconsax.cpu, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                  title: const Text('Devices'),
-                  subtitle: const Text('Manage your synced devices'),
-                  onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
+              SwitchListTile(
+                title: const Text('Errors & Crashes'),
+                secondary: Icon(
+                  Iconsax.cpu,
+                  color: themeColor,
                 ),
-              ],
+                value: persistence.crashReporting.val,
+                subtitle: const Text(
+                  "Help us by sending anonymous crash reports so we can crush those pesky bugs and improve your experience",
+                ),
+                onChanged: (value) => persistence.crashReporting.val = value,
+              ),
+              const Divider(),
+              SwitchListTile(
+                title: const Text('Usage Statistics'),
+                secondary: Icon(
+                  Iconsax.chart_square,
+                  color: themeColor,
+                ),
+                value: persistence.analytics.val,
+                subtitle: const Text(
+                  'Help us understand how you use the app so we can improve the app without compromising your privacy.',
+                ),
+                onChanged: (value) => persistence.analytics.val = value,
+              ),
             ],
           );
         }),

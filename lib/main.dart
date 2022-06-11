@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
@@ -78,6 +80,11 @@ void init(Flavor flavor) async {
       await windowManager.ensureInitialized();
       await Utils.setWindowSize(); // for desktop
     }
+
+    LicenseRegistry.addLicense(() async* {
+      final license = await rootBundle.loadString('google_fonts/OFL.txt');
+      yield LicenseEntryWithLineBreaks(['google_fonts'], license);
+    });
 
     runApp(const App()); // run
   }, (Object exception, StackTrace stackTrace) {

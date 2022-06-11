@@ -18,13 +18,13 @@ class NotificationsManager {
     const androidSettings = AndroidInitializationSettings('ic_notification');
 
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-    plugin.initialize(
+    await plugin.initialize(
+      onSelectNotification: onBackgroundPayload,
       const InitializationSettings(
         android: androidSettings,
         iOS: iosSettings,
         macOS: macosSettings,
       ),
-      onSelectNotification: onBackgroundPayload,
     );
 
     console.info("init");
@@ -33,6 +33,7 @@ class NotificationsManager {
   static void notify({
     required final String title,
     required final String body,
+    String payload = '',
   }) async {
     const iosDetails = IOSNotificationDetails();
     const macosDetails = MacOSNotificationDetails();
@@ -42,9 +43,6 @@ class NotificationsManager {
       "general",
       "General",
       channelDescription: "General Notifications",
-      importance: Importance.max,
-      priority: Priority.high,
-      styleInformation: BigTextStyleInformation(''),
     );
 
     const details = NotificationDetails(
@@ -59,8 +57,10 @@ class NotificationsManager {
       title,
       body,
       details,
-      payload: '',
+      payload: payload,
     );
+
+    console.info('notified');
   }
 
   static void onBackgroundPayload(String? payload) async {

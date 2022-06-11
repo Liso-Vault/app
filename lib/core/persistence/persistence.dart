@@ -25,6 +25,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final analytics = true.val('analytics');
   final proTester = true.val('pro-tester');
   final lastBuildNumber = 0.val('last-build-number');
+  final backedUpSeed = false.val('backed-up-seed-phrase');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window-width');
   final windowHeight = 850.0.val('window-height');
@@ -37,7 +38,6 @@ class Persistence extends GetxController with ConsoleMixin {
   final notificationId = 0.val('notification-id');
   // SYNC
   final sync = true.val('sync');
-  final syncConfirmed = false.val('sync-confirmed');
   final syncProvider = LisoSyncProvider.sia.name.val('sync-provider');
   final biometrics = true.val('biometrics');
   final s3ObjectsCache = ''.val('s3-objects-cache');
@@ -63,9 +63,7 @@ class Persistence extends GetxController with ConsoleMixin {
 
   // GETTERS
 
-  bool get canSync => sync.val && syncConfirmed.val;
-
-  bool get canShare => canSync && isFirebaseSupported;
+  bool get canShare => sync.val && isFirebaseSupported;
 
   // FUNCTIONS
   static Future<void> open() async {

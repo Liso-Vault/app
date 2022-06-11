@@ -11,14 +11,14 @@ import 'package:minio/minio.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 
-class SyncProviderScreenBinding extends Bindings {
+class CustomSyncProviderScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => SyncProviderScreenController(), fenix: true);
+    Get.lazyPut(() => CustomSyncProviderScreenController(), fenix: true);
   }
 }
 
-class SyncProviderScreenController extends GetxController
+class CustomSyncProviderScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();

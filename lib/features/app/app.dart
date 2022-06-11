@@ -45,7 +45,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.values.byName(persistence.theme.val),
       // DARK THEME
       darkTheme: FlexColorScheme.dark(
-        fontFamily: 'RobotoFlex',
+        fontFamily: 'Lato',
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColor),
         visualDensity: VisualDensity.compact,
@@ -57,6 +57,7 @@ class App extends StatelessWidget {
       ).toTheme,
       // LIGHT THEME
       theme: FlexColorScheme.light(
+        fontFamily: 'Lato',
         scheme: FlexScheme.green,
         colors: FlexSchemeColor.from(primary: kAppColorDarker),
         appBarStyle: FlexAppBarStyle.background,

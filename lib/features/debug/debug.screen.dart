@@ -1,17 +1,13 @@
 import 'dart:convert';
 
-import 'package:app_settings/app_settings.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/models/metadata/device.hive.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:random_string/random_string.dart';
-import 'package:uuid/uuid.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
 import '../../core/liso/liso.manager.dart';
@@ -81,8 +77,9 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            AppSettings.openSecuritySettings();
+            // AppSettings.openSecuritySettings();
             // AppSettings.openLockAndPasswordSettings();
+            Persistence.to.backedUpSeed.val = false;
           },
         ),
         const Divider(),
@@ -92,18 +89,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
             // TODO: show console log
-          },
-        ),
-        const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Add Device'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            await FirestoreService.to.userDevices.add(HiveMetadataDevice(
-              id: const Uuid().v4(),
-              model: randomString(randomBetween(5, 10)),
-            ));
           },
         ),
         const Divider(),

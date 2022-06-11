@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class SegmentedControlItem extends StatelessWidget {
   final String text;
-  final IconData iconData;
+  final IconData? iconData;
 
   const SegmentedControlItem({
     Key? key,
     required this.text,
-    required this.iconData,
+    this.iconData,
   }) : super(key: key);
 
   @override
@@ -17,8 +17,10 @@ class SegmentedControlItem extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(iconData),
-          const SizedBox(width: 5),
+          if (iconData != null) ...[
+            Icon(iconData),
+            const SizedBox(width: 5),
+          ],
           Text(text),
         ],
       ),

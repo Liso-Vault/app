@@ -31,6 +31,7 @@ class BusyIndicator extends StatelessWidget {
               Text(
                 message,
                 style: const TextStyle(color: Colors.grey),
+                textAlign: TextAlign.center,
               )
             ]
           ],

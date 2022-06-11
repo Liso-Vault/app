@@ -121,7 +121,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, bool>> sync() async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Right(false);
+    if (!persistence.sync.val && ready) return const Right(false);
 
     if (syncing.value) {
       console.warning('already down syncing');
@@ -186,7 +186,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // DOWN SYNC
   Future<Either<dynamic, bool>> _downSync() async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Right(false);
+    if (!persistence.sync.val && ready) return const Right(false);
     console.info('down syncing...');
 
     final downloadResult = await downloadFile(
@@ -306,7 +306,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     if (!inSync.value) {
       return const Left('not in sync with server');
     }
@@ -351,7 +351,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, bool>> syncSharedVaults() async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
 
     if (SharedVaultsController.to.data.isEmpty) {
       return const Left('nothing to sync');
@@ -422,7 +422,7 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, minio.CopyObjectResult>> backup(
       S3Content content) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('backup: ${content.path}...');
 
     try {
@@ -442,7 +442,7 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<Either<dynamic, minio.StatObjectResult>> stat(
       S3Content content) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info(
       'stat: ${config.s3.preferredBucket}->${basename(content.path)}...',
     );
@@ -461,7 +461,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, bool>> remove(S3Content content) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('removing: ${content.path}...');
 
     try {
@@ -482,7 +482,7 @@ class S3Service extends GetxService with ConsoleMixin {
     List<String> filterExtensions = const [],
   }) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('fetch: $path...');
     minio.ListObjectsResult? result;
 
@@ -528,7 +528,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, S3FolderInfo>> folderInfo(String s3Path) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('folder size: $s3Path...');
     minio.ListObjectsResult? result;
 
@@ -567,7 +567,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, String>> getPreSignedUrl(String s3Path) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('pre signing: $s3Path...');
     String? result;
 
@@ -591,7 +591,7 @@ class S3Service extends GetxService with ConsoleMixin {
     bool force = false,
   }) async {
     if (!ready) init();
-    if (!persistence.canSync && ready && !force) return const Left('offline');
+    if (!persistence.sync.val && ready && !force) return const Left('offline');
     console.info(
       'downloading: ${ConfigService.to.s3.preferredBucket} -> $s3Path',
     );
@@ -603,9 +603,9 @@ class S3Service extends GetxService with ConsoleMixin {
         ConfigService.to.s3.preferredBucket,
         s3Path,
       );
-    } catch (e, s) {
+    } catch (e) {
       console.error('downloadFile error -> $e');
-      CrashlyticsService.to.record(e, s);
+      // CrashlyticsService.to.record(e, s);
       return Left(e);
     }
 
@@ -621,7 +621,7 @@ class S3Service extends GetxService with ConsoleMixin {
     required String s3Path,
   }) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('uploading...');
     uploadTotalSize.value = await file.length();
     String eTag = '';
@@ -649,7 +649,7 @@ class S3Service extends GetxService with ConsoleMixin {
     required String s3Path,
   }) async {
     if (!ready) init();
-    if (!persistence.canSync && ready) return const Left('offline');
+    if (!persistence.sync.val && ready) return const Left('offline');
     console.info('creating folder...');
     String eTag = '';
 

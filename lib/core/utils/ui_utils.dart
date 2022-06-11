@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/utils.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class UIUtils {
   static showSnackBar({
@@ -125,5 +126,49 @@ class UIUtils {
             : SizedBox(width: 400, child: bodyContent),
       ),
     );
+  }
+
+  static void showQR(
+    String data, {
+    required String title,
+    required String subTitle,
+  }) {
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: Center(
+            child: QrImage(
+              data: data,
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          subTitle,
+          style: const TextStyle(color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
+
+    Get.dialog(AlertDialog(
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+      ),
+      content: Utils.isDrawerExpandable
+          ? content
+          : SizedBox(width: 450, child: content),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('okay'.tr),
+        ),
+      ],
+    ));
   }
 }

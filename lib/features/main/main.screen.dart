@@ -6,7 +6,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/item/item.tile.dart';
 import 'package:liso/features/menu/menu.button.dart';
@@ -14,6 +13,7 @@ import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
+import '../../core/utils/utils.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -34,9 +34,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         );
 
   Widget itemBuilder(context, index) {
-    return ItemTile(
-      controller.data[index],
-    );
+    return ItemTile(controller.data[index]);
   }
 
   @override
@@ -81,7 +79,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     // enable pull to refresh if mobile
     if (GetPlatform.isMobile) {
       childContent = RefreshIndicator(
-        onRefresh: controller.sync,
+        onRefresh: S3Service.to.sync,
         child: childContent,
       );
     }
@@ -143,7 +141,36 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final content = Column(
       children: [
+        Obx(
+          () => Visibility(
+            visible: S3Service.to.syncing.value,
+            child: const LinearProgressIndicator(),
+          ),
+        ),
         const ConnectivityBar(),
+        PersistenceBuilder(
+          builder: (_, context) => Visibility(
+            visible: !Persistence.to.backedUpSeed.val,
+            child: Card(
+              elevation: 1.0,
+              child: ListTile(
+                selected: true,
+                dense: Utils.isDrawerExpandable,
+                selectedTileColor: themeColor.withOpacity(0.05),
+                // TODO: localize
+                title: const Text("Backup Your Seed Phrase"),
+                subtitle: const Text(
+                  "Please confirm you've backed up your seed phrase",
+                ),
+                leading: const Icon(Iconsax.key),
+                trailing: OutlinedButton(
+                  onPressed: controller.showSeed,
+                  child: const Text('Backup'),
+                ),
+              ),
+            ),
+          ),
+        ),
         Expanded(child: childContent),
         Align(
           alignment: Alignment.centerLeft,
@@ -167,49 +194,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               .toLowerCase()
               .contains(e.title.toLowerCase().replaceAll(' ', '')),
         ),
-        child: IconButton(
-          icon: const Icon(Iconsax.sort),
-          onPressed: () {},
-        ),
+        child: const Icon(Iconsax.sort),
       ),
       PersistenceBuilder(
-        builder: (p, context) {
-          if (!Persistence.to.sync.val) return const SizedBox.shrink();
-          final changeCount = Persistence.to.changes.val;
-
-          final syncButton = IconButton(
-            icon: const Icon(Iconsax.cloud_change),
-            onPressed: controller.sync,
-          );
-
-          final syncBadge = Badge(
-            badgeContent: Text(changeCount.toString()),
-            position: BadgePosition.topEnd(top: -1, end: -5),
-            child: syncButton,
-          );
-
-          const progressIndicator = Padding(
-            padding: EdgeInsets.all(10),
-            child: Center(
-              child: SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(),
-              ),
-            ),
-          );
-
-          return Obx(
-            () => Visibility(
-              visible: !S3Service.to.syncing.value &&
-                  ConnectivityService.to.connected(),
-              replacement: S3Service.to.syncing.value
-                  ? progressIndicator
-                  : const SizedBox(),
-              child: changeCount > 0 ? syncBadge : syncButton,
-            ),
-          );
-        },
+        builder: (p, context) => Badge(
+          showBadge: Persistence.to.changes.val > 0,
+          badgeContent: Text(Persistence.to.changes.val.toString()),
+          position: BadgePosition.topEnd(top: -1, end: -5),
+          child: ContextMenuButton(
+            controller.menuItems,
+            child: const Icon(LineIcons.verticalEllipsis),
+          ),
+        ),
       ),
       const SizedBox(width: 10),
     ];
@@ -228,8 +224,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           style: const TextStyle(fontSize: 20),
         ),
         if (isBeta) ...[
+          const SizedBox(width: 3),
           const Text(
-            ' Beta',
+            'Beta',
             style: TextStyle(fontSize: 12, color: Colors.cyan),
           ),
         ]

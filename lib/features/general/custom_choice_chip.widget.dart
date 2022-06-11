@@ -29,6 +29,7 @@ class CustomChoiceChip extends StatelessWidget {
       label: Text(label, style: TextStyle(color: textColor)),
       selected: selected,
       onSelected: onSelected,
+      checkmarkColor: textColor,
     );
 
     if (color == null) return chip;

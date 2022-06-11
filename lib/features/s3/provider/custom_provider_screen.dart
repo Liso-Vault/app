@@ -4,17 +4,16 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
-import 'package:liso/features/s3/provider/sync_provider_screen.controller.dart';
+import 'package:liso/features/s3/provider/custom_provider_screen.controller.dart';
 
 import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
 
-class SyncProviderScreen extends GetView<SyncProviderScreenController>
-    with ConsoleMixin {
-  const SyncProviderScreen({Key? key}) : super(key: key);
+class CustomSyncProviderScreen
+    extends GetView<CustomSyncProviderScreenController> with ConsoleMixin {
+  const CustomSyncProviderScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class SyncProviderScreen extends GetView<SyncProviderScreenController>
           Icon(Iconsax.refresh, size: 100, color: themeColor),
           const SizedBox(height: 10),
           const Text(
-            'Sync Provider',
+            'Custom Provider',
             style: TextStyle(fontSize: 20),
           ),
           const SizedBox(height: 10),
@@ -125,16 +124,13 @@ class SyncProviderScreen extends GetView<SyncProviderScreenController>
       ),
     );
 
-    final content = Center(
-      child: SingleChildScrollView(
-        child: Container(
-          constraints: Styles.containerConstraints,
-          padding: const EdgeInsets.symmetric(
-            vertical: 50,
-            horizontal: 20,
-          ),
-          child: form,
+    final content = SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: 50,
+          horizontal: 30,
         ),
+        child: form,
       ),
     );
 

@@ -10,7 +10,7 @@ import '../form_fields/date.field.dart';
 import '../form_fields/datetime.field.dart';
 import '../form_fields/divider.field.dart';
 import '../form_fields/email.field.dart';
-import '../form_fields/mnemonic.field.dart';
+import '../form_fields/seed.field.dart';
 import '../form_fields/number.field.dart';
 import '../form_fields/passport.field.dart';
 import '../form_fields/password.field.dart';
@@ -34,7 +34,7 @@ class FieldParser {
     }
     // MNEMONIC SEED
     else if (field.type == LisoFieldType.mnemonicSeed.name) {
-      return MnemonicFormField(field);
+      return SeedFormField(field);
     }
     // TEXT FIELD
     else if (field.type == LisoFieldType.textField.name) {

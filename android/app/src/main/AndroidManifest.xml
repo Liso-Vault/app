@@ -8,15 +8,12 @@
       </intent-filter>
     </activity>
     <!-- Flutter Local Notifications -->
-    <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationBootReceiver">
-      <intent-filter>
-        <action android:name="android.intent.action.BOOT_COMPLETED" />
-      </intent-filter>
-    </receiver>
-    <receiver android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />
+    <service android:name="com.dexterous.flutterlocalnotifications.ForegroundService" android:exported="false" android:stopWithTask="false"/>
     <meta-data android:name="flutterEmbedding" android:value="2" />
   </application>
-
+  
+  <!-- SERVICE -->
+  <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
   <!-- STORAGE -->
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <!-- SECURITY -->

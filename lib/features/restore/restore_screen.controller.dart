@@ -4,7 +4,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hex/hex.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
@@ -16,15 +15,15 @@ import 'package:path/path.dart';
 
 import '../../core/liso/liso.manager.dart';
 import '../../core/liso/liso_paths.dart';
-import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/ui_utils.dart';
+import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../s3/s3.service.dart';
 
-class ImportScreenBinding extends Bindings {
+class RestoreScreenBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => ImportScreenController(), fenix: true);
+    Get.lazyPut(() => RestoreScreenController(), fenix: true);
   }
 }
 
@@ -34,7 +33,7 @@ enum ImportMode {
   s3,
 }
 
-class ImportScreenController extends GetxController
+class RestoreScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();
@@ -140,21 +139,24 @@ class ImportScreenController extends GetxController
 
     // parse and import vault file
     await LisoManager.importVaultFile(vaultFile, cipherKey: cipherKey);
-    // ignore syncing screen if we just imported
-    AuthenticationMiddleware.ignoreSync = true;
     // turn on sync setting if successfully imported via cloud
     Persistence.to.sync.val =
         importMode.value == ImportMode.liso ? true : false;
     change(null, status: RxStatus.success());
 
-    Get.offNamed(
-      Routes.createPassword,
-      parameters: {
-        'privateKeyHex': HEX.encode(credentials.privateKey),
-        'seed': seedController.text,
-        'from': 'import_screen',
-      },
-    );
+    if (isLocalAuthSupported) {
+      final password = Utils.generatePassword();
+      await WalletService.to.create(seedController.text, password, true);
+      Get.offNamedUntil(Routes.main, (route) => false);
+    } else {
+      Get.offNamed(
+        Routes.createPassword,
+        parameters: {
+          'seed': seedController.text,
+          'from': 'restore_screen',
+        },
+      );
+    }
   }
 
   void importFile() async {

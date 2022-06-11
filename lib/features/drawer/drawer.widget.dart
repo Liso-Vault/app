@@ -214,7 +214,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               PersistenceBuilder(
-                builder: (p, context) => Persistence.to.canSync &&
+                builder: (p, context) => Persistence.to.sync.val &&
                         (!GetPlatform.isIOS || Persistence.to.proTester.val)
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),
@@ -315,18 +315,18 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ListTile(
                 title: Text('password_generator'.tr),
                 leading: const Icon(Iconsax.password_check),
-                // onTap: () => Utils.adaptiveRouteOpen(
-                //   name: Routes.passwordGenerator,
-                //   method: 'offAndToNamed',
-                // ),
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.passwordGenerator,
+                  method: 'offAndToNamed',
+                ),
               ),
               ListTile(
                 title: Text('seed_generator'.tr),
                 leading: const Icon(Iconsax.key),
-                // onTap: () => Utils.adaptiveRouteOpen(
-                //   name: Routes.passwordGenerator,
-                //   method: 'offAndToNamed',
-                // ),
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.seedGenerator,
+                  method: 'offAndToNamed',
+                ),
               ),
               ListTile(
                 title: Text('breach_scanner'.tr),

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
+import 'package:random_string_generator/random_string_generator.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
@@ -29,28 +28,6 @@ class Utils {
       Get.mediaQuery.size.width < kDesktopChangePoint;
 
   // FUNCTIONS
-
-  static String generatePassword({
-    bool letter = true,
-    bool number = true,
-    bool special = true,
-    int length = 15,
-  }) {
-    const lettersLowerCase = "abcdefghijklmnopqrstuvwxyz";
-    const lettersUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const numbers = '0123456789';
-    const specials = '@#%^*>\$@?/[]=+';
-
-    String chars = "";
-    if (letter) chars += ' $lettersLowerCase $lettersUpperCase ';
-    if (number) chars += ' $numbers ';
-    if (special) chars += ' $specials ';
-
-    return List.generate(length, (index) {
-      final indexRandom = Random.secure().nextInt(chars.length);
-      return chars[indexRandom];
-    }).join('');
-  }
 
   static void copyToClipboard(text) async {
     await Clipboard.setData(ClipboardData(text: text));
@@ -219,35 +196,6 @@ class Utils {
     );
   }
 
-  static String? validatePassword(String? text) {
-    const min = 8;
-    const max = 100;
-
-    if (text == null || text.isEmpty) {
-      return 'Enter your password';
-    } else if (text.length < min) {
-      return 'Vault password must be at least $min characters';
-    } else if (text.length > max) {
-      return "That's a lot of a password";
-    } else {
-      final hasUppercase = text.contains(RegExp(r'[A-Z]'));
-      final hasLowercase = text.contains(RegExp(r'[a-z]'));
-      final hasDigits = text.contains(RegExp(r'[0-9]'));
-      final hasSpecialCharacters = text.contains(
-        RegExp(r'[!;*_=@#$%^&*(),.?":{}[]|<>]'),
-      );
-
-      if (!hasUppercase ||
-          !hasLowercase ||
-          !hasDigits ||
-          !hasSpecialCharacters) {
-        return 'Must contain a digit, special character, lower and uppercase letters';
-      } else {
-        return null;
-      }
-    }
-  }
-
   static String? validateUri(String data) {
     final uri = Uri.tryParse(data);
 
@@ -325,5 +273,27 @@ class Utils {
     final canLaunch = await canLaunchUrlString(url);
     if (!canLaunch) console.error('cannot launch: $url');
     launchUrlString(url, mode: mode);
+  }
+
+  static String generatePassword() {
+    return RandomStringGenerator(
+      fixedLength: 15,
+      mustHaveAtLeastOneOfEach: true,
+    ).generate();
+  }
+
+  static String? validatePassword(String? text) {
+    const min = 8;
+    const max = 100;
+
+    if (text == null || text.isEmpty) {
+      return 'Enter your password';
+    } else if (text.length < min) {
+      return 'Vault password must be at least $min characters';
+    } else if (text.length > max) {
+      return "That's a lot of a password";
+    }
+
+    return null;
   }
 }

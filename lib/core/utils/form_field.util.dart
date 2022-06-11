@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/date.field.dart';
-import 'package:liso/core/form_fields/mnemonic.field.dart';
+import 'package:liso/core/form_fields/seed.field.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/form_fields/phone.field.dart';
 import 'package:liso/core/form_fields/pin.field.dart';
@@ -75,7 +75,7 @@ class FormFieldUtils {
           formField = widget as AddressFormField;
           break;
         case LisoFieldType.mnemonicSeed:
-          formField = widget as MnemonicFormField;
+          formField = widget as SeedFormField;
           break;
         default:
       }

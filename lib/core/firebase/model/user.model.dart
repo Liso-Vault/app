@@ -119,22 +119,46 @@ class FirebaseUserCount {
 
 class FirebaseUserSettings {
   FirebaseUserSettings({
-    this.sync = false,
     this.theme = '',
+    this.syncProvider = '',
+    this.localeCode = '',
+    this.sync = false,
+    this.backedUpSeed = false,
+    this.crashReporting = false,
+    this.analytics = false,
+    this.biometrics = false,
   });
 
-  bool sync;
-  String theme;
+  String? theme;
+  String? syncProvider;
+  String? localeCode;
+  bool? sync;
+  bool? backedUpSeed;
+  bool? crashReporting;
+  bool? analytics;
+  bool? biometrics;
 
   factory FirebaseUserSettings.fromJson(Map<String, dynamic> json) =>
       FirebaseUserSettings(
         sync: json["sync"],
         theme: json["theme"],
+        syncProvider: json["syncProvider"],
+        backedUpSeed: json["backedUpSeed"],
+        localeCode: json["localeCode"],
+        crashReporting: json["crashReporting"],
+        analytics: json["analytics"],
+        biometrics: json["biometrics"],
       );
 
   Map<String, dynamic> toJson() => {
         "sync": sync,
         "theme": theme,
+        "syncProvider": syncProvider,
+        "backedUpSeed": backedUpSeed,
+        "localeCode": localeCode,
+        "crashReporting": crashReporting,
+        "analytics": analytics,
+        "biometrics": biometrics,
       };
 }
 

@@ -15,6 +15,7 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
+import '../general/card_button.widget.dart';
 import '../menu/menu.button.dart';
 import 'nfts/nfts.screen.dart';
 import 'wallet_screen.controller.dart';
@@ -226,39 +227,6 @@ class WalletScreen extends GetView<WalletScreenController> with ConsoleMixin {
         appBar: appBar,
         bottomNavigationBar: bottomBar,
         body: content,
-      ),
-    );
-  }
-}
-
-class CardButton extends StatelessWidget {
-  final String text;
-  final IconData iconData;
-  final Function()? onPressed;
-
-  const CardButton({
-    Key? key,
-    required this.text,
-    required this.iconData,
-    this.onPressed,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: const EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 10,
-        ),
-      ),
-      child: Column(
-        children: [
-          Icon(iconData, size: 30),
-          const SizedBox(height: 5),
-          Text(text),
-        ],
       ),
     );
   }

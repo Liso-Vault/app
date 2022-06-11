@@ -1,12 +1,12 @@
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:random_password_generator/random_password_generator.dart';
-import 'package:bip39/bip39.dart' as bip39;
 
 import '../../core/firebase/auth.service.dart';
 import '../../core/services/local_auth.service.dart';
+import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
 
@@ -38,29 +38,20 @@ class WelcomeScreenController extends GetxController with ConsoleMixin {
 
   void create() async {
     await AuthService.to.signOut(); // just to make sure
-    if (!isLocalAuthSupported) return Get.toNamed(Routes.mnemonic);
-
+    if (!isLocalAuthSupported) return Get.toNamed(Routes.seed);
     // TODO: custom localized reason
     final authenticated = await LocalAuthService.to.authenticate();
 
     if (authenticated) {
       final seed = bip39.generateMnemonic(strength: 256);
-
-      final password = RandomPasswordGenerator().randomPassword(
-        letters: true,
-        numbers: true,
-        specialChar: true,
-        uppercase: true,
-        passwordLength: 15,
-      );
-
+      final password = Utils.generatePassword();
       await WalletService.to.create(seed, password, true);
-      Get.offAllNamed(Routes.configuration);
+      Get.offNamedUntil(Routes.main, (route) => false);
     }
   }
 
   void import() async {
     await AuthService.to.signOut(); // just to make sure
-    Get.toNamed(Routes.import);
+    Get.toNamed(Routes.restore);
   }
 }

@@ -35,8 +35,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }) : super(key: key);
 
   void _open() async {
-    console.info('identifier: ${item.identifier}');
-
     if (item.protected && !(await _unlock())) return;
 
     // route parameters
@@ -83,39 +81,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     // item.metadata = m;
     item.save();
     MainScreenController.to.onItemsUpdated();
-  }
-
-  void _confirmTrash() async {
-    if (item.reserved) {
-      const dialogContent = Text(
-        'Are you sure you want to trash this reserved item?',
-      );
-
-      return Get.dialog(AlertDialog(
-        title: Text('move_to_trash'.tr),
-        content: Utils.isDrawerExpandable
-            ? dialogContent
-            : const SizedBox(
-                width: 450,
-                child: dialogContent,
-              ),
-        actions: [
-          TextButton(
-            onPressed: Get.back,
-            child: Text('cancel'.tr),
-          ),
-          TextButton(
-            onPressed: () {
-              Get.back();
-              _trash();
-            },
-            child: Text('move_to_trash'.tr),
-          ),
-        ],
-      ));
-    }
-
-    _trash();
   }
 
   void _confirmDelete() async {
@@ -194,15 +159,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             onSelected: _favorite,
           ),
           ContextMenuItem(
-            title: 'move_to_trash'.tr,
-            leading: const Icon(Iconsax.trash),
-            onSelected: _confirmTrash,
-          ),
-          ContextMenuItem(
             title: 'duplicate'.tr,
             leading: const Icon(Iconsax.copy),
             onSelected: _duplicate,
           ),
+          if (!item.reserved) ...[
+            ContextMenuItem(
+              title: 'move_to_trash'.tr,
+              leading: const Icon(Iconsax.trash),
+              onSelected: _trash,
+            ),
+          ],
         ],
       ],
       ContextMenuItem(
@@ -228,8 +195,9 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     final sharedVaults = item.sharedVaultIds.map(
       (e) {
-        final results =
-            SharedVaultsController.to.data.where((x) => x.docId == e);
+        final results = SharedVaultsController.to.data.where(
+          (x) => x.docId == e,
+        );
 
         SharedVault? vault;
 
@@ -400,7 +368,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         performsFirstActionWithFullSwipe: true,
         onTap: (CompletionHandler handler) async {
           await handler(true);
-          item.trashed ? _delete() : _confirmTrash();
+          item.trashed ? _delete() : _trash();
         },
       ),
     ];

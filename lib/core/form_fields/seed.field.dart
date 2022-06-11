@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
-import '../../features/general/passphrase.card.dart';
+import '../../features/seed/seed_field.widget.dart';
 
 // ignore: must_be_immutable
-class MnemonicFormField extends StatelessWidget {
+class SeedFormField extends StatelessWidget {
   final HiveLisoField field;
-  MnemonicFormField(this.field, {Key? key}) : super(key: key);
+  SeedFormField(this.field, {Key? key}) : super(key: key);
 
   // VARIABLES
   final _fieldController = TextEditingController();
@@ -16,10 +16,11 @@ class MnemonicFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PassphraseCard(
+    return SeedField(
       fieldController: _fieldController,
       initialValue: field.data.value ?? '',
-      required: false,
+      readOnly: field.readOnly,
+      required: field.required,
     );
   }
 }
