@@ -73,11 +73,16 @@ class HiveItemsService extends GetxService with ConsoleMixin {
     box.addAll(data);
   }
 
-  Future<File> export({required String path}) async {
+  Future<File> export({required String path, bool encrypt = true}) async {
     final jsonString = jsonEncode(data); // TODO: isolate
     final file = File(path);
     await file.writeAsString(jsonString);
-    return await CipherService.to.encryptFile(file, addExtensionExtra: false);
+
+    if (encrypt) {
+      return await CipherService.to.encryptFile(file, addExtensionExtra: false);
+    } else {
+      return file;
+    }
   }
 
   Future<Either<dynamic, String>> obtainFieldValue(

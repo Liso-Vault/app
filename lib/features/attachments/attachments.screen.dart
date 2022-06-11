@@ -57,12 +57,11 @@ class AttachmentsScreen extends GetView<AttachmentsScreenController>
             ),
           );
         } else {
-          return ListView.separated(
+          return ListView.builder(
             shrinkWrap: true,
             itemCount: controller.data.length,
             itemBuilder: itemBuilder,
             physics: const AlwaysScrollableScrollPhysics(),
-            separatorBuilder: (context, index) => const Divider(height: 0),
             padding: const EdgeInsets.symmetric(vertical: 15),
           );
         }

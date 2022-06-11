@@ -1,13 +1,15 @@
 ## 0.4.1
 New! Purge Vault
-Simplified! Creation of vault
-Removed! Initial syncing screen
-Improved! Re-organized settings
 New! Password Field Strength Indicator
 New! Powerful Password Generator
 New! Mnemonic Seed Phrase Generator
 New! Backup Seed Phrase Reminder Card
 New! Font: Lato
+New! Export an unencrypted vault
+Simplified! Creation of vault
+Improved! Mnemonic Seed Phrase Field
+Improved! Re-organized settings
+Removed! Initial syncing screen
 
 ## 0.4.0
 - New! Shared Vaults

@@ -15,11 +15,10 @@ class TransactionsScreen extends GetView<TransactionsScreenController>
   @override
   Widget build(BuildContext context) {
     final listView = Obx(
-      () => ListView.separated(
+      () => ListView.builder(
         itemCount: controller.data.length,
         shrinkWrap: true,
         controller: ScrollController(),
-        separatorBuilder: (context, index) => const Divider(height: 0),
         itemBuilder: (context, index) {
           final receipt = controller.data[index];
           return ListTile(

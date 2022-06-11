@@ -89,12 +89,11 @@ class GroupsScreen extends GetView<GroupsScreenController> with ConsoleMixin {
     }
 
     final listView = Obx(
-      () => ListView.separated(
+      () => ListView.builder(
         shrinkWrap: true,
         itemCount: vaultsController.filtered.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
-        separatorBuilder: (context, index) => const Divider(height: 0),
       ),
     );
 

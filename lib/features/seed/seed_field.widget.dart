@@ -1,4 +1,5 @@
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:blur/blur.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -11,11 +12,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../menu/menu.item.dart';
 
-class SeedFormFieldController extends GetxController {
-  final obscureText = true.obs;
-}
-
-class SeedField extends GetWidget<SeedFormFieldController> with ConsoleMixin {
+class SeedField extends StatelessWidget with ConsoleMixin {
   final String initialValue;
   final bool required;
   final bool showGenerate;
@@ -23,7 +20,7 @@ class SeedField extends GetWidget<SeedFormFieldController> with ConsoleMixin {
   final TextEditingController fieldController;
   final Function(String)? onFieldSubmitted;
 
-  const SeedField({
+  SeedField({
     Key? key,
     this.initialValue = '',
     this.required = true,
@@ -37,34 +34,7 @@ class SeedField extends GetWidget<SeedFormFieldController> with ConsoleMixin {
       ? fieldController.text
       : null;
 
-  @override
-  Widget build(BuildContext context) {
-    fieldController.text = initialValue;
-
-    return Obx(
-      () => TextFormField(
-        controller: fieldController,
-        minLines: 1,
-        obscureText: controller.obscureText.value,
-        textInputAction: TextInputAction.next,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (text) => _validateSeed(text!),
-        readOnly: readOnly,
-        onFieldSubmitted: onFieldSubmitted,
-        inputFormatters: [
-          // don't allow new lines
-          FilteringTextInputFormatter.deny(RegExp(r'\n')),
-        ],
-        decoration: InputDecoration(
-          labelText: 'Mnemonic Seed Phrase',
-          suffixIcon: ContextMenuButton(
-            menuItems,
-            child: const Icon(LineIcons.verticalEllipsis),
-          ),
-        ),
-      ),
-    );
-  }
+  final blur = true.obs;
 
   void _generate() async {
     final seed = await Utils.adaptiveRouteOpen(
@@ -73,8 +43,8 @@ class SeedField extends GetWidget<SeedFormFieldController> with ConsoleMixin {
     );
 
     if (seed == null) return;
-    controller.obscureText.value = false;
     fieldController.text = seed;
+    blur.value = false;
   }
 
   String? _validateSeed(String seed) {
@@ -90,11 +60,9 @@ class SeedField extends GetWidget<SeedFormFieldController> with ConsoleMixin {
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: controller.obscureText.value ? 'Show' : 'Hide',
-        onSelected: controller.obscureText.toggle,
-        leading: Icon(
-          controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
-        ),
+        title: 'Hide',
+        onSelected: () => blur.value = true,
+        leading: const Icon(Iconsax.eye_slash),
       ),
       if (showGenerate) ...[
         ContextMenuItem(
@@ -110,11 +78,59 @@ class SeedField extends GetWidget<SeedFormFieldController> with ConsoleMixin {
       ),
     ];
   }
-}
 
-enum PassphraseMode {
-  create,
-  confirm,
-  import,
-  none,
+  @override
+  Widget build(BuildContext context) {
+    fieldController.text = initialValue;
+    blur.value = initialValue.isNotEmpty;
+
+    final field = TextFormField(
+      controller: fieldController,
+      minLines: 1,
+      maxLines: 3,
+      textInputAction: TextInputAction.next,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (text) => _validateSeed(text!),
+      readOnly: readOnly,
+      onFieldSubmitted: onFieldSubmitted,
+      inputFormatters: [
+        // don't allow new lines
+        FilteringTextInputFormatter.deny(RegExp(r'\n')),
+      ],
+      decoration: InputDecoration(
+        labelText: 'Mnemonic Seed Phrase',
+        suffixIcon: ContextMenuButton(
+          menuItems,
+          child: const Icon(LineIcons.verticalEllipsis),
+        ),
+      ),
+    );
+
+    final hiddenField = Stack(
+      alignment: Alignment.center,
+      children: [
+        SizedBox(
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Blur(
+              blur: 5.0,
+              blurColor: Colors.grey.shade900,
+              child: field,
+            ),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Iconsax.eye),
+          onPressed: () => blur.value = false,
+        ),
+      ],
+    );
+
+    return Obx(
+      () => IndexedStack(
+        index: blur.value ? 0 : 1,
+        children: [hiddenField, field],
+      ),
+    );
+  }
 }

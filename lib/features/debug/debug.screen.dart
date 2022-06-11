@@ -71,7 +71,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Debug'),
@@ -82,7 +81,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             Persistence.to.backedUpSeed.val = false;
           },
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Show Console'),
@@ -91,7 +89,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             // TODO: show console log
           },
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Restart Vault Controllers'),
@@ -101,7 +98,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             JoinedVaultsController.to.restart();
           },
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Show Limits'),
@@ -113,7 +109,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             );
           },
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Sign Message'),
@@ -123,14 +118,12 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             console.wtf('signature: $signature');
           },
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Wallet Connect'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: _walletConnect,
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Image Dialog'),
@@ -147,7 +140,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             },
           ),
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Export Vault JSON'),
@@ -157,7 +149,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             console.warning(json);
           },
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Upgrade Screen'),

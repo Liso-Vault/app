@@ -14,10 +14,8 @@ class JSONViewerScreen extends StatelessWidget {
         centerTitle: false,
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: JsonObjectViewer(data),
-        ),
+        padding: const EdgeInsets.all(20),
+        child: JsonObjectViewer(data),
       ),
     );
   }

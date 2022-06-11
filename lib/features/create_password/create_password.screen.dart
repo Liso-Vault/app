@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
+import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import '../../core/utils/globals.dart';
@@ -110,17 +111,17 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       ),
     );
 
-    return WillPopScope(
-      onWillPop: () => Future.value(false),
-      child: Scaffold(
-        body: Center(
-          child: Container(
-            constraints: Styles.containerConstraints,
-            padding: const EdgeInsets.all(30),
-            child: controller.obx(
-              (_) => SingleChildScrollView(child: content),
-              onLoading: const BusyIndicator(),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: const AppBarLeadingButton(),
+      ),
+      body: Center(
+        child: Container(
+          constraints: Styles.containerConstraints,
+          padding: const EdgeInsets.all(30),
+          child: controller.obx(
+            (_) => SingleChildScrollView(child: content),
+            onLoading: const BusyIndicator(),
           ),
         ),
       ),

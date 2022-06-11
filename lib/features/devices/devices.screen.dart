@@ -77,12 +77,11 @@ class DevicesScreen extends GetView<DevicesScreenController> with ConsoleMixin {
     }
 
     final listView = Obx(
-      () => ListView.separated(
+      () => ListView.builder(
         shrinkWrap: true,
         itemCount: controller.data.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
-        separatorBuilder: (context, index) => const Divider(height: 0),
       ),
     );
 

@@ -6,8 +6,6 @@ import 'package:liso/features/beta/disabled_beta_screen.controller.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/create_password/create_password_screen.controller.dart';
 import 'package:liso/features/debug/debug.screen.dart';
-import 'package:liso/features/export/export.screen.dart';
-import 'package:liso/features/export/export_screen.controller.dart';
 import 'package:liso/features/restore/restore.screen.dart';
 import 'package:liso/features/restore/restore_screen.controller.dart';
 import 'package:liso/features/main/main.screen.dart';
@@ -99,11 +97,6 @@ class AppPages {
       name: Routes.restore,
       page: () => const RestoreScreen(),
       binding: RestoreScreenBinding(),
-    ),
-    GetPage(
-      name: Routes.export,
-      page: () => const ExportScreen(),
-      binding: ExportScreenBinding(),
     ),
     GetPage(
       name: Routes.seed,

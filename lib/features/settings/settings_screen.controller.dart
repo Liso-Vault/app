@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
@@ -97,7 +98,6 @@ class SettingsScreenController extends GetxController
         false;
 
     if (!unlocked) return;
-
     if (status == RxStatus.loading()) return console.error('still busy');
     change('Exporting...', status: RxStatus.loading());
 
@@ -139,8 +139,83 @@ class SettingsScreenController extends GetxController
     change('Exporting to: $exportPath', status: RxStatus.success());
 
     NotificationsManager.notify(
-      title: 'Successfully Exported Wallet',
+      title: 'Exported Wallet File',
       body: exportFileName,
+    );
+  }
+
+  void exportVault({bool encrypt = true}) {
+    void _export() async {
+      // prompt password from unlock screen
+      final unlocked = await Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'password_prompt'},
+          ) ??
+          false;
+
+      if (!unlocked) return;
+      if (status == RxStatus.loading()) return console.error('still busy');
+      change('Exporting...', status: RxStatus.loading());
+
+      final dateFormat = DateFormat('MMM-dd-yyyy_hh-mm_aaa');
+      final exportFileName =
+          '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
+
+      final vaultFile = await HiveItemsService.to.export(
+        path: join(LisoPaths.tempPath, exportFileName),
+        encrypt: encrypt,
+      );
+
+      console.info('vault file path: ${vaultFile.path}');
+
+      if (GetPlatform.isMobile) {
+        await Share.shareFiles(
+          [vaultFile.path],
+          subject: exportFileName,
+          text: GetPlatform.isIOS ? null : '${ConfigService.to.appName} Vault',
+        );
+
+        console.info('done');
+        Get.back();
+      }
+
+      change('Choose export path...', status: RxStatus.loading());
+      Globals.timeLockEnabled = false; // temporarily disable
+      // choose directory and export file
+      final exportPath = await FilePicker.platform.getDirectoryPath(
+        dialogTitle: 'Choose Export Path',
+      );
+
+      Globals.timeLockEnabled = true; // re-enable
+      // user cancelled picker
+      if (exportPath == null) {
+        return change(null, status: RxStatus.success());
+      }
+
+      console.info('export path: $exportPath');
+      change('Exporting to: $exportPath', status: RxStatus.loading());
+      await Future.delayed(1.seconds); // just for style
+      await FileUtils.move(vaultFile, join(exportPath, exportFileName));
+      change(null, status: RxStatus.success());
+
+      NotificationsManager.notify(
+        title: 'Exported Vault',
+        body: exportFileName,
+      );
+
+      Get.back();
+    }
+
+    UIUtils.showImageDialog(
+      Icon(Iconsax.box_1, size: 100, color: themeColor),
+      title: 'Export Vault',
+      subTitle:
+          "You'll be prompted to save a <vault>.$kVaultExtension file. Please store it offline or in a secure digital cloud storage",
+      body:
+          "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file",
+      closeText: 'Cancel',
+      action: _export,
+      actionText: 'Export',
     );
   }
 

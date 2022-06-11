@@ -63,10 +63,9 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       },
       optionsViewBuilder: (context, onSelected, options) {
         return Material(
-          child: ListView.separated(
+          child: ListView.builder(
             shrinkWrap: true,
             itemCount: options.length,
-            separatorBuilder: (context, index) => const Divider(height: 0),
             itemBuilder: (context, index) {
               final tag = options.elementAt(index);
 
@@ -118,11 +117,10 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       const SizedBox(height: 10),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       Obx(
-        () => ListView.separated(
+        () => ListView.builder(
           shrinkWrap: true,
           itemCount: controller.widgets.length,
           physics: const NeverScrollableScrollPhysics(),
-          separatorBuilder: (_, index) => const SizedBox(height: 10),
           itemBuilder: (_, index) => controller.widgets[index],
         ),
       ),
@@ -137,7 +135,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         onTap: controller.attach,
         enabled: !controller.joinedVaultItem,
       ),
-      const Divider(),
+
       const SizedBox(height: 10),
       DropdownButtonFormField<String>(
         isExpanded: true,
@@ -164,7 +162,7 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         ),
         controller.favorite,
       ),
-      const Divider(),
+
       ObxValue(
         (RxBool data) => CheckboxListTile(
           title: Text('protected'.tr),
@@ -176,7 +174,6 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
       ),
       if (controller.sharedVaultChips.isNotEmpty &&
           Persistence.to.canShare) ...[
-        const Divider(),
         Section(text: 'shared_vaults'.tr.toUpperCase()),
         Obx(
           () => Wrap(
@@ -188,7 +185,6 @@ class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
         ),
       ],
       if (mode == 'update') ...[
-        const Divider(),
         const SizedBox(height: 20),
         Text(
           'Modified ${controller.item.updatedDateTimeFormatted}',

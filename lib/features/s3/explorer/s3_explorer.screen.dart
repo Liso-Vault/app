@@ -31,12 +31,11 @@ class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
     final listView = Obx(
       () => RefreshIndicator(
         onRefresh: controller.pulledRefresh,
-        child: ListView.separated(
+        child: ListView.builder(
           shrinkWrap: true,
           itemCount: controller.data.length,
           itemBuilder: itemBuilder,
           physics: const AlwaysScrollableScrollPhysics(),
-          separatorBuilder: (context, index) => const Divider(height: 0),
           padding: const EdgeInsets.symmetric(vertical: 15),
         ),
       ),

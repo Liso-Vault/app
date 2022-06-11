@@ -149,8 +149,9 @@ class RestoreScreenController extends GetxController
       await WalletService.to.create(seedController.text, password, true);
       Get.offNamedUntil(Routes.main, (route) => false);
     } else {
-      Get.offNamed(
-        Routes.createPassword,
+      Utils.adaptiveRouteOpen(
+        name: Routes.createPassword,
+        method: 'offAllNamed',
         parameters: {
           'seed': seedController.text,
           'from': 'restore_screen',

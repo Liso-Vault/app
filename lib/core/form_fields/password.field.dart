@@ -20,8 +20,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
   TextEditingController? _fieldController;
   String get value => _fieldController!.text;
 
-  List<dynamic> get excluded => field.data.extra?['excluded_actions'] ?? [];
-  bool get showGenerate => excluded.contains('generate');
+  bool get isPasswordField => field.identifier == 'password';
 
   void _generate() async {
     final password_ = await Utils.adaptiveRouteOpen(
@@ -37,35 +36,32 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
 
   List<ContextMenuItem> get menuItems {
     return [
-      if (!excluded.contains('visibility')) ...[
-        ContextMenuItem(
-          title: controller.obscureText.value ? 'Show' : 'Hide',
-          onSelected: controller.obscureText.toggle,
-          leading: Icon(
-            controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
-          ),
+      ContextMenuItem(
+        title: controller.obscureText.value ? 'Show' : 'Hide',
+        onSelected: controller.obscureText.toggle,
+        leading: Icon(
+          controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
         ),
-      ],
-      if (!showGenerate) ...[
+      ),
+      if (isPasswordField) ...[
         ContextMenuItem(
           title: 'Generate',
           leading: const Icon(Iconsax.password_check),
           onSelected: _generate,
         ),
       ],
-      if (!excluded.contains('copy')) ...[
-        ContextMenuItem(
-          title: 'Copy',
-          leading: const Icon(Iconsax.copy),
-          onSelected: () => Utils.copyToClipboard(_fieldController!.text),
-        ),
-      ]
+      ContextMenuItem(
+        title: 'Copy',
+        leading: const Icon(Iconsax.copy),
+        onSelected: () => Utils.copyToClipboard(_fieldController!.text),
+      ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     _fieldController = TextEditingController(text: field.data.value);
+    controller.password.value = field.data.value!;
 
     return Obx(
       () => TextFormField(
@@ -77,7 +73,8 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
         decoration: InputDecoration(
           labelText: field.data.label,
           hintText: field.data.hint,
-          helperText: !showGenerate ? controller.strengthName.toUpperCase() : null,
+          helperText:
+              isPasswordField ? controller.strengthName.toUpperCase() : null,
           helperStyle: TextStyle(color: controller.strengthColor),
           suffixIcon: ContextMenuButton(
             menuItems,
@@ -106,7 +103,6 @@ class PasswordFormFieldController extends GetxController with ConsoleMixin {
       name = 'Strong';
     }
 
-    console.wtf(name);
     return name;
   }
 

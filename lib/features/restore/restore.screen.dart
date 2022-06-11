@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence_builder.widget.dart';
-import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/seed/seed_field.widget.dart';
 
@@ -12,6 +11,7 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../general/appbar_leading.widget.dart';
 import '../general/segmented_item.widget.dart';
 import 'restore_screen.controller.dart';
 
@@ -113,16 +113,17 @@ class RestoreScreen extends GetView<RestoreScreenController> with ConsoleMixin {
     );
 
     final scaffold = Scaffold(
-      appBar: AppBar(centerTitle: false),
-      body: Center(
-        child: Container(
-          constraints: Styles.containerConstraints,
-          padding: const EdgeInsets.all(20),
-          child: controller.obx(
-            (_) => SingleChildScrollView(child: content),
-            onLoading: const BusyIndicator(),
+      appBar: AppBar(
+        leading: const AppBarLeadingButton(),
+      ),
+      body: controller.obx(
+        (_) => Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: content,
           ),
         ),
+        onLoading: const BusyIndicator(),
       ),
     );
 

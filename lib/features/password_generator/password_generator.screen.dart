@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:random_string_generator/random_string_generator.dart';
 
 import '../general/appbar_leading.widget.dart';
 import 'password_generator_screen.controller.dart';
@@ -44,10 +43,7 @@ class PasswordGeneratorScreen extends GetView<PasswordGeneratorScreenController>
     );
 
     final content = SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
+      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

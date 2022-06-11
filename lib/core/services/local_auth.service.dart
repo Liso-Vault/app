@@ -86,7 +86,7 @@ class LocalAuthService extends GetxService with ConsoleMixin {
         );
       } else {
         UIUtils.showSimpleDialog(
-          'Unknown Error',
+          'Unknown PlatformException',
           'Please report to the developer! $e',
         );
       }

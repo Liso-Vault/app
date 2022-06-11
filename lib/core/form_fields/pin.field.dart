@@ -6,12 +6,14 @@ import 'package:liso/core/hive/models/field.hive.dart';
 import '../utils/globals.dart';
 
 // ignore: must_be_immutable
-class PINFormField extends GetWidget<PINFormFieldController> {
+class PINFormField extends StatelessWidget {
   final HiveLisoField field;
   PINFormField(this.field, {Key? key}) : super(key: key);
 
   TextEditingController? _fieldController;
   String get value => _fieldController!.text;
+
+  final obscureText = true.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,7 @@ class PINFormField extends GetWidget<PINFormFieldController> {
       () => TextFormField(
         controller: _fieldController,
         keyboardType: TextInputType.number,
-        obscureText: controller.obscureText(),
+        obscureText: obscureText.value,
         readOnly: field.readOnly,
         inputFormatters: [
           inputFormatterRestrictSpaces,
@@ -35,10 +37,10 @@ class PINFormField extends GetWidget<PINFormFieldController> {
           hintText: field.data.hint,
           suffixIcon: IconButton(
             padding: const EdgeInsets.only(right: 10),
-            onPressed: controller.obscureText.toggle,
+            onPressed: obscureText.toggle,
             icon: Obx(
               () => Icon(
-                controller.obscureText() ? Iconsax.eye : Iconsax.eye_slash,
+                obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
               ),
             ),
           ),
@@ -46,8 +48,4 @@ class PINFormField extends GetWidget<PINFormFieldController> {
       ),
     );
   }
-}
-
-class PINFormFieldController extends GetxController {
-  final obscureText = true.obs;
 }

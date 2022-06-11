@@ -243,12 +243,11 @@ class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
     }
 
     final listView = Obx(
-      () => ListView.separated(
+      () => ListView.builder(
         shrinkWrap: true,
         itemCount: sharedController.data.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
-        separatorBuilder: (context, index) => const Divider(height: 0),
       ),
     );
 

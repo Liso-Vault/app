@@ -14,10 +14,7 @@ class OTPScreen extends GetView<OTPScreenController> with ConsoleMixin {
   Widget build(BuildContext context) {
     final content = Center(
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-          vertical: 20,
-        ),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Icon(Iconsax.convert_3d_cube, size: 150, color: themeColor),

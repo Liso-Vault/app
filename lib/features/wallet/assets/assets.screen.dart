@@ -41,7 +41,6 @@ class AssetsScreen extends GetView<AssetsScreenController> with ConsoleMixin {
               subtitle: Text('\$$lisoUsd'),
               onTap: () {},
             ),
-            const Divider(),
             ListTile(
               leading: Image.asset(Images.polygon, height: 18),
               trailing: const Icon(Iconsax.arrow_right_3),
@@ -49,7 +48,6 @@ class AssetsScreen extends GetView<AssetsScreenController> with ConsoleMixin {
               subtitle: Text('\$$maticUsd'),
               onTap: () {},
             ),
-            const Divider(),
           ],
         );
       },

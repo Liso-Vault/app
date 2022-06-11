@@ -38,7 +38,10 @@ class WelcomeScreenController extends GetxController with ConsoleMixin {
 
   void create() async {
     await AuthService.to.signOut(); // just to make sure
-    if (!isLocalAuthSupported) return Get.toNamed(Routes.seed);
+    if (!isLocalAuthSupported) {
+      return Utils.adaptiveRouteOpen(name: Routes.seed);
+    }
+
     // TODO: custom localized reason
     final authenticated = await LocalAuthService.to.authenticate();
 
@@ -52,6 +55,6 @@ class WelcomeScreenController extends GetxController with ConsoleMixin {
 
   void import() async {
     await AuthService.to.signOut(); // just to make sure
-    Get.toNamed(Routes.restore);
+    Utils.adaptiveRouteOpen(name: Routes.restore);
   }
 }

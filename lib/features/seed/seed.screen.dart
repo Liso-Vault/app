@@ -5,11 +5,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/styles.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
+import '../general/appbar_leading.widget.dart';
 import '../menu/menu.button.dart';
 import 'seed_screen.controller.dart';
 
@@ -103,6 +103,7 @@ class SeedScreen extends GetView<SeedScreenController> with ConsoleMixin {
 
     return Scaffold(
       appBar: AppBar(
+        leading: const AppBarLeadingButton(),
         actions: [
           ContextMenuButton(
             controller.menuItems,
@@ -111,13 +112,10 @@ class SeedScreen extends GetView<SeedScreenController> with ConsoleMixin {
           const SizedBox(width: 10),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Container(
-            constraints: Styles.containerConstraints,
-            child: SingleChildScrollView(child: content),
-          ),
+      body: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20),
+          child: content,
         ),
       ),
     );

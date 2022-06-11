@@ -52,11 +52,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final listView = Obx(
-      () => ListView.separated(
+      () => ListView.builder(
         shrinkWrap: true,
         itemCount: controller.data.length,
         itemBuilder: itemBuilder,
-        separatorBuilder: (_, index) => const Divider(height: 0),
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 15),
       ),

@@ -173,6 +173,12 @@ class Utils {
             parameters: parameters,
             arguments: arguments,
           );
+        case 'offAllNamed':
+          return Get.offAllNamed(
+            name,
+            parameters: parameters,
+            arguments: arguments,
+          );
         default:
       }
     }
@@ -180,6 +186,7 @@ class Utils {
     // Open page as dialog for desktop
     Get.parameters = parameters; // manually pass parameters
     final page = AppPages.routes.firstWhere((e) => e.name == name).page();
+    // larger real estate for secure notes
     final isNote = parameters['category'] == LisoItemCategory.note.name;
 
     final dialog = Dialog(
@@ -192,7 +199,7 @@ class Utils {
 
     return Get.dialog(
       dialog,
-      routeSettings: RouteSettings(name: name),
+      routeSettings: RouteSettings(name: name, arguments: arguments),
     );
   }
 

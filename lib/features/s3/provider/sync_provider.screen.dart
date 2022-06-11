@@ -82,110 +82,102 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
     };
 
     final content = SingleChildScrollView(
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: PersistenceBuilder(builder: (_, context) {
-          final provider = providersMap[persistence.syncProvider.val];
+      padding: const EdgeInsets.all(20),
+      child: PersistenceBuilder(builder: (_, context) {
+        final provider = providersMap[persistence.syncProvider.val];
 
-          final name = provider?['name'];
-          final description = provider?['description'];
-          final image = provider?['image'];
-          final url = provider?['url'];
+        final name = provider?['name'];
+        final description = provider?['description'];
+        final image = provider?['image'];
+        final url = provider?['url'];
 
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (persistence.syncProvider.val !=
-                  LisoSyncProvider.custom.name) ...[
-                Image.asset(image!, height: 100),
-                const SizedBox(height: 20),
-                Text(
-                  name!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 30),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  description!,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                TextButton(
-                  onPressed: () => Utils.openUrl(url!),
-                  child: const Text('Learn more'),
-                ),
-              ] else ...[
-                const Icon(Iconsax.setting_2, size: 100),
-                const SizedBox(height: 20),
-                const Text(
-                  'Custom',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 30),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  'Set your own configuration',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.grey),
-                ),
-                TextButton(
-                  onPressed: () => Utils.adaptiveRouteOpen(
-                    name: Routes.customSyncProvider,
-                  ),
-                  child: const Text('Configure'),
-                ),
-              ],
-              Section(text: 'Choose a provider'.toUpperCase()),
-              const Divider(),
-              RadioListTile<LisoSyncProvider>(
-                title: const Text('Sia'),
-                secondary: Image.asset(Images.sia, height: 25),
-                value: LisoSyncProvider.sia,
-                groupValue: LisoSyncProvider.values
-                    .byName(persistence.syncProvider.val),
-                onChanged: _switchProvider,
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (persistence.syncProvider.val !=
+                LisoSyncProvider.custom.name) ...[
+              Image.asset(image!, height: 100),
+              const SizedBox(height: 20),
+              Text(
+                name!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 30),
               ),
-              const Divider(),
-              RadioListTile<LisoSyncProvider>(
-                title: const Text('Storj'),
-                secondary: Image.asset(Images.storj, height: 25),
-                value: LisoSyncProvider.storj,
-                groupValue: LisoSyncProvider.values
-                    .byName(persistence.syncProvider.val),
-                onChanged: _switchProvider,
+              const SizedBox(height: 10),
+              Text(
+                description!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.grey),
               ),
-              const Divider(),
-              RadioListTile<LisoSyncProvider>(
-                title: const Text('IPFS'),
-                secondary: Image.asset(Images.ipfs, height: 25),
-                value: LisoSyncProvider.ipfs,
-                groupValue: LisoSyncProvider.values
-                    .byName(persistence.syncProvider.val),
-                onChanged: _switchProvider,
+              TextButton(
+                onPressed: () => Utils.openUrl(url!),
+                child: const Text('Learn more'),
               ),
-              const Divider(),
-              RadioListTile<LisoSyncProvider>(
-                title: const Text('Skynet'),
-                secondary: Image.asset(Images.skynet, height: 25),
-                value: LisoSyncProvider.skynet,
-                groupValue: LisoSyncProvider.values
-                    .byName(persistence.syncProvider.val),
-                onChanged: _switchProvider,
+            ] else ...[
+              const Icon(Iconsax.setting_2, size: 100),
+              const SizedBox(height: 20),
+              const Text(
+                'Custom',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 30),
               ),
-              const Divider(),
-              RadioListTile<LisoSyncProvider>(
-                title: const Text('Custom'),
-                secondary: const Icon(Iconsax.setting_2),
-                value: LisoSyncProvider.custom,
-                groupValue: LisoSyncProvider.values
-                    .byName(persistence.syncProvider.val),
-                onChanged: _switchProvider,
+              const SizedBox(height: 10),
+              const Text(
+                'Set your own configuration',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey),
               ),
-              const Divider(),
+              TextButton(
+                onPressed: () => Utils.adaptiveRouteOpen(
+                  name: Routes.customSyncProvider,
+                ),
+                child: const Text('Configure'),
+              ),
             ],
-          );
-        }),
-      ),
+            Section(text: 'Choose a provider'.toUpperCase()),
+            RadioListTile<LisoSyncProvider>(
+              title: const Text('Sia'),
+              secondary: Image.asset(Images.sia, height: 25),
+              value: LisoSyncProvider.sia,
+              groupValue:
+                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              onChanged: _switchProvider,
+            ),
+            RadioListTile<LisoSyncProvider>(
+              title: const Text('Storj'),
+              secondary: Image.asset(Images.storj, height: 25),
+              value: LisoSyncProvider.storj,
+              groupValue:
+                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              onChanged: _switchProvider,
+            ),
+            RadioListTile<LisoSyncProvider>(
+              title: const Text('IPFS'),
+              secondary: Image.asset(Images.ipfs, height: 25),
+              value: LisoSyncProvider.ipfs,
+              groupValue:
+                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              onChanged: _switchProvider,
+            ),
+            RadioListTile<LisoSyncProvider>(
+              title: const Text('Skynet'),
+              secondary: Image.asset(Images.skynet, height: 25),
+              value: LisoSyncProvider.skynet,
+              groupValue:
+                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              onChanged: _switchProvider,
+            ),
+            RadioListTile<LisoSyncProvider>(
+              title: const Text('Custom'),
+              secondary: const Icon(Iconsax.setting_2),
+              value: LisoSyncProvider.custom,
+              groupValue:
+                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              onChanged: _switchProvider,
+            ),
+          ],
+        );
+      }),
     );
 
     return Scaffold(

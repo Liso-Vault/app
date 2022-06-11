@@ -50,11 +50,10 @@ class VaultExplorerScreen extends GetView<VaultExplorerScreenController>
     );
 
     final listView = Obx(
-      () => ListView.separated(
+      () => ListView.builder(
         shrinkWrap: true,
         itemCount: controller.data.length,
         itemBuilder: itemBuilder,
-        separatorBuilder: (_, index) => const Divider(height: 0),
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 15),
       ),

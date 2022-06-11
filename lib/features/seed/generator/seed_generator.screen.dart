@@ -18,11 +18,9 @@ class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
   @override
   Widget build(BuildContext context) {
     final content = SingleChildScrollView(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 20,
-      ),
+      padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(5),
@@ -33,7 +31,8 @@ class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
           ),
           Card(
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.only(
+                  top: 30, bottom: 5, left: 20, right: 20),
               child: Column(
                 children: [
                   Obx(() => SeedChips(seeds: controller.seed.split(' '))),
@@ -60,8 +59,9 @@ class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
                       CardButton(
                         text: 'Copy',
                         iconData: Iconsax.copy,
-                        onPressed: () =>
-                            Utils.copyToClipboard(controller.seed.value),
+                        onPressed: () => Utils.copyToClipboard(
+                          controller.seed.value,
+                        ),
                       ),
                     ],
                   ),
@@ -71,11 +71,19 @@ class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
           ),
           Padding(
             padding: const EdgeInsets.all(5),
-            child: Obx(
-              () => Text(
-                '${'strength'.tr.toUpperCase()}: ${controller.strength.value} Bits',
-                style: const TextStyle(fontSize: 12, color: Colors.grey),
-              ),
+            child: Row(
+              children: [
+                Text(
+                  '${'strength'.tr.toUpperCase()}: ',
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                Obx(
+                  () => Text(
+                    '${controller.strength.value} Bits',
+                    style: const TextStyle(fontSize: 12),
+                  ),
+                )
+              ],
             ),
           ),
           Card(

@@ -12,10 +12,10 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/hive/hive_items.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
+import '../menu/menu.item.dart';
 import 'settings_screen.controller.dart';
 
 class SettingsScreen extends GetView<SettingsScreenController>
@@ -48,7 +48,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
             ),
           ),
         ),
-        const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(
             title: const Text('Sync Settings'),
@@ -64,7 +63,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 onChanged: (value) => persistence.sync.val = value,
               ),
               if (persistence.sync.val && isFirebaseSupported) ...[
-                const Divider(),
                 ListTile(
                   leading: Icon(Iconsax.cpu, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
@@ -72,7 +70,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   subtitle: const Text('Manage your synced devices'),
                   onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
                 ),
-                const Divider(),
                 ListTile(
                   leading: Icon(Iconsax.setting, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
@@ -86,7 +83,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
             ],
           );
         }),
-        const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(
             title: const Text('Vault Settings'),
@@ -102,7 +98,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
               ),
               if (Persistence.to.canShare && isFirebaseSupported) ...[
-                const Divider(),
                 ListTile(
                   leading: Icon(Iconsax.share, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
@@ -111,7 +106,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   onTap: () =>
                       Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
                 ),
-                const Divider(),
                 ListTile(
                   leading: Icon(LineIcons.plus, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
@@ -121,7 +115,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                       Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
                 ),
               ],
-              const Divider(),
               ListTile(
                 title: const Text('Backed Up Vaults'),
                 subtitle: const Text('Go back in time and undo your changes'),
@@ -141,24 +134,29 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   );
                 },
               ),
-              const Divider(),
-              ListTile(
-                leading: Icon(Iconsax.box_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: Text('export_vault'.tr),
-                subtitle: const Text('Save <vault>.liso to an external source'),
-                onTap: () {
-                  if (HiveItemsService.to.data.isEmpty) {
-                    return UIUtils.showSimpleDialog(
-                      'Empty Vault',
-                      'Cannot export an empty vault.',
-                    );
-                  }
-
-                  Utils.adaptiveRouteOpen(name: Routes.export);
-                },
+              ContextMenuButton(
+                padding: EdgeInsets.zero,
+                [
+                  ContextMenuItem(
+                    title: 'Encrypted',
+                    onSelected: () => controller.exportVault(),
+                    leading: const Icon(Iconsax.shield_tick),
+                  ),
+                  ContextMenuItem(
+                    title: 'Unencrypted',
+                    onSelected: () => controller.exportVault(encrypt: false),
+                    leading: const Icon(Iconsax.document),
+                  )
+                ],
+                child: ListTile(
+                  leading: Icon(Iconsax.box_1, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: Text('export_vault'.tr),
+                  subtitle:
+                      const Text('Save <vault>.liso to an external source'),
+                  onTap: controller.exportVault,
+                ),
               ),
-              const Divider(),
               ListTile(
                 leading: Icon(Iconsax.refresh, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
@@ -166,7 +164,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 subtitle: const Text('Delete all items and start over'),
                 onTap: controller.purge,
               ),
-              const Divider(),
               ListTile(
                 leading: Icon(Iconsax.import_1, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
@@ -183,7 +180,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
             ],
           );
         }),
-        const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(
             title: const Text('Wallet Settings'),
@@ -199,7 +195,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
                     const Text('Save <wallet>.json to an external source'),
                 onTap: controller.exportWallet,
               ),
-              const Divider(),
+
               ListTile(
                 leading: Icon(Iconsax.key, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
@@ -207,18 +203,16 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 subtitle: const Text('Make sure you are in a safe location'),
                 onTap: controller.showSeed,
               ),
-              const Divider(),
-              ListTile(
-                leading: Icon(Iconsax.password_check, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: const Text('Change Password'),
-                subtitle: const Text('Change your wallet password'),
-                // onTap: controller.showSeed,
-              ),
+              // ListTile(
+              //   leading: Icon(Iconsax.password_check, color: themeColor),
+              //   trailing: const Icon(Iconsax.arrow_right_3),
+              //   title: const Text('Change Password'),
+              //   subtitle: const Text('Change your wallet password'),
+              //   // onTap: controller.showSeed,
+              // ),
             ],
           );
         }),
-        const Divider(),
         PersistenceBuilder(builder: (_, context) {
           return ExpansionTile(
             title: const Text('Other Settings'),
@@ -238,7 +232,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
                 ),
                 onChanged: (value) => persistence.crashReporting.val = value,
               ),
-              const Divider(),
               SwitchListTile(
                 title: const Text('Usage Statistics'),
                 secondary: Icon(
@@ -254,7 +247,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
             ],
           );
         }),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.lock, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
@@ -262,7 +254,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
-        const Divider(),
         ListTile(
           leading: Icon(Iconsax.refresh5, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
@@ -270,7 +261,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
           subtitle: const Text('Delete local vault and logout'),
           onTap: controller.reset,
         ),
-        const Divider(),
         if (kDebugMode) ...[
           ListTile(
             leading: const Icon(Iconsax.code),
@@ -280,7 +270,6 @@ class SettingsScreen extends GetView<SettingsScreenController>
             selected: true,
             selectedColor: Colors.red,
           ),
-          const Divider(),
         ]
       ],
     );

@@ -98,8 +98,9 @@ class SeedScreenController extends GetxController with ConsoleMixin {
 
   void continuePressed() async {
     if (!isDisplayMode) {
-      Get.offAllNamed(
-        Routes.createPassword,
+      Utils.adaptiveRouteOpen(
+        name: Routes.createPassword,
+        method: 'offAllNamed',
         parameters: {
           'seed': seed.value,
           'from': 'seed_screen',

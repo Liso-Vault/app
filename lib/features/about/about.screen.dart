@@ -28,7 +28,6 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const Divider(),
         ListTile(
           leading: RemoteImage(
             url: config.general.app.image,
@@ -45,7 +44,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             );
           },
         ),
-        const Divider(),
+
         ListTile(
           leading: Icon(Iconsax.chrome, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
@@ -55,7 +54,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             config.general.app.links.website,
           ),
         ),
-        const Divider(),
+
         ListTile(
           leading: Icon(LineIcons.rocket, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
@@ -64,7 +63,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             config.general.app.links.roadmap,
           ),
         ),
-        const Divider(),
+
         ContextMenuButton(
           controller.communityMenuItems,
           useMouseRegion: true,
@@ -76,14 +75,14 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             onTap: () {},
           ),
         ),
-        const Divider(),
+
         ListTile(
           leading: Icon(LineIcons.productHunt, color: themeColor),
           title: Text('${config.appName} Product Hunt'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.productHunt),
         ),
-        const Divider(),
+
         // TODO: Add GitCoin link
         // ListTile(
         //   leading: Icon(LineIcons.git, color: themeColor),
@@ -91,21 +90,21 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
         //   trailing: const Icon(Iconsax.arrow_right_3),
         //   onTap: () => Utils.openUrl(config.general.app.links.gitcoin),
         // ),
-        // const Divider(),
+        //
         ListTile(
           leading: Icon(LineIcons.github, color: themeColor),
           title: Text('${config.appName} GitHub'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.github),
         ),
-        const Divider(),
+
         ListTile(
           leading: Icon(Iconsax.security_user, color: themeColor),
           title: Text('${config.appName} Privacy'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.privacy),
         ),
-        const Divider(),
+
         ListTile(
           leading: Icon(Iconsax.book_1, color: themeColor),
           title: Text('${config.appName} Terms'),
@@ -113,7 +112,6 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           onTap: () => Utils.openUrl(config.general.app.links.terms),
         ),
         if (!GetPlatform.isMobile) ...[
-          const Divider(),
           ListTile(
             leading: Icon(Iconsax.forward_square, color: themeColor),
             title: const Text('Invite a friend'),
@@ -131,14 +129,14 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
           //   onTap: () => Utils.openUrl(kAppGithubReleasesUrl),
           // ),
         ],
-        const Divider(),
+
         ListTile(
           leading: Icon(Iconsax.code_1, color: themeColor),
           title: Text('licenses'.tr),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => controller.showLicenses(context),
         ),
-        const Divider(),
+
         ContextMenuButton(
           controller.developerMenuItems,
           useMouseRegion: true,
@@ -156,7 +154,7 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             onTap: () {},
           ),
         ),
-        const Divider(),
+
         const SizedBox(height: 50),
       ],
     );

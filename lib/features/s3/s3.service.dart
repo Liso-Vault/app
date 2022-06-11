@@ -150,7 +150,6 @@ class S3Service extends GetxService with ConsoleMixin {
 
         _syncProgress(1, '');
         syncing.value = false;
-
         return upsyncResult;
       }
 
@@ -167,19 +166,28 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     if (downResult.isLeft) return Left(downResult.left);
-
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
     Persistence.to.changes.val = 0;
-
     // up sync local changes with server
     _syncProgress(0.5, 'Pushing...');
-    await upSync();
+
+    await upSync().timeout(
+      syncTimeoutDuration,
+      onTimeout: () => const Left('Timed Out'),
+    );
+
     syncing.value = false;
     _syncProgress(1, '');
+
     MainScreenController.to.load();
     GroupsController.to.load();
-    syncSharedVaults();
+
+    syncSharedVaults().timeout(
+      syncTimeoutDuration,
+      onTimeout: () => const Left('Timed Out'),
+    );
+
     return Right(downResult.right);
   }
 
@@ -212,42 +220,6 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
-    // var local = HiveGroupsService.to.box;
-    // // MERGED
-    // final merged = {...server, ...local.values};
-    // console.info('merged: ${merged.length}');
-    // final leastUpdatedDuplicates = <HiveLisoGroup>[];
-
-    // for (var x in merged) {
-    //   // skip if item already added to least updated item list
-    //   if (x.reserved ||
-    //       leastUpdatedDuplicates.where((e) => e.id == x.id).isNotEmpty) {
-    //     continue;
-    //   }
-    //   // find duplicates
-    //   final duplicate = merged.where((y) => y.id == x.id);
-    //   // return the least updated item of a duplicate
-    //   if (duplicate.length > 1) {
-    //     final leastUpdated = duplicate.first.metadata!.updatedTime
-    //             .isBefore(duplicate.last.metadata!.updatedTime)
-    //         ? duplicate.first
-    //         : duplicate.last;
-    //     leastUpdatedDuplicates.add(leastUpdated);
-    //   }
-    // }
-
-    // console.info('least updated duplicates: ${leastUpdatedDuplicates.length}');
-    // // remove duplicate + least updated item
-    // merged.removeWhere(
-    //   (e) => leastUpdatedDuplicates.contains(e),
-    // );
-
-    // // clear and reload updated items
-    // await local.clear();
-    // await local.addAll(merged);
-
-    // console.info('merged groups: ${local.length}');
-
     final local = HiveGroupsService.to.box;
     // merge server and local items
     final merged = [...server, ...local.values];
@@ -592,6 +564,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }) async {
     if (!ready) init();
     if (!persistence.sync.val && ready && !force) return const Left('offline');
+
     console.info(
       'downloading: ${ConfigService.to.s3.preferredBucket} -> $s3Path',
     );
@@ -603,9 +576,13 @@ class S3Service extends GetxService with ConsoleMixin {
         ConfigService.to.s3.preferredBucket,
         s3Path,
       );
-    } catch (e) {
+    } catch (e, s) {
       console.error('downloadFile error -> $e');
-      // CrashlyticsService.to.record(e, s);
+
+      if (!e.toString().contains('The specified key does not exist')) {
+        CrashlyticsService.to.record(e, s);
+      }
+
       return Left(e);
     }
 
