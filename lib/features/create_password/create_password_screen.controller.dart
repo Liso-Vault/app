@@ -9,13 +9,6 @@ import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/auth.service.dart';
 
-class CreatePasswordScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => CreatePasswordScreenController(), fenix: true);
-  }
-}
-
 class CreatePasswordScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES

@@ -21,6 +21,7 @@ import 'core/firebase/auth.service.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
+import 'core/form_fields/password.field.dart';
 import 'core/hive/hive_items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
@@ -29,7 +30,12 @@ import 'core/services/local_auth.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/connectivity/connectivity.service.dart';
+import 'features/debug/debug.screen.dart';
+import 'features/drawer/drawer_widget.controller.dart';
+import 'features/groups/groups.controller.dart';
 import 'features/joined_vaults/joined_vault.controller.dart';
+import 'features/main/main_screen.controller.dart';
+import 'features/s3/explorer/s3_content_tile.controller.dart';
 import 'features/s3/s3.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
 
@@ -63,9 +69,19 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => HiveItemsService());
     Get.lazyPut(() => HiveGroupsService());
 
+    // permanent controllers
+    Get.put(MainScreenController());
+    Get.put(DrawerMenuController());
     Get.put(SharedVaultsController());
     Get.put(JoinedVaultsController());
+    Get.put(GroupsController());
 
+    // create controllers
+    Get.create(() => PasswordFormFieldController());
+    Get.create(() => S3ContentTileController());
+    Get.create(() => ChipsInputController());
+
+    // initializations
     CrashlyticsService.to.init();
     await Globals.init();
     await LisoPaths.init();

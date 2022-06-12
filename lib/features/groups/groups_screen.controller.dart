@@ -14,13 +14,6 @@ import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
 import 'groups.controller.dart';
 
-class GroupsScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => GroupsScreenController(), fenix: true);
-  }
-}
-
 class GroupsScreenController extends GetxController with ConsoleMixin {
   static GroupsScreenController get to => Get.find();
 
@@ -55,7 +48,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      await HiveGroupsService.to.box.add(HiveLisoGroup(
+      await HiveGroupsService.to.box!.add(HiveLisoGroup(
         id: const Uuid().v4(),
         name: name,
         description: description,

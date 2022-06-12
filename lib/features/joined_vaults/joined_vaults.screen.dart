@@ -22,12 +22,12 @@ import 'explorer/vault_explorer_screen.controller.dart';
 import 'joined_vault.controller.dart';
 import 'joined_vaults_screen.controller.dart';
 
-class JoinedVaultsScreen extends GetView<JoinedVaultsScreenController>
-    with ConsoleMixin {
+class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
   const JoinedVaultsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(JoinedVaultsScreenController());
     final joinedController = Get.find<JoinedVaultsController>();
 
     Widget itemBuilder(context, index) {

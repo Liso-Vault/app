@@ -14,11 +14,12 @@ import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
 import 'upgrade_screen.controller.dart';
 
-class UpgradeScreen extends GetView<UpgradeScreenController> with ConsoleMixin {
+class UpgradeScreen extends StatelessWidget with ConsoleMixin {
   const UpgradeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(UpgradeScreenController());
     // final title = Get.parameters['title']!;
     // final body = Get.parameters['body']!;
 

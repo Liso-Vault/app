@@ -16,11 +16,13 @@ import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import 'about_screen.controller.dart';
 
-class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
+class AboutScreen extends StatelessWidget with ConsoleMixin {
   const AboutScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AboutScreenController());
+
     final config = Get.find<ConfigService>();
     final persistence = Get.find<Persistence>();
 

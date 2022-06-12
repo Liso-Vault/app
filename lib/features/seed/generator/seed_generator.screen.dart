@@ -11,12 +11,13 @@ import '../../general/appbar_leading.widget.dart';
 import '../../general/card_button.widget.dart';
 import 'seed_generator_screen.controller.dart';
 
-class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
-    with ConsoleMixin {
+class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
   const SeedGeneratorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SeedGeneratorScreenController());
+
     final content = SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(

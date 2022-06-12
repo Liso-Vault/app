@@ -8,7 +8,6 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/unknown.screen.dart';
 
 import '../../core/utils/globals.dart';
-import '../main/main_screen.bindings.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -37,7 +36,6 @@ class App extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'),
       // NAVIGATION
       initialRoute: Routes.main,
-      initialBinding: MainScreenBinding(),
       getPages: AppPages.routes,
       defaultTransition: Transition.rightToLeft,
       transitionDuration: 200.milliseconds,

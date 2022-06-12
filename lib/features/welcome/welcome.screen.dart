@@ -11,11 +11,13 @@ import '../general/remote_image.widget.dart';
 import '../general/version.widget.dart';
 import 'welcome_screen.controller.dart';
 
-class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
+class WelcomeScreen extends StatelessWidget with ConsoleMixin {
   const WelcomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(WelcomeScreenController());
+
     final content = Container(
       constraints: Styles.containerConstraints,
       child: Column(

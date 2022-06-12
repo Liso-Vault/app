@@ -11,13 +11,6 @@ import 'package:minio/minio.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 
-class CustomSyncProviderScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => CustomSyncProviderScreenController(), fenix: true);
-  }
-}
-
 class CustomSyncProviderScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES

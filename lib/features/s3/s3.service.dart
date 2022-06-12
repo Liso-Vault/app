@@ -220,7 +220,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
-    final local = HiveGroupsService.to.box;
+    final local = HiveGroupsService.to.box!;
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time

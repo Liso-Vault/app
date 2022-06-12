@@ -6,13 +6,6 @@ import 'package:liso/core/utils/utils.dart';
 import '../app/routes.dart';
 import '../s3/s3.service.dart';
 
-class AttachmentsScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => AttachmentsScreenController(), fenix: true);
-  }
-}
-
 class AttachmentsScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   static AttachmentsScreenController get to => Get.find();

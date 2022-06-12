@@ -25,13 +25,6 @@ import '../app/routes.dart';
 import '../menu/menu.item.dart';
 import '../wallet/wallet.service.dart';
 
-class SettingsScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => SettingsScreenController(), fenix: true);
-  }
-}
-
 class SettingsScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   static SettingsScreenController get to => Get.find();

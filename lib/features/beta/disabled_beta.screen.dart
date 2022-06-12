@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
-import 'package:liso/features/beta/disabled_beta_screen.controller.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
@@ -10,11 +8,13 @@ import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import '../general/version.widget.dart';
 
-class DisabledBetaScreen extends GetView<DisabledBetaScreenController> {
+class DisabledBetaScreen extends StatelessWidget {
   const DisabledBetaScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // final controller = Get.put(DisabledBetaScreenController());
+
     final content = Container(
       constraints: Styles.containerConstraints,
       child: Column(

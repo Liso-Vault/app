@@ -15,11 +15,13 @@ import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import 'devices_screen.controller.dart';
 
-class DevicesScreen extends GetView<DevicesScreenController> with ConsoleMixin {
+class DevicesScreen extends StatelessWidget with ConsoleMixin {
   const DevicesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DevicesScreenController());
+
     Widget itemBuilder(context, index) {
       final device = controller.data[index];
 

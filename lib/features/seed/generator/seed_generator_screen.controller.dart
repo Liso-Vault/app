@@ -6,13 +6,6 @@ import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
 
-class SeedGeneratorScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => SeedGeneratorScreenController(), fenix: true);
-  }
-}
-
 class SeedGeneratorScreenController extends GetxController with ConsoleMixin {
   static SeedGeneratorScreenController get to => Get.find();
 

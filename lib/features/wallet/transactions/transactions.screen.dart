@@ -8,12 +8,13 @@ import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
 import 'transactions_screen.controller.dart';
 
-class TransactionsScreen extends GetView<TransactionsScreenController>
-    with ConsoleMixin {
+class TransactionsScreen extends StatelessWidget with ConsoleMixin {
   const TransactionsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(TransactionsScreenController());
+
     final listView = Obx(
       () => ListView.builder(
         itemCount: controller.data.length,

@@ -12,13 +12,6 @@ import '../../core/services/local_auth.service.dart';
 import '../../core/utils/globals.dart';
 import '../wallet/wallet.service.dart';
 
-class UnlockScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => UnlockScreenController(), fenix: true);
-  }
-}
-
 class UnlockScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES

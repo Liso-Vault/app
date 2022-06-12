@@ -9,13 +9,6 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
 
-class WelcomeScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => WelcomeScreenController(), fenix: true);
-  }
-}
-
 class WelcomeScreenController extends GetxController with ConsoleMixin {
   // VARIABLES
 

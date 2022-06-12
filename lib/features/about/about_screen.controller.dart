@@ -10,13 +10,6 @@ import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.item.dart';
 
-class AboutScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => AboutScreenController(), fenix: true);
-  }
-}
-
 class AboutScreenController extends GetxController with ConsoleMixin {
   // VARIABLES
 

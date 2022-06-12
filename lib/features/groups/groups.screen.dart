@@ -15,11 +15,12 @@ import '../menu/menu.item.dart';
 import 'groups.controller.dart';
 import 'groups_screen.controller.dart';
 
-class GroupsScreen extends GetView<GroupsScreenController> with ConsoleMixin {
+class GroupsScreen extends StatelessWidget with ConsoleMixin {
   const GroupsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(GroupsScreenController());
     final vaultsController = Get.find<GroupsController>();
 
     Widget itemBuilder(context, index) {
@@ -31,7 +32,7 @@ class GroupsScreen extends GetView<GroupsScreenController> with ConsoleMixin {
           // TODO: if user proceeds, these items will also be deleted
 
           Get.back();
-          await HiveGroupsService.to.box.delete(vault.key);
+          await HiveGroupsService.to.box!.delete(vault.key);
           vaultsController.load();
         }
 

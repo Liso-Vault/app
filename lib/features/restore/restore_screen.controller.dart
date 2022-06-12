@@ -21,19 +21,6 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../s3/s3.service.dart';
 
-class RestoreScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => RestoreScreenController(), fenix: true);
-  }
-}
-
-enum ImportMode {
-  file,
-  liso,
-  s3,
-}
-
 class RestoreScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
@@ -42,12 +29,12 @@ class RestoreScreenController extends GetxController
   final filePathController = TextEditingController();
 
   // PROPERTIES
-  final importMode = ImportMode.liso.obs;
+  final importMode = RestoreMode.liso.obs;
   final busy = false.obs;
   final syncProvider = LisoSyncProvider.sia.name.obs;
 
   // GETTERS
-  String get vaultFilePath => importMode() == ImportMode.file
+  String get vaultFilePath => importMode() == RestoreMode.file
       ? filePathController.text
       : LisoPaths.tempVaultFilePath;
 
@@ -109,7 +96,7 @@ class RestoreScreenController extends GetxController
     change(null, status: RxStatus.loading());
 
     // download vault file
-    if (importMode.value == ImportMode.liso) {
+    if (importMode.value == RestoreMode.liso) {
       if (!(await _downloadVault())) {
         return change(null, status: RxStatus.success());
       }
@@ -142,7 +129,7 @@ class RestoreScreenController extends GetxController
     await LisoManager.importVaultFile(vaultFile, cipherKey: cipherKey);
     // turn on sync setting if successfully imported via cloud
     Persistence.to.sync.val =
-        importMode.value == ImportMode.liso ? true : false;
+        importMode.value == RestoreMode.liso ? true : false;
     change(null, status: RxStatus.success());
 
     if (isLocalAuthSupported) {
@@ -190,4 +177,10 @@ class RestoreScreenController extends GetxController
 
     filePathController.text = result.files.single.path!;
   }
+}
+
+enum RestoreMode {
+  file,
+  liso,
+  s3,
 }

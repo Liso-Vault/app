@@ -13,12 +13,13 @@ import '../s3.service.dart';
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
 
-class S3ExplorerScreen extends GetView<S3ExplorerScreenController>
-    with ConsoleMixin {
+class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
   const S3ExplorerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(S3ExplorerScreenController());
+
     Widget itemBuilder(context, index) {
       final content = controller.data[index];
 

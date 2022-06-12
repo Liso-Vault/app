@@ -14,11 +14,13 @@ import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
 
-class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
+class UnlockScreen extends StatelessWidget with ConsoleMixin {
   const UnlockScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(UnlockScreenController());
+
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [

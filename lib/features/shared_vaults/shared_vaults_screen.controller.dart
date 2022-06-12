@@ -26,13 +26,6 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 
-class SharedVaultsScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => SharedVaultsScreenController(), fenix: true);
-  }
-}
-
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   static SharedVaultsScreenController get to => Get.find();
 

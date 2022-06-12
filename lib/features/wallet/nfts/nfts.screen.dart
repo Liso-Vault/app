@@ -9,11 +9,13 @@ import '../../general/centered_placeholder.widget.dart';
 import '../../general/remote_image.widget.dart';
 import 'nfts_screen.controller.dart';
 
-class NFTsScreen extends GetView<NFTsScreenController> with ConsoleMixin {
+class NFTsScreen extends StatelessWidget with ConsoleMixin {
   const NFTsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(NFTsScreenController());
+
     final listView = Obx(
       () => ListView.builder(
         itemCount: controller.data.length,

@@ -18,12 +18,12 @@ import '../general/busy_indicator.widget.dart';
 import '../menu/menu.item.dart';
 import 'settings_screen.controller.dart';
 
-class SettingsScreen extends GetView<SettingsScreenController>
-    with ConsoleMixin {
+class SettingsScreen extends StatelessWidget with ConsoleMixin {
   const SettingsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SettingsScreenController());
     final persistence = Get.find<Persistence>();
     final config = Get.find<ConfigService>();
 

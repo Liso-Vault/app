@@ -13,11 +13,13 @@ import '../general/appbar_leading.widget.dart';
 import '../menu/menu.button.dart';
 import 'seed_screen.controller.dart';
 
-class SeedScreen extends GetView<SeedScreenController> with ConsoleMixin {
+class SeedScreen extends StatelessWidget with ConsoleMixin {
   const SeedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SeedScreenController());
+
     final phraseChips = GestureDetector(
       onLongPress: () => Utils.copyToClipboard(controller.seed.value),
       onSecondaryTap: () => Utils.copyToClipboard(controller.seed.value),

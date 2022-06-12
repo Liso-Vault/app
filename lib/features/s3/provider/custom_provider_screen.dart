@@ -10,12 +10,13 @@ import 'package:liso/features/s3/provider/custom_provider_screen.controller.dart
 import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
 
-class CustomSyncProviderScreen
-    extends GetView<CustomSyncProviderScreenController> with ConsoleMixin {
+class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
   const CustomSyncProviderScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CustomSyncProviderScreenController());
+
     final content = SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Form(

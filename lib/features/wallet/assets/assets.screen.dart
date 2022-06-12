@@ -13,11 +13,12 @@ import '../../general/centered_placeholder.widget.dart';
 import '../wallet.service.dart';
 import 'assets_screen.controller.dart';
 
-class AssetsScreen extends GetView<AssetsScreenController> with ConsoleMixin {
+class AssetsScreen extends StatelessWidget with ConsoleMixin {
   const AssetsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AssetsScreenController());
     final persistence = Get.find<Persistence>();
     final wallet = Get.find<WalletService>();
 

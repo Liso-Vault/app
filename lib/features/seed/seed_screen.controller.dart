@@ -12,13 +12,6 @@ import '../../core/hive/hive_items.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../menu/menu.item.dart';
 
-class SeedScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => SeedScreenController(), fenix: true);
-  }
-}
-
 class SeedScreenController extends GetxController with ConsoleMixin {
   // VARIABLES'
 

@@ -10,12 +10,12 @@ import '../../item/item.tile.dart';
 import '../../menu/menu.button.dart';
 import 'vault_explorer_screen.controller.dart';
 
-class VaultExplorerScreen extends GetView<VaultExplorerScreenController>
-    with ConsoleMixin {
+class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
   const VaultExplorerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(VaultExplorerScreenController());
     final vault = VaultExplorerScreenController.vault;
 
     Widget itemBuilder(context, index) {

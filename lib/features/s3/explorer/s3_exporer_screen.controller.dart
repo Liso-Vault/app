@@ -18,13 +18,6 @@ import '../../menu/menu.item.dart';
 import '../../wallet/wallet.service.dart';
 import '../model/s3_content.model.dart';
 
-class S3ExplorerScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
-  }
-}
-
 class S3ExplorerScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   static S3ExplorerScreenController get to => Get.find();

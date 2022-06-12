@@ -11,13 +11,6 @@ import 'package:liso/core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../wallet/wallet.service.dart';
 
-class DevicesScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => DevicesScreenController(), fenix: true);
-  }
-}
-
 class DevicesScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   static DevicesScreenController get to => Get.find();

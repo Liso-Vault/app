@@ -15,11 +15,13 @@ import '../general/appbar_leading.widget.dart';
 import '../general/segmented_item.widget.dart';
 import 'restore_screen.controller.dart';
 
-class RestoreScreen extends GetView<RestoreScreenController> with ConsoleMixin {
+class RestoreScreen extends StatelessWidget with ConsoleMixin {
   const RestoreScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(RestoreScreenController());
+
     final content = Form(
       key: controller.formKey,
       child: Column(
@@ -39,15 +41,15 @@ class RestoreScreen extends GetView<RestoreScreenController> with ConsoleMixin {
           ),
           const SizedBox(height: 20),
           Obx(
-            () => CupertinoSegmentedControl<ImportMode>(
+            () => CupertinoSegmentedControl<RestoreMode>(
               groupValue: controller.importMode.value,
               onValueChanged: (value) => controller.importMode.value = value,
               children: {
-                ImportMode.liso: SegmentedControlItem(
+                RestoreMode.liso: SegmentedControlItem(
                   text: '${ConfigService.to.appName} Cloud',
                   iconData: Iconsax.cloud,
                 ),
-                ImportMode.file: const SegmentedControlItem(
+                RestoreMode.file: const SegmentedControlItem(
                   text: 'Liso File',
                   iconData: Iconsax.document_code,
                 ),
@@ -56,7 +58,7 @@ class RestoreScreen extends GetView<RestoreScreenController> with ConsoleMixin {
           ),
           const SizedBox(height: 10),
           Obx(() {
-            if (controller.importMode() == ImportMode.file) {
+            if (controller.importMode() == RestoreMode.file) {
               return Row(
                 children: [
                   Expanded(
@@ -76,7 +78,7 @@ class RestoreScreen extends GetView<RestoreScreenController> with ConsoleMixin {
                   ),
                 ],
               );
-            } else if (controller.importMode() == ImportMode.liso) {
+            } else if (controller.importMode() == RestoreMode.liso) {
               return PersistenceBuilder(builder: (_, context) {
                 return Column(
                   children: [

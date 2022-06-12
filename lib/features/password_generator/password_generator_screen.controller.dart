@@ -3,17 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
-import '../../core/parsers/template.parser.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-
-class PasswordGeneratorScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => PasswordGeneratorScreenController(), fenix: true);
-  }
-}
 
 class PasswordGeneratorScreenController extends GetxController
     with ConsoleMixin {

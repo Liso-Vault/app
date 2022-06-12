@@ -3,13 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otp/otp.dart';
 
-class OTPScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => OTPScreenController(), fenix: true);
-  }
-}
-
 class OTPScreenController extends GetxController with ConsoleMixin {
   static OTPScreenController get to => Get.find();
 

@@ -7,11 +7,13 @@ import '../../core/utils/globals.dart';
 import '../general/appbar_leading.widget.dart';
 import 'otp_screen.controller.dart';
 
-class OTPScreen extends GetView<OTPScreenController> with ConsoleMixin {
+class OTPScreen extends StatelessWidget with ConsoleMixin {
   const OTPScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(OTPScreenController());
+
     final content = Center(
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

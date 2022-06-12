@@ -10,12 +10,13 @@ import '../general/centered_placeholder.widget.dart';
 import '../s3/s3.service.dart';
 import 'attachments_screen.controller.dart';
 
-class AttachmentsScreen extends GetView<AttachmentsScreenController>
-    with ConsoleMixin {
+class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
   const AttachmentsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AttachmentsScreenController());
+
     Widget itemBuilder(context, index) {
       final eTag = controller.data[index];
 

@@ -18,11 +18,12 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
   static HiveGroupsService get to => Get.find<HiveGroupsService>();
 
   // VARIABLES
-  late Box<HiveLisoGroup> box;
+  Box<HiveLisoGroup>? box;
   bool boxInitialized = false;
 
   // GETTERS
-  List<HiveLisoGroup> get data => box.isOpen ? box.values.toList() : [];
+  List<HiveLisoGroup> get data =>
+      box != null && box!.isOpen ? box!.values.toList() : [];
 
   // FUNCTIONS
 
@@ -35,7 +36,7 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
 
     boxInitialized = true;
 
-    if (box.isEmpty && initialize) {
+    if (box!.isEmpty && initialize) {
       _initialize();
     }
   }
@@ -46,11 +47,11 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
       Secrets.groups.map((x) => HiveLisoGroup.fromJson(x)),
     );
 
-    await box.addAll(groups);
+    await box!.addAll(groups);
   }
 
   Future<void> close() async {
-    await box.close();
+    await box!.close();
     console.info('close');
   }
 
@@ -60,20 +61,20 @@ class HiveGroupsService extends GetxService with ConsoleMixin {
       return;
     }
 
-    await box.clear();
+    await box!.clear();
     // refresh cusom vaults
     GroupsController.to.load();
-    await box.deleteFromDisk();
+    await box!.deleteFromDisk();
     console.info('clear');
   }
 
   Future<void> import(List<HiveLisoGroup> data, {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey, initialize: false);
-    box.addAll(data);
+    box!.addAll(data);
   }
 
   Future<void> purge() async {
-    await box.clear();
+    await box!.clear();
     await _initialize();
   }
 }

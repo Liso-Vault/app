@@ -9,12 +9,13 @@ import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import 'password_generator_screen.controller.dart';
 
-class PasswordGeneratorScreen extends GetView<PasswordGeneratorScreenController>
-    with ConsoleMixin {
+class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
   const PasswordGeneratorScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(PasswordGeneratorScreenController());
+
     const minLength = 8.0;
     const maxLength = 100.0;
 

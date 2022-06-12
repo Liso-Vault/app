@@ -11,12 +11,13 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';
 
-class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
-    with ConsoleMixin {
+class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
   const CreatePasswordScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CreatePasswordScreenController());
+
     final content = Form(
       key: controller.formKey,
       child: Column(
@@ -85,21 +86,18 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             ),
           ),
           const SizedBox(height: 20),
-          const Text(
-            'Use a password that has at least 8 characters, one uppercase letter, one lowercase letter, and one symbol',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 20),
-          Row(
+          Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              ElevatedButton.icon(
-                onPressed: controller.confirm,
-                label: Text('confirm'.tr),
-                icon: const Icon(Iconsax.arrow_circle_right),
+              SizedBox(
+                width: 200,
+                child: ElevatedButton.icon(
+                  onPressed: controller.confirm,
+                  label: Text('confirm'.tr),
+                  icon: const Icon(Iconsax.arrow_circle_right),
+                ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(height: 10),
               TextButton.icon(
                 onPressed: controller.generate,
                 label: Text('generate'.tr),

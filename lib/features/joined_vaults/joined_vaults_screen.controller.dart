@@ -26,13 +26,6 @@ import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 
-class JoinedVaultsScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => JoinedVaultsScreenController(), fenix: true);
-  }
-}
-
 class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   static JoinedVaultsScreenController get to => Get.find();
 

@@ -16,13 +16,6 @@ import '../../resources/resources.dart';
 import '../menu/menu.item.dart';
 import 'assets/assets_screen.controller.dart';
 
-class WalletScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => WalletScreenController(), fenix: true);
-  }
-}
-
 class WalletScreenController extends GetxController with ConsoleMixin {
   static WalletScreenController get to => Get.find();
 
@@ -102,7 +95,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
-        ElevatedButton.icon(
+        TextButton.icon(
           onPressed: () => Utils.copyToClipboard(WalletService.to.longAddress),
           icon: const Icon(Iconsax.copy),
           label: const Text('Copy Address'),

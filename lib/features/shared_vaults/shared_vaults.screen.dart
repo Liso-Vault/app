@@ -29,12 +29,12 @@ import '../menu/menu.item.dart';
 import 'shared_vault.controller.dart';
 import 'shared_vaults_screen.controller.dart';
 
-class SharedVaultsScreen extends GetView<SharedVaultsScreenController>
-    with ConsoleMixin {
+class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
   const SharedVaultsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SharedVaultsScreenController());
     final sharedController = Get.find<SharedVaultsController>();
 
     Widget itemBuilder(context, index) {

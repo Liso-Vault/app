@@ -18,13 +18,6 @@ import '../../s3/s3.service.dart';
 import '../../search/search.delegate.dart';
 import '../../shared_vaults/model/shared_vault.model.dart';
 
-class VaultExplorerScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => VaultExplorerScreenController(), fenix: true);
-  }
-}
-
 class VaultExplorerScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   static VaultExplorerScreenController get to => Get.find();

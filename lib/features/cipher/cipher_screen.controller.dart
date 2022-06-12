@@ -18,13 +18,6 @@ import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 
-class CipherScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => CipherScreenController(), fenix: true);
-  }
-}
-
 class CipherScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   static CipherScreenController get to => Get.find();
@@ -56,16 +49,6 @@ class CipherScreenController extends GetxController
   // FUNCTIONS
 
   void encrypt() async {
-    if (!WalletService.to.limits.cipherTool) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Cipher Tool',
-          'body': 'Upgrade to use Cipher Tool',
-        }, // TODO: add message
-      );
-    }
-
     Globals.timeLockEnabled = false; // temporarily disable
     FilePickerResult? result;
 
@@ -84,6 +67,16 @@ class CipherScreenController extends GetxController
       Globals.timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
+    }
+
+    if (!WalletService.to.limits.cipherTool) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Cipher Tool',
+          'body': 'Upgrade to use Cipher Tool',
+        }, // TODO: add message
+      );
     }
 
     change(false, status: RxStatus.loading());
