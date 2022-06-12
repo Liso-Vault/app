@@ -5,95 +5,94 @@ import '../hive/models/field.hive.dart';
 import '../utils/globals.dart';
 
 class TemplateParser {
-  static List<HiveLisoField> parse(String template) {
+  static List<HiveLisoField> parse(String category) {
     final config = Get.find<ConfigService>();
 
     // CRYPTO WALLET
-    if (template == LisoItemCategory.cryptoWallet.name) {
+    if (category == LisoItemCategory.cryptoWallet.name) {
       return config.templateCryptoWallet;
     }
     // LOGIN
-    else if (template == LisoItemCategory.login.name) {
+    else if (category == LisoItemCategory.login.name) {
       return config.templateLogin;
     }
     // PASSWORD
-    else if (template == LisoItemCategory.password.name) {
+    else if (category == LisoItemCategory.password.name) {
       return config.templatePassword;
     }
     // IDENTITY
-    else if (template == LisoItemCategory.identity.name) {
+    else if (category == LisoItemCategory.identity.name) {
       return config.templateIdentity;
     }
     // NOTE
-    else if (template == LisoItemCategory.note.name) {
+    else if (category == LisoItemCategory.note.name) {
       return config.templateNote;
     }
     // CASH CARD
-    else if (template == LisoItemCategory.cashCard.name) {
+    else if (category == LisoItemCategory.cashCard.name) {
       return config.templateCashCard;
     }
     // BANK ACCOUNT
-    else if (template == LisoItemCategory.bankAccount.name) {
+    else if (category == LisoItemCategory.bankAccount.name) {
       return config.templateBankAccount;
     }
     // MEDICAL RECORDS
-    else if (template == LisoItemCategory.medicalRecord.name) {
+    else if (category == LisoItemCategory.medicalRecord.name) {
       return config.templateMedicalRecord;
     }
     // PASSPORT
-    else if (template == LisoItemCategory.passport.name) {
+    else if (category == LisoItemCategory.passport.name) {
       return config.templatePassport;
     }
     // SERVER
-    else if (template == LisoItemCategory.server.name) {
+    else if (category == LisoItemCategory.server.name) {
       return config.templateServer;
     }
     // SOFTWARE LICENSE
-    else if (template == LisoItemCategory.softwareLicense.name) {
+    else if (category == LisoItemCategory.softwareLicense.name) {
       return config.templateSoftwareLicense;
     }
     // API CREDENTIAL
-    else if (template == LisoItemCategory.apiCredential.name) {
+    else if (category == LisoItemCategory.apiCredential.name) {
       return config.templateAPICredential;
     }
     // DATABASE
-    else if (template == LisoItemCategory.database.name) {
+    else if (category == LisoItemCategory.database.name) {
       return config.templateDatabase;
     }
     // DRIVER'S LICENSE
-    else if (template == LisoItemCategory.driversLicense.name) {
+    else if (category == LisoItemCategory.driversLicense.name) {
       return config.templateDriversLicense;
     }
     // EMAIL
-    else if (template == LisoItemCategory.email.name) {
+    else if (category == LisoItemCategory.email.name) {
       return config.templateEmailAccount;
     }
     // MEMBERSHIP
-    else if (template == LisoItemCategory.membership.name) {
+    else if (category == LisoItemCategory.membership.name) {
       return config.templateMembership;
     }
     // OUTDOOR LICENSE
-    else if (template == LisoItemCategory.outdoorLicense.name) {
+    else if (category == LisoItemCategory.outdoorLicense.name) {
       return config.templateOutdoorLicense;
     }
     // REWARDS PROGRAM
-    else if (template == LisoItemCategory.rewardsProgram.name) {
+    else if (category == LisoItemCategory.rewardsProgram.name) {
       return config.templateRewardsProgram;
     }
     // SOCIAL SECURITY
-    else if (template == LisoItemCategory.socialSecurity.name) {
+    else if (category == LisoItemCategory.socialSecurity.name) {
       return config.templateSocialSecurity;
     }
     // WIRELESS ROUTER
-    else if (template == LisoItemCategory.wirelessRouter.name) {
+    else if (category == LisoItemCategory.wirelessRouter.name) {
       return config.templateWirelessRouter;
     }
     // ENCRYPTION
-    else if (template == LisoItemCategory.encryption.name) {
+    else if (category == LisoItemCategory.encryption.name) {
       return config.templateEncryption;
+    } else {
+      return config.templateNote;
     }
-
-    // UNKNOWN TEMPLATE
-    throw 'Failed to parse unknown template: $template';
   }
 }

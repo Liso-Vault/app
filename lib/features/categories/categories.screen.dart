@@ -3,28 +3,28 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
+import '../../core/hive/hive_categories.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
-import 'groups.controller.dart';
-import 'groups_screen.controller.dart';
+import 'categories.controller.dart';
+import 'categories_screen.controller.dart';
 
-class GroupsScreen extends StatelessWidget with ConsoleMixin {
-  const GroupsScreen({Key? key}) : super(key: key);
+class CategoriesScreen extends StatelessWidget with ConsoleMixin {
+  const CategoriesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(GroupsScreenController());
-    final vaultsController = Get.find<GroupsController>();
+    final controller = Get.put(CategoriesScreenController());
+    final categoriesController = Get.find<CategoriesController>();
 
     Widget itemBuilder(context, index) {
-      final vault = vaultsController.data[index];
+      final category = categoriesController.data[index];
 
       void _confirmDelete() async {
         void _delete() async {
@@ -32,16 +32,16 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
           // TODO: if user proceeds, these items will also be deleted
 
           Get.back();
-          await HiveGroupsService.to.box!.delete(vault.key);
-          vaultsController.load();
+          await HiveCategoriesService.to.box!.delete(category.key);
+          categoriesController.load();
         }
 
         final dialogContent = Text(
-          'Are you sure you want to delete the custom vault "${vault.name}"?',
+          'Are you sure you want to delete the category "${category.name}"?',
         );
 
         Get.dialog(AlertDialog(
-          title: const Text('Delete Custom Vault'),
+          title: const Text('Delete Category'),
           content: Utils.isDrawerExpandable
               ? dialogContent
               : SizedBox(
@@ -70,15 +70,15 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
       ];
 
       return ListTile(
-        enabled: !vault.isReserved,
-        title: Text(vault.reservedName),
-        subtitle: vault.reservedDescription.isNotEmpty
-            ? Text(vault.reservedDescription)
+        enabled: !category.isReserved,
+        title: Text(category.reservedName),
+        subtitle: category.reservedDescription.isNotEmpty
+            ? Text(category.reservedDescription)
             : null,
-        leading: vault.iconUrl.isEmpty
-            ? const Icon(Iconsax.briefcase)
+        leading: category.iconUrl.isEmpty
+            ? const Icon(Iconsax.category)
             : RemoteImage(
-                url: vault.iconUrl,
+                url: category.iconUrl,
                 width: 35,
                 alignment: Alignment.centerLeft,
               ),
@@ -92,23 +92,23 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
     final listView = Obx(
       () => ListView.builder(
         shrinkWrap: true,
-        itemCount: vaultsController.data.length,
+        itemCount: categoriesController.data.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
       ),
     );
 
-    final content = vaultsController.obx(
+    final content = categoriesController.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.briefcase,
-        message: 'no_custom_vaults'.tr,
+        iconData: Iconsax.category,
+        message: 'no_custom_categories'.tr,
       ),
     );
 
     final appBar = AppBar(
-      title: Text('custom_vaults'.tr),
+      title: Text('custom_categories'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );

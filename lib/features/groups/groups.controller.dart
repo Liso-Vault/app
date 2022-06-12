@@ -12,11 +12,19 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
 
   // PROPERTIES
   final data = <HiveLisoGroup>[].obs;
-  final filtered = <HiveLisoGroup>[].obs;
-
-  // PROPERTIES
 
   // GETTERS
+  List<HiveLisoGroup> get combined {
+    final reserved = reservedVaultIds.map(
+      (e) => HiveLisoGroup(
+        id: e,
+        name: e.tr,
+        metadata: null,
+      ),
+    );
+
+    return [...reserved, ...HiveGroupsService.to.data];
+  }
 
   // INIT
   @override
@@ -30,12 +38,9 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
   void load() {
     data.value = HiveGroupsService.to.data;
 
-    filtered.value =
-        data.where((e) => !kReservedVaultIds.contains(e.id)).toList();
-
     change(
       null,
-      status: filtered.isEmpty ? RxStatus.empty() : RxStatus.success(),
+      status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
     );
   }
 }

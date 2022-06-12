@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -24,12 +23,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          // ListTile(
-          //   title: const Text('Debug'),
-          //   onTap: () {
-          //     //
-          //   },
-          // ),
           ExpansionTile(
             maintainState: true,
             title: Text(
@@ -165,14 +158,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             children: [
               ...controller.categories.map(
                 (e) {
-                  final category = LisoItemCategory.values.byName(e);
-
                   return Obx(
                     () => ListTile(
                       title: Text(e.tr),
-                      leading: Utils.categoryIcon(category),
+                      leading: Utils.categoryIcon(e),
                       onTap: () => controller.filterByCategory(e),
-                      selected: category == controller.filterCategory.value,
+                      selected: e == controller.filterCategory.value,
                     ),
                   );
                 },
@@ -214,8 +205,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               PersistenceBuilder(
-                builder: (p, context) => Persistence.to.sync.val &&
-                        (!GetPlatform.isIOS || Persistence.to.proTester.val)
+                builder: (p, context) => Persistence.to.sync.val
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),
                         onTap: controller.files,
@@ -249,16 +239,14 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               PersistenceBuilder(
                 builder: (p, context) => Column(
                   children: [
-                    if (!GetPlatform.isIOS || Persistence.to.proTester.val) ...[
-                      ListTile(
-                        title: Text('wallet'.tr),
-                        leading: const Icon(Iconsax.wallet_1),
-                        onTap: () => Utils.adaptiveRouteOpen(
-                          name: Routes.wallet,
-                          method: 'offAndToNamed',
-                        ),
+                    ListTile(
+                      title: Text('wallet'.tr),
+                      leading: const Icon(Iconsax.wallet_1),
+                      onTap: () => Utils.adaptiveRouteOpen(
+                        name: Routes.wallet,
+                        method: 'offAndToNamed',
                       ),
-                    ],
+                    ),
                   ],
                 ),
               ),

@@ -91,10 +91,17 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               ListTile(
+                leading: Icon(Iconsax.category, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Custom Categories'),
+                subtitle: const Text('Manage your custom categories'),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.categories),
+              ),
+              ListTile(
                 leading: Icon(Iconsax.briefcase, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Custom Vaults'),
-                subtitle: const Text('Manage your own custom vaults'),
+                subtitle: const Text('Manage your custom vaults'),
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
               ),
               if (Persistence.to.canShare && isFirebaseSupported) ...[

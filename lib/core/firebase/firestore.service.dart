@@ -17,6 +17,7 @@ import '../../features/app/routes.dart';
 import '../../features/joined_vaults/model/member.model.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import '../../features/wallet/wallet.service.dart';
+import '../hive/hive_categories.service.dart';
 import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
 import '../services/cipher.service.dart';
@@ -149,6 +150,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
       count: FirebaseUserCount(
         items: HiveItemsService.to.data.length,
         groups: HiveGroupsService.to.data.length,
+        categories: HiveCategoriesService.to.data.length,
         files: filesCount,
         encryptedFiles: encryptedFilesCount,
         sharedVaults: SharedVaultsController.to.data.length,

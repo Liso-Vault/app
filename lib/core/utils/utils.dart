@@ -77,76 +77,53 @@ class Utils {
     ));
   }
 
-  static Icon categoryIcon(LisoItemCategory category, {Color? color}) {
+  static Icon categoryIcon(String category, {Color? color}) {
     IconData? iconData;
 
-    switch (category) {
-      case LisoItemCategory.cryptoWallet:
-        iconData = Iconsax.wallet;
-        break;
-      case LisoItemCategory.login:
-        iconData = Iconsax.login;
-        break;
-      case LisoItemCategory.password:
-        iconData = Iconsax.password_check;
-        break;
-      case LisoItemCategory.identity:
-        iconData = Iconsax.user;
-        break;
-      case LisoItemCategory.note:
-        iconData = Iconsax.note_text;
-        break;
-      case LisoItemCategory.cashCard:
-        iconData = Iconsax.card;
-        break;
-      case LisoItemCategory.bankAccount:
-        iconData = Iconsax.bank;
-        break;
-      case LisoItemCategory.medicalRecord:
-        iconData = Iconsax.health;
-        break;
-      case LisoItemCategory.passport:
-        iconData = Iconsax.airplane_square;
-        break;
-      case LisoItemCategory.server:
-        iconData = Iconsax.cloud;
-        break;
-      case LisoItemCategory.softwareLicense:
-        iconData = Iconsax.code_1;
-        break;
-      case LisoItemCategory.apiCredential:
-        iconData = Iconsax.code;
-        break;
-      case LisoItemCategory.database:
-        iconData = Iconsax.document;
-        break;
-      case LisoItemCategory.driversLicense:
-        iconData = Iconsax.car;
-        break;
-      case LisoItemCategory.email:
-        iconData = Iconsax.message;
-        break;
-      case LisoItemCategory.membership:
-        iconData = Iconsax.personalcard;
-        break;
-      case LisoItemCategory.outdoorLicense:
-        iconData = Iconsax.activity;
-        break;
-      case LisoItemCategory.rewardsProgram:
-        iconData = Iconsax.award;
-        break;
-      case LisoItemCategory.socialSecurity:
-        iconData = Iconsax.security_card;
-        break;
-      case LisoItemCategory.wirelessRouter:
-        iconData = Iconsax.home_wifi;
-        break;
-      case LisoItemCategory.encryption:
-        iconData = Iconsax.key;
-        break;
-      default:
-        iconData = Iconsax.warning_2; // not found
-        break;
+    if (category == LisoItemCategory.cryptoWallet.name) {
+      iconData = Iconsax.wallet;
+    } else if (category == LisoItemCategory.login.name) {
+      iconData = Iconsax.login;
+    } else if (category == LisoItemCategory.password.name) {
+      iconData = Iconsax.password_check;
+    } else if (category == LisoItemCategory.identity.name) {
+      iconData = Iconsax.user;
+    } else if (category == LisoItemCategory.note.name) {
+      iconData = Iconsax.note_text;
+    } else if (category == LisoItemCategory.cashCard.name) {
+      iconData = Iconsax.card;
+    } else if (category == LisoItemCategory.bankAccount.name) {
+      iconData = Iconsax.bank;
+    } else if (category == LisoItemCategory.medicalRecord.name) {
+      iconData = Iconsax.health;
+    } else if (category == LisoItemCategory.passport.name) {
+      iconData = Iconsax.airplane_square;
+    } else if (category == LisoItemCategory.server.name) {
+      iconData = Iconsax.cloud;
+    } else if (category == LisoItemCategory.softwareLicense.name) {
+      iconData = Iconsax.code_1;
+    } else if (category == LisoItemCategory.apiCredential.name) {
+      iconData = Iconsax.code;
+    } else if (category == LisoItemCategory.database.name) {
+      iconData = Iconsax.document;
+    } else if (category == LisoItemCategory.driversLicense.name) {
+      iconData = Iconsax.car;
+    } else if (category == LisoItemCategory.email.name) {
+      iconData = Iconsax.message;
+    } else if (category == LisoItemCategory.membership.name) {
+      iconData = Iconsax.personalcard;
+    } else if (category == LisoItemCategory.outdoorLicense.name) {
+      iconData = Iconsax.activity;
+    } else if (category == LisoItemCategory.rewardsProgram.name) {
+      iconData = Iconsax.award;
+    } else if (category == LisoItemCategory.socialSecurity.name) {
+      iconData = Iconsax.security_card;
+    } else if (category == LisoItemCategory.wirelessRouter.name) {
+      iconData = Iconsax.home_wifi;
+    } else if (category == LisoItemCategory.encryption.name) {
+      iconData = Iconsax.key;
+    } else {
+      iconData = Iconsax.category;
     }
 
     return Icon(iconData, color: color);

@@ -237,6 +237,9 @@ class S3Service extends GetxService with ConsoleMixin {
       },
     );
 
+    // TODO: temporarily remove previously added groups
+    merged.removeWhere((e) => reservedVaultIds.contains(e.id));
+
     // leave only the most updated items
     final newList = <HiveLisoGroup>[];
 

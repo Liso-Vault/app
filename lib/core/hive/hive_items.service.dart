@@ -41,6 +41,7 @@ class HiveItemsService extends GetxService with ConsoleMixin {
     );
 
     boxInitialized = true;
+    console.info('length: ${data.length}');
   }
 
   Future<void> close() async {

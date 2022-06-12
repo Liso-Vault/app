@@ -53,7 +53,6 @@ class Persistence extends GetxController with ConsoleMixin {
   final s3UseSsl = true.val('s3 use-ssl');
   final s3EnableTrace = false.val('s3-enable-trace');
   // VAULT
-  final groupId = 'personal'.val('group-id');
   final metadata = ''.val('vault-metadata');
   final changes = 0.val('vault-changes-count');
   // PRICES

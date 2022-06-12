@@ -6,9 +6,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/section.widget.dart';
+import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
-import '../../core/hive/hive_groups.service.dart';
+import '../../core/hive/hive_categories.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
@@ -92,9 +93,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
               controller.menuItemsChangeIcon,
               enabled: !controller.joinedVaultItem,
               child: controller.iconUrl().isEmpty
-                  ? Utils.categoryIcon(
-                      LisoItemCategory.values.byName(controller.item.category),
-                    )
+                  ? Utils.categoryIcon(controller.item.category)
                   : RemoteImage(
                       url: controller.iconUrl(),
                       width: 30,
@@ -145,7 +144,22 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         onChanged: (value) => controller.groupId.value = value!,
         decoration: const InputDecoration(labelText: 'Vault'),
         items: [
-          ...HiveGroupsService.to.data
+          ...GroupsController.to.combined
+              .map((e) => DropdownMenuItem<String>(
+                    value: e.id,
+                    child: Text(e.reservedName),
+                  ))
+              .toList()
+        ],
+      ),
+      const SizedBox(height: 10),
+      DropdownButtonFormField<String>(
+        isExpanded: true,
+        value: controller.category.value,
+        onChanged: (value) => controller.category.value = value!,
+        decoration: const InputDecoration(labelText: 'Category'),
+        items: [
+          ...HiveCategoriesService.to.data
               .map((e) => DropdownMenuItem<String>(
                     value: e.id,
                     child: Text(e.reservedName),

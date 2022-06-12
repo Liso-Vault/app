@@ -1,3 +1,4 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -6,7 +7,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/hive_items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
@@ -52,7 +52,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   void _favorite() async {
     item.favorite = !item.favorite;
     item.metadata = await item.metadata.getUpdated();
-    item.save();
+    await item.save();
     MainScreenController.to.onItemsUpdated();
   }
 
@@ -69,7 +69,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.trashed = false;
     item.deleted = false;
     item.metadata = await item.metadata.getUpdated();
-    item.save();
+    await item.save();
     MainScreenController.to.onItemsUpdated();
   }
 
@@ -79,7 +79,25 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     // final m = await item.metadata.getUpdated();
     // m.updatedTime = DateTime.now().subtract(31.days);
     // item.metadata = m;
-    item.save();
+    await item.save();
+    MainScreenController.to.onItemsUpdated();
+  }
+
+  void _delete() async {
+    // if (!item.deleted) {
+    //   item.deleted = true;
+    //   item.metadata = await item.metadata.getUpdated();
+    //   await item.save();
+    // } else {
+    //   item.fields = HiveItemsService.to.data.first.fields;
+    //   item.metadata = await item.metadata.getUpdated();
+    //   await item.save();
+    // }
+
+    item.fields = HiveItemsService.to.data[1].fields;
+    item.metadata = await item.metadata.getUpdated();
+    await item.save();
+
     MainScreenController.to.onItemsUpdated();
   }
 
@@ -112,13 +130,6 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     ));
   }
 
-  void _delete() async {
-    item.deleted = true;
-    item.metadata = await item.metadata.getUpdated();
-    item.save();
-    MainScreenController.to.onItemsUpdated();
-  }
-
   // show lock screen if item is protected
   Future<bool> _unlock() async {
     final unlocked = await Get.toNamed(
@@ -142,13 +153,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             leading: const Icon(Iconsax.refresh),
             onSelected: _restore,
           ),
-          if (!item.deleted) ...[
-            ContextMenuItem(
-              title: 'delete'.tr,
-              leading: const Icon(Iconsax.trash),
-              onSelected: _confirmDelete,
-            ),
-          ]
+          ContextMenuItem(
+            title: 'delete'.tr,
+            leading: const Icon(Iconsax.trash),
+            onSelected: _confirmDelete,
+          ),
         ] else ...[
           ContextMenuItem(
             title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
@@ -299,10 +308,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             width: 35,
             alignment: Alignment.centerLeft,
           )
-        : Utils.categoryIcon(
-            LisoItemCategory.values.byName(item.category),
-            color: themeColor,
-          );
+        : Utils.categoryIcon(item.category, color: themeColor);
 
     var tile = ListTile(
       selected: item.deleted,

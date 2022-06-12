@@ -46,7 +46,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
   final filterDeleted = false.obs;
-  final filterCategory = LisoItemCategory.none.obs;
+  final filterCategory = LisoItemCategory.none.name.obs;
   final filterTag = ''.obs;
   final filterSharedVaultId = ''.obs;
 
@@ -111,7 +111,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterTrashed.value &&
       !filterDeleted.value;
 
-  List<Widget> get groupTiles => GroupsController.to.data.map((group) {
+  List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
         final count = HiveItemsService.to.data
             .where((item) => item.groupId == group.id && !item.deleted)
             .length;
@@ -218,7 +218,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   String get filterGroupLabel {
     final groups =
-        HiveGroupsService.to.data.where((e) => e.id == filterGroupId.value);
+        GroupsController.to.combined.where((e) => e.id == filterGroupId.value);
     if (groups.isEmpty) return 'Error';
     return groups.first.reservedName;
   }
@@ -235,8 +235,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   String get filterTagLabel => filterTag.value;
 
   String get filterCategoryLabel =>
-      filterCategory.value != LisoItemCategory.none
-          ? GetUtils.capitalizeFirst(filterCategory.value.name)!
+      filterCategory.value != LisoItemCategory.none.name
+          ? GetUtils.capitalizeFirst(filterCategory.value)!
           : '';
 
   // INIT
@@ -261,11 +261,10 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void filterByCategory(String category) {
-    final categoryEnum = LisoItemCategory.values.byName(category);
     // if already selected, deselect
-    filterCategory.value = categoryEnum == filterCategory.value
-        ? LisoItemCategory.none
-        : categoryEnum;
+    filterCategory.value = category == filterCategory.value
+        ? LisoItemCategory.none.name
+        : category;
     done();
   }
 
@@ -309,7 +308,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void clearFilters() {
-    filterCategory.value = LisoItemCategory.none;
+    filterCategory.value = LisoItemCategory.none.name;
     filterTag.value = '';
     filterSharedVaultId.value = '';
     filterFavorites.value = false;

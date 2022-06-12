@@ -1,14 +1,15 @@
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../../utils/globals.dart';
 import 'metadata/metadata.hive.dart';
 
-part 'group.hive.g.dart';
+part 'category.hive.g.dart';
 
-@HiveType(typeId: 10)
-class HiveLisoGroup extends HiveObject with EquatableMixin {
+@HiveType(typeId: 11)
+class HiveLisoCategory extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String id;
   @HiveField(1)
@@ -18,24 +19,35 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
   @HiveField(3)
   final String description;
   @HiveField(4)
-  bool reserved;
+  String significant;
   @HiveField(5)
+  List<HiveLisoField> fields;
+  @HiveField(6)
+  bool reserved;
+  @HiveField(7)
   HiveMetadata? metadata;
 
-  HiveLisoGroup({
+  HiveLisoCategory({
     required this.id,
     this.iconUrl = '',
     required this.name,
     this.description = '',
+    this.significant = '',
+    this.fields = const [],
     this.reserved = false,
     required this.metadata,
   });
 
-  factory HiveLisoGroup.fromJson(Map<String, dynamic> json) => HiveLisoGroup(
+  factory HiveLisoCategory.fromJson(Map<String, dynamic> json) =>
+      HiveLisoCategory(
         id: json["id"],
         iconUrl: json["icon_url"],
         name: json["name"],
         description: json["description"],
+        significant: json["significant"],
+        fields: List<HiveLisoField>.from(
+          json["fields"].map((x) => HiveLisoField.fromJson(x)),
+        ),
         reserved: json["reserved"],
         metadata: json["metadata"] == null
             ? null
@@ -48,18 +60,21 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
       "icon_url": iconUrl,
       "name": name,
       "description": description,
+      "significant": significant,
+      "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
       "reserved": reserved,
       "metadata": metadata?.toJson(),
     };
   }
 
   @override
-  List<Object?> get props => [id, name, description];
+  List<Object?> get props =>
+      [id, name, description, significant, fields, reserved];
 
   // GETTERS
-  String get reservedName => reservedVaultIds.contains(id) ? id.tr : name;
+  String get reservedName => reservedCategories.contains(id) ? id.tr : name;
   String get reservedDescription =>
-      reservedVaultIds.contains(id) ? '${id}_desc'.tr : description;
+      reservedCategories.contains(id) ? '${id}_desc'.tr : description;
 
-  bool get isReserved => reservedVaultIds.contains(id);
+  bool get isReserved => reservedCategories.contains(id);
 }

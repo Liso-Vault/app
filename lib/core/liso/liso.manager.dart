@@ -7,6 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
+import 'package:liso/core/hive/hive_categories.service.dart';
 import 'package:liso/core/liso/vault.model.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
@@ -51,6 +52,7 @@ class LisoManager {
   static Future<String> compactJson() async {
     final vault = LisoVault(
       groups: HiveGroupsService.to.data,
+      categories: HiveCategoriesService.to.data,
       items: HiveItemsService.to.data,
       persistence: Persistence.box.toMap(),
       version: kVaultFormatVersion,

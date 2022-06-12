@@ -5,9 +5,11 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
+import 'package:secrets/secrets.dart';
 
 // HIVE DATABASE
 const kHiveBoxGroups = 'groups';
+const kHiveBoxCategories = 'categories';
 const kHiveBoxItems = 'items';
 const kHiveBoxPersistence = 'persistence';
 // BIOMETRIC STORAGE
@@ -36,7 +38,9 @@ final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 final isLocalAuthSupported = GetPlatform.isWindows || GetPlatform.isMobile;
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
-const kReservedVaultIds = 'personal,work,family,others,secrets';
+final reservedVaultIds = Secrets.groups.map((e) => e['id'] as String);
+final reservedCategories = Secrets.categories.map((e) => e['id'] as String);
+
 const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';

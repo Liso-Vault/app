@@ -41,6 +41,7 @@ class ConfigLimitsSetting {
     this.sharedMembers = 0,
     this.sharedVaults = 0,
     this.customVaults = 0,
+    this.customCategories = 0,
     this.encryptedFiles = 0,
     this.breachScanner = false,
     this.passwordHealth = false,
@@ -63,6 +64,7 @@ class ConfigLimitsSetting {
   final int sharedMembers;
   final int sharedVaults;
   final int customVaults;
+  final int customCategories;
   final int encryptedFiles;
   final bool breachScanner;
   final bool passwordHealth;
@@ -86,6 +88,7 @@ class ConfigLimitsSetting {
         sharedMembers: json["shared_members"],
         sharedVaults: json["shared_vaults"],
         customVaults: json["custom_vaults"],
+        customCategories: json["custom_categories"],
         encryptedFiles: json["encrypted_files"],
         breachScanner: json["breach_scanner"],
         passwordHealth: json["password_health"],
@@ -109,6 +112,7 @@ class ConfigLimitsSetting {
         "shared_members": sharedMembers,
         "shared_vaults": sharedVaults,
         "custom_vaults": customVaults,
+        "custom_categories": customCategories,
         "encrypted_files": encryptedFiles,
         "breach_scanner": breachScanner,
         "password_health": passwordHealth,

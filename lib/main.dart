@@ -22,6 +22,7 @@ import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/form_fields/password.field.dart';
+import 'core/hive/hive_categories.service.dart';
 import 'core/hive/hive_items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
@@ -29,6 +30,7 @@ import 'core/persistence/persistence.dart';
 import 'core/services/local_auth.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
+import 'features/categories/categories.controller.dart';
 import 'features/connectivity/connectivity.service.dart';
 import 'features/debug/debug.screen.dart';
 import 'features/drawer/drawer_widget.controller.dart';
@@ -68,6 +70,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => HiveService());
     Get.lazyPut(() => HiveItemsService());
     Get.lazyPut(() => HiveGroupsService());
+    Get.lazyPut(() => HiveCategoriesService());
 
     // permanent controllers
     Get.put(MainScreenController());
@@ -75,6 +78,7 @@ void init(Flavor flavor) async {
     Get.put(SharedVaultsController());
     Get.put(JoinedVaultsController());
     Get.put(GroupsController());
+    Get.put(CategoriesController());
 
     // create controllers
     Get.create(() => PasswordFormFieldController());

@@ -13,6 +13,7 @@ import 'package:liso/features/welcome/welcome.screen.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
 import '../attachments/attachments.screen.dart';
+import '../categories/categories.screen.dart';
 import '../cipher/cipher.screen.dart';
 import '../devices/devices.screen.dart';
 import '../groups/groups.screen.dart';
@@ -114,6 +115,10 @@ class AppPages {
     GetPage(
       name: Routes.otp,
       page: () => const OTPScreen(),
+    ),
+    GetPage(
+      name: Routes.categories,
+      page: () => const CategoriesScreen(),
     ),
     GetPage(
       name: Routes.vaults,

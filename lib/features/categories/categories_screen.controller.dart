@@ -1,21 +1,21 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../core/hive/models/group.hive.dart';
+import '../../core/hive/hive_categories.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
-import 'groups.controller.dart';
+import 'categories.controller.dart';
 
-class GroupsScreenController extends GetxController with ConsoleMixin {
-  static GroupsScreenController get to => Get.find();
+class CategoriesScreenController extends GetxController with ConsoleMixin {
+  static CategoriesScreenController get to => Get.find();
 
   // VARIABLES
 
@@ -37,8 +37,8 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
     void _create() async {
       if (!formKey.currentState!.validate()) return;
 
-      if (GroupsController.to.data.length >=
-          WalletService.to.limits.customVaults) {
+      if (CategoriesController.to.data.length >=
+          WalletService.to.limits.customCategories) {
         return Utils.adaptiveRouteOpen(
           name: Routes.upgrade,
           parameters: {
@@ -48,7 +48,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      await HiveGroupsService.to.box!.add(HiveLisoGroup(
+      await HiveCategoriesService.to.box!.add(HiveLisoCategory(
         id: const Uuid().v4(),
         name: nameController.text,
         description: descriptionController.text,
@@ -56,11 +56,11 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
       ));
 
       NotificationsManager.notify(
-        title: 'Vault Created',
+        title: 'Category Created',
         body: nameController.text,
       );
 
-      GroupsController.to.load();
+      CategoriesController.to.load();
       MainScreenController.to.onItemsUpdated();
     }
 
@@ -79,7 +79,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
           },
           decoration: const InputDecoration(
             labelText: 'Name',
-            hintText: 'Vault Name',
+            hintText: 'Category Name',
           ),
         ),
         TextFormField(
@@ -96,7 +96,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
     );
 
     Get.dialog(AlertDialog(
-      title: Text('new_vault'.tr),
+      title: Text('new_category'.tr),
       content: Form(
         key: formKey,
         child: Utils.isDrawerExpandable
@@ -111,7 +111,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         TextButton(
           child: Text('create'.tr),
           onPressed: () {
-            final exists = GroupsController.to.combined
+            final exists = CategoriesController.to.combined
                 .where((e) => e.name == nameController.text)
                 .isNotEmpty;
 
@@ -120,7 +120,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
               _create();
             } else {
               UIUtils.showSimpleDialog(
-                'Vault Already Exists',
+                'Category Already Exists',
                 '"${nameController.text}" already exists.',
               );
             }

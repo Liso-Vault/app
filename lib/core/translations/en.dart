@@ -29,6 +29,9 @@ final en = {
   //
   "category": "Category",
   "categories": "Categories",
+  "custom_categories": "Custom Categories",
+  "new_category": "New Category",
+  "no_custom_categories": "No custom categories",
   "all_Items": "All Items",
   "tags": "Tags",
   "favorites": "Favorites",

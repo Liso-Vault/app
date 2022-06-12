@@ -11,6 +11,7 @@ import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -21,21 +22,6 @@ import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
 import '../s3/s3.service.dart';
 import '../search/search.delegate.dart';
-
-const kIOSRestrictedCategories = [
-  LisoItemCategory.bankAccount,
-  LisoItemCategory.cashCard,
-  LisoItemCategory.cryptoWallet,
-  LisoItemCategory.encryption,
-  LisoItemCategory.apiCredential,
-  LisoItemCategory.passport,
-  LisoItemCategory.password,
-  LisoItemCategory.login,
-  LisoItemCategory.socialSecurity,
-  LisoItemCategory.server,
-  LisoItemCategory.database,
-  LisoItemCategory.email,
-];
 
 class MainScreenController extends GetxController
     with StateMixin, ConsoleMixin, WindowListener {
@@ -48,25 +34,21 @@ class MainScreenController extends GetxController
   final persistence = Get.find<Persistence>();
 
   List<ContextMenuItem> get menuItemsCategory {
-    return LisoItemCategory.values
+    return CategoriesController.to.combined
         .where((e) {
-          if (e.name == 'none') return false;
-          if (!GetPlatform.isIOS) return true;
-          // allow only notes category for iOS
-          return e == LisoItemCategory.note || Persistence.to.proTester.val;
+          if (e.id == LisoItemCategory.none.name) return false;
+          return e.id == LisoItemCategory.note.name ||
+              Persistence.to.proTester.val;
         })
         .toList()
         .map(
           (e) => ContextMenuItem(
-            title: e.name.tr,
-            leading: Utils.categoryIcon(
-              LisoItemCategory.values.byName(e.name),
-              color: themeColor,
-            ),
+            title: reservedCategories.contains(e.id) ? e.id.tr : e.name,
+            leading: Utils.categoryIcon(e.id, color: themeColor),
             onSelected: () {
               Utils.adaptiveRouteOpen(
                 name: Routes.item,
-                parameters: {'mode': 'add', 'category': e.name},
+                parameters: {'mode': 'add', 'category': e.id},
               );
             },
           ),
@@ -301,16 +283,16 @@ class MainScreenController extends GetxController
     }
 
     // FILTER BY CATEGORY
-    if (drawerController.filterCategory() != LisoItemCategory.none) {
+    if (drawerController.filterCategory.value != LisoItemCategory.none.name) {
       items = items
-          .where((e) => e.category == drawerController.filterCategory().name)
+          .where((e) => e.category == drawerController.filterCategory.value)
           .toList();
     }
 
     // FILTER BY TAG
     if (drawerController.filterTag.isNotEmpty) {
       items = items
-          .where((e) => e.tags.contains(drawerController.filterTag()))
+          .where((e) => e.tags.contains(drawerController.filterTag.value))
           .toList();
     }
 

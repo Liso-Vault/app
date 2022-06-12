@@ -84,23 +84,26 @@ class FirebaseUserCount {
   FirebaseUserCount({
     this.items = 0,
     this.groups = 0,
+    this.categories = 0,
     this.files = 0,
     this.encryptedFiles = 0,
     this.sharedVaults = 0,
     this.joinedVaults = 0,
   });
 
-  int items;
-  int groups;
-  int files;
-  int encryptedFiles;
-  int sharedVaults;
-  int joinedVaults;
+  int? items;
+  int? groups;
+  int? categories;
+  int? files;
+  int? encryptedFiles;
+  int? sharedVaults;
+  int? joinedVaults;
 
   factory FirebaseUserCount.fromJson(Map<String, dynamic> json) =>
       FirebaseUserCount(
         items: json["items"],
         groups: json["groups"],
+        categories: json["categories"],
         files: json["files"],
         encryptedFiles: json["encrypted_files"],
         sharedVaults: json["shared_vaults"],
@@ -110,6 +113,7 @@ class FirebaseUserCount {
   Map<String, dynamic> toJson() => {
         "items": items,
         "groups": groups,
+        "categories": categories,
         "files": files,
         "encrypted_files": encryptedFiles,
         "shared_vaults": sharedVaults,

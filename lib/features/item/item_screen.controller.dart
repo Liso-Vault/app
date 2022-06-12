@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
@@ -30,7 +29,6 @@ class ItemScreenController extends GetxController
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
   final mode = Get.parameters['mode'] as String;
-  final category = Get.parameters['category'] as String;
   final joinedVaultItem = Get.parameters['joinedVaultItem'] == 'true';
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
@@ -45,7 +43,7 @@ class ItemScreenController extends GetxController
     LisoItemCategory.passport,
     LisoItemCategory.encryption,
     LisoItemCategory.wirelessRouter,
-  ];
+  ].map((e) => e.name);
 
   Set<String> tags = {};
   final iconUrl = ''.obs;
@@ -54,7 +52,8 @@ class ItemScreenController extends GetxController
   // PROPERTIES
   final favorite = false.obs;
   final protected = false.obs;
-  final groupId = Persistence.to.groupId.val.obs;
+  final groupId = DrawerMenuController.to.filterGroupId.value.obs;
+  final category = Get.parameters['category']!.obs;
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
 
@@ -63,7 +62,7 @@ class ItemScreenController extends GetxController
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: '${'copy'.tr} ${item.significant.keys.first}',
+        title: '${'copy'.tr} ${item.significant['name']}',
         leading: const Icon(Iconsax.copy),
         onSelected: () => Utils.copyToClipboard(item.significant.values.first),
       ),
@@ -100,10 +99,7 @@ class ItemScreenController extends GetxController
           .where((vault) => vault.docId == vaultId);
 
       String name = vaultId;
-
-      if (results.isNotEmpty) {
-        name = results.first.name;
-      }
+      if (results.isNotEmpty) name = results.first.name;
 
       return ActionChip(
         label: Text(name),
@@ -160,13 +156,13 @@ class ItemScreenController extends GetxController
 
   // FUNCTIONS
   Future<void> _populateGeneratedItem() async {
-    var fields = TemplateParser.parse(category);
+    var fields = TemplateParser.parse(category.value);
     final value = Get.parameters['value'];
     String identifier = '';
 
-    if (category == LisoItemCategory.password.name) {
+    if (category.value == LisoItemCategory.password.name) {
       identifier = 'password';
-    } else if (category == LisoItemCategory.cryptoWallet.name) {
+    } else if (category.value == LisoItemCategory.cryptoWallet.name) {
       identifier = 'seed';
     }
 
@@ -182,7 +178,7 @@ class ItemScreenController extends GetxController
 
     item = HiveLisoItem(
       identifier: const Uuid().v4(),
-      category: category,
+      category: category.value,
       title: 'Generated ${GetUtils.capitalizeFirst(identifier)}',
       fields: fields,
       tags: [],
@@ -221,13 +217,13 @@ class ItemScreenController extends GetxController
   Future<void> _loadTemplate() async {
     final drawerController = Get.find<DrawerMenuController>();
     final protected_ = drawerController.filterProtected.value ||
-        protectedCategories.contains(LisoItemCategory.values.byName(category));
+        protectedCategories.contains(category.value);
 
-    final fields = TemplateParser.parse(category);
+    final fields = TemplateParser.parse(category.value);
 
     item = HiveLisoItem(
       identifier: const Uuid().v4(),
-      category: category,
+      category: category.value,
       title: '',
       fields: fields,
       tags: [],
@@ -266,7 +262,7 @@ class ItemScreenController extends GetxController
 
     final newItem = HiveLisoItem(
       identifier: const Uuid().v4(),
-      category: category,
+      category: category.value,
       iconUrl: iconUrl.value,
       title: titleController.text,
       tags: tags.toList(),
@@ -307,6 +303,7 @@ class ItemScreenController extends GetxController
     item.favorite = favorite.value;
     item.protected = protected.value;
     item.groupId = groupId.value;
+    item.category = category.value;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
 
@@ -385,7 +382,7 @@ class ItemScreenController extends GetxController
       metadata: item.metadata,
       trashed: item.trashed,
       deleted: item.deleted,
-      category: category,
+      category: category.value,
       title: titleController.text,
       fields: FormFieldUtils.obtainFields(item, widgets: widgets),
       attachments: attachments,
