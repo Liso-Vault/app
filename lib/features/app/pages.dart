@@ -91,7 +91,7 @@ class AppPages {
     GetPage(
       name: Routes.item,
       page: () => const ItemScreen(),
-      binding: ItemScreenBinding(),
+      // binding: ItemScreenBinding(),
     ),
     GetPage(
       name: Routes.restore,

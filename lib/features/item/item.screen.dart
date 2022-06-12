@@ -15,11 +15,13 @@ import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
 import 'item_screen.controller.dart';
 
-class ItemScreen extends GetView<ItemScreenController> with ConsoleMixin {
+class ItemScreen extends StatelessWidget with ConsoleMixin {
   const ItemScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ItemScreenController());
+
     final mode = Get.parameters['mode'].toString();
     final category = Get.parameters['category'].toString();
     final chipsKey = GlobalKey<ChipsInputState>();

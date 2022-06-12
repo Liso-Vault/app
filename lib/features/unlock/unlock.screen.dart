@@ -42,6 +42,7 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           // const Divider(),
         ],
         if (isLocalAuthSupported) ...[
+          const SizedBox(height: 10),
           SizedBox(
             width: 200,
             child: ElevatedButton.icon(

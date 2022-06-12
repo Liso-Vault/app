@@ -20,13 +20,6 @@ import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
-class ItemScreenBinding extends Bindings {
-  @override
-  void dependencies() {
-    Get.lazyPut(() => ItemScreenController(), fenix: true);
-  }
-}
-
 class ItemScreenController extends GetxController
     with ConsoleMixin, StateMixin {
   static ItemScreenController get to => Get.find();

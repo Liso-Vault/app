@@ -16,7 +16,6 @@ import '../attachments/attachments_screen.controller.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../groups/groups.controller.dart';
 import '../groups/groups_screen.controller.dart';
-import '../item/item_screen.controller.dart';
 import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import '../joined_vaults/joined_vaults_screen.controller.dart';
 import '../password_generator/password_generator_screen.controller.dart';
@@ -38,7 +37,6 @@ class MainScreenBinding extends Bindings {
     Get.create(() => ChipsInputController());
     // Re-inject controllers when in Desktop
     // SCREENS
-    Get.lazyPut(() => ItemScreenController(), fenix: true);
     Get.lazyPut(() => AttachmentsScreenController(), fenix: true);
     Get.lazyPut(() => SettingsScreenController(), fenix: true);
     Get.lazyPut(() => AboutScreenController(), fenix: true);
@@ -54,14 +52,11 @@ class MainScreenBinding extends Bindings {
     Get.lazyPut(() => PasswordGeneratorScreenController(), fenix: true);
     Get.lazyPut(() => RestoreScreenController(), fenix: true);
     Get.lazyPut(() => CreatePasswordScreenController(), fenix: true);
-    // CONTROLLERS
-    Get.lazyPut(() => GroupsController(), fenix: true);
-    // S3
     Get.lazyPut(() => S3ExplorerScreenController(), fenix: true);
     Get.lazyPut(() => CustomSyncProviderScreenController(), fenix: true);
-    // WALLET
     Get.lazyPut(() => WalletScreenController(), fenix: true);
-    // CIPHER
     Get.lazyPut(() => CipherScreenController(), fenix: true);
+    // CONTROLLERS
+    Get.lazyPut(() => GroupsController(), fenix: true);
   }
 }
