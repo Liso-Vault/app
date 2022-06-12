@@ -34,7 +34,9 @@ class AboutScreen extends GetView<AboutScreenController> with ConsoleMixin {
             height: 20,
             placeholder: Image.asset(Images.logo, height: 20),
           ),
-          title: Obx(() => Text('${config.appName} v${controller.appVersion}')),
+          title: Text(
+            '${config.appName} ${Globals.metadata?.app.formattedVersion}',
+          ),
           onLongPress: () {
             persistence.proTester.val = !persistence.proTester.val;
 

@@ -98,8 +98,7 @@ class UnlockScreenController extends GetxController
     }
 
     change(null, status: RxStatus.success());
-    WalletService.to.wallet = wallet_;
-    await WalletService.to.init();
+    await WalletService.to.init(wallet_);
     if (passwordMode) return Get.back(result: true);
     await HiveService.to.open();
     return Get.offNamedUntil(Routes.main, (route) => false);

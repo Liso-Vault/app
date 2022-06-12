@@ -110,7 +110,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
       final devicesSnapshot = await FirestoreService.to.userDevices.get();
       final devices = devicesSnapshot.docs.map((e) => e.data()).toList();
       final foundDevices =
-          devices.where((e) => e.id == Globals.metadata.device.id);
+          devices.where((e) => e.id == Globals.metadata?.device.id);
       final totalDevices = devices.length + (foundDevices.isEmpty ? 1 : 0);
 
       if (totalDevices > WalletService.to.limits.devices) {

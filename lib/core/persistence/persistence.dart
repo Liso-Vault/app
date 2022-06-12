@@ -19,6 +19,7 @@ class Persistence extends GetxController with ConsoleMixin {
   // WALLET JSON
   final wallet = ''.val('wallet');
   final walletPassword = ''.val('wallet-password');
+  final walletAddress = ''.val('wallet-address');
   // GENERAL
   final localeCode = 'en'.val('locale-code');
   final crashReporting = true.val('crash-reporting');
@@ -64,6 +65,9 @@ class Persistence extends GetxController with ConsoleMixin {
   // GETTERS
 
   bool get canShare => sync.val && isFirebaseSupported;
+
+  String get shortAddress =>
+      '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
 
   // FUNCTIONS
   static Future<void> open() async {

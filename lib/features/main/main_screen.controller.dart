@@ -12,7 +12,6 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../core/utils/ui_utils.dart';
@@ -425,8 +424,9 @@ class MainScreenController extends GetxController
   }
 
   void _updateBuildNumber() async {
-    final packageInfo = await PackageInfo.fromPlatform();
-    persistence.lastBuildNumber.val = int.parse(packageInfo.buildNumber);
+    persistence.lastBuildNumber.val = int.parse(
+      Globals.metadata!.app.buildNumber,
+    );
   }
 
   void emptyTrash() {
@@ -467,7 +467,16 @@ class MainScreenController extends GetxController
     ));
   }
 
-  void showSeed() {
+  void showSeed() async {
+    // prompt password from unlock screen
+    final unlocked = await Get.toNamed(
+          Routes.unlock,
+          parameters: {'mode': 'password_prompt'},
+        ) ??
+        false;
+
+    if (!unlocked) return;
+
     Utils.adaptiveRouteOpen(
       name: Routes.seed,
       parameters: {'mode': 'display'},

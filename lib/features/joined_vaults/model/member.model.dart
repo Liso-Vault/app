@@ -46,7 +46,7 @@ class VaultMember {
       "permissions": permissions,
       if (createdTime == null) "createdTime": FieldValue.serverTimestamp(),
       "updatedTime": FieldValue.serverTimestamp(),
-      "metadata": Globals.metadata.toJson(),
+      "metadata": Globals.metadata!.toJson(),
     };
   }
 

@@ -4,6 +4,8 @@ New! Password Field Strength Indicator
 New! Powerful Password Generator
 New! Mnemonic Seed Phrase Generator
 New! Backup Seed Phrase Reminder Card
+New! Message/Text Signer in Wallet
+New! Encrypt & Decrypt Texts in Cipher Tool
 New! Font: Lato
 New! Export an unencrypted vault
 Simplified! Creation of vault

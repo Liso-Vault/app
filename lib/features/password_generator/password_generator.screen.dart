@@ -5,6 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 
+import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import 'password_generator_screen.controller.dart';
 
@@ -57,7 +58,6 @@ class PasswordGeneratorScreen extends GetView<PasswordGeneratorScreenController>
           Card(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                horizontal: 30,
                 vertical: 20,
               ),
               child: Column(
@@ -74,10 +74,19 @@ class PasswordGeneratorScreen extends GetView<PasswordGeneratorScreenController>
                         icon: const Icon(Iconsax.chart),
                       ),
                       TextButton.icon(
-                        onPressed: controller.copy,
                         label: Text('copy'.tr),
                         icon: const Icon(Iconsax.copy),
+                        onPressed: () => Utils.copyToClipboard(
+                          controller.password.value,
+                        ),
                       ),
+                      if (controller.isFromDrawer) ...[
+                        TextButton.icon(
+                          onPressed: controller.save,
+                          label: Text('save'.tr),
+                          icon: const Icon(Iconsax.add_circle),
+                        ),
+                      ]
                     ],
                   ),
                 ],

@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
+import 'package:liso/features/general/version.widget.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
@@ -30,7 +32,15 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
           ConfigService.to.appName,
           style: const TextStyle(fontSize: 25),
         ),
-        const SizedBox(height: 15),
+        if (!controller.passwordMode) ...[
+          TextFormField(
+            initialValue: Persistence.to.shortAddress,
+            readOnly: true,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.grey),
+          ),
+          // const Divider(),
+        ],
         if (isLocalAuthSupported) ...[
           SizedBox(
             width: 200,
@@ -95,15 +105,13 @@ class UnlockScreen extends GetView<UnlockScreenController> with ConsoleMixin {
       onWillPop: () => Future.value(controller.passwordMode),
       child: Scaffold(
         appBar: controller.passwordMode ? AppBar() : null,
-        body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Center(
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 300),
-              child: controller.obx(
-                (_) => content,
-                onLoading: const BusyIndicator(),
-              ),
+        bottomNavigationBar: const VersionText(),
+        body: Center(
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 300),
+            child: controller.obx(
+              (_) => content,
+              onLoading: const BusyIndicator(),
             ),
           ),
         ),

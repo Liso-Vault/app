@@ -76,7 +76,7 @@ class DevicesScreenController extends GetxController
 
     data.value = snapshot.docs.map((e) => e.data()).toList();
 
-    final thisDevice = Globals.metadata.device;
+    final thisDevice = Globals.metadata!.device;
     final foundDevices = data.where((e) => e.id == thisDevice.id);
 
     if (foundDevices.isEmpty) {

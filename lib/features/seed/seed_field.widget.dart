@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../menu/menu.item.dart';
@@ -71,6 +72,16 @@ class SeedField extends StatelessWidget with ConsoleMixin {
           onSelected: _generate,
         ),
       ],
+      ContextMenuItem(
+        title: 'QR Code',
+        leading: const Icon(Iconsax.barcode),
+        onSelected: () => UIUtils.showQR(
+          fieldController.text,
+          title: 'Your Seed QR Code',
+          subTitle:
+              "Make sure you're in a safe location and free from prying eyes",
+        ),
+      ),
       ContextMenuItem(
         title: 'Copy',
         leading: const Icon(Iconsax.copy),

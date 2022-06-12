@@ -104,12 +104,12 @@ enum LisoSyncProvider {
 class Globals {
   // VARIABLES
   static bool timeLockEnabled = true;
-  static late HiveMetadata metadata;
+  static HiveMetadata? metadata;
 
   // GETTERS
 
   // FUNCTIONS
-  static void init() async {
+  static Future<void> init() async {
     metadata = await HiveMetadata.get();
   }
 }

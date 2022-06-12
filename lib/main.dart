@@ -67,6 +67,7 @@ void init(Flavor flavor) async {
     Get.put(JoinedVaultsController());
 
     CrashlyticsService.to.init();
+    await Globals.init();
     await LisoPaths.init();
     await Persistence.open();
     HiveService.init();

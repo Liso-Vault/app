@@ -67,15 +67,6 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   @override
   void onReady() async {
     if (isDisplayMode) {
-      // prompt password from unlock screen
-      final unlocked = await Get.toNamed(
-            Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
-          ) ??
-          false;
-
-      if (!unlocked) return;
-
       final result = await HiveItemsService.to.obtainFieldValue(
         itemId: 'seed',
         fieldId: 'seed',
@@ -100,7 +91,6 @@ class SeedScreenController extends GetxController with ConsoleMixin {
     if (!isDisplayMode) {
       Utils.adaptiveRouteOpen(
         name: Routes.createPassword,
-        method: 'offAllNamed',
         parameters: {
           'seed': seed.value,
           'from': 'seed_screen',

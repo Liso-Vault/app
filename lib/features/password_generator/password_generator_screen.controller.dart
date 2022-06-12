@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
+import '../../core/parsers/template.parser.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 
 class PasswordGeneratorScreenBinding extends Bindings {
   @override
@@ -18,6 +20,7 @@ class PasswordGeneratorScreenController extends GetxController
   static PasswordGeneratorScreenController get to => Get.find();
 
   // VARIABLES
+  final isFromDrawer = Get.parameters['from'] == 'drawer';
 
   // PROPERTIES
   final password = ''.obs;
@@ -85,7 +88,14 @@ class PasswordGeneratorScreenController extends GetxController
     }
   }
 
-  void copy() {
-    Utils.copyToClipboard(password.value);
+  void save() {
+    Utils.adaptiveRouteOpen(
+      name: Routes.item,
+      parameters: {
+        'mode': 'generated',
+        'category': LisoItemCategory.password.name,
+        'value': password.value,
+      },
+    );
   }
 }

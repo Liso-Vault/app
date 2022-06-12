@@ -8,6 +8,7 @@ import 'package:liso/resources/resources.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
+import '../general/version.widget.dart';
 
 class DisabledBetaScreen extends GetView<DisabledBetaScreenController> {
   const DisabledBetaScreen({Key? key}) : super(key: key);
@@ -35,12 +36,6 @@ class DisabledBetaScreen extends GetView<DisabledBetaScreenController> {
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.grey),
           ),
-          Obx(
-            () => Text(
-              'v${controller.appVersion}',
-              style: const TextStyle(color: Colors.grey, fontSize: 10),
-            ),
-          ),
           const Divider(),
           const SizedBox(height: 20),
           SizedBox(
@@ -58,6 +53,7 @@ class DisabledBetaScreen extends GetView<DisabledBetaScreenController> {
     );
 
     return Scaffold(
+      bottomNavigationBar: const VersionText(),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Center(child: content),

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.item.dart';
@@ -21,11 +21,8 @@ class AboutScreenController extends GetxController with ConsoleMixin {
   // VARIABLES
 
   // PROPERTIES
-  final packageInfo = Rxn<PackageInfo>();
 
   // GETTERS
-  String get appVersion =>
-      '${packageInfo.value?.version}+${packageInfo.value?.buildNumber}';
 
   List<ContextMenuItem> get communityMenuItems {
     final links = ConfigService.to.general.app.links;
@@ -126,17 +123,11 @@ class AboutScreenController extends GetxController with ConsoleMixin {
   }
 
   // INIT
-  @override
-  void onInit() async {
-    packageInfo.value = await PackageInfo.fromPlatform();
-    console.info('onInit');
-    super.onInit();
-  }
 
   // FUNCTIONS
 
   void showLicenses(BuildContext context) async {
-    final packageInfo = await PackageInfo.fromPlatform();
+    final app = Globals.metadata!.app;
 
     final icon = Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
@@ -150,8 +141,8 @@ class AboutScreenController extends GetxController with ConsoleMixin {
     showLicensePage(
       context: context,
       applicationIcon: icon,
-      applicationName: packageInfo.appName,
-      applicationVersion: appVersion,
+      applicationName: app.appName,
+      applicationVersion: app.formattedVersion,
       applicationLegalese:
           'Copyright © ${DateTime.now().year} ${ConfigService.to.general.developer.name}\nAll rights reserved.',
     );

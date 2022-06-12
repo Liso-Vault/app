@@ -225,7 +225,11 @@ class WalletService extends GetxService with ConsoleMixin {
     return wallet_;
   }
 
-  Future<void> init() async {
+  Future<void> init(Wallet wallet_) async {
+    wallet = wallet_;
+    // save to persistence
+    Persistence.to.wallet.val = wallet!.toJson();
+    Persistence.to.walletAddress.val = longAddress;
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     // from the first 32 bits of the signature
@@ -238,10 +242,8 @@ class WalletService extends GetxService with ConsoleMixin {
   }
 
   Future<void> create(String seed, String password, bool isNew) async {
-    wallet = WalletService.to.mnemonicToWallet(seed, password: password);
-    await init();
-    // save to persistence
-    Persistence.to.wallet.val = wallet!.toJson();
+    final wallet_ = WalletService.to.mnemonicToWallet(seed, password: password);
+    await init(wallet_);
     // just to make sure the Wallet is ready before proceeding
     await Future.delayed(200.milliseconds);
     // save password

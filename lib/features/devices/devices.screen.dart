@@ -24,7 +24,7 @@ class DevicesScreen extends GetView<DevicesScreenController> with ConsoleMixin {
       final device = controller.data[index];
 
       final menuItems = [
-        if (device.id != Globals.metadata.device.id) ...[
+        if (device.id != Globals.metadata!.device.id) ...[
           ContextMenuItem(
             title: 'unsync'.tr,
             leading: const Icon(Iconsax.slash),
@@ -40,7 +40,7 @@ class DevicesScreen extends GetView<DevicesScreenController> with ConsoleMixin {
         ),
       ];
 
-      final isThisDevice = device.id == Globals.metadata.device.id;
+      final isThisDevice = device.id == Globals.metadata?.device.id;
 
       return ListTile(
         title: Text(device.model),

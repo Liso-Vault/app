@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -10,6 +11,7 @@ import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
+import '../../core/hive/hive_items.service.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -161,6 +163,19 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             },
           ),
         ),
+        const Divider(),
+        const ChipInput(
+          data: [
+            'test',
+            'two',
+            'three',
+            'another',
+            'this is a long one',
+            'moira',
+            'hindi',
+            'debugging',
+          ],
+        ),
       ],
     );
 
@@ -174,5 +189,120 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       appBar: appBar,
       body: content,
     );
+  }
+}
+
+class ChipInput extends GetWidget<ChipsInputController> {
+  final List<String> data;
+  const ChipInput({Key? key, required this.data}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final data_ = data.obs;
+
+    return Obx(
+      () => Wrap(
+        spacing: 5,
+        runSpacing: 5,
+        children: [
+          ...data_
+              .map(
+                (e) => Chip(
+                  label: Text(e),
+                  onDeleted: () => data_.remove(e),
+                ),
+              )
+              .toList(),
+          ActionChip(
+            label: const Icon(Iconsax.add_circle5, size: 20),
+            onPressed: controller.add,
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class ChipsInputController extends GetxController {
+  // VARIABLES
+  final textController = TextEditingController();
+
+  // PROPERTIES
+  final data = <String>[].obs;
+
+  // FUNCTIONS
+  void add() {
+    List<String> _query(String query) {
+      if (query.isEmpty) return [];
+
+      final usedTags = HiveItemsService.to.data
+          .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
+          .toSet();
+
+      // include query as a suggested tag
+      final Set<String> tags = {query};
+
+      if (usedTags.isNotEmpty) {
+        tags.addAll(usedTags.reduce((a, b) => a + b).toSet());
+      }
+
+      final filteredTags = tags.where(
+        (e) => e.toLowerCase().contains(query.toLowerCase()),
+      );
+
+      return filteredTags.toList();
+    }
+
+    Widget _itemBuilder(context, index) {
+      final tag = data[index];
+
+      return ListTile(
+        title: Text(tag),
+        onTap: () {
+          //
+        },
+      );
+    }
+
+    final textField = TextFormField(
+      controller: textController,
+      autofocus: true,
+      decoration: const InputDecoration(
+        labelText: 'Tag',
+        hintText: 'Add a tag',
+      ),
+      onChanged: (value) => data.value = _query(value),
+      onFieldSubmitted: (value) {
+        //
+        Get.back();
+      },
+    );
+
+    final listView = Expanded(
+      child: Obx(
+        () => ListView.builder(
+          itemCount: data.length,
+          itemBuilder: _itemBuilder,
+        ),
+      ),
+    );
+
+    final content = SizedBox(
+      height: 300,
+      child: Scaffold(
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              textField,
+              listView,
+            ],
+          ),
+        ),
+      ),
+    );
+
+    Get.bottomSheet(content);
   }
 }

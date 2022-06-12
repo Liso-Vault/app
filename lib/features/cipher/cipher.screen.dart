@@ -19,29 +19,45 @@ class CipherScreen extends GetView<CipherScreenController> with ConsoleMixin {
     final content = SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            leading: Icon(Iconsax.lock, color: themeColor),
+            leading: Icon(Iconsax.shield_tick, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3),
             title: Text('encrypt_file'.tr),
-            subtitle: const Text('Choose a file to encrypt'),
+            subtitle: const Text('Encrypt a file'),
             onTap: controller.encrypt,
           ),
           ListTile(
             onTap: controller.decrypt,
-            leading: Icon(Iconsax.lock_slash, color: themeColor),
+            leading: Icon(Iconsax.shield_cross, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3),
             title: Text('decrypt_file'.tr),
             subtitle: const Text(
               'Decrypt a <file>$kEncryptedExtensionExtra file',
             ),
           ),
+          const Divider(),
+          ListTile(
+            leading: Icon(Iconsax.shield_tick, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3),
+            title: Text('encrypt_text'.tr),
+            subtitle: const Text('Encrypt texts'),
+            onTap: controller.encryptText,
+          ),
+          ListTile(
+            onTap: controller.decryptText,
+            leading: Icon(Iconsax.shield_cross, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3),
+            title: Text('decrypt_text'.tr),
+            subtitle: const Text('Decrypt texts'),
+          ),
         ],
       ),
     );
 
     final appBar = AppBar(
-      title: const Text('Cipher'),
+      title: const Text('Cipher Tool'),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );

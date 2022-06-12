@@ -36,16 +36,17 @@ class UIUtils {
     Function()? action,
     String? actionText,
   }) {
-    final bodyContent = Text(body);
+    final content = SingleChildScrollView(child: Text(body));
 
     Get.dialog(
       AlertDialog(
         title: Text(title),
         content: Utils.isDrawerExpandable
-            ? bodyContent
-            : SizedBox(
+            ? content
+            : Container(
+                constraints: const BoxConstraints(maxHeight: 600),
                 width: 400,
-                child: bodyContent,
+                child: content,
               ),
         actions: [
           TextButton(
@@ -162,7 +163,11 @@ class UIUtils {
       ),
       content: Utils.isDrawerExpandable
           ? content
-          : SizedBox(width: 450, child: content),
+          : Container(
+              constraints: const BoxConstraints(maxHeight: 600),
+              width: 450,
+              child: content,
+            ),
       actions: [
         TextButton(
           onPressed: Get.back,

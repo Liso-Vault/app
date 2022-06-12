@@ -32,8 +32,6 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 
     // first time initialization
     if (!initialized) CrashlyticsService.to.configure();
-
-    Globals.init();
     // load balances
     AlchemyService.to.init();
     AlchemyService.to.load();

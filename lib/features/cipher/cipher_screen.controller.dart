@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -9,8 +11,8 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/services/cipher.service.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/services/cipher.service.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -28,6 +30,8 @@ class CipherScreenController extends GetxController
   static CipherScreenController get to => Get.find();
 
   // VARIABLES
+  final encryptController = TextEditingController();
+  final decryptController = TextEditingController();
 
   // PROPERTIES
   final busy = false.obs;
@@ -229,5 +233,111 @@ class CipherScreenController extends GetxController
     );
 
     change(false, status: RxStatus.success());
+  }
+
+  void encryptText() async {
+    final formKey = GlobalKey<FormState>();
+    final textController = TextEditingController();
+
+    void _encrypt() async {
+      if (!formKey.currentState!.validate()) return;
+
+      final encrypted = CipherService.to.encrypt(
+        utf8.encode(textController.text),
+      );
+
+      final encoded = base64Encode(encrypted);
+
+      UIUtils.showSimpleDialog(
+        'Encrypted Text',
+        encoded,
+        action: () => Utils.copyToClipboard(encoded),
+        actionText: 'Copy',
+      );
+    }
+
+    final content = TextFormField(
+      controller: textController,
+      minLines: 1,
+      maxLines: 5,
+      validator: (data) => data!.isEmpty ? 'Required' : null,
+      decoration: const InputDecoration(
+        labelText: 'Text',
+        hintText: 'Enter the text to encrypt',
+      ),
+    );
+
+    Get.dialog(AlertDialog(
+      title: Text('encrypt_text'.tr),
+      content: Form(
+        key: formKey,
+        child: Utils.isDrawerExpandable
+            ? content
+            : SizedBox(width: 450, child: content),
+      ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _encrypt,
+          child: Text('encrypt'.tr),
+        ),
+      ],
+    ));
+  }
+
+  void decryptText() async {
+    final formKey = GlobalKey<FormState>();
+    final textController = TextEditingController();
+
+    void _decrypt() async {
+      if (!formKey.currentState!.validate()) return;
+
+      final encrypted = CipherService.to.decrypt(
+        base64Decode(textController.text),
+      );
+
+      final decoded = utf8.decode(encrypted);
+
+      UIUtils.showSimpleDialog(
+        'Decrypted Text',
+        decoded,
+        action: () => Utils.copyToClipboard(decoded),
+        actionText: 'Copy',
+      );
+    }
+
+    final content = TextFormField(
+      controller: textController,
+      minLines: 1,
+      maxLines: 5,
+      validator: (data) => data!.isEmpty ? 'Required' : null,
+      decoration: const InputDecoration(
+        labelText: 'Encrypted Text',
+        hintText: 'Enter the encrypted & base64 encoded text to decrypt',
+      ),
+    );
+
+    Get.dialog(AlertDialog(
+      title: Text('decrypt_text'.tr),
+      content: Form(
+        key: formKey,
+        child: Utils.isDrawerExpandable
+            ? content
+            : SizedBox(width: 450, child: content),
+      ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _decrypt,
+          child: Text('decrypt'.tr),
+        ),
+      ],
+    ));
   }
 }

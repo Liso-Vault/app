@@ -34,7 +34,7 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
             style: TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 30),
+          const Divider(),
           Obx(
             () => TextFormField(
               autofocus: true,
@@ -118,9 +118,11 @@ class CreatePasswordScreen extends GetView<CreatePasswordScreenController>
       body: Center(
         child: Container(
           constraints: Styles.containerConstraints,
-          padding: const EdgeInsets.all(30),
           child: controller.obx(
-            (_) => SingleChildScrollView(child: content),
+            (_) => SingleChildScrollView(
+              padding: const EdgeInsets.all(30),
+              child: content,
+            ),
             onLoading: const BusyIndicator(),
           ),
         ),

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:liso/features/cipher/cipher_screen.controller.dart';
 import 'package:liso/features/create_password/create_password_screen.controller.dart';
+import 'package:liso/features/debug/debug.screen.dart';
 import 'package:liso/features/devices/devices_screen.controller.dart';
 import 'package:liso/features/otp/otp_screen.controller.dart';
 import 'package:liso/features/restore/restore_screen.controller.dart';
@@ -34,6 +35,7 @@ class MainScreenBinding extends Bindings {
     // WIDGETS
     Get.create(() => PasswordFormFieldController());
     Get.create(() => S3ContentTileController());
+    Get.create(() => ChipsInputController());
     // Re-inject controllers when in Desktop
     // SCREENS
     Get.lazyPut(() => ItemScreenController(), fenix: true);

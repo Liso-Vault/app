@@ -232,4 +232,53 @@ class WalletScreenController extends GetxController with ConsoleMixin {
 
     // console.info('We have ${balance.first} Liso');
   }
+
+  void signText() async {
+    final formKey = GlobalKey<FormState>();
+    final textController = TextEditingController();
+
+    void _sign() async {
+      if (!formKey.currentState!.validate()) return;
+
+      final signature = await WalletService.to.sign(textController.text);
+
+      UIUtils.showSimpleDialog(
+        'Signature',
+        signature,
+        action: () => Utils.copyToClipboard(signature),
+        actionText: 'Copy',
+      );
+    }
+
+    final content = TextFormField(
+      controller: textController,
+      minLines: 1,
+      maxLines: 5,
+      validator: (data) => data!.isEmpty ? 'Required' : null,
+      decoration: const InputDecoration(
+        labelText: 'Text',
+        hintText: 'Enter the text to sign',
+      ),
+    );
+
+    Get.dialog(AlertDialog(
+      title: Text('sign_text'.tr),
+      content: Form(
+        key: formKey,
+        child: Utils.isDrawerExpandable
+            ? content
+            : SizedBox(width: 450, child: content),
+      ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _sign,
+          child: Text('sign'.tr),
+        ),
+      ],
+    ));
+  }
 }

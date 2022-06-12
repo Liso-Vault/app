@@ -15,13 +15,18 @@ import '../utils/utils.dart';
 // ignore: must_be_immutable
 class PasswordFormField extends GetWidget<PasswordFormFieldController>
     with ConsoleMixin {
+  // CONSTRUCTOR
   final HiveLisoField field;
   PasswordFormField(this.field, {Key? key}) : super(key: key);
-  TextEditingController? _fieldController;
-  String get value => _fieldController!.text;
 
+  // VARIABLES
+  TextEditingController? _fieldController;
+
+  // GETTERS
+  String get value => _fieldController!.text;
   bool get isPasswordField => field.identifier == 'password';
 
+  // FUNCTIONS
   void _generate() async {
     final password_ = await Utils.adaptiveRouteOpen(
       name: Routes.passwordGenerator,
@@ -73,8 +78,9 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
         decoration: InputDecoration(
           labelText: field.data.label,
           hintText: field.data.hint,
-          helperText:
-              isPasswordField ? controller.strengthName.toUpperCase() : null,
+          helperText: isPasswordField && _fieldController!.text.isNotEmpty
+              ? controller.strengthName.toUpperCase()
+              : null,
           helperStyle: TextStyle(color: controller.strengthColor),
           suffixIcon: ContextMenuButton(
             menuItems,

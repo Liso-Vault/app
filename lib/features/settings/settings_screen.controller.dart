@@ -220,6 +220,15 @@ class SettingsScreenController extends GetxController
   }
 
   void showSeed() async {
+    // prompt password from unlock screen
+    final unlocked = await Get.toNamed(
+          Routes.unlock,
+          parameters: {'mode': 'password_prompt'},
+        ) ??
+        false;
+
+    if (!unlocked) return;
+
     Utils.adaptiveRouteOpen(
       name: Routes.seed,
       parameters: {'mode': 'display'},

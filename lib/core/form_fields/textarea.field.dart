@@ -17,7 +17,7 @@ class TextAreaFormField extends StatelessWidget with ConsoleMixin {
 
     return TextFormField(
       controller: _fieldController,
-      minLines: 2,
+      minLines: 1,
       maxLines: 5,
       readOnly: field.readOnly,
       textCapitalization: TextCapitalization.sentences,

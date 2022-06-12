@@ -227,9 +227,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   color: themeColor,
                 ),
                 value: persistence.crashReporting.val,
-                subtitle: const Text(
-                  "Help us by sending anonymous crash reports so we can crush those pesky bugs and improve your experience",
-                ),
+                subtitle: const Text("Send anonymous crash reports"),
                 onChanged: (value) => persistence.crashReporting.val = value,
               ),
               SwitchListTile(
@@ -239,9 +237,7 @@ class SettingsScreen extends GetView<SettingsScreenController>
                   color: themeColor,
                 ),
                 value: persistence.analytics.val,
-                subtitle: const Text(
-                  'Help us understand how you use the app so we can improve the app without compromising your privacy.',
-                ),
+                subtitle: const Text('Send anonymous usage statistics'),
                 onChanged: (value) => persistence.analytics.val = value,
               ),
             ],

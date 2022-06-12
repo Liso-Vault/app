@@ -297,7 +297,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               ListTile(
-                title: const Text('Cipher'),
+                title: const Text('Cipher Tool'),
                 leading: const Icon(Iconsax.convert_3d_cube),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.cipher,
@@ -318,6 +318,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.passwordGenerator,
                   method: 'offAndToNamed',
+                  parameters: {'from': 'drawer'},
                 ),
               ),
               ListTile(
@@ -326,6 +327,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.seedGenerator,
                   method: 'offAndToNamed',
+                  parameters: {'from': 'drawer'},
                 ),
               ),
               ListTile(

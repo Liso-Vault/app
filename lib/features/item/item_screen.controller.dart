@@ -42,6 +42,18 @@ class ItemScreenController extends GetxController
   final titleController = TextEditingController();
   final tagsController = TextEditingController();
 
+  final protectedCategories = [
+    LisoItemCategory.cryptoWallet,
+    LisoItemCategory.cashCard,
+    LisoItemCategory.bankAccount,
+    LisoItemCategory.apiCredential,
+    LisoItemCategory.email,
+    LisoItemCategory.login,
+    LisoItemCategory.passport,
+    LisoItemCategory.encryption,
+    LisoItemCategory.wirelessRouter,
+  ];
+
   Set<String> tags = {};
   final iconUrl = ''.obs;
   final widgets = <Widget>[].obs;
@@ -50,7 +62,6 @@ class ItemScreenController extends GetxController
   final favorite = false.obs;
   final protected = false.obs;
   final groupId = Persistence.to.groupId.val.obs;
-  // TODO: convert to Sets
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
 
@@ -64,12 +75,6 @@ class ItemScreenController extends GetxController
         onSelected: () => Utils.copyToClipboard(item.significant.values.first),
       ),
       // if (item.categoryObject == LisoItemCategory.cryptoWallet) ...[
-      //   // TODO: export wallet and generate qr code
-      //   ContextMenuItem(
-      //     title: 'export_wallet'.tr,
-      //     leading: const Icon(Iconsax.export_1),
-      //     onSelected: () {},
-      //   ),
       //   ContextMenuItem(
       //     title: 'QR Code',
       //     leading: const Icon(Iconsax.barcode),
@@ -148,9 +153,12 @@ class ItemScreenController extends GetxController
     if (mode == 'add') {
       await _loadTemplate();
     } else if (mode == 'update') {
-      _populateItem();
+      _loadItem();
+    } else if (mode == 'generated') {
+      await _populateGeneratedItem();
     }
 
+    _populateItem();
     originalItem = HiveLisoItem.fromJson(item.toJson());
     widgets.value = item.widgets;
     change(null, status: RxStatus.success());
@@ -158,7 +166,43 @@ class ItemScreenController extends GetxController
   }
 
   // FUNCTIONS
-  void _populateItem() {
+  Future<void> _populateGeneratedItem() async {
+    var fields = TemplateParser.parse(category);
+    final value = Get.parameters['value'];
+    String identifier = '';
+
+    if (category == LisoItemCategory.password.name) {
+      identifier = 'password';
+    } else if (category == LisoItemCategory.cryptoWallet.name) {
+      identifier = 'seed';
+    }
+
+    fields = fields.map((e) {
+      if (e.identifier == identifier) {
+        e.data.value = value;
+        e.readOnly = true;
+        return e;
+      } else {
+        return e;
+      }
+    }).toList();
+
+    item = HiveLisoItem(
+      identifier: const Uuid().v4(),
+      category: category,
+      title: 'Generated ${GetUtils.capitalizeFirst(identifier)}',
+      fields: fields,
+      tags: [],
+      attachments: [],
+      sharedVaultIds: [],
+      favorite: false,
+      protected: true,
+      metadata: await HiveMetadata.get(),
+      groupId: groupId.value,
+    );
+  }
+
+  void _loadItem() {
     if (!joinedVaultItem) {
       final hiveKey = Get.parameters['hiveKey'].toString();
       item = HiveItemsService.to.box.get(int.parse(hiveKey))!;
@@ -168,7 +212,9 @@ class ItemScreenController extends GetxController
         (e) => e.identifier == identifier,
       );
     }
+  }
 
+  void _populateItem() {
     iconUrl.value = item.iconUrl;
     titleController.text = item.title;
     favorite.value = item.favorite;
@@ -181,23 +227,7 @@ class ItemScreenController extends GetxController
 
   Future<void> _loadTemplate() async {
     final drawerController = Get.find<DrawerMenuController>();
-    groupId.value = drawerController.filterGroupId.value;
-    favorite.value = drawerController.filterFavorites.value;
-
-    // protected templates by default
-    final protectedCategories = [
-      LisoItemCategory.cryptoWallet,
-      LisoItemCategory.cashCard,
-      LisoItemCategory.bankAccount,
-      LisoItemCategory.apiCredential,
-      LisoItemCategory.email,
-      LisoItemCategory.login,
-      LisoItemCategory.passport,
-      LisoItemCategory.encryption,
-      LisoItemCategory.wirelessRouter,
-    ];
-
-    protected.value = drawerController.filterProtected.value ||
+    final protected_ = drawerController.filterProtected.value ||
         protectedCategories.contains(LisoItemCategory.values.byName(category));
 
     final fields = TemplateParser.parse(category);
@@ -210,10 +240,10 @@ class ItemScreenController extends GetxController
       tags: [],
       attachments: [],
       sharedVaultIds: [],
-      favorite: favorite.value,
-      protected: protected.value,
+      favorite: drawerController.filterFavorites.value,
+      protected: protected_,
       metadata: await HiveMetadata.get(),
-      groupId: groupId.value,
+      groupId: drawerController.filterGroupId.value,
     );
   }
 

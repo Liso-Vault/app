@@ -32,7 +32,11 @@ class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
           Card(
             child: Padding(
               padding: const EdgeInsets.only(
-                  top: 30, bottom: 5, left: 20, right: 20),
+                top: 30,
+                bottom: 5,
+                left: 20,
+                right: 20,
+              ),
               child: Column(
                 children: [
                   Obx(() => SeedChips(seeds: controller.seed.split(' '))),
@@ -63,6 +67,13 @@ class SeedGeneratorScreen extends GetView<SeedGeneratorScreenController>
                           controller.seed.value,
                         ),
                       ),
+                      if (controller.isFromDrawer) ...[
+                        CardButton(
+                          text: 'save'.tr,
+                          iconData: Iconsax.add_circle,
+                          onPressed: controller.save,
+                        ),
+                      ]
                     ],
                   ),
                 ],

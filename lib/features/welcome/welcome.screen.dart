@@ -8,6 +8,7 @@ import 'package:liso/resources/resources.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/remote_image.widget.dart';
+import '../general/version.widget.dart';
 import 'welcome_screen.controller.dart';
 
 class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
@@ -36,13 +37,6 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
             textAlign: TextAlign.center,
             style: const TextStyle(color: Colors.grey),
           ),
-          Obx(
-            () => Text(
-              'v${controller.appVersion}',
-              style: const TextStyle(color: Colors.grey, fontSize: 10),
-            ),
-          ),
-          const Divider(),
           const SizedBox(height: 20),
           SizedBox(
             width: 200,
@@ -63,32 +57,30 @@ class WelcomeScreen extends GetView<WelcomeScreenController> with ConsoleMixin {
     );
 
     return Scaffold(
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Text('By proceeding, you agree to our'),
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextButton(
-                  onPressed: () => Utils.openUrl(
-                    ConfigService.to.general.app.links.terms,
-                  ),
-                  child: const Text('Terms of Service'),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text('By proceeding, you agree to our'),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextButton(
+                onPressed: () => Utils.openUrl(
+                  ConfigService.to.general.app.links.terms,
                 ),
-                const Text('and'),
-                TextButton(
-                  onPressed: () => Utils.openUrl(
-                    ConfigService.to.general.app.links.privacy,
-                  ),
-                  child: const Text('Privacy Policy'),
+                child: const Text('Terms of Service'),
+              ),
+              const Text('and'),
+              TextButton(
+                onPressed: () => Utils.openUrl(
+                  ConfigService.to.general.app.links.privacy,
                 ),
-              ],
-            ),
-          ],
-        ),
+                child: const Text('Privacy Policy'),
+              ),
+            ],
+          ),
+          const VersionText()
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),

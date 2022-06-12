@@ -15,6 +15,7 @@ import 'package:path/path.dart';
 
 import '../../core/liso/liso.manager.dart';
 import '../../core/liso/liso_paths.dart';
+import '../../core/services/local_auth.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -145,13 +146,14 @@ class RestoreScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (isLocalAuthSupported) {
+      final authenticated = await LocalAuthService.to.authenticate();
+      if (!authenticated) return;
       final password = Utils.generatePassword();
       await WalletService.to.create(seedController.text, password, true);
       Get.offNamedUntil(Routes.main, (route) => false);
     } else {
       Utils.adaptiveRouteOpen(
         name: Routes.createPassword,
-        method: 'offAllNamed',
         parameters: {
           'seed': seedController.text,
           'from': 'restore_screen',
