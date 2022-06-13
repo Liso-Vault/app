@@ -9,7 +9,7 @@ import 'package:liso/core/hive/models/metadata/device.hive.dart';
 
 import '../liso/liso_paths.dart';
 import '../../features/categories/categories.service.dart';
-import '../../features/item/items.service.dart';
+import '../../features/items/items.service.dart';
 import 'models/field.hive.dart';
 import 'models/item.hive.dart';
 import 'models/metadata/metadata.hive.dart';

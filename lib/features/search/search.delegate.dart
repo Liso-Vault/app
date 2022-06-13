@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/features/item/item.tile.dart';
+import 'package:liso/features/items/item.tile.dart';
 
 import '../../core/hive/models/item.hive.dart';
 

@@ -6,7 +6,7 @@ import 'package:skeletons/skeletons.dart';
 
 import '../../general/appbar_leading.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
-import '../../item/item.tile.dart';
+import '../../items/item.tile.dart';
 import '../../menu/menu.button.dart';
 import 'vault_explorer_screen.controller.dart';
 

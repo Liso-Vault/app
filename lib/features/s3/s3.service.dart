@@ -25,7 +25,7 @@ import 'package:supercharged/supercharged.dart';
 
 import '../categories/categories.service.dart';
 import '../groups/groups.service.dart';
-import '../item/items.service.dart';
+import '../items/items.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';

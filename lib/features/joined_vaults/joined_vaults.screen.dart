@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/features/item/items.service.dart';
+import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 
 import '../../core/firebase/crashlytics.service.dart';

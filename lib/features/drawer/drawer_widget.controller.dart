@@ -12,7 +12,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
 import '../general/remote_image.widget.dart';
-import '../item/items.service.dart';
+import '../items/items.service.dart';
 import '../joined_vaults/joined_vault.controller.dart';
 import '../main/main_screen.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';

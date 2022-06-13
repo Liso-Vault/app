@@ -15,7 +15,7 @@ import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/groups/groups.service.dart';
-import '../../features/item/items.service.dart';
+import '../../features/items/items.service.dart';
 import '../hive/models/metadata/metadata.hive.dart';
 import '../services/cipher.service.dart';
 import '../utils/globals.dart';

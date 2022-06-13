@@ -8,7 +8,7 @@ import 'package:liso/features/app/routes.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:liso/features/seed/seed_field.widget.dart';
 
-import '../item/items.service.dart';
+import '../items/items.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../menu/menu.item.dart';
 

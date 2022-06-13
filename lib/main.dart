@@ -23,7 +23,7 @@ import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/form_fields/password.field.dart';
 import 'features/categories/categories.service.dart';
-import 'features/item/items.service.dart';
+import 'features/items/items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';

@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/model/user.model.dart';
 import 'package:liso/features/groups/groups.service.dart';
-import 'package:liso/features/item/items.service.dart';
+import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';

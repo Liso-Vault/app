@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/item/items.service.dart';
+import 'package:liso/features/items/items.service.dart';
 
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/liso/liso_paths.dart';

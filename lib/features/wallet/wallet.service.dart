@@ -17,7 +17,7 @@ import 'package:web3dart/web3dart.dart';
 
 import '../../core/firebase/config/models/config_limits.model.dart';
 import '../../core/hive/hive.service.dart';
-import '../item/items.service.dart';
+import '../items/items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/utils/globals.dart';

@@ -19,7 +19,7 @@ dependencies:
   alchemy_web3:
     git: https://github.com/oliverbytes/alchemy_web3.git
   web3dart: ^2.3.5 # Ethereum
-  eth_sig_util: ^0.0.7 # Ethereum signature
+  eth_sig_util: ^0.0.8 # Ethereum signature
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
@@ -39,7 +39,7 @@ dependencies:
   # firebase_app_check: ^0.0.6+9
 
   # IO
-  hive: ^2.2.1 # database
+  hive: ^2.2.2 # database
   path_provider: ^2.0.11
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
@@ -57,7 +57,7 @@ dependencies:
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   chips_input: ^0.1.0 # tags input
-  flutter_swipe_action_cell: ^3.0.3
+  flutter_swipe_action_cell: ^3.0.4
   flutter_quill:
     git: https://github.com/oliverbytes/flutter-quill.git
   badges: ^2.0.3 # pending changes indicator
@@ -68,16 +68,16 @@ dependencies:
   skeletons: ^0.0.3 # shimmer loading effects
 
   # TOOLS
-  url_launcher: ^6.1.2
+  url_launcher: ^6.1.3
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2
   flutter_local_notifications: ^9.6.0
   permission_handler: ^9.2.0 # managing permissions
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
-  share_plus: ^4.0.7 # exporting files and sharing texts
+  share_plus: ^4.0.8 # exporting files and sharing texts
   equatable: ^2.0.3
-  app_settings: ^4.1.6
+  app_settings: ^4.1.8
   uuid: ^3.0.6 # unique identifiers for items
   window_manager: ^0.2.5 # set desktop window size
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
@@ -88,7 +88,7 @@ dependencies:
   # INFO
   device_info_plus: ^3.2.4
   package_info_plus: ^1.4.2
-  connectivity_plus: ^2.3.2 # internet connectivity checking
+  connectivity_plus: ^2.3.4 # internet connectivity checking
 
 dev_dependencies:
   # flutter_test:

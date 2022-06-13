@@ -17,7 +17,7 @@ import '../categories/categories.screen.dart';
 import '../cipher/cipher.screen.dart';
 import '../devices/devices.screen.dart';
 import '../groups/groups.screen.dart';
-import '../item/item.screen.dart';
+import '../items/item.screen.dart';
 import '../joined_vaults/explorer/vault_explorer.screen.dart';
 import '../joined_vaults/joined_vaults.screen.dart';
 import '../otp/otp.screen.dart';
