@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
 import '../../core/utils/utils.dart';
@@ -32,7 +32,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
           // TODO: if user proceeds, these items will also be deleted
 
           Get.back();
-          await HiveGroupsService.to.box!.delete(vault.key);
+          await GroupsService.to.box!.delete(vault.key);
           vaultsController.load();
         }
 

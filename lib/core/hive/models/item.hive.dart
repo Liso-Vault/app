@@ -4,7 +4,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_quill/flutter_quill.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -155,24 +154,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
 
   String get subTitle {
     String identifier = significant.keys.first;
-    final foundFields = fields.where((e) => e.identifier == identifier);
-    final field = foundFields.isNotEmpty ? foundFields.first : null;
-
-    if (field == null || field.data.value == null) {
-      console.error('null field or value here');
-    }
-
-    String value = field?.data.value ?? '';
-
-    // // decode rich text back to plain text
-    // if (categoryObject == LisoItemCategory.note) {
-    //   try {
-    //     value = Document.fromJson(jsonDecode(value)).toPlainText();
-    //   } catch (e) {
-    //     console.error('error decoding rich text: $e');
-    //     value = 'failed to decode';
-    //   }
-    // }
+    final field = fields.firstWhere((e) => e.identifier == identifier);
+    final value = field.data.value ?? '';
 
     // obscure characters
     if (category == LisoItemCategory.encryption.name ||
@@ -240,23 +223,15 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     }
 
     final foundFields = fields.where((e) => e.identifier == identifier);
-    final field = foundFields.isNotEmpty ? foundFields.first : null;
+    var field = foundFields.isNotEmpty ? foundFields.first : null;
 
+    // if modified category
     if (field == null || field.data.value == null) {
-      console.error('null field or value here');
+      identifier = 'note';
+      field = fields.firstWhere((e) => e.identifier == identifier);
     }
 
-    String value = field?.data.value ?? '';
-
-    // decode rich text back to plain text
-    if (category == LisoItemCategory.note.name) {
-      try {
-        value = Document.fromJson(jsonDecode(value)).toPlainText();
-      } catch (e) {
-        console.error('error decoding rich text: $e');
-        value = 'failed to decode';
-      }
-    }
+    String value = field.data.value ?? '';
 
     return {
       identifier: value,

@@ -17,11 +17,11 @@ import 'package:web3dart/web3dart.dart';
 
 import '../../core/firebase/config/models/config_limits.model.dart';
 import '../../core/hive/hive.service.dart';
-import '../../core/hive/hive_items.service.dart';
+import '../item/items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
-import '../../core/parsers/template.parser.dart';
 import '../../core/utils/globals.dart';
+import '../categories/categories.controller.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
@@ -251,9 +251,10 @@ class WalletService extends GetxService with ConsoleMixin {
     // open Hive Boxes
     await HiveService.to.open();
     if (!isNew) return;
-    // inject cipher key to fields
-    const category = LisoItemCategory.cryptoWallet;
-    var fields = TemplateParser.parse(category.name);
+    // inject values to fields
+    final category = CategoriesController.to.combined
+        .firstWhere((e) => e.id == LisoItemCategory.cryptoWallet.name);
+    var fields = category.fields;
 
     fields = fields.map((e) {
       if (e.identifier == 'seed') {
@@ -282,10 +283,10 @@ class WalletService extends GetxService with ConsoleMixin {
     }).toList();
 
     // save cipher key as a liso item
-    await HiveItemsService.to.box.add(HiveLisoItem(
+    await ItemsService.to.box.add(HiveLisoItem(
       identifier: 'seed',
       groupId: 'secrets', // TODO: use enums for reserved groups
-      category: category.name,
+      category: category.id,
       title: 'Liso Master Seed Phrase',
       fields: fields,
       metadata: await HiveMetadata.get(),

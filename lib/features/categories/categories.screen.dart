@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
-import '../../core/hive/hive_categories.service.dart';
+import 'categories.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
@@ -32,7 +32,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
           // TODO: if user proceeds, these items will also be deleted
 
           Get.back();
-          await HiveCategoriesService.to.box!.delete(category.key);
+          await CategoriesService.to.box!.delete(category.key);
           categoriesController.load();
         }
 
@@ -44,19 +44,10 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Delete Category'),
           content: Utils.isDrawerExpandable
               ? dialogContent
-              : SizedBox(
-                  width: 450,
-                  child: dialogContent,
-                ),
+              : SizedBox(width: 450, child: dialogContent),
           actions: [
-            TextButton(
-              onPressed: Get.back,
-              child: Text('cancel'.tr),
-            ),
-            TextButton(
-              onPressed: _delete,
-              child: Text('confirm_delete'.tr),
-            ),
+            TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
+            TextButton(onPressed: _delete, child: Text('confirm_delete'.tr)),
           ],
         ));
       }

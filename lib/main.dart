@@ -9,7 +9,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -22,8 +22,8 @@ import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/form_fields/password.field.dart';
-import 'core/hive/hive_categories.service.dart';
-import 'core/hive/hive_items.service.dart';
+import 'features/categories/categories.service.dart';
+import 'features/item/items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
@@ -68,9 +68,9 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => ConfigService());
     Get.lazyPut(() => LocalAuthService());
     Get.lazyPut(() => HiveService());
-    Get.lazyPut(() => HiveItemsService());
-    Get.lazyPut(() => HiveGroupsService());
-    Get.lazyPut(() => HiveCategoriesService());
+    Get.lazyPut(() => ItemsService());
+    Get.lazyPut(() => GroupsService());
+    Get.lazyPut(() => CategoriesService());
 
     // permanent controllers
     Get.put(MainScreenController());

@@ -20,10 +20,9 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
   PasswordFormField(this.field, {Key? key}) : super(key: key);
 
   // VARIABLES
-  TextEditingController? _fieldController;
 
   // GETTERS
-  String get value => _fieldController!.text;
+  String get value => controller.fieldController!.text;
   bool get isPasswordField => field.identifier == 'password';
 
   // FUNCTIONS
@@ -35,7 +34,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
 
     if (password_ == null) return;
     controller.obscureText.value = false;
-    _fieldController!.text = password_;
+    controller.fieldController!.text = password_;
     controller.password.value = password_;
   }
 
@@ -48,7 +47,7 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
           controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
         ),
       ),
-      if (isPasswordField) ...[
+      if (isPasswordField && !field.readOnly) ...[
         ContextMenuItem(
           title: 'Generate',
           leading: const Icon(Iconsax.password_check),
@@ -58,19 +57,21 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
       ContextMenuItem(
         title: 'Copy',
         leading: const Icon(Iconsax.copy),
-        onSelected: () => Utils.copyToClipboard(_fieldController!.text),
+        onSelected: () =>
+            Utils.copyToClipboard(controller.fieldController!.text),
       ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data.value);
+    console.info('field.data.value: ${field.data.value}');
+    controller.fieldController = TextEditingController(text: field.data.value);
     controller.password.value = field.data.value!;
 
     return Obx(
       () => TextFormField(
-        controller: _fieldController,
+        controller: controller.fieldController,
         keyboardType: TextInputType.visiblePassword,
         obscureText: controller.obscureText.value,
         readOnly: field.readOnly,
@@ -78,9 +79,10 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
         decoration: InputDecoration(
           labelText: field.data.label,
           hintText: field.data.hint,
-          helperText: isPasswordField && _fieldController!.text.isNotEmpty
-              ? controller.strengthName.toUpperCase()
-              : null,
+          helperText:
+              isPasswordField && controller.fieldController!.text.isNotEmpty
+                  ? controller.strengthName.toUpperCase()
+                  : null,
           helperStyle: TextStyle(color: controller.strengthColor),
           suffixIcon: ContextMenuButton(
             menuItems,
@@ -93,6 +95,9 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
 }
 
 class PasswordFormFieldController extends GetxController with ConsoleMixin {
+  // VARIABLES
+  TextEditingController? fieldController;
+
   // PROPERTIES
   final password = ''.obs;
   final obscureText = true.obs;

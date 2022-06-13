@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/s3/model/s3_content.model.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -107,7 +107,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
       }
 
       void shareDialog() async {
-        final result = await HiveItemsService.to.obtainFieldValue(
+        final result = await ItemsService.to.obtainFieldValue(
           itemId: vault.docId,
           fieldId: 'key',
         );

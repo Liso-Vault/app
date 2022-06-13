@@ -11,7 +11,7 @@ import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
-import '../../core/hive/hive_items.service.dart';
+import '../item/items.service.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -235,7 +235,7 @@ class ChipsInputController extends GetxController {
     List<String> _query(String query) {
       if (query.isEmpty) return [];
 
-      final usedTags = HiveItemsService.to.data
+      final usedTags = ItemsService.to.data
           .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
           .toSet();
 

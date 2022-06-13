@@ -1,4 +1,5 @@
 ## 0.4.1
+New! Custom Categories - Thanks to Kevin Gargar's suggestion
 New! Purge Vault
 New! Password Field Strength Indicator
 New! Powerful Password Generator

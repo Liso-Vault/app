@@ -2,16 +2,17 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../core/hive/hive_items.service.dart';
+import 'items.service.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
-import '../../core/parsers/template.parser.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -24,7 +25,8 @@ class ItemScreenController extends GetxController
   static ItemScreenController get to => Get.find();
 
   // VARIABLES
-  late HiveLisoItem item, originalItem;
+  HiveLisoItem? item;
+  late HiveLisoItem originalItem;
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
@@ -52,19 +54,31 @@ class ItemScreenController extends GetxController
   // PROPERTIES
   final favorite = false.obs;
   final protected = false.obs;
+  final reserved = false.obs;
   final groupId = DrawerMenuController.to.filterGroupId.value.obs;
   final category = Get.parameters['category']!.obs;
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
 
   // GETTERS
+  HiveLisoCategory get categoryObject {
+    final categories_ =
+        CategoriesController.to.combined.where((e) => e.id == category.value);
+    if (categories_.isNotEmpty) return categories_.first;
+    return HiveLisoCategory(
+      id: category.value,
+      name: category.value,
+      metadata: null,
+    );
+  }
+
   // MENU ITEMS
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: '${'copy'.tr} ${item.significant['name']}',
+        title: '${'copy'.tr} ${item?.significant['name']}',
         leading: const Icon(Iconsax.copy),
-        onSelected: () => Utils.copyToClipboard(item.significant.values.first),
+        onSelected: () => Utils.copyToClipboard(item!.significant.values.first),
       ),
       // if (item.categoryObject == LisoItemCategory.cryptoWallet) ...[
       //   ContextMenuItem(
@@ -147,16 +161,14 @@ class ItemScreenController extends GetxController
       await _populateGeneratedItem();
     }
 
+    originalItem = HiveLisoItem.fromJson(item!.toJson());
     _populateItem();
-    originalItem = HiveLisoItem.fromJson(item.toJson());
-    widgets.value = item.widgets;
     change(null, status: RxStatus.success());
     super.onInit();
   }
 
   // FUNCTIONS
   Future<void> _populateGeneratedItem() async {
-    var fields = TemplateParser.parse(category.value);
     final value = Get.parameters['value'];
     String identifier = '';
 
@@ -166,6 +178,7 @@ class ItemScreenController extends GetxController
       identifier = 'seed';
     }
 
+    var fields = categoryObject.fields;
     fields = fields.map((e) {
       if (e.identifier == identifier) {
         e.data.value = value;
@@ -194,7 +207,7 @@ class ItemScreenController extends GetxController
   void _loadItem() {
     if (!joinedVaultItem) {
       final hiveKey = Get.parameters['hiveKey'].toString();
-      item = HiveItemsService.to.box.get(int.parse(hiveKey))!;
+      item = ItemsService.to.box.get(int.parse(hiveKey))!;
     } else {
       final identifier = Get.parameters['identifier'].toString();
       item = VaultExplorerScreenController.to.data.firstWhere(
@@ -204,14 +217,16 @@ class ItemScreenController extends GetxController
   }
 
   void _populateItem() {
-    iconUrl.value = item.iconUrl;
-    titleController.text = item.title;
-    favorite.value = item.favorite;
-    protected.value = item.protected;
-    groupId.value = item.groupId;
-    tags = item.tags.toSet();
-    attachments.value = List.from(item.attachments);
-    sharedVaultIds.value = List.from(item.sharedVaultIds);
+    iconUrl.value = item!.iconUrl;
+    titleController.text = item!.title;
+    favorite.value = item!.favorite;
+    protected.value = item!.protected;
+    reserved.value = item!.reserved;
+    groupId.value = item!.groupId;
+    tags = item!.tags.toSet();
+    attachments.value = List.from(item!.attachments);
+    sharedVaultIds.value = List.from(item!.sharedVaultIds);
+    widgets.value = item!.widgets;
   }
 
   Future<void> _loadTemplate() async {
@@ -219,13 +234,11 @@ class ItemScreenController extends GetxController
     final protected_ = drawerController.filterProtected.value ||
         protectedCategories.contains(category.value);
 
-    final fields = TemplateParser.parse(category.value);
-
     item = HiveLisoItem(
       identifier: const Uuid().v4(),
       category: category.value,
       title: '',
-      fields: fields,
+      fields: categoryObject.fields,
       tags: [],
       attachments: [],
       sharedVaultIds: [],
@@ -239,7 +252,7 @@ class ItemScreenController extends GetxController
   void add() async {
     if (!formKey.currentState!.validate()) return;
     // items limit
-    if (HiveItemsService.to.itemLimitReached) {
+    if (ItemsService.to.itemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -250,7 +263,7 @@ class ItemScreenController extends GetxController
     }
 
     // protected items limit
-    if (protected.value && HiveItemsService.to.protectedItemLimitReached) {
+    if (protected.value && ItemsService.to.protectedItemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -268,14 +281,14 @@ class ItemScreenController extends GetxController
       tags: tags.toList(),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
-      fields: FormFieldUtils.obtainFields(item, widgets: widgets),
+      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
       groupId: groupId.value,
     );
 
-    await HiveItemsService.to.box.add(newItem);
+    await ItemsService.to.box.add(newItem);
     MainScreenController.to.onItemsUpdated();
     Get.back();
   }
@@ -284,7 +297,7 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
 
     // protected items limit
-    if (protected.value && HiveItemsService.to.protectedItemLimitReached) {
+    if (protected.value && ItemsService.to.protectedItemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -294,18 +307,18 @@ class ItemScreenController extends GetxController
       );
     }
 
-    item.iconUrl = iconUrl.value;
-    item.title = titleController.text;
-    item.fields = FormFieldUtils.obtainFields(item, widgets: widgets);
-    item.tags = tags.toList();
-    item.attachments = attachments;
-    item.sharedVaultIds = sharedVaultIds;
-    item.favorite = favorite.value;
-    item.protected = protected.value;
-    item.groupId = groupId.value;
-    item.category = category.value;
-    item.metadata = await item.metadata.getUpdated();
-    await item.save();
+    item!.iconUrl = iconUrl.value;
+    item!.title = titleController.text;
+    item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
+    item!.tags = tags.toList();
+    item!.attachments = attachments;
+    item!.sharedVaultIds = sharedVaultIds;
+    item!.favorite = favorite.value;
+    item!.protected = protected.value;
+    item!.groupId = groupId.value;
+    item!.category = category.value;
+    item!.metadata = await item!.metadata.getUpdated();
+    await item!.save();
 
     MainScreenController.to.onItemsUpdated();
     Get.back();
@@ -314,7 +327,7 @@ class ItemScreenController extends GetxController
   List<String> querySuggestions(String query) {
     if (query.isEmpty) return [];
 
-    final usedTags = HiveItemsService.to.data
+    final usedTags = ItemsService.to.data
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
 
@@ -378,13 +391,13 @@ class ItemScreenController extends GetxController
   Future<bool> canPop() async {
     // TODO: improve equality check
     final updatedItem = HiveLisoItem(
-      identifier: item.identifier,
-      metadata: item.metadata,
-      trashed: item.trashed,
-      deleted: item.deleted,
+      identifier: item!.identifier,
+      metadata: item!.metadata,
+      trashed: item!.trashed,
+      deleted: item!.deleted,
       category: category.value,
       title: titleController.text,
-      fields: FormFieldUtils.obtainFields(item, widgets: widgets),
+      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
       tags: tags.toList(),
@@ -392,8 +405,8 @@ class ItemScreenController extends GetxController
       favorite: favorite.value,
       iconUrl: iconUrl.value,
       protected: protected.value,
-      reserved: item.reserved,
-      hidden: item.hidden,
+      reserved: item!.reserved,
+      hidden: item!.hidden,
     );
 
     // convert to json string for absolute equality check

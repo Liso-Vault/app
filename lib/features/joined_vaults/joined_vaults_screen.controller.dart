@@ -7,12 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/joined_vaults/model/member.model.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -22,7 +23,6 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 
@@ -201,8 +201,9 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     console.wtf('member added: ${memberDoc.id}');
 
     // inject cipher key to fields
-    const category = LisoItemCategory.encryption;
-    var fields = TemplateParser.parse(category.name);
+    final category = CategoriesController.to.combined
+        .firstWhere((e) => e.id == LisoItemCategory.encryption.name);
+    var fields = category.fields;
 
     fields = fields.map((e) {
       if (e.identifier == 'key') {
@@ -219,10 +220,10 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     }).toList();
 
     // save cipher key as a liso item
-    await HiveItemsService.to.box.add(HiveLisoItem(
+    await ItemsService.to.box.add(HiveLisoItem(
       identifier: vault.docId,
       groupId: 'secrets', // TODO: use enums for reserved groups
-      category: category.name,
+      category: category.id,
       title: '${vault.name} Shared Vault Cipher Key',
       fields: fields,
       metadata: await HiveMetadata.get(),

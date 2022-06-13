@@ -2,8 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
+import 'package:liso/features/categories/categories.controller.dart';
 
-import '../../utils/globals.dart';
 import 'metadata/metadata.hive.dart';
 
 part 'category.hive.g.dart';
@@ -72,9 +72,13 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
       [id, name, description, significant, fields, reserved];
 
   // GETTERS
-  String get reservedName => reservedCategories.contains(id) ? id.tr : name;
-  String get reservedDescription =>
-      reservedCategories.contains(id) ? '${id}_desc'.tr : description;
+  String get reservedName =>
+      CategoriesController.to.reservedIds.contains(id) ? id.tr : name;
 
-  bool get isReserved => reservedCategories.contains(id);
+  String get reservedDescription =>
+      CategoriesController.to.reservedIds.contains(id)
+          ? '${id}_desc'.tr
+          : description;
+
+  bool get isReserved => CategoriesController.to.reservedIds.contains(id);
 }

@@ -1,9 +1,9 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/section.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:console_mixin/console_mixin.dart';
+import 'package:secrets/secrets.dart';
 
 // ignore: must_be_immutable
 class AddressFormField extends StatelessWidget with ConsoleMixin {
@@ -45,7 +45,9 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
         data: HiveLisoFieldData(
           value: extra['country'],
           label: 'Country',
-          choices: ConfigService.to.choicesCountry,
+          choices: List<HiveLisoFieldChoices>.from(
+            Secrets.countries.map((x) => HiveLisoFieldChoices.fromJson(x)),
+          ),
         ),
       ),
     );

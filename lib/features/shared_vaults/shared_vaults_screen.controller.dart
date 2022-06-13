@@ -9,7 +9,7 @@ import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -21,10 +21,10 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/parsers/template.parser.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../categories/categories.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   static SharedVaultsScreenController get to => Get.find();
@@ -126,8 +126,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       console.wtf('created shared vault: ${doc.id}');
 
       // inject cipher key to fields
-      const category = LisoItemCategory.encryption;
-      var fields = TemplateParser.parse(category.name);
+      final category = CategoriesController.to.combined
+          .firstWhere((e) => e.id == LisoItemCategory.encryption.name);
+      var fields = category.fields;
 
       fields = fields.map((e) {
         if (e.identifier == 'key') {
@@ -144,10 +145,10 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       }).toList();
 
       // save cipher key as a liso item
-      await HiveItemsService.to.box.add(HiveLisoItem(
+      await ItemsService.to.box.add(HiveLisoItem(
         identifier: doc.id,
         groupId: 'secrets', // TODO: use enums for reserved groups
-        category: category.name,
+        category: category.id,
         title: '${nameController.text} Shared Vault Cipher Key',
         fields: fields,
         metadata: await HiveMetadata.get(),

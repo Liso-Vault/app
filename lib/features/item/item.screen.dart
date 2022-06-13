@@ -5,11 +5,12 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
-import '../../core/hive/hive_categories.service.dart';
+import '../../core/hive/models/category.hive.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
@@ -24,7 +25,6 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
     final controller = Get.put(ItemScreenController());
 
     final mode = Get.parameters['mode'].toString();
-    final category = Get.parameters['category'].toString();
     final chipsKey = GlobalKey<ChipsInputState>();
 
     final tagsInput = ChipsInput<String>(
@@ -93,7 +93,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
               controller.menuItemsChangeIcon,
               enabled: !controller.joinedVaultItem,
               child: controller.iconUrl().isEmpty
-                  ? Utils.categoryIcon(controller.item.category)
+                  ? Utils.categoryIcon(controller.category.value)
                   : RemoteImage(
                       url: controller.iconUrl(),
                       width: 30,
@@ -141,7 +141,9 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       DropdownButtonFormField<String>(
         isExpanded: true,
         value: controller.groupId.value,
-        onChanged: (value) => controller.groupId.value = value!,
+        onChanged: controller.reserved.value
+            ? null
+            : (value) => controller.groupId.value = value!,
         decoration: const InputDecoration(labelText: 'Vault'),
         items: [
           ...GroupsController.to.combined
@@ -153,15 +155,17 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ],
       ),
       const SizedBox(height: 10),
-      DropdownButtonFormField<String>(
+      DropdownButtonFormField<HiveLisoCategory>(
         isExpanded: true,
-        value: controller.category.value,
-        onChanged: (value) => controller.category.value = value!,
+        value: controller.categoryObject,
+        onChanged: controller.reserved.value
+            ? null
+            : (value) => controller.category.value = value!.id,
         decoration: const InputDecoration(labelText: 'Category'),
         items: [
-          ...HiveCategoriesService.to.data
-              .map((e) => DropdownMenuItem<String>(
-                    value: e.id,
+          ...{...CategoriesController.to.combined, controller.categoryObject}
+              .map((e) => DropdownMenuItem<HiveLisoCategory>(
+                    value: e,
                     child: Text(e.reservedName),
                   ))
               .toList()
@@ -203,13 +207,13 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       if (mode == 'update') ...[
         const SizedBox(height: 20),
         Text(
-          'Modified ${controller.item.updatedDateTimeFormatted}',
+          'Modified ${controller.item?.updatedDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 5),
         Text(
-          'Created ${controller.item.createdDateTimeFormatted}',
+          'Created ${controller.item?.createdDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
@@ -218,8 +222,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
     ];
 
     final appBar = AppBar(
-      centerTitle: false,
-      title: Text(category.tr),
+      title: Text(controller.categoryObject.name),
       leading: IconButton(
         onPressed: () async {
           final canPop = await controller.canPop();

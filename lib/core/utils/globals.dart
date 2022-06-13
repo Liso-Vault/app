@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:secrets/secrets.dart';
 
 // HIVE DATABASE
 const kHiveBoxGroups = 'groups';
@@ -37,9 +36,6 @@ final inputFormatterNumericOnly =
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 final isLocalAuthSupported = GetPlatform.isWindows || GetPlatform.isMobile;
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
-
-final reservedVaultIds = Secrets.groups.map((e) => e['id'] as String);
-final reservedCategories = Secrets.categories.map((e) => e['id'] as String);
 
 const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
@@ -94,7 +90,7 @@ enum LisoItemCategory {
   socialSecurity,
   wirelessRouter,
   encryption,
-  none,
+  // none,
 }
 
 enum LisoSyncProvider {

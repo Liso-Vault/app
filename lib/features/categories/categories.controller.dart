@@ -1,9 +1,9 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
-import 'package:liso/core/utils/globals.dart';
+import 'package:secrets/secrets.dart';
 
-import '../../core/hive/hive_categories.service.dart';
+import 'categories.service.dart';
 
 class CategoriesController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -15,17 +15,13 @@ class CategoriesController extends GetxController
   final data = <HiveLisoCategory>[].obs;
 
   // GETTERS
-  List<HiveLisoCategory> get combined {
-    final reserved = reservedCategories.map(
-      (e) => HiveLisoCategory(
-        id: e,
-        name: e.tr,
-        metadata: null,
-      ),
-    );
+  List<HiveLisoCategory> get reserved => List<HiveLisoCategory>.from(
+        Secrets.categories.map((x) => HiveLisoCategory.fromJson(x)),
+      );
 
-    return [...reserved, ...HiveCategoriesService.to.data];
-  }
+  Set<HiveLisoCategory> get combined => {...reserved, ...data};
+
+  Iterable<String> get reservedIds => reserved.map((e) => e.id);
 
   // INIT
   @override
@@ -37,11 +33,7 @@ class CategoriesController extends GetxController
   // FUNCTIONS
 
   void load() {
-    data.value = HiveCategoriesService.to.data;
-
-    change(
-      null,
-      status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
-    );
+    data.value = CategoriesService.to.data;
+    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 }

@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
@@ -48,7 +48,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      await HiveGroupsService.to.box!.add(HiveLisoGroup(
+      await GroupsService.to.box!.add(HiveLisoGroup(
         id: const Uuid().v4(),
         name: nameController.text,
         description: descriptionController.text,

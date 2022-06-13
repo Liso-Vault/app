@@ -3,17 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 
-import '../../../core/utils/globals.dart';
-import '../../core/hive/hive_items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../categories/categories.controller.dart';
 import '../general/remote_image.widget.dart';
+import '../item/items.service.dart';
 import '../joined_vaults/joined_vault.controller.dart';
 import '../main/main_screen.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
@@ -46,13 +45,13 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
   final filterDeleted = false.obs;
-  final filterCategory = LisoItemCategory.none.name.obs;
+  final filterCategory = ''.obs;
   final filterTag = ''.obs;
   final filterSharedVaultId = ''.obs;
 
   // GETTERS
 
-  Iterable<HiveLisoItem> get groupedItems => HiveItemsService.to.data.where(
+  Iterable<HiveLisoItem> get groupedItems => ItemsService.to.data.where(
         (e) {
           if (filterGroupId.value.isNotEmpty) {
             return e.groupId == filterGroupId.value;
@@ -112,7 +111,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterDeleted.value;
 
   List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
-        final count = HiveItemsService.to.data
+        final count = ItemsService.to.data
             .where((item) => item.groupId == group.id && !item.deleted)
             .length;
 
@@ -129,6 +128,17 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
           leading: const Icon(Iconsax.briefcase),
           selected: group.id == filterGroupId.value,
           onTap: () => filterByGroupId(group.id),
+        );
+      }).toList();
+
+  List<Widget> get categoryTiles => CategoriesController.to.combined
+          .where((e) => categories.contains(e.id))
+          .map((category) {
+        return ListTile(
+          title: Text(category.reservedName),
+          leading: Utils.categoryIcon(category.id),
+          selected: category.id == filterCategory.value,
+          onTap: () => filterByCategory(category.id),
         );
       }).toList();
 
@@ -219,8 +229,15 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   String get filterGroupLabel {
     final groups =
         GroupsController.to.combined.where((e) => e.id == filterGroupId.value);
-    if (groups.isEmpty) return 'Error';
+    if (groups.isEmpty) return '';
     return groups.first.reservedName;
+  }
+
+  String get filterCategoryLabel {
+    final categories = CategoriesController.to.combined
+        .where((e) => e.id == filterCategory.value);
+    if (categories.isEmpty) return '';
+    return categories.first.reservedName;
   }
 
   String get filterToggleLabel {
@@ -233,11 +250,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   String get filterTagLabel => filterTag.value;
-
-  String get filterCategoryLabel =>
-      filterCategory.value != LisoItemCategory.none.name
-          ? GetUtils.capitalizeFirst(filterCategory.value)!
-          : '';
 
   // INIT
 
@@ -262,9 +274,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   void filterByCategory(String category) {
     // if already selected, deselect
-    filterCategory.value = category == filterCategory.value
-        ? LisoItemCategory.none.name
-        : category;
+    filterCategory.value = category == filterCategory.value ? '' : category;
     done();
   }
 
@@ -308,7 +318,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void clearFilters() {
-    filterCategory.value = LisoItemCategory.none.name;
+    filterCategory.value = '';
     filterTag.value = '';
     filterSharedVaultId.value = '';
     filterFavorites.value = false;

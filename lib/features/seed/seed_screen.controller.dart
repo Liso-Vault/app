@@ -8,7 +8,7 @@ import 'package:liso/features/app/routes.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:liso/features/seed/seed_field.widget.dart';
 
-import '../../core/hive/hive_items.service.dart';
+import '../item/items.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../menu/menu.item.dart';
 
@@ -60,7 +60,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   @override
   void onReady() async {
     if (isDisplayMode) {
-      final result = await HiveItemsService.to.obtainFieldValue(
+      final result = await ItemsService.to.obtainFieldValue(
         itemId: 'seed',
         fieldId: 'seed',
       );

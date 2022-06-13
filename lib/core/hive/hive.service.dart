@@ -1,15 +1,15 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
+import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 
 import '../liso/liso_paths.dart';
-import 'hive_categories.service.dart';
-import 'hive_items.service.dart';
+import '../../features/categories/categories.service.dart';
+import '../../features/item/items.service.dart';
 import 'models/field.hive.dart';
 import 'models/item.hive.dart';
 import 'models/metadata/metadata.hive.dart';
@@ -38,23 +38,23 @@ class HiveService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
-    await HiveItemsService.to.clear();
-    await HiveGroupsService.to.clear();
-    await HiveCategoriesService.to.clear();
+    await ItemsService.to.clear();
+    await GroupsService.to.clear();
+    await CategoriesService.to.clear();
     console.info('clear');
   }
 
   Future<void> open() async {
-    await HiveItemsService.to.open();
-    await HiveGroupsService.to.open();
-    await HiveCategoriesService.to.open();
+    await ItemsService.to.open();
+    await GroupsService.to.open();
+    await CategoriesService.to.open();
     console.info('open');
   }
 
   Future<void> close() async {
-    await HiveItemsService.to.close();
-    await HiveGroupsService.to.close();
-    await HiveCategoriesService.to.close();
+    await ItemsService.to.close();
+    await GroupsService.to.close();
+    await CategoriesService.to.close();
     console.info('open');
   }
 }

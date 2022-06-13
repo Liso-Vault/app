@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
@@ -61,7 +61,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     copy.identifier = const Uuid().v4();
     copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
-    await HiveItemsService.to.box.add(copy);
+    await ItemsService.to.box.add(copy);
     MainScreenController.to.onItemsUpdated();
   }
 
@@ -89,12 +89,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     //   item.metadata = await item.metadata.getUpdated();
     //   await item.save();
     // } else {
-    //   item.fields = HiveItemsService.to.data.first.fields;
+    //   item.fields = ItemsService.to.data.first.fields;
     //   item.metadata = await item.metadata.getUpdated();
     //   await item.save();
     // }
 
-    item.fields = HiveItemsService.to.data[1].fields;
+    item.fields = ItemsService.to.data[1].fields;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
 
@@ -209,11 +209,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         );
 
         SharedVault? vault;
-
-        if (results.isNotEmpty) {
-          vault = results.first;
-        }
-
+        if (results.isNotEmpty) vault = results.first;
         Widget icon = const Icon(Iconsax.share, size: 10);
 
         if (vault?.iconUrl != null && vault!.iconUrl.isNotEmpty) {

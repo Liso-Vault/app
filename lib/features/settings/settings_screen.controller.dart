@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -17,7 +17,7 @@ import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/hive/hive_groups.service.dart';
+import '../groups/groups.service.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
@@ -154,7 +154,7 @@ class SettingsScreenController extends GetxController
       final exportFileName =
           '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
 
-      final vaultFile = await HiveItemsService.to.export(
+      final vaultFile = await ItemsService.to.export(
         path: join(LisoPaths.tempPath, exportFileName),
         encrypt: encrypt,
       );
@@ -239,8 +239,8 @@ class SettingsScreenController extends GetxController
 
       if (!unlocked) return;
       // clear database
-      await HiveItemsService.to.purge();
-      await HiveGroupsService.to.purge();
+      await ItemsService.to.purge();
+      await GroupsService.to.purge();
       // reload lists
       MainScreenController.to.load();
 

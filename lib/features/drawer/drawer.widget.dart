@@ -156,18 +156,19 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
-              ...controller.categories.map(
-                (e) {
-                  return Obx(
-                    () => ListTile(
-                      title: Text(e.tr),
-                      leading: Utils.categoryIcon(e),
-                      onTap: () => controller.filterByCategory(e),
-                      selected: e == controller.filterCategory.value,
-                    ),
-                  );
-                },
-              ).toList(),
+              ...controller.categoryTiles,
+              // ...controller.categories.map(
+              //   (e) {
+              //     return Obx(
+              //       () => ListTile(
+              //         title: Text(e.tr),
+              //         leading: Utils.categoryIcon(e),
+              //         onTap: () => controller.filterByCategory(e),
+              //         selected: e == controller.filterCategory.value,
+              //       ),
+              //     );
+              //   },
+              // ).toList(),
             ],
             onExpansionChanged: (expanded) =>
                 controller.categoriesExpanded = expanded,

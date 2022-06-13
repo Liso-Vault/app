@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
-import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/groups/groups.service.dart';
+import 'package:secrets/secrets.dart';
 
 import '../../core/hive/models/group.hive.dart';
 
@@ -13,18 +13,14 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
   // PROPERTIES
   final data = <HiveLisoGroup>[].obs;
 
-  // GETTERS
-  List<HiveLisoGroup> get combined {
-    final reserved = reservedVaultIds.map(
-      (e) => HiveLisoGroup(
-        id: e,
-        name: e.tr,
-        metadata: null,
-      ),
-    );
+  final reserved = List<HiveLisoGroup>.from(
+    Secrets.groups.map((x) => HiveLisoGroup.fromJson(x)),
+  );
 
-    return [...reserved, ...HiveGroupsService.to.data];
-  }
+  // GETTERS
+  Set<HiveLisoGroup> get combined => {...reserved, ...data};
+
+  Iterable<String> get reservedIds => reserved.map((e) => e.id);
 
   // INIT
   @override
@@ -36,11 +32,7 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
   // FUNCTIONS
 
   void load() {
-    data.value = HiveGroupsService.to.data;
-
-    change(
-      null,
-      status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
-    );
+    data.value = GroupsService.to.data;
+    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 }

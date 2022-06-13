@@ -6,7 +6,7 @@ import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../core/hive/hive_categories.service.dart';
+import 'categories.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
@@ -33,6 +33,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
     final formKey = GlobalKey<FormState>();
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();
+    HiveLisoCategory? category;
 
     void _create() async {
       if (!formKey.currentState!.validate()) return;
@@ -48,11 +49,13 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      await HiveCategoriesService.to.box!.add(HiveLisoCategory(
+      await CategoriesService.to.box!.add(HiveLisoCategory(
         id: const Uuid().v4(),
         name: nameController.text,
         description: descriptionController.text,
         metadata: await HiveMetadata.get(),
+        fields: category!.fields,
+        significant: category!.significant,
       ));
 
       NotificationsManager.notify(
@@ -91,7 +94,21 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
             labelText: 'Description',
             hintText: 'optional',
           ),
-        )
+        ),
+        DropdownButtonFormField<HiveLisoCategory>(
+          isExpanded: true,
+          // value: controller.category.value,
+          onChanged: (value) => category = value!,
+          decoration: const InputDecoration(labelText: 'Template'),
+          items: [
+            ...CategoriesController.to.combined
+                .map((e) => DropdownMenuItem<HiveLisoCategory>(
+                      value: e,
+                      child: Text(e.reservedName),
+                    ))
+                .toList()
+          ],
+        ),
       ],
     );
 

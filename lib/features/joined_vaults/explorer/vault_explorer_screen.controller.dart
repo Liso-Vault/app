@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/liso/liso_paths.dart';
@@ -139,9 +139,8 @@ class VaultExplorerScreenController extends GetxController
     }
 
     // obtain cipher key
-    final items_ = HiveItemsService.to.data
-        .where((e) => e.identifier == vault.docId)
-        .toList();
+    final items_ =
+        ItemsService.to.data.where((e) => e.identifier == vault.docId).toList();
 
     if (items_.isEmpty) {
       const message = 'Missing cipher key from vault';

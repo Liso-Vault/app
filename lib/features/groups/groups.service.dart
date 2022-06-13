@@ -8,33 +8,44 @@ import 'package:hive/hive.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
-import '../../features/categories/categories.controller.dart';
-import '../liso/liso_paths.dart';
-import '../utils/globals.dart';
-import 'models/category.hive.dart';
+import 'groups.controller.dart';
+import '../../core/liso/liso_paths.dart';
+import '../../core/utils/globals.dart';
+import '../../core/hive/models/group.hive.dart';
 
-class HiveCategoriesService extends GetxService with ConsoleMixin {
-  static HiveCategoriesService get to => Get.find<HiveCategoriesService>();
+class GroupsService extends GetxService with ConsoleMixin {
+  static GroupsService get to => Get.find<GroupsService>();
 
   // VARIABLES
-  Box<HiveLisoCategory>? box;
+  Box<HiveLisoGroup>? box;
   bool boxInitialized = false;
 
   // GETTERS
-  List<HiveLisoCategory> get data =>
+  List<HiveLisoGroup> get data =>
       box != null && box!.isOpen ? box!.values.toList() : [];
 
   // FUNCTIONS
 
   Future<void> open({Uint8List? cipherKey, bool initialize = true}) async {
     box = await Hive.openBox(
-      kHiveBoxCategories,
+      kHiveBoxGroups,
       encryptionCipher: HiveAesCipher(cipherKey ?? WalletService.to.cipherKey!),
       path: LisoPaths.hivePath,
     );
 
+    _migrate();
     boxInitialized = true;
+  }
+
+  void _migrate() async {
+    // TODO: temporarily remove previously added groups
+    final groupsToDelete = data
+        .where((e) => GroupsController.to.reservedIds.contains(e.id))
+        .map((e) => e.key);
+
+    await box!.deleteAll(groupsToDelete);
     console.info('length: ${data.length}');
+    GroupsController.to.load();
   }
 
   Future<void> close() async {
@@ -44,19 +55,18 @@ class HiveCategoriesService extends GetxService with ConsoleMixin {
 
   Future<void> clear() async {
     if (!boxInitialized) {
-      await File(join(LisoPaths.hivePath, '$kHiveBoxCategories.hive')).delete();
+      await File(join(LisoPaths.hivePath, '$kHiveBoxGroups.hive')).delete();
       return;
     }
 
     await box!.clear();
-    // refresh cusom categories
-    CategoriesController.to.load();
+    // refresh cusom vaults
+    GroupsController.to.load();
     await box!.deleteFromDisk();
     console.info('clear');
   }
 
-  Future<void> import(List<HiveLisoCategory> data,
-      {Uint8List? cipherKey}) async {
+  Future<void> import(List<HiveLisoGroup> data, {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey, initialize: false);
     box!.addAll(data);
   }

@@ -11,13 +11,13 @@ import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
-import '../../features/main/main_screen.controller.dart';
-import '../liso/liso_paths.dart';
-import '../utils/globals.dart';
-import 'models/item.hive.dart';
+import '../main/main_screen.controller.dart';
+import '../../core/liso/liso_paths.dart';
+import '../../core/utils/globals.dart';
+import '../../core/hive/models/item.hive.dart';
 
-class HiveItemsService extends GetxService with ConsoleMixin {
-  static HiveItemsService get to => Get.find<HiveItemsService>();
+class ItemsService extends GetxService with ConsoleMixin {
+  static ItemsService get to => Get.find<ItemsService>();
 
   // VARIABLES
   late Box<HiveLisoItem> box;

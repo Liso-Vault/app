@@ -8,10 +8,12 @@ import 'package:filesize/filesize.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
+import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -21,8 +23,9 @@ import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
 import 'package:supercharged/supercharged.dart';
 
-import '../../core/hive/hive_groups.service.dart';
-import '../../core/hive/hive_items.service.dart';
+import '../categories/categories.service.dart';
+import '../groups/groups.service.dart';
+import '../item/items.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';
@@ -182,6 +185,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     MainScreenController.to.load();
     GroupsController.to.load();
+    CategoriesController.to.load();
 
     syncSharedVaults().timeout(
       syncTimeoutDuration,
@@ -215,12 +219,13 @@ class S3Service extends GetxService with ConsoleMixin {
     final vault = LisoVault.fromJson(jsonMap);
     _syncProgress(0.4, null);
     await _mergeGroups(vault.groups);
+    await _mergeCategories(vault.categories ?? []);
     await _mergeItems(vault.items);
     return const Right(true);
   }
 
   Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
-    final local = HiveGroupsService.to.box!;
+    final local = GroupsService.to.box!;
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time
@@ -238,7 +243,7 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     // TODO: temporarily remove previously added groups
-    merged.removeWhere((e) => reservedVaultIds.contains(e.id));
+    merged.removeWhere((e) => GroupsController.to.reservedIds.contains(e.id));
 
     // leave only the most updated items
     final newList = <HiveLisoGroup>[];
@@ -254,8 +259,40 @@ class S3Service extends GetxService with ConsoleMixin {
     await local.addAll(newList);
   }
 
+  Future<void> _mergeCategories(List<HiveLisoCategory> server) async {
+    final local = CategoriesService.to.box!;
+    // merge server and local items
+    final merged = [...server, ...local.values];
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) {
+        if (a.reserved ||
+            b.reserved ||
+            a.metadata == null ||
+            b.metadata == null) {
+          return 0;
+        }
+
+        return b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime);
+      },
+    );
+
+    // leave only the most updated items
+    final newList = <HiveLisoCategory>[];
+
+    for (final item in merged) {
+      final exists = newList.where((e) => e.id == item.id).isNotEmpty;
+      if (exists) continue;
+      newList.addIf(!newList.contains(item), item);
+    }
+
+    console.wtf('merged categories: ${newList.length}');
+    await local.clear();
+    await local.addAll(newList);
+  }
+
   Future<void> _mergeItems(List<HiveLisoItem> server) async {
-    final local = HiveItemsService.to.box;
+    final local = ItemsService.to.box;
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time
@@ -341,11 +378,11 @@ class S3Service extends GetxService with ConsoleMixin {
     );
 
     for (final sharedVault in SharedVaultsController.to.data) {
-      final sharedItems = HiveItemsService.to.data
+      final sharedItems = ItemsService.to.data
           .where((item) => item.sharedVaultIds.contains(sharedVault.docId))
           .toList();
 
-      final cipherKeyResult = await HiveItemsService.to.obtainFieldValue(
+      final cipherKeyResult = await ItemsService.to.obtainFieldValue(
         itemId: sharedVault.docId,
         fieldId: 'key',
       );

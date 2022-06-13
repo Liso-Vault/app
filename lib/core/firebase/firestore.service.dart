@@ -5,8 +5,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/model/user.model.dart';
-import 'package:liso/core/hive/hive_groups.service.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/groups/groups.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -17,7 +17,7 @@ import '../../features/app/routes.dart';
 import '../../features/joined_vaults/model/member.model.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import '../../features/wallet/wallet.service.dart';
-import '../hive/hive_categories.service.dart';
+import '../../features/categories/categories.service.dart';
 import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
 import '../services/cipher.service.dart';
@@ -148,9 +148,9 @@ class FirestoreService extends GetxService with ConsoleMixin {
         vault: encryptedVaultBytes.length,
       ),
       count: FirebaseUserCount(
-        items: HiveItemsService.to.data.length,
-        groups: HiveGroupsService.to.data.length,
-        categories: HiveCategoriesService.to.data.length,
+        items: ItemsService.to.data.length,
+        groups: GroupsService.to.data.length,
+        categories: CategoriesService.to.data.length,
         files: filesCount,
         encryptedFiles: encryptedFilesCount,
         sharedVaults: SharedVaultsController.to.data.length,

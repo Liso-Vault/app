@@ -6,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 
 import '../../core/firebase/crashlytics.service.dart';
@@ -78,12 +78,12 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
           }
 
           // remove from items
-          final items = HiveItemsService.to.data.where(
+          final items = ItemsService.to.data.where(
             (e) => e.identifier == vault.docId,
           );
 
           if (items.isNotEmpty) {
-            await HiveItemsService.to.box.deleteAll(items.map((e) => e.key));
+            await ItemsService.to.box.deleteAll(items.map((e) => e.key));
             console.wtf('permanently deleted');
           }
 

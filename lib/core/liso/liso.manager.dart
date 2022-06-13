@@ -7,15 +7,15 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
-import 'package:liso/core/hive/hive_categories.service.dart';
+import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/core/liso/vault.model.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../hive/hive_groups.service.dart';
-import '../hive/hive_items.service.dart';
+import '../../features/groups/groups.service.dart';
+import '../../features/item/items.service.dart';
 import '../hive/models/metadata/metadata.hive.dart';
 import '../services/cipher.service.dart';
 import '../utils/globals.dart';
@@ -51,9 +51,9 @@ class LisoManager {
 
   static Future<String> compactJson() async {
     final vault = LisoVault(
-      groups: HiveGroupsService.to.data,
-      categories: HiveCategoriesService.to.data,
-      items: HiveItemsService.to.data,
+      groups: GroupsService.to.data,
+      categories: CategoriesService.to.data,
+      items: ItemsService.to.data,
       persistence: Persistence.box.toMap(),
       version: kVaultFormatVersion,
       metadata: await HiveMetadata.get(),
@@ -65,8 +65,8 @@ class LisoManager {
   static Future<void> importVaultFile(File file, {Uint8List? cipherKey}) async {
     // parse vault to items
     final vault = await parseVaultFile(file, cipherKey: cipherKey);
-    await HiveGroupsService.to.import(vault.groups, cipherKey: cipherKey);
-    await HiveItemsService.to.import(vault.items, cipherKey: cipherKey);
+    await GroupsService.to.import(vault.groups, cipherKey: cipherKey);
+    await ItemsService.to.import(vault.items, cipherKey: cipherKey);
   }
 
   static Future<LisoVault> parseVaultFile(

@@ -65,7 +65,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
         onSelected: () => blur.value = true,
         leading: const Icon(Iconsax.eye_slash),
       ),
-      if (showGenerate) ...[
+      if (showGenerate && !readOnly) ...[
         ContextMenuItem(
           title: 'Generate',
           leading: const Icon(Iconsax.password_check),

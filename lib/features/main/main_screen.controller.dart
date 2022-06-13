@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/hive_items.service.dart';
+import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -35,22 +35,14 @@ class MainScreenController extends GetxController
 
   List<ContextMenuItem> get menuItemsCategory {
     return CategoriesController.to.combined
-        .where((e) {
-          if (e.id == LisoItemCategory.none.name) return false;
-          return e.id == LisoItemCategory.note.name ||
-              Persistence.to.proTester.val;
-        })
-        .toList()
         .map(
           (e) => ContextMenuItem(
-            title: reservedCategories.contains(e.id) ? e.id.tr : e.name,
+            title: e.reservedName,
             leading: Utils.categoryIcon(e.id, color: themeColor),
-            onSelected: () {
-              Utils.adaptiveRouteOpen(
-                name: Routes.item,
-                parameters: {'mode': 'add', 'category': e.id},
-              );
-            },
+            onSelected: () => Utils.adaptiveRouteOpen(
+              name: Routes.item,
+              parameters: {'mode': 'add', 'category': e.id},
+            ),
           ),
         )
         .toList();
@@ -232,17 +224,18 @@ class MainScreenController extends GetxController
   }
 
   void search() async {
-    searchDelegate = ItemsSearchDelegate(HiveItemsService.to.data);
+    searchDelegate = ItemsSearchDelegate(ItemsService.to.data);
     await showSearch(context: Get.context!, delegate: searchDelegate!);
     searchDelegate = null;
   }
 
   Future<void> load() async {
     GroupsController.to.load();
+    CategoriesController.to.load();
 
     change(null, status: RxStatus.loading());
     final drawerController = DrawerMenuController.to;
-    var items = HiveItemsService.to.data;
+    var items = ItemsService.to.data;
 
     // FILTER BY GROUP
     items = items
@@ -263,7 +256,7 @@ class MainScreenController extends GetxController
     );
 
     if (itemsToDelete.isNotEmpty) {
-      await HiveItemsService.to.hidelete(itemsToDelete);
+      await ItemsService.to.hidelete(itemsToDelete);
     }
 
     // FILTER BY TOGGLE
@@ -283,7 +276,7 @@ class MainScreenController extends GetxController
     }
 
     // FILTER BY CATEGORY
-    if (drawerController.filterCategory.value != LisoItemCategory.none.name) {
+    if (drawerController.filterCategory.value != '') {
       items = items
           .where((e) => e.category == drawerController.filterCategory.value)
           .toList();
@@ -414,8 +407,8 @@ class MainScreenController extends GetxController
   void emptyTrash() {
     void _empty() async {
       Get.back();
-      final trashedKeys = HiveItemsService.to.data.where((e) => e.trashed);
-      await HiveItemsService.to.hidelete(trashedKeys);
+      final trashedKeys = ItemsService.to.data.where((e) => e.trashed);
+      await ItemsService.to.hidelete(trashedKeys);
       load();
 
       UIUtils.showSnackBar(
