@@ -1,15 +1,13 @@
-import 'package:flutter/widgets.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/date.field.dart';
-import 'package:liso/core/form_fields/seed.field.dart';
 import 'package:liso/core/form_fields/password.field.dart';
 import 'package:liso/core/form_fields/phone.field.dart';
 import 'package:liso/core/form_fields/pin.field.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
+import 'package:liso/core/form_fields/seed.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
 import 'package:liso/core/form_fields/url.field.dart';
-import 'package:console_mixin/console_mixin.dart';
 
 import '../form_fields/address.field.dart';
 import '../form_fields/email.field.dart';
@@ -21,20 +19,16 @@ import '../hive/models/item.hive.dart';
 class FormFieldUtils {
   static List<HiveLisoField> obtainFields(
     HiveLisoItem item, {
-    required List<Widget> widgets,
+    required List<dynamic> widgets,
   }) {
-    // ignore: unused_local_variable
-    final console = Console(name: 'FormFieldUtils');
     final List<HiveLisoField> newFields = [];
 
     for (var i = 0; i < item.fields.length; i++) {
       final field = item.fields[i];
-      final widget = widgets[i];
-      final fieldType = LisoFieldType.values.byName(field.type);
-
+      dynamic widget = widgets[i].children.first.child;
       dynamic formField;
 
-      switch (fieldType) {
+      switch (LisoFieldType.values.byName(field.type)) {
         case LisoFieldType.choices:
           formField = widget as ChoicesFormField;
           break;

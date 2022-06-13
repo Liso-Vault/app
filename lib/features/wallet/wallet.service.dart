@@ -227,6 +227,13 @@ class WalletService extends GetxService with ConsoleMixin {
 
   Future<void> init(Wallet wallet_) async {
     wallet = wallet_;
+
+    console.wtf('init');
+    console.info('address: ${wallet!.privateKey.address}');
+    console.info(
+      'privateKey: ${HEX.encode(wallet!.privateKey.privateKey)}',
+    );
+
     // save to persistence
     Persistence.to.wallet.val = wallet!.toJson();
     Persistence.to.walletAddress.val = longAddress;

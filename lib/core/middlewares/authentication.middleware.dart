@@ -41,7 +41,6 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     MainScreenController.to.init();
     // sync vault
     S3Service.to.sync();
-
     initialized = true;
     console.wtf('welcome');
     return super.redirect(route);

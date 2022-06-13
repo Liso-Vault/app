@@ -226,6 +226,9 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
     final local = GroupsService.to.box!;
+    console
+        .wtf('merged groups local: ${local.length}, server: ${server.length}');
+
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time
@@ -261,6 +264,8 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<void> _mergeCategories(List<HiveLisoCategory> server) async {
     final local = CategoriesService.to.box!;
+    console.wtf(
+        'merged categories local: ${local.length}, server: ${server.length}');
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time
@@ -293,6 +298,9 @@ class S3Service extends GetxService with ConsoleMixin {
 
   Future<void> _mergeItems(List<HiveLisoItem> server) async {
     final local = ItemsService.to.box;
+    console
+        .wtf('merged items local: ${local.length}, server: ${server.length}');
+
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time

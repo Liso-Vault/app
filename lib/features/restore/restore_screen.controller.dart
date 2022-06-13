@@ -55,12 +55,7 @@ class RestoreScreenController extends GetxController
 
   // FUNCTIONS
 
-  Future<bool> _downloadVault() async {
-    final privateKey = WalletService.to.mnemonicToPrivateKey(
-      seedController.text,
-    );
-
-    final address = privateKey.address.hexEip55;
+  Future<bool> _downloadVault(String address) async {
     final s3VaultPath = join(address, kVaultFileName).replaceAll('\\', '/');
 
     final result = await S3Service.to.downloadFile(
@@ -95,16 +90,15 @@ class RestoreScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     change(null, status: RxStatus.loading());
 
+    final seed = seedController.text;
+    final credentials = WalletService.to.mnemonicToPrivateKey(seed);
+
     // download vault file
     if (importMode.value == RestoreMode.liso) {
-      if (!(await _downloadVault())) {
+      if (!(await _downloadVault(credentials.address.hexEip55))) {
         return change(null, status: RxStatus.success());
       }
     }
-
-    final credentials = WalletService.to.mnemonicToPrivateKey(
-      seedController.text,
-    );
 
     final cipherKey = await WalletService.to.credentialsToCipherKey(
       credentials,
@@ -136,13 +130,13 @@ class RestoreScreenController extends GetxController
       final authenticated = await LocalAuthService.to.authenticate();
       if (!authenticated) return;
       final password = Utils.generatePassword();
-      await WalletService.to.create(seedController.text, password, true);
+      await WalletService.to.create(seed, password, false);
       Get.offNamedUntil(Routes.main, (route) => false);
     } else {
       Utils.adaptiveRouteOpen(
         name: Routes.createPassword,
         parameters: {
-          'seed': seedController.text,
+          'seed': seed,
           'from': 'restore_screen',
         },
       );

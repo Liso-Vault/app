@@ -117,12 +117,31 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       const SizedBox(height: 10),
       // -------- RENDER FIELDS AS WIDGETS -------- //
+      // Obx(
+      //   () => ListView.builder(
+      //     shrinkWrap: true,
+      //     itemCount: controller.widgets.length,
+      //     physics: const NeverScrollableScrollPhysics(),
+      //     itemBuilder: (_, index) => controller.widgets[index],
+      //   ),
+      // ),
       Obx(
-        () => ListView.builder(
+        () => ReorderableListView(
           shrinkWrap: true,
-          itemCount: controller.widgets.length,
           physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (_, index) => controller.widgets[index],
+          children: controller.widgets,
+          onReorder: (int oldIndex, int newIndex) {
+            if (oldIndex < newIndex) {
+              newIndex -= 1;
+            }
+
+            // re-order widget
+            final widget = controller.widgets.removeAt(oldIndex);
+            controller.widgets.insert(newIndex, widget);
+            // re-order fields
+            final field = controller.item!.fields.removeAt(oldIndex);
+            controller.item!.fields.insert(newIndex, field);
+          },
         ),
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
@@ -136,7 +155,6 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         onTap: controller.attach,
         enabled: !controller.joinedVaultItem,
       ),
-
       const SizedBox(height: 10),
       DropdownButtonFormField<String>(
         isExpanded: true,

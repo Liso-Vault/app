@@ -65,30 +65,35 @@ class PasswordFormField extends GetWidget<PasswordFormFieldController>
 
   @override
   Widget build(BuildContext context) {
-    console.info('field.data.value: ${field.data.value}');
     controller.fieldController = TextEditingController(text: field.data.value);
     controller.password.value = field.data.value!;
 
     return Obx(
-      () => TextFormField(
-        controller: controller.fieldController,
-        keyboardType: TextInputType.visiblePassword,
-        obscureText: controller.obscureText.value,
-        readOnly: field.readOnly,
-        onChanged: (value) => controller.password.value = value,
-        decoration: InputDecoration(
-          labelText: field.data.label,
-          hintText: field.data.hint,
-          helperText:
-              isPasswordField && controller.fieldController!.text.isNotEmpty
-                  ? controller.strengthName.toUpperCase()
-                  : null,
-          helperStyle: TextStyle(color: controller.strengthColor),
-          suffixIcon: ContextMenuButton(
-            menuItems,
-            child: const Icon(LineIcons.verticalEllipsis),
+      () => Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              controller: controller.fieldController,
+              keyboardType: TextInputType.visiblePassword,
+              obscureText: controller.obscureText.value,
+              readOnly: field.readOnly,
+              onChanged: (value) => controller.password.value = value,
+              decoration: InputDecoration(
+                labelText: field.data.label,
+                hintText: field.data.hint,
+                helperText: isPasswordField &&
+                        controller.fieldController!.text.isNotEmpty
+                    ? controller.strengthName.toUpperCase()
+                    : null,
+                helperStyle: TextStyle(color: controller.strengthColor),
+                suffixIcon: ContextMenuButton(
+                  menuItems,
+                  child: const Icon(LineIcons.verticalEllipsis),
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

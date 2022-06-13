@@ -1,4 +1,5 @@
 import 'package:console_mixin/console_mixin.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -87,6 +88,13 @@ class ItemScreenController extends GetxController
       //     onSelected: () {},
       //   ),
       // ]
+      if (kDebugMode) ...[
+        ContextMenuItem(
+          title: 'Force Close',
+          leading: const Icon(Iconsax.slash),
+          onSelected: Get.back,
+        ),
+      ]
     ];
   }
 
@@ -226,7 +234,26 @@ class ItemScreenController extends GetxController
     tags = item!.tags.toSet();
     attachments.value = List.from(item!.attachments);
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
-    widgets.value = item!.widgets;
+
+    // widgets.value = item!.widgets;
+    widgets.value = item!.widgets
+        .asMap()
+        .entries
+        .map(
+          (e) => Row(
+            key: Key(e.key.toString()),
+            children: [
+              Expanded(child: e.value),
+              if (Utils.isDrawerExpandable) ...[
+                const SizedBox(width: 5),
+                const Icon(Icons.drag_handle_rounded),
+              ] else ...[
+                const SizedBox(width: 40),
+              ],
+            ],
+          ),
+        )
+        .toList();
   }
 
   Future<void> _loadTemplate() async {

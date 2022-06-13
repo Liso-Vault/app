@@ -19,6 +19,7 @@ import '../../features/item/items.service.dart';
 import '../hive/models/metadata/metadata.hive.dart';
 import '../services/cipher.service.dart';
 import '../utils/globals.dart';
+import 'liso_paths.dart';
 
 class LisoManager {
   // VARIABLES
@@ -46,6 +47,8 @@ class LisoManager {
     await AuthService.to.signOut();
     // clear hives
     await HiveService.to.clear();
+    // clean temp folder
+    await LisoPaths.cleanTemp();
     console.info('reset!');
   }
 
@@ -66,6 +69,7 @@ class LisoManager {
     // parse vault to items
     final vault = await parseVaultFile(file, cipherKey: cipherKey);
     await GroupsService.to.import(vault.groups, cipherKey: cipherKey);
+    await CategoriesService.to.import(vault.categories!, cipherKey: cipherKey);
     await ItemsService.to.import(vault.items, cipherKey: cipherKey);
   }
 

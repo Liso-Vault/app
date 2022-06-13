@@ -2,6 +2,7 @@ import 'package:alchemy_web3/alchemy_web3.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hex/hex.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/contracts/liso.dart';
 import 'package:liso/core/services/alchemy.service.dart';
@@ -72,7 +73,11 @@ class WalletScreenController extends GetxController with ConsoleMixin {
   }
 
   void switchAccounts() {
-    UIUtils.showSimpleDialog('Switch Accounts', 'Coming soon...');
+    console.info('address: ${WalletService.to.wallet?.privateKey.address}');
+    console.info(
+      'privateKey: ${HEX.encode(WalletService.to.wallet!.privateKey.privateKey)}',
+    );
+    // UIUtils.showSimpleDialog('Switch Accounts', 'Coming soon...');
   }
 
   void showQRCode() {

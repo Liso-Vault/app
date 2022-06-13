@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/features/item/items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -241,6 +242,7 @@ class SettingsScreenController extends GetxController
       // clear database
       await ItemsService.to.purge();
       await GroupsService.to.purge();
+      await CategoriesService.to.purge();
       // reload lists
       MainScreenController.to.load();
 
