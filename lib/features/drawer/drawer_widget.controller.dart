@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/groups/groups.controller.dart';
+import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 
 import '../../core/hive/models/item.hive.dart';
@@ -12,9 +13,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
 import '../general/remote_image.widget.dart';
-import '../items/items.service.dart';
 import '../joined_vaults/joined_vault.controller.dart';
-import '../main/main_screen.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
 enum HiveBoxFilter {
@@ -51,7 +50,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   // GETTERS
 
-  Iterable<HiveLisoItem> get groupedItems => ItemsService.to.data.where(
+  Iterable<HiveLisoItem> get groupedItems => ItemsController.to.raw.where(
         (e) {
           if (filterGroupId.value.isNotEmpty) {
             return e.groupId == filterGroupId.value;
@@ -111,7 +110,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterDeleted.value;
 
   List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
-        final count = ItemsService.to.data
+        final count = ItemsController.to.raw
             .where((item) => item.groupId == group.id && !item.deleted)
             .length;
 
@@ -128,17 +127,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
           leading: const Icon(Iconsax.briefcase),
           selected: group.id == filterGroupId.value,
           onTap: () => filterByGroupId(group.id),
-        );
-      }).toList();
-
-  List<Widget> get categoryTiles => CategoriesController.to.combined
-          .where((e) => categories.contains(e.id))
-          .map((category) {
-        return ListTile(
-          title: Text(category.reservedName),
-          leading: Utils.categoryIcon(category.id),
-          selected: category.id == filterCategory.value,
-          onTap: () => filterByCategory(category.id),
         );
       }).toList();
 
@@ -219,6 +207,32 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
               ),
             ];
 
+  List<Widget> get categoryTiles => CategoriesController.to.combined
+          .where((e) => categories.contains(e.id))
+          .map((category) {
+        return Obx(
+          () => ListTile(
+            title: Text(category.reservedName),
+            leading: Utils.categoryIcon(category.id),
+            selected: category.id == filterCategory.value,
+            onTap: () => filterByCategory(category.id),
+          ),
+        );
+      }).toList();
+
+  List<Widget> get tagTiles => tags
+      .map(
+        (e) => Obx(
+          () => ListTile(
+            title: Text(e),
+            leading: const Icon(Iconsax.tag),
+            onTap: () => filterByTag(e),
+            selected: e == filterTag.value,
+          ),
+        ),
+      )
+      .toList();
+
   String get filterSharedVaultLabel {
     final vaults = SharedVaultsController.to.data
         .where((e) => e.docId == filterSharedVaultId.value);
@@ -266,20 +280,17 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void filterBySharedVaultId(String vaultId) {
-    // if already selected, deselect
     if (vaultId == filterSharedVaultId.value) vaultId = '';
     filterSharedVaultId.value = vaultId;
     done();
   }
 
   void filterByCategory(String category) {
-    // if already selected, deselect
     filterCategory.value = category == filterCategory.value ? '' : category;
     done();
   }
 
   void filterByTag(String tag) {
-    // if already selected, deselect
     if (tag == filterTag.value) tag = '';
     filterTag.value = tag;
     done();
@@ -327,15 +338,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterDeleted.value = false;
   }
 
-  void files() async {
-    Utils.adaptiveRouteOpen(
-      name: Routes.s3Explorer,
-      parameters: {'type': 'explorer'},
-    );
-  }
-
   void done() async {
-    MainScreenController.to.load();
+    await ItemsController.to.load();
     if (Utils.isDrawerExpandable) Get.back();
   }
 }

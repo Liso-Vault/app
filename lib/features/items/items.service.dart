@@ -8,13 +8,13 @@ import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:liso/core/services/cipher.service.dart';
+import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
-import '../main/main_screen.controller.dart';
+import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/utils/globals.dart';
-import '../../core/hive/models/item.hive.dart';
 
 class ItemsService extends GetxService with ConsoleMixin {
   static ItemsService get to => Get.find<ItemsService>();
@@ -57,7 +57,7 @@ class ItemsService extends GetxService with ConsoleMixin {
 
     await box.clear();
     // refresh main listview
-    await MainScreenController.to.load();
+    await ItemsController.to.load();
     await box.deleteFromDisk();
     console.info('clear');
   }

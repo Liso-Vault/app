@@ -9,17 +9,18 @@ import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import 'items.service.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/shared_vault.controller.dart';
+import 'items.controller.dart';
+import 'items.service.dart';
 
 class ItemScreenController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -316,7 +317,8 @@ class ItemScreenController extends GetxController
     );
 
     await ItemsService.to.box.add(newItem);
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
     Get.back();
   }
 
@@ -347,7 +349,8 @@ class ItemScreenController extends GetxController
     item!.metadata = await item!.metadata.getUpdated();
     await item!.save();
 
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
     Get.back();
   }
 

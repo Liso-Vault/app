@@ -117,14 +117,6 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       const SizedBox(height: 10),
       // -------- RENDER FIELDS AS WIDGETS -------- //
-      // Obx(
-      //   () => ListView.builder(
-      //     shrinkWrap: true,
-      //     itemCount: controller.widgets.length,
-      //     physics: const NeverScrollableScrollPhysics(),
-      //     itemBuilder: (_, index) => controller.widgets[index],
-      //   ),
-      // ),
       Obx(
         () => ReorderableListView(
           shrinkWrap: true,

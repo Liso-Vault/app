@@ -46,17 +46,15 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
           final batch = FirestoreService.to.instance.batch();
           final doc = FirestoreService.to.sharedVaults.doc(vault.docId);
-
           // update user doc
           batch.delete(doc);
-
           // update users collection stats counter
           batch.set(
             FirestoreService.to.vaultsStatsDoc,
             {
               'count': FieldValue.increment(-1),
               'updatedTime': FieldValue.serverTimestamp(),
-              'userId': AuthService.to.userId,
+              'userId': AuthService.to.userId
             },
             SetOptions(merge: true),
           );
@@ -69,8 +67,6 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
             return console.error("error batch commit: $e");
           }
 
-          console.info('deleted: ${doc.id}');
-
           await S3Service.to.remove(S3Content(
             path: join(
               S3Service.to.sharedPath,
@@ -78,7 +74,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
             ),
           ));
 
-          console.info('deleted in s3');
+          console.info('deleted: ${doc.id}');
         }
 
         final dialogContent = Text(

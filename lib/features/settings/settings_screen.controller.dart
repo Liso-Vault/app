@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/features/categories/categories.service.dart';
+import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -77,10 +78,10 @@ class SettingsScreenController extends GetxController
     theme.value = mode.name;
     if (GetPlatform.isDesktop) Get.back();
     Get.changeThemeMode(mode);
-    // reload main listview to fix refresh the backgrounds of tags
-    MainScreenController.to.data.clear();
+    // reload items listview to refresh the backgrounds of tags
+    ItemsController.to.data.clear();
     await Future.delayed(200.milliseconds);
-    MainScreenController.to.load();
+    ItemsController.to.load();
   }
 
   void exportWallet() async {

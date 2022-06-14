@@ -3,16 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
-import 'categories.service.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
 import 'categories.controller.dart';
+import 'categories.service.dart';
 
 class CategoriesScreenController extends GetxController with ConsoleMixin {
   static CategoriesScreenController get to => Get.find();
@@ -44,7 +44,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
           name: Routes.upgrade,
           parameters: {
             'title': 'Title',
-            'body': 'Maximum encrypted files limit reached',
+            'body': 'Maximum custom category limit reached',
           }, // TODO: add message
         );
       }
@@ -58,13 +58,13 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         significant: category!.significant,
       ));
 
+      Persistence.to.changes.val++;
+      CategoriesController.to.load();
+
       NotificationsManager.notify(
         title: 'Category Created',
         body: nameController.text,
       );
-
-      CategoriesController.to.load();
-      MainScreenController.to.onItemsUpdated();
     }
 
     final content = Column(

@@ -49,7 +49,7 @@ class CategoriesService extends GetxService with ConsoleMixin {
     }
 
     await box!.clear();
-    // refresh cusom categories
+    // refresh custom categories
     CategoriesController.to.load();
     await box!.deleteFromDisk();
     console.info('clear');

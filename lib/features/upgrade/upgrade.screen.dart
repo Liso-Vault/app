@@ -136,6 +136,15 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       onTap: () {},
                     ),
                     ListTile(
+                      leading: const Icon(Iconsax.briefcase),
+                      title: const Text('Custom Categories'),
+                      trailing: Text(
+                        '${tier.customCategories}',
+                        style: TextStyle(color: themeColor, fontSize: 20),
+                      ),
+                      onTap: () {},
+                    ),
+                    ListTile(
                       leading: const Icon(Iconsax.key),
                       title: const Text('Encrypted Files'),
                       trailing: Text(

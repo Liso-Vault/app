@@ -13,7 +13,6 @@ import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -23,14 +22,14 @@ import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
 import 'package:supercharged/supercharged.dart';
 
-import '../categories/categories.service.dart';
-import '../groups/groups.service.dart';
-import '../items/items.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/liso/vault.model.dart';
 import '../../core/utils/globals.dart';
+import '../categories/categories.service.dart';
+import '../groups/groups.service.dart';
+import '../items/items.service.dart';
 import '../wallet/wallet.service.dart';
 import 'model/s3_content.model.dart';
 import 'model/s3_folder_info.model.dart';
@@ -182,10 +181,8 @@ class S3Service extends GetxService with ConsoleMixin {
 
     syncing.value = false;
     _syncProgress(1, '');
-
+    // reload all list
     MainScreenController.to.load();
-    GroupsController.to.load();
-    CategoriesController.to.load();
 
     syncSharedVaults().timeout(
       syncTimeoutDuration,

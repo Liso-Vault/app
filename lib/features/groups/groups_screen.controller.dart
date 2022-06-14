@@ -1,13 +1,13 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/groups/groups.service.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/group.hive.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -43,7 +43,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
           name: Routes.upgrade,
           parameters: {
             'title': 'Title',
-            'body': 'Maximum encrypted files limit reached',
+            'body': 'Maximum custom vaults limit reached',
           }, // TODO: add message
         );
       }
@@ -55,13 +55,13 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         metadata: await HiveMetadata.get(),
       ));
 
+      Persistence.to.changes.val++;
+      GroupsController.to.load();
+
       NotificationsManager.notify(
         title: 'Vault Created',
         body: nameController.text,
       );
-
-      GroupsController.to.load();
-      MainScreenController.to.onItemsUpdated();
     }
 
     final content = Column(

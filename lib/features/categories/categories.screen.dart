@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
 import 'categories.service.dart';
@@ -33,6 +34,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
 
           Get.back();
           await CategoriesService.to.box!.delete(category.key);
+          Persistence.to.changes.val++;
           categoriesController.load();
         }
 

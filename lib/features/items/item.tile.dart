@@ -5,13 +5,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/items/items.controller.dart';
+import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -53,7 +54,8 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.favorite = !item.favorite;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
   }
 
   void _duplicate() async {
@@ -62,7 +64,8 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
     await ItemsService.to.box.add(copy);
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
   }
 
   void _restore() async {
@@ -70,35 +73,24 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.deleted = false;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
   }
 
   void _trash() async {
     item.trashed = true;
     item.metadata = await item.metadata.getUpdated();
-    // final m = await item.metadata.getUpdated();
-    // m.updatedTime = DateTime.now().subtract(31.days);
-    // item.metadata = m;
     await item.save();
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
   }
 
   void _delete() async {
-    // if (!item.deleted) {
-    //   item.deleted = true;
-    //   item.metadata = await item.metadata.getUpdated();
-    //   await item.save();
-    // } else {
-    //   item.fields = ItemsService.to.data.first.fields;
-    //   item.metadata = await item.metadata.getUpdated();
-    //   await item.save();
-    // }
-
     item.fields = ItemsService.to.data[1].fields;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-
-    MainScreenController.to.onItemsUpdated();
+    Persistence.to.changes.val++;
+    ItemsController.to.load();
   }
 
   void _confirmDelete() async {
@@ -189,18 +181,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ),
     ];
 
-    final tags = item.tags
-        .map(
-          (e) => CustomChip(
-            icon: const Icon(Iconsax.tag, size: 10),
-            label: Text(
-              e,
-              overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 10),
-            ),
-          ),
-        )
-        .toList();
+    const kIconSize = 10.0;
+    final tags = item.tags.map(
+      (e) => CustomChip(
+        icon: const Icon(Iconsax.tag, size: kIconSize),
+        label: Text(
+          e,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: kIconSize),
+        ),
+      ),
+    );
 
     final sharedVaults = item.sharedVaultIds.map(
       (e) {
@@ -210,7 +201,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
         SharedVault? vault;
         if (results.isNotEmpty) vault = results.first;
-        Widget icon = const Icon(Iconsax.share, size: 10);
+        Widget icon = const Icon(Iconsax.share, size: kIconSize);
 
         if (vault?.iconUrl != null && vault!.iconUrl.isNotEmpty) {
           icon = RemoteImage(
@@ -226,75 +217,42 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           label: Text(
             vault?.name ?? e,
             overflow: TextOverflow.ellipsis,
-            style: const TextStyle(fontSize: 10),
+            style: const TextStyle(fontSize: kIconSize),
           ),
         );
       },
-    ).toList();
+    );
 
     final bottomSubTitle = Wrap(
       runSpacing: 5,
+      spacing: 5,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         if (item.favorite) ...[
-          const Padding(
-            padding: EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.heart, color: Colors.pink, size: 10),
-          ),
-          const SizedBox(width: 5),
+          const Icon(Iconsax.heart, color: Colors.pink, size: kIconSize),
         ],
         if (item.protected) ...[
-          Padding(
-            padding: const EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.shield_tick, color: themeColor, size: 10),
-          ),
-          const SizedBox(width: 5),
+          Icon(Iconsax.shield_tick, color: themeColor, size: kIconSize),
         ],
         if (item.attachments.isNotEmpty) ...[
-          const Padding(
-            padding: EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.attach_circle, color: null, size: 10),
-          ),
-          const SizedBox(width: 5),
+          const Icon(Iconsax.attach_circle, size: kIconSize),
         ],
         if (item.reserved) ...[
-          const Padding(
-            padding: EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.key, color: Colors.lightBlue, size: 10),
-          ),
-          const SizedBox(width: 5),
+          const Icon(Iconsax.key, color: Colors.lightBlue, size: kIconSize),
         ],
-        if (item.tags.isNotEmpty) ...[
-          ...tags,
-        ],
-        if (item.sharedVaultIds.isNotEmpty) ...[
-          ...sharedVaults,
-        ],
+        ...tags,
+        ...sharedVaults,
         Text(
           item.updatedTimeAgo,
-          style: const TextStyle(fontSize: 10, color: Colors.grey),
+          style: const TextStyle(fontSize: kIconSize, color: Colors.grey),
         ),
         if (item.trashed) ...[
-          const SizedBox(width: 5),
           Text(
             '${item.daysLeftToDelete} days left till ',
-            style: const TextStyle(fontSize: 10, color: Colors.red),
+            style: const TextStyle(fontSize: kIconSize, color: Colors.red),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 3),
-            child: Icon(Iconsax.trash, color: Colors.red, size: 10),
-          ),
+          const Icon(Iconsax.trash, color: Colors.red, size: kIconSize),
         ]
-      ],
-    );
-
-    final subTitle = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        if (item.subTitle.trim().isNotEmpty) ...[
-          Text(item.subTitle, overflow: TextOverflow.ellipsis, maxLines: 1),
-          const SizedBox(height: 5),
-        ],
-        bottomSubTitle,
       ],
     );
 
@@ -310,11 +268,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       selected: item.deleted,
       selectedColor: item.deleted ? Colors.red : null,
       leading: leading,
-      subtitle: subTitle,
-      title: Text(
-        item.title,
-        overflow: TextOverflow.ellipsis,
-        maxLines: 1,
+      // for some reason, using subtitle gets a lot of errors so we're not using it
+      // subtitle: subTitle,
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(item.title, overflow: TextOverflow.ellipsis, maxLines: 1),
+          if (item.subTitle.trim().isNotEmpty) ...[
+            Text(item.subTitle, overflow: TextOverflow.ellipsis, maxLines: 1),
+          ],
+          bottomSubTitle,
+        ],
       ),
       trailing: ContextMenuButton(
         menuItems,
@@ -348,10 +312,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         SwipeAction(
           title: 'restore'.tr,
           color: themeColor,
-          icon: const Icon(
-            Iconsax.refresh,
-            color: Colors.white,
-          ),
+          icon: const Icon(Iconsax.refresh, color: Colors.white),
           style: const TextStyle(fontSize: 15, color: Colors.white),
           onTap: (CompletionHandler handler) async {
             await handler(true);

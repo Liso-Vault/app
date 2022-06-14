@@ -6,6 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
@@ -30,9 +31,9 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
         void _delete() async {
           // TODO: show the items binded to this group
           // TODO: if user proceeds, these items will also be deleted
-
           Get.back();
           await GroupsService.to.box!.delete(vault.key);
+          Persistence.to.changes.val++;
           vaultsController.load();
         }
 

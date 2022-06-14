@@ -37,8 +37,8 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     AlchemyService.to.load();
     // firebase auth
     AuthService.to.signIn();
-    // init main screen
-    MainScreenController.to.init();
+    // load all list
+    MainScreenController.to.load();
     // sync vault
     S3Service.to.sync();
     initialized = true;

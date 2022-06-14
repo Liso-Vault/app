@@ -9,11 +9,11 @@ import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/items/items.controller.dart';
+import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -157,6 +157,8 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         tags: ['secret'],
       ));
 
+      // reload items
+      ItemsController.to.load();
       console.wtf('created liso item');
 
       // send notification
@@ -164,9 +166,6 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         title: 'Shared Vault Created',
         body: nameController.text,
       );
-
-      // reload main screen
-      MainScreenController.to.load();
     }
 
     final content = Column(

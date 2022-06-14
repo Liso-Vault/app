@@ -23,6 +23,7 @@ import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/form_fields/password.field.dart';
 import 'features/categories/categories.service.dart';
+import 'features/items/items.controller.dart';
 import 'features/items/items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
@@ -73,12 +74,13 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => CategoriesService());
 
     // permanent controllers
+    Get.put(ItemsController());
+    Get.put(GroupsController());
+    Get.put(CategoriesController());
     Get.put(MainScreenController());
     Get.put(DrawerMenuController());
     Get.put(SharedVaultsController());
     Get.put(JoinedVaultsController());
-    Get.put(GroupsController());
-    Get.put(CategoriesController());
 
     // create controllers
     Get.create(() => PasswordFormFieldController());

@@ -7,16 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
+import 'package:liso/features/items/items.controller.dart';
+import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/joined_vaults/model/member.model.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -232,6 +232,8 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       tags: ['secret'],
     ));
 
+    // reload main screen
+    ItemsController.to.load();
     console.wtf('created liso item');
 
     // send notification
@@ -239,9 +241,6 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       title: 'Shared Vault Joined',
       body: vault.name,
     );
-
-    // reload main screen
-    MainScreenController.to.load();
   }
 
   void joinDialog() async {

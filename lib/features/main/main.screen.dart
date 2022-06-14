@@ -8,6 +8,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
+import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/resources/resources.dart';
 
@@ -33,12 +34,11 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
         );
 
-  Widget itemBuilder(context, index) {
-    return ItemTile(controller.data[index]);
-  }
-
   @override
   Widget? builder() {
+    final itemsController = Get.find<ItemsController>();
+    final drawerController = Get.find<DrawerMenuController>();
+
     final addItemButton = ContextMenuButton(
       controller.menuItemsCategory,
       child: TextButton.icon(
@@ -54,23 +54,21 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final listView = Obx(
       () => ListView.builder(
         shrinkWrap: true,
-        itemCount: controller.data.length,
-        itemBuilder: itemBuilder,
+        itemCount: itemsController.data.length,
+        itemBuilder: (_, index) => ItemTile(itemsController.data[index]),
         physics: const AlwaysScrollableScrollPhysics(),
         padding: const EdgeInsets.only(bottom: 15),
       ),
     );
 
-    var childContent = controller.obx(
+    var childContent = itemsController.obx(
       (_) => listView,
       // onLoading: const BusyIndicator(),
       onEmpty: Obx(
         () => CenteredPlaceholder(
           iconData: Iconsax.document,
           message: 'no_items'.tr,
-          child: DrawerMenuController.to.filterTrashed.value
-              ? null
-              : addItemButton,
+          child: drawerController.filterTrashed.value ? null : addItemButton,
         ),
       ),
     );
@@ -83,6 +81,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       );
     }
 
+    // filters indicator in the bottom
     final filters = Wrap(
       runSpacing: 3,
       children: [
@@ -94,7 +93,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           () => CustomChip(
             icon: const Icon(Iconsax.briefcase, size: 10),
             label: Text(
-              DrawerMenuController.to.filterGroupLabel,
+              drawerController.filterGroupLabel,
               style: const TextStyle(fontSize: 9),
             ),
           ),
@@ -103,7 +102,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           () => CustomChip(
             icon: const Icon(Iconsax.share, size: 10),
             label: Text(
-              DrawerMenuController.to.filterSharedVaultLabel,
+              drawerController.filterSharedVaultLabel,
               style: const TextStyle(fontSize: 9),
             ),
           ),
@@ -112,7 +111,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           () => CustomChip(
             icon: const Icon(Iconsax.filter, size: 10),
             label: Text(
-              DrawerMenuController.to.filterToggleLabel,
+              drawerController.filterToggleLabel,
               style: const TextStyle(fontSize: 9),
             ),
           ),
@@ -121,7 +120,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           () => CustomChip(
             icon: const Icon(Iconsax.category, size: 10),
             label: Text(
-              DrawerMenuController.to.filterCategoryLabel,
+              drawerController.filterCategoryLabel,
               style: const TextStyle(fontSize: 9),
             ),
           ),
@@ -130,7 +129,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           () => CustomChip(
             icon: const Icon(Iconsax.tag, size: 10),
             label: Text(
-              DrawerMenuController.to.filterTagLabel,
+              drawerController.filterTagLabel,
               style: const TextStyle(fontSize: 9),
             ),
           ),
@@ -189,7 +188,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ContextMenuButton(
         controller.menuItemsSort,
         initialItem: controller.menuItemsSort.firstWhere(
-          (e) => controller.sortOrder.value.name
+          (e) => ItemsController.to.sortOrder.value.name
               .toLowerCase()
               .contains(e.title.toLowerCase().replaceAll(' ', '')),
         ),
@@ -246,8 +245,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final fab = Obx(
       () {
-        if (DrawerMenuController.to.filterTrashed.value) {
-          if (DrawerMenuController.to.trashedCount > 0) {
+        if (drawerController.filterTrashed.value) {
+          if (drawerController.trashedCount > 0) {
             return clearTrashFab;
           } else {
             return const SizedBox.shrink();

@@ -33,7 +33,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 controller.groupsExpanded = expanded,
             initiallyExpanded: controller.groupsExpanded,
             children: [
-              ...controller.groupTiles,
+              Obx(() => Column(children: controller.groupTiles)),
               PersistenceBuilder(builder: (_, context) {
                 if (!Persistence.to.canShare) return const SizedBox.shrink();
 
@@ -155,21 +155,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               'categories'.tr.toUpperCase(),
               style: const TextStyle(fontSize: 13),
             ),
-            children: [
-              ...controller.categoryTiles,
-              // ...controller.categories.map(
-              //   (e) {
-              //     return Obx(
-              //       () => ListTile(
-              //         title: Text(e.tr),
-              //         leading: Utils.categoryIcon(e),
-              //         onTap: () => controller.filterByCategory(e),
-              //         selected: e == controller.filterCategory.value,
-              //       ),
-              //     );
-              //   },
-              // ).toList(),
-            ],
+            children: controller.categoryTiles,
             onExpansionChanged: (expanded) =>
                 controller.categoriesExpanded = expanded,
           ),
@@ -182,20 +168,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             initiallyExpanded: controller.tagsExpanded,
             onExpansionChanged: (expanded) =>
                 controller.tagsExpanded = expanded,
-            children: [
-              ...controller.tags
-                  .map(
-                    (e) => Obx(
-                      () => ListTile(
-                        title: Text(e),
-                        leading: const Icon(Iconsax.tag),
-                        onTap: () => controller.filterByTag(e),
-                        selected: e == controller.filterTag(),
-                      ),
-                    ),
-                  )
-                  .toList(),
-            ],
+            children: controller.tagTiles,
           ),
           ExpansionTile(
             maintainState: true,
@@ -209,7 +182,10 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 builder: (p, context) => Persistence.to.sync.val
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),
-                        onTap: controller.files,
+                        onTap: () => Utils.adaptiveRouteOpen(
+                          name: Routes.s3Explorer,
+                          parameters: {'type': 'explorer'},
+                        ),
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -255,7 +231,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('browser'.tr),
                 leading: const Icon(Iconsax.chrome),
                 enabled: false,
-                // onTap: controller.files,
+                // onTap: controller.browser,
               ),
               ListTile(
                 title: Text('settings'.tr),
