@@ -186,14 +186,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         icon: const Icon(Iconsax.search_normal),
         onPressed: controller.search,
       ),
-      ContextMenuButton(
-        controller.menuItemsSort,
-        initialItem: controller.menuItemsSort.firstWhere(
-          (e) => ItemsController.to.sortOrder.value.name
-              .toLowerCase()
-              .contains(e.title.toLowerCase().replaceAll(' ', '')),
+      Obx(
+        () => ContextMenuButton(
+          controller.menuItemsSort,
+          initialItem: controller.menuItemsSort.firstWhere(
+            (e) => ItemsController.to.sortOrder.value.name
+                .toLowerCase()
+                .contains(e.title.toLowerCase().replaceAll(' ', '')),
+          ),
+          child: const Icon(Iconsax.sort),
         ),
-        child: const Icon(Iconsax.sort),
       ),
       PersistenceBuilder(
         builder: (p, context) => Badge(

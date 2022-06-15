@@ -65,8 +65,9 @@ class Persistence extends GetxController with ConsoleMixin {
 
   bool get canShare => sync.val && isFirebaseSupported;
 
-  String get shortAddress =>
-      '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
+  String get shortAddress => walletAddress.val.isEmpty
+      ? ''
+      : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
 
   // FUNCTIONS
   static Future<void> open() async {

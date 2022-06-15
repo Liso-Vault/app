@@ -175,18 +175,15 @@ class WalletService extends GetxService with ConsoleMixin {
     final messageBytes = Uint8List.fromList(utf8.encode(message));
     final privateKeyHex = HEX.encode(privateKey_ ?? privateKey);
 
-    // final signedMessage = await privateKey.sign(messageBytes);
-    // final signedMessageHex = HEX.encode(signedMessage);
-
-    // console.info('message: $message');
-    // console.warning('privateKeyHex: $privateKeyHex');
+    console.info('message: $message');
+    console.warning('privateKeyHex: $privateKeyHex');
 
     final signature = EthSigUtil.signMessage(
       privateKey: privateKeyHex,
       message: messageBytes,
     );
 
-    // final recovered = EthSigUtil.ecRecover(
+    // final recovered = EthSigUtil.recoverSignature(
     //   signature: signature,
     //   message: messageBytes,
     // );
@@ -199,15 +196,13 @@ class WalletService extends GetxService with ConsoleMixin {
       message: messageBytes,
     );
 
-    // final personalRecovered = EthSigUtil.ecRecover(
+    // final personalRecovered = EthSigUtil.recoverPersonalSignature(
     //   signature: personalSignature,
     //   message: messageBytes,
     // );
 
     // console.info('EthSigUtil personalSignature: $personalSignature');
     // console.wtf('EthSigUtil personalRecovered: $personalRecovered');
-
-    // console.info('signedMessageHex: $signedMessageHex');
 
     return personal ? personalSignature : signature;
   }

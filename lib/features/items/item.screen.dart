@@ -8,6 +8,7 @@ import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:liso/features/tags/tags_input.widget.dart';
 
 import '../../core/hive/models/category.hive.dart';
 import '../../core/utils/globals.dart';
@@ -62,12 +63,10 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         () => ReorderableListView(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
+          buildDefaultDragHandles: !controller.joinedVaultItem,
           children: controller.widgets,
           onReorder: (int oldIndex, int newIndex) {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-
+            if (oldIndex < newIndex) newIndex -= 1;
             // re-order widget
             final widget = controller.widgets.removeAt(oldIndex);
             controller.widgets.insert(newIndex, widget);
@@ -79,7 +78,10 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      Obx(() => controller.tagsInput.value), // TAGS
+      TagsInput(
+        label: 'Tags',
+        controller: controller.tagsController,
+      ),
       const SizedBox(height: 10),
       ListTile(
         title: Obx(() => Text('${controller.attachments.length} Attachments')),
@@ -173,11 +175,10 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
     ];
 
     final appBar = AppBar(
-      title: Text(controller.categoryObject.name),
+      title: Text(controller.categoryObject.reservedName),
       leading: IconButton(
         onPressed: () async {
-          final canPop = await controller.canPop();
-          if (canPop) Get.back();
+          if (await controller.canPop()) Get.back();
         },
         icon: Icon(
           Utils.isDrawerExpandable ? Iconsax.arrow_left_2 : LineIcons.times,
@@ -207,7 +208,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: items.length,
-        padding: const EdgeInsets.all(30),
+        padding: const EdgeInsets.symmetric(horizontal: 30),
         itemBuilder: (context, index) => items[index],
       ),
     );

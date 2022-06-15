@@ -131,6 +131,7 @@ class RestoreScreenController extends GetxController
       if (!authenticated) return;
       final password = Utils.generatePassword();
       await WalletService.to.create(seed, password, false);
+      Persistence.to.backedUpSeed.val = true;
       Get.offNamedUntil(Routes.main, (route) => false);
     } else {
       Utils.adaptiveRouteOpen(

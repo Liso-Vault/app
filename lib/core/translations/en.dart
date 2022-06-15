@@ -2,8 +2,6 @@ final en = {
   "locale_string": "en",
   "language_string": "English",
   "language": "Language",
-  // TAGS
-  // TODO: use LisoItemCategory enum
   "cryptoWallet": "Crypto Wallet",
   "login": "Login",
   "password": "Password",
@@ -26,7 +24,6 @@ final en = {
   "socialSecurity": "Social Security",
   "wirelessRouter": "Wireless Router",
   "encryption": "Encryption",
-  //
   "category": "Category",
   "categories": "Categories",
   "custom_categories": "Custom Categories",
@@ -180,4 +177,5 @@ final en = {
   "length": "Length",
   "generated_password": "Generated Password",
   "generated_seed_phrase": "Generated Seed Phrase",
+  "scan": "Scan",
 };

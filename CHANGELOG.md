@@ -1,20 +1,22 @@
-## 0.4.1
-New! Custom Categories - Thanks to Kevin Gargar's suggestion
-New! Reorderable Fields
-New! Purge Vault
+## 0.5.0
+New! Custom Categories
+New! Re-orderable Fields
+New! Purge Vault Feature
 New! Password Field Strength Indicator
 New! Powerful Password Generator
 New! Mnemonic Seed Phrase Generator
 New! Backup Seed Phrase Reminder Card
 New! Message/Text Signer in Wallet
 New! Encrypt & Decrypt Texts in Cipher Tool
-New! Font: Lato
 New! Export an unencrypted vault
+New! Update a Custom Vault
+New! Font: Lato
 Fixed! Deleted custom vault is restored after sync
 Simplified! Creation of vault
 Improved! Mnemonic Seed Phrase Field
 Improved! Re-organized settings
 Removed! Initial syncing screen
+And lots of bug fixes and improvements
 
 ## 0.4.0
 - New! Shared Vaults

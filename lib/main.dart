@@ -40,7 +40,6 @@ import 'features/main/main_screen.controller.dart';
 import 'features/s3/explorer/s3_content_tile.controller.dart';
 import 'features/s3/s3.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
-import 'features/tags/tags_input.controller.dart';
 
 void init(Flavor flavor) async {
   Flavors.flavor = flavor;
@@ -85,7 +84,6 @@ void init(Flavor flavor) async {
     // create controllers
     Get.create(() => PasswordFormFieldController());
     Get.create(() => S3ContentTileController());
-    Get.create(() => TagsInputController());
 
     // initializations
     CrashlyticsService.to.init();

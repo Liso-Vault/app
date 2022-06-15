@@ -258,7 +258,8 @@ class SettingsScreenController extends GetxController
     UIUtils.showImageDialog(
       const Icon(Iconsax.warning_2, size: 100, color: Colors.orange),
       title: 'Purge Vault?',
-      subTitle: 'All items and custom vaults will be deleted',
+      subTitle:
+          'All items, custom vaults, and custom categories will be deleted',
       body: 'Please proceed with caution',
       closeText: 'Cancel',
       action: _reset,

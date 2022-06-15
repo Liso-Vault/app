@@ -87,13 +87,13 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           onTap: () => Utils.openUrl(config.general.app.links.productHunt),
         ),
 
-        // TODO: Add GitCoin link
-        // ListTile(
-        //   leading: Icon(LineIcons.git, color: themeColor),
-        //   title: Text('${config.appName} GitCoin'),
-        //   trailing: const Icon(Iconsax.arrow_right_3),
-        //   onTap: () => Utils.openUrl(config.general.app.links.gitcoin),
-        // ),
+        ListTile(
+          leading: Icon(LineIcons.git, color: themeColor),
+          title: Text('${config.appName} GitCoin Grants'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => Utils.openUrl(
+              'https://gitcoin.co/grants/5819/liso-decentralized-password-manager'),
+        ),
         //
         ListTile(
           leading: Icon(LineIcons.github, color: themeColor),

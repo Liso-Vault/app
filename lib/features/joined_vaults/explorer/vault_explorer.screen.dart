@@ -75,7 +75,7 @@ class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final button = IconButton(
-      icon: const Icon(Iconsax.cloud_change),
+      icon: const Icon(Iconsax.refresh),
       onPressed: controller.init,
     );
 

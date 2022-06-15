@@ -9,6 +9,7 @@ import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
+import 'package:liso/features/tags/tags_input.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/metadata/metadata.hive.dart';
@@ -19,7 +20,6 @@ import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/shared_vault.controller.dart';
-import '../tags/tags_input.widget.dart';
 import 'items.controller.dart';
 import 'items.service.dart';
 
@@ -36,7 +36,7 @@ class ItemScreenController extends GetxController
   final mode = Get.parameters['mode'] as String;
   final joinedVaultItem = Get.parameters['joinedVaultItem'] == 'true';
   final titleController = TextEditingController();
-  final tagsController = TextEditingController();
+  final tagsController = Get.put(TagsInputController());
 
   final protectedCategories = [
     LisoItemCategory.cryptoWallet,
@@ -61,11 +61,6 @@ class ItemScreenController extends GetxController
   final category = Get.parameters['category']!.obs;
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
-
-  final tagsInput = const TagsInput(
-    data: [],
-    label: '',
-  ).obs;
 
   // GETTERS
   HiveLisoCategory get categoryObject {
@@ -239,11 +234,7 @@ class ItemScreenController extends GetxController
     groupId.value = item!.groupId;
     attachments.value = List.from(item!.attachments);
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
-
-    tagsInput.value = TagsInput(
-      label: 'Tags',
-      data: item!.tags.toSet().toList(),
-    );
+    tagsController.data.value = item!.tags.toSet().toList();
 
     // widgets.value = item!.widgets;
     widgets.value = item!.widgets
@@ -254,12 +245,14 @@ class ItemScreenController extends GetxController
             key: Key(e.key.toString()),
             children: [
               Expanded(child: e.value),
-              if (Utils.isDrawerExpandable) ...[
-                const SizedBox(width: 5),
-                const Icon(Icons.drag_handle_rounded),
-              ] else ...[
-                const SizedBox(width: 40),
-              ],
+              if (!joinedVaultItem) ...[
+                if (Utils.isDrawerExpandable || GetPlatform.isMobile) ...[
+                  const SizedBox(width: 10),
+                  const Icon(Icons.drag_handle_rounded),
+                ] else ...[
+                  const SizedBox(width: 40),
+                ],
+              ]
             ],
           ),
         )
@@ -315,7 +308,7 @@ class ItemScreenController extends GetxController
       category: category.value,
       iconUrl: iconUrl.value,
       title: titleController.text,
-      tags: tagsInput.value.controller.data,
+      tags: tagsController.data,
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
@@ -348,7 +341,7 @@ class ItemScreenController extends GetxController
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
-    item!.tags = tagsInput.value.controller.data;
+    item!.tags = tagsController.data;
     item!.attachments = attachments;
     item!.sharedVaultIds = sharedVaultIds;
     item!.favorite = favorite.value;
@@ -382,11 +375,6 @@ class ItemScreenController extends GetxController
     );
 
     return filteredTags.toList();
-  }
-
-  void querySubmitted() {
-    // TODO: add tag when submitted
-    // tags.add(tagsController.text);
   }
 
   void _pickIcon() async {
@@ -439,7 +427,7 @@ class ItemScreenController extends GetxController
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
-      tags: tagsInput.value.controller.data,
+      tags: tagsController.data,
       groupId: groupId.value,
       favorite: favorite.value,
       iconUrl: iconUrl.value,
