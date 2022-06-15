@@ -29,12 +29,12 @@ class RestoreScreenController extends GetxController
   final filePathController = TextEditingController();
 
   // PROPERTIES
-  final importMode = RestoreMode.liso.obs;
+  final restoreMode = RestoreMode.cloud.obs;
   final busy = false.obs;
   final syncProvider = LisoSyncProvider.sia.name.obs;
 
   // GETTERS
-  String get vaultFilePath => importMode() == RestoreMode.file
+  String get vaultFilePath => restoreMode.value == RestoreMode.file
       ? filePathController.text
       : LisoPaths.tempVaultFilePath;
 
@@ -94,7 +94,7 @@ class RestoreScreenController extends GetxController
     final credentials = WalletService.to.mnemonicToPrivateKey(seed);
 
     // download vault file
-    if (importMode.value == RestoreMode.liso) {
+    if (restoreMode.value == RestoreMode.cloud) {
       if (!(await _downloadVault(credentials.address.hexEip55))) {
         return change(null, status: RxStatus.success());
       }
@@ -123,7 +123,7 @@ class RestoreScreenController extends GetxController
     await LisoManager.importVaultFile(vaultFile, cipherKey: cipherKey);
     // turn on sync setting if successfully imported via cloud
     Persistence.to.sync.val =
-        importMode.value == RestoreMode.liso ? true : false;
+        restoreMode.value == RestoreMode.cloud ? true : false;
     change(null, status: RxStatus.success());
 
     if (isLocalAuthSupported) {
@@ -175,6 +175,6 @@ class RestoreScreenController extends GetxController
 
 enum RestoreMode {
   file,
-  liso,
+  cloud,
   s3,
 }

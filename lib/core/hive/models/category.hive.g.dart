@@ -24,6 +24,7 @@ class HiveLisoCategoryAdapter extends TypeAdapter<HiveLisoCategory> {
       significant: fields[4] as String,
       fields: (fields[5] as List).cast<HiveLisoField>(),
       reserved: fields[6] as bool,
+      deleted: fields[8] as bool?,
       metadata: fields[7] as HiveMetadata?,
     );
   }
@@ -31,7 +32,7 @@ class HiveLisoCategoryAdapter extends TypeAdapter<HiveLisoCategory> {
   @override
   void write(BinaryWriter writer, HiveLisoCategory obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -46,6 +47,8 @@ class HiveLisoCategoryAdapter extends TypeAdapter<HiveLisoCategory> {
       ..write(obj.fields)
       ..writeByte(6)
       ..write(obj.reserved)
+      ..writeByte(8)
+      ..write(obj.deleted)
       ..writeByte(7)
       ..write(obj.metadata);
   }

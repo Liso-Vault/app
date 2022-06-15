@@ -6,7 +6,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
-import 'categories.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
@@ -27,17 +26,15 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final category = categoriesController.data[index];
 
+      void _delete() async {
+        category.metadata = await category.metadata!.getUpdated();
+        category.deleted = true;
+        await category.save();
+        Persistence.to.changes.val++;
+        categoriesController.load();
+      }
+
       void _confirmDelete() async {
-        void _delete() async {
-          // TODO: show the items binded to this group
-          // TODO: if user proceeds, these items will also be deleted
-
-          Get.back();
-          await CategoriesService.to.box!.delete(category.key);
-          Persistence.to.changes.val++;
-          categoriesController.load();
-        }
-
         final dialogContent = Text(
           'Are you sure you want to delete the category "${category.name}"?',
         );
@@ -49,7 +46,13 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
               : SizedBox(width: 450, child: dialogContent),
           actions: [
             TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
-            TextButton(onPressed: _delete, child: Text('confirm_delete'.tr)),
+            TextButton(
+              onPressed: () {
+                _delete();
+                Get.back();
+              },
+              child: Text('confirm_delete'.tr),
+            ),
           ],
         ));
       }

@@ -37,18 +37,25 @@ class HiveService extends GetxService with ConsoleMixin {
     Console(name: 'HiveService').info("init");
   }
 
-  Future<void> clear() async {
-    await ItemsService.to.clear();
-    await GroupsService.to.clear();
-    await CategoriesService.to.clear();
-    console.info('clear');
-  }
-
   Future<void> open() async {
     await ItemsService.to.open();
     await GroupsService.to.open();
     await CategoriesService.to.open();
     console.info('open');
+  }
+
+  Future<void> purge() async {
+    await ItemsService.to.box?.clear();
+    await GroupsService.to.box?.clear();
+    await CategoriesService.to.box?.clear();
+    console.info('purge');
+  }
+
+  Future<void> clear() async {
+    await ItemsService.to.clear();
+    await GroupsService.to.clear();
+    await CategoriesService.to.clear();
+    console.info('clear');
   }
 
   Future<void> close() async {

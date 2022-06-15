@@ -83,7 +83,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
           );
 
           if (items.isNotEmpty) {
-            await ItemsService.to.box.deleteAll(items.map((e) => e.key));
+            await ItemsService.to.box!.deleteAll(items.map((e) => e.key));
             console.wtf('permanently deleted');
           }
 

@@ -38,7 +38,7 @@ class CategoriesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> close() async {
-    await box!.close();
+    await box?.close();
     console.info('close');
   }
 
@@ -48,20 +48,17 @@ class CategoriesService extends GetxService with ConsoleMixin {
       return;
     }
 
-    await box!.clear();
+    await box?.clear();
     // refresh custom categories
     CategoriesController.to.load();
-    await box!.deleteFromDisk();
+    await box?.deleteFromDisk();
     console.info('clear');
   }
 
   Future<void> import(List<HiveLisoCategory> data,
       {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey, initialize: false);
-    box!.addAll(data);
-  }
-
-  Future<void> purge() async {
-    await box!.clear();
+    await box?.clear();
+    box?.addAll(data);
   }
 }

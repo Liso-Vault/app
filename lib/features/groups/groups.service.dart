@@ -43,13 +43,13 @@ class GroupsService extends GetxService with ConsoleMixin {
         .where((e) => GroupsController.to.reservedIds.contains(e.id))
         .map((e) => e.key);
 
-    await box!.deleteAll(groupsToDelete);
+    await box?.deleteAll(groupsToDelete);
     console.info('length: ${data.length}');
     GroupsController.to.load();
   }
 
   Future<void> close() async {
-    await box!.close();
+    await box?.close();
     console.info('close');
   }
 
@@ -59,19 +59,16 @@ class GroupsService extends GetxService with ConsoleMixin {
       return;
     }
 
-    await box!.clear();
+    await box?.clear();
     // refresh cusom vaults
     GroupsController.to.load();
-    await box!.deleteFromDisk();
+    await box?.deleteFromDisk();
     console.info('clear');
   }
 
   Future<void> import(List<HiveLisoGroup> data, {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey, initialize: false);
-    box!.addAll(data);
-  }
-
-  Future<void> purge() async {
-    await box!.clear();
+    await box?.clear();
+    box?.addAll(data);
   }
 }

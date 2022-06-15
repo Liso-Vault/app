@@ -9,10 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
-import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
@@ -22,9 +22,6 @@ import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/form_fields/password.field.dart';
-import 'features/categories/categories.service.dart';
-import 'features/items/items.controller.dart';
-import 'features/items/items.service.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
@@ -32,15 +29,18 @@ import 'core/services/local_auth.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/categories/categories.controller.dart';
+import 'features/categories/categories.service.dart';
 import 'features/connectivity/connectivity.service.dart';
-import 'features/debug/debug.screen.dart';
 import 'features/drawer/drawer_widget.controller.dart';
 import 'features/groups/groups.controller.dart';
+import 'features/items/items.controller.dart';
+import 'features/items/items.service.dart';
 import 'features/joined_vaults/joined_vault.controller.dart';
 import 'features/main/main_screen.controller.dart';
 import 'features/s3/explorer/s3_content_tile.controller.dart';
 import 'features/s3/s3.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
+import 'features/tags/tags_input.controller.dart';
 
 void init(Flavor flavor) async {
   Flavors.flavor = flavor;
@@ -85,7 +85,7 @@ void init(Flavor flavor) async {
     // create controllers
     Get.create(() => PasswordFormFieldController());
     Get.create(() => S3ContentTileController());
-    Get.create(() => ChipsInputController());
+    Get.create(() => TagsInputController());
 
     // initializations
     CrashlyticsService.to.init();

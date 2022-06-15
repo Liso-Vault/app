@@ -294,7 +294,7 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<void> _mergeItems(List<HiveLisoItem> server) async {
-    final local = ItemsService.to.box;
+    final local = ItemsService.to.box!;
     console
         .wtf('merged items local: ${local.length}, server: ${server.length}');
 

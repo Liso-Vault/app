@@ -241,9 +241,9 @@ class SettingsScreenController extends GetxController
 
       if (!unlocked) return;
       // clear database
-      await ItemsService.to.purge();
-      await GroupsService.to.purge();
-      await CategoriesService.to.purge();
+      await ItemsService.to.box?.clear();
+      await GroupsService.to.box?.clear();
+      await CategoriesService.to.box?.clear();
       // reload lists
       MainScreenController.to.load();
 

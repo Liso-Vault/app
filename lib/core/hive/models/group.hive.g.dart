@@ -22,6 +22,7 @@ class HiveLisoGroupAdapter extends TypeAdapter<HiveLisoGroup> {
       name: fields[2] as String,
       description: fields[3] as String,
       reserved: fields[4] as bool,
+      deleted: fields[6] as bool?,
       metadata: fields[5] as HiveMetadata?,
     );
   }
@@ -29,7 +30,7 @@ class HiveLisoGroupAdapter extends TypeAdapter<HiveLisoGroup> {
   @override
   void write(BinaryWriter writer, HiveLisoGroup obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -40,6 +41,8 @@ class HiveLisoGroupAdapter extends TypeAdapter<HiveLisoGroup> {
       ..write(obj.description)
       ..writeByte(4)
       ..write(obj.reserved)
+      ..writeByte(6)
+      ..write(obj.deleted)
       ..writeByte(5)
       ..write(obj.metadata);
   }

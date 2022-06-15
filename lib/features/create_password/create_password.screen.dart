@@ -110,9 +110,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        leading: const AppBarLeadingButton(),
-      ),
+      appBar: AppBar(leading: const AppBarLeadingButton()),
       body: Center(
         child: Container(
           constraints: Styles.containerConstraints,

@@ -81,19 +81,16 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
-    if (!isDisplayMode) {
-      Utils.adaptiveRouteOpen(
-        name: Routes.createPassword,
-        parameters: {
-          'seed': seed.value,
-          'from': 'seed_screen',
-        },
-      );
-    } else {
-      // display mode
-      Persistence.to.backedUpSeed.val = true;
-      Get.back();
-    }
+    Persistence.to.backedUpSeed.val = true;
+    if (isDisplayMode) return Get.back();
+
+    Utils.adaptiveRouteOpen(
+      name: Routes.createPassword,
+      parameters: {
+        'seed': seed.value,
+        'from': 'seed_screen',
+      },
+    );
   }
 
   void _showQR() {

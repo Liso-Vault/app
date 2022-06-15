@@ -10,6 +10,7 @@ New! Message/Text Signer in Wallet
 New! Encrypt & Decrypt Texts in Cipher Tool
 New! Font: Lato
 New! Export an unencrypted vault
+Fixed! Deleted custom vault is restored after sync
 Simplified! Creation of vault
 Improved! Mnemonic Seed Phrase Field
 Improved! Re-organized settings

@@ -19,6 +19,7 @@ import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/shared_vault.controller.dart';
+import '../tags/tags_input.widget.dart';
 import 'items.controller.dart';
 import 'items.service.dart';
 
@@ -49,7 +50,7 @@ class ItemScreenController extends GetxController
     LisoItemCategory.wirelessRouter,
   ].map((e) => e.name);
 
-  Set<String> tags = {};
+  // Set<String> tags = {};
   final iconUrl = ''.obs;
   final widgets = <Widget>[].obs;
 
@@ -61,6 +62,8 @@ class ItemScreenController extends GetxController
   final category = Get.parameters['category']!.obs;
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
+
+  TagsInput? tagsInput;
 
   // GETTERS
   HiveLisoCategory get categoryObject {
@@ -124,9 +127,9 @@ class ItemScreenController extends GetxController
       String name = vaultId;
       if (results.isNotEmpty) name = results.first.name;
 
-      return ActionChip(
+      return Chip(
         label: Text(name),
-        onPressed: () =>
+        onDeleted: () =>
             joinedVaultItem ? null : sharedVaultIds.remove(vaultId),
       );
     }).toList();
@@ -216,7 +219,7 @@ class ItemScreenController extends GetxController
   void _loadItem() {
     if (!joinedVaultItem) {
       final hiveKey = Get.parameters['hiveKey'].toString();
-      item = ItemsService.to.box.get(int.parse(hiveKey))!;
+      item = ItemsService.to.box!.get(int.parse(hiveKey))!;
     } else {
       final identifier = Get.parameters['identifier'].toString();
       item = VaultExplorerScreenController.to.data.firstWhere(
@@ -232,9 +235,13 @@ class ItemScreenController extends GetxController
     protected.value = item!.protected;
     reserved.value = item!.reserved;
     groupId.value = item!.groupId;
-    tags = item!.tags.toSet();
     attachments.value = List.from(item!.attachments);
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
+
+    tagsInput = TagsInput(
+      label: 'Tags',
+      data: item!.tags.toSet().toList(),
+    );
 
     // widgets.value = item!.widgets;
     widgets.value = item!.widgets
@@ -306,7 +313,7 @@ class ItemScreenController extends GetxController
       category: category.value,
       iconUrl: iconUrl.value,
       title: titleController.text,
-      tags: tags.toList(),
+      tags: tagsInput!.controller.data,
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
@@ -316,7 +323,7 @@ class ItemScreenController extends GetxController
       groupId: groupId.value,
     );
 
-    await ItemsService.to.box.add(newItem);
+    await ItemsService.to.box!.add(newItem);
     Persistence.to.changes.val++;
     ItemsController.to.load();
     Get.back();
@@ -339,7 +346,7 @@ class ItemScreenController extends GetxController
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
-    item!.tags = tags.toList();
+    item!.tags = tagsInput!.controller.data;
     item!.attachments = attachments;
     item!.sharedVaultIds = sharedVaultIds;
     item!.favorite = favorite.value;
@@ -430,7 +437,7 @@ class ItemScreenController extends GetxController
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
-      tags: tags.toList(),
+      tags: tagsInput!.controller.data,
       groupId: groupId.value,
       favorite: favorite.value,
       iconUrl: iconUrl.value,

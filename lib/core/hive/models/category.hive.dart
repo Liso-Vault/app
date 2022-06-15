@@ -24,6 +24,8 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
   List<HiveLisoField> fields;
   @HiveField(6)
   bool reserved;
+  @HiveField(8)
+  bool? deleted;
   @HiveField(7)
   HiveMetadata? metadata;
 
@@ -35,6 +37,7 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
     this.significant = '',
     this.fields = const [],
     this.reserved = false,
+    this.deleted = false,
     required this.metadata,
   });
 
@@ -49,6 +52,7 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
           json["fields"].map((x) => HiveLisoField.fromJson(x)),
         ),
         reserved: json["reserved"],
+        deleted: json["deleted"],
         metadata: json["metadata"] == null
             ? null
             : HiveMetadata.fromJson(json["metadata"]),
@@ -63,6 +67,7 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
       "significant": significant,
       "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
       "reserved": reserved,
+      "deleted": deleted,
       "metadata": metadata?.toJson(),
     };
   }

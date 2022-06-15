@@ -84,6 +84,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     // filters indicator in the bottom
     final filters = Wrap(
       runSpacing: 3,
+      spacing: 3,
       children: [
         const Text(
           'Filters: ',

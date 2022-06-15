@@ -1,4 +1,3 @@
-import 'package:chips_input/chips_input.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,65 +22,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ItemScreenController());
-
     final mode = Get.parameters['mode'].toString();
-    final chipsKey = GlobalKey<ChipsInputState>();
-
-    final tagsInput = ChipsInput<String>(
-      key: chipsKey,
-      controller: controller.tagsController,
-      maxChips: 5,
-      initialValue: controller.tags.toList(),
-      textCapitalization: TextCapitalization.words,
-      maxLength: 40,
-      decoration: InputDecoration(labelText: 'tags'.tr),
-      findSuggestions: controller.querySuggestions,
-      onChanged: (data) => controller.tags = data.toSet(),
-      readOnly: controller.joinedVaultItem,
-      // onEditingComplete: controller.querySubmitted,
-      // onEditingComplete: () async {
-      //   console.info('completed: ${controller.tagsController.text}');
-      //   // chipsKey.currentState!.addChip(controller.tagsController.text);
-      //   final options = await chipsKey.currentState!.widget.findSuggestions(
-      //       controller.tagsController.text.replaceAll(" ", ""));
-
-      //   console.info('first: ${options.first}');
-      //   chipsKey.currentState!.addChip(options.first);
-      //   console.info('completed: ${controller.tagsController.text}');
-      // },
-      chipBuilder: (context, state, tag) {
-        return InputChip(
-          key: ObjectKey(tag),
-          label: Text(tag),
-          onDeleted: () => state.deleteChip(tag),
-          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        );
-      },
-      suggestionBuilder: (context, tag) {
-        return ListTile(
-          key: ObjectKey(tag),
-          title: Text(tag.toString()),
-          subtitle: Text(tag.toString()),
-        );
-      },
-      optionsViewBuilder: (context, onSelected, options) {
-        return Material(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: options.length,
-            itemBuilder: (context, index) {
-              final tag = options.elementAt(index);
-
-              return ListTile(
-                key: ObjectKey(tag),
-                title: Text(tag),
-                onTap: () => onSelected(tag),
-              );
-            },
-          ),
-        );
-      },
-    );
 
     final items = [
       Row(
@@ -138,7 +79,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      tagsInput, // TAGS
+      controller.tagsInput, // TAGS
       const SizedBox(height: 10),
       ListTile(
         title: Obx(() => Text('${controller.attachments.length} Attachments')),
@@ -267,7 +208,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         shrinkWrap: true,
         itemCount: items.length,
         padding: const EdgeInsets.all(30),
-        itemBuilder: (context, index) => items[index],
+        itemBuilder: (context, index) => items[index]!,
       ),
     );
 

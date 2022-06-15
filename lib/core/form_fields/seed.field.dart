@@ -9,16 +9,17 @@ class SeedFormField extends StatelessWidget {
   SeedFormField(this.field, {Key? key}) : super(key: key);
 
   // VARIABLES
-  final _fieldController = TextEditingController();
+  TextEditingController? _fieldController;
 
   // GETTERS
-  String get value => _fieldController.text;
+  String get value => _fieldController!.text;
 
   @override
   Widget build(BuildContext context) {
+    _fieldController = TextEditingController(text: field.data.value ?? '');
+
     return SeedField(
       fieldController: _fieldController,
-      initialValue: field.data.value ?? '',
       readOnly: field.readOnly,
       required: field.required,
     );

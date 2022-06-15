@@ -42,10 +42,10 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
           const SizedBox(height: 20),
           Obx(
             () => CupertinoSegmentedControl<RestoreMode>(
-              groupValue: controller.importMode.value,
-              onValueChanged: (value) => controller.importMode.value = value,
+              groupValue: controller.restoreMode.value,
+              onValueChanged: (value) => controller.restoreMode.value = value,
               children: {
-                RestoreMode.liso: SegmentedControlItem(
+                RestoreMode.cloud: SegmentedControlItem(
                   text: '${ConfigService.to.appName} Cloud',
                   iconData: Iconsax.cloud,
                 ),
@@ -58,7 +58,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
           ),
           const SizedBox(height: 10),
           Obx(() {
-            if (controller.importMode() == RestoreMode.file) {
+            if (controller.restoreMode.value == RestoreMode.file) {
               return Row(
                 children: [
                   Expanded(
@@ -78,7 +78,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ],
               );
-            } else if (controller.importMode() == RestoreMode.liso) {
+            } else if (controller.restoreMode.value == RestoreMode.cloud) {
               return PersistenceBuilder(builder: (_, context) {
                 return Column(
                   children: [
@@ -98,7 +98,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
           }),
           SeedField(
             fieldController: controller.seedController,
-            onFieldSubmitted: (text) => controller.continuePressed,
+            onFieldSubmitted: (text) => controller.continuePressed(),
             showGenerate: false,
           ),
           const SizedBox(height: 20),

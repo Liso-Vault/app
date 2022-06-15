@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
 import '../../core/persistence/persistence.dart';
@@ -22,23 +21,23 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(GroupsScreenController());
-    final vaultsController = Get.find<GroupsController>();
+    final groupsController = Get.find<GroupsController>();
 
     Widget itemBuilder(context, index) {
-      final vault = vaultsController.data[index];
+      final group = groupsController.data[index];
+
+      void _delete() async {
+        group.metadata = await group.metadata!.getUpdated();
+        group.deleted = true;
+        await group.save();
+        Persistence.to.changes.val++;
+        groupsController.load();
+        console.info('deleted');
+      }
 
       void _confirmDelete() async {
-        void _delete() async {
-          // TODO: show the items binded to this group
-          // TODO: if user proceeds, these items will also be deleted
-          Get.back();
-          await GroupsService.to.box!.delete(vault.key);
-          Persistence.to.changes.val++;
-          vaultsController.load();
-        }
-
         final dialogContent = Text(
-          'Are you sure you want to delete the custom vault "${vault.name}"?',
+          'Are you sure you want to delete the custom vault "${group.name}"?',
         );
 
         Get.dialog(AlertDialog(
@@ -55,7 +54,10 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
               child: Text('cancel'.tr),
             ),
             TextButton(
-              onPressed: _delete,
+              onPressed: () {
+                _delete();
+                Get.back();
+              },
               child: Text('confirm_delete'.tr),
             ),
           ],
@@ -71,15 +73,15 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
       ];
 
       return ListTile(
-        enabled: !vault.isReserved,
-        title: Text(vault.reservedName),
-        subtitle: vault.reservedDescription.isNotEmpty
-            ? Text(vault.reservedDescription)
+        enabled: !group.isReserved,
+        title: Text(group.reservedName),
+        subtitle: group.reservedDescription.isNotEmpty
+            ? Text(group.reservedDescription)
             : null,
-        leading: vault.iconUrl.isEmpty
+        leading: group.iconUrl.isEmpty
             ? const Icon(Iconsax.briefcase)
             : RemoteImage(
-                url: vault.iconUrl,
+                url: group.iconUrl,
                 width: 35,
                 alignment: Alignment.centerLeft,
               ),
@@ -93,13 +95,13 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
     final listView = Obx(
       () => ListView.builder(
         shrinkWrap: true,
-        itemCount: vaultsController.data.length,
+        itemCount: groupsController.data.length,
         itemBuilder: itemBuilder,
         physics: const AlwaysScrollableScrollPhysics(),
       ),
     );
 
-    final content = vaultsController.obx(
+    final content = groupsController.obx(
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(

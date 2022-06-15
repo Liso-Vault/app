@@ -14,16 +14,14 @@ import '../app/routes.dart';
 import '../menu/menu.item.dart';
 
 class SeedField extends StatelessWidget with ConsoleMixin {
-  final String initialValue;
   final bool required;
   final bool showGenerate;
   final bool readOnly;
-  final TextEditingController fieldController;
+  final TextEditingController? fieldController;
   final Function(String)? onFieldSubmitted;
 
   SeedField({
     Key? key,
-    this.initialValue = '',
     this.required = true,
     this.showGenerate = true,
     this.readOnly = false,
@@ -31,8 +29,8 @@ class SeedField extends StatelessWidget with ConsoleMixin {
     this.onFieldSubmitted,
   }) : super(key: key);
 
-  String? get value => bip39.validateMnemonic(fieldController.text)
-      ? fieldController.text
+  String? get value => bip39.validateMnemonic(fieldController!.text)
+      ? fieldController!.text
       : null;
 
   final blur = true.obs;
@@ -44,7 +42,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
     );
 
     if (seed == null) return;
-    fieldController.text = seed;
+    fieldController!.text = seed;
     blur.value = false;
   }
 
@@ -76,7 +74,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
         title: 'QR Code',
         leading: const Icon(Iconsax.barcode),
         onSelected: () => UIUtils.showQR(
-          fieldController.text,
+          fieldController!.text,
           title: 'Your Seed QR Code',
           subTitle:
               "Make sure you're in a safe location and free from prying eyes",
@@ -85,15 +83,14 @@ class SeedField extends StatelessWidget with ConsoleMixin {
       ContextMenuItem(
         title: 'Copy',
         leading: const Icon(Iconsax.copy),
-        onSelected: () => Utils.copyToClipboard(fieldController.text),
+        onSelected: () => Utils.copyToClipboard(fieldController!.text),
       ),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    fieldController.text = initialValue;
-    blur.value = initialValue.isNotEmpty;
+    blur.value = fieldController!.text.isNotEmpty;
 
     final field = TextFormField(
       controller: fieldController,

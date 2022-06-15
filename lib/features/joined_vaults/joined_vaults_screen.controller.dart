@@ -220,7 +220,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     }).toList();
 
     // save cipher key as a liso item
-    await ItemsService.to.box.add(HiveLisoItem(
+    await ItemsService.to.box!.add(HiveLisoItem(
       identifier: vault.docId,
       groupId: 'secrets', // TODO: use enums for reserved groups
       category: category.id,

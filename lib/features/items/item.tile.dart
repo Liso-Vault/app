@@ -63,7 +63,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     copy.identifier = const Uuid().v4();
     copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
-    await ItemsService.to.box.add(copy);
+    await ItemsService.to.box!.add(copy);
     Persistence.to.changes.val++;
     ItemsController.to.load();
   }

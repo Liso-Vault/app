@@ -19,6 +19,8 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
   final String description;
   @HiveField(4)
   bool reserved;
+  @HiveField(6)
+  bool? deleted;
   @HiveField(5)
   HiveMetadata? metadata;
 
@@ -28,6 +30,7 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
     required this.name,
     this.description = '',
     this.reserved = false,
+    this.deleted = false,
     required this.metadata,
   });
 
@@ -37,6 +40,7 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
         name: json["name"],
         description: json["description"],
         reserved: json["reserved"],
+        deleted: json["deleted"],
         metadata: json["metadata"] == null
             ? null
             : HiveMetadata.fromJson(json["metadata"]),
@@ -49,6 +53,7 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
       "name": name,
       "description": description,
       "reserved": reserved,
+      "deleted": deleted,
       "metadata": metadata?.toJson(),
     };
   }

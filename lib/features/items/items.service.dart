@@ -20,11 +20,12 @@ class ItemsService extends GetxService with ConsoleMixin {
   static ItemsService get to => Get.find<ItemsService>();
 
   // VARIABLES
-  late Box<HiveLisoItem> box;
+  Box<HiveLisoItem>? box;
   bool boxInitialized = false;
 
   // GETTERS
-  List<HiveLisoItem> get data => box.isOpen ? box.values.toList() : [];
+  List<HiveLisoItem> get data =>
+      box != null && box!.isOpen ? box!.values.toList() : [];
 
   bool get itemLimitReached => data.length >= WalletService.to.limits.items;
 
@@ -45,7 +46,7 @@ class ItemsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> close() async {
-    await box.close();
+    await box?.close();
     console.info('close');
   }
 
@@ -55,10 +56,10 @@ class ItemsService extends GetxService with ConsoleMixin {
       return;
     }
 
-    await box.clear();
+    await box?.clear();
     // refresh main listview
     await ItemsController.to.load();
-    await box.deleteFromDisk();
+    await box?.deleteFromDisk();
     console.info('clear');
   }
 
@@ -71,7 +72,8 @@ class ItemsService extends GetxService with ConsoleMixin {
 
   Future<void> import(List<HiveLisoItem> data, {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey);
-    box.addAll(data);
+    await box?.clear();
+    box?.addAll(data);
   }
 
   Future<File> export({required String path, bool encrypt = true}) async {
@@ -99,9 +101,5 @@ class ItemsService extends GetxService with ConsoleMixin {
     );
 
     return Right(field.data.value!);
-  }
-
-  Future<void> purge() async {
-    await box.clear();
   }
 }
