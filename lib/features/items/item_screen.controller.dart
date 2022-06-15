@@ -50,7 +50,6 @@ class ItemScreenController extends GetxController
     LisoItemCategory.wirelessRouter,
   ].map((e) => e.name);
 
-  // Set<String> tags = {};
   final iconUrl = ''.obs;
   final widgets = <Widget>[].obs;
 
@@ -63,7 +62,10 @@ class ItemScreenController extends GetxController
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
 
-  TagsInput? tagsInput;
+  final tagsInput = const TagsInput(
+    data: [],
+    label: '',
+  ).obs;
 
   // GETTERS
   HiveLisoCategory get categoryObject {
@@ -238,7 +240,7 @@ class ItemScreenController extends GetxController
     attachments.value = List.from(item!.attachments);
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
 
-    tagsInput = TagsInput(
+    tagsInput.value = TagsInput(
       label: 'Tags',
       data: item!.tags.toSet().toList(),
     );
@@ -313,7 +315,7 @@ class ItemScreenController extends GetxController
       category: category.value,
       iconUrl: iconUrl.value,
       title: titleController.text,
-      tags: tagsInput!.controller.data,
+      tags: tagsInput.value.controller.data,
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
@@ -346,7 +348,7 @@ class ItemScreenController extends GetxController
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
     item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
-    item!.tags = tagsInput!.controller.data;
+    item!.tags = tagsInput.value.controller.data;
     item!.attachments = attachments;
     item!.sharedVaultIds = sharedVaultIds;
     item!.favorite = favorite.value;
@@ -437,7 +439,7 @@ class ItemScreenController extends GetxController
       fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
-      tags: tagsInput!.controller.data,
+      tags: tagsInput.value.controller.data,
       groupId: groupId.value,
       favorite: favorite.value,
       iconUrl: iconUrl.value,

@@ -79,7 +79,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      controller.tagsInput, // TAGS
+      Obx(() => controller.tagsInput.value), // TAGS
       const SizedBox(height: 10),
       ListTile(
         title: Obx(() => Text('${controller.attachments.length} Attachments')),
@@ -208,7 +208,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         shrinkWrap: true,
         itemCount: items.length,
         padding: const EdgeInsets.all(30),
-        itemBuilder: (context, index) => items[index]!,
+        itemBuilder: (context, index) => items[index],
       ),
     );
 

@@ -13,11 +13,11 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
   @HiveField(0)
   final String id;
   @HiveField(1)
-  final String iconUrl;
+  String iconUrl;
   @HiveField(2)
-  final String name;
+  String name;
   @HiveField(3)
-  final String description;
+  String description;
   @HiveField(4)
   String significant;
   @HiveField(5)

@@ -30,8 +30,10 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   static SharedVaultsScreenController get to => Get.find();
 
   // VARIABLES
-
-  // PROPERTIES
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
+  final cipherKeyController = TextEditingController();
 
   // PROPERTIES
 
@@ -53,11 +55,6 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void create() async {
-    final formKey = GlobalKey<FormState>();
-    final nameController = TextEditingController();
-    final descriptionController = TextEditingController();
-    final cipherKeyController = TextEditingController();
-
     void _create() async {
       if (!formKey.currentState!.validate()) return;
 

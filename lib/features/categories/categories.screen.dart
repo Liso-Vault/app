@@ -66,6 +66,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
       ];
 
       return ListTile(
+        onTap: () => controller.edit(category),
         enabled: !category.isReserved,
         title: Text(category.reservedName),
         subtitle: category.reservedDescription.isNotEmpty

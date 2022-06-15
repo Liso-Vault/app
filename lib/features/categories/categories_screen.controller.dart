@@ -18,8 +18,13 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
   static CategoriesScreenController get to => Get.find();
 
   // VARIABLES
+  final formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final descriptionController = TextEditingController();
 
-  // PROPERTIES
+  HiveLisoCategory? object;
+  HiveLisoCategory? template;
+  bool createMode = true;
 
   // PROPERTIES
 
@@ -29,14 +34,50 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
 
   // FUNCTIONS
 
+  void edit(HiveLisoCategory object_) async {
+    createMode = false;
+    object = object_;
+    nameController.text = object!.name;
+    descriptionController.text = object!.description;
+    _showForm();
+  }
+
   void create() async {
-    final formKey = GlobalKey<FormState>();
-    final nameController = TextEditingController();
-    final descriptionController = TextEditingController();
-    HiveLisoCategory? category;
+    createMode = true;
+    object = null;
+    nameController.clear();
+    descriptionController.clear();
+    _showForm();
+  }
+
+  void _showForm() async {
+    void _done() {
+      Persistence.to.changes.val++;
+      CategoriesController.to.load();
+
+      NotificationsManager.notify(
+        title: 'Category ${createMode ? 'Created' : 'Updated'}',
+        body: nameController.text,
+      );
+
+      Get.back();
+    }
 
     void _create() async {
       if (!formKey.currentState!.validate()) return;
+
+      final exists = CategoriesController.to.combined
+          .where((e) => e.name == nameController.text)
+          .isNotEmpty;
+
+      if (exists) {
+        Get.back();
+
+        return UIUtils.showSimpleDialog(
+          'Category Already Exists',
+          '"${nameController.text}" already exists.',
+        );
+      }
 
       if (CategoriesController.to.data.length >=
           WalletService.to.limits.customCategories) {
@@ -53,95 +94,88 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         id: const Uuid().v4(),
         name: nameController.text,
         description: descriptionController.text,
+        fields: template!.fields,
+        significant: template!.significant,
         metadata: await HiveMetadata.get(),
-        fields: category!.fields,
-        significant: category!.significant,
       ));
 
-      Persistence.to.changes.val++;
-      CategoriesController.to.load();
-
-      NotificationsManager.notify(
-        title: 'Category Created',
-        body: nameController.text,
-      );
+      _done();
     }
 
-    final content = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TextFormField(
-          controller: nameController,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          maxLength: 30,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (data) {
-            if (data!.isNotEmpty) return null;
-            return 'Invalid Name';
-          },
-          decoration: const InputDecoration(
-            labelText: 'Name',
-            hintText: 'Category Name',
+    void _edit() async {
+      if (!formKey.currentState!.validate()) return;
+      object!.name = nameController.text;
+      object!.description = descriptionController.text;
+      object!.fields = template!.fields;
+      object!.significant = template!.significant;
+      object!.metadata = await HiveMetadata.get();
+      object!.save();
+      _done();
+    }
+
+    final content = Form(
+      key: formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          TextFormField(
+            controller: nameController,
+            autofocus: true,
+            textCapitalization: TextCapitalization.sentences,
+            maxLength: 30,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (data) {
+              if (data!.isNotEmpty) return null;
+              return 'Invalid Name';
+            },
+            decoration: const InputDecoration(
+              labelText: 'Name',
+              hintText: 'Category Name',
+            ),
           ),
-        ),
-        TextFormField(
-          controller: descriptionController,
-          autofocus: true,
-          textCapitalization: TextCapitalization.sentences,
-          maxLength: 100,
-          decoration: const InputDecoration(
-            labelText: 'Description',
-            hintText: 'optional',
+          TextFormField(
+            controller: descriptionController,
+            autofocus: true,
+            textCapitalization: TextCapitalization.sentences,
+            maxLength: 100,
+            decoration: const InputDecoration(
+              labelText: 'Description',
+              hintText: 'optional',
+            ),
           ),
-        ),
-        DropdownButtonFormField<HiveLisoCategory>(
-          isExpanded: true,
-          // value: controller.category.value,
-          onChanged: (value) => category = value!,
-          decoration: const InputDecoration(labelText: 'Template'),
-          items: [
-            ...CategoriesController.to.combined
+          DropdownButtonFormField<HiveLisoCategory>(
+            isExpanded: true,
+            onChanged: (value) => template = value!,
+            decoration: const InputDecoration(labelText: 'Template'),
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (data) {
+              if (data != null) return null;
+              return 'Required';
+            },
+            items: CategoriesController.to.combined
                 .map((e) => DropdownMenuItem<HiveLisoCategory>(
                       value: e,
                       child: Text(e.reservedName),
                     ))
-                .toList()
-          ],
-        ),
-      ],
+                .toList(),
+          ),
+        ],
+      ),
     );
 
     Get.dialog(AlertDialog(
-      title: Text('new_category'.tr),
-      content: Form(
-        key: formKey,
-        child: Utils.isDrawerExpandable
-            ? content
-            : SizedBox(width: 450, child: content),
-      ),
+      title: Text('${createMode ? 'new' : 'update'}_category'.tr),
+      content: Utils.isDrawerExpandable
+          ? content
+          : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,
           child: Text('cancel'.tr),
         ),
         TextButton(
-          child: Text('create'.tr),
-          onPressed: () {
-            final exists = CategoriesController.to.combined
-                .where((e) => e.name == nameController.text)
-                .isNotEmpty;
-
-            if (!exists) {
-              Get.back();
-              _create();
-            } else {
-              UIUtils.showSimpleDialog(
-                'Category Already Exists',
-                '"${nameController.text}" already exists.',
-              );
-            }
-          },
+          onPressed: createMode ? _create : _edit,
+          child: Text(createMode ? 'create' : 'update'.tr),
         ),
       ],
     ));

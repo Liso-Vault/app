@@ -118,7 +118,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(group.reservedName),
+              Expanded(
+                child: Text(
+                  group.reservedName,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               if (count > 0) ...[
                 Chip(label: Text(count.toString())),
               ],
@@ -142,7 +147,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(vault.name),
+                      Expanded(
+                        child: Text(
+                          vault.name,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                       if (count > 0) ...[
                         Chip(label: Text(count.toString())),
                       ],
@@ -179,7 +189,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(vault.name),
+                      Expanded(
+                        child: Text(
+                          vault.name,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                       if (count > 0) ...[
                         Chip(label: Text(count.toString())),
                       ],
@@ -212,7 +227,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
           .map((category) {
         return Obx(
           () => ListTile(
-            title: Text(category.reservedName),
+            title: Text(category.reservedName, overflow: TextOverflow.ellipsis),
             leading: Utils.categoryIcon(category.id),
             selected: category.id == filterCategory.value,
             onTap: () => filterByCategory(category.id),
@@ -224,7 +239,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       .map(
         (e) => Obx(
           () => ListTile(
-            title: Text(e),
+            title: Text(e, overflow: TextOverflow.ellipsis),
             leading: const Icon(Iconsax.tag),
             onTap: () => filterByTag(e),
             selected: e == filterTag.value,

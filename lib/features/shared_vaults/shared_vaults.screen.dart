@@ -40,6 +40,10 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final vault = sharedController.data[index];
 
+      void _open() async {
+        //
+      }
+
       void _confirmDelete() {
         void _delete() async {
           Get.back();
@@ -222,6 +226,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
       ];
 
       return ListTile(
+        onTap: _open,
         title: Text(vault.name),
         subtitle: vault.description.isNotEmpty ? Text(vault.description) : null,
         leading: vault.iconUrl.isEmpty

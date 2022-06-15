@@ -33,6 +33,11 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final vault = joinedController.data[index];
 
+      void _open() async {
+        VaultExplorerScreenController.vault = vault;
+        Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
+      }
+
       void _confirmLeave() {
         void _leave() async {
           // TODO: delete self as member
@@ -125,6 +130,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
       ];
 
       return ListTile(
+        onTap: _open,
         title: Text(vault.name),
         subtitle: vault.description.isNotEmpty ? Text(vault.description) : null,
         leading: vault.iconUrl.isEmpty
@@ -138,10 +144,6 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),
         ),
-        onTap: () {
-          VaultExplorerScreenController.vault = vault;
-          Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
-        },
       );
     }
 

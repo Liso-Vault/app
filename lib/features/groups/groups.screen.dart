@@ -73,6 +73,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
       ];
 
       return ListTile(
+        onTap: () => controller.edit(group),
         enabled: !group.isReserved,
         title: Text(group.reservedName),
         subtitle: group.reservedDescription.isNotEmpty
