@@ -34,7 +34,7 @@ final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
-final isLocalAuthSupported = GetPlatform.isWindows || GetPlatform.isMobile;
+final isLocalAuthSupported = GetPlatform.isMobile;
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 
 const kCipherKeySignatureMessage = 'liso';

@@ -21,7 +21,7 @@ class AuthService extends GetxService with ConsoleMixin {
   // GETTERS
   User? get user => instance.currentUser;
 
-  bool get isSignedIn => user != null;
+  bool get isSignedIn => isFirebaseSupported && user != null;
 
   String get userId => user!.uid;
 

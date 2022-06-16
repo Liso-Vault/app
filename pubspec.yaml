@@ -71,14 +71,13 @@ dependencies:
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2
   flutter_local_notifications: ^9.6.0
-  permission_handler: ^9.2.0 # managing permissions
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
   share_plus: ^4.0.8 # exporting files and sharing texts
   equatable: ^2.0.3
   app_settings: ^4.1.8
   uuid: ^3.0.6 # unique identifiers for items
-  window_manager: ^0.2.5 # set desktop window size
+  window_manager: ^0.2.3 # set desktop window size
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
   console_mixin: ^0.0.1 # logger
   random_string_generator: ^2.0.0

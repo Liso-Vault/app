@@ -62,14 +62,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 subtitle: const Text("Keep multiple devices in sync"),
                 onChanged: (value) => persistence.sync.val = value,
               ),
-              if (persistence.sync.val && isFirebaseSupported) ...[
-                ListTile(
-                  leading: Icon(Iconsax.cpu, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                  title: const Text('Devices'),
-                  subtitle: const Text('Manage your synced devices'),
-                  onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
-                ),
+              if (persistence.sync.val) ...[
                 ListTile(
                   leading: Icon(Iconsax.setting, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
@@ -79,6 +72,15 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     name: Routes.syncProvider,
                   ),
                 ),
+                if (isFirebaseSupported) ...[
+                  ListTile(
+                    leading: Icon(Iconsax.cpu, color: themeColor),
+                    trailing: const Icon(Iconsax.arrow_right_3),
+                    title: const Text('Devices'),
+                    subtitle: const Text('Manage your synced devices'),
+                    onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
+                  ),
+                ]
               ],
             ],
           );
