@@ -263,6 +263,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           title: Text('${'reset'.tr} ${config.appName}'),
           subtitle: const Text('Delete local vault and logout'),
           onTap: controller.reset,
+          onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),
         ),
         if (kDebugMode) ...[
           ListTile(

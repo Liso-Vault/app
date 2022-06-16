@@ -174,9 +174,7 @@ class WalletService extends GetxService with ConsoleMixin {
   }) async {
     final messageBytes = Uint8List.fromList(utf8.encode(message));
     final privateKeyHex = HEX.encode(privateKey_ ?? privateKey);
-
-    console.info('message: $message');
-    console.warning('privateKeyHex: $privateKeyHex');
+    // console.info('message: $message');
 
     final signature = EthSigUtil.signMessage(
       privateKey: privateKeyHex,

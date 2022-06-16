@@ -111,7 +111,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
         final count = ItemsController.to.raw
-            .where((item) => item.groupId == group.id && !item.deleted)
+            .where((item) =>
+                item.groupId == group.id && !item.deleted && !item.trashed)
             .length;
 
         return ListTile(

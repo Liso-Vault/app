@@ -91,12 +91,19 @@ android {
             dimension "app"
             applicationId "com.liso.app.debug"
             resValue "string", "app_name", "Liso Debug"
+            firebaseCrashlytics {
+                mappingFileUploadEnabled false
+            }
         }
 
         production {
             dimension "app"
             applicationId "com.liso.app"
             resValue "string", "app_name", "Liso"
+
+            firebaseCrashlytics {
+                mappingFileUploadEnabled true
+            }
         }
     }
 }

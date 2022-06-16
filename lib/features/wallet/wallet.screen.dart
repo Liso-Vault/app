@@ -73,10 +73,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                   ),
                   const Text(
                     'TOTAL BALANCE',
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 10,
-                    ),
+                    style: TextStyle(color: Colors.grey, fontSize: 10),
                   ),
                 ],
               ),

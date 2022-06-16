@@ -4,7 +4,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -76,9 +75,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Debug'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            // AppSettings.openSecuritySettings();
-            // AppSettings.openLockAndPasswordSettings();
-            Persistence.to.backedUpSeed.val = false;
+            throw Exception('Test Exception! Release: $kReleaseMode');
           },
         ),
         ListTile(

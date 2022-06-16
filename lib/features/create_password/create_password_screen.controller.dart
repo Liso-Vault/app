@@ -8,6 +8,7 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/auth.service.dart';
+import '../../core/persistence/persistence.dart';
 
 class CreatePasswordScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -69,6 +70,8 @@ class CreatePasswordScreenController extends GetxController
     }
 
     change(null, status: RxStatus.success());
+    Persistence.to.backedUpSeed.val =
+        Get.parameters['from'] == 'restore_screen';
     final isNewVault = Get.parameters['from'] == 'seed_screen';
 
     await WalletService.to.create(
