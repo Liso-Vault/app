@@ -40,7 +40,7 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
         name: json["name"],
         description: json["description"],
         reserved: json["reserved"],
-        deleted: json["deleted"],
+        deleted: json["deleted"] ?? false,
         metadata: json["metadata"] == null
             ? null
             : HiveMetadata.fromJson(json["metadata"]),
@@ -53,7 +53,7 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
       "name": name,
       "description": description,
       "reserved": reserved,
-      "deleted": deleted,
+      "deleted": deleted ?? false,
       "metadata": metadata?.toJson(),
     };
   }

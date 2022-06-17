@@ -128,8 +128,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   selected: controller.filterTrashed(),
                 ),
               ),
-              if (kDebugMode || Persistence.to.proTester.val) ...[
-                Obx(
+              PersistenceBuilder(builder: (_, context) {
+                if (!Persistence.to.proTester.val) {
+                  return const SizedBox.shrink();
+                }
+
+                return Obx(
                   () => ListTile(
                     selected: controller.filterDeleted(),
                     selectedColor: Colors.red,
@@ -145,8 +149,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       ],
                     ),
                   ),
-                ),
-              ]
+                );
+              }),
             ],
           ),
           ExpansionTile(

@@ -54,6 +54,9 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
     void _done() {
       Persistence.to.changes.val++;
       CategoriesController.to.load();
+      // clear fields
+      nameController.clear();
+      descriptionController.clear();
 
       NotificationsManager.notify(
         title: 'Category ${createMode ? 'Created' : 'Updated'}',

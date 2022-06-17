@@ -46,31 +46,15 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
 
       return ListTile(
         title: Text(device.model),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              device.id,
-              style: const TextStyle(fontSize: 12),
-            ),
-            if (isThisDevice) ...[
-              Row(
-                children: [
-                  Icon(LineIcons.check, color: themeColor, size: 15),
-                  const SizedBox(width: 5),
-                  Text(
-                    'This device',
-                    style: TextStyle(color: themeColor),
-                  ),
-                ],
-              )
-            ]
-          ],
-        ),
-        leading: Icon(isThisDevice ? Iconsax.cpu : LineIcons.syncIcon),
+        selected: isThisDevice,
+        leading: Icon(isThisDevice ? LineIcons.check : LineIcons.laptop),
         trailing: ContextMenuButton(
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),
+        ),
+        subtitle: Text(
+          device.id,
+          style: const TextStyle(fontSize: 12),
         ),
         onTap: () {
           //

@@ -53,6 +53,9 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
     void _done() {
       Persistence.to.changes.val++;
       GroupsController.to.load();
+      // clear fields
+      nameController.clear();
+      descriptionController.clear();
 
       NotificationsManager.notify(
         title: 'Custom Vault ${createMode ? 'Created' : 'Updated'}',

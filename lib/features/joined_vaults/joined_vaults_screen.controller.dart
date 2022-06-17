@@ -235,6 +235,8 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     // reload main screen
     ItemsController.to.load();
     console.wtf('created liso item');
+    vaultIdController.clear();
+    cipherKeyController.clear();
 
     // send notification
     NotificationsManager.notify(

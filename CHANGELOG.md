@@ -1,3 +1,9 @@
+## 0.5.1
+Potential screen lock auth fix for older android devices
+Permently delete items feature
+Auto clear fields after managing vaults & categories
+
+
 ## 0.5.0
 New! Custom Categories
 New! Re-orderable Fields

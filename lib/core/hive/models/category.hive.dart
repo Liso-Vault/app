@@ -52,7 +52,7 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
           json["fields"].map((x) => HiveLisoField.fromJson(x)),
         ),
         reserved: json["reserved"],
-        deleted: json["deleted"],
+        deleted: json["deleted"] ?? false,
         metadata: json["metadata"] == null
             ? null
             : HiveMetadata.fromJson(json["metadata"]),
@@ -67,7 +67,7 @@ class HiveLisoCategory extends HiveObject with EquatableMixin {
       "significant": significant,
       "fields": List<dynamic>.from(fields.map((x) => x.toJson())),
       "reserved": reserved,
-      "deleted": deleted,
+      "deleted": deleted ?? false,
       "metadata": metadata?.toJson(),
     };
   }
