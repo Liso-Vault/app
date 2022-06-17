@@ -86,10 +86,17 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }
 
   void _delete() async {
-    item.fields = ItemsService.to.data[1].fields;
+    item.deleted = true;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
     Persistence.to.changes.val++;
+    ItemsController.to.load();
+  }
+
+  void _permaDelete() async {
+    Persistence.to.addToDeletedItems(item.identifier);
+    Persistence.to.changes.val++;
+    await item.delete();
     ItemsController.to.load();
   }
 
@@ -102,10 +109,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       title: Text('delete'.tr),
       content: Utils.isDrawerExpandable
           ? dialogContent
-          : const SizedBox(
-              width: 450,
-              child: dialogContent,
-            ),
+          : const SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -114,7 +118,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         TextButton(
           onPressed: () {
             Get.back();
-            _delete();
+
+            if (!item.deleted) {
+              _delete();
+            } else {
+              _permaDelete();
+            }
           },
           child: Text('delete'.tr),
         ),
@@ -145,11 +154,19 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             leading: const Icon(Iconsax.refresh),
             onSelected: _restore,
           ),
-          ContextMenuItem(
-            title: 'delete'.tr,
-            leading: const Icon(Iconsax.trash),
-            onSelected: _confirmDelete,
-          ),
+          if (!item.deleted) ...[
+            ContextMenuItem(
+              title: 'delete'.tr,
+              leading: const Icon(Iconsax.trash),
+              onSelected: _confirmDelete,
+            ),
+          ] else ...[
+            ContextMenuItem(
+              title: 'Permanent Delete',
+              leading: const Icon(Iconsax.trash),
+              onSelected: _confirmDelete,
+            ),
+          ]
         ] else ...[
           ContextMenuItem(
             title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,

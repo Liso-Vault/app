@@ -215,35 +215,31 @@ class S3Service extends GetxService with ConsoleMixin {
     final jsonMap = jsonDecode(decryptedJson); // TODO: isolate
     final vault = LisoVault.fromJson(jsonMap);
     _syncProgress(0.4, null);
-    await _mergeGroups(vault.groups);
-    await _mergeCategories(vault.categories ?? []);
-    await _mergeItems(vault.items);
+    await _mergeGroups(vault);
+    await _mergeCategories(vault);
+    await _mergeItems(vault);
     return const Right(true);
   }
 
-  Future<void> _mergeGroups(List<HiveLisoGroup> server) async {
+  Future<void> _mergeGroups(LisoVault vault) async {
+    final server = vault.groups;
     final local = GroupsService.to.box!;
     console
         .wtf('merged groups local: ${local.length}, server: ${server.length}');
 
     // merge server and local items
     final merged = [...server, ...local.values];
-    // sort all from most to least updated time
-    merged.sort(
-      (a, b) {
-        if (a.reserved ||
-            b.reserved ||
-            a.metadata == null ||
-            b.metadata == null) {
-          return 0;
-        }
-
-        return b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime);
-      },
-    );
-
     // TODO: temporarily remove previously added groups
     merged.removeWhere((e) => GroupsController.to.reservedIds.contains(e.id));
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
+    );
+
+    // remove permanently flagged deleted items
+    final deletedIds =
+        (vault.persistence['deleted-group-ids'] ?? '').split(',');
+    merged.removeWhere((e) => deletedIds.contains(e.id));
 
     // leave only the most updated items
     final newList = <HiveLisoGroup>[];
@@ -259,7 +255,8 @@ class S3Service extends GetxService with ConsoleMixin {
     await local.addAll(newList);
   }
 
-  Future<void> _mergeCategories(List<HiveLisoCategory> server) async {
+  Future<void> _mergeCategories(LisoVault vault) async {
+    final server = vault.categories ?? [];
     final local = CategoriesService.to.box!;
     console.wtf(
         'merged categories local: ${local.length}, server: ${server.length}');
@@ -267,17 +264,13 @@ class S3Service extends GetxService with ConsoleMixin {
     final merged = [...server, ...local.values];
     // sort all from most to least updated time
     merged.sort(
-      (a, b) {
-        if (a.reserved ||
-            b.reserved ||
-            a.metadata == null ||
-            b.metadata == null) {
-          return 0;
-        }
-
-        return b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime);
-      },
+      (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
     );
+
+    // remove permanently flagged deleted items
+    final deletedIds =
+        (vault.persistence['deleted-category-ids'] ?? '').split(',');
+    merged.removeWhere((e) => deletedIds.contains(e.id));
 
     // leave only the most updated items
     final newList = <HiveLisoCategory>[];
@@ -293,7 +286,8 @@ class S3Service extends GetxService with ConsoleMixin {
     await local.addAll(newList);
   }
 
-  Future<void> _mergeItems(List<HiveLisoItem> server) async {
+  Future<void> _mergeItems(LisoVault vault) async {
+    final server = vault.items;
     final local = ItemsService.to.box!;
     console
         .wtf('merged items local: ${local.length}, server: ${server.length}');
@@ -304,6 +298,10 @@ class S3Service extends GetxService with ConsoleMixin {
     merged.sort(
       (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
     );
+
+    // remove permanently flagged deleted items
+    final deletedIds = (vault.persistence['deleted-item-ids'] ?? '').split(',');
+    merged.removeWhere((e) => deletedIds.contains(e.identifier));
 
     // leave only the most updated items
     final newList = <HiveLisoItem>[];

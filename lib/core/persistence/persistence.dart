@@ -53,16 +53,18 @@ class Persistence extends GetxController with ConsoleMixin {
   final s3UseSsl = true.val('s3 use-ssl');
   final s3EnableTrace = false.val('s3-enable-trace');
   // VAULT
-  final metadata = ''.val('vault-metadata');
   final changes = 0.val('vault-changes-count');
+  final deletedGroupIds = ''.val('deleted-group-ids');
+  final deletedCategoryIds = ''.val('deleted-category-ids');
+  final deletedItemIds = ''.val('deleted-item-ids');
   // PRICES
   final lastMaticBalance = 0.0.val('last-matic-balance');
   final lastLisoBalance = 0.0.val('last-liso-balance');
   final lastMaticUsdPrice = 0.0.val('last-matic-usd-price');
   final lastLisoUsdPrice = 0.0.val('last-liso-usd-price');
+  // DELETED IDS
 
   // GETTERS
-
   bool get canShare => sync.val && isFirebaseSupported;
 
   String get shortAddress => walletAddress.val.isEmpty
@@ -78,11 +80,6 @@ class Persistence extends GetxController with ConsoleMixin {
     );
 
     _initLocale();
-  }
-
-  static Future<void> close() async {
-    await box.close();
-    // console.info('close');
   }
 
   static Future<void> reset() async {
@@ -102,5 +99,26 @@ class Persistence extends GetxController with ConsoleMixin {
     if (defaultLocaleCode != null && localeCode == null) {
       box.put('locale code', defaultLocaleCode);
     }
+  }
+
+  void addToDeletedGroups(String id) {
+    final ids = deletedGroupIds.val.split(',');
+    ids.add(id);
+    deletedGroupIds.val = ids.join(',');
+    console.wtf('deletedGroupIds: ${deletedGroupIds.val}');
+  }
+
+  void addToDeletedCategories(String id) {
+    final ids = deletedCategoryIds.val.split(',');
+    ids.add(id);
+    deletedCategoryIds.val = ids.join(',');
+    console.wtf('deletedCategoryIds: ${deletedCategoryIds.val}');
+  }
+
+  void addToDeletedItems(String id) {
+    final ids = deletedItemIds.val.split(',');
+    ids.add(id);
+    deletedItemIds.val = ids.join(',');
+    console.wtf('deletedItemIds: ${deletedItemIds.val}');
   }
 }

@@ -128,7 +128,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   selected: controller.filterTrashed(),
                 ),
               ),
-              if (kDebugMode) ...[
+              if (kDebugMode || Persistence.to.proTester.val) ...[
                 Obx(
                   () => ListTile(
                     selected: controller.filterDeleted(),
