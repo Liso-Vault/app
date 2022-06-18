@@ -8,7 +8,13 @@ import 'package:liso/core/hive/models/field.hive.dart';
 // ignore: must_be_immutable
 class RichTextFormField extends StatelessWidget with ConsoleMixin {
   final HiveLisoField field;
-  RichTextFormField(this.field, {Key? key}) : super(key: key);
+  final bool readOnly;
+
+  RichTextFormField(
+    this.field, {
+    Key? key,
+    this.readOnly = false,
+  }) : super(key: key);
 
   QuillController? _fieldController;
 
@@ -44,16 +50,18 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        QuillToolbar.basic(
-          controller: _fieldController!,
-          multiRowsDisplay: false,
-        ),
-        const Divider(),
+        if (!readOnly) ...[
+          QuillToolbar.basic(
+            controller: _fieldController!,
+            multiRowsDisplay: false,
+          ),
+          const Divider(),
+        ],
         SizedBox(
           height: 300,
           child: QuillEditor.basic(
             controller: _fieldController!,
-            readOnly: false, // true for view only mode
+            readOnly: readOnly, // true for view only mode
           ),
         ),
         const Divider(),

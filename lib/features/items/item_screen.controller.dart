@@ -3,11 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
+import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
+import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/tags/tags_input.controller.dart';
 import 'package:uuid/uuid.dart';
@@ -61,6 +64,7 @@ class ItemScreenController extends GetxController
   final category = Get.parameters['category']!.obs;
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
+  final editMode = (Get.parameters['mode'] != 'view').obs;
 
   // GETTERS
   HiveLisoCategory get categoryObject {
@@ -148,10 +152,11 @@ class ItemScreenController extends GetxController
     if (menuItems.isNotEmpty && !joinedVaultItem) {
       chips.add(ContextMenuButton(
         menuItems,
+        enabled: editMode.value,
         padding: EdgeInsets.zero,
-        child: const Chip(
-          label: Text('Assign'),
-          avatar: Icon(Iconsax.add),
+        child: ActionChip(
+          label: const Icon(Iconsax.add_circle5, size: 20),
+          onPressed: () {},
         ),
       ));
     }
@@ -164,7 +169,7 @@ class ItemScreenController extends GetxController
   void onInit() async {
     if (mode == 'add') {
       await _loadTemplate();
-    } else if (mode == 'update') {
+    } else if (mode == 'view') {
       _loadItem();
     } else if (mode == 'generated') {
       await _populateGeneratedItem();
@@ -173,6 +178,12 @@ class ItemScreenController extends GetxController
     originalItem = HiveLisoItem.fromJson(item!.toJson());
     _populateItem();
     change(null, status: RxStatus.success());
+
+    // re-populate widgets
+    editMode.listen((value) {
+      _populateItem();
+    });
+
     super.onInit();
   }
 
@@ -189,13 +200,10 @@ class ItemScreenController extends GetxController
 
     var fields = categoryObject.fields;
     fields = fields.map((e) {
-      if (e.identifier == identifier) {
-        e.data.value = value;
-        e.readOnly = true;
-        return e;
-      } else {
-        return e;
-      }
+      if (e.identifier != identifier) return e;
+      e.data.value = value;
+      e.readOnly = true;
+      return e;
     }).toList();
 
     item = HiveLisoItem(
@@ -236,27 +244,66 @@ class ItemScreenController extends GetxController
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
     tagsController.data.value = item!.tags.toSet().toList();
 
-    // widgets.value = item!.widgets;
-    widgets.value = item!.widgets
-        .asMap()
-        .entries
-        .map(
-          (e) => Row(
-            key: Key(e.key.toString()),
-            children: [
-              Expanded(child: e.value),
-              if (!joinedVaultItem) ...[
-                if (Utils.isDrawerExpandable || GetPlatform.isMobile) ...[
-                  const SizedBox(width: 10),
-                  const Icon(Icons.drag_handle_rounded),
-                ] else ...[
-                  const SizedBox(width: 40),
-                ],
-              ]
+    // filter empty fields
+    List<Widget> widgets_ = item!.widgets;
+
+    if (!editMode.value) {
+      widgets_.removeWhere((e) {
+        final field = (e as dynamic).field as HiveLisoField;
+        return field.data.value!.isEmpty;
+      });
+    }
+
+    widgets.value = widgets_.asMap().entries.map(
+      (e) {
+        final dragHandle = Row(
+          children: [
+            if (!joinedVaultItem) ...[
+              if (Utils.isDrawerExpandable || GetPlatform.isMobile) ...[
+                const SizedBox(width: 10),
+                const Icon(Icons.drag_handle_rounded),
+              ] else ...[
+                const SizedBox(width: 40),
+              ],
             ],
-          ),
-        )
-        .toList();
+          ],
+        );
+
+        Widget widget = e.value;
+
+        if (!editMode.value) {
+          final field = (e.value as dynamic).field as HiveLisoField;
+
+          if (field.type == LisoFieldType.section.name) {
+            widget = Section(text: field.data.value!.toUpperCase());
+          } else if (field.type == LisoFieldType.richText.name) {
+            widget = RichTextFormField(field, readOnly: true);
+          } else {
+            widget = TextFormField(
+              initialValue: field.data.value,
+              enabled: false,
+              decoration: InputDecoration(
+                labelText: field.data.label,
+                hintText: field.data.hint,
+              ),
+            );
+          }
+        }
+
+        return Row(
+          key: Key(e.key.toString()),
+          children: [
+            Expanded(child: widget),
+            Obx(
+              () => Visibility(
+                visible: editMode.value,
+                child: dragHandle,
+              ),
+            )
+          ],
+        );
+      },
+    ).toList();
   }
 
   Future<void> _loadTemplate() async {
@@ -416,6 +463,8 @@ class ItemScreenController extends GetxController
   }
 
   Future<bool> canPop() async {
+    if (!editMode.value) return true;
+
     // TODO: improve equality check
     final updatedItem = HiveLisoItem(
       identifier: item!.identifier,

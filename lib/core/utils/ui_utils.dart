@@ -4,7 +4,7 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class UIUtils {
-  static showSnackBar({
+  static Future<void> showSnackBar({
     required String title,
     required String message,
     final Widget? icon,
@@ -29,16 +29,16 @@ class UIUtils {
     );
   }
 
-  static void showSimpleDialog(
+  static Future<void> showSimpleDialog(
     String title,
     String body, {
     String? closeText,
     Function()? action,
     String? actionText,
-  }) {
+  }) async {
     final content = SingleChildScrollView(child: Text(body));
 
-    Get.dialog(
+    await Get.dialog(
       AlertDialog(
         title: Text(title),
         content: Utils.isDrawerExpandable
@@ -64,15 +64,16 @@ class UIUtils {
     );
   }
 
-  static void showImageDialog(
+  static Future<void> showImageDialog(
     Widget image, {
     required String title,
     String? subTitle,
     required String body,
+    Function()? onClose,
     String? closeText,
     Function()? action,
     String? actionText,
-  }) {
+  }) async {
     final bodyContent = Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,7 +101,7 @@ class UIUtils {
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: Get.back,
+                onPressed: onClose ?? Get.back,
                 child: Text(closeText ?? 'okay'.tr),
               ),
             ),
@@ -118,7 +119,7 @@ class UIUtils {
       ],
     );
 
-    Get.dialog(
+    await Get.dialog(
       AlertDialog(
         title: null,
         actionsAlignment: MainAxisAlignment.center,
@@ -129,11 +130,11 @@ class UIUtils {
     );
   }
 
-  static void showQR(
+  static Future<void> showQR(
     String data, {
     required String title,
     required String subTitle,
-  }) {
+  }) async {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -156,7 +157,7 @@ class UIUtils {
       ],
     );
 
-    Get.dialog(AlertDialog(
+    await Get.dialog(AlertDialog(
       title: Text(
         title,
         textAlign: TextAlign.center,

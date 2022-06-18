@@ -83,8 +83,8 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
 
     final content = SingleChildScrollView(
       padding: const EdgeInsets.all(20),
-      child: PersistenceBuilder(builder: (_, context) {
-        final provider = providersMap[persistence.syncProvider.val];
+      child: PersistenceBuilder(builder: (p, context) {
+        final provider = providersMap[p.syncProvider.val];
 
         final name = provider?['name'];
         final description = provider?['description'];
@@ -94,8 +94,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (persistence.syncProvider.val !=
-                LisoSyncProvider.custom.name) ...[
+            if (p.syncProvider.val != LisoSyncProvider.custom.name) ...[
               Image.asset(image!, height: 100),
               const SizedBox(height: 20),
               Text(
@@ -139,40 +138,35 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
               title: const Text('Sia'),
               secondary: Image.asset(Images.sia, height: 25),
               value: LisoSyncProvider.sia,
-              groupValue:
-                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
               onChanged: _switchProvider,
             ),
             RadioListTile<LisoSyncProvider>(
               title: const Text('Storj'),
               secondary: Image.asset(Images.storj, height: 25),
               value: LisoSyncProvider.storj,
-              groupValue:
-                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
               onChanged: _switchProvider,
             ),
             RadioListTile<LisoSyncProvider>(
               title: const Text('IPFS'),
               secondary: Image.asset(Images.ipfs, height: 25),
               value: LisoSyncProvider.ipfs,
-              groupValue:
-                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
               onChanged: _switchProvider,
             ),
             RadioListTile<LisoSyncProvider>(
               title: const Text('Skynet'),
               secondary: Image.asset(Images.skynet, height: 25),
               value: LisoSyncProvider.skynet,
-              groupValue:
-                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
               onChanged: _switchProvider,
             ),
             RadioListTile<LisoSyncProvider>(
               title: const Text('Custom'),
               secondary: const Icon(Iconsax.setting_2),
               value: LisoSyncProvider.custom,
-              groupValue:
-                  LisoSyncProvider.values.byName(persistence.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
               onChanged: _switchProvider,
             ),
           ],

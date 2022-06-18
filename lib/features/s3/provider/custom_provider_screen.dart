@@ -100,8 +100,8 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
             PersistenceBuilder(
               builder: (p, context) => SwitchListTile(
                 title: const Text('Use SSL'),
-                value: Persistence.to.s3UseSsl.val,
-                onChanged: (value) => Persistence.to.s3UseSsl.val = value,
+                value: p.s3UseSsl.val,
+                onChanged: (value) => p.s3UseSsl.val = value,
                 contentPadding: EdgeInsets.zero,
               ),
             ),

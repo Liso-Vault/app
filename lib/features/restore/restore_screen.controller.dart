@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
@@ -119,29 +120,51 @@ class RestoreScreenController extends GetxController
       );
     }
 
-    // parse and import vault file
-    await LisoManager.importVaultFile(vaultFile, cipherKey: cipherKey);
-    // turn on sync setting if successfully imported via cloud
-    Persistence.to.sync.val =
-        restoreMode.value == RestoreMode.cloud ? true : false;
-    change(null, status: RxStatus.success());
+    final vault = await LisoManager.parseVaultFile(
+      vaultFile,
+      cipherKey: cipherKey,
+    );
 
-    if (isLocalAuthSupported) {
-      final authenticated = await LocalAuthService.to.authenticate();
-      if (!authenticated) return;
-      final password = Utils.generatePassword();
-      await WalletService.to.create(seed, password, false);
-      Persistence.to.backedUpSeed.val = true;
-      Get.offNamedUntil(Routes.main, (route) => false);
-    } else {
-      Utils.adaptiveRouteOpen(
-        name: Routes.createPassword,
-        parameters: {
-          'seed': seed,
-          'from': 'restore_screen',
-        },
+    Future<void> _proceed() async {
+      // parse and import vault file
+      await LisoManager.importVaultFile(
+        vault,
+        cipherKey: cipherKey,
       );
+      // turn on sync setting if successfully imported via cloud
+      Persistence.to.sync.val =
+          restoreMode.value == RestoreMode.cloud ? true : false;
+      change(null, status: RxStatus.success());
+
+      if (isLocalAuthSupported) {
+        final authenticated = await LocalAuthService.to.authenticate();
+        if (!authenticated) return;
+        final password = Utils.generatePassword();
+        await WalletService.to.create(seed, password, false);
+        Persistence.to.backedUpSeed.val = true;
+        Get.offNamedUntil(Routes.main, (route) => false);
+      } else {
+        Utils.adaptiveRouteOpen(
+          name: Routes.createPassword,
+          parameters: {'seed': seed, 'from': 'restore_screen'},
+        );
+      }
     }
+
+    await UIUtils.showImageDialog(
+      Icon(Iconsax.import, size: 100, color: themeColor),
+      title: 'Restore Vault',
+      subTitle: basename(vaultFile.path),
+      body:
+          "Device: ${vault.metadata!.device.name}\nApp Version: ${vault.metadata!.app.formattedVersion}\nLast Modified: ${vault.metadata!.updatedTime}\nVault Version: ${vault.version}",
+      action: _proceed,
+      actionText: 'Restore',
+      closeText: 'Cancel',
+      onClose: () {
+        change(null, status: RxStatus.success());
+        Get.back();
+      },
+    );
   }
 
   void importFile() async {
@@ -168,6 +191,15 @@ class RestoreScreenController extends GetxController
       Globals.timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
+    }
+
+    final valid = extension(result.files.single.path!) != '.$kVaultExtension';
+
+    if (!valid) {
+      return UIUtils.showSimpleDialog(
+        'Invalid Vault',
+        'You can only restore a valid & encrypted <vault>.$kVaultExtension file',
+      );
     }
 
     filePathController.text = result.files.single.path!;

@@ -65,9 +65,8 @@ class LisoManager {
     return vault.toJsonString();
   }
 
-  static Future<void> importVaultFile(File file, {Uint8List? cipherKey}) async {
-    // parse vault to items
-    final vault = await parseVaultFile(file, cipherKey: cipherKey);
+  static Future<void> importVaultFile(LisoVault vault,
+      {Uint8List? cipherKey}) async {
     await GroupsService.to.import(vault.groups, cipherKey: cipherKey);
     await CategoriesService.to.import(vault.categories!, cipherKey: cipherKey);
     await ItemsService.to.import(vault.items, cipherKey: cipherKey);

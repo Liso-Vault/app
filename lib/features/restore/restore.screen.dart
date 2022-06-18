@@ -65,10 +65,11 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                     child: TextFormField(
                       controller: controller.filePathController,
                       validator: (text) =>
-                          text!.isEmpty ? 'Import your vault file' : null,
+                          text!.isEmpty ? 'Select your vault file' : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
                         hintText: 'Path to your <vault>.$kVaultExtension file',
+                        label: Text('Vault File Path'),
                       ),
                     ),
                   ),
@@ -79,7 +80,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                 ],
               );
             } else if (controller.restoreMode.value == RestoreMode.cloud) {
-              return PersistenceBuilder(builder: (_, context) {
+              return PersistenceBuilder(builder: (p, context) {
                 return Column(
                   children: [
                     TextButton(

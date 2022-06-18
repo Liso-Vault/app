@@ -19,16 +19,14 @@ class AssetsScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AssetsScreenController());
-    final persistence = Get.find<Persistence>();
     final wallet = Get.find<WalletService>();
 
     final listView = PersistenceBuilder(
       builder: (p, context) {
-        final liso = currencyFormatter.format(persistence.lastLisoBalance.val);
+        final liso = currencyFormatter.format(p.lastLisoBalance.val);
         final lisoUsd = currencyFormatter.format(wallet.lisoUsdBalance);
 
-        final matic =
-            currencyFormatter.format(persistence.lastMaticBalance.val);
+        final matic = currencyFormatter.format(p.lastMaticBalance.val);
         final maticUsd = currencyFormatter.format(wallet.maticUsdBalance);
 
         return ListView(

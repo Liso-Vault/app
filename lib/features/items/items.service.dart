@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -7,7 +6,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
@@ -74,18 +72,6 @@ class ItemsService extends GetxService with ConsoleMixin {
     await open(cipherKey: cipherKey);
     await box?.clear();
     box?.addAll(data);
-  }
-
-  Future<File> export({required String path, bool encrypt = true}) async {
-    final jsonString = jsonEncode(data); // TODO: isolate
-    final file = File(path);
-    await file.writeAsString(jsonString);
-
-    if (encrypt) {
-      return await CipherService.to.encryptFile(file, addExtensionExtra: false);
-    } else {
-      return file;
-    }
   }
 
   Future<Either<dynamic, String>> obtainFieldValue(

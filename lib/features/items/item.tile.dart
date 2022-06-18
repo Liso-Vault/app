@@ -40,7 +40,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     // route parameters
     final parameters = {
-      'mode': 'update',
+      'mode': 'view',
       'category': item.category,
       'hiveKey': item.key.toString(),
       'identifier': item.identifier,

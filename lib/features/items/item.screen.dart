@@ -11,7 +11,6 @@ import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/tags/tags_input.widget.dart';
 
 import '../../core/hive/models/category.hive.dart';
-import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
@@ -33,7 +32,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           Obx(
             () => ContextMenuButton(
               controller.menuItemsChangeIcon,
-              enabled: !controller.joinedVaultItem,
+              enabled: !controller.joinedVaultItem && controller.editMode.value,
               child: controller.iconUrl().isEmpty
                   ? Utils.categoryIcon(controller.category.value)
                   : RemoteImage(
@@ -44,14 +43,17 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           ),
           const SizedBox(width: 10),
           // TITLE
-          Expanded(
-            child: TextFormField(
-              autofocus: mode == 'add',
-              controller: controller.titleController,
-              textCapitalization: TextCapitalization.words,
-              validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
-              decoration: InputDecoration(
-                labelText: '${'title'.tr} *',
+          Obx(
+            () => Expanded(
+              child: TextFormField(
+                enabled: controller.editMode.value,
+                autofocus: mode == 'add',
+                controller: controller.titleController,
+                textCapitalization: TextCapitalization.words,
+                validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
+                decoration: InputDecoration(
+                  labelText: '${'title'.tr} *',
+                ),
               ),
             ),
           ),
@@ -63,7 +65,8 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         () => ReorderableListView(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          buildDefaultDragHandles: !controller.joinedVaultItem,
+          buildDefaultDragHandles:
+              !controller.joinedVaultItem && controller.editMode.value,
           children: controller.widgets,
           onReorder: (int oldIndex, int newIndex) {
             if (oldIndex < newIndex) newIndex -= 1;
@@ -78,86 +81,114 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      TagsInput(
-        label: 'Tags',
-        controller: controller.tagsController,
-      ),
-      const SizedBox(height: 10),
-      ListTile(
-        title: Obx(() => Text('${controller.attachments.length} Attachments')),
-        trailing: Icon(Iconsax.attach_circle, color: themeColor),
-        contentPadding: EdgeInsets.zero,
-        onTap: controller.attach,
-        enabled: !controller.joinedVaultItem,
-      ),
-      const SizedBox(height: 10),
-      DropdownButtonFormField<String>(
-        isExpanded: true,
-        value: controller.groupId.value,
-        onChanged: controller.reserved.value
-            ? null
-            : (value) => controller.groupId.value = value!,
-        decoration: const InputDecoration(labelText: 'Vault'),
-        items: [
-          ...GroupsController.to.combined
-              .map((e) => DropdownMenuItem<String>(
-                    value: e.id,
-                    child: Text(e.reservedName),
-                  ))
-              .toList()
-        ],
-      ),
-      const SizedBox(height: 10),
-      DropdownButtonFormField<HiveLisoCategory>(
-        isExpanded: true,
-        value: controller.categoryObject,
-        onChanged: controller.reserved.value
-            ? null
-            : (value) => controller.category.value = value!.id,
-        decoration: const InputDecoration(labelText: 'Category'),
-        items: [
-          ...{...CategoriesController.to.combined, controller.categoryObject}
-              .map((e) => DropdownMenuItem<HiveLisoCategory>(
-                    value: e,
-                    child: Text(e.reservedName),
-                  ))
-              .toList()
-        ],
-      ),
-      const SizedBox(height: 10),
-      ObxValue(
-        (RxBool data) => CheckboxListTile(
-          title: Text('favorite'.tr),
-          value: data(),
-          onChanged: data,
-          activeColor: Colors.pink,
+      if (Persistence.to.sync.val) ...[
+        ListTile(
+          title:
+              Obx(() => Text('${controller.attachments.length} Attachments')),
+          trailing: const Icon(Iconsax.attach_circle),
           contentPadding: EdgeInsets.zero,
+          onTap: controller.attach,
+          enabled: !controller.joinedVaultItem,
         ),
-        controller.favorite,
-      ),
-
-      ObxValue(
-        (RxBool data) => CheckboxListTile(
-          title: Text('protected'.tr),
-          value: data(),
-          onChanged: data,
-          contentPadding: EdgeInsets.zero,
-        ),
-        controller.protected,
-      ),
-      if (controller.sharedVaultChips.isNotEmpty &&
-          Persistence.to.canShare) ...[
-        Section(text: 'shared_vaults'.tr.toUpperCase()),
-        Obx(
-          () => Wrap(
-            spacing: 5,
-            children: [
-              ...controller.sharedVaultChips,
-            ],
-          ),
-        ),
+        const SizedBox(height: 10),
       ],
-      if (mode == 'update') ...[
+      Obx(
+        () => TagsInput(
+          label: 'Tags',
+          enabled: controller.editMode.value,
+          controller: controller.tagsController,
+        ),
+      ),
+      const SizedBox(height: 10),
+      Theme(
+          data: Get.theme.copyWith(disabledColor: Colors.grey),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Obx(
+                () => DropdownButtonFormField<String>(
+                  isExpanded: true,
+                  value: controller.groupId.value,
+                  onChanged:
+                      controller.reserved.value || !controller.editMode.value
+                          ? null
+                          : (value) => controller.groupId.value = value!,
+                  decoration: const InputDecoration(labelText: 'Vault'),
+                  items: [
+                    ...GroupsController.to.combined
+                        .map((e) => DropdownMenuItem<String>(
+                              value: e.id,
+                              child: Text(e.reservedName),
+                            ))
+                        .toList()
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Obx(
+                () => DropdownButtonFormField<HiveLisoCategory>(
+                  isExpanded: true,
+                  value: controller.categoryObject,
+                  onChanged:
+                      controller.reserved.value || !controller.editMode.value
+                          ? null
+                          : (value) => controller.category.value = value!.id,
+                  decoration: const InputDecoration(labelText: 'Category'),
+                  items: [
+                    ...{
+                      ...CategoriesController.to.combined,
+                      controller.categoryObject
+                    }
+                        .map((e) => DropdownMenuItem<HiveLisoCategory>(
+                              value: e,
+                              child: Text(e.reservedName),
+                            ))
+                        .toList()
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              ObxValue(
+                (RxBool data) => CheckboxListTile(
+                  title: Text('favorite'.tr),
+                  value: data(),
+                  onChanged: controller.editMode.value
+                      ? (value) => data.value = value!
+                      : null,
+                  activeColor: Colors.pink,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                controller.favorite,
+              ),
+              ObxValue(
+                (RxBool data) => CheckboxListTile(
+                  title: Text('protected'.tr),
+                  value: data(),
+                  onChanged: controller.editMode.value
+                      ? (value) => data.value = value!
+                      : null,
+                  contentPadding: EdgeInsets.zero,
+                ),
+                controller.protected,
+              ),
+              if (controller.sharedVaultChips.isNotEmpty &&
+                  Persistence.to.canShare) ...[
+                Section(text: 'shared_vaults'.tr.toUpperCase()),
+                Obx(
+                  () => Opacity(
+                    opacity: controller.editMode.value ? 1.0 : 0.6,
+                    child: Wrap(
+                      spacing: 5,
+                      children: [
+                        ...controller.sharedVaultChips,
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ],
+          )),
+      if (mode == 'view') ...[
         const SizedBox(height: 20),
         Text(
           'Modified ${controller.item?.updatedDateTimeFormatted}',
@@ -185,15 +216,24 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ),
       ),
       actions: [
-        IconButton(
-          onPressed: controller.joinedVaultItem
-              ? null
-              : mode == 'update'
-                  ? controller.edit
-                  : controller.add,
-          icon: const Icon(LineIcons.check),
+        Obx(
+          () => Visibility(
+            visible: controller.editMode.value,
+            replacement: IconButton(
+              onPressed: controller.editMode.toggle,
+              icon: const Icon(LineIcons.pen),
+            ),
+            child: IconButton(
+              onPressed: controller.joinedVaultItem
+                  ? null
+                  : mode == 'view'
+                      ? controller.edit
+                      : controller.add,
+              icon: const Icon(LineIcons.check),
+            ),
+          ),
         ),
-        if (mode == 'update') ...[
+        if (mode == 'view') ...[
           ContextMenuButton(
             controller.menuItems,
             child: const Icon(LineIcons.verticalEllipsis),

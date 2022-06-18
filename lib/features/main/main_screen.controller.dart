@@ -53,11 +53,13 @@ class MainScreenController extends GetxController
   // GETTERS
   List<ContextMenuItem> get menuItems {
     return [
-      ContextMenuItem(
-        title: 'sync'.tr,
-        leading: const Icon(Iconsax.cloud_change),
-        onSelected: S3Service.to.sync,
-      ),
+      if (persistence.sync.val) ...[
+        ContextMenuItem(
+          title: 'sync'.tr,
+          leading: const Icon(Iconsax.cloud_change),
+          onSelected: S3Service.to.sync,
+        ),
+      ],
       ContextMenuItem(
         title: 'scan'.tr,
         leading: const Icon(Iconsax.scan),

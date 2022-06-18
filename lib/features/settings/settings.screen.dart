@@ -24,7 +24,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(SettingsScreenController());
-    final persistence = Get.find<Persistence>();
     final config = Get.find<ConfigService>();
 
     final listView = ListView(
@@ -48,7 +47,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ),
           ),
         ),
-        PersistenceBuilder(builder: (_, context) {
+        PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Sync Settings'),
             subtitle: const Text('Vault synchronization settings'),
@@ -58,11 +57,11 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               SwitchListTile(
                 title: const Text('Enabled'),
                 secondary: Icon(Iconsax.cloud, color: themeColor),
-                value: persistence.sync.val,
+                value: p.sync.val,
                 subtitle: const Text("Keep multiple devices in sync"),
-                onChanged: (value) => persistence.sync.val = value,
+                onChanged: (value) => p.sync.val = value,
               ),
-              if (persistence.sync.val) ...[
+              if (p.sync.val) ...[
                 ListTile(
                   leading: Icon(Iconsax.setting, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
@@ -85,7 +84,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ],
           );
         }),
-        PersistenceBuilder(builder: (_, context) {
+        PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Vault Settings'),
             subtitle: const Text('Manage your vaults'),
@@ -129,8 +128,8 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 subtitle: const Text('Go back in time and undo your changes'),
                 leading: Icon(Iconsax.clock, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
-                onTap: () {
-                  if (!persistence.sync.val) {
+                onTap: () async {
+                  if (!p.sync.val) {
                     return UIUtils.showSimpleDialog(
                       'Sync Required',
                       'Please turn on ${config.appName} Cloud Sync to use this feature',
@@ -189,7 +188,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ],
           );
         }),
-        PersistenceBuilder(builder: (_, context) {
+        PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Wallet Settings'),
             subtitle: const Text('Manage your wallet'),
@@ -222,7 +221,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ],
           );
         }),
-        PersistenceBuilder(builder: (_, context) {
+        PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Other Settings'),
             subtitle: const Text('Anonymous reporting settings'),
@@ -235,9 +234,9 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   Iconsax.cpu,
                   color: themeColor,
                 ),
-                value: persistence.crashReporting.val,
+                value: p.crashReporting.val,
                 subtitle: const Text("Send anonymous crash reports"),
-                onChanged: (value) => persistence.crashReporting.val = value,
+                onChanged: (value) => p.crashReporting.val = value,
               ),
               SwitchListTile(
                 title: const Text('Usage Statistics'),
@@ -245,9 +244,9 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   Iconsax.chart_square,
                   color: themeColor,
                 ),
-                value: persistence.analytics.val,
+                value: p.analytics.val,
                 subtitle: const Text('Send anonymous usage statistics'),
-                onChanged: (value) => persistence.analytics.val = value,
+                onChanged: (value) => p.analytics.val = value,
               ),
             ],
           );

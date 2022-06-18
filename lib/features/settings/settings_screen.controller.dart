@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
@@ -19,6 +20,7 @@ import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
+import '../../core/services/cipher.service.dart';
 import '../groups/groups.service.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
@@ -152,17 +154,31 @@ class SettingsScreenController extends GetxController
       if (status == RxStatus.loading()) return console.error('still busy');
       change('Exporting...', status: RxStatus.loading());
 
+      // File Name
       final dateFormat = DateFormat('MMM-dd-yyyy_hh-mm_aaa');
       final exportFileName =
           '${WalletService.to.longAddress}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
 
-      final vaultFile = await ItemsService.to.export(
-        path: join(LisoPaths.tempPath, exportFileName),
-        encrypt: encrypt,
-      );
+      // Vault Compaction
+      String vaultString = await LisoManager.compactJson();
+      List<int> vaultBytes = utf8.encode(vaultString);
+
+      // Vault Encryption
+      if (encrypt) {
+        vaultBytes = CipherService.to.encrypt(
+          utf8.encode(vaultString),
+        );
+      }
+
+      // Vault File
+      final vaultFile = await File(join(
+        LisoPaths.tempPath,
+        exportFileName,
+      )).writeAsBytes(vaultBytes);
 
       console.info('vault file path: ${vaultFile.path}');
 
+      // Share for Mobile
       if (GetPlatform.isMobile) {
         await Share.shareFiles(
           [vaultFile.path],
@@ -204,10 +220,12 @@ class SettingsScreenController extends GetxController
     UIUtils.showImageDialog(
       Icon(Iconsax.box_1, size: 100, color: themeColor),
       title: 'Export Vault',
-      subTitle:
-          "You'll be prompted to save a <vault>.$kVaultExtension file. Please store it offline or in a secure digital cloud storage",
-      body:
-          "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file",
+      subTitle: encrypt
+          ? "You'll be prompted to save an encrypted <vault>.$kVaultExtension file. Please store it offline or in a secure digital cloud storage"
+          : "You'll be prompted to save an unencrypted <vault>.json file.",
+      body: encrypt
+          ? "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file"
+          : "Please keep in mind this is an unencrypted vault file and leaking it will be exposed to hackers.",
       closeText: 'Cancel',
       action: _export,
       actionText: 'Export',

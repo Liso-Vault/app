@@ -1,6 +1,5 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -34,8 +33,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             initiallyExpanded: controller.groupsExpanded,
             children: [
               Obx(() => Column(children: controller.groupTiles)),
-              PersistenceBuilder(builder: (_, context) {
-                if (!Persistence.to.canShare) return const SizedBox.shrink();
+              PersistenceBuilder(builder: (p, context) {
+                if (!p.canShare) return const SizedBox.shrink();
 
                 return Obx(
                   () => Column(
@@ -128,8 +127,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   selected: controller.filterTrashed(),
                 ),
               ),
-              PersistenceBuilder(builder: (_, context) {
-                if (!Persistence.to.proTester.val) {
+              PersistenceBuilder(builder: (p, context) {
+                if (!p.proTester.val) {
                   return const SizedBox.shrink();
                 }
 
@@ -183,7 +182,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               PersistenceBuilder(
-                builder: (p, context) => Persistence.to.sync.val
+                builder: (p, context) => p.sync.val
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),
                         onTap: () => Utils.adaptiveRouteOpen(
@@ -217,18 +216,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       )
                     : const SizedBox.shrink(),
               ),
-              PersistenceBuilder(
-                builder: (p, context) => Column(
-                  children: [
-                    ListTile(
-                      title: Text('wallet'.tr),
-                      leading: const Icon(Iconsax.wallet_1),
-                      onTap: () => Utils.adaptiveRouteOpen(
-                        name: Routes.wallet,
-                        method: 'offAndToNamed',
-                      ),
-                    ),
-                  ],
+              ListTile(
+                title: Text('wallet'.tr),
+                leading: const Icon(Iconsax.wallet_1),
+                onTap: () => Utils.adaptiveRouteOpen(
+                  name: Routes.wallet,
+                  method: 'offAndToNamed',
                 ),
               ),
               ListTile(

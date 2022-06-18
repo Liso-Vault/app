@@ -4,7 +4,13 @@ import 'package:liso/core/hive/models/field.hive.dart';
 // ignore: must_be_immutable
 class TextFieldForm extends StatelessWidget {
   final HiveLisoField field;
-  TextFieldForm(this.field, {Key? key}) : super(key: key);
+  final bool enabled;
+
+  TextFieldForm(
+    this.field, {
+    Key? key,
+    this.enabled = true,
+  }) : super(key: key);
 
   TextEditingController? _fieldController;
   String get value => _fieldController!.text;

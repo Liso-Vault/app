@@ -160,13 +160,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     // obscure characters
     if (category == LisoItemCategory.encryption.name ||
         category == LisoItemCategory.note.name) {
-      final obscuredCharacters = <String>[];
-
-      for (var i = 0; i < (value.length < 100 ? value.length : 100); i++) {
-        obscuredCharacters.add('*');
-      }
-
-      return obscuredCharacters.join();
+      return '';
     }
 
     return value;

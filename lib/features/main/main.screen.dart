@@ -148,8 +148,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         const ConnectivityBar(),
         PersistenceBuilder(
-          builder: (_, context) => Visibility(
-            visible: !Persistence.to.backedUpSeed.val,
+          builder: (p, context) => Visibility(
+            visible: !p.backedUpSeed.val,
             child: Card(
               elevation: 1.0,
               child: ListTile(
@@ -199,8 +199,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
       PersistenceBuilder(
         builder: (p, context) => Badge(
-          showBadge: Persistence.to.changes.val > 0,
-          badgeContent: Text(Persistence.to.changes.val.toString()),
+          showBadge: p.sync.val && p.changes.val > 0,
+          badgeContent: Text(p.changes.val.toString()),
           position: BadgePosition.topEnd(top: -1, end: -5),
           child: ContextMenuButton(
             controller.menuItems,
