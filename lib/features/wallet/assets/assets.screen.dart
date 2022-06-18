@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/features/general/keep_alive.widget.dart';
 
-import '../../../core/persistence/persistence.dart';
 import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
 import '../../../resources/resources.dart';

@@ -48,11 +48,13 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
       );
     }
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: contextItems.length,
-      itemBuilder: _itemBuilder,
-      padding: const EdgeInsets.all(15),
+    return Padding(
+      padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: contextItems.length,
+        itemBuilder: _itemBuilder,
+      ),
     );
   }
 }

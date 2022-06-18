@@ -3,7 +3,7 @@ Potential screen lock auth fix for older android devices
 Permently delete items feature
 Auto clear fields after managing vaults & categories
 View only feature when 1st opening an item
-
+Displays metadata before restoring vault
 
 ## 0.5.0
 New! Custom Categories

@@ -82,13 +82,14 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
       if (Persistence.to.sync.val) ...[
-        ListTile(
-          title:
-              Obx(() => Text('${controller.attachments.length} Attachments')),
-          trailing: const Icon(Iconsax.attach_circle),
-          contentPadding: EdgeInsets.zero,
-          onTap: controller.attach,
-          enabled: !controller.joinedVaultItem,
+        Obx(
+          () => ListTile(
+            title: Text('${controller.attachments.length} Attachments'),
+            trailing: const Icon(Iconsax.attach_circle),
+            contentPadding: EdgeInsets.zero,
+            onTap: controller.attach,
+            enabled: !controller.joinedVaultItem && controller.editMode.value,
+          ),
         ),
         const SizedBox(height: 10),
       ],

@@ -3,7 +3,6 @@ import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -224,12 +223,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   method: 'offAndToNamed',
                 ),
               ),
-              ListTile(
-                title: Text('browser'.tr),
-                leading: const Icon(Iconsax.chrome),
-                enabled: false,
-                // onTap: controller.browser,
-              ),
+              // ListTile(
+              //   title: Text('browser'.tr),
+              //   leading: const Icon(Iconsax.chrome),
+              //   enabled: false,
+              //   // onTap: controller.browser,
+              // ),
               ListTile(
                 title: Text('settings'.tr),
                 leading: const Icon(Iconsax.setting_2),

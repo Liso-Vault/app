@@ -279,12 +279,16 @@ class ItemScreenController extends GetxController
           } else if (field.type == LisoFieldType.richText.name) {
             widget = RichTextFormField(field, readOnly: true);
           } else {
-            widget = TextFormField(
-              initialValue: field.data.value,
-              enabled: false,
-              decoration: InputDecoration(
-                labelText: field.data.label,
-                hintText: field.data.hint,
+            // add a quick copy value feature when tapped
+            widget = InkWell(
+              onTap: () => Utils.copyToClipboard(field.data.value),
+              child: TextFormField(
+                initialValue: field.data.value,
+                enabled: false,
+                decoration: InputDecoration(
+                  labelText: field.data.label,
+                  hintText: field.data.hint,
+                ),
               ),
             );
           }

@@ -14,7 +14,7 @@ import '../utils/globals.dart';
 class Persistence extends GetxController with ConsoleMixin {
   // STATIC
   static Persistence get to => Get.find();
-  static late Box box;
+  static Box? box;
 
   // WALLET JSON
   final wallet = ''.val('wallet');
@@ -83,8 +83,8 @@ class Persistence extends GetxController with ConsoleMixin {
   }
 
   static Future<void> reset() async {
-    await box.clear();
-    await box.deleteFromDisk();
+    await box?.clear();
+    await box?.deleteFromDisk();
     await open();
   }
 
@@ -94,10 +94,10 @@ class Persistence extends GetxController with ConsoleMixin {
     final isSystemLocaleSupported =
         translationKeys[deviceLanguage ?? 'en'] != null;
     final defaultLocaleCode = isSystemLocaleSupported ? deviceLanguage : 'en';
-    final localeCode = box.get('locale code');
+    final localeCode = box?.get('locale code');
 
     if (defaultLocaleCode != null && localeCode == null) {
-      box.put('locale code', defaultLocaleCode);
+      box?.put('locale code', defaultLocaleCode);
     }
   }
 

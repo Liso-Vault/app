@@ -6,10 +6,10 @@ class MutableValue<T> {
 
   MutableValue(this.key, this.defaultValue);
 
-  T get val => Persistence.box.get(key) ?? defaultValue;
+  T get val => Persistence.box?.get(key) ?? defaultValue;
 
   set val(T value) {
-    Persistence.box.put(key, value);
+    Persistence.box?.put(key, value);
     Persistence.to.update();
   }
 }

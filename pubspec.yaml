@@ -25,17 +25,17 @@ dependencies:
   hex: ^0.2.0 # Hex encoding & decoding
   encrypt: ^5.0.1 # File Encryption
   local_auth: ^2.0.2 # check biometric availability
-  walletconnect_dart: ^0.0.10
-  otp: ^3.0.4
+  walletconnect_dart: ^0.0.11
+  otp: ^3.1.0
 
   # FIREBASE
-  firebase_core: 1.17.1
-  firebase_analytics: 9.1.9
-  firebase_crashlytics: 2.8.1
-  firebase_performance: 0.8.0+13
-  firebase_remote_config: 2.0.8
-  firebase_auth: 3.3.19
-  cloud_firestore: 3.1.17
+  firebase_core: 1.18.0
+  firebase_analytics: 9.1.10
+  firebase_crashlytics: 2.8.2
+  firebase_performance: 0.8.0+14
+  firebase_remote_config: 2.0.9
+  firebase_auth: 3.3.20
+  cloud_firestore: 3.1.18
   # firebase_app_check: ^0.0.6+9
 
   # IO

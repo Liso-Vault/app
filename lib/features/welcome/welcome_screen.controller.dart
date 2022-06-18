@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../core/firebase/auth.service.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -21,6 +22,8 @@ class WelcomeScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void create() async {
+    console.info('isLocalAuthSupported: $isLocalAuthSupported');
+    console.info('biometrics: ${Persistence.to.biometrics.val}');
     await AuthService.to.signOut(); // just to make sure
 
     if (!isLocalAuthSupported) {

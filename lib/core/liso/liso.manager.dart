@@ -57,7 +57,7 @@ class LisoManager {
       groups: GroupsService.to.data,
       categories: CategoriesService.to.data,
       items: ItemsService.to.data,
-      persistence: Persistence.box.toMap(),
+      persistence: Persistence.box!.toMap(),
       version: kVaultFormatVersion,
       metadata: await HiveMetadata.get(),
     );

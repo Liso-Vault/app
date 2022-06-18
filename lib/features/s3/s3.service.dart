@@ -391,11 +391,12 @@ class S3Service extends GetxService with ConsoleMixin {
       );
 
       if (cipherKeyResult.isLeft) {
-        UIUtils.showSimpleDialog(
-          'Cipher Key Not Found',
-          cipherKeyResult.left,
-        );
+        // UIUtils.showSimpleDialog(
+        //   'Cipher Key Not Found',
+        //   cipherKeyResult.left,
+        // );
 
+        console.error('Cipher Key Not Found');
         return const Left('value');
       }
 

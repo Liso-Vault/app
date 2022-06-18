@@ -3,11 +3,15 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:local_auth/local_auth.dart';
 import 'package:local_auth_android/local_auth_android.dart';
 import 'package:local_auth_ios/local_auth_ios.dart';
+
+import '../../features/wallet/wallet.service.dart';
+import '../persistence/persistence.dart';
 // import 'package:local_auth_windows/local_auth_windows.dart';
 
 class LocalAuthService extends GetxService with ConsoleMixin {
@@ -21,6 +25,7 @@ class LocalAuthService extends GetxService with ConsoleMixin {
   // INIT
 
   // FUNCTIONS
+
   Future<bool> authenticate() async {
     bool authenticated = false;
 
@@ -39,40 +44,15 @@ class LocalAuthService extends GetxService with ConsoleMixin {
           // const WindowsAuthMessages(),
         ],
       );
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
+      console.error('exception: ${e.toString()}');
+
       if (e.code == auth_error.notAvailable) {
-        UIUtils.showSimpleDialog(
-          'Screenlock Required',
-          "Please turn it on to continue.",
-          closeText: 'Cancel',
-          actionText: 'Open Settings',
-          action: () {
-            Get.back();
-            AppSettings.openLockAndPasswordSettings();
-          },
-        );
+        _onError(e);
       } else if (e.code == auth_error.notEnrolled) {
-        UIUtils.showSimpleDialog(
-          'Biometrics Required',
-          "Please turn it on to continue.",
-          closeText: 'Cancel',
-          actionText: 'Open Settings',
-          action: () {
-            Get.back();
-            AppSettings.openLockAndPasswordSettings();
-          },
-        );
+        _onError(e);
       } else if (e.code == auth_error.passcodeNotSet) {
-        UIUtils.showSimpleDialog(
-          GetPlatform.isIOS ? 'Passcode Not Set' : 'Screenlock Not Set',
-          "Please turn it on to continue.",
-          closeText: 'Cancel',
-          actionText: 'Open Settings',
-          action: () {
-            Get.back();
-            AppSettings.openLockAndPasswordSettings();
-          },
-        );
+        _onError(e);
       } else if (e.code == auth_error.lockedOut ||
           e.code == auth_error.permanentlyLockedOut) {
         UIUtils.showSimpleDialog(
@@ -80,30 +60,50 @@ class LocalAuthService extends GetxService with ConsoleMixin {
           "Because of too many attempts you've been locked out. Please try again later.",
         );
       } else if (e.code == auth_error.otherOperatingSystem) {
-        UIUtils.showSimpleDialog(
-          'Unsupported OS',
-          'Please report to the developer',
-        );
+        _failedAuth(e);
       } else {
-        UIUtils.showSimpleDialog(
-          'Unknown PlatformException',
-          'Please report to the developer! $e',
-        );
+        CrashlyticsService.to.record(e, s);
+        _failedAuth(e);
       }
 
-      console.error('PlatformException: ${e.toString()}');
       return false;
-    } catch (e) {
+    } catch (e, s) {
       console.error('error: ${e.toString()}');
-
-      UIUtils.showSimpleDialog(
-        'Unknown Error',
-        'Please report to the developer! $e',
-      );
-
+      CrashlyticsService.to.record(e, s);
+      _failedAuth(e);
       return false;
     }
 
     return authenticated;
+  }
+
+  void _onError(dynamic e) {
+    if (WalletService.to.isReady) {
+      _showError();
+    } else {
+      _failedAuth(e);
+    }
+  }
+
+  void _showError() {
+    UIUtils.showSimpleDialog(
+      'Screenlock Required',
+      "Please turn it on to continue.",
+      closeText: 'Cancel',
+      actionText: 'Open Settings',
+      action: () {
+        Get.back();
+        AppSettings.openLockAndPasswordSettings();
+      },
+    );
+  }
+
+  void _failedAuth(dynamic e) {
+    Persistence.to.biometrics.val = false;
+
+    UIUtils.showSimpleDialog(
+      'Failed Biometrics',
+      'Please try again using Master Passwords instead\n\n$e',
+    );
   }
 }
