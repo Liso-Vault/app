@@ -14,6 +14,7 @@ import 'package:liso/resources/resources.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -67,7 +68,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         () => CenteredPlaceholder(
           iconData: Iconsax.document,
           message: 'no_items'.tr,
-          child: drawerController.filterTrashed.value ? null : addItemButton,
+          child: drawerController.filterTrashed.value || isTestFlight
+              ? null
+              : addItemButton,
         ),
       ),
     );
@@ -253,6 +256,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           } else {
             return const SizedBox.shrink();
           }
+        }
+
+        if (isTestFlight) {
+          return FloatingActionButton(
+            child: const Icon(LineIcons.plus),
+            onPressed: () {
+              Utils.adaptiveRouteOpen(
+                name: Routes.item,
+                parameters: {'mode': 'add', 'category': 'password'},
+              );
+            },
+          );
         }
 
         return ContextMenuButton(

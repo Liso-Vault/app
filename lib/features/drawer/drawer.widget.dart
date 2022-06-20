@@ -3,6 +3,7 @@ import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
@@ -180,49 +181,52 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
-              PersistenceBuilder(
-                builder: (p, context) => p.sync.val
-                    ? ListTile(
-                        leading: const Icon(Iconsax.document_cloud),
-                        onTap: () => Utils.adaptiveRouteOpen(
-                          name: Routes.s3Explorer,
-                          parameters: {'type': 'explorer'},
-                        ),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('files'.tr),
-                            Chip(
-                              label: Obx(
-                                () => Text(
-                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(WalletService.to.limits.storageSize, 0)}',
-                                  style: const TextStyle(fontSize: 10),
+              if (!isTestFlight) ...[
+                PersistenceBuilder(
+                  builder: (p, context) => p.sync.val
+                      ? ListTile(
+                          leading: const Icon(Iconsax.document_cloud),
+                          onTap: () => Utils.adaptiveRouteOpen(
+                            name: Routes.s3Explorer,
+                            parameters: {'type': 'explorer'},
+                          ),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('files'.tr),
+                              Chip(
+                                label: Obx(
+                                  () => Text(
+                                    '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(WalletService.to.limits.storageSize, 0)}',
+                                    style: const TextStyle(fontSize: 10),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        subtitle: Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Obx(
-                            () => LinearProgressIndicator(
-                              value: S3Service.to.storageSize.value.toDouble() /
-                                  WalletService.to.limits.storageSize,
-                              backgroundColor: Colors.grey.withOpacity(0.1),
+                            ],
+                          ),
+                          subtitle: Padding(
+                            padding: const EdgeInsets.only(top: 5),
+                            child: Obx(
+                              () => LinearProgressIndicator(
+                                value:
+                                    S3Service.to.storageSize.value.toDouble() /
+                                        WalletService.to.limits.storageSize,
+                                backgroundColor: Colors.grey.withOpacity(0.1),
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-              ),
-              ListTile(
-                title: Text('wallet'.tr),
-                leading: const Icon(Iconsax.wallet_1),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.wallet,
-                  method: 'offAndToNamed',
+                        )
+                      : const SizedBox.shrink(),
                 ),
-              ),
+                ListTile(
+                  title: Text('wallet'.tr),
+                  leading: const Icon(Iconsax.wallet_1),
+                  onTap: () => Utils.adaptiveRouteOpen(
+                    name: Routes.wallet,
+                    method: 'offAndToNamed',
+                  ),
+                ),
+              ],
               // ListTile(
               //   title: Text('browser'.tr),
               //   leading: const Icon(Iconsax.chrome),

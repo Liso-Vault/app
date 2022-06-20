@@ -44,6 +44,7 @@ const kVaultFormatVersion = 1;
 const kReleaseMode = ReleaseMode.beta;
 
 bool get isBeta => kReleaseMode == ReleaseMode.beta;
+bool get isTestFlight => GetPlatform.isIOS && !Persistence.to.proTester.val;
 bool get isLocalAuthSupported =>
     GetPlatform.isMobile && Persistence.to.biometrics.val;
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
@@ -81,7 +82,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      if (Persistence.to.sync.val) ...[
+      if (Persistence.to.sync.val && !isTestFlight) ...[
         Obx(
           () => ListTile(
             title: Text('${controller.attachments.length} Attachments'),
@@ -126,29 +127,31 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 ),
               ),
               const SizedBox(height: 10),
-              Obx(
-                () => DropdownButtonFormField<HiveLisoCategory>(
-                  isExpanded: true,
-                  value: controller.categoryObject,
-                  onChanged:
-                      controller.reserved.value || !controller.editMode.value
-                          ? null
-                          : (value) => controller.category.value = value!.id,
-                  decoration: const InputDecoration(labelText: 'Category'),
-                  items: [
-                    ...{
-                      ...CategoriesController.to.combined,
-                      controller.categoryObject
-                    }
-                        .map((e) => DropdownMenuItem<HiveLisoCategory>(
-                              value: e,
-                              child: Text(e.reservedName),
-                            ))
-                        .toList()
-                  ],
+              if (!isTestFlight) ...[
+                Obx(
+                  () => DropdownButtonFormField<HiveLisoCategory>(
+                    isExpanded: true,
+                    value: controller.categoryObject,
+                    onChanged:
+                        controller.reserved.value || !controller.editMode.value
+                            ? null
+                            : (value) => controller.category.value = value!.id,
+                    decoration: const InputDecoration(labelText: 'Category'),
+                    items: [
+                      ...{
+                        ...CategoriesController.to.combined,
+                        controller.categoryObject
+                      }
+                          .map((e) => DropdownMenuItem<HiveLisoCategory>(
+                                value: e,
+                                child: Text(e.reservedName),
+                              ))
+                          .toList()
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
+                const SizedBox(height: 10),
+              ],
               ObxValue(
                 (RxBool data) => CheckboxListTile(
                   title: Text('favorite'.tr),

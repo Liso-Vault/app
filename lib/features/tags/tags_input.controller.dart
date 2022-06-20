@@ -56,7 +56,7 @@ class TagsInputController extends GetxController {
       ),
       onChanged: (value) => suggestions.value = _query(value),
       validator: (value) =>
-          value!.length > 3 ? null : 'Must be at least 3 letter word',
+          value!.length >= 3 ? null : 'Must be at least 3 letter word',
       onFieldSubmitted: (tag) {
         if (!formKey.currentState!.validate()) return;
         _add(tag);

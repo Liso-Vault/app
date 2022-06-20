@@ -24,7 +24,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final localeCode = 'en'.val('locale-code');
   final crashReporting = true.val('crash-reporting');
   final analytics = true.val('analytics');
-  final proTester = true.val('pro-tester');
+  final proTester = false.val('pro-tester');
   final lastBuildNumber = 0.val('last-build-number');
   final backedUpSeed = false.val('backed-up-seed-phrase');
   // WINDOW SIZE
