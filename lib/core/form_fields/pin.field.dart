@@ -5,7 +5,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
-import '../../features/app/routes.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';

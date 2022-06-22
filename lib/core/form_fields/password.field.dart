@@ -155,7 +155,10 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
             widget.isPasswordField && widget.fieldController.text.isNotEmpty
                 ? strengthName.toUpperCase()
                 : null,
-        helperStyle: TextStyle(color: strengthColor),
+        helperStyle: TextStyle(
+          color: strengthColor,
+          fontWeight: FontWeight.bold,
+        ),
         suffixIcon: ContextMenuButton(
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),

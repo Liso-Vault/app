@@ -21,8 +21,6 @@ import 'core/firebase/auth.service.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/flavors/flavors.dart';
-import 'core/form_fields/password.field.dart';
-import 'core/form_fields/textfield.field.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';

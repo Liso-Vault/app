@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/form_fields/address.field.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
@@ -23,6 +22,7 @@ import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
+import '../s3/s3.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'items.controller.dart';
 import 'items.service.dart';
@@ -283,7 +283,7 @@ class ItemScreenController extends GetxController
               reserved: false,
               type: LisoFieldType.section.name,
               data: HiveLisoFieldData(
-                value: 'Section',
+                label: 'Section',
               ),
             );
 
@@ -347,6 +347,30 @@ class ItemScreenController extends GetxController
           label: const Icon(Iconsax.add_circle5, size: 20),
           onPressed: () {},
         ),
+      ));
+    }
+
+    return chips;
+  }
+
+  List<Widget> get attachmentChips {
+    List<Widget> chips = attachments.map<Widget>((attachment) {
+      final content = S3Service.to.contentsCache.firstWhere(
+        (e) => e.object!.eTag == attachment,
+      );
+
+      return Chip(
+        label: Text(content.name),
+        onDeleted: joinedVaultItem || !editMode.value
+            ? null
+            : () => attachments.remove(attachment),
+      );
+    }).toList();
+
+    if (!joinedVaultItem && editMode.value) {
+      chips.add(ActionChip(
+        label: const Icon(Iconsax.add_circle5, size: 20),
+        onPressed: attach,
       ));
     }
 
@@ -477,21 +501,102 @@ class ItemScreenController extends GetxController
           final field = (e.value as dynamic).field as HiveLisoField;
 
           if (field.type == LisoFieldType.section.name) {
-            widget = Section(text: field.data.value!.toUpperCase());
+            widget = Section(
+                text:
+                    (field.data.label ?? field.data.value ?? '').toUpperCase());
           } else if (field.type == LisoFieldType.richText.name) {
             widget = RichTextFormField(field, readOnly: true);
           } else if (field.type == LisoFieldType.address.name) {
-            widget = AddressFormField(field, readOnly: true);
+            String street1 = field.data.extra!['street1'];
+            String street2 = field.data.extra!['street2'];
+            String city = field.data.extra!['city'];
+            String state = field.data.extra!['state'];
+            String zip = field.data.extra!['zip'];
+            String country = field.data.extra!['country'] ?? '';
+
+            widget = Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // SECTION
+                Section(text: field.data.label ?? field.data.value ?? ''),
+                // STREET 1
+                if (street1.isNotEmpty) ...[
+                  InkWell(
+                    onTap: () => Utils.copyToClipboard(street1),
+                    child: TextFormField(
+                      initialValue: street1,
+                      enabled: false,
+                      decoration: const InputDecoration(labelText: 'Street 1'),
+                    ),
+                  ),
+                ],
+                if (street2.isNotEmpty) ...[
+                  InkWell(
+                    onTap: () => Utils.copyToClipboard(street2),
+                    child: TextFormField(
+                      initialValue: street2,
+                      enabled: false,
+                      decoration: const InputDecoration(labelText: 'Street 2'),
+                    ),
+                  ),
+                ],
+                if (city.isNotEmpty) ...[
+                  InkWell(
+                    onTap: () => Utils.copyToClipboard(city),
+                    child: TextFormField(
+                      initialValue: city,
+                      enabled: false,
+                      decoration: const InputDecoration(labelText: 'City'),
+                    ),
+                  ),
+                ],
+                if (state.isNotEmpty) ...[
+                  InkWell(
+                    onTap: () => Utils.copyToClipboard(state),
+                    child: TextFormField(
+                      initialValue: state,
+                      enabled: false,
+                      decoration:
+                          const InputDecoration(labelText: 'State / Province'),
+                    ),
+                  ),
+                ],
+                if (zip.isNotEmpty) ...[
+                  InkWell(
+                    onTap: () => Utils.copyToClipboard(zip),
+                    child: TextFormField(
+                      initialValue: zip,
+                      enabled: false,
+                      decoration: const InputDecoration(labelText: 'Zip Code'),
+                    ),
+                  ),
+                ],
+                if (country.isNotEmpty) ...[
+                  InkWell(
+                    onTap: () => Utils.copyToClipboard(country),
+                    child: TextFormField(
+                      initialValue: country,
+                      enabled: false,
+                      decoration: const InputDecoration(labelText: 'Country'),
+                    ),
+                  ),
+                ],
+              ],
+            );
           } else {
+            bool obscured = field.type == LisoFieldType.password.name ||
+                field.type == LisoFieldType.mnemonicSeed.name ||
+                field.type == LisoFieldType.pin.name;
+
             // add a quick copy value feature when tapped
             widget = InkWell(
               onTap: () => Utils.copyToClipboard(field.data.value),
               child: TextFormField(
                 initialValue: field.data.value,
                 enabled: false,
-                obscureText: field.type == LisoFieldType.password.name,
+                obscureText: obscured,
                 minLines: 1,
-                maxLines: field.type == LisoFieldType.password.name ? 1 : 10,
+                maxLines: obscured ? 1 : 10,
                 decoration: InputDecoration(
                   labelText: field.data.label,
                   hintText: field.data.hint,
@@ -751,8 +856,6 @@ class ItemScreenController extends GetxController
           controller: hintController,
           textCapitalization: TextCapitalization.words,
           maxLength: 20,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (data) => data!.isEmpty ? 'Invalid Hint' : null,
           decoration: const InputDecoration(labelText: 'Hint'),
         ),
       ],

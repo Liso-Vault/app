@@ -4,6 +4,7 @@ New! Permently delete items feature
 Improved! View mode feature before editing
 Improved! Auto clear fields after managing vaults & categories
 Improved! Displays metadata before restoring vault
+Improved! Attachments view
 Fixed! Screen lock auth for older android devices
 Lots of minor fixes and improvements
 

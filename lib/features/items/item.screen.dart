@@ -5,12 +5,12 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/categories/categories.controller.dart';
-import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/tags/tags_input.widget.dart';
 
 import '../../core/hive/models/category.hive.dart';
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
@@ -80,26 +80,36 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       Obx(
         () => Visibility(
           visible: controller.canEdit,
-          child: ContextMenuButton(
-            controller.menuFieldItems,
-            padding: EdgeInsets.zero,
-            child: ListTile(
-              title: const Text('Add Custom Field'),
-              trailing: const Icon(Iconsax.add_circle),
-              contentPadding: EdgeInsets.zero,
-              onTap: controller.attach,
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: ContextMenuButton(
+              controller.menuFieldItems,
+              padding: EdgeInsets.zero,
+              child: OutlinedButton.icon(
+                onPressed: controller.attach,
+                icon: const Icon(Iconsax.add_circle),
+                label: const Text('Add Custom Field'),
+              ),
             ),
           ),
         ),
       ),
       const Divider(),
+      Text(
+        'attachments'.tr,
+        style: TextStyle(color: themeColor, fontSize: 12),
+      ),
+      const SizedBox(height: 5),
       Obx(
-        () => ListTile(
-          title: Text('${controller.attachments.length} Attachments'),
-          trailing: const Icon(Iconsax.attach_circle),
-          contentPadding: EdgeInsets.zero,
-          onTap: controller.attach,
-          enabled: controller.canEdit,
+        () => Opacity(
+          opacity: controller.editMode.value ? 1.0 : 0.6,
+          child: Wrap(
+            spacing: 5,
+            runSpacing: 5,
+            children: [
+              ...controller.attachmentChips,
+            ],
+          ),
         ),
       ),
       const Divider(),
@@ -183,12 +193,17 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 controller.protected,
               ),
               if (Persistence.to.canShare) ...[
-                Section(text: 'shared_vaults'.tr.toUpperCase()),
+                Text(
+                  'shared_vaults'.tr,
+                  style: TextStyle(color: themeColor, fontSize: 12),
+                ),
+                const SizedBox(height: 5),
                 Obx(
                   () => Opacity(
                     opacity: controller.editMode.value ? 1.0 : 0.6,
                     child: Wrap(
                       spacing: 5,
+                      runSpacing: 5,
                       children: [
                         ...controller.sharedVaultChips,
                       ],

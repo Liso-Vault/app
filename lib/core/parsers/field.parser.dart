@@ -4,6 +4,7 @@ import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
+import 'package:secrets/secrets.dart';
 
 import '../form_fields/address.field.dart';
 import '../form_fields/coordinates.field.dart';
@@ -57,7 +58,29 @@ class FieldParser {
     }
     // ADDRESS
     else if (field.type == LisoFieldType.address.name) {
-      return AddressFormField(field);
+      final extra = field.data.extra!;
+
+      return AddressFormField(
+        field,
+        street1Controller: TextEditingController(text: extra['street1']),
+        street2Controller: TextEditingController(text: extra['street2']),
+        cityController: TextEditingController(text: extra['city']),
+        stateController: TextEditingController(text: extra['state']),
+        zipController: TextEditingController(text: extra['zip']),
+        countryFormField: ChoicesFormField(
+          HiveLisoField(
+            type: LisoFieldType.choices.name,
+            readOnly: field.readOnly,
+            data: HiveLisoFieldData(
+              value: extra['country'],
+              label: 'Country',
+              choices: List<HiveLisoFieldChoices>.from(
+                Secrets.countries.map((x) => HiveLisoFieldChoices.fromJson(x)),
+              ),
+            ),
+          ),
+        ),
+      );
     }
     // DATE
     else if (field.type == LisoFieldType.date.name) {

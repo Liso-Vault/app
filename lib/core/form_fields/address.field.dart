@@ -1,112 +1,164 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
-import 'package:liso/core/form_fields/section.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:secrets/secrets.dart';
+
+import '../../features/general/section.widget.dart';
+import '../../features/items/item_screen.controller.dart';
+import '../../features/menu/menu.button.dart';
+import '../../features/menu/menu.item.dart';
+import '../utils/utils.dart';
 
 // ignore: must_be_immutable
-class AddressFormField extends StatelessWidget with ConsoleMixin {
+class AddressFormField extends StatefulWidget with ConsoleMixin {
   final HiveLisoField field;
+  final TextEditingController street1Controller;
+  final TextEditingController street2Controller;
+  final TextEditingController cityController;
+  final TextEditingController stateController;
+  final TextEditingController zipController;
+  final ChoicesFormField countryFormField;
+
   final bool readOnly;
 
   AddressFormField(
     this.field, {
     Key? key,
     this.readOnly = false,
+    required this.street1Controller,
+    required this.street2Controller,
+    required this.cityController,
+    required this.stateController,
+    required this.zipController,
+    required this.countryFormField,
   }) : super(key: key);
 
-  TextEditingController? _street1Controller;
-  TextEditingController? _street2Controller;
-  TextEditingController? _cityController;
-  TextEditingController? _stateController;
-  TextEditingController? _zipController;
-  ChoicesFormField? _countryFormField;
-
-  // TODO: Address Field JSON to Class
   Map<String, dynamic> get value {
     return {
-      'street1': _street1Controller!.text,
-      'street2': _street2Controller!.text,
-      'city': _cityController!.text,
-      'state': _stateController!.text,
-      'zip': _zipController!.text,
-      'country': _countryFormField!.dropdown!.value,
+      'street1': street1Controller.text,
+      'street2': street2Controller.text,
+      'city': cityController.text,
+      'state': stateController.text,
+      'zip': zipController.text,
+      'country': countryFormField.dropdown!.value,
     };
   }
 
   @override
-  Widget build(BuildContext context) {
-    final extra = field.data.extra!;
+  State<AddressFormField> createState() => _AddressFormFieldState();
+}
 
-    _street1Controller = TextEditingController(text: extra['street1']);
-    _street2Controller = TextEditingController(text: extra['street2']);
-    _cityController = TextEditingController(text: extra['city']);
-    _stateController = TextEditingController(text: extra['state']);
-    _zipController = TextEditingController(text: extra['zip']);
+class _AddressFormFieldState extends State<AddressFormField> {
+  // GETTERS
+  dynamic get formWidget => ItemScreenController.to.widgets.firstWhere((e) =>
+      (e as dynamic).children.first.child.field.identifier ==
+      widget.field.identifier);
 
-    _countryFormField = ChoicesFormField(
-      HiveLisoField(
-        type: LisoFieldType.choices.name,
-        readOnly: field.readOnly || readOnly,
-        data: HiveLisoFieldData(
-          value: extra['country'],
-          label: 'Country',
-          choices: List<HiveLisoFieldChoices>.from(
-            Secrets.countries.map((x) => HiveLisoFieldChoices.fromJson(x)),
+  HiveLisoField get formField => formWidget.children.first.child.field;
+
+  List<ContextMenuItem> get menuItems {
+    return [
+      ContextMenuItem(
+        title: 'Copy',
+        leading: const Icon(Iconsax.copy),
+        onSelected: () {
+          final address = widget.value;
+          final addressString =
+              '${address['street1']}, ${address['street2']}, ${address['city']}, ${address['state']}, ${address['zip']}, ${address['country']}';
+          Utils.copyToClipboard(addressString);
+        },
+      ),
+      ContextMenuItem(
+        title: 'Clear',
+        leading: const Icon(LineIcons.times),
+        onSelected: () {
+          widget.street1Controller.clear();
+          widget.street2Controller.clear();
+          widget.cityController.clear();
+          widget.stateController.clear();
+          widget.zipController.clear();
+          widget.countryFormField.clear();
+        },
+      ),
+      if (!widget.field.reserved) ...[
+        ContextMenuItem(
+          title: 'Properties',
+          leading: const Icon(Iconsax.setting),
+          onSelected: () async {
+            await ItemScreenController.to.showFieldProperties(formWidget);
+            setState(() {});
+          },
+        ),
+        ContextMenuItem(
+          title: 'Remove',
+          leading: const Icon(Iconsax.trash),
+          onSelected: () => ItemScreenController.to.widgets.remove(
+            formWidget,
           ),
         ),
-      ),
-    );
+      ]
+    ];
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SectionFormField(
-          HiveLisoField(
-            type: '',
-            data: HiveLisoFieldData(value: field.data.label),
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: Section(
+                text: widget.field.data.label ?? widget.field.data.value ?? '',
+              ),
+            ),
+            ContextMenuButton(
+              menuItems,
+              child: const Icon(LineIcons.verticalEllipsis),
+            )
+          ],
         ),
         const SizedBox(height: 10),
         TextFormField(
-          controller: _street1Controller,
+          controller: widget.street1Controller,
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'Street 1'),
-          readOnly: field.readOnly || readOnly,
+          readOnly: widget.field.readOnly || widget.readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
-          controller: _street2Controller,
+          controller: widget.street2Controller,
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'Street 2'),
-          readOnly: field.readOnly || readOnly,
+          readOnly: widget.field.readOnly || widget.readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
-          controller: _cityController,
+          controller: widget.cityController,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'City'),
-          readOnly: field.readOnly || readOnly,
+          readOnly: widget.field.readOnly || widget.readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
-          controller: _stateController,
+          controller: widget.stateController,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'State / Province'),
-          readOnly: field.readOnly || readOnly,
+          readOnly: widget.field.readOnly || widget.readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
-          controller: _zipController,
+          controller: widget.zipController,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(labelText: 'Zip Code'),
-          readOnly: field.readOnly || readOnly,
+          readOnly: widget.field.readOnly || widget.readOnly,
         ),
         const SizedBox(height: 10),
-        _countryFormField!,
+        widget.countryFormField,
       ],
     );
   }

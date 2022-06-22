@@ -11,6 +11,8 @@ class ChoicesFormField extends StatelessWidget {
   CustomDropDownFormField? dropdown;
   String get value => dropdown!.value ?? '';
 
+  void clear() => dropdown!.value = '';
+
   @override
   Widget build(BuildContext context) {
     final items = field.data.choices!

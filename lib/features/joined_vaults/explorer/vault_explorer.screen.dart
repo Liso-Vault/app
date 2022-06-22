@@ -66,11 +66,9 @@ class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
         iconData: Iconsax.warning_2,
         message: message!,
       ),
-      onEmpty: Obx(
-        () => CenteredPlaceholder(
-          iconData: Iconsax.document,
-          message: 'no_items'.tr,
-        ),
+      onEmpty: CenteredPlaceholder(
+        iconData: Iconsax.document,
+        message: 'no_items'.tr,
       ),
     );
 
