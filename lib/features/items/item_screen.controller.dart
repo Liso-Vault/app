@@ -3,11 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/form_fields/address.field.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/utils/form_field.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/section.widget.dart';
@@ -36,7 +37,7 @@ class ItemScreenController extends GetxController
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
-  final mode = Get.parameters['mode'] as String;
+  final mode = Get.parameters['mode'];
   final joinedVaultItem = Get.parameters['joinedVaultItem'] == 'true';
   final titleController = TextEditingController();
   final tagsController = Get.put(TagsInputController());
@@ -67,6 +68,21 @@ class ItemScreenController extends GetxController
   final editMode = (Get.parameters['mode'] != 'view').obs;
 
   // GETTERS
+  List<HiveLisoField> get parseFields => widgets.map((e) {
+        final formWidget = (e as dynamic).children.first.child;
+        final field = formWidget.field as HiveLisoField;
+
+        if (formWidget?.value is Map<String, dynamic>) {
+          field.data.extra = formWidget.value;
+        } else {
+          field.data.value = formWidget?.value ?? '';
+        }
+
+        return field;
+      }).toList();
+
+  bool get canEdit => !joinedVaultItem && editMode.value;
+
   HiveLisoCategory get categoryObject {
     final categories_ =
         CategoriesController.to.combined.where((e) => e.id == category.value);
@@ -103,6 +119,179 @@ class ItemScreenController extends GetxController
     ];
   }
 
+  List<ContextMenuItem> get menuFieldItems => [
+        ContextMenuItem(
+          title: 'Text Field',
+          leading: const Icon(Iconsax.text),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.textField.name,
+              data: HiveLisoFieldData(label: 'Text Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Textarea Field',
+          leading: const Icon(Iconsax.text),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.textArea.name,
+              data: HiveLisoFieldData(label: 'Textarea Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Password Field',
+          leading: const Icon(Iconsax.password_check),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.password.name,
+              data: HiveLisoFieldData(label: 'Password Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Phone Field',
+          leading: const Icon(LineIcons.phone),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.phone.name,
+              data: HiveLisoFieldData(label: 'Phone Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'PIN Field',
+          leading: const Icon(Iconsax.code),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.pin.name,
+              data: HiveLisoFieldData(label: 'PIN Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'URL Field',
+          leading: const Icon(Iconsax.link),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.url.name,
+              data: HiveLisoFieldData(label: 'URL Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Date Field',
+          leading: const Icon(Iconsax.calendar),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.date.name,
+              data: HiveLisoFieldData(label: 'Date Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Email Field',
+          leading: const Icon(Iconsax.message),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.email.name,
+              data: HiveLisoFieldData(label: 'Email Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Number Field',
+          leading: const Icon(Icons.numbers),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.number.name,
+              data: HiveLisoFieldData(label: 'Number Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Passport Field',
+          leading: const Icon(Iconsax.card),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.passport.name,
+              data: HiveLisoFieldData(label: 'Passport Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Address Field',
+          leading: const Icon(Iconsax.location),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.address.name,
+              data: HiveLisoFieldData(label: 'Address Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Section',
+          leading: const Icon(Icons.text_fields),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.section.name,
+              data: HiveLisoFieldData(
+                value: 'Section',
+              ),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget));
+          },
+        ),
+      ];
+
   List<ContextMenuItem> get menuItemsChangeIcon {
     return [
       ContextMenuItem(
@@ -130,8 +319,9 @@ class ItemScreenController extends GetxController
 
       return Chip(
         label: Text(name),
-        onDeleted: () =>
-            joinedVaultItem ? null : sharedVaultIds.remove(vaultId),
+        onDeleted: joinedVaultItem || !editMode.value
+            ? null
+            : () => sharedVaultIds.remove(vaultId),
       );
     }).toList();
 
@@ -149,10 +339,9 @@ class ItemScreenController extends GetxController
       );
     }).toList();
 
-    if (menuItems.isNotEmpty && !joinedVaultItem) {
+    if (menuItems.isNotEmpty && !joinedVaultItem && editMode.value) {
       chips.add(ContextMenuButton(
         menuItems,
-        enabled: editMode.value,
         padding: EdgeInsets.zero,
         child: ActionChip(
           label: const Icon(Iconsax.add_circle5, size: 20),
@@ -243,32 +432,45 @@ class ItemScreenController extends GetxController
     attachments.value = List.from(item!.attachments);
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
     tagsController.data.value = item!.tags.toSet().toList();
+    _buildFieldWidgets();
+  }
 
+  Widget _buildFieldWidget(Widget widget) {
+    final dragHandle = Row(
+      children: [
+        if (!joinedVaultItem) ...[
+          if (Utils.isDrawerExpandable || GetPlatform.isMobile) ...[
+            const SizedBox(width: 10),
+            const Icon(Icons.drag_handle_rounded),
+          ] else ...[
+            const SizedBox(width: 40),
+          ],
+        ],
+      ],
+    );
+
+    return Row(
+      key: Key(const Uuid().v4()),
+      children: [
+        Expanded(child: widget),
+        Obx(() => Visibility(visible: editMode.value, child: dragHandle))
+      ],
+    );
+  }
+
+  void _buildFieldWidgets() {
     // filter empty fields
     List<Widget> widgets_ = item!.widgets;
 
     if (!editMode.value) {
       widgets_.removeWhere((e) {
         final field = (e as dynamic).field as HiveLisoField;
-        return field.data.value!.isEmpty;
+        return field.data.value!.isEmpty && field.data.extra == null;
       });
     }
 
     widgets.value = widgets_.asMap().entries.map(
       (e) {
-        final dragHandle = Row(
-          children: [
-            if (!joinedVaultItem) ...[
-              if (Utils.isDrawerExpandable || GetPlatform.isMobile) ...[
-                const SizedBox(width: 10),
-                const Icon(Icons.drag_handle_rounded),
-              ] else ...[
-                const SizedBox(width: 40),
-              ],
-            ],
-          ],
-        );
-
         Widget widget = e.value;
 
         if (!editMode.value) {
@@ -278,6 +480,8 @@ class ItemScreenController extends GetxController
             widget = Section(text: field.data.value!.toUpperCase());
           } else if (field.type == LisoFieldType.richText.name) {
             widget = RichTextFormField(field, readOnly: true);
+          } else if (field.type == LisoFieldType.address.name) {
+            widget = AddressFormField(field, readOnly: true);
           } else {
             // add a quick copy value feature when tapped
             widget = InkWell(
@@ -285,6 +489,9 @@ class ItemScreenController extends GetxController
               child: TextFormField(
                 initialValue: field.data.value,
                 enabled: false,
+                obscureText: field.type == LisoFieldType.password.name,
+                minLines: 1,
+                maxLines: field.type == LisoFieldType.password.name ? 1 : 10,
                 decoration: InputDecoration(
                   labelText: field.data.label,
                   hintText: field.data.hint,
@@ -294,18 +501,7 @@ class ItemScreenController extends GetxController
           }
         }
 
-        return Row(
-          key: Key(e.key.toString()),
-          children: [
-            Expanded(child: widget),
-            Obx(
-              () => Visibility(
-                visible: editMode.value,
-                child: dragHandle,
-              ),
-            )
-          ],
-        );
+        return _buildFieldWidget(widget);
       },
     ).toList();
   }
@@ -362,7 +558,7 @@ class ItemScreenController extends GetxController
       tags: tagsController.data,
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
-      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      fields: parseFields,
       favorite: favorite.value,
       protected: protected.value,
       metadata: await HiveMetadata.get(),
@@ -391,7 +587,7 @@ class ItemScreenController extends GetxController
 
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
-    item!.fields = FormFieldUtils.obtainFields(item!, widgets: widgets);
+    item!.fields = parseFields;
     item!.tags = tagsController.data;
     item!.attachments = attachments;
     item!.sharedVaultIds = sharedVaultIds;
@@ -477,7 +673,7 @@ class ItemScreenController extends GetxController
       deleted: item!.deleted,
       category: category.value,
       title: titleController.text,
-      fields: FormFieldUtils.obtainFields(item!, widgets: widgets),
+      fields: parseFields,
       attachments: attachments,
       sharedVaultIds: sharedVaultIds,
       tags: tagsController.data,
@@ -524,5 +720,62 @@ class ItemScreenController extends GetxController
 
     if (attachments_ == null) return;
     attachments.value = attachments_;
+  }
+
+  Future<void> showFieldProperties(dynamic formWidget) async {
+    final field = formWidget.children.first.child.field;
+    final formKey = GlobalKey<FormState>();
+    final labelController = TextEditingController(text: field.data.label);
+    final hintController = TextEditingController(text: field.data.hint);
+
+    void _update() async {
+      if (!formKey.currentState!.validate()) return;
+      field.data.label = labelController.text;
+      field.data.hint = hintController.text;
+      Get.back();
+    }
+
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        TextFormField(
+          controller: labelController,
+          autofocus: true,
+          textCapitalization: TextCapitalization.words,
+          maxLength: 20,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (data) => data!.isEmpty ? 'Invalid Label' : null,
+          decoration: const InputDecoration(labelText: 'Label'),
+        ),
+        TextFormField(
+          controller: hintController,
+          textCapitalization: TextCapitalization.words,
+          maxLength: 20,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          validator: (data) => data!.isEmpty ? 'Invalid Hint' : null,
+          decoration: const InputDecoration(labelText: 'Hint'),
+        ),
+      ],
+    );
+
+    await Get.dialog(AlertDialog(
+      title: const Text('Field Properties'),
+      content: Form(
+        key: formKey,
+        child: Utils.isDrawerExpandable
+            ? content
+            : SizedBox(width: 450, child: content),
+      ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _update,
+          child: Text('update'.tr),
+        ),
+      ],
+    ));
   }
 }

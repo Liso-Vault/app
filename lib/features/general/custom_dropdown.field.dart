@@ -25,7 +25,7 @@ class CustomDropDownFormField extends StatelessWidget {
       isExpanded: true, // fix for renderflex overflowed
       value: value,
       items: items,
-      onChanged: (newValue) => value = newValue,
+      onChanged: field.readOnly ? null : (newValue) => value = newValue,
       decoration: InputDecoration(
         labelText: field.data.label,
         hintText: field.data.hint,

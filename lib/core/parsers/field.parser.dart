@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
@@ -38,11 +39,17 @@ class FieldParser {
     }
     // TEXT FIELD
     else if (field.type == LisoFieldType.textField.name) {
-      return TextFieldForm(field);
+      return TextFieldForm(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // TEXT AREA
     else if (field.type == LisoFieldType.textArea.name) {
-      return TextAreaFormField(field);
+      return TextAreaFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // RICH TEXT
     else if (field.type == LisoFieldType.richText.name) {
@@ -54,7 +61,23 @@ class FieldParser {
     }
     // DATE
     else if (field.type == LisoFieldType.date.name) {
-      return DateFormField(field);
+      DateTime? initialDate;
+
+      try {
+        initialDate = DateFormat('dd/MM/yyyy').parse(field.data.value!);
+      } catch (e) {
+        // empty date
+      }
+
+      return DateFormField(
+        field,
+        initialDate: initialDate,
+        fieldController: TextEditingController(
+          text: initialDate != null
+              ? DateFormat('dd/MM/yyyy').format(initialDate)
+              : '',
+        ),
+      );
     }
     // TIME
     else if (field.type == LisoFieldType.time.name) {
@@ -66,31 +89,52 @@ class FieldParser {
     }
     // PHONE
     else if (field.type == LisoFieldType.phone.name) {
-      return PhoneFormField(field);
+      return PhoneFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // EMAIL
     else if (field.type == LisoFieldType.email.name) {
-      return EmailFormField(field);
+      return EmailFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // URL
     else if (field.type == LisoFieldType.url.name) {
-      return URLFormField(field);
+      return URLFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // PASSWORD
     else if (field.type == LisoFieldType.password.name) {
-      return PasswordFormField(field);
+      return PasswordFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // PIN
     else if (field.type == LisoFieldType.pin.name) {
-      return PINFormField(field);
+      return PINFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // NUMBER
     else if (field.type == LisoFieldType.number.name) {
-      return NumberFormField(field);
+      return NumberFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // PASSPORT
     else if (field.type == LisoFieldType.passport.name) {
-      return PassportFormField(field);
+      return PassportFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
     }
     // COORDINATES
     else if (field.type == LisoFieldType.coordinates.name) {

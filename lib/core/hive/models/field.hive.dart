@@ -59,13 +59,13 @@ class HiveLisoField extends HiveObject with EquatableMixin {
 @HiveType(typeId: 21)
 class HiveLisoFieldData extends HiveObject with EquatableMixin {
   @HiveField(0)
-  final String? label;
+  String? label;
   @HiveField(1)
-  final String? hint;
+  String? hint;
   @HiveField(2)
   String? value;
   @HiveField(3)
-  final List<HiveLisoFieldChoices>? choices;
+  List<HiveLisoFieldChoices>? choices;
   @HiveField(4)
   Map<String, dynamic>? extra;
 

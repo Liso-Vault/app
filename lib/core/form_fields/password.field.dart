@@ -1,113 +1,48 @@
-import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
 import '../../features/app/routes.dart';
+import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
 import '../utils/globals.dart';
 import '../utils/utils.dart';
 
-// ignore: must_be_immutable
-class PasswordFormField extends GetWidget<PasswordFormFieldController>
-    with ConsoleMixin {
-  // CONSTRUCTOR
+class PasswordFormField extends StatefulWidget {
   final HiveLisoField field;
-  PasswordFormField(this.field, {Key? key}) : super(key: key);
+  final TextEditingController fieldController;
+  final bool enabled;
 
-  // VARIABLES
+  const PasswordFormField(
+    this.field, {
+    Key? key,
+    required this.fieldController,
+    this.enabled = true,
+  }) : super(key: key);
 
-  // GETTERS
-  String get value => controller.fieldController!.text;
-  bool get isPasswordField => field.identifier == 'password';
+  String get value => fieldController.text;
 
-  // FUNCTIONS
-  void _generate() async {
-    final password_ = await Utils.adaptiveRouteOpen(
-      name: Routes.passwordGenerator,
-      parameters: {'return': 'true'},
-    );
-
-    if (password_ == null) return;
-    controller.obscureText.value = false;
-    controller.fieldController!.text = password_;
-    controller.password.value = password_;
-  }
-
-  List<ContextMenuItem> get menuItems {
-    return [
-      ContextMenuItem(
-        title: controller.obscureText.value ? 'Show' : 'Hide',
-        onSelected: controller.obscureText.toggle,
-        leading: Icon(
-          controller.obscureText.value ? Iconsax.eye : Iconsax.eye_slash,
-        ),
-      ),
-      if (isPasswordField && !field.readOnly) ...[
-        ContextMenuItem(
-          title: 'Generate',
-          leading: const Icon(Iconsax.password_check),
-          onSelected: _generate,
-        ),
-      ],
-      ContextMenuItem(
-        title: 'Copy',
-        leading: const Icon(Iconsax.copy),
-        onSelected: () =>
-            Utils.copyToClipboard(controller.fieldController!.text),
-      ),
-    ];
-  }
+  bool get isPasswordField =>
+      field.identifier != 'private_key' && field.identifier != 'key';
 
   @override
-  Widget build(BuildContext context) {
-    controller.fieldController = TextEditingController(text: field.data.value);
-    controller.password.value = field.data.value!;
-
-    return Obx(
-      () => Row(
-        children: [
-          Expanded(
-            child: TextFormField(
-              controller: controller.fieldController,
-              keyboardType: TextInputType.visiblePassword,
-              obscureText: controller.obscureText.value,
-              readOnly: field.readOnly,
-              onChanged: (value) => controller.password.value = value,
-              decoration: InputDecoration(
-                labelText: field.data.label,
-                hintText: field.data.hint,
-                helperText: isPasswordField &&
-                        controller.fieldController!.text.isNotEmpty
-                    ? controller.strengthName.toUpperCase()
-                    : null,
-                helperStyle: TextStyle(color: controller.strengthColor),
-                suffixIcon: ContextMenuButton(
-                  menuItems,
-                  child: const Icon(LineIcons.verticalEllipsis),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  State<PasswordFormField> createState() => _PasswordFormFieldState();
 }
 
-class PasswordFormFieldController extends GetxController with ConsoleMixin {
+class _PasswordFormFieldState extends State<PasswordFormField> {
   // VARIABLES
-  TextEditingController? fieldController;
-
-  // PROPERTIES
-  final password = ''.obs;
-  final obscureText = true.obs;
+  bool obscureText = true;
 
   // GETTERS
+  dynamic get formWidget => ItemScreenController.to.widgets.firstWhere((e) =>
+      (e as dynamic).children.first.child.field.identifier ==
+      widget.field.identifier);
+
+  HiveLisoField get formField => formWidget.children.first.child.field;
+
   String get strengthName {
     String name = 'Very Weak'; // VERY WEAK
 
@@ -140,5 +75,92 @@ class PasswordFormFieldController extends GetxController with ConsoleMixin {
       (strength.index.toDouble() + 0.5) / PasswordStrength.STRONG.index;
 
   PasswordStrength get strength =>
-      PasswordStrengthChecker.checkStrength(password.value);
+      PasswordStrengthChecker.checkStrength(widget.fieldController.text);
+
+  List<ContextMenuItem> get menuItems {
+    return [
+      ContextMenuItem(
+        title: obscureText ? 'Show' : 'Hide',
+        onSelected: () => setState(() {
+          obscureText = !obscureText;
+        }),
+        leading: Icon(
+          obscureText ? Iconsax.eye : Iconsax.eye_slash,
+        ),
+      ),
+      if (widget.isPasswordField && !widget.field.readOnly) ...[
+        ContextMenuItem(
+          title: 'Generate',
+          leading: const Icon(Iconsax.password_check),
+          onSelected: _generate,
+        ),
+      ],
+      ContextMenuItem(
+        title: 'Copy',
+        leading: const Icon(Iconsax.copy),
+        onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
+      ),
+      ContextMenuItem(
+        title: 'Clear',
+        leading: const Icon(LineIcons.times),
+        onSelected: widget.fieldController.clear,
+      ),
+      if (!widget.field.reserved) ...[
+        ContextMenuItem(
+          title: 'Properties',
+          leading: const Icon(Iconsax.setting),
+          onSelected: () async {
+            await ItemScreenController.to.showFieldProperties(formWidget);
+            setState(() {});
+          },
+        ),
+        ContextMenuItem(
+          title: 'Remove',
+          leading: const Icon(Iconsax.trash),
+          onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
+        ),
+      ]
+    ];
+  }
+
+  // FUNCTIONS
+  void _generate() async {
+    final password_ = await Utils.adaptiveRouteOpen(
+      name: Routes.passwordGenerator,
+      parameters: {'return': 'true'},
+    );
+
+    if (password_ == null) return;
+    widget.fieldController.text = password_;
+
+    setState(() {
+      obscureText = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      enabled: widget.enabled,
+      controller: widget.fieldController,
+      obscureText: obscureText,
+      keyboardType: TextInputType.visiblePassword,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      readOnly: widget.field.readOnly,
+      onChanged: (value) => setState(() {}),
+      decoration: InputDecoration(
+        labelText: widget.field.data.label,
+        hintText: widget.field.data.hint,
+        helperText:
+            widget.isPasswordField && widget.fieldController.text.isNotEmpty
+                ? strengthName.toUpperCase()
+                : null,
+        helperStyle: TextStyle(color: strengthColor),
+        suffixIcon: ContextMenuButton(
+          menuItems,
+          child: const Icon(LineIcons.verticalEllipsis),
+        ),
+      ),
+    );
+  }
 }

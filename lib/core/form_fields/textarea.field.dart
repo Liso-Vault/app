@@ -1,29 +1,85 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:console_mixin/console_mixin.dart';
 
-// ignore: must_be_immutable
-class TextAreaFormField extends StatelessWidget with ConsoleMixin {
+import '../../features/items/item_screen.controller.dart';
+import '../../features/menu/menu.button.dart';
+import '../../features/menu/menu.item.dart';
+import '../utils/utils.dart';
+
+class TextAreaFormField extends StatefulWidget {
   final HiveLisoField field;
-  TextAreaFormField(this.field, {Key? key}) : super(key: key);
+  final TextEditingController fieldController;
+  final bool enabled;
 
-  TextEditingController? _fieldController;
+  const TextAreaFormField(
+    this.field, {
+    Key? key,
+    this.enabled = true,
+    required this.fieldController,
+  }) : super(key: key);
 
-  String get value => _fieldController!.text;
+  String get value => fieldController.text;
+
+  @override
+  State<TextAreaFormField> createState() => _TextAreaFormFieldState();
+}
+
+class _TextAreaFormFieldState extends State<TextAreaFormField> {
+  // GETTERS
+  dynamic get formWidget => ItemScreenController.to.widgets.firstWhere((e) =>
+      (e as dynamic).children.first.child.field.identifier ==
+      widget.field.identifier);
+
+  HiveLisoField get formField => formWidget.children.first.child.field;
+
+  List<ContextMenuItem> get menuItems {
+    return [
+      ContextMenuItem(
+        title: 'Copy',
+        leading: const Icon(Iconsax.copy),
+        onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
+      ),
+      ContextMenuItem(
+        title: 'Clear',
+        leading: const Icon(LineIcons.times),
+        onSelected: widget.fieldController.clear,
+      ),
+      if (!widget.field.reserved) ...[
+        ContextMenuItem(
+          title: 'Properties',
+          leading: const Icon(Iconsax.setting),
+          onSelected: () async {
+            await ItemScreenController.to.showFieldProperties(formWidget);
+            setState(() {});
+          },
+        ),
+        ContextMenuItem(
+          title: 'Remove',
+          leading: const Icon(Iconsax.trash),
+          onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
+        ),
+      ]
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
-    _fieldController = TextEditingController(text: field.data.value);
-
     return TextFormField(
-      controller: _fieldController,
+      enabled: widget.enabled,
+      controller: widget.fieldController,
       minLines: 1,
       maxLines: 5,
-      readOnly: field.readOnly,
+      readOnly: widget.field.readOnly,
       textCapitalization: TextCapitalization.sentences,
       decoration: InputDecoration(
-        labelText: field.data.label,
-        hintText: field.data.hint,
+        labelText: widget.field.data.label,
+        hintText: widget.field.data.hint,
+        suffixIcon: ContextMenuButton(
+          menuItems,
+          child: const Icon(LineIcons.verticalEllipsis),
+        ),
       ),
     );
   }

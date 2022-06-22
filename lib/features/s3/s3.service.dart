@@ -12,7 +12,6 @@ import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';

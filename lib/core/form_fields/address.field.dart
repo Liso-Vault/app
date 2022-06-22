@@ -8,7 +8,13 @@ import 'package:secrets/secrets.dart';
 // ignore: must_be_immutable
 class AddressFormField extends StatelessWidget with ConsoleMixin {
   final HiveLisoField field;
-  AddressFormField(this.field, {Key? key}) : super(key: key);
+  final bool readOnly;
+
+  AddressFormField(
+    this.field, {
+    Key? key,
+    this.readOnly = false,
+  }) : super(key: key);
 
   TextEditingController? _street1Controller;
   TextEditingController? _street2Controller;
@@ -42,6 +48,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
     _countryFormField = ChoicesFormField(
       HiveLisoField(
         type: LisoFieldType.choices.name,
+        readOnly: field.readOnly || readOnly,
         data: HiveLisoFieldData(
           value: extra['country'],
           label: 'Country',
@@ -67,7 +74,7 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'Street 1'),
-          readOnly: field.readOnly,
+          readOnly: field.readOnly || readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
@@ -75,28 +82,28 @@ class AddressFormField extends StatelessWidget with ConsoleMixin {
           keyboardType: TextInputType.streetAddress,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'Street 2'),
-          readOnly: field.readOnly,
+          readOnly: field.readOnly || readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: _cityController,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'City'),
-          readOnly: field.readOnly,
+          readOnly: field.readOnly || readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: _stateController,
           textCapitalization: TextCapitalization.words,
           decoration: const InputDecoration(labelText: 'State / Province'),
-          readOnly: field.readOnly,
+          readOnly: field.readOnly || readOnly,
         ),
         const SizedBox(height: 10),
         TextFormField(
           controller: _zipController,
           keyboardType: TextInputType.number,
           decoration: const InputDecoration(labelText: 'Zip Code'),
-          readOnly: field.readOnly,
+          readOnly: field.readOnly || readOnly,
         ),
         const SizedBox(height: 10),
         _countryFormField!,

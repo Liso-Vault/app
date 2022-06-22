@@ -88,6 +88,8 @@ final en = {
   "about": "About",
   "settings": "Settings",
   "attempts_left": "attempts left",
+  "attachment": "Attachment",
+  "attachments": "Attachments",
   "theme": "Theme",
   "dark": "Dark",
   "light": "Light",

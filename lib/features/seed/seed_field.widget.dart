@@ -85,6 +85,11 @@ class SeedField extends StatelessWidget with ConsoleMixin {
         leading: const Icon(Iconsax.copy),
         onSelected: () => Utils.copyToClipboard(fieldController!.text),
       ),
+      ContextMenuItem(
+        title: 'Clear',
+        leading: const Icon(LineIcons.times),
+        onSelected: fieldController!.clear,
+      ),
     ];
   }
 

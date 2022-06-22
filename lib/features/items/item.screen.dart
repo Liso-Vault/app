@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
@@ -33,7 +32,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           Obx(
             () => ContextMenuButton(
               controller.menuItemsChangeIcon,
-              enabled: !controller.joinedVaultItem && controller.editMode.value,
+              enabled: controller.canEdit,
               child: controller.iconUrl().isEmpty
                   ? Utils.categoryIcon(controller.category.value)
                   : RemoteImage(
@@ -47,7 +46,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           Obx(
             () => Expanded(
               child: TextFormField(
-                enabled: controller.editMode.value,
+                enabled: controller.canEdit,
                 autofocus: mode == 'add',
                 controller: controller.titleController,
                 textCapitalization: TextCapitalization.words,
@@ -66,34 +65,44 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         () => ReorderableListView(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          buildDefaultDragHandles:
-              !controller.joinedVaultItem && controller.editMode.value,
+          buildDefaultDragHandles: controller.canEdit,
           children: controller.widgets,
           onReorder: (int oldIndex, int newIndex) {
             if (oldIndex < newIndex) newIndex -= 1;
-            // re-order widget
+            // re-order widgets
             final widget = controller.widgets.removeAt(oldIndex);
             controller.widgets.insert(newIndex, widget);
-            // re-order fields
-            final field = controller.item!.fields.removeAt(oldIndex);
-            controller.item!.fields.insert(newIndex, field);
           },
         ),
       ),
       // -------- RENDER FIELDS AS WIDGETS -------- //
       const SizedBox(height: 10),
-      if (Persistence.to.sync.val && !isTestFlight) ...[
-        Obx(
-          () => ListTile(
-            title: Text('${controller.attachments.length} Attachments'),
-            trailing: const Icon(Iconsax.attach_circle),
-            contentPadding: EdgeInsets.zero,
-            onTap: controller.attach,
-            enabled: !controller.joinedVaultItem && controller.editMode.value,
+      Obx(
+        () => Visibility(
+          visible: controller.canEdit,
+          child: ContextMenuButton(
+            controller.menuFieldItems,
+            padding: EdgeInsets.zero,
+            child: ListTile(
+              title: const Text('Add Custom Field'),
+              trailing: const Icon(Iconsax.add_circle),
+              contentPadding: EdgeInsets.zero,
+              onTap: controller.attach,
+            ),
           ),
         ),
-        const SizedBox(height: 10),
-      ],
+      ),
+      const Divider(),
+      Obx(
+        () => ListTile(
+          title: Text('${controller.attachments.length} Attachments'),
+          trailing: const Icon(Iconsax.attach_circle),
+          contentPadding: EdgeInsets.zero,
+          onTap: controller.attach,
+          enabled: controller.canEdit,
+        ),
+      ),
+      const Divider(),
       Obx(
         () => TagsInput(
           label: 'Tags',
@@ -101,7 +110,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           controller: controller.tagsController,
         ),
       ),
-      const SizedBox(height: 10),
+      const Divider(),
       Theme(
           data: Get.theme.copyWith(disabledColor: Colors.grey),
           child: Column(
@@ -127,31 +136,29 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 ),
               ),
               const SizedBox(height: 10),
-              if (!isTestFlight) ...[
-                Obx(
-                  () => DropdownButtonFormField<HiveLisoCategory>(
-                    isExpanded: true,
-                    value: controller.categoryObject,
-                    onChanged:
-                        controller.reserved.value || !controller.editMode.value
-                            ? null
-                            : (value) => controller.category.value = value!.id,
-                    decoration: const InputDecoration(labelText: 'Category'),
-                    items: [
-                      ...{
-                        ...CategoriesController.to.combined,
-                        controller.categoryObject
-                      }
-                          .map((e) => DropdownMenuItem<HiveLisoCategory>(
-                                value: e,
-                                child: Text(e.reservedName),
-                              ))
-                          .toList()
-                    ],
-                  ),
+              Obx(
+                () => DropdownButtonFormField<HiveLisoCategory>(
+                  isExpanded: true,
+                  value: controller.categoryObject,
+                  onChanged:
+                      controller.reserved.value || !controller.editMode.value
+                          ? null
+                          : (value) => controller.category.value = value!.id,
+                  decoration: const InputDecoration(labelText: 'Category'),
+                  items: [
+                    ...{
+                      ...CategoriesController.to.combined,
+                      controller.categoryObject
+                    }
+                        .map((e) => DropdownMenuItem<HiveLisoCategory>(
+                              value: e,
+                              child: Text(e.reservedName),
+                            ))
+                        .toList()
+                  ],
                 ),
-                const SizedBox(height: 10),
-              ],
+              ),
+              const SizedBox(height: 10),
               ObxValue(
                 (RxBool data) => CheckboxListTile(
                   title: Text('favorite'.tr),
@@ -175,8 +182,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 controller.protected,
               ),
-              if (controller.sharedVaultChips.isNotEmpty &&
-                  Persistence.to.canShare) ...[
+              if (Persistence.to.canShare) ...[
                 Section(text: 'shared_vaults'.tr.toUpperCase()),
                 Obx(
                   () => Opacity(
@@ -189,6 +195,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                     ),
                   ),
                 ),
+                const Divider(),
               ],
             ],
           )),

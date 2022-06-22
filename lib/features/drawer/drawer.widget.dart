@@ -181,43 +181,42 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
-              if (!isTestFlight) ...[
-                PersistenceBuilder(
-                  builder: (p, context) => p.sync.val
-                      ? ListTile(
-                          leading: const Icon(Iconsax.document_cloud),
-                          onTap: () => Utils.adaptiveRouteOpen(
-                            name: Routes.s3Explorer,
-                            parameters: {'type': 'explorer'},
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text('files'.tr),
-                              Chip(
-                                label: Obx(
-                                  () => Text(
-                                    '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(WalletService.to.limits.storageSize, 0)}',
-                                    style: const TextStyle(fontSize: 10),
-                                  ),
+              PersistenceBuilder(
+                builder: (p, context) => p.sync.val
+                    ? ListTile(
+                        leading: const Icon(Iconsax.document_cloud),
+                        onTap: () => Utils.adaptiveRouteOpen(
+                          name: Routes.s3Explorer,
+                          parameters: {'type': 'explorer'},
+                        ),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('files'.tr),
+                            Chip(
+                              label: Obx(
+                                () => Text(
+                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(WalletService.to.limits.storageSize, 0)}',
+                                  style: const TextStyle(fontSize: 10),
                                 ),
                               ),
-                            ],
-                          ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Obx(
-                              () => LinearProgressIndicator(
-                                value:
-                                    S3Service.to.storageSize.value.toDouble() /
-                                        WalletService.to.limits.storageSize,
-                                backgroundColor: Colors.grey.withOpacity(0.1),
-                              ),
+                            ),
+                          ],
+                        ),
+                        subtitle: Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: Obx(
+                            () => LinearProgressIndicator(
+                              value: S3Service.to.storageSize.value.toDouble() /
+                                  WalletService.to.limits.storageSize,
+                              backgroundColor: Colors.grey.withOpacity(0.1),
                             ),
                           ),
-                        )
-                      : const SizedBox.shrink(),
-                ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+              if (!isTestFlight) ...[
                 ListTile(
                   title: Text('wallet'.tr),
                   leading: const Icon(Iconsax.wallet_1),

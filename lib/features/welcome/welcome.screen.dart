@@ -2,7 +2,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/resources/resources.dart';
 
@@ -34,14 +33,12 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             ConfigService.to.appName,
             style: const TextStyle(fontSize: 25),
           ),
-          if (!isTestFlight) ...[
-            const SizedBox(height: 10),
-            Text(
-              ConfigService.to.general.app.shortDescription,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey),
-            ),
-          ],
+          const SizedBox(height: 10),
+          Text(
+            ConfigService.to.general.app.shortDescription,
+            textAlign: TextAlign.center,
+            style: const TextStyle(color: Colors.grey),
+          ),
           const SizedBox(height: 20),
           SizedBox(
             width: 200,
