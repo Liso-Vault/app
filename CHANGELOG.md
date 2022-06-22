@@ -1,13 +1,15 @@
 ## 0.5.1
-Potential screen lock auth fix for older android devices
-Permently delete items feature
-Auto clear fields after managing vaults & categories
-View only feature when 1st opening an item
-Displays metadata before restoring vault
+New! Custom Fields
+New! Permently delete items feature
+Improved! View mode feature before editing
+Improved! Auto clear fields after managing vaults & categories
+Improved! Displays metadata before restoring vault
+Fixed! Screen lock auth for older android devices
+Lots of minor fixes and improvements
 
 ## 0.5.0
 New! Custom Categories
-New! Re-orderable Fields
+New! Reorderable Fields
 New! Purge Vault Feature
 New! Password Field Strength Indicator
 New! Powerful Password Generator
