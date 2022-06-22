@@ -1,32 +1,32 @@
 ## 0.5.1
-New! Custom Fields
-New! Permently delete items feature
-Improved! View mode feature before editing
-Improved! Auto clear fields after managing vaults & categories
-Improved! Displays metadata before restoring vault
-Improved! Attachments view
-Fixed! Screen lock auth for older android devices
-Lots of minor fixes and improvements
+- New! Custom Fields
+- New! Permanently delete items feature
+- Improved! View mode feature before editing
+- Improved! Auto clear fields after managing vaults & categories
+- Improved! Displays metadata before restoring vault
+- Improved! Attachments view
+- Fixed! Screen lock auth for older android devices
+- Lots of minor fixes and improvements
 
 ## 0.5.0
-New! Custom Categories
-New! Reorderable Fields
-New! Purge Vault Feature
-New! Password Field Strength Indicator
-New! Powerful Password Generator
-New! Mnemonic Seed Phrase Generator
-New! Backup Seed Phrase Reminder Card
-New! Message/Text Signer in Wallet
-New! Encrypt & Decrypt Texts in Cipher Tool
-New! Export an unencrypted vault
-New! Update a Custom Vault
-New! Font: Lato
-Fixed! Deleted custom vault is restored after sync
-Simplified! Creation of vault
-Improved! Mnemonic Seed Phrase Field
-Improved! Re-organized settings
-Removed! Initial syncing screen
-And lots of bug fixes and improvements
+- New! Custom Categories
+- New! Reorderable Fields
+- New! Purge Vault Feature
+- New! Password Field Strength Indicator
+- New! Powerful Password Generator
+- New! Mnemonic Seed Phrase Generator
+- New! Backup Seed Phrase Reminder Card
+- New! Message/Text Signer in Wallet
+- New! Encrypt & Decrypt Texts in Cipher Tool
+- New! Export an unencrypted vault
+- New! Update a Custom Vault
+- New! Font: Lato
+- Fixed! Deleted custom vault is restored after sync
+- Simplified! Creation of vault
+- Improved! Mnemonic Seed Phrase Field
+- Improved! Re-organized settings
+- Removed! Initial syncing screen
+- And lots of bug fixes and improvements
 
 ## 0.4.0
 - New! Shared Vaults

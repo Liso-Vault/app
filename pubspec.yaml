@@ -73,7 +73,7 @@ dependencies:
   flutter_local_notifications: ^9.6.1
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
-  share_plus: ^4.0.8 # exporting files and sharing texts
+  share_plus: ^4.0.9 # exporting files and sharing texts
   equatable: ^2.0.3
   app_settings: ^4.1.8
   uuid: ^3.0.6 # unique identifiers for items
@@ -86,7 +86,7 @@ dependencies:
   # INFO
   device_info_plus: ^3.2.4
   package_info_plus: ^1.4.2
-  connectivity_plus: ^2.3.4 # internet connectivity checking
+  connectivity_plus: ^2.3.5 # internet connectivity checking
 
 dev_dependencies:
   # flutter_test:
