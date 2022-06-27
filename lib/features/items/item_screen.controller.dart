@@ -885,7 +885,7 @@ class ItemScreenController extends GetxController
 
   void _pickIcon() async {
     final formKey = GlobalKey<FormState>();
-    final iconController = TextEditingController();
+    final iconController = TextEditingController(text: item!.iconUrl);
 
     void _save() async {
       if (!formKey.currentState!.validate()) return;
