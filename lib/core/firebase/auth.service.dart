@@ -36,12 +36,12 @@ class AuthService extends GetxService with ConsoleMixin {
         console.warning('signed out');
         SharedVaultsController.to.stop();
         JoinedVaultsController.to.stop();
-        ProController.to.deinit();
+        ProController.to.logout();
       } else {
         console.info('signed in: ${user_.uid}');
         SharedVaultsController.to.start();
         JoinedVaultsController.to.start();
-        ProController.to.init();
+        ProController.to.login();
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
         _record();

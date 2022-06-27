@@ -10,6 +10,7 @@ import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -101,10 +102,13 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Show Limits'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            UIUtils.showSimpleDialog(
-              'Limits',
-              jsonEncode(ProController.to.limits.toJson()),
-            );
+            // UIUtils.showSimpleDialog(
+            //   'Limits',
+            //   jsonEncode(ProController.to.limits.toJson()),
+            // );
+
+            console
+                .wtf('api key: ${ConfigService.to.secrets.revenuecat.apiKey}');
           },
         ),
         ListTile(
@@ -158,24 +162,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
               'body': 'Custom Message',
             },
           ),
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Sync'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: ProController.to.sync,
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Init'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: ProController.to.init,
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Load'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: ProController.to.load,
         ),
       ],
     );

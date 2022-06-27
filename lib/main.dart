@@ -92,6 +92,7 @@ void init(Flavor flavor) async {
     await Persistence.open();
     HiveService.init();
     await ConfigService.to.init();
+    await ProController.to.init();
 
     // init
     NotificationsManager.init();

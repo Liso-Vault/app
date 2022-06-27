@@ -12,7 +12,7 @@ import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
 import 'models/config_general.model.dart';
 import 'models/config_limits.model.dart';
-import 'models/config_s3.model.dart';
+import 'models/config_secrets.model.dart';
 import 'models/config_users.model.dart';
 
 class ConfigService extends GetxService with ConsoleMixin {
@@ -21,7 +21,7 @@ class ConfigService extends GetxService with ConsoleMixin {
   // VARIABLES
   var general = const ConfigGeneral();
   var app = const ConfigApp();
-  var s3 = const ConfigS3();
+  var secrets = const ConfigSecrets();
   var web3 = const ConfigWeb3();
   var limits = const ConfigLimits();
   var users = const ConfigUsers();
@@ -68,9 +68,9 @@ class ConfigService extends GetxService with ConsoleMixin {
         ? Secrets.configs.app
         : jsonDecode(instance.getString('app_config')));
 
-    s3 = ConfigS3.fromJson(local
-        ? Secrets.configs.s3
-        : jsonDecode(instance.getString('s3_config')));
+    secrets = ConfigSecrets.fromJson(local
+        ? Secrets.configs.secrets
+        : jsonDecode(instance.getString('secrets_config')));
 
     web3 = ConfigWeb3.fromJson(local
         ? Secrets.configs.web3

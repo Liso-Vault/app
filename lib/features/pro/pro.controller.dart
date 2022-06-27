@@ -98,22 +98,6 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   // INIT
-  @override
-  void onInit() async {
-    await Purchases.setDebugLogsEnabled(true);
-
-    await Purchases.setup(
-      Secrets.rcAPIKey,
-      appUserId: AuthService.to.user?.uid,
-    );
-
-    Purchases.addPurchaserInfoUpdateListener((info_) {
-      info.value = info_;
-    });
-
-    sync();
-    super.onInit();
-  }
 
   @override
   void onClose() {
@@ -139,6 +123,21 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> init() async {
+    await Purchases.setDebugLogsEnabled(true);
+
+    await Purchases.setup(
+      ConfigService.to.secrets.revenuecat.apiKey,
+      appUserId: AuthService.to.user?.uid,
+    );
+
+    Purchases.addPurchaserInfoUpdateListener((info_) {
+      info.value = info_;
+    });
+
+    sync();
+  }
+
+  Future<void> login() async {
     await Purchases.logIn(AuthService.to.userId);
 
     await Purchases.setAttributes({
@@ -146,7 +145,7 @@ class ProController extends GetxController with ConsoleMixin {
     });
   }
 
-  Future<void> deinit() async {
+  Future<void> logout() async {
     try {
       Purchases.logOut();
     } on PlatformException catch (e) {

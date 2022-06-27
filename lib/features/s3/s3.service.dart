@@ -95,9 +95,9 @@ class S3Service extends GetxService with ConsoleMixin {
       } else {
         // DEFAULT SYNC PROVIDER
         client = Minio(
-          endPoint: config.s3.endpoint,
-          accessKey: config.s3.key,
-          secretKey: config.s3.secret,
+          endPoint: config.secrets.s3.endpoint,
+          accessKey: config.secrets.s3.key,
+          secretKey: config.secrets.s3.secret,
         );
       }
 
@@ -343,7 +343,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       eTag = await client!.putObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         vaultPath,
         Stream<Uint8List>.value(encryptedBytes),
         onProgress: (size) => uploadedSize.value = size,
@@ -411,7 +411,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
       try {
         eTag = await client!.putObject(
-          config.s3.preferredBucket,
+          config.secrets.s3.preferredBucket,
           s3path,
           Stream<Uint8List>.value(encryptedBytes),
           onProgress: (size) => uploadedSize.value = size,
@@ -436,7 +436,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       final result = await client!.copyObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         content.path,
         backupsPath,
         // CopyConditions(),
@@ -453,12 +453,12 @@ class S3Service extends GetxService with ConsoleMixin {
     if (!ready) init();
     if (!persistence.sync.val && ready) return const Left('offline');
     console.info(
-      'stat: ${config.s3.preferredBucket}->${basename(content.path)}...',
+      'stat: ${config.secrets.s3.preferredBucket}->${basename(content.path)}...',
     );
 
     try {
       final result = await client!.statObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         content.path,
       );
 
@@ -475,7 +475,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       await client!.removeObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         content.path,
       );
     } catch (e) {
@@ -497,7 +497,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       result = await client!.listAllObjectsV2(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         prefix: path,
       );
     } catch (e) {
@@ -543,7 +543,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       result = await client!.listAllObjectsV2(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         prefix: s3Path,
         recursive: true,
       );
@@ -582,7 +582,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       result = await client!.presignedGetObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         s3Path,
         expires: 1.hours.inSeconds,
       );
@@ -603,14 +603,14 @@ class S3Service extends GetxService with ConsoleMixin {
     if (!persistence.sync.val && ready && !force) return const Left('offline');
 
     console.info(
-      'downloading: ${ConfigService.to.s3.preferredBucket} -> $s3Path',
+      'downloading: ${config.secrets.s3.preferredBucket} -> $s3Path',
     );
 
     MinioByteStream? stream;
 
     try {
       stream = await client!.getObject(
-        ConfigService.to.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         s3Path,
       );
     } catch (e, s) {
@@ -642,7 +642,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       eTag = await client!.putObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         s3Path,
         Stream<Uint8List>.value(file.readAsBytesSync()),
         onProgress: (size) => uploadedSize.value = size,
@@ -669,7 +669,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     try {
       eTag = await client!.putObject(
-        config.s3.preferredBucket,
+        config.secrets.s3.preferredBucket,
         join(s3Path, '$name/').replaceAll('\\', '/'),
         Stream<Uint8List>.value(Uint8List(0)),
       );
