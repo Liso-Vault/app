@@ -9,7 +9,6 @@ import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:secrets/secrets.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/config/models/config_limits.model.dart';
@@ -30,7 +29,7 @@ class ProController extends GetxController with ConsoleMixin {
 
   bool get isPro => proEntitlement?.isActive ?? false;
 
-  bool get isFreeTrial => AuthService.to.user == null
+  bool get isFreeTrial => !AuthService.to.isSignedIn
       ? false
       : AuthService.to.user!.metadata.creationTime!.isBefore(
           DateTime.tryParse(Persistence.to.lastServerDateTime.val) ??
@@ -101,6 +100,7 @@ class ProController extends GetxController with ConsoleMixin {
 
   @override
   void onClose() {
+    if (!ready) return;
     Purchases.removePurchaserInfoUpdateListener((info_) {
       info.value = info_;
     });
@@ -123,6 +123,7 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> init() async {
+    if (!ready) return;
     await Purchases.setDebugLogsEnabled(true);
 
     await Purchases.setup(
@@ -138,6 +139,7 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> login() async {
+    if (!ready) return;
     await Purchases.logIn(AuthService.to.userId);
 
     await Purchases.setAttributes({
@@ -146,6 +148,8 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> logout() async {
+    if (!ready) return;
+
     try {
       Purchases.logOut();
     } on PlatformException catch (e) {
@@ -167,6 +171,8 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> sync() async {
+    if (!ready) return;
+
     try {
       info.value = await Purchases.getPurchaserInfo();
       // console.warning('sync: ${jsonEncode(info.value.toJson())}');

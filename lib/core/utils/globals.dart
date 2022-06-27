@@ -51,8 +51,10 @@ bool get isBeta => kReleaseMode == ReleaseMode.beta;
 // TODO: set to false when publishing on Mac App Store
 const isMacAppStore = false;
 bool get isCryptoSupported =>
-    (!GetPlatform.isIOS && (GetPlatform.isMacOS && !isMacAppStore)) ||
-    Persistence.to.proTester.val;
+    Persistence.to.proTester.val ||
+    (GetPlatform.isMacOS && !isMacAppStore) ||
+    GetPlatform.isAndroid ||
+    GetPlatform.isWindows;
 
 bool get isPurchasesSupported => !GetPlatform.isWindows;
 

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -243,22 +244,25 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               ],
+              if (GetPlatform.isAndroid) ...[
+                SwitchListTile(
+                  title: const Text('Use Highest Refresh Rate'),
+                  secondary: Icon(Iconsax.monitor, color: themeColor),
+                  value: p.useHighestRefreshRate.val,
+                  subtitle: const Text("Experimental"),
+                  onChanged: (value) => p.useHighestRefreshRate.val = value,
+                ),
+              ],
               SwitchListTile(
                 title: const Text('Errors & Crashes'),
-                secondary: Icon(
-                  Iconsax.cpu,
-                  color: themeColor,
-                ),
+                secondary: Icon(Iconsax.cpu, color: themeColor),
                 value: p.crashReporting.val,
                 subtitle: const Text("Send anonymous crash reports"),
                 onChanged: (value) => p.crashReporting.val = value,
               ),
               SwitchListTile(
                 title: const Text('Usage Statistics'),
-                secondary: Icon(
-                  Iconsax.chart_square,
-                  color: themeColor,
-                ),
+                secondary: Icon(Iconsax.chart_square, color: themeColor),
                 value: p.analytics.val,
                 subtitle: const Text('Send anonymous usage statistics'),
                 onChanged: (value) => p.analytics.val = value,

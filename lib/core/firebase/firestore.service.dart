@@ -96,7 +96,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-  // record the some metadata: created time and updated time, items count and files count
+  // record created time and updated time, items count and files count
   // data will be used for airdrops, and other promotions
   Future<void> syncUser({
     required int filesCount,

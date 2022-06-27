@@ -31,6 +31,7 @@ class Persistence extends GetxController with ConsoleMixin {
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window-width');
   final windowHeight = 850.0.val('window-height');
+  final useHighestRefreshRate = false.val('use-highest-refresh-rate');
   // THEME
   final theme = ThemeMode.system.name.val('theme');
   // SECURITY

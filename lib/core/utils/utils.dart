@@ -48,7 +48,9 @@ class Utils {
 
   // support higher refresh rate
   static void setDisplayMode() async {
-    if (!GetPlatform.isAndroid) return;
+    if (!GetPlatform.isAndroid && !Persistence.to.useHighestRefreshRate.val) {
+      return;
+    }
 
     try {
       final mode = await FlutterDisplayMode.active;
