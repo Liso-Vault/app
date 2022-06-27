@@ -13,6 +13,7 @@ import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/groups/groups.service.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
@@ -79,6 +80,7 @@ void init(Flavor flavor) async {
     Get.put(DrawerMenuController());
     Get.put(SharedVaultsController());
     Get.put(JoinedVaultsController());
+    Get.put(ProController());
 
     // create controllers
     Get.create(() => S3ContentTileController());

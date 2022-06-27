@@ -8,9 +8,10 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:random_string_generator/random_string_generator.dart';
 import 'package:supercharged/supercharged.dart';
 
+import '../../../features/pro/pro.controller.dart';
 import '../../utils/utils.dart';
 import 'field.hive.dart';
 import 'metadata/metadata.hive.dart';
@@ -116,6 +117,19 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
 
   String toJsonString() => jsonEncode(toJson());
 
+  bool get hasFragilePasswords {
+    final passwords = fields.where((e) {
+      if (e.type != LisoFieldType.password.name) return false;
+      if (e.data.value!.isEmpty) return false;
+      final isPasswordField = !kNonPasswordFieldIds.contains(e.identifier);
+      if (!isPasswordField) return false;
+      final strength = PasswordStrengthChecker.checkStrength(e.data.value!);
+      return strength != PasswordStrength.STRONG;
+    });
+
+    return passwords.isNotEmpty;
+  }
+
   @override
   List<Object?> get props => [
         identifier,
@@ -150,7 +164,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   int get daysLeftToDelete =>
       metadata.updatedTime.duration().inDays -
       DateTime.now().duration().inDays +
-      WalletService.to.limits.trashDays;
+      ProController.to.limits.trashDays;
 
   String get subTitle {
     String identifier = significant.keys.first;

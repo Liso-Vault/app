@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
@@ -102,7 +103,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           onTap: () async {
             UIUtils.showSimpleDialog(
               'Limits',
-              jsonEncode(WalletService.to.limits.toJson()),
+              jsonEncode(ProController.to.limits.toJson()),
             );
           },
         ),
@@ -158,7 +159,24 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             },
           ),
         ),
-        const Divider(),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Sync'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: ProController.to.sync,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Init'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: ProController.to.init,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Load'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: ProController.to.load,
+        ),
       ],
     );
 

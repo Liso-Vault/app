@@ -10,7 +10,7 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../wallet/wallet.service.dart';
+import '../pro/pro.controller.dart';
 import 'groups.controller.dart';
 import 'groups.service.dart';
 
@@ -82,13 +82,14 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
       }
 
       if (GroupsController.to.data.length >=
-          WalletService.to.limits.customVaults) {
+          ProController.to.limits.customVaults) {
         return Utils.adaptiveRouteOpen(
           name: Routes.upgrade,
           parameters: {
-            'title': 'Title',
-            'body': 'Maximum custom vault limit reached',
-          }, // TODO: add message
+            'title': 'Custom Vaults',
+            'body':
+                'Maximum custom vaults of ${ProController.to.limits.customVaults} limit reached. Upgrade to Pro to unlock unlimited custom vaults feature.',
+          },
         );
       }
 

@@ -8,6 +8,7 @@ import '../../features/app/routes.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
+import '../../features/pro/pro.controller.dart';
 import '../utils/globals.dart';
 import '../utils/utils.dart';
 
@@ -25,8 +26,7 @@ class PasswordFormField extends StatefulWidget {
 
   String get value => fieldController.text;
 
-  bool get isPasswordField =>
-      field.identifier != 'private_key' && field.identifier != 'key';
+  bool get isPasswordField => !kNonPasswordFieldIds.contains(field.identifier);
 
   @override
   State<PasswordFormField> createState() => _PasswordFormFieldState();
@@ -42,34 +42,6 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       widget.field.identifier);
 
   HiveLisoField get formField => formWidget.children.first.child.field;
-
-  String get strengthName {
-    String name = 'Very Weak'; // VERY WEAK
-
-    if (strength == PasswordStrength.WEAK) {
-      name = 'Weak';
-    } else if (strength == PasswordStrength.GOOD) {
-      name = 'Good';
-    } else if (strength == PasswordStrength.STRONG) {
-      name = 'Strong';
-    }
-
-    return name;
-  }
-
-  Color get strengthColor {
-    Color color = Colors.red; // VERY WEAK
-
-    if (strength == PasswordStrength.WEAK) {
-      color = Colors.orange;
-    } else if (strength == PasswordStrength.GOOD) {
-      color = Colors.lime;
-    } else if (strength == PasswordStrength.STRONG) {
-      color = themeColor;
-    }
-
-    return color;
-  }
 
   double get strengthValue =>
       (strength.index.toDouble() + 0.5) / PasswordStrength.STRONG.index;
@@ -100,11 +72,27 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         leading: const Icon(Iconsax.copy),
         onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
       ),
-      ContextMenuItem(
-        title: 'Clear',
-        leading: const Icon(LineIcons.times),
-        onSelected: widget.fieldController.clear,
-      ),
+      if (!ProController.to.limits.passwordHealth) ...[
+        ContextMenuItem(
+          title: 'Password Health',
+          leading: const Icon(Iconsax.health),
+          onSelected: () => Utils.adaptiveRouteOpen(
+            name: Routes.upgrade,
+            parameters: {
+              'title': 'Password Health',
+              'body':
+                  'Monitor the health of your passwords. Upgrade to Pro to take advantage of this powerful feature.',
+            },
+          ),
+        ),
+      ],
+      if (!widget.field.readOnly) ...[
+        ContextMenuItem(
+          title: 'Clear',
+          leading: const Icon(LineIcons.times),
+          onSelected: widget.fieldController.clear,
+        ),
+      ],
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
@@ -151,12 +139,13 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,
-        helperText:
-            widget.isPasswordField && widget.fieldController.text.isNotEmpty
-                ? strengthName.toUpperCase()
-                : null,
+        helperText: ProController.to.limits.passwordHealth &&
+                widget.isPasswordField &&
+                widget.fieldController.text.isNotEmpty
+            ? Utils.strengthName(strength).toUpperCase()
+            : null,
         helperStyle: TextStyle(
-          color: strengthColor,
+          color: Utils.strengthColor(strength),
           fontWeight: FontWeight.bold,
         ),
         suffixIcon: ContextMenuButton(

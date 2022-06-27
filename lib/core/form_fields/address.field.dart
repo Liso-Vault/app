@@ -70,18 +70,20 @@ class _AddressFormFieldState extends State<AddressFormField> {
           Utils.copyToClipboard(addressString);
         },
       ),
-      ContextMenuItem(
-        title: 'Clear',
-        leading: const Icon(LineIcons.times),
-        onSelected: () {
-          widget.street1Controller.clear();
-          widget.street2Controller.clear();
-          widget.cityController.clear();
-          widget.stateController.clear();
-          widget.zipController.clear();
-          widget.countryFormField.clear();
-        },
-      ),
+      if (!widget.field.readOnly) ...[
+        ContextMenuItem(
+          title: 'Clear',
+          leading: const Icon(LineIcons.times),
+          onSelected: () {
+            widget.street1Controller.clear();
+            widget.street2Controller.clear();
+            widget.cityController.clear();
+            widget.stateController.clear();
+            widget.zipController.clear();
+            widget.countryFormField.clear();
+          },
+        ),
+      ],
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
@@ -109,11 +111,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
       children: [
         Row(
           children: [
-            Expanded(
-              child: Section(
-                text: widget.field.data.label ?? widget.field.data.value ?? '',
-              ),
-            ),
+            Expanded(child: Section(text: widget.field.data.label!)),
             ContextMenuButton(
               menuItems,
               child: const Icon(LineIcons.verticalEllipsis),

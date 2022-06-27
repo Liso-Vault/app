@@ -1,5 +1,5 @@
-import 'package:liso/core/utils/styles.dart';
 import 'package:flutter/material.dart';
+import 'package:liso/core/utils/styles.dart';
 
 class CenteredPlaceholder extends StatelessWidget {
   final IconData iconData;
@@ -41,3 +41,40 @@ class CenteredPlaceholder extends StatelessWidget {
     );
   }
 }
+
+// class CenteredPlaceholder2 extends StatelessWidget {
+//   final Widget image;
+//   final Widget text;
+//   final Widget? child;
+
+//   const CenteredPlaceholder2({
+//     Key? key,
+//     required this.image,
+//     required this.text,
+//     this.child,
+//   }) : super(key: key);
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Center(
+//       child: Container(
+//         constraints: Styles.containerConstraints,
+//         padding: const EdgeInsets.symmetric(horizontal: 20),
+//         child: SingleChildScrollView(
+//           child: Column(
+//             mainAxisAlignment: MainAxisAlignment.center,
+//             children: <Widget>[
+//               image,
+//               const SizedBox(height: 20),
+//               text,
+//               if (child != null) ...[
+//                 const SizedBox(height: 20),
+//                 child!,
+//               ]
+//             ],
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

@@ -1,3 +1,13 @@
+## 0.5.2
+- New! OTP Category
+- New! OTP Generator from Secret Key
+- New! Toggle Field
+- New! Upgrade Screen, Subscribe to Pro, Restore Purchases
+- Added! Upgrade to pro button on drawer
+- Added! Details json feature on Items Screen
+- Improved! Reorganized Categories
+- Fixed! wrong Tags count. Thanks to Timothy
+
 ## 0.5.1
 - New! Custom Fields
 - New! Permanently delete items feature

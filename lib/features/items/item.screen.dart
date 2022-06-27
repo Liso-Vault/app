@@ -32,7 +32,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           Obx(
             () => ContextMenuButton(
               controller.menuItemsChangeIcon,
-              enabled: controller.canEdit,
+              enabled: controller.editMode.value,
               child: controller.iconUrl().isEmpty
                   ? Utils.categoryIcon(controller.category.value)
                   : RemoteImage(
@@ -46,13 +46,17 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           Obx(
             () => Expanded(
               child: TextFormField(
-                enabled: controller.canEdit,
+                enabled: controller.editMode.value,
                 autofocus: mode == 'add',
                 controller: controller.titleController,
                 textCapitalization: TextCapitalization.words,
                 validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
                 decoration: InputDecoration(
                   labelText: '${'title'.tr} *',
+                  suffixIcon: ContextMenuButton(
+                    controller.titleMenuItems,
+                    child: const Icon(LineIcons.verticalEllipsis),
+                  ),
                 ),
               ),
             ),
@@ -60,12 +64,57 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ],
       ),
       const SizedBox(height: 10),
+      Obx(
+        () => Visibility(
+          visible: !controller.editMode.value &&
+              controller.category.value == LisoItemCategory.otp.name,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Generated OTP Code',
+                style: TextStyle(color: themeColor, fontSize: 12),
+              ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  OutlinedButton.icon(
+                    icon: const Icon(Iconsax.copy),
+                    label: Text(controller.otpCode.value),
+                    onPressed: () => Utils.copyToClipboard(
+                      controller.otpCode.value,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                      Text(
+                        controller.otpRemainingSeconds.value.toString(),
+                        style: const TextStyle(fontSize: 11),
+                      )
+                    ],
+                  ),
+                ],
+              ),
+              const Divider(),
+            ],
+          ),
+        ),
+      ),
+
       // -------- RENDER FIELDS AS WIDGETS -------- //
       Obx(
         () => ReorderableListView(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          buildDefaultDragHandles: controller.canEdit,
+          // buildDefaultDragHandles: controller.canEdit,
+          buildDefaultDragHandles: false,
           children: controller.widgets,
           onReorder: (int oldIndex, int newIndex) {
             if (oldIndex < newIndex) newIndex -= 1;
@@ -79,7 +128,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       const SizedBox(height: 10),
       Obx(
         () => Visibility(
-          visible: controller.canEdit,
+          visible: controller.editMode.value,
           child: Align(
             alignment: Alignment.centerLeft,
             child: ContextMenuButton(
@@ -121,99 +170,86 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ),
       ),
       const Divider(),
-      Theme(
-          data: Get.theme.copyWith(disabledColor: Colors.grey),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Obx(
-                () => DropdownButtonFormField<String>(
-                  isExpanded: true,
-                  value: controller.groupId.value,
-                  onChanged:
-                      controller.reserved.value || !controller.editMode.value
-                          ? null
-                          : (value) => controller.groupId.value = value!,
-                  decoration: const InputDecoration(labelText: 'Vault'),
-                  items: [
-                    ...GroupsController.to.combined
-                        .map((e) => DropdownMenuItem<String>(
-                              value: e.id,
-                              child: Text(e.reservedName),
-                            ))
-                        .toList()
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              Obx(
-                () => DropdownButtonFormField<HiveLisoCategory>(
-                  isExpanded: true,
-                  value: controller.categoryObject,
-                  onChanged:
-                      controller.reserved.value || !controller.editMode.value
-                          ? null
-                          : (value) => controller.category.value = value!.id,
-                  decoration: const InputDecoration(labelText: 'Category'),
-                  items: [
-                    ...{
-                      ...CategoriesController.to.combined,
-                      controller.categoryObject
-                    }
-                        .map((e) => DropdownMenuItem<HiveLisoCategory>(
-                              value: e,
-                              child: Text(e.reservedName),
-                            ))
-                        .toList()
-                  ],
-                ),
-              ),
-              const SizedBox(height: 10),
-              ObxValue(
-                (RxBool data) => CheckboxListTile(
-                  title: Text('favorite'.tr),
-                  value: data(),
-                  onChanged: controller.editMode.value
-                      ? (value) => data.value = value!
-                      : null,
-                  activeColor: Colors.pink,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                controller.favorite,
-              ),
-              ObxValue(
-                (RxBool data) => CheckboxListTile(
-                  title: Text('protected'.tr),
-                  value: data(),
-                  onChanged: controller.editMode.value
-                      ? (value) => data.value = value!
-                      : null,
-                  contentPadding: EdgeInsets.zero,
-                ),
-                controller.protected,
-              ),
-              if (Persistence.to.canShare) ...[
-                Text(
-                  'shared_vaults'.tr,
-                  style: TextStyle(color: themeColor, fontSize: 12),
-                ),
-                const SizedBox(height: 5),
-                Obx(
-                  () => Opacity(
-                    opacity: controller.editMode.value ? 1.0 : 0.6,
-                    child: Wrap(
-                      spacing: 5,
-                      runSpacing: 5,
-                      children: [
-                        ...controller.sharedVaultChips,
-                      ],
-                    ),
-                  ),
-                ),
-                const Divider(),
+      if (Persistence.to.canShare) ...[
+        Text(
+          'shared_vaults'.tr,
+          style: TextStyle(color: themeColor, fontSize: 12),
+        ),
+        const SizedBox(height: 5),
+        Obx(
+          () => Opacity(
+            opacity: controller.editMode.value ? 1.0 : 0.6,
+            child: Wrap(
+              spacing: 5,
+              runSpacing: 5,
+              children: [
+                ...controller.sharedVaultChips,
               ],
-            ],
-          )),
+            ),
+          ),
+        ),
+        const Divider(),
+      ],
+      Obx(
+        () => DropdownButtonFormField<String>(
+          isExpanded: true,
+          value: controller.groupId.value,
+          onChanged: controller.reserved.value || !controller.editMode.value
+              ? null
+              : (value) => controller.groupId.value = value!,
+          decoration: const InputDecoration(labelText: 'Vault'),
+          items: [
+            ...GroupsController.to.combined
+                .map((e) => DropdownMenuItem<String>(
+                      value: e.id,
+                      child: Text(e.reservedName),
+                    ))
+                .toList()
+          ],
+        ),
+      ),
+      const SizedBox(height: 10),
+      Obx(
+        () => DropdownButtonFormField<HiveLisoCategory>(
+          isExpanded: true,
+          value: controller.categoryObject,
+          onChanged: controller.reserved.value || !controller.editMode.value
+              ? null
+              : (value) => controller.category.value = value!.id,
+          decoration: const InputDecoration(labelText: 'Category'),
+          items: [
+            ...{...CategoriesController.to.combined, controller.categoryObject}
+                .map((e) => DropdownMenuItem<HiveLisoCategory>(
+                      value: e,
+                      child: Text(e.reservedName),
+                    ))
+                .toList()
+          ],
+        ),
+      ),
+      const SizedBox(height: 10),
+      ObxValue(
+        (RxBool data) => CheckboxListTile(
+          title: Text('favorite'.tr),
+          value: data(),
+          onChanged:
+              controller.editMode.value ? (value) => data.value = value! : null,
+          activeColor: Colors.pink,
+          contentPadding: EdgeInsets.zero,
+        ),
+        controller.favorite,
+      ),
+      ObxValue(
+        (RxBool data) => CheckboxListTile(
+          title: Text('protected'.tr),
+          value: data(),
+          onChanged:
+              controller.editMode.value ? (value) => data.value = value! : null,
+          contentPadding: EdgeInsets.zero,
+        ),
+        controller.protected,
+      ),
+
       if (mode == 'view') ...[
         const SizedBox(height: 20),
         Text(
@@ -288,7 +324,11 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       onWillPop: controller.canPop,
       child: Scaffold(
         appBar: appBar,
-        body: content,
+        // grey disabled fields
+        body: Theme(
+          data: Get.theme.copyWith(disabledColor: Colors.grey),
+          child: content,
+        ),
       ),
     );
   }

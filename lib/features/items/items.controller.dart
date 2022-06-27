@@ -62,6 +62,9 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
     } else if (drawerController.filterProtected.value) {
       filteredItems =
           filteredItems.where((e) => e.protected && !e.deleted && !e.trashed);
+    } else if (drawerController.filterPasswordHealth.value) {
+      filteredItems = filteredItems
+          .where((e) => e.hasFragilePasswords && !e.deleted && !e.trashed);
     } else if (drawerController.filterTrashed.value) {
       filteredItems = filteredItems.where((e) => e.trashed && !e.deleted);
     } else if (drawerController.filterDeleted.value) {

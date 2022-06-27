@@ -6,9 +6,12 @@ class MutableValue<T> {
 
   MutableValue(this.key, this.defaultValue);
 
-  T get val => Persistence.box?.get(key) ?? defaultValue;
+  T get val => Persistence.box != null && Persistence.box!.isOpen
+      ? Persistence.box?.get(key) ?? defaultValue
+      : defaultValue;
 
   set val(T value) {
+    if (Persistence.box == null || !Persistence.box!.isOpen) return;
     Persistence.box?.put(key, value);
     Persistence.to.update();
   }

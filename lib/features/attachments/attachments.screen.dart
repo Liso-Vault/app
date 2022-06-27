@@ -85,7 +85,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
     final floatingActionButton = Obx(
       () => FloatingActionButton(
         onPressed: controller.busy() ? null : controller.pick,
-        child: const Icon(Iconsax.attach_circle),
+        child: const Icon(Iconsax.add),
       ),
     );
 

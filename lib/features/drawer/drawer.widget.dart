@@ -3,14 +3,16 @@ import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/general/pro.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
+import '../pro/pro.controller.dart';
 import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends StatelessWidget with ConsoleMixin {
@@ -196,7 +198,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                             Chip(
                               label: Obx(
                                 () => Text(
-                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(WalletService.to.limits.storageSize, 0)}',
+                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(ProController.to.limits.storageSize, 0)}',
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               ),
@@ -208,7 +210,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           child: Obx(
                             () => LinearProgressIndicator(
                               value: S3Service.to.storageSize.value.toDouble() /
-                                  WalletService.to.limits.storageSize,
+                                  ProController.to.limits.storageSize,
                               backgroundColor: Colors.grey.withOpacity(0.1),
                             ),
                           ),
@@ -216,16 +218,20 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       )
                     : const SizedBox.shrink(),
               ),
-              if (!isTestFlight) ...[
-                ListTile(
+              PersistenceBuilder(builder: (p, context) {
+                if (!isCryptoSupported) {
+                  return const SizedBox.shrink();
+                }
+
+                return ListTile(
                   title: Text('wallet'.tr),
                   leading: const Icon(Iconsax.wallet_1),
                   onTap: () => Utils.adaptiveRouteOpen(
                     name: Routes.wallet,
                     method: 'offAndToNamed',
                   ),
-                ),
-              ],
+                );
+              }),
               // ListTile(
               //   title: Text('browser'.tr),
               //   leading: const Icon(Iconsax.chrome),
@@ -246,6 +252,29 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.about,
                   method: 'offAndToNamed',
+                ),
+              ),
+              PersistenceBuilder(
+                builder: (p, context) => Obx(
+                  () => Column(
+                    children: [
+                      if (ProController.to.limits.id != 'pro') ...[
+                        const Divider(),
+                        ListTile(
+                          title: const ProText(size: 16),
+                          subtitle: const Text(
+                            'Unlock powerful features',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          leading: Icon(LineIcons.rocket, color: proColor),
+                          onTap: () => Utils.adaptiveRouteOpen(
+                            name: Routes.upgrade,
+                            method: 'offAndToNamed',
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -269,14 +298,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 ),
               ),
               ListTile(
-                title: Text('otp_generator'.tr),
-                leading: const Icon(Iconsax.code),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.otp,
-                  method: 'offAndToNamed',
-                ),
-              ),
-              ListTile(
                 title: Text('password_generator'.tr),
                 leading: const Icon(Iconsax.password_check),
                 onTap: () => Utils.adaptiveRouteOpen(
@@ -294,17 +315,19 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   parameters: {'from': 'drawer'},
                 ),
               ),
-              ListTile(
-                title: Text('breach_scanner'.tr),
-                leading: const Icon(Iconsax.warning_2),
-                enabled: false,
-                // onTap: controller.files,
-              ),
-              ListTile(
-                title: Text('password_health'.tr),
-                leading: const Icon(Iconsax.health),
-                enabled: false,
-                // onTap: controller.files,
+              // ListTile(
+              //   title: Text('breach_scanner'.tr),
+              //   leading: const Icon(Iconsax.warning_2),
+              //   enabled: false,
+              //   // onTap: controller.files,
+              // ),
+              Obx(
+                () => ListTile(
+                  title: Text('password_health'.tr),
+                  leading: const Icon(Iconsax.health),
+                  selected: controller.filterPasswordHealth(),
+                  onTap: controller.filterPasswordHealthItems,
+                ),
               ),
             ],
           ),

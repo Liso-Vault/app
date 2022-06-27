@@ -269,7 +269,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             style: const TextStyle(fontSize: kIconSize, color: Colors.red),
           ),
           const Icon(Iconsax.trash, color: Colors.red, size: kIconSize),
-        ]
+        ],
       ],
     );
 

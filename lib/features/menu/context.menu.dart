@@ -49,7 +49,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(top: 20, left: 15, right: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: contextItems.length,

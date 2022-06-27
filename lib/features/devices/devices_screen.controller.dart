@@ -9,7 +9,7 @@ import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../core/utils/utils.dart';
-import '../wallet/wallet.service.dart';
+import '../pro/pro.controller.dart';
 
 class DevicesScreenController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -91,7 +91,7 @@ class DevicesScreenController extends GetxController
       data.remove(device);
       Get.back(); // close dialog
 
-      if (enforce && data.length <= WalletService.to.limits.devices) {
+      if (enforce && data.length <= ProController.to.limits.devices) {
         Get.back(); // close screen
       }
     }

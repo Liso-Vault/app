@@ -4,12 +4,14 @@ class BusyIndicator extends StatelessWidget {
   final String message;
   final double size;
   final EdgeInsets padding;
+  final Color? color;
 
   const BusyIndicator({
     Key? key,
     this.message = '',
     this.size = 35,
     this.padding = const EdgeInsets.all(20),
+    this.color,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class BusyIndicator extends StatelessWidget {
             SizedBox(
               height: size,
               width: size,
-              child: const CircularProgressIndicator(),
+              child: CircularProgressIndicator(color: color),
             ),
             if (message.isNotEmpty) ...[
               const SizedBox(height: 25),

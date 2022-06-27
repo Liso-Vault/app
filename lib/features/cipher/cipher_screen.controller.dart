@@ -6,7 +6,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -17,6 +16,7 @@ import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../pro/pro.controller.dart';
 
 class CipherScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -69,13 +69,14 @@ class CipherScreenController extends GetxController
       return;
     }
 
-    if (!WalletService.to.limits.cipherTool) {
+    if (!ProController.to.limits.cipherTool) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
           'title': 'Cipher Tool',
-          'body': 'Upgrade to use Cipher Tool',
-        }, // TODO: add message
+          'body':
+              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${ConfigService.to.appName} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
+        },
       );
     }
 

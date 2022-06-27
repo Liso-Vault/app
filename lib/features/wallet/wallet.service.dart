@@ -11,17 +11,15 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
-import '../../core/firebase/config/models/config_limits.model.dart';
 import '../../core/hive/hive.service.dart';
-import '../items/items.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.controller.dart';
+import '../items/items.service.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
@@ -58,45 +56,6 @@ class WalletService extends GetxService with ConsoleMixin {
 
   double get lisoUsdBalance =>
       Persistence.to.lastLisoBalance.val * Persistence.to.lastLisoUsdPrice.val;
-
-  ConfigLimitsSetting get limits {
-    final limits_ = ConfigService.to.limits;
-    if (wallet == null) return limits_.tier0;
-
-    // check if user is subscribed to premium
-    // check if user is a staker
-
-    // check if user is whitelisted
-    final users = ConfigService.to.users.users.where(
-      (e) => e.address == WalletService.to.longAddress,
-    );
-
-    if (users.isNotEmpty) {
-      final user = users.first;
-
-      if (user.limits == 'tier1') {
-        return limits_.tier1;
-      } else if (user.limits == 'tier2') {
-        return limits_.tier2;
-      } else if (user.limits == 'tier3') {
-        return limits_.tier3;
-      }
-    }
-
-    final balance = Persistence.to.lastLisoBalance.val;
-
-    // set the limit corresponding to the token threshold
-    if (balance > limits_.tier3.tokenThreshold) {
-      return limits_.tier3;
-    } else if (balance > limits_.tier2.tokenThreshold) {
-      return limits_.tier2;
-    } else if (balance > limits_.tier1.tokenThreshold) {
-      return limits_.tier1;
-    }
-
-    // a tier1 user
-    return limits_.tier0;
-  }
 
   @override
   void onInit() {

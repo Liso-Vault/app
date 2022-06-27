@@ -10,7 +10,7 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../wallet/wallet.service.dart';
+import '../pro/pro.controller.dart';
 import 'categories.controller.dart';
 import 'categories.service.dart';
 
@@ -83,13 +83,14 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
       }
 
       if (CategoriesController.to.data.length >=
-          WalletService.to.limits.customCategories) {
+          ProController.to.limits.customCategories) {
         return Utils.adaptiveRouteOpen(
           name: Routes.upgrade,
           parameters: {
-            'title': 'Title',
-            'body': 'Maximum custom category limit reached',
-          }, // TODO: add message
+            'title': 'Custom Categories',
+            'body':
+                'Maximum custom categories of ${ProController.to.limits.customCategories} limit reached. Upgrade to Pro to unlock unlimited custom categories feature.',
+          },
         );
       }
 

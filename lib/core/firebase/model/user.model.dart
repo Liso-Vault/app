@@ -32,8 +32,8 @@ class FirebaseUser {
         userId: json["userId"],
         address: json["address"],
         limits: json["limits"],
-        updatedTime: json["updatedTime"],
-        createdTime: json["createdTime"],
+        updatedTime: json["updatedTime"] ?? DateTime.now(),
+        createdTime: json["createdTime"] ?? DateTime.now(),
         metadata: FirebaseUserMetadata.fromJson(json["metadata"]),
       );
 

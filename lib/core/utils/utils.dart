@@ -122,6 +122,8 @@ class Utils {
       iconData = Iconsax.home_wifi;
     } else if (category == LisoItemCategory.encryption.name) {
       iconData = Iconsax.key;
+    } else if (category == LisoItemCategory.otp.name) {
+      iconData = LineIcons.mobilePhone;
     } else {
       iconData = Iconsax.category;
     }
@@ -279,5 +281,33 @@ class Utils {
     }
 
     return null;
+  }
+
+  static String strengthName(PasswordStrength strength) {
+    String name = 'Very Weak'; // VERY WEAK
+
+    if (strength == PasswordStrength.WEAK) {
+      name = 'Weak';
+    } else if (strength == PasswordStrength.GOOD) {
+      name = 'Good';
+    } else if (strength == PasswordStrength.STRONG) {
+      name = 'Strong';
+    }
+
+    return name;
+  }
+
+  static Color? strengthColor(PasswordStrength strength) {
+    Color color = Colors.red; // VERY WEAK
+
+    if (strength == PasswordStrength.WEAK) {
+      color = Colors.orange;
+    } else if (strength == PasswordStrength.GOOD) {
+      color = Colors.lime;
+    } else if (strength == PasswordStrength.STRONG) {
+      color = themeColor;
+    }
+
+    return color;
   }
 }

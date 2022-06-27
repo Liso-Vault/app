@@ -1,33 +1,58 @@
 class ConfigLimits {
   const ConfigLimits({
-    this.tier0 = const ConfigLimitsSetting(),
-    this.tier1 = const ConfigLimitsSetting(),
-    this.tier2 = const ConfigLimitsSetting(),
-    this.tier3 = const ConfigLimitsSetting(),
+    this.settings = const ConfigLimitsSettings(),
+    this.free = const ConfigLimitsTier(),
+    this.holder = const ConfigLimitsTier(),
+    this.staker = const ConfigLimitsTier(),
+    this.trial = const ConfigLimitsTier(),
+    this.pro = const ConfigLimitsTier(),
   });
 
-  final ConfigLimitsSetting tier0;
-  final ConfigLimitsSetting tier1;
-  final ConfigLimitsSetting tier2;
-  final ConfigLimitsSetting tier3;
+  final ConfigLimitsSettings settings;
+  final ConfigLimitsTier free;
+  final ConfigLimitsTier holder;
+  final ConfigLimitsTier staker;
+  final ConfigLimitsTier trial;
+  final ConfigLimitsTier pro;
 
   factory ConfigLimits.fromJson(Map<String, dynamic> json) => ConfigLimits(
-        tier0: ConfigLimitsSetting.fromJson(json["tier0"]),
-        tier1: ConfigLimitsSetting.fromJson(json["tier1"]),
-        tier2: ConfigLimitsSetting.fromJson(json["tier2"]),
-        tier3: ConfigLimitsSetting.fromJson(json["tier3"]),
+        settings: ConfigLimitsSettings.fromJson(json["settings"]),
+        free: ConfigLimitsTier.fromJson(json["free"]),
+        holder: ConfigLimitsTier.fromJson(json["holder"]),
+        staker: ConfigLimitsTier.fromJson(json["staker"]),
+        trial: ConfigLimitsTier.fromJson(json["trial"]),
+        pro: ConfigLimitsTier.fromJson(json["pro"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "tier0": tier0.toJson(),
-        "tier1": tier1.toJson(),
-        "tier2": tier2.toJson(),
-        "tier3": tier3.toJson(),
+        "settings": settings.toJson(),
+        "free": free.toJson(),
+        "holder": holder.toJson(),
+        "staker": staker.toJson(),
+        "trial": trial.toJson(),
+        "pro": pro.toJson(),
       };
 }
 
-class ConfigLimitsSetting {
-  const ConfigLimitsSetting({
+class ConfigLimitsSettings {
+  const ConfigLimitsSettings({
+    this.trialDays = 30,
+  });
+
+  final int trialDays;
+
+  factory ConfigLimitsSettings.fromJson(Map<String, dynamic> json) =>
+      ConfigLimitsSettings(
+        trialDays: json["trial_days"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "trial_days": trialDays,
+      };
+}
+
+class ConfigLimitsTier {
+  const ConfigLimitsTier({
     this.id = '',
     this.tokenThreshold = 0,
     this.storageSize = 0,
@@ -73,8 +98,8 @@ class ConfigLimitsSetting {
   final bool otpGenerator;
   final bool prioritySupport;
 
-  factory ConfigLimitsSetting.fromJson(Map<String, dynamic> json) =>
-      ConfigLimitsSetting(
+  factory ConfigLimitsTier.fromJson(Map<String, dynamic> json) =>
+      ConfigLimitsTier(
         id: json["id"],
         tokenThreshold: json["token_threshold"],
         storageSize: json["storage_size"],

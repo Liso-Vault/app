@@ -1,5 +1,6 @@
 // COMPANY
 
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -36,18 +37,31 @@ final inputFormatterNumericOnly =
 
 final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
+final kFormatter = NumberFormat.compact();
 
 const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';
 const kVaultFormatVersion = 1;
 const kReleaseMode = ReleaseMode.beta;
+const kNonPasswordFieldIds = ['key', 'private_key', 'secret'];
 
 bool get isBeta => kReleaseMode == ReleaseMode.beta;
-bool get isTestFlight => GetPlatform.isIOS && !Persistence.to.proTester.val;
+
+// TODO: set to false when publishing on Mac App Store
+const isMacAppStore = false;
+bool get isCryptoSupported =>
+    (!GetPlatform.isIOS && (GetPlatform.isMacOS && !isMacAppStore)) ||
+    Persistence.to.proTester.val;
+
+bool get isPurchasesSupported => !GetPlatform.isWindows;
+
 bool get isLocalAuthSupported =>
     GetPlatform.isMobile && Persistence.to.biometrics.val;
+
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
+
+Color get proColor => Get.isDarkMode ? Colors.cyanAccent : Colors.cyan;
 
 // ENUMS
 enum ReleaseMode {
@@ -74,25 +88,25 @@ enum LisoItemCategory {
   cryptoWallet,
   login,
   password,
-  identity,
+  email,
+  otp,
   note,
   cashCard,
   bankAccount,
-  medicalRecord,
+  identity,
   passport,
-  server,
-  softwareLicense,
-  apiCredential,
-  database,
+  medicalRecord,
   driversLicense,
-  email,
+  wirelessRouter,
+  softwareLicense,
   membership,
   outdoorLicense,
   rewardsProgram,
   socialSecurity,
-  wirelessRouter,
+  apiCredential,
+  database,
+  server,
   encryption,
-  // none,
 }
 
 enum LisoSyncProvider {

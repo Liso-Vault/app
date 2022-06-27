@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
+import 'package:liso/core/form_fields/slider.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
+import 'package:liso/core/form_fields/toggle.field.dart';
 import 'package:secrets/secrets.dart';
 
 import '../form_fields/address.field.dart';
@@ -158,6 +160,14 @@ class FieldParser {
         field,
         fieldController: TextEditingController(text: field.data.value),
       );
+    }
+    // TOGGLE
+    else if (field.type == LisoFieldType.toggle.name) {
+      return ToggleFieldForm(field);
+    }
+    // SLIDER
+    else if (field.type == LisoFieldType.slider.name) {
+      return SliderFieldForm(field);
     }
     // COORDINATES
     else if (field.type == LisoFieldType.coordinates.name) {

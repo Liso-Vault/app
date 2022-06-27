@@ -170,7 +170,8 @@ Project Link: [https://github.com/liso-vault/app](https://github.com/liso-vault/
 ## Acknowledgements
 (To be updated)
 
-
+## Open-source Status
+The current state of Liso being open-source is for self-auditing purposes only. This means some code are not included as they contain `secrets` proprietory for Liso as a business, in result you will be unable to successfully build the source.
 
 
 <!-- MARKDOWN LINKS & IMAGES -->

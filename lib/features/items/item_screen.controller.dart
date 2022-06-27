@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
@@ -13,6 +16,8 @@ import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/tags/tags_input.controller.dart';
+import 'package:otp/otp.dart';
+import 'package:random_string_generator/random_string_generator.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/metadata/metadata.hive.dart';
@@ -20,8 +25,10 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../json_viewer/json_viewer.screen.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
+import '../pro/pro.controller.dart';
 import '../s3/s3.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'items.controller.dart';
@@ -34,6 +41,7 @@ class ItemScreenController extends GetxController
   // VARIABLES
   HiveLisoItem? item;
   late HiveLisoItem originalItem;
+  Timer? otpTimer;
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
@@ -49,9 +57,10 @@ class ItemScreenController extends GetxController
     LisoItemCategory.apiCredential,
     LisoItemCategory.email,
     LisoItemCategory.login,
-    LisoItemCategory.passport,
-    LisoItemCategory.encryption,
+    LisoItemCategory.password,
     LisoItemCategory.wirelessRouter,
+    LisoItemCategory.encryption,
+    LisoItemCategory.otp,
   ].map((e) => e.name);
 
   final iconUrl = ''.obs;
@@ -66,8 +75,11 @@ class ItemScreenController extends GetxController
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
   final editMode = (Get.parameters['mode'] != 'view').obs;
+  final otpCode = ''.obs;
+  final otpRemainingSeconds = 0.obs;
 
   // GETTERS
+
   List<HiveLisoField> get parseFields => widgets.map((e) {
         final formWidget = (e as dynamic).children.first.child;
         final field = formWidget.field as HiveLisoField;
@@ -80,8 +92,6 @@ class ItemScreenController extends GetxController
 
         return field;
       }).toList();
-
-  bool get canEdit => !joinedVaultItem && editMode.value;
 
   HiveLisoCategory get categoryObject {
     final categories_ =
@@ -109,6 +119,11 @@ class ItemScreenController extends GetxController
       //     onSelected: () {},
       //   ),
       // ]
+      ContextMenuItem(
+        title: 'Details',
+        leading: const Icon(Iconsax.code),
+        onSelected: () => Get.to(() => JSONViewerScreen(data: item!.toJson())),
+      ),
       if (kDebugMode) ...[
         ContextMenuItem(
           title: 'Force Close',
@@ -116,6 +131,21 @@ class ItemScreenController extends GetxController
           onSelected: Get.back,
         ),
       ]
+    ];
+  }
+
+  List<ContextMenuItem> get titleMenuItems {
+    return [
+      ContextMenuItem(
+        title: 'Copy',
+        leading: const Icon(Iconsax.copy),
+        onSelected: () => Utils.copyToClipboard(titleController.text),
+      ),
+      ContextMenuItem(
+        title: 'Clear',
+        leading: const Icon(LineIcons.times),
+        onSelected: titleController.clear,
+      ),
     ];
   }
 
@@ -131,7 +161,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Text Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -145,7 +175,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Textarea Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -159,7 +189,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Password Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -173,7 +203,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Phone Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -187,7 +217,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'PIN Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -201,7 +231,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'URL Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -215,7 +245,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Date Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -229,7 +259,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Email Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -243,7 +273,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Number Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -257,7 +287,23 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Passport Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+          },
+        ),
+        ContextMenuItem(
+          title: 'Toggle Field',
+          leading: const Icon(Icons.toggle_on),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.toggle.name,
+              data: HiveLisoFieldData(
+                label: 'Toggle',
+              ),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -271,7 +317,7 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Address Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
         ContextMenuItem(
@@ -287,7 +333,7 @@ class ItemScreenController extends GetxController
               ),
             );
 
-            widgets.add(_buildFieldWidget(field.widget));
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
           },
         ),
       ];
@@ -319,9 +365,7 @@ class ItemScreenController extends GetxController
 
       return Chip(
         label: Text(name),
-        onDeleted: joinedVaultItem || !editMode.value
-            ? null
-            : () => sharedVaultIds.remove(vaultId),
+        onDeleted: editMode.value ? () => sharedVaultIds.remove(vaultId) : null,
       );
     }).toList();
 
@@ -339,7 +383,7 @@ class ItemScreenController extends GetxController
       );
     }).toList();
 
-    if (menuItems.isNotEmpty && !joinedVaultItem && editMode.value) {
+    if (menuItems.isNotEmpty && editMode.value) {
       chips.add(ContextMenuButton(
         menuItems,
         padding: EdgeInsets.zero,
@@ -361,13 +405,11 @@ class ItemScreenController extends GetxController
 
       return Chip(
         label: Text(content.name),
-        onDeleted: joinedVaultItem || !editMode.value
-            ? null
-            : () => attachments.remove(attachment),
+        onDeleted: editMode.value ? () => attachments.remove(attachment) : null,
       );
     }).toList();
 
-    if (!joinedVaultItem && editMode.value) {
+    if (editMode.value) {
       chips.add(ActionChip(
         label: const Icon(Iconsax.add_circle5, size: 20),
         onPressed: attach,
@@ -397,10 +439,85 @@ class ItemScreenController extends GetxController
       _populateItem();
     });
 
+    if (category.value == LisoItemCategory.otp.name) {
+      _generateOTP();
+    }
+
     super.onInit();
   }
 
+  @override
+  void onClose() {
+    otpTimer?.cancel();
+    super.onClose();
+  }
+
   // FUNCTIONS
+  void _generateOTP() async {
+    final interval =
+        item!.fields.firstWhere((e) => e.identifier == 'interval').data.value!;
+
+    final intervalInt = double.parse(interval).toInt();
+
+    final secret =
+        item!.fields.firstWhere((e) => e.identifier == 'secret').data.value!;
+
+    final length =
+        item!.fields.firstWhere((e) => e.identifier == 'length').data.value!;
+
+    final isGoogle =
+        item!.fields.firstWhere((e) => e.identifier == 'google').data.value!;
+
+    final algorithmValue =
+        item!.fields.firstWhere((e) => e.identifier == 'algorithm').data.value!;
+
+    var algorithm = Algorithm.SHA1;
+
+    if (algorithmValue == 'sha256') {
+      algorithm = Algorithm.SHA256;
+    } else if (algorithmValue == 'sha512') {
+      algorithm = Algorithm.SHA512;
+    }
+
+    void _generate() {
+      if (editMode.value) return;
+
+      final totpString = OTP.generateTOTPCodeString(
+        secret,
+        DateTime.now().millisecondsSinceEpoch,
+        algorithm: algorithm,
+        interval: intervalInt,
+        length: double.parse(length).toInt(),
+        isGoogle: isGoogle == 'true',
+      );
+
+      otpCode.value = totpString;
+    }
+
+    _generate();
+
+    otpRemainingSeconds.value = OTP.remainingSeconds(interval: intervalInt);
+
+    Timer.periodic(
+      1.seconds,
+      (_) {
+        otpRemainingSeconds.value--;
+        if (otpRemainingSeconds.value <= 0) {
+          otpRemainingSeconds.value = intervalInt;
+          _generate();
+
+          otpTimer = Timer.periodic(
+            Duration(seconds: intervalInt),
+            (_) {
+              otpRemainingSeconds.value = intervalInt;
+              _generate();
+            },
+          );
+        }
+      },
+    );
+  }
+
   Future<void> _populateGeneratedItem() async {
     final value = Get.parameters['value'];
     String identifier = '';
@@ -459,25 +576,20 @@ class ItemScreenController extends GetxController
     _buildFieldWidgets();
   }
 
-  Widget _buildFieldWidget(Widget widget) {
-    final dragHandle = Row(
-      children: [
-        if (!joinedVaultItem) ...[
-          if (Utils.isDrawerExpandable || GetPlatform.isMobile) ...[
-            const SizedBox(width: 10),
-            const Icon(Icons.drag_handle_rounded),
-          ] else ...[
-            const SizedBox(width: 40),
-          ],
-        ],
-      ],
-    );
-
+  Widget _buildFieldWidget(Widget widget, int index) {
     return Row(
       key: Key(const Uuid().v4()),
       children: [
         Expanded(child: widget),
-        Obx(() => Visibility(visible: editMode.value, child: dragHandle))
+        Obx(
+          () => Visibility(
+            visible: editMode.value,
+            child: ReorderableDragStartListener(
+              index: index,
+              child: const Icon(Icons.drag_indicator),
+            ),
+          ),
+        )
       ],
     );
   }
@@ -501,9 +613,7 @@ class ItemScreenController extends GetxController
           final field = (e.value as dynamic).field as HiveLisoField;
 
           if (field.type == LisoFieldType.section.name) {
-            widget = Section(
-                text:
-                    (field.data.label ?? field.data.value ?? '').toUpperCase());
+            widget = Section(text: (field.sectionLabel).toUpperCase());
           } else if (field.type == LisoFieldType.richText.name) {
             widget = RichTextFormField(field, readOnly: true);
           } else if (field.type == LisoFieldType.address.name) {
@@ -518,66 +628,87 @@ class ItemScreenController extends GetxController
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // SECTION
-                Section(text: field.data.label ?? field.data.value ?? ''),
+                Section(text: field.data.label!),
                 // STREET 1
                 if (street1.isNotEmpty) ...[
-                  InkWell(
-                    onTap: () => Utils.copyToClipboard(street1),
-                    child: TextFormField(
-                      initialValue: street1,
-                      enabled: false,
-                      decoration: const InputDecoration(labelText: 'Street 1'),
+                  GestureDetector(
+                    onSecondaryTap: () => Utils.copyToClipboard(street1),
+                    child: InkWell(
+                      onLongPress: () => Utils.copyToClipboard(street1),
+                      child: TextFormField(
+                        initialValue: street1,
+                        enabled: false,
+                        decoration:
+                            const InputDecoration(labelText: 'Street 1'),
+                      ),
                     ),
                   ),
                 ],
                 if (street2.isNotEmpty) ...[
-                  InkWell(
-                    onTap: () => Utils.copyToClipboard(street2),
-                    child: TextFormField(
-                      initialValue: street2,
-                      enabled: false,
-                      decoration: const InputDecoration(labelText: 'Street 2'),
+                  GestureDetector(
+                    onSecondaryTap: () => Utils.copyToClipboard(street2),
+                    child: InkWell(
+                      onLongPress: () => Utils.copyToClipboard(street2),
+                      child: TextFormField(
+                        initialValue: street2,
+                        enabled: false,
+                        decoration:
+                            const InputDecoration(labelText: 'Street 2'),
+                      ),
                     ),
                   ),
                 ],
                 if (city.isNotEmpty) ...[
-                  InkWell(
-                    onTap: () => Utils.copyToClipboard(city),
-                    child: TextFormField(
-                      initialValue: city,
-                      enabled: false,
-                      decoration: const InputDecoration(labelText: 'City'),
+                  GestureDetector(
+                    onSecondaryTap: () => Utils.copyToClipboard(city),
+                    child: InkWell(
+                      onLongPress: () => Utils.copyToClipboard(city),
+                      child: TextFormField(
+                        initialValue: city,
+                        enabled: false,
+                        decoration: const InputDecoration(labelText: 'City'),
+                      ),
                     ),
                   ),
                 ],
                 if (state.isNotEmpty) ...[
-                  InkWell(
-                    onTap: () => Utils.copyToClipboard(state),
-                    child: TextFormField(
-                      initialValue: state,
-                      enabled: false,
-                      decoration:
-                          const InputDecoration(labelText: 'State / Province'),
+                  GestureDetector(
+                    onSecondaryTap: () => Utils.copyToClipboard(state),
+                    child: InkWell(
+                      onLongPress: () => Utils.copyToClipboard(state),
+                      child: TextFormField(
+                        initialValue: state,
+                        enabled: false,
+                        decoration: const InputDecoration(
+                            labelText: 'State / Province'),
+                      ),
                     ),
                   ),
                 ],
                 if (zip.isNotEmpty) ...[
-                  InkWell(
-                    onTap: () => Utils.copyToClipboard(zip),
-                    child: TextFormField(
-                      initialValue: zip,
-                      enabled: false,
-                      decoration: const InputDecoration(labelText: 'Zip Code'),
+                  GestureDetector(
+                    onSecondaryTap: () => Utils.copyToClipboard(zip),
+                    child: InkWell(
+                      onLongPress: () => Utils.copyToClipboard(zip),
+                      child: TextFormField(
+                        initialValue: zip,
+                        enabled: false,
+                        decoration:
+                            const InputDecoration(labelText: 'Zip Code'),
+                      ),
                     ),
                   ),
                 ],
                 if (country.isNotEmpty) ...[
-                  InkWell(
-                    onTap: () => Utils.copyToClipboard(country),
-                    child: TextFormField(
-                      initialValue: country,
-                      enabled: false,
-                      decoration: const InputDecoration(labelText: 'Country'),
+                  GestureDetector(
+                    onSecondaryTap: () => Utils.copyToClipboard(country),
+                    child: InkWell(
+                      onLongPress: () => Utils.copyToClipboard(country),
+                      child: TextFormField(
+                        initialValue: country,
+                        enabled: false,
+                        decoration: const InputDecoration(labelText: 'Country'),
+                      ),
                     ),
                   ),
                 ],
@@ -588,25 +719,45 @@ class ItemScreenController extends GetxController
                 field.type == LisoFieldType.mnemonicSeed.name ||
                 field.type == LisoFieldType.pin.name;
 
+            final strength = PasswordStrengthChecker.checkStrength(
+              field.data.value!,
+            );
+
+            final isPasswordField =
+                !kNonPasswordFieldIds.contains(field.identifier);
+
             // add a quick copy value feature when tapped
-            widget = InkWell(
-              onTap: () => Utils.copyToClipboard(field.data.value),
-              child: TextFormField(
-                initialValue: field.data.value,
-                enabled: false,
-                obscureText: obscured,
-                minLines: 1,
-                maxLines: obscured ? 1 : 10,
-                decoration: InputDecoration(
-                  labelText: field.data.label,
-                  hintText: field.data.hint,
+            widget = GestureDetector(
+              onSecondaryTap: () => Utils.copyToClipboard(field.data.value),
+              child: InkWell(
+                onLongPress: () => Utils.copyToClipboard(field.data.value),
+                child: TextFormField(
+                  initialValue: field.data.value,
+                  enabled: false,
+                  obscureText: obscured,
+                  minLines: 1,
+                  maxLines: obscured ? 1 : 10,
+                  decoration: InputDecoration(
+                    labelText: field.data.label,
+                    hintText: field.data.hint,
+                    helperText: ProController.to.limits.passwordHealth &&
+                            isPasswordField &&
+                            obscured &&
+                            field.data.value!.isNotEmpty
+                        ? Utils.strengthName(strength).toUpperCase()
+                        : null,
+                    helperStyle: TextStyle(
+                      color: Utils.strengthColor(strength),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             );
           }
         }
 
-        return _buildFieldWidget(widget);
+        return _buildFieldWidget(widget, e.key);
       },
     ).toList();
   }
@@ -638,9 +789,10 @@ class ItemScreenController extends GetxController
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Title',
-          'body': 'Maximum items limit reached',
-        }, // TODO: add message
+          'title': 'Items Limit Reached',
+          'body':
+              'Maximum items of ${ProController.to.limits.items} limit reached. Upgrade to Pro to unlock unlimited items features',
+        },
       );
     }
 
@@ -649,9 +801,10 @@ class ItemScreenController extends GetxController
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Title',
-          'body': 'Maximum protected items limit reached',
-        }, // TODO: add message
+          'title': 'Protected Items',
+          'body':
+              'Maximum protected items of ${ProController.to.limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+        },
       );
     }
 
@@ -684,9 +837,10 @@ class ItemScreenController extends GetxController
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Title',
-          'body': 'Maximum protected items limit reached',
-        }, // TODO: add message
+          'title': 'Protected Items',
+          'body':
+              'Maximum protected items of ${ProController.to.limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+        },
       );
     }
 

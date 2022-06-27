@@ -44,11 +44,13 @@ class _NumberFormFieldState extends State<NumberFormField> {
         leading: const Icon(Iconsax.copy),
         onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
       ),
-      ContextMenuItem(
-        title: 'Clear',
-        leading: const Icon(LineIcons.times),
-        onSelected: widget.fieldController.clear,
-      ),
+      if (!widget.field.readOnly) ...[
+        ContextMenuItem(
+          title: 'Clear',
+          leading: const Icon(LineIcons.times),
+          onSelected: widget.fieldController.clear,
+        ),
+      ],
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',

@@ -14,11 +14,13 @@ import 'package:liso/resources/resources.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
+import '../pro/pro.controller.dart';
 import '../s3/s3.service.dart';
 import 'main_screen.controller.dart';
 
@@ -61,16 +63,57 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
     );
 
-    var childContent = itemsController.obx(
-      (_) => listView,
-      // onLoading: const BusyIndicator(),
-      onEmpty: Obx(
-        () => CenteredPlaceholder(
-          iconData: Iconsax.document,
-          message: 'no_items'.tr,
-          child: drawerController.filterTrashed.value ? null : addItemButton,
-        ),
+    final weakPasswords = Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            '${ItemsController.to.data.length}',
+            style: const TextStyle(
+              fontSize: 50,
+              color: Colors.orange,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const Text(
+            'Weak Passwords Detected',
+            style: TextStyle(color: Colors.orange, fontSize: 16),
+          ),
+          const SizedBox(height: 10),
+          OutlinedButton(
+            onPressed: () => Utils.adaptiveRouteOpen(
+              name: Routes.upgrade,
+              parameters: {
+                'title': 'Password Health',
+                'body':
+                    'Monitor the health of your passwords. Upgrade to Pro to take advantage of this powerful feature.',
+              },
+            ),
+            child: const Text('Upgrade To Identify'),
+          ),
+        ],
       ),
+    );
+
+    var childContent = itemsController.obx(
+      (_) => ProController.to.limits.passwordHealth &&
+              drawerController.filterPasswordHealth.value
+          ? weakPasswords
+          : listView,
+      // onLoading: const BusyIndicator(),
+      onEmpty: drawerController.filterPasswordHealth.value
+          ? const CenteredPlaceholder(
+              iconData: LineIcons.check,
+              message: 'No Weak Passwords Detected',
+            )
+          : Obx(
+              () => CenteredPlaceholder(
+                iconData: Iconsax.document,
+                message: 'no_items'.tr,
+                child:
+                    drawerController.filterTrashed.value ? null : addItemButton,
+              ),
+            ),
     );
 
     // enable pull to refresh if mobile

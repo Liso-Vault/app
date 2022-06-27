@@ -2,23 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:liso/features/general/section.widget.dart';
+import 'package:liso/features/items/item_screen.controller.dart';
 
-import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
 
-class SectionFormField extends StatefulWidget {
+class ToggleFieldForm extends StatefulWidget {
   final HiveLisoField field;
-  const SectionFormField(this.field, {Key? key}) : super(key: key);
 
-  String get value => field.data.value!.toUpperCase();
+  const ToggleFieldForm(
+    this.field, {
+    Key? key,
+  }) : super(key: key);
+
+  String get value => field.data.value!;
 
   @override
-  State<SectionFormField> createState() => _SectionFormFieldState();
+  State<ToggleFieldForm> createState() => _ToggleFieldFormState();
 }
 
-class _SectionFormFieldState extends State<SectionFormField> {
+class _ToggleFieldFormState extends State<ToggleFieldForm> {
   // GETTERS
   dynamic get formWidget => ItemScreenController.to.widgets.firstWhere((e) =>
       (e as dynamic).children.first.child.field.identifier ==
@@ -46,16 +49,26 @@ class _SectionFormFieldState extends State<SectionFormField> {
 
   @override
   Widget build(BuildContext context) {
-    final section = Section(text: widget.field.sectionLabel);
-    if (widget.field.reserved) return section;
-
     return Row(
       children: [
-        Expanded(child: section),
-        ContextMenuButton(
-          menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+        Expanded(
+          child: SwitchListTile(
+            value: widget.field.data.value == 'true',
+            title: Text(widget.field.data.label!),
+            contentPadding: EdgeInsets.zero,
+            onChanged: (value) {
+              setState(() {
+                widget.field.data.value = value.toString();
+              });
+            },
+          ),
         ),
+        if (!widget.field.reserved) ...[
+          ContextMenuButton(
+            menuItems,
+            child: const Icon(LineIcons.verticalEllipsis),
+          )
+        ],
       ],
     );
   }

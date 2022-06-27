@@ -44,6 +44,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
   final filterDeleted = false.obs;
+  final filterPasswordHealth = false.obs;
   final filterCategory = ''.obs;
   final filterTag = ''.obs;
   final filterSharedVaultId = ''.obs;
@@ -77,6 +78,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   // Obtain used tags distinctly
   Set<String> get tags {
     final usedTags = groupedItems
+        .where((e) => !e.trashed && !e.deleted)
         .map((e) => e.tags.where((x) => x.isNotEmpty).toList())
         .toSet();
 
@@ -107,7 +109,8 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterFavorites.value &&
       !filterProtected.value &&
       !filterTrashed.value &&
-      !filterDeleted.value;
+      !filterDeleted.value &&
+      !filterPasswordHealth.value;
 
   List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
         final count = ItemsController.to.raw
@@ -276,6 +279,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     if (filterProtected.value) return 'Protected';
     if (filterTrashed.value) return 'Trashed';
     if (filterDeleted.value) return 'Deleted';
+    if (filterPasswordHealth.value) return 'Password Health';
     return 'Unknown';
   }
 
@@ -317,6 +321,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
+    filterPasswordHealth.value = false;
     done();
   }
 
@@ -325,6 +330,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
+    filterPasswordHealth.value = false;
     done();
   }
 
@@ -333,11 +339,22 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterDeleted.value = false;
+    filterPasswordHealth.value = false;
     done();
   }
 
   void filterDeletedItems() async {
     filterDeleted.toggle();
+    filterFavorites.value = false;
+    filterProtected.value = false;
+    filterTrashed.value = false;
+    filterPasswordHealth.value = false;
+    done();
+  }
+
+  void filterPasswordHealthItems() async {
+    filterPasswordHealth.toggle();
+    filterDeleted.value = false;
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;
@@ -352,6 +369,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
+    filterPasswordHealth.value = false;
   }
 
   void done() async {

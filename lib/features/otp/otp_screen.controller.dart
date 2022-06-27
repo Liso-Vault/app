@@ -20,9 +20,15 @@ class OTPScreenController extends GetxController with ConsoleMixin {
 
   // FUNCTIONS
   void generate() {
-    code.value = OTP.generateTOTPCodeString(
-      codeController.text,
-      DateTime.now().millisecondsSinceEpoch,
-    );
+    code.value = OTP
+        .generateTOTPCode(
+          codeController.text,
+          DateTime.now().millisecondsSinceEpoch,
+          algorithm: Algorithm.SHA256,
+          interval: 10,
+          length: 1,
+          isGoogle: true,
+        )
+        .toString();
   }
 }

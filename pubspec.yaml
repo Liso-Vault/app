@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.5.1+23
+version: 0.5.1+25
 
 environment:
   sdk: ">=2.17.3 <3.0.0"
@@ -45,8 +45,11 @@ dependencies:
   filesize: ^2.0.1 # file size calculator
   file_picker: ^4.6.1 # exporting + importing
   http: ^0.13.4 # web3dart client
+
+  # API
   minio: ^3.5.0 # S3 API
   coingecko_api: ^1.0.2+2 # Coingecko API
+  purchases_flutter: ^3.10.0
 
   # UI
   line_icons: ^2.0.1 # icons
@@ -81,7 +84,6 @@ dependencies:
   flutter_displaymode: ^0.4.0 # allow higher refresh rates
   console_mixin: ^0.0.1 # logger
   random_string_generator: ^2.0.0
-  easy_rich_text: ^1.0.4
 
   # INFO
   device_info_plus: ^3.2.4

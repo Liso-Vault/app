@@ -10,11 +10,13 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
+import '../general/pro.widget.dart';
 import '../menu/menu.item.dart';
 import 'settings_screen.controller.dart';
 
@@ -142,6 +144,26 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   );
                 },
               ),
+              ListTile(
+                leading: Icon(Iconsax.refresh, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: Text('${'purge'.tr} Vault'),
+                subtitle: const Text('Delete all items and start over'),
+                onTap: controller.purge,
+              ),
+              ListTile(
+                leading: Icon(Iconsax.import_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Import Items'),
+                subtitle: const Text('Import items from external sources'),
+                // enabled: false,
+                onTap: () {
+                  UIUtils.showSimpleDialog(
+                    'Import Items',
+                    "Soon, you'll be able to import items from 1Password, LastPass, etc...",
+                  );
+                },
+              ),
               ContextMenuButton(
                 padding: EdgeInsets.zero,
                 [
@@ -165,26 +187,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   onTap: controller.exportVault,
                 ),
               ),
-              ListTile(
-                leading: Icon(Iconsax.refresh, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: Text('${'purge'.tr} Vault'),
-                subtitle: const Text('Delete all items and start over'),
-                onTap: controller.purge,
-              ),
-              ListTile(
-                leading: Icon(Iconsax.import_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: const Text('Import Items'),
-                subtitle: const Text('Import items from external sources'),
-                // enabled: false,
-                onTap: () {
-                  UIUtils.showSimpleDialog(
-                    'Import Items',
-                    "Soon, you'll be able to import items from 1Password, LastPass, etc...",
-                  );
-                },
-              ),
             ],
           );
         }),
@@ -195,15 +197,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             leading: Icon(Iconsax.wallet, color: themeColor),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
-              ListTile(
-                leading: Icon(Iconsax.wallet_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: Text('export_wallet'.tr),
-                subtitle:
-                    const Text('Save <wallet>.json to an external source'),
-                onTap: controller.exportWallet,
-              ),
-
               ListTile(
                 leading: Icon(Iconsax.key, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
@@ -218,16 +211,38 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               //   subtitle: const Text('Change your wallet password'),
               //   // onTap: controller.showSeed,
               // ),
+              ListTile(
+                leading: Icon(Iconsax.wallet_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: Text('export_wallet'.tr),
+                subtitle: const Text(
+                  'Save <wallet>.json to an external source',
+                ),
+                onTap: controller.exportWallet,
+              ),
             ],
           );
         }),
         PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Other Settings'),
-            subtitle: const Text('Anonymous reporting settings'),
+            subtitle: const Text('A few other settings'),
             leading: Icon(Iconsax.chart_2, color: themeColor),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
+              if (ProController.to.isPro) ...[
+                ListTile(
+                  leading: Icon(LineIcons.rocket, color: proColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: const ProText(size: 16),
+                  subtitle: Text(
+                    '${ProController.to.proPrefixString} ${ProController.to.proDateString}',
+                  ),
+                  onTap: () => Utils.openUrl(
+                    ProController.to.info.value.managementURL!,
+                  ),
+                ),
+              ],
               SwitchListTile(
                 title: const Text('Errors & Crashes'),
                 secondary: Icon(

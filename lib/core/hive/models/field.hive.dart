@@ -52,6 +52,13 @@ class HiveLisoField extends HiveObject with EquatableMixin {
 
   Widget get widget => FieldParser.parse(this);
 
+  // this is just temporary migration
+  String get sectionLabel => type == LisoFieldType.section.name &&
+          data.label != null &&
+          data.label!.isNotEmpty
+      ? data.label!
+      : data.value!;
+
   @override
   List<Object?> get props => [identifier, type, reserved, required, data];
 }
@@ -153,4 +160,6 @@ enum LisoFieldType {
   tags,
   number,
   passport,
+  toggle,
+  slider,
 }

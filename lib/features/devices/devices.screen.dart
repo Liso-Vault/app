@@ -107,8 +107,9 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: () =>
-                      Utils.adaptiveRouteOpen(name: Routes.upgrade),
+                  onPressed: () => Utils.adaptiveRouteOpen(
+                    name: Routes.upgrade,
+                  ),
                   label: const Text('Upgrade to Pro'),
                   icon: const Icon(LineIcons.rocket),
                 ),

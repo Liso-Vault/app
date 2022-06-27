@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/joined_vaults/joined_vault.controller.dart';
@@ -35,10 +36,12 @@ class AuthService extends GetxService with ConsoleMixin {
         console.warning('signed out');
         SharedVaultsController.to.stop();
         JoinedVaultsController.to.stop();
+        ProController.to.deinit();
       } else {
         console.info('signed in: ${user_.uid}');
         SharedVaultsController.to.start();
         JoinedVaultsController.to.start();
+        ProController.to.init();
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
         _record();
@@ -76,7 +79,7 @@ class AuthService extends GetxService with ConsoleMixin {
 
     if (isSignedIn) {
       _record(enforceDevices: true);
-      return console.warning('Already Signed In');
+      return console.warning('Already Signed In: $userId');
     }
 
     final email = '${WalletService.to.longAddress}@liso.dev';

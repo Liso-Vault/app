@@ -26,7 +26,7 @@ import '../s3/explorer/s3_explorer.screen.dart';
 import '../s3/provider/custom_provider_screen.dart';
 import '../s3/provider/sync_provider.screen.dart';
 import '../seed/generator/seed_generator.screen.dart';
-import '../upgrade/upgrade.screen.dart';
+import '../pro/upgrade/upgrade.screen.dart';
 import '../wallet/wallet.screen.dart';
 import 'routes.dart';
 

@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
@@ -15,7 +17,7 @@ import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
 import '../../menu/menu.item.dart';
-import '../../wallet/wallet.service.dart';
+import '../../pro/pro.controller.dart';
 import '../model/s3_content.model.dart';
 
 class S3ExplorerScreenController extends GetxController
@@ -51,13 +53,14 @@ class S3ExplorerScreenController extends GetxController
         leading: const Icon(Iconsax.shield_tick),
         onSelected: () {
           if (S3Service.to.encryptedFiles >=
-              WalletService.to.limits.encryptedFiles) {
+              ProController.to.limits.encryptedFiles) {
             return Utils.adaptiveRouteOpen(
               name: Routes.upgrade,
               parameters: {
-                'title': 'Title',
-                'body': 'Maximum encrypted files limit reached',
-              }, // TODO: add message
+                'title': 'Encrypted Files',
+                'body':
+                    'Maximum encrypted files of ${ProController.to.limits.encryptedFiles} limit reached. Upgrade to Pro to unlock unlimited encrypted files feature.',
+              },
             );
           }
 
@@ -124,16 +127,6 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void pickFile({bool encryptFile = false}) async {
-    if (S3Service.to.objectsCount >= WalletService.to.limits.files) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Title',
-          'body': 'Maximum files limit reached',
-        }, // TODO: add message
-      );
-    }
-
     change(true, status: RxStatus.loading());
     Globals.timeLockEnabled = false; // disable
     FilePickerResult? result;
@@ -173,14 +166,16 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    if (fileSize > WalletService.to.limits.uploadSize) {
+    if (fileSize > ProController.to.limits.uploadSize) {
       change(false, status: RxStatus.success());
 
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'message': 'Upload Size Limit Reached'
-        }, // TODO: add message
+          'title': 'Upload Large Files',
+          'body':
+              'Upload size limit: ${filesize(ProController.to.limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(ConfigService.to.limits.pro.uploadSize)} per file.',
+        },
       );
     }
 
@@ -191,13 +186,14 @@ class S3ExplorerScreenController extends GetxController
   void _upload(File file, {bool encryptFile = false}) async {
     final assumedTotal = S3Service.to.storageSize.value + await file.length();
 
-    if (assumedTotal >= WalletService.to.limits.uploadSize) {
+    if (assumedTotal >= ProController.to.limits.uploadSize) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Title',
-          'body': 'Storage size limit reached',
-        }, // TODO: add message
+          'title': 'Add More Storage',
+          'body':
+              'Upgrade to Pro to store up to ${filesize(ConfigService.to.limits.pro.storageSize)} of files.',
+        },
       );
     }
 

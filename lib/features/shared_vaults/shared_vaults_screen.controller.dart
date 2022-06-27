@@ -25,6 +25,7 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
+import '../pro/pro.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   static SharedVaultsScreenController get to => Get.find();
@@ -73,13 +74,14 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       Get.back(); // close dialog
 
       if (SharedVaultsController.to.data.length >=
-          WalletService.to.limits.sharedVaults) {
+          ProController.to.limits.sharedVaults) {
         return Utils.adaptiveRouteOpen(
           name: Routes.upgrade,
           parameters: {
-            'title': 'Title',
-            'body': 'Maximum members in shared vault reached',
-          }, // TODO: add message
+            'title': 'Shared Vaults',
+            'body':
+                'Maximum members: ${ProController.to.limits.sharedMembers} in shared vault reached. Upgrade to Pro to unlock unlimited shared vault members feature.',
+          },
         );
       }
 
