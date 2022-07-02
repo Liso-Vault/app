@@ -7,6 +7,7 @@ import 'package:liso/features/app/pages.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/unknown.screen.dart';
 
+import '../../core/firebase/analytics.service.dart';
 import '../../core/utils/globals.dart';
 
 class App extends StatelessWidget {
@@ -29,6 +30,7 @@ class App extends StatelessWidget {
 
     // MATERIAL APP
     return GetMaterialApp(
+      navigatorObservers: [AnalyticsService.to.observer],
       debugShowCheckedModeBanner: false,
       // LOCALE
       translationsKeys: translationKeys,

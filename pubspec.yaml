@@ -37,6 +37,9 @@ dependencies:
   firebase_auth: 3.3.20
   cloud_firestore: 3.1.18
   # firebase_app_check: ^0.0.6+9
+  # FIREBASE WINDOWS
+  firebase_core_desktop: ^1.0.0
+  firebase_auth_desktop: ^1.0.0
 
   # IO
   hive: ^2.2.2 # database

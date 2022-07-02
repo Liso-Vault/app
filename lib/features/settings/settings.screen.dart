@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -74,7 +73,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     name: Routes.syncProvider,
                   ),
                 ),
-                if (isFirebaseSupported) ...[
+                if (!GetPlatform.isWindows) ...[
                   ListTile(
                     leading: Icon(Iconsax.cpu, color: themeColor),
                     trailing: const Icon(Iconsax.arrow_right_3),
@@ -108,7 +107,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 subtitle: const Text('Manage your custom vaults'),
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
               ),
-              if (Persistence.to.canShare && isFirebaseSupported) ...[
+              if (Persistence.to.canShare) ...[
                 ListTile(
                   leading: Icon(Iconsax.share, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),

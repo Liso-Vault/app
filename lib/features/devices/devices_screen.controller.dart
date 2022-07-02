@@ -52,7 +52,10 @@ class DevicesScreenController extends GetxController
   }
 
   void start() {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) {
+      // TODO: fetch user's devices via cloud functions REST API
+      return console.warning('Not Supported');
+    }
 
     _stream = FirestoreService.to.userDevices
         .snapshots()

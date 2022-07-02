@@ -8,7 +8,6 @@ import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:secrets/secrets.dart';
 
-import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
 import 'models/config_general.model.dart';
 import 'models/config_limits.model.dart';
@@ -37,7 +36,11 @@ class ConfigService extends GetxService with ConsoleMixin {
   Future<void> init() async {
     // pre-populate with local as defaults
     await _populate(local: true);
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+
+    if (GetPlatform.isWindows) {
+      // TODO: fetch full remote config from cloud functions using REST API
+      return console.warning('Not Supported');
+    }
 
     // SETTINGS
     await instance.setConfigSettings(RemoteConfigSettings(
@@ -51,7 +54,7 @@ class ConfigService extends GetxService with ConsoleMixin {
   }
 
   Future<void> fetch() async {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) return console.warning('Not Supported');
     console.info('fetching...');
 
     try {

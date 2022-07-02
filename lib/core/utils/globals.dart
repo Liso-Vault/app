@@ -1,6 +1,5 @@
 // COMPANY
 
-import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -35,7 +34,6 @@ final inputFormatterRestrictSpaces =
 final inputFormatterNumericOnly =
     FilteringTextInputFormatter.allow(RegExp("[0-9]"));
 
-final isFirebaseSupported = GetPlatform.isMacOS || GetPlatform.isMobile;
 final currencyFormatter = NumberFormat.currency(symbol: '', decimalDigits: 2);
 final kFormatter = NumberFormat.compact();
 

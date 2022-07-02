@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
@@ -31,7 +32,11 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     // first time initialization
-    if (!initialized) CrashlyticsService.to.configure();
+    if (!initialized) {
+      CrashlyticsService.to.configure();
+      AnalyticsService.to.init();
+    }
+
     // load balances
     AlchemyService.to.init();
     AlchemyService.to.load();

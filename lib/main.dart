@@ -18,6 +18,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'core/firebase/analytics.service.dart';
 import 'core/firebase/auth.service.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
@@ -51,9 +52,7 @@ void init(Flavor flavor) async {
     // improve performance
     GestureBinding.instance.resamplingEnabled = true;
     // init firebase
-    if (isFirebaseSupported) {
-      await Firebase.initializeApp(options: Secrets.firebaseOptions);
-    }
+    await Firebase.initializeApp(options: Secrets.firebaseOptions);
 
     // GetX services
     Get.lazyPut(() => CrashlyticsService());
@@ -73,6 +72,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => CategoriesService());
 
     // permanent controllers
+    Get.put(AnalyticsService());
     Get.put(ItemsController());
     Get.put(GroupsController());
     Get.put(CategoriesController());

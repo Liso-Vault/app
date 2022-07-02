@@ -67,7 +67,7 @@ class Persistence extends GetxController with ConsoleMixin {
   // DELETED IDS
 
   // GETTERS
-  bool get canShare => sync.val && isFirebaseSupported;
+  bool get canShare => sync.val && !GetPlatform.isWindows;
 
   String get shortAddress => walletAddress.val.isEmpty
       ? ''

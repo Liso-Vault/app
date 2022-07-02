@@ -2,8 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:liso/core/utils/globals.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 
 import '../persistence/persistence.dart';
 
@@ -13,6 +12,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   // VARIABLES
 
   // GETTERS
+  FirebaseCrashlytics get instance => FirebaseCrashlytics.instance;
 
   // INIT
 
@@ -27,14 +27,14 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
   }
 
   void configure() {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) return console.warning('Not Supported');
 
-    FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+    instance.setCrashlyticsCollectionEnabled(
       Persistence.to.crashReporting.val,
     );
 
-    FirebaseCrashlytics.instance.setUserIdentifier(
-      WalletService.to.longAddress,
+    instance.setUserIdentifier(
+      AuthService.to.userId,
     );
   }
 
@@ -67,7 +67,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       }
     }
 
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) return console.warning('Not Supported');
     FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }

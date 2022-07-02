@@ -45,7 +45,7 @@ class SharedVaultsController extends GetxController
   }
 
   void start() {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) return console.warning('Not Supported');
 
     _stream = FirestoreService.to.sharedVaults
         .where('userId', isEqualTo: AuthService.to.userId)

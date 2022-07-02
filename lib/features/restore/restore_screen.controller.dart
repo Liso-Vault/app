@@ -153,7 +153,7 @@ class RestoreScreenController extends GetxController
 
     await UIUtils.showImageDialog(
       Icon(Iconsax.import, size: 100, color: themeColor),
-      title: 'Restore Vault',
+      title: 'restore_vault'.tr,
       subTitle: basename(vaultFile.path),
       body:
           "Device: ${vault.metadata!.device.name}\nApp Version: ${vault.metadata!.app.formattedVersion}\nLast Modified: ${vault.metadata!.updatedTime}\nVault Version: ${vault.version}",

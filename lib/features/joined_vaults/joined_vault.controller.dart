@@ -46,7 +46,10 @@ class JoinedVaultsController extends GetxController
   }
 
   void start() {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) {
+      // TODO: fetch vault members via cloud functions REST API
+      return console.warning('Not Supported');
+    }
 
     _stream = FirestoreService.to.vaultMembers
         .where('userId', isEqualTo: AuthService.to.userId)

@@ -104,7 +104,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     required int totalSize,
     bool enforceDevices = false,
   }) async {
-    if (!isFirebaseSupported) return console.warning('Not Supported');
+    if (GetPlatform.isWindows) return console.warning('Not Supported');
     // just to make sure
     if (!AuthService.to.isSignedIn) await AuthService.to.signIn();
 
