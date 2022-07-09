@@ -63,13 +63,13 @@ IDI_APP_ICON            ICON                    "resources\\app_icon.ico"
 #ifdef FLUTTER_BUILD_NUMBER
 #define VERSION_AS_NUMBER FLUTTER_BUILD_NUMBER
 #else
-#define VERSION_AS_NUMBER 0,5,123,0
+#define VERSION_AS_NUMBER 0,5,226,0
 #endif
 
 #ifdef FLUTTER_BUILD_NAME
 #define VERSION_AS_STRING #FLUTTER_BUILD_NAME
 #else
-#define VERSION_AS_STRING "0.5.1+23"
+#define VERSION_AS_STRING "0.5.2+26"
 #endif
 
 VS_VERSION_INFO VERSIONINFO
@@ -93,7 +93,7 @@ BEGIN
             VALUE "FileDescription", "An open-source data management application that focuses mainly on securely storing private information and files." "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "liso" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2022 Stackwares. All rights reserved." "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2022 Liso. All rights reserved." "\0"
             VALUE "OriginalFilename", "liso.exe" "\0"
             VALUE "ProductName", "Liso" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"

@@ -7,6 +7,7 @@ import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/pro/pro.controller.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/firebase/config/models/config_limits.model.dart';
 
@@ -19,9 +20,17 @@ class UpgradeScreenController extends GetxController
   // PROPERTIES
   final busy = false.obs;
   final tabIndex = 0.obs;
-  final identifier = ''.obs;
+  final package = Rx<Package>(Package.fromJson(kPackageInitial));
 
   // GETTERS
+  String get identifier => package.value.identifier;
+
+  bool get isSubscription => package.value.product.identifier.contains('.sub.');
+
+  String get priceString =>
+      package.value.product.introductoryPrice?.priceString ??
+      package.value.product.priceString;
+
   int get limitIndex {
     int index = 3;
 
@@ -110,15 +119,18 @@ class UpgradeScreenController extends GetxController
     await ProController.to.load();
 
     if (ProController.to.packages.isNotEmpty) {
-      identifier.value = ProController.to.packages.first.identifier;
+      package.value = ProController.to.packages.first;
     }
   }
 
   void purchase() async {
-    final package = ProController.to.packages
-        .firstWhere((e) => e.identifier == identifier.value);
-
+    if (busy.value) return console.error('still busy');
     change(null, status: RxStatus.loading());
+
+    final package = ProController.to.packages.firstWhere(
+      (e) => e.identifier == identifier,
+    );
+
     await ProController.to.purchase(package);
     change(null, status: RxStatus.success());
 
@@ -133,6 +145,7 @@ class UpgradeScreenController extends GetxController
   }
 
   void restore() async {
+    if (busy.value) return console.error('still busy');
     change(null, status: RxStatus.loading());
     await ProController.to.restore();
     change(null, status: RxStatus.success());

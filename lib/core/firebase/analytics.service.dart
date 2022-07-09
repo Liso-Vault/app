@@ -32,15 +32,6 @@ class AnalyticsService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-  void init() async {
-    await instance.setUserId(id: AuthService.to.userId);
-
-    await instance.setUserProperty(
-      name: 'wallet-address',
-      value: WalletService.to.longAddress,
-    );
-  }
-
   void logSignIn() async {
     if (GetPlatform.isWindows) {
       return;

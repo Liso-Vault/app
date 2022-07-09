@@ -118,6 +118,24 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
+                      Text('weak_passwords'.tr),
+                      if (controller.weakPasswordCount > 0) ...[
+                        Chip(
+                          label: Text(controller.weakPasswordCount.toString()),
+                        ),
+                      ],
+                    ],
+                  ),
+                  leading: const Icon(Iconsax.health),
+                  selected: controller.filterWeakPasswords.value,
+                  onTap: controller.filterWeakPasswordsItems,
+                ),
+              ),
+              Obx(
+                () => ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
                       Text('trash'.tr),
                       if (controller.trashedCount > 0) ...[
                         Chip(label: Text(controller.trashedCount.toString())),
@@ -258,7 +276,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 builder: (p, context) => Obx(
                   () => Column(
                     children: [
-                      if (ProController.to.limits.id != 'pro') ...[
+                      if (!ProController.to.isPro) ...[
                         const Divider(),
                         ListTile(
                           title: const ProText(size: 16),
@@ -321,14 +339,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               //   enabled: false,
               //   // onTap: controller.files,
               // ),
-              Obx(
-                () => ListTile(
-                  title: Text('password_health'.tr),
-                  leading: const Icon(Iconsax.health),
-                  selected: controller.filterPasswordHealth(),
-                  onTap: controller.filterPasswordHealthItems,
-                ),
-              ),
             ],
           ),
           Obx(

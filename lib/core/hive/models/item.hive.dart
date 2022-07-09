@@ -117,7 +117,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
 
   String toJsonString() => jsonEncode(toJson());
 
-  bool get hasFragilePasswords {
+  bool get hasWeakPasswords {
     final passwords = fields.where((e) {
       if (e.type != LisoFieldType.password.name) return false;
       if (e.data.value!.isEmpty) return false;

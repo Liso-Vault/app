@@ -44,7 +44,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   final filterProtected = false.obs;
   final filterTrashed = false.obs;
   final filterDeleted = false.obs;
-  final filterPasswordHealth = false.obs;
+  final filterWeakPasswords = false.obs;
   final filterCategory = ''.obs;
   final filterTag = ''.obs;
   final filterSharedVaultId = ''.obs;
@@ -100,6 +100,10 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   int get protectedCount =>
       groupedItems.where((e) => e.protected && !e.trashed && !e.deleted).length;
 
+  int get weakPasswordCount => groupedItems
+      .where((e) => e.hasWeakPasswords && !e.trashed && !e.deleted)
+      .length;
+
   int get trashedCount =>
       groupedItems.where((e) => e.trashed && !e.deleted).length;
 
@@ -110,7 +114,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterProtected.value &&
       !filterTrashed.value &&
       !filterDeleted.value &&
-      !filterPasswordHealth.value;
+      !filterWeakPasswords.value;
 
   List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
         final count = ItemsController.to.raw
@@ -279,7 +283,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     if (filterProtected.value) return 'Protected';
     if (filterTrashed.value) return 'Trashed';
     if (filterDeleted.value) return 'Deleted';
-    if (filterPasswordHealth.value) return 'Password Health';
+    if (filterWeakPasswords.value) return 'Weak Passwords';
     return 'Unknown';
   }
 
@@ -321,7 +325,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
-    filterPasswordHealth.value = false;
+    filterWeakPasswords.value = false;
     done();
   }
 
@@ -330,7 +334,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
-    filterPasswordHealth.value = false;
+    filterWeakPasswords.value = false;
     done();
   }
 
@@ -339,7 +343,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterDeleted.value = false;
-    filterPasswordHealth.value = false;
+    filterWeakPasswords.value = false;
     done();
   }
 
@@ -348,12 +352,12 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterFavorites.value = false;
     filterProtected.value = false;
     filterTrashed.value = false;
-    filterPasswordHealth.value = false;
+    filterWeakPasswords.value = false;
     done();
   }
 
-  void filterPasswordHealthItems() async {
-    filterPasswordHealth.toggle();
+  void filterWeakPasswordsItems() async {
+    filterWeakPasswords.toggle();
     filterDeleted.value = false;
     filterFavorites.value = false;
     filterProtected.value = false;
@@ -369,7 +373,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterProtected.value = false;
     filterTrashed.value = false;
     filterDeleted.value = false;
-    filterPasswordHealth.value = false;
+    filterWeakPasswords.value = false;
   }
 
   void done() async {

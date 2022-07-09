@@ -64,7 +64,7 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
       title: Text(
         controller.isTimeMachine
             ? 'Time Machine'
-            : (controller.isPicker ? 'File Picker' : 'file_explorer'.tr),
+            : (controller.isPicker ? 'File Picker' : 'files'.tr),
       ),
       centerTitle: false,
       leading: const AppBarLeadingButton(),

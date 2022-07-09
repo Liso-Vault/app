@@ -28,6 +28,7 @@ class ProController extends GetxController with ConsoleMixin {
   // GETTERS
 
   bool get isPro => proEntitlement?.isActive ?? false;
+  // bool get isPro => false;
 
   bool get isFreeTrial => !AuthService.to.isSignedIn
       ? false
@@ -272,8 +273,9 @@ class ProController extends GetxController with ConsoleMixin {
       case PurchasesErrorCode.receiptInUseByOtherSubscriberError:
         break;
       case PurchasesErrorCode.storeProblemError:
-        errorMessage =
-            'There was a problem with ${GetPlatform.isIOS ? 'the App Store' : 'Google Play'}';
+        errorMessage = '';
+        // errorMessage =
+        //     'There was a problem with ${GetPlatform.isIOS ? 'the App Store' : 'Google Play'}';
         break;
       case PurchasesErrorCode.unexpectedBackendResponseError:
         break;
@@ -340,4 +342,27 @@ const kOfferingsInitial = {
     "twoMonth": null,
     "monthly": null,
   }
+};
+
+const kPackageInitial = {
+  "identifier": "",
+  "packageType": "",
+  "product": {
+    "identifier": "",
+    "description": "",
+    "title": "",
+    "price": 0.0,
+    "price_string": "",
+    "currency_code": "",
+    "introPrice": {
+      "price": 0.0,
+      "priceString": "",
+      "period": "",
+      "cycles": 0,
+      "periodUnit": "",
+      "periodNumberOfUnits": 0
+    },
+    "discounts": []
+  },
+  "offeringIdentifier": "annual",
 };

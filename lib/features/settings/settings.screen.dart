@@ -125,25 +125,25 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                       Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
                 ),
               ],
-              ListTile(
-                title: const Text('Backed Up Vaults'),
-                subtitle: const Text('Go back in time and undo your changes'),
-                leading: Icon(Iconsax.clock, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                onTap: () async {
-                  if (!p.sync.val) {
-                    return UIUtils.showSimpleDialog(
-                      'Sync Required',
-                      'Please turn on ${config.appName} Cloud Sync to use this feature',
-                    );
-                  }
+              // ListTile(
+              //   title: const Text('Backed Up Vaults'),
+              //   subtitle: const Text('Go back in time and undo your changes'),
+              //   leading: Icon(Iconsax.clock, color: themeColor),
+              //   trailing: const Icon(Iconsax.arrow_right_3),
+              //   onTap: () async {
+              //     if (!p.sync.val) {
+              //       return UIUtils.showSimpleDialog(
+              //         'Sync Required',
+              //         'Please turn on ${config.appName} Cloud Sync to use this feature',
+              //       );
+              //     }
 
-                  Utils.adaptiveRouteOpen(
-                    name: Routes.s3Explorer,
-                    parameters: {'type': 'time_machine'},
-                  );
-                },
-              ),
+              //     Utils.adaptiveRouteOpen(
+              //       name: Routes.s3Explorer,
+              //       parameters: {'type': 'time_machine'},
+              //     );
+              //   },
+              // ),
               ListTile(
                 leading: Icon(Iconsax.refresh, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
@@ -151,19 +151,19 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 subtitle: const Text('Delete all items and start over'),
                 onTap: controller.purge,
               ),
-              ListTile(
-                leading: Icon(Iconsax.import_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: const Text('Import Items'),
-                subtitle: const Text('Import items from external sources'),
-                // enabled: false,
-                onTap: () {
-                  UIUtils.showSimpleDialog(
-                    'Import Items',
-                    "Soon, you'll be able to import items from 1Password, LastPass, etc...",
-                  );
-                },
-              ),
+              // ListTile(
+              //   leading: Icon(Iconsax.import_1, color: themeColor),
+              //   trailing: const Icon(Iconsax.arrow_right_3),
+              //   title: const Text('Import Items'),
+              //   subtitle: const Text('Import items from external sources'),
+              //   // enabled: false,
+              //   onTap: () {
+              //     UIUtils.showSimpleDialog(
+              //       'Import Items',
+              //       "Soon, you'll be able to import items from 1Password, LastPass, etc...",
+              //     );
+              //   },
+              // ),
               ContextMenuButton(
                 padding: EdgeInsets.zero,
                 [

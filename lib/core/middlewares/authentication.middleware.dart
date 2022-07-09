@@ -34,7 +34,6 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     // first time initialization
     if (!initialized) {
       CrashlyticsService.to.configure();
-      AnalyticsService.to.init();
     }
 
     // load balances

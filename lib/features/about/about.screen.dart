@@ -146,14 +146,8 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           useMouseRegion: true,
           padding: EdgeInsets.zero,
           child: ListTile(
-            leading: RemoteImage(
-              url: config.general.developer.image,
-              height: 23,
-              width: 23,
-              placeholder: Image.asset(Images.stackwares, height: 23),
-            ),
+            leading: Icon(Iconsax.code, color: themeColor),
             title: Text('developer'.tr),
-            subtitle: Text(config.devName),
             trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () {},
           ),

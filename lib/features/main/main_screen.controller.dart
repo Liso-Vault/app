@@ -60,16 +60,16 @@ class MainScreenController extends GetxController
           onSelected: S3Service.to.sync,
         ),
       ],
-      ContextMenuItem(
-        title: 'scan'.tr,
-        leading: const Icon(Iconsax.scan),
-        onSelected: () {
-          UIUtils.showSimpleDialog(
-            'Scan Barcodes',
-            'Coming soon...',
-          );
-        },
-      ),
+      // ContextMenuItem(
+      //   title: 'scan'.tr,
+      //   leading: const Icon(Iconsax.scan),
+      //   onSelected: () {
+      //     UIUtils.showSimpleDialog(
+      //       'Scan Barcodes',
+      //       'Coming soon...',
+      //     );
+      //   },
+      // ),
     ];
   }
 

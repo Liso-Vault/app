@@ -11,6 +11,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
+import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
@@ -186,6 +187,11 @@ class WalletService extends GetxService with ConsoleMixin {
     final signature = await sign(kCipherKeySignatureMessage);
     // from the first 32 bits of the signature
     cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
+
+    await AnalyticsService.to.instance.setUserProperty(
+      name: 'wallet_address',
+      value: longAddress,
+    );
   }
 
   void reset() {

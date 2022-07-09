@@ -43,22 +43,43 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           ),
           const SizedBox(width: 10),
           // TITLE
-          Obx(
-            () => Expanded(
-              child: TextFormField(
-                enabled: controller.editMode.value,
-                autofocus: mode == 'add',
-                controller: controller.titleController,
-                textCapitalization: TextCapitalization.words,
-                validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
-                decoration: InputDecoration(
-                  labelText: '${'title'.tr} *',
-                  suffixIcon: ContextMenuButton(
-                    controller.titleMenuItems,
-                    child: const Icon(LineIcons.verticalEllipsis),
+          Expanded(
+            child: Obx(
+              () {
+                if (controller.editMode.value) {
+                  return TextFormField(
+                    enabled: controller.editMode.value,
+                    autofocus: mode == 'add',
+                    controller: controller.titleController,
+                    textCapitalization: TextCapitalization.words,
+                    validator: (data) =>
+                        data!.isNotEmpty ? null : 'required'.tr,
+                    decoration: InputDecoration(
+                      labelText: '${'title'.tr} *',
+                      suffixIcon: ContextMenuButton(
+                        controller.titleMenuItems,
+                        child: const Icon(LineIcons.verticalEllipsis),
+                      ),
+                    ),
+                  );
+                }
+
+                return GestureDetector(
+                  onSecondaryTap: () => Utils.copyToClipboard(
+                    controller.titleController.text,
                   ),
-                ),
-              ),
+                  child: InkWell(
+                    onLongPress: () => Utils.copyToClipboard(
+                      controller.titleController.text,
+                    ),
+                    child: TextFormField(
+                      initialValue: controller.titleController.text,
+                      enabled: false,
+                      decoration: InputDecoration(labelText: '${'title'.tr} *'),
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ],
@@ -137,7 +158,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
               child: OutlinedButton.icon(
                 onPressed: controller.attach,
                 icon: const Icon(Iconsax.add_circle),
-                label: const Text('Add Custom Field'),
+                label: const Text('Custom Field'),
               ),
             ),
           ),

@@ -41,18 +41,9 @@ const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';
 const kVaultFormatVersion = 1;
-const kReleaseMode = ReleaseMode.beta;
 const kNonPasswordFieldIds = ['key', 'private_key', 'secret'];
 
-bool get isBeta => kReleaseMode == ReleaseMode.beta;
-
-// TODO: set to false when publishing on Mac App Store
-const isMacAppStore = false;
-bool get isCryptoSupported =>
-    Persistence.to.proTester.val ||
-    (GetPlatform.isMacOS && !isMacAppStore) ||
-    GetPlatform.isAndroid ||
-    GetPlatform.isWindows;
+// GETTERS
 
 bool get isPurchasesSupported => !GetPlatform.isWindows;
 
@@ -62,6 +53,18 @@ bool get isLocalAuthSupported =>
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 Color get proColor => Get.isDarkMode ? Colors.cyanAccent : Colors.cyan;
+
+// TODO: set before releasing a new version
+const kReleaseMode = ReleaseMode.production;
+bool get isBeta => kReleaseMode == ReleaseMode.beta;
+
+// TODO: set to false when publishing on Mac App Store
+const isMacAppStore = false;
+bool get isCryptoSupported =>
+    Persistence.to.proTester.val ||
+    (GetPlatform.isMacOS && !isMacAppStore) ||
+    GetPlatform.isAndroid ||
+    GetPlatform.isWindows;
 
 // ENUMS
 enum ReleaseMode {

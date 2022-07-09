@@ -3,9 +3,12 @@
 - New! OTP Generator from Secret Key
 - New! Toggle Field
 - New! Upgrade Screen, Subscribe to Pro, Restore Purchases
+- New! Weak Passwords Filter
 - Added! Upgrade to pro button on drawer
 - Added! Details json feature on Items Screen
+- Improved! Copy title when in viewing mode
 - Improved! Reorganized Categories
+- Improved! Upgrade Screen
 - Fixed! wrong Tags count. Thanks to Timothy
 
 ## 0.5.1

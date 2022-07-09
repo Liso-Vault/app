@@ -4,7 +4,6 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus_windows
-  desktop_webview_auth
   local_auth_windows
   screen_retriever
   url_launcher_windows

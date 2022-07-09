@@ -96,12 +96,12 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     var childContent = itemsController.obx(
-      (_) => ProController.to.limits.passwordHealth &&
-              drawerController.filterPasswordHealth.value
+      (_) => !ProController.to.limits.passwordHealth &&
+              drawerController.filterWeakPasswords.value
           ? weakPasswords
           : listView,
       // onLoading: const BusyIndicator(),
-      onEmpty: drawerController.filterPasswordHealth.value
+      onEmpty: drawerController.filterWeakPasswords.value
           ? const CenteredPlaceholder(
               iconData: LineIcons.check,
               message: 'No Weak Passwords Detected',

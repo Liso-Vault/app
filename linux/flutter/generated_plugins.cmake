@@ -3,7 +3,6 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  desktop_webview_auth
   screen_retriever
   url_launcher_linux
   window_manager

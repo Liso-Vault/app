@@ -57,7 +57,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.liso.app"
+        applicationId "com.liso.android"
         minSdkVersion 23 // biometrics requirement
         targetSdkVersion 30
         multiDexEnabled true // Firebase
@@ -93,13 +93,13 @@ android {
     productFlavors {
         development {
             dimension "app"
-            applicationId "com.liso.app.debug"
+            applicationId "com.liso.android.debug"
             resValue "string", "app_name", "Liso Debug"
         }
 
         production {
             dimension "app"
-            applicationId "com.liso.app"
+            applicationId "com.liso.android"
             resValue "string", "app_name", "Liso"
         }
     }

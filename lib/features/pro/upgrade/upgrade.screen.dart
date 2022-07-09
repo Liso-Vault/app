@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:humanizer/humanizer.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -244,14 +245,46 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           final product = package.product;
           final packageType = package.packageType.name.toLowerCase();
 
+          String titleString = 'Just ${product.priceString} ${packageType.tr}';
+          String subTitleString = product.description;
+          Widget title = Text(titleString);
+
+          if (product.introductoryPrice != null) {
+            final intro = product.introductoryPrice!;
+            final periodCycle = intro.cycles > 1
+                ? '${intro.cycles} ${intro.periodUnit.name.tr}s'
+                : intro.periodUnit.name.tr;
+
+            titleString = 'Just ${intro.priceString} on the first $periodCycle';
+            subTitleString =
+                'Then ${product.priceString} billed per ${intro.periodUnit.name.tr}';
+
+            final percentageDifference_ = 100 *
+                (product.price - intro.price) /
+                ((product.price + intro.price) / 2);
+
+            title = Wrap(
+              children: [
+                Text(titleString),
+                Text(
+                  ' - Save ${percentageDifference_.round()}%',
+                  style: TextStyle(color: themeColor),
+                ),
+              ],
+            );
+          }
+
           return Obx(
             () => RadioListTile<String>(
-              title: Text('${product.priceString} ${packageType.tr}'),
-              subtitle: Text(product.description),
+              title: title,
+              subtitle: Text(subTitleString),
               value: package.identifier,
-              groupValue: controller.identifier.value,
+              groupValue: controller.identifier,
               activeColor: proColor,
-              onChanged: (value) => controller.identifier.value = value!,
+              onChanged: (value) => controller.package.value =
+                  ProController.to.packages.firstWhere(
+                (e) => e.identifier == value,
+              ),
             ),
           );
         },
@@ -304,16 +337,20 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        'Experience the full potential of ${ConfigService.to.appName} with Pro',
+                      const Text(
+                        'Unlock Powerful Features',
                         textAlign: TextAlign.center,
-                        style:
-                            const TextStyle(color: Colors.grey, fontSize: 15),
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                        ),
                       ),
                       productsListView,
                       const SizedBox(height: 5),
                       ElevatedButton.icon(
-                        label: const Text('Subscribe'),
+                        label: Text(
+                          'Subscribe for ${controller.priceString}',
+                        ),
                         icon: const Icon(LineIcons.rocket),
                         style: ElevatedButton.styleFrom(primary: proColor),
                         onPressed: controller.purchase,
@@ -416,31 +453,13 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           )
         ],
         const SizedBox(height: 10),
-        if (ProController.to.isFreeTrial) ...[
-          Card(
-            child: ListTile(
-              dense: true,
-              leading: Icon(LineIcons.check, color: proColor),
-              title: Text(
-                'Free trial is active',
-                style: TextStyle(color: proColor),
-              ),
-              subtitle: Text(
-                'Expires on ${ProController.to.freeTrialExpirationDateTimeString}',
-              ),
-              onTap: () {
-                // TODO: show some message
-              },
-            ),
-          )
-        ],
       ],
     );
 
     final actionCard = Card(
       elevation: 4.0,
       child: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
         child: controller.obx(
           (state) => actionCardContent,
           onLoading: BusyIndicator(color: proColor),
@@ -455,6 +474,36 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         children: [
           Expanded(child: benefits),
           actionCard,
+          const SizedBox(height: 5),
+          Obx(
+            () => Visibility(
+              visible: controller.isSubscription,
+              child: const Text(
+                'Renews automatically. Cancel anytime.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.grey, fontSize: 12),
+              ),
+            ),
+          ),
+          if (ProController.to.isFreeTrial) ...[
+            RichText(
+              textAlign: TextAlign.center,
+              text: TextSpan(
+                text: '✔️ Free Trial',
+                style: TextStyle(fontSize: 12, color: themeColor),
+                children: [
+                  TextSpan(
+                    text:
+                        ' is on and will expire on ${ProController.to.freeTrialExpirationDateTimeString}',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -487,7 +536,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         children: [
           Icon(LineIcons.rocket, color: proColor),
           const SizedBox(width: 7),
-          const ProText(size: 18),
+          const ProText(size: 23),
         ],
       ),
       actions: [
@@ -504,7 +553,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               child: Text('Restore'),
             ),
           ],
-        )
+        ),
+        const SizedBox(width: 10),
       ],
     );
 
