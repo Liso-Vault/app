@@ -150,12 +150,17 @@ class ProController extends GetxController with ConsoleMixin {
 
   Future<void> logout() async {
     if (!ready) return;
+    // prevent exception if logging out with an anonymous user
+    if (await Purchases.isAnonymous) {
+      return console.error('anonymous user');
+    }
 
     try {
-      Purchases.logOut();
+      await Purchases.logOut();
     } on PlatformException catch (e) {
+      console.error('exception error: $e');
+    } catch (e) {
       console.error('logout error: $e');
-      _showError(e);
     }
   }
 
@@ -164,7 +169,7 @@ class ProController extends GetxController with ConsoleMixin {
 
     try {
       offerings.value = await Purchases.getOfferings();
-      // console.warning('offerings: ${jsonEncode(offerings.value.toJson())}');
+      console.warning('offerings: ${jsonEncode(offerings.value.toJson())}');
     } on PlatformException catch (e) {
       console.error('load error: $e');
       _showError(e);
@@ -273,9 +278,8 @@ class ProController extends GetxController with ConsoleMixin {
       case PurchasesErrorCode.receiptInUseByOtherSubscriberError:
         break;
       case PurchasesErrorCode.storeProblemError:
-        errorMessage = '';
-        // errorMessage =
-        //     'There was a problem with ${GetPlatform.isIOS ? 'the App Store' : 'Google Play'}';
+        errorMessage =
+            'There was a problem with ${GetPlatform.isIOS ? 'the App Store' : 'Google Play'}';
         break;
       case PurchasesErrorCode.unexpectedBackendResponseError:
         break;

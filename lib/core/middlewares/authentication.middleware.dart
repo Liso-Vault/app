@@ -1,7 +1,6 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';

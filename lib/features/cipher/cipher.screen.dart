@@ -40,7 +40,6 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
               ),
             ),
           ),
-          const Divider(),
           ListTile(
             leading: Icon(Iconsax.shield_tick, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3),

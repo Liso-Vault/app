@@ -2,7 +2,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 
 import '../persistence/persistence.dart';
 
@@ -31,10 +30,6 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
 
     instance.setCrashlyticsCollectionEnabled(
       Persistence.to.crashReporting.val,
-    );
-
-    instance.setUserIdentifier(
-      AuthService.to.userId,
     );
   }
 

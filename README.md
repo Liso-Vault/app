@@ -122,8 +122,6 @@ flutter run
 * Translations
 * Autofill Service
 * Breach Scanner
-* Password Health
-* OTP/MFA Generator
 * Web3 Browser
 * DeFi (Swap)
 * Liso Token

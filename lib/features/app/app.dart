@@ -32,6 +32,7 @@ class App extends StatelessWidget {
     return GetMaterialApp(
       navigatorObservers: [AnalyticsService.to.observer],
       debugShowCheckedModeBanner: false,
+      // showPerformanceOverlay: true,
       // LOCALE
       translationsKeys: translationKeys,
       locale: Locale(persistence.localeCode.val),

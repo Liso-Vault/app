@@ -1,15 +1,15 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
+import 'package:liso/features/groups/groups.service.dart';
 
-import '../liso/liso_paths.dart';
 import '../../features/categories/categories.service.dart';
 import '../../features/items/items.service.dart';
+import '../liso/liso_paths.dart';
 import 'models/field.hive.dart';
 import 'models/item.hive.dart';
 import 'models/metadata/metadata.hive.dart';

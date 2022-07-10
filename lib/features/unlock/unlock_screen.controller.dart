@@ -54,8 +54,8 @@ class UnlockScreenController extends GetxController
 
   void unlock() async {
     if (status == RxStatus.loading()) return console.error('still busy');
-    change(null, status: RxStatus.loading());
     await Get.closeCurrentSnackbar();
+    change(null, status: RxStatus.loading());
 
     final wallet_ = await WalletService.to.initJson(
       Persistence.to.wallet.val,
@@ -90,7 +90,6 @@ class UnlockScreenController extends GetxController
       return;
     }
 
-    change(null, status: RxStatus.success());
     await WalletService.to.init(wallet_);
     if (passwordMode) return Get.back(result: true);
     await HiveService.to.open();

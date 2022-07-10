@@ -42,7 +42,8 @@ class AuthService extends GetxService with ConsoleMixin {
         SharedVaultsController.to.start();
         JoinedVaultsController.to.start();
         ProController.to.login();
-        await AnalyticsService.to.instance.setUserId(id: user_.uid);
+        CrashlyticsService.to.instance.setUserIdentifier(AuthService.to.userId);
+        AnalyticsService.to.instance.setUserId(id: user_.uid);
         AnalyticsService.to.logSignIn();
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);

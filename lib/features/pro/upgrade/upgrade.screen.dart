@@ -513,7 +513,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 onPressed: () => Utils.openUrl(
                   ConfigService.to.general.app.links.terms,
                 ),
-                child: const Text('Terms of Service'),
+                child: const Text('Terms of Use'),
               ),
               const Text('and'),
               TextButton(
@@ -548,9 +548,15 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
+            PopupMenuItem<String>(
               value: 'restore',
-              child: Text('Restore'),
+              child: Row(
+                children: [
+                  Icon(Iconsax.refresh, color: themeColor),
+                  const SizedBox(width: 10),
+                  const Text('Restore Purchases'),
+                ],
+              ),
             ),
           ],
         ),

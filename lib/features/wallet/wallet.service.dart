@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
@@ -14,6 +15,7 @@ import 'package:hex/hex.dart';
 import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:worker_manager/worker_manager.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/hive/models/item.hive.dart';
@@ -21,6 +23,10 @@ import '../../core/hive/models/metadata/metadata.hive.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.controller.dart';
 import '../items/items.service.dart';
+
+int _test(int n, TypeSendPort port) {
+  return 0;
+}
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
@@ -168,12 +174,15 @@ class WalletService extends GetxService with ConsoleMixin {
   Future<Wallet?> initJson(String data, {required String password}) async {
     Wallet? wallet_;
 
-    try {
-      wallet_ = Wallet.fromJson(data, password);
-    } catch (e) {
-      console.error('wallet initJson error: ${e.toString()}');
-      return null;
-    }
+    await Executor().execute(
+      arg1: {'data': data, 'password': password},
+      fun1: walletFromJson,
+    ).then(
+      (value) => wallet_ = value,
+      onError: (e, s) {
+        console.error('wallet initJson error: ${e.toString()}');
+      },
+    );
 
     return wallet_;
   }
@@ -253,4 +262,8 @@ class WalletService extends GetxService with ConsoleMixin {
       tags: ['secret'],
     ));
   }
+}
+
+Wallet walletFromJson(Map<String, dynamic> arg, TypeSendPort port) {
+  return Wallet.fromJson(arg['data'], arg['password']);
 }

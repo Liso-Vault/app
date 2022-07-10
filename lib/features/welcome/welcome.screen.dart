@@ -70,7 +70,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                 onPressed: () => Utils.openUrl(
                   ConfigService.to.general.app.links.terms,
                 ),
-                child: const Text('Terms of Service'),
+                child: const Text('Terms of Use'),
               ),
               const Text('and'),
               TextButton(

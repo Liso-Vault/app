@@ -17,6 +17,7 @@ import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:worker_manager/worker_manager.dart';
 
 import 'core/firebase/analytics.service.dart';
 import 'core/firebase/auth.service.dart';
@@ -53,6 +54,8 @@ void init(Flavor flavor) async {
     GestureBinding.instance.resamplingEnabled = true;
     // init firebase
     await Firebase.initializeApp(options: Secrets.firebaseOptions);
+    // warm up executor
+    await Executor().warmUp();
 
     // GetX services
     Get.lazyPut(() => CrashlyticsService());

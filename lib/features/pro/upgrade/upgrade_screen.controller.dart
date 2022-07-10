@@ -125,6 +125,10 @@ class UpgradeScreenController extends GetxController
 
   void purchase() async {
     if (busy.value) return console.error('still busy');
+    if (ProController.to.packages.isEmpty) {
+      return console.error('empty packages');
+    }
+
     change(null, status: RxStatus.loading());
 
     final package = ProController.to.packages.firstWhere(

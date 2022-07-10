@@ -59,7 +59,7 @@ const kReleaseMode = ReleaseMode.production;
 bool get isBeta => kReleaseMode == ReleaseMode.beta;
 
 // TODO: set to false when publishing on Mac App Store
-const isMacAppStore = false;
+const isMacAppStore = true;
 bool get isCryptoSupported =>
     Persistence.to.proTester.val ||
     (GetPlatform.isMacOS && !isMacAppStore) ||
