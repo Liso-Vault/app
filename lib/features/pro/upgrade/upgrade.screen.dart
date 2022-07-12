@@ -245,9 +245,10 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           final product = package.product;
           final packageType = package.packageType.name.toLowerCase();
 
-          String titleString = 'Just ${product.priceString} ${packageType.tr}';
-          String subTitleString = product.description;
-          Widget title = Text(titleString);
+          Widget title = Text('Just ${product.priceString} ${packageType.tr}');
+          Widget? subTitle =
+              product.description.isEmpty ? null : Text(product.description);
+          Widget? secondary;
 
           if (product.introductoryPrice != null) {
             final intro = product.introductoryPrice!;
@@ -255,30 +256,60 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 ? '${intro.cycles} ${intro.periodUnit.name.tr}s'
                 : intro.periodUnit.name.tr;
 
-            titleString = 'Just ${intro.priceString} on the first $periodCycle';
-            subTitleString =
-                'Then ${product.priceString} billed per ${intro.periodUnit.name.tr}';
-
-            final percentageDifference_ = 100 *
-                (product.price - intro.price) /
-                ((product.price + intro.price) / 2);
-
-            title = Wrap(
-              children: [
-                Text(titleString),
-                Text(
-                  ' - Save ${percentageDifference_.round()}%',
-                  style: TextStyle(color: themeColor),
+            title = RichText(
+              text: TextSpan(
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                  color: Get.theme.textTheme.titleLarge?.color,
                 ),
-              ],
+                children: [
+                  TextSpan(text: product.priceString),
+                  TextSpan(text: ' / ${intro.periodUnit.name.tr}'),
+                ],
+              ),
+            );
+
+            final percentageDifference_ =
+                ((product.price - intro.price) / product.price) * 100;
+
+            secondary = Text(
+              '✔️ Save ${percentageDifference_.round()}%\nOr ${product.price - intro.price} ${product.currencyCode}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: themeColor,
+                fontStyle: FontStyle.italic,
+                fontSize: 12,
+              ),
+            );
+
+            subTitle = RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                  color: Colors.grey,
+                ),
+                children: [
+                  const TextSpan(text: 'Start with '),
+                  TextSpan(
+                    text: intro.priceString,
+                    style: TextStyle(
+                      color: Get.theme.textTheme.bodyText1?.color,
+                    ),
+                  ),
+                  TextSpan(text: ' on the first $periodCycle'),
+                ],
+              ),
             );
           }
 
           return Obx(
             () => RadioListTile<String>(
               title: title,
-              subtitle: Text(subTitleString),
+              subtitle: subTitle,
               value: package.identifier,
+              secondary: secondary,
               groupValue: controller.identifier,
               activeColor: proColor,
               onChanged: (value) => controller.package.value =
@@ -337,10 +368,12 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      const Text(
-                        'Unlock Powerful Features',
+                      Text(
+                        ProController.to.packages.length > 1
+                            ? 'Choose your plan'
+                            : 'Unlock Powerful Features',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.grey,
                           fontSize: 15,
                         ),
@@ -348,12 +381,16 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       productsListView,
                       const SizedBox(height: 5),
                       ElevatedButton.icon(
-                        label: Text(
-                          'Subscribe for ${controller.priceString}',
-                        ),
-                        icon: const Icon(LineIcons.rocket),
-                        style: ElevatedButton.styleFrom(primary: proColor),
                         onPressed: controller.purchase,
+                        icon: const Icon(LineIcons.rocket),
+                        label: const Text(
+                          // 'Subscribe for ${controller.priceString}',
+                          'Subscribe Now',
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          primary: proColor,
+                          visualDensity: VisualDensity.standard,
+                        ),
                       ),
                     ],
                   ),
@@ -490,7 +527,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               textAlign: TextAlign.center,
               text: TextSpan(
                 text: '✔️ Free Trial',
-                style: TextStyle(fontSize: 12, color: themeColor),
+                style: TextStyle(fontSize: 12, color: proColor),
                 children: [
                   TextSpan(
                     text:

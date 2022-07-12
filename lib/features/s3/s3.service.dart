@@ -114,6 +114,41 @@ class S3Service extends GetxService with ConsoleMixin {
     if (message != null) progressText.value = message;
   }
 
+  Future<Either<dynamic, bool>> purge() async {
+    if (!ready) init();
+    if (!persistence.sync.val && ready) return const Left('offline');
+    console.info('listing: $rootPath...');
+    minio.ListObjectsResult? result;
+
+    try {
+      result = await client!.listAllObjectsV2(
+        config.secrets.s3.preferredBucket,
+        prefix: rootPath,
+        recursive: true,
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    final objects = [...result.prefixes, ...result.objects.map((e) => e.key!)];
+
+    console.info('objects: ${objects.length} -> $objects');
+    console.info('purging: $rootPath...');
+
+    try {
+      await client!.removeObjects(
+        config.secrets.s3.preferredBucket,
+        objects,
+      );
+
+      return const Right(true);
+    } catch (e) {
+      return Left(e);
+    }
+
+    return const Right(true);
+  }
+
   Future<Either<dynamic, bool>> sync() async {
     if (!ready) init();
     if (!persistence.sync.val && ready) return const Right(false);

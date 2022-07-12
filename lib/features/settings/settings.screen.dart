@@ -144,13 +144,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               //     );
               //   },
               // ),
-              ListTile(
-                leading: Icon(Iconsax.refresh, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                title: Text('${'purge'.tr} Vault'),
-                subtitle: const Text('Delete all items and start over'),
-                onTap: controller.purge,
-              ),
+
               // ListTile(
               //   leading: Icon(Iconsax.import_1, color: themeColor),
               //   trailing: const Icon(Iconsax.arrow_right_3),
@@ -265,7 +259,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 value: p.analytics.val,
                 subtitle: const Text('Send anonymous usage statistics'),
                 onChanged: (value) => p.analytics.val = value,
-              ),
+              )
             ],
           );
         }),
@@ -276,24 +270,49 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
-        ListTile(
-          leading: Icon(Iconsax.refresh5, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('${'reset'.tr} ${config.appName}'),
-          subtitle: const Text('Delete local vault and logout'),
-          onTap: controller.reset,
-          onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),
+        ExpansionTile(
+          title: const Text('Danger Zone'),
+          subtitle: const Text('Delete, purge, or reset your data'),
+          leading: Icon(Iconsax.warning_2, color: themeColor),
+          childrenPadding: const EdgeInsets.only(left: 20),
+          children: [
+            ListTile(
+              iconColor: Colors.amber,
+              leading: const Icon(Iconsax.refresh),
+              trailing: const Icon(Iconsax.arrow_right_3),
+              title: Text('${'purge'.tr} Vault'),
+              subtitle: const Text('Clear all items and start over'),
+              onTap: controller.purge,
+            ),
+            ListTile(
+              iconColor: const Color(0xFFFF7300),
+              leading: const Icon(Iconsax.refresh5),
+              trailing: const Icon(Iconsax.arrow_right_3),
+              title: Text('${'reset'.tr} ${config.appName}'),
+              subtitle: const Text('Delete local vault and logout'),
+              onTap: controller.reset,
+              onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),
+            ),
+            ListTile(
+              iconColor: Colors.red,
+              leading: const Icon(Iconsax.warning_2),
+              trailing: const Icon(Iconsax.arrow_right_3),
+              title: const Text('Delete Remote Data'),
+              subtitle: const Text('Delete remote vault and files'),
+              onTap: controller.unsync,
+            ),
+            if (kDebugMode) ...[
+              ListTile(
+                leading: const Icon(Iconsax.code),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Debugging'),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.debug),
+                selected: true,
+                selectedColor: Colors.red,
+              ),
+            ]
+          ],
         ),
-        if (kDebugMode) ...[
-          ListTile(
-            leading: const Icon(Iconsax.code),
-            trailing: const Icon(Iconsax.arrow_right_3),
-            title: const Text('Debugging'),
-            onTap: () => Utils.adaptiveRouteOpen(name: Routes.debug),
-            selected: true,
-            selectedColor: Colors.red,
-          ),
-        ]
       ],
     );
 

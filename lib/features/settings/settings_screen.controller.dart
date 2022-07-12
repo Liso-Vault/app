@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
@@ -17,6 +19,7 @@ import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/s3/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -27,6 +30,7 @@ import '../../core/notifications/notifications.manager.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../menu/menu.item.dart';
+import '../pro/pro.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class SettingsScreenController extends GetxController
@@ -278,10 +282,58 @@ class SettingsScreenController extends GetxController
       title: 'Purge Vault?',
       subTitle:
           'All items, custom vaults, and custom categories will be deleted',
-      body: 'Please proceed with caution',
+      body:
+          'Please proceed with caution.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: _reset,
       actionText: 'Purge',
+      actionStyle: ElevatedButton.styleFrom(
+        primary: Colors.orange,
+      ),
+    );
+  }
+
+  void unsync() async {
+    void _unsync() async {
+      // prompt password from unlock screen
+      final unlocked = await Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'password_prompt'},
+          ) ??
+          false;
+
+      if (!unlocked) return;
+
+      final result = await S3Service.to.purge();
+
+      if (result.isLeft) {
+        return UIUtils.showSimpleDialog(
+          'Error Deleting',
+          'An error occured while trying to delete your remote vault. Please try again later.',
+        );
+      }
+
+      NotificationsManager.notify(
+        title: 'Remote Vault Deleted',
+        body: 'Your remote vault has been deleted',
+      );
+
+      Get.back();
+    }
+
+    UIUtils.showImageDialog(
+      const Icon(Iconsax.warning_2, size: 100, color: Colors.red),
+      title: 'Warning',
+      subTitle:
+          'By proceeding you will only delete your remote <vault>.$kVaultExtension, backups, files, and shared vaults.',
+      body:
+          'This cannot be undone. Your local and offline vault will still remain.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
+      closeText: 'Cancel',
+      action: _unsync,
+      actionText: 'Proceed',
+      actionStyle: ElevatedButton.styleFrom(
+        primary: Colors.redAccent,
+      ),
     );
   }
 
@@ -312,10 +364,13 @@ class SettingsScreenController extends GetxController
       subTitle:
           'Your local <vault>.$kVaultExtension will be deleted and you will be logged out.',
       body:
-          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed',
+          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: _reset,
       actionText: 'Reset',
+      actionStyle: ElevatedButton.styleFrom(
+        primary: Colors.redAccent,
+      ),
     );
   }
 }

@@ -43,8 +43,11 @@ class UnlockScreenController extends GetxController
 
   // biometric storage
   void authenticate() async {
-    if (!isLocalAuthSupported) return;
-    if (!(await LocalAuthService.to.authenticate())) return;
+    if (!isLocalAuthSupported) return console.warning('local auth unsupported');
+    if (!(await LocalAuthService.to.authenticate())) {
+      return console.warning('local auth failed to authenticate');
+    }
+
     // set the password then programmatically unlock
     passwordController.text = Persistence.to.walletPassword.val;
     // delay to show that password has been inserted

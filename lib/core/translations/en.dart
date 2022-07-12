@@ -192,4 +192,7 @@ final en = {
   "renews": "Renews",
   "expires": "Expires",
   "benefits": "Benefits",
+  "year": "Year",
+  "month": "Month",
+  "week": "Week",
 };

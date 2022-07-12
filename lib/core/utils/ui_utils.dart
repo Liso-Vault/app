@@ -73,6 +73,7 @@ class UIUtils {
     String? closeText,
     Function()? action,
     String? actionText,
+    ButtonStyle? actionStyle,
   }) async {
     final bodyContent = Column(
       mainAxisSize: MainAxisSize.min,
@@ -110,6 +111,7 @@ class UIUtils {
               Expanded(
                 child: ElevatedButton(
                   onPressed: action,
+                  style: actionStyle,
                   child: Text(actionText ?? 'okay'.tr),
                 ),
               ),

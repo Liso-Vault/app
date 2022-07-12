@@ -12,6 +12,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/config/models/config_limits.model.dart';
+import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/globals.dart';
 import '../connectivity/connectivity.service.dart';
@@ -112,10 +113,12 @@ class ProController extends GetxController with ConsoleMixin {
   // FUNCTIONS
   bool get ready {
     if (!ConnectivityService.to.connected.value) {
-      UIUtils.showSimpleDialog(
-        'Network Error',
-        'No internet connection',
-      );
+      if (AuthenticationMiddleware.initialized) {
+        UIUtils.showSimpleDialog(
+          'Network Error',
+          'No internet connection',
+        );
+      }
 
       return false;
     }

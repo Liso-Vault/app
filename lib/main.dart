@@ -55,7 +55,10 @@ void init(Flavor flavor) async {
     // init firebase
     await Firebase.initializeApp(options: Secrets.firebaseOptions);
     // warm up executor
-    await Executor().warmUp();
+    await Executor().warmUp(
+      log: true,
+      isolatesCount: kDebugMode ? 2 : 50,
+    );
 
     // GetX services
     Get.lazyPut(() => CrashlyticsService());
