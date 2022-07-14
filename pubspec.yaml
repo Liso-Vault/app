@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 0.1.1+2
+version: 0.5.1+23
 
 environment:
   sdk: ">=2.17.3 <3.0.0"
@@ -29,13 +29,13 @@ dependencies:
   otp: ^3.1.1
 
   # FIREBASE
-  firebase_core: 1.19.1
-  firebase_analytics: 9.1.12
-  firebase_crashlytics: 2.8.4
-  firebase_performance: 0.8.1+1
-  firebase_remote_config: 2.0.11
-  firebase_auth: 3.4.1
-  cloud_firestore: 3.2.1
+  firebase_core: 1.19.2
+  firebase_analytics: 9.2.0
+  firebase_crashlytics: 2.8.5
+  firebase_performance: 0.8.2
+  firebase_remote_config: 2.0.12
+  firebase_auth: 3.4.2
+  cloud_firestore: 3.3.0
   # firebase_app_check: ^0.0.6+9
   # FIREBASE WINDOWS
   # firebase_core_desktop: ^1.0.0
@@ -73,10 +73,10 @@ dependencies:
   skeletons: ^0.0.3 # shimmer loading effects
 
   # TOOLS
-  url_launcher: ^6.1.4
+  url_launcher: ^6.1.5
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2
-  flutter_local_notifications: ^9.6.1
+  flutter_local_notifications: ^9.7.0
   either_dart: ^0.1.4 # functional programming + error handling
   intl: ^0.17.0 # date formatting
   share_plus: ^4.0.10 # exporting files and sharing texts
@@ -101,7 +101,7 @@ dev_dependencies:
 
   flutter_lints: ^2.0.1
   hive_generator: ^1.1.3 # hive database
-  build_runner: ^2.1.11
+  build_runner: ^2.2.0
   flutter_native_splash: ^2.2.0+1
   dart_code_metrics: ^4.16.0 # checking unused stuffs
 

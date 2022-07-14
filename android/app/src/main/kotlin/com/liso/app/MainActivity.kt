@@ -1,4 +1,4 @@
-package com.liso.android
+package com.liso.app
 
 import io.flutter.embedding.android.FlutterFragmentActivity
 import io.flutter.embedding.engine.FlutterEngine

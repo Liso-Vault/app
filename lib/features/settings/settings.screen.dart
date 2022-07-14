@@ -6,7 +6,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/menu/menu.button.dart';
@@ -237,15 +236,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               ],
-              if (GetPlatform.isAndroid) ...[
-                SwitchListTile(
-                  title: const Text('Use Highest Refresh Rate'),
-                  secondary: Icon(Iconsax.monitor, color: themeColor),
-                  value: p.useHighestRefreshRate.val,
-                  subtitle: const Text("Experimental"),
-                  onChanged: (value) => p.useHighestRefreshRate.val = value,
-                ),
-              ],
               SwitchListTile(
                 title: const Text('Errors & Crashes'),
                 secondary: Icon(Iconsax.cpu, color: themeColor),
@@ -280,7 +270,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               iconColor: Colors.amber,
               leading: const Icon(Iconsax.refresh),
               trailing: const Icon(Iconsax.arrow_right_3),
-              title: Text('${'purge'.tr} Vault'),
+              title: Text('${'purge'.tr} Items'),
               subtitle: const Text('Clear all items and start over'),
               onTap: controller.purge,
             ),
