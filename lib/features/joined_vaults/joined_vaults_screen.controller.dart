@@ -81,7 +81,14 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     console.info('existingMembers: $existingMembers');
 
     final sharedVaultSnapshot = await sharedVaultDoc.get();
-    final sharedVault = sharedVaultSnapshot.data()!;
+    final sharedVault = sharedVaultSnapshot.data();
+
+    if (sharedVault == null) {
+      return UIUtils.showSimpleDialog(
+        'Shared Vault Not Found',
+        'The shared vault with ID: ${vaultIdController.text} does not exist.',
+      );
+    }
 
     final ownerDoc = FirestoreService.to.users.doc(sharedVault.userId);
     final ownerSnapshot = await ownerDoc.get();

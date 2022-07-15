@@ -12,6 +12,7 @@ import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../features/app/routes.dart';
 import '../../features/categories/categories.service.dart';
@@ -170,6 +171,10 @@ class FirestoreService extends GetxService with ConsoleMixin {
     user.address = WalletService.to.longAddress;
     user.limits = ProController.to.limits.id;
     user.metadata = metadata;
+
+    user.purchases = FirebaseUserPurchases(
+      rcPurchaserInfo: await Purchases.getPurchaserInfo(),
+    );
 
     final batch = instance.batch();
 

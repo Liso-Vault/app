@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
+import 'package:purchases_flutter/object_wrappers.dart';
 
 class FirebaseUser {
   FirebaseUser({
@@ -7,6 +8,7 @@ class FirebaseUser {
     this.userId = '',
     this.address = '',
     this.limits = '',
+    this.purchases,
     this.updatedTime,
     this.createdTime,
     this.metadata,
@@ -16,6 +18,7 @@ class FirebaseUser {
   String userId;
   String address;
   String? limits;
+  FirebaseUserPurchases? purchases;
   Timestamp? updatedTime;
   Timestamp? createdTime;
   FirebaseUserMetadata? metadata;
@@ -32,6 +35,9 @@ class FirebaseUser {
         userId: json["userId"],
         address: json["address"],
         limits: json["limits"],
+        purchases: json["purchases"] == null
+            ? null
+            : FirebaseUserPurchases.fromJson(json["purchases"]),
         updatedTime: json["updatedTime"] ?? DateTime.now(),
         createdTime: json["createdTime"] ?? DateTime.now(),
         metadata: FirebaseUserMetadata.fromJson(json["metadata"]),
@@ -41,6 +47,7 @@ class FirebaseUser {
         "userId": userId,
         "address": address,
         "limits": limits,
+        "purchases": purchases?.toJson(),
         "updatedTime": FieldValue.serverTimestamp(),
         if (createdTime == null) "createdTime": FieldValue.serverTimestamp(),
         "metadata": metadata?.toJson(),
@@ -184,5 +191,22 @@ class FirebaseUserSize {
   Map<String, dynamic> toJson() => {
         "storage": storage,
         "vault": vault,
+      };
+}
+
+class FirebaseUserPurchases {
+  FirebaseUserPurchases({
+    this.rcPurchaserInfo,
+  });
+
+  PurchaserInfo? rcPurchaserInfo;
+
+  factory FirebaseUserPurchases.fromJson(Map<String, dynamic> json) =>
+      FirebaseUserPurchases(
+        rcPurchaserInfo: PurchaserInfo.fromJson(json["rcPurchaserInfo"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "rcPurchaserInfo": rcPurchaserInfo?.toJson(),
       };
 }

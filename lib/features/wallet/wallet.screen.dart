@@ -156,7 +156,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: Text('wallet'.tr),
+      title: Text('${'wallet'.tr} (Alpha)'),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [

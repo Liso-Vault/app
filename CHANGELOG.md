@@ -4,6 +4,7 @@
 - New! Toggle Field
 - New! Upgrade Screen, Subscribe to Pro, Restore Purchases
 - New! Weak Passwords Filter
+- New! Vault Switcher
 - Added! Upgrade to pro button on drawer
 - Added! Details json feature on Items Screen
 - Improved! Copy title when in viewing mode
