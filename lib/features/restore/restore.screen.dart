@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/persistence/persistence_builder.widget.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/seed/seed_field.widget.dart';
 
@@ -79,20 +79,6 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ],
               );
-            } else if (controller.restoreMode.value == RestoreMode.cloud) {
-              return PersistenceBuilder(builder: (p, context) {
-                return Column(
-                  children: [
-                    TextButton(
-                      onPressed: () => Utils.adaptiveRouteOpen(
-                        name: Routes.syncProvider,
-                      ),
-                      child: Text('configure'.tr),
-                    ),
-                    const Divider(),
-                  ],
-                );
-              });
             } else {
               return const SizedBox.shrink();
             }
@@ -118,6 +104,29 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
     final scaffold = Scaffold(
       appBar: AppBar(
         leading: const AppBarLeadingButton(),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(LineIcons.verticalEllipsis),
+            onSelected: (item) {
+              if (item == 'configure') {
+                Utils.adaptiveRouteOpen(name: Routes.syncProvider);
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              PopupMenuItem<String>(
+                value: 'configure',
+                child: Row(
+                  children: [
+                    Icon(Iconsax.refresh, color: themeColor),
+                    const SizedBox(width: 10),
+                    const Text('Configure'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(width: 10),
+        ],
       ),
       body: controller.obx(
         (_) => Center(

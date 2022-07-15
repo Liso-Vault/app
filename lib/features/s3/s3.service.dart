@@ -140,8 +140,6 @@ class S3Service extends GetxService with ConsoleMixin {
         config.secrets.s3.preferredBucket,
         objects,
       );
-
-      return const Right(true);
     } catch (e) {
       return Left(e);
     }

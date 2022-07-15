@@ -82,8 +82,8 @@ void init(Flavor flavor) async {
     Get.put(ItemsController());
     Get.put(GroupsController());
     Get.put(CategoriesController());
-    Get.put(MainScreenController());
     Get.put(DrawerMenuController());
+    Get.put(MainScreenController());
     Get.put(SharedVaultsController());
     Get.put(JoinedVaultsController());
     Get.put(ProController());

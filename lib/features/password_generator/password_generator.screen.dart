@@ -45,7 +45,7 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final content = SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -66,8 +66,7 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
                   passwordView,
                   const SizedBox(height: 15),
                   const Divider(),
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
+                  Wrap(
                     children: [
                       TextButton.icon(
                         onPressed: controller.generate,

@@ -32,8 +32,12 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
   // FUNCTIONS
 
   void load() {
-    data.value =
-        GroupsService.to.data.where((e) => !(e.deleted ?? false)).toList();
+    data.value = GroupsService.to.data
+        .where(
+          (e) => !(e.deleted ?? false),
+        )
+        .toList();
+
     change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
   }
 }

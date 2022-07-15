@@ -2,18 +2,13 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
-import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 
 import '../../core/hive/models/item.hive.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
-import '../app/routes.dart';
 import '../categories/categories.controller.dart';
-import '../general/remote_image.widget.dart';
-import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
 enum HiveBoxFilter {
@@ -115,120 +110,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       !filterTrashed.value &&
       !filterDeleted.value &&
       !filterWeakPasswords.value;
-
-  List<Widget> get groupTiles => GroupsController.to.combined.map((group) {
-        final count = ItemsController.to.raw
-            .where((item) =>
-                item.groupId == group.id && !item.deleted && !item.trashed)
-            .length;
-
-        return ListTile(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: Text(
-                  group.reservedName,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (count > 0) ...[
-                Chip(label: Text(count.toString())),
-              ],
-            ],
-          ),
-          leading: const Icon(Iconsax.briefcase),
-          selected: group.id == filterGroupId.value,
-          onTap: () => filterByGroupId(group.id),
-        );
-      }).toList();
-
-  List<Widget> get sharedVaultsTiles =>
-      SharedVaultsController.to.data.isNotEmpty
-          ? SharedVaultsController.to.data.map(
-              (vault) {
-                final count = groupedItems
-                    .where((item) => item.sharedVaultIds.contains(vault.docId))
-                    .length;
-
-                return ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          vault.name,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      if (count > 0) ...[
-                        Chip(label: Text(count.toString())),
-                      ],
-                    ],
-                  ),
-                  leading: vault.iconUrl.isEmpty
-                      ? const Icon(Iconsax.share)
-                      : RemoteImage(
-                          url: vault.iconUrl,
-                          width: 35,
-                          alignment: Alignment.centerLeft,
-                        ),
-                  selected: vault.docId == filterSharedVaultId.value,
-                  onTap: () => filterBySharedVaultId(vault.docId),
-                );
-              },
-            ).toList()
-          : [
-              ListTile(
-                title: const Text('Create'),
-                leading: const Icon(LineIcons.plus),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
-              ),
-            ];
-
-  List<Widget> get joinedVaultsTiles =>
-      JoinedVaultsController.to.data.isNotEmpty
-          ? JoinedVaultsController.to.data.map(
-              (vault) {
-                // TODO: extract vault and count items
-                const count = 0;
-
-                return ListTile(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          vault.name,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                      if (count > 0) ...[
-                        Chip(label: Text(count.toString())),
-                      ],
-                    ],
-                  ),
-                  leading: vault.iconUrl.isEmpty
-                      ? const Icon(Iconsax.share)
-                      : RemoteImage(
-                          url: vault.iconUrl,
-                          width: 35,
-                          alignment: Alignment.centerLeft,
-                        ),
-                  onTap: () {
-                    VaultExplorerScreenController.vault = vault;
-                    Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
-                  },
-                );
-              },
-            ).toList()
-          : [
-              ListTile(
-                title: const Text('Join'),
-                leading: const Icon(LineIcons.plus),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
-              ),
-            ];
 
   List<Widget> get categoryTiles => CategoriesController.to.combined
           .where((e) => categories.contains(e.id))
@@ -366,6 +247,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void clearFilters() {
+    filterGroupId.value = 'personal';
     filterCategory.value = '';
     filterTag.value = '';
     filterSharedVaultId.value = '';

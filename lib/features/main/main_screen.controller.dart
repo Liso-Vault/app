@@ -32,6 +32,7 @@ class MainScreenController extends GetxController
   ItemsSearchDelegate? searchDelegate;
   final persistence = Get.find<Persistence>();
   final itemsController = Get.find<ItemsController>();
+  final drawerController = Get.find<DrawerMenuController>();
 
   List<ContextMenuItem> get menuItemsCategory {
     return CategoriesController.to.combined
@@ -238,7 +239,7 @@ class MainScreenController extends GetxController
     ItemsController.to.load();
     GroupsController.to.load();
     CategoriesController.to.load();
-    DrawerMenuController.to.refresh(); // update drawer state
+    drawerController.refresh(); // update drawer state
     // reload SearchDelegate to reflect
     searchDelegate?.reload(Get.context!);
   }

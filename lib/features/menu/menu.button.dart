@@ -14,6 +14,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
   final List<ContextMenuItem> contextItems;
   final EdgeInsets padding;
   final bool enabled;
+  final bool sheetForSmallScreen;
 
   const ContextMenuButton(
     this.contextItems, {
@@ -23,6 +24,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     this.useMouseRegion = false,
     this.padding = const EdgeInsets.all(8.0),
     this.enabled = true,
+    this.sheetForSmallScreen = false,
   }) : super(key: key);
 
   @override
@@ -33,7 +35,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     );
 
     // if mobile / small screen
-    if (Utils.isDrawerExpandable) {
+    if (Utils.isDrawerExpandable && sheetForSmallScreen) {
       return InkWell(
         onTap: enabled
             ? () => ContextMenuSheet(
@@ -48,7 +50,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     // if desktop / large screen
     final popupItems = contextItems.map(
       (e) {
-        var leading = e.leading!;
+        var leading = e.leading;
 
         if (e.leading is Icon) {
           final icon = e.leading as Icon;
@@ -61,9 +63,12 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
           value: e,
           child: Row(
             children: [
-              leading,
+              if (leading != null) ...[leading],
               const SizedBox(width: 15),
-              Text(e.title),
+              Text(
+                e.title,
+                style: TextStyle(color: e.isActive ? themeColor : null),
+              ),
               if (e.trailing != null) ...[
                 const Spacer(),
                 e.trailing!,
@@ -74,7 +79,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       },
     ).toList();
 
-    if (!useMouseRegion) {
+    if (!useMouseRegion || Utils.isDrawerExpandable) {
       return PopupMenuButton(
         onSelected: (ContextMenuItem menu) => menu.onSelected?.call(),
         itemBuilder: (context) => popupItems,

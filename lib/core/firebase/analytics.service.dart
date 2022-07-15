@@ -2,9 +2,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
-
-import 'auth.service.dart';
 
 class AnalyticsService extends GetxService with ConsoleMixin {
   static AnalyticsService get to => Get.find();

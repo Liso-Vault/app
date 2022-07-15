@@ -8,10 +8,10 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
 import 'package:liso/features/items/items.controller.dart';
+import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
-import 'package:liso/resources/resources.dart';
 
-import '../../core/firebase/config/config.service.dart';
+import '../../core/hive/models/group.hive.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -20,8 +20,12 @@ import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
+import '../groups/groups.controller.dart';
+import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import '../pro/pro.controller.dart';
 import '../s3/s3.service.dart';
+import '../shared_vaults/model/shared_vault.model.dart';
+import '../shared_vaults/shared_vault.controller.dart';
 import 'main_screen.controller.dart';
 
 // ignore: use_key_in_widget_constructors
@@ -245,36 +249,156 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           showBadge: p.sync.val && p.changes.val > 0,
           badgeContent: Text(p.changes.val.toString()),
           position: BadgePosition.topEnd(top: -1, end: -5),
-          child: ContextMenuButton(
-            controller.menuItems,
-            child: const Icon(LineIcons.verticalEllipsis),
+          // child: ContextMenuButton(
+          //   controller.menuItems,
+          //   child: const Icon(LineIcons.verticalEllipsis),
+          // ),
+          child: IconButton(
+            onPressed: S3Service.to.sync,
+            icon: const Icon(Iconsax.cloud_change),
           ),
         ),
       ),
       const SizedBox(width: 10),
     ];
 
-    final appBarTitle = Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        RemoteImage(
-          url: ConfigService.to.general.app.image,
-          height: 20,
-          placeholder: Image.asset(Images.logo, height: 20),
-        ),
-        const SizedBox(width: 10),
-        Text(
-          ConfigService.to.appName,
-          style: const TextStyle(fontSize: 20),
-        ),
-        if (isBeta) ...[
-          const SizedBox(width: 3),
-          const Text(
-            'Beta',
-            style: TextStyle(fontSize: 12, color: Colors.cyan),
-          ),
-        ]
-      ],
+    final appBarTitle = Transform.translate(
+      offset: const Offset(-12, 0),
+      child: Obx(
+        () {
+          final groups = GroupsController.to.combined.map((group) {
+            final count = ItemsController.to.raw
+                .where((item) =>
+                    item.groupId == group.id && !item.deleted && !item.trashed)
+                .length;
+
+            final isSelected = group.id == drawerController.filterGroupId.value;
+
+            return PopupMenuItem<HiveLisoGroup>(
+              onTap: () => drawerController.filterByGroupId(group.id),
+              child: Row(
+                children: [
+                  Icon(
+                    Iconsax.briefcase,
+                    color: isSelected ? themeColor : null,
+                  ),
+                  const SizedBox(width: 15),
+                  Expanded(
+                    child: Text(
+                      group.reservedName,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(color: isSelected ? themeColor : null),
+                    ),
+                  ),
+                  Chip(label: Text(count.toString())),
+                ],
+              ),
+            );
+          }).toList();
+
+          final sharedGroups = SharedVaultsController.to.data.map(
+            (vault) {
+              final count = drawerController.groupedItems
+                  .where((item) => item.sharedVaultIds.contains(vault.docId))
+                  .length;
+
+              final isSelected =
+                  vault.docId == drawerController.filterSharedVaultId.value;
+
+              return PopupMenuItem<SharedVault>(
+                onTap: () =>
+                    drawerController.filterBySharedVaultId(vault.docId),
+                child: Row(
+                  children: [
+                    vault.iconUrl.isEmpty
+                        ? Icon(
+                            Iconsax.share,
+                            color: isSelected ? themeColor : null,
+                          )
+                        : RemoteImage(
+                            url: vault.iconUrl,
+                            width: 35,
+                            alignment: Alignment.centerLeft,
+                          ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        vault.name,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: isSelected ? themeColor : null),
+                      ),
+                    ),
+                    Chip(label: Text(count.toString())),
+                  ],
+                ),
+              );
+            },
+          ).toList();
+
+          final joinedGroups = JoinedVaultsController.to.data.map(
+            (vault) {
+              return PopupMenuItem<SharedVault>(
+                onTap: () async {
+                  await Future.delayed(const Duration(milliseconds: 10));
+                  VaultExplorerScreenController.vault = vault;
+                  Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
+                },
+                child: Row(
+                  children: [
+                    vault.iconUrl.isEmpty
+                        ? const Icon(LineIcons.briefcase)
+                        : RemoteImage(
+                            url: vault.iconUrl,
+                            width: 35,
+                            alignment: Alignment.centerLeft,
+                          ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        vault.name,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    // Chip(label: Text(count.toString())),
+                  ],
+                ),
+              );
+            },
+          ).toList();
+
+          return PopupMenuButton<dynamic>(
+            itemBuilder: (_) => [
+              ...groups,
+              if (sharedGroups.isNotEmpty) ...[
+                const PopupMenuDivider(),
+                ...sharedGroups,
+              ],
+              if (joinedGroups.isNotEmpty) ...[
+                const PopupMenuDivider(),
+                ...joinedGroups,
+              ]
+            ],
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    drawerController.filterGroupLabel,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  const Icon(LineIcons.caretDown, size: 15),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
 
     final appBar = AppBar(
@@ -301,6 +425,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
         return ContextMenuButton(
           controller.menuItemsCategory,
+          sheetForSmallScreen: true,
           child: FloatingActionButton(
             child: const Icon(LineIcons.plus),
             onPressed: () {},

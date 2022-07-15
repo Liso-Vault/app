@@ -154,6 +154,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
             alignment: Alignment.centerLeft,
             child: ContextMenuButton(
               controller.menuFieldItems,
+              sheetForSmallScreen: true,
               padding: EdgeInsets.zero,
               child: OutlinedButton.icon(
                 onPressed: controller.attach,

@@ -7,7 +7,6 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/pro.widget.dart';
-import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 
 import '../../../core/utils/utils.dart';
@@ -24,39 +23,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
       init: Get.find<DrawerMenuController>(),
       builder: (DrawerMenuController controller) {
         final items = [
-          ExpansionTile(
-            maintainState: true,
-            title: Text(
-              'vaults'.tr.toUpperCase(),
-              style: const TextStyle(fontSize: 13),
-            ),
-            onExpansionChanged: (expanded) =>
-                controller.groupsExpanded = expanded,
-            initiallyExpanded: controller.groupsExpanded,
-            children: [
-              Obx(() => Column(children: controller.groupTiles)),
-              PersistenceBuilder(builder: (p, context) {
-                if (!p.canShare) return const SizedBox.shrink();
-
-                return Obx(
-                  () => Column(
-                    children: [
-                      const Section(
-                        text: 'Shared',
-                        padding: EdgeInsets.symmetric(horizontal: 18),
-                      ),
-                      ...controller.sharedVaultsTiles,
-                      const Section(
-                        text: 'Joined',
-                        padding: EdgeInsets.symmetric(horizontal: 18),
-                      ),
-                      ...controller.joinedVaultsTiles
-                    ],
-                  ),
-                );
-              }),
-            ],
-          ),
           ExpansionTile(
             maintainState: true,
             title: Text(

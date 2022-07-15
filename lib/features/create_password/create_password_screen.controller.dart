@@ -69,7 +69,6 @@ class CreatePasswordScreenController extends GetxController
       return console.error('Passwords do not match');
     }
 
-    change(null, status: RxStatus.success());
     Persistence.to.backedUpSeed.val =
         Get.parameters['from'] == 'restore_screen';
     final isNewVault = Get.parameters['from'] == 'seed_screen';
@@ -80,6 +79,7 @@ class CreatePasswordScreenController extends GetxController
       isNewVault,
     );
 
+    change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

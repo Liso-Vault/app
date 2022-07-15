@@ -172,7 +172,6 @@ class ProController extends GetxController with ConsoleMixin {
 
     try {
       offerings.value = await Purchases.getOfferings();
-      console.warning('offerings: ${jsonEncode(offerings.value.toJson())}');
     } on PlatformException catch (e) {
       console.error('load error: $e');
       _showError(e);

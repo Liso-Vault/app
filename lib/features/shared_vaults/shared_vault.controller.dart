@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
-import 'package:liso/core/utils/globals.dart';
 
 import '../../core/firebase/firestore.service.dart';
 import 'model/shared_vault.model.dart';

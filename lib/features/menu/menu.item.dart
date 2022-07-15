@@ -7,6 +7,7 @@ class ContextMenuItem extends Equatable {
   final Widget? leading;
   final Widget? trailing;
   final Function? onSelected;
+  final bool isActive;
 
   const ContextMenuItem({
     required this.title,
@@ -14,6 +15,7 @@ class ContextMenuItem extends Equatable {
     this.leading,
     this.trailing,
     this.onSelected,
+    this.isActive = false,
   });
 
   @override

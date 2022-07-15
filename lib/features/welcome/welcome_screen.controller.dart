@@ -4,13 +4,13 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../core/firebase/auth.service.dart';
-import '../../core/persistence/persistence.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../wallet/wallet.service.dart';
 
-class WelcomeScreenController extends GetxController with ConsoleMixin {
+class WelcomeScreenController extends GetxController
+    with StateMixin, ConsoleMixin {
   // VARIABLES
 
   // PROPERTIES
@@ -18,15 +18,20 @@ class WelcomeScreenController extends GetxController with ConsoleMixin {
   // GETTERS
 
   // INIT
+  @override
+  void onInit() {
+    change(null, status: RxStatus.success());
+    super.onInit();
+  }
 
   // FUNCTIONS
 
   void create() async {
-    console.info('isLocalAuthSupported: $isLocalAuthSupported');
-    console.info('biometrics: ${Persistence.to.biometrics.val}');
+    change(null, status: RxStatus.loading());
     await AuthService.to.signOut(); // just to make sure
 
     if (!isLocalAuthSupported) {
+      change(null, status: RxStatus.success());
       return Utils.adaptiveRouteOpen(name: Routes.seed);
     }
 
@@ -36,6 +41,7 @@ class WelcomeScreenController extends GetxController with ConsoleMixin {
     final seed = bip39.generateMnemonic(strength: 256);
     final password = Utils.generatePassword();
     await WalletService.to.create(seed, password, true);
+    change(null, status: RxStatus.success());
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 
