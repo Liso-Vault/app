@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:console_mixin/console_mixin.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -54,6 +55,7 @@ void init(Flavor flavor) async {
     GestureBinding.instance.resamplingEnabled = true;
     // init firebase
     await Firebase.initializeApp(options: Secrets.firebaseOptions);
+    await FirebaseAppCheck.instance.activate();
     // warm up executor
     await Executor().warmUp(
       log: true,

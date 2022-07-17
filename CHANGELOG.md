@@ -1,4 +1,4 @@
-## 0.5.2
+## 0.5.3
 - New! OTP Category
 - New! OTP Generator from Secret Key
 - New! Toggle Field
@@ -7,10 +7,12 @@
 - New! Vault Switcher
 - Added! Upgrade to pro button on drawer
 - Added! Details json feature on Items Screen
+- Improved! Context Menu UX
 - Improved! Copy title when in viewing mode
 - Improved! Reorganized Categories
 - Improved! Upgrade Screen
 - Fixed! wrong Tags count. Thanks to Timothy
+- And lots of fixes and improvements
 
 ## 0.5.1
 - New! Custom Fields

@@ -35,7 +35,7 @@ target 'Runner' do
   use_modular_headers!
   # fix slow build
   # pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :tag => '9.2.0'
-  pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :branch => 'main'
+  # pod 'FirebaseFirestore', :git => 'https://github.com/invertase/firestore-ios-sdk-frameworks.git', :branch => 'main'
   
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
 end
