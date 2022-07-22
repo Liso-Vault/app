@@ -28,6 +28,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final lastBuildNumber = 0.val('last-build-number');
   final lastServerDateTime = ''.val('last-server-datetime');
   final backedUpSeed = false.val('backed-up-seed-phrase');
+  final backedUpPassword = false.val('backed-up-password');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window-width');
   final windowHeight = 850.0.val('window-height');

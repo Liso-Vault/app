@@ -3,7 +3,6 @@ import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
-import 'package:random_string_generator/random_string_generator.dart';
 
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
@@ -40,40 +39,6 @@ class _PINFormFieldState extends State<PINFormField> {
       widget.field.identifier);
 
   HiveLisoField get formField => formWidget.children.first.child.field;
-
-  String get strengthName {
-    String name = 'Very Weak'; // VERY WEAK
-
-    if (strength == PasswordStrength.WEAK) {
-      name = 'Weak';
-    } else if (strength == PasswordStrength.GOOD) {
-      name = 'Good';
-    } else if (strength == PasswordStrength.STRONG) {
-      name = 'Strong';
-    }
-
-    return name;
-  }
-
-  Color get strengthColor {
-    Color color = Colors.red; // VERY WEAK
-
-    if (strength == PasswordStrength.WEAK) {
-      color = Colors.orange;
-    } else if (strength == PasswordStrength.GOOD) {
-      color = Colors.lime;
-    } else if (strength == PasswordStrength.STRONG) {
-      color = themeColor;
-    }
-
-    return color;
-  }
-
-  double get strengthValue =>
-      (strength.index.toDouble() + 0.5) / PasswordStrength.STRONG.index;
-
-  PasswordStrength get strength =>
-      PasswordStrengthChecker.checkStrength(widget.fieldController.text);
 
   List<ContextMenuItem> get menuItems {
     return [
@@ -138,7 +103,6 @@ class _PINFormFieldState extends State<PINFormField> {
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,
-        helperStyle: TextStyle(color: strengthColor),
         suffixIcon: ContextMenuButton(
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),

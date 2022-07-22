@@ -123,7 +123,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 color: limit.otpGenerator ? proColor : Colors.grey,
               ),
               leading: Icon(Iconsax.password_check, color: proColor),
-              title: const Text('OTP Generator'),
+              title: const Text('OTP Authenticator'),
               onTap: () {},
             ),
             ListTile(

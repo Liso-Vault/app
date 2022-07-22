@@ -99,6 +99,7 @@ class LocalAuthService extends GetxService with ConsoleMixin {
   }
 
   void _failedAuth(dynamic e) {
+    if (!Persistence.to.backedUpPassword.val) return;
     Persistence.to.biometrics.val = false;
 
     UIUtils.showSimpleDialog(

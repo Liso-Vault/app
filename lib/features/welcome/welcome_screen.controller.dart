@@ -37,7 +37,7 @@ class WelcomeScreenController extends GetxController
 
     // TODO: custom localized reason
     final authenticated = await LocalAuthService.to.authenticate();
-    if (!authenticated) return;
+    if (!authenticated) return change(null, status: RxStatus.success());
     final seed = bip39.generateMnemonic(strength: 256);
     final password = Utils.generatePassword();
     await WalletService.to.create(seed, password, true);

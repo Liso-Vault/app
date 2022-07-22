@@ -71,6 +71,7 @@ class CreatePasswordScreenController extends GetxController
 
     Persistence.to.backedUpSeed.val =
         Get.parameters['from'] == 'restore_screen';
+    Persistence.to.backedUpPassword.val = true;
     final isNewVault = Get.parameters['from'] == 'seed_screen';
 
     await WalletService.to.create(

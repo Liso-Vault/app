@@ -23,6 +23,9 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       console.error("FLUTTER_ERROR");
       record(details.exception, details.stack);
     };
+
+    // TODO: implement new crashlytics soon
+    // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   }
 
   void configure() {

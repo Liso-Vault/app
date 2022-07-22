@@ -1,3 +1,10 @@
+## 0.5.4
+- New! All vaults filter
+- Removed! unecessary password indicators
+- Improved! wrong password attempts warning
+- Fixed! stuck progress bar when user cancels biometrics
+- Fixed! switching to master password for failed biometrics
+
 ## 0.5.3
 - New! OTP Category
 - New! OTP Generator from Secret Key

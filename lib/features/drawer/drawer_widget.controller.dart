@@ -53,7 +53,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
           } else if (filterSharedVaultId.value.isNotEmpty) {
             return e.sharedVaultIds.contains(filterSharedVaultId.value);
           } else {
-            console.error('error query');
             return false;
           }
         },
@@ -145,6 +144,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   String get filterGroupLabel {
+    if (filterGroupId.value.isEmpty) return 'all'.tr;
     final groups =
         GroupsController.to.combined.where((e) => e.id == filterGroupId.value);
     if (groups.isEmpty) return '';

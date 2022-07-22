@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -108,11 +110,10 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Sign Message'),
+          title: const Text('Locale'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            final signature = await WalletService.to.sign('liso');
-            console.wtf('signature: $signature');
+            //
           },
         ),
         ListTile(

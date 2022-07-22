@@ -34,9 +34,11 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
     raw.value = ItemsService.to.data;
     Iterable<HiveLisoItem> filteredItems = List.from(raw);
 
-    // FILTER BY GROUP
-    filteredItems = filteredItems
-        .where((e) => e.groupId == drawerController.filterGroupId.value);
+    if (drawerController.filterGroupId.value.isNotEmpty) {
+      // FILTER BY GROUP
+      filteredItems = filteredItems
+          .where((e) => e.groupId == drawerController.filterGroupId.value);
+    }
 
     if (drawerController.filterSharedVaultId.value.isNotEmpty) {
       // FILTER BY SHARED VAULT

@@ -107,6 +107,7 @@ class ConfigGeneralAppLinks {
     this.faqs = '',
     this.roadmap = '',
     this.productHunt = '',
+    this.reddit = '',
     this.forum = '',
     this.store = const ConfigGeneralStore(),
   });
@@ -124,6 +125,7 @@ class ConfigGeneralAppLinks {
   final String faqs;
   final String roadmap;
   final String productHunt;
+  final String reddit;
   final String forum;
   final ConfigGeneralStore store;
 
@@ -142,6 +144,7 @@ class ConfigGeneralAppLinks {
         faqs: json["faqs"] ?? '',
         roadmap: json["roadmap"] ?? '',
         productHunt: json["product_hunt"] ?? '',
+        reddit: json["reddit"] ?? '',
         forum: json["forum"] ?? '',
         store: ConfigGeneralStore.fromJson(json["store"]),
       );
@@ -160,6 +163,7 @@ class ConfigGeneralAppLinks {
         "faqs": faqs,
         "roadmap": roadmap,
         "product_hunt": productHunt,
+        "reddit": reddit,
         "forum": forum,
         "store": store.toJson(),
       };

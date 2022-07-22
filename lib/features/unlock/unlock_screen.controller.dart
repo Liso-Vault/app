@@ -80,7 +80,10 @@ class UnlockScreenController extends GetxController
           return Get.offNamedUntil(Routes.main, (route) => false);
         }
 
-        message = '$attemptsLeft ${'attempts_left'.tr} until your vault resets';
+        if (attemptsLeft < 3) {
+          message =
+              '$attemptsLeft ${'attempts_left'.tr} until your vault resets';
+        }
       }
 
       UIUtils.showSnackBar(

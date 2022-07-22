@@ -41,7 +41,14 @@ const kCipherKeySignatureMessage = 'liso';
 const kAuthSignatureMessage = 'auth';
 const kS3MetadataVersion = '1';
 const kVaultFormatVersion = 1;
-const kNonPasswordFieldIds = ['key', 'private_key', 'secret'];
+
+const kNonPasswordFieldIds = [
+  'key',
+  'private_key',
+  'secret',
+  'pin',
+  'verification_number',
+];
 
 // GETTERS
 

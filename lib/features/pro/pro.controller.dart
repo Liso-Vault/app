@@ -29,7 +29,6 @@ class ProController extends GetxController with ConsoleMixin {
   // GETTERS
 
   bool get isPro => proEntitlement?.isActive ?? false;
-  // bool get isPro => false;
 
   bool get isFreeTrial => !AuthService.to.isSignedIn
       ? false

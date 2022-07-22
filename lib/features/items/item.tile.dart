@@ -176,12 +176,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             ),
             onSelected: _favorite,
           ),
-          ContextMenuItem(
-            title: 'duplicate'.tr,
-            leading: const Icon(Iconsax.copy),
-            onSelected: _duplicate,
-          ),
           if (!item.reserved) ...[
+            ContextMenuItem(
+              title: 'duplicate'.tr,
+              leading: const Icon(Iconsax.copy),
+              onSelected: _duplicate,
+            ),
             ContextMenuItem(
               title: 'move_to_trash'.tr,
               leading: const Icon(Iconsax.trash),

@@ -46,6 +46,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final addItemButton = ContextMenuButton(
       controller.menuItemsCategory,
+      sheetForSmallScreen: true,
       padding: EdgeInsets.zero,
       child: TextButton.icon(
         icon: const Icon(Iconsax.add_circle),
@@ -366,8 +367,34 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             },
           ).toList();
 
+          final isAllSelected = drawerController.filterGroupId.value == '';
+          final allCount = ItemsController.to.raw
+              .where((e) => !e.trashed && !e.deleted)
+              .length;
+
           return PopupMenuButton<dynamic>(
             itemBuilder: (_) => [
+              PopupMenuItem<HiveLisoGroup>(
+                onTap: () => drawerController.filterByGroupId(''),
+                child: Row(
+                  children: [
+                    Icon(
+                      Iconsax.briefcase,
+                      color: isAllSelected ? themeColor : null,
+                    ),
+                    const SizedBox(width: 15),
+                    Expanded(
+                      child: Text(
+                        'all'.tr,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(color: isAllSelected ? themeColor : null),
+                      ),
+                    ),
+                    Chip(label: Text(allCount.toString())),
+                  ],
+                ),
+              ),
               ...groups,
               if (sharedGroups.isNotEmpty) ...[
                 const PopupMenuDivider(),

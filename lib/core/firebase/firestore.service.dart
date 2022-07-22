@@ -126,6 +126,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
       }
     }
 
+    final persistence = Get.find<Persistence>();
+
     // calculate vault byte size
     final encryptedVaultBytes = CipherService.to.encrypt(
       utf8.encode(await LisoManager.compactJson()),
@@ -136,7 +138,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
     if (fetchedUser.exists) {
       user = fetchedUser.data()!;
-      Persistence.to.lastServerDateTime.val =
+      persistence.lastServerDateTime.val =
           user.updatedTime!.toDate().toIso8601String();
     } else {
       user = FirebaseUser();
@@ -161,9 +163,14 @@ class FirestoreService extends GetxService with ConsoleMixin {
         joinedVaults: JoinedVaultsController.to.data.length,
       ),
       settings: FirebaseUserSettings(
-        sync: Persistence.to.sync.val,
-        theme: Persistence.to.theme.val,
-        syncProvider: Persistence.to.syncProvider.val,
+        sync: persistence.sync.val,
+        theme: persistence.theme.val,
+        syncProvider: persistence.syncProvider.val,
+        biometrics: persistence.biometrics.val,
+        analytics: persistence.analytics.val,
+        crashReporting: persistence.crashReporting.val,
+        backedUpSeed: persistence.backedUpSeed.val,
+        localeCode: persistence.localeCode.val,
       ),
     );
 
@@ -185,8 +192,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
         usersStatsDoc,
         {
           'count': FieldValue.increment(1),
+          'userId': user.userId,
           'updatedTime': FieldValue.serverTimestamp(),
-          'userId': AuthService.to.userId,
         },
         SetOptions(merge: true),
       );
