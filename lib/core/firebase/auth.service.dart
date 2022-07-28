@@ -18,6 +18,8 @@ class AuthService extends GetxService with ConsoleMixin {
   // VARIABLES
   FirebaseAuth get instance => FirebaseAuth.instance;
 
+  Map<String, dynamic> claims = {};
+
   // PROPERTIES
 
   // GETTERS
@@ -45,6 +47,12 @@ class AuthService extends GetxService with ConsoleMixin {
         CrashlyticsService.to.instance.setUserIdentifier(userId);
         AnalyticsService.to.instance.setUserId(id: user_.uid);
         AnalyticsService.to.logSignIn();
+
+        // fetch custom claims
+        user_
+            .getIdTokenResult(true)
+            .then((value) => claims = value.claims ?? {});
+
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
         _record();

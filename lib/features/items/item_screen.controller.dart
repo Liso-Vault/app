@@ -637,8 +637,9 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: street1,
                         enabled: false,
-                        decoration:
-                            const InputDecoration(labelText: 'Street 1'),
+                        decoration: const InputDecoration(
+                          labelText: 'Street 1',
+                        ),
                       ),
                     ),
                   ),
@@ -651,8 +652,9 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: street2,
                         enabled: false,
-                        decoration:
-                            const InputDecoration(labelText: 'Street 2'),
+                        decoration: const InputDecoration(
+                          labelText: 'Street 2',
+                        ),
                       ),
                     ),
                   ),
@@ -665,7 +667,9 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: city,
                         enabled: false,
-                        decoration: const InputDecoration(labelText: 'City'),
+                        decoration: const InputDecoration(
+                          labelText: 'City',
+                        ),
                       ),
                     ),
                   ),
@@ -679,7 +683,8 @@ class ItemScreenController extends GetxController
                         initialValue: state,
                         enabled: false,
                         decoration: const InputDecoration(
-                            labelText: 'State / Province'),
+                          labelText: 'State / Province',
+                        ),
                       ),
                     ),
                   ),
@@ -692,8 +697,9 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: zip,
                         enabled: false,
-                        decoration:
-                            const InputDecoration(labelText: 'Zip Code'),
+                        decoration: const InputDecoration(
+                          labelText: 'Zip Code',
+                        ),
                       ),
                     ),
                   ),
@@ -706,7 +712,9 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: country,
                         enabled: false,
-                        decoration: const InputDecoration(labelText: 'Country'),
+                        decoration: const InputDecoration(
+                          labelText: 'Country',
+                        ),
                       ),
                     ),
                   ),
@@ -831,18 +839,6 @@ class ItemScreenController extends GetxController
   void edit() async {
     if (!formKey.currentState!.validate()) return;
 
-    // protected items limit
-    if (protected.value && ItemsService.to.protectedItemLimitReached) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Protected Items',
-          'body':
-              'Maximum protected items of ${ProController.to.limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-        },
-      );
-    }
-
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
     item!.fields = parseFields;
@@ -859,6 +855,24 @@ class ItemScreenController extends GetxController
     Persistence.to.changes.val++;
     ItemsController.to.load();
     Get.back();
+  }
+
+  void onProtectedChanged(bool? value) {
+    // protected items limit
+    if (value! && ItemsService.to.protectedItemLimitReached) {
+      Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Protected Items',
+          'body':
+              'Maximum protected items of ${ProController.to.limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+        },
+      );
+
+      return;
+    }
+
+    protected.value = value;
   }
 
   List<String> querySuggestions(String query) {
@@ -899,6 +913,7 @@ class ItemScreenController extends GetxController
       validator: (data) =>
           data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      autofillHints: const [AutofillHints.url],
       decoration: const InputDecoration(
         labelText: 'Icon URL',
         hintText: 'https://images.com/icon.png',

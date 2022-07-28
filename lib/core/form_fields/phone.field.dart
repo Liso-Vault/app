@@ -80,6 +80,7 @@ class _PhoneFormFieldState extends State<PhoneFormField> {
       validator: (data) => data!.isEmpty || GetUtils.isPhoneNumber(data)
           ? null
           : 'Invalid phone number',
+      autofillHints: const [AutofillHints.telephoneNumber],
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,

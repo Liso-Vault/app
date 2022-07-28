@@ -1,15 +1,20 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/firebase/auth.service.dart';
+import 'package:liso/core/firebase/config/models/config_app.model.dart';
+import 'package:liso/core/firebase/functions.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
+import '../../core/firebase/model/user.model.dart';
+import '../../core/hive/models/metadata/app.hive.dart';
+import '../../core/hive/models/metadata/device.hive.dart';
 import '../../core/liso/liso.manager.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -74,10 +79,90 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       children: [
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Debug'),
+          title: const Text('Get Remote Config'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            throw Exception('Test Exception! Release: $kReleaseMode');
+            final result = await FunctionsService.to.getRemoteConfig();
+
+            result.fold(
+              (error) => console.error(error),
+              (response) {
+                console.info(
+                    'response: ${response.parameters.secretsConfig.toJson()}');
+              },
+            );
+          },
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Get User'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            final result = await FunctionsService.to.getUser(
+              AuthService.to.userId,
+            );
+
+            result.fold(
+              (error) => console.error(error),
+              (response) {
+                console.info('response: ${response.toJson()}');
+              },
+            );
+          },
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Set User'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            final device = await HiveMetadataDevice.get();
+
+            final metadata = FirebaseUserMetadata(
+              app: await HiveMetadataApp.get(),
+              deviceId: device.id,
+              size: FirebaseUserSize(
+                storage: 1000,
+                vault: 10,
+              ),
+              count: FirebaseUserCount(
+                items: 0,
+                groups: 0,
+                categories: 0,
+                files: 0,
+                encryptedFiles: 0,
+                sharedVaults: SharedVaultsController.to.data.length,
+                joinedVaults: JoinedVaultsController.to.data.length,
+              ),
+              settings: FirebaseUserSettings(
+                sync: false,
+                theme: 'false',
+                syncProvider: 'false',
+                biometrics: false,
+                analytics: false,
+                crashReporting: false,
+                backedUpSeed: false,
+                localeCode: 'false',
+              ),
+            );
+
+            final user = FirebaseUser();
+            user.userId = AuthService.to.userId;
+            user.address = WalletService.to.longAddress;
+            user.limits = ProController.to.limits.id;
+            user.metadata = metadata;
+
+            user.purchases = FirebaseUserPurchases(
+              rcPurchaserInfo: await Purchases.getPurchaserInfo(),
+            );
+
+            final result = await FunctionsService.to.setUser(user, device);
+
+            result.fold(
+              (error) => console.error(error),
+              (response) {
+                console.info('response: $response');
+              },
+            );
           },
         ),
         ListTile(
@@ -106,14 +191,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
               'Limits',
               jsonEncode(ProController.to.limits.toJson()),
             );
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Locale'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            //
           },
         ),
         ListTile(

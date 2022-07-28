@@ -24,6 +24,7 @@ import 'core/firebase/analytics.service.dart';
 import 'core/firebase/auth.service.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
+import 'core/firebase/functions.service.dart';
 import 'core/flavors/flavors.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
@@ -69,6 +70,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => CipherService());
     Get.lazyPut(() => FirestoreService());
+    Get.lazyPut(() => FunctionsService());
     Get.lazyPut(() => AuthService());
     Get.lazyPut(() => AlchemyService());
     Get.lazyPut(() => S3Service());

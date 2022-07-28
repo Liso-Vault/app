@@ -41,7 +41,7 @@ class SharedVault {
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toFirestoreJson() => {
         "userId": userId,
         "name": name,
         "description": description,

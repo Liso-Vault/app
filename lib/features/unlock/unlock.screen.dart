@@ -70,6 +70,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
               onFieldSubmitted: (text) => controller.unlock(),
               validator: Utils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              autofillHints: const [AutofillHints.password],
               decoration: InputDecoration(
                 hintText: 'master_password'.tr,
                 suffixIcon: IconButton(

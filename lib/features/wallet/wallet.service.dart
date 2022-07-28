@@ -178,6 +178,7 @@ class WalletService extends GetxService with ConsoleMixin {
       (value) => wallet_ = value,
       onError: (e, s) {
         console.error('wallet initJson error: ${e.toString()}');
+        return Future.error(e.toString());
       },
     );
 

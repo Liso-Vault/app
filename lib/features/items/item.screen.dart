@@ -266,7 +266,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           title: Text('protected'.tr),
           value: data(),
           onChanged:
-              controller.editMode.value ? (value) => data.value = value! : null,
+              controller.editMode.value ? controller.onProtectedChanged : null,
           contentPadding: EdgeInsets.zero,
         ),
         controller.protected,

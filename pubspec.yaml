@@ -30,16 +30,19 @@ dependencies:
 
   # FIREBASE
   firebase_core: 1.19.2
-  firebase_analytics: 9.2.0
-  firebase_crashlytics: 2.8.5
-  firebase_performance: 0.8.2
-  firebase_remote_config: 2.0.12
-  firebase_auth: 3.4.2
-  cloud_firestore: 3.3.0
-  firebase_app_check: 0.0.6+17
-  # FIREBASE WINDOWS
-  # firebase_core_desktop: ^1.0.0
-  # firebase_auth_desktop: ^1.0.0
+  firebase_analytics: 9.3.0
+  firebase_crashlytics: 2.8.6
+  firebase_performance: 0.8.2+1
+  firebase_remote_config: 2.0.13
+  firebase_auth: 3.4.1
+  cloud_firestore: 3.4.1
+  cloud_functions: 3.3.3
+  firebase_app_check: 0.0.6+18
+  # FIREBASE DESKTOP
+  firebase_core_desktop: 1.0.1
+  firebase_auth_desktop: 1.0.1
+  firebase_functions_desktop: 0.2.0+2
+  firebase_auth_platform_interface: '6.3.1'
 
   # IO
   hive: ^2.2.3 # database
@@ -88,12 +91,12 @@ dependencies:
   console_mixin: ^0.0.1 # logger
   random_string_generator: ^2.0.0
   humanizer: ^2.0.0
-  worker_manager: ^4.4.0
+  worker_manager: ^4.4.2
 
   # INFO
   device_info_plus: 3.2.4
   package_info_plus: ^1.4.2
-  connectivity_plus: ^2.3.5 # internet connectivity checking
+  connectivity_plus: ^2.3.6 # internet connectivity checking
 
 dev_dependencies:
   # flutter_test:

@@ -176,7 +176,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     final memberDoc = membersCol
         .withConverter<VaultMember>(
           fromFirestore: (snapshot, _) => VaultMember.fromSnapshot(snapshot),
-          toFirestore: (object, _) => object.toJson(),
+          toFirestore: (object, _) => object.toFirestoreJson(),
         )
         .doc();
 

@@ -106,58 +106,65 @@ class _AddressFormFieldState extends State<AddressFormField> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Expanded(child: Section(text: widget.field.data.label!)),
-            ContextMenuButton(
-              menuItems,
-              child: const Icon(LineIcons.verticalEllipsis),
-            )
-          ],
-        ),
-        const SizedBox(height: 10),
-        TextFormField(
-          controller: widget.street1Controller,
-          keyboardType: TextInputType.streetAddress,
-          textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(labelText: 'Street 1'),
-          readOnly: widget.field.readOnly || widget.readOnly,
-        ),
-        const SizedBox(height: 10),
-        TextFormField(
-          controller: widget.street2Controller,
-          keyboardType: TextInputType.streetAddress,
-          textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(labelText: 'Street 2'),
-          readOnly: widget.field.readOnly || widget.readOnly,
-        ),
-        const SizedBox(height: 10),
-        TextFormField(
-          controller: widget.cityController,
-          textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(labelText: 'City'),
-          readOnly: widget.field.readOnly || widget.readOnly,
-        ),
-        const SizedBox(height: 10),
-        TextFormField(
-          controller: widget.stateController,
-          textCapitalization: TextCapitalization.words,
-          decoration: const InputDecoration(labelText: 'State / Province'),
-          readOnly: widget.field.readOnly || widget.readOnly,
-        ),
-        const SizedBox(height: 10),
-        TextFormField(
-          controller: widget.zipController,
-          keyboardType: TextInputType.number,
-          decoration: const InputDecoration(labelText: 'Zip Code'),
-          readOnly: widget.field.readOnly || widget.readOnly,
-        ),
-        const SizedBox(height: 10),
-        widget.countryFormField,
-      ],
+    return AutofillGroup(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(child: Section(text: widget.field.data.label!)),
+              ContextMenuButton(
+                menuItems,
+                child: const Icon(LineIcons.verticalEllipsis),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: widget.street1Controller,
+            keyboardType: TextInputType.streetAddress,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(labelText: 'Street 1'),
+            readOnly: widget.field.readOnly || widget.readOnly,
+            autofillHints: const [AutofillHints.streetAddressLine1],
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: widget.street2Controller,
+            keyboardType: TextInputType.streetAddress,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(labelText: 'Street 2'),
+            readOnly: widget.field.readOnly || widget.readOnly,
+            autofillHints: const [AutofillHints.streetAddressLine2],
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: widget.cityController,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(labelText: 'City'),
+            readOnly: widget.field.readOnly || widget.readOnly,
+            autofillHints: const [AutofillHints.addressCity],
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: widget.stateController,
+            textCapitalization: TextCapitalization.words,
+            decoration: const InputDecoration(labelText: 'State / Province'),
+            readOnly: widget.field.readOnly || widget.readOnly,
+            autofillHints: const [AutofillHints.addressState],
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            controller: widget.zipController,
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(labelText: 'Zip Code'),
+            readOnly: widget.field.readOnly || widget.readOnly,
+            autofillHints: const [AutofillHints.postalCode],
+          ),
+          const SizedBox(height: 10),
+          widget.countryFormField,
+        ],
+      ),
     );
   }
 }

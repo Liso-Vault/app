@@ -69,22 +69,21 @@ class FirestoreService extends GetxService with ConsoleMixin {
       vaultsCol.doc(kStatsDoc);
 
   // INIT
-
   @override
   void onInit() {
     users = usersCol.withConverter<FirebaseUser>(
       fromFirestore: (snapshot, _) => FirebaseUser.fromSnapshot(snapshot),
-      toFirestore: (object, _) => object.toJson(),
+      toFirestore: (object, _) => object.toFirestoreJson(),
     );
 
     sharedVaults = vaultsCol.withConverter<SharedVault>(
       fromFirestore: (snapshot, _) => SharedVault.fromSnapshot(snapshot),
-      toFirestore: (object, _) => object.toJson(),
+      toFirestore: (object, _) => object.toFirestoreJson(),
     );
 
     vaultMembers = vaultMembersCol.withConverter<VaultMember>(
       fromFirestore: (snapshot, _) => VaultMember.fromSnapshot(snapshot),
-      toFirestore: (object, _) => object.toJson(),
+      toFirestore: (object, _) => object.toFirestoreJson(),
     );
 
     userDevices = userDoc.collection('devices').withConverter(

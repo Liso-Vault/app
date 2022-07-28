@@ -38,18 +38,44 @@ class FirebaseUser {
         purchases: json["purchases"] == null
             ? null
             : FirebaseUserPurchases.fromJson(json["purchases"]),
-        updatedTime: json["updatedTime"] ?? DateTime.now(),
-        createdTime: json["createdTime"] ?? DateTime.now(),
+        updatedTime: json["updatedTime"] == null
+            ? null
+            : Timestamp(json["updatedTime"]['_seconds'],
+                json["updatedTime"]['_nanoseconds']),
+        createdTime: json["createdTime"] == null
+            ? null
+            : Timestamp(json["updatedTime"]['_seconds'],
+                json["updatedTime"]['_nanoseconds']),
         metadata: FirebaseUserMetadata.fromJson(json["metadata"]),
       );
 
-  Map<String, dynamic> toJson() => {
+  // json with firestore values
+  Map<String, dynamic> toFirestoreJson() => {
         "userId": userId,
         "address": address,
         "limits": limits,
         "purchases": purchases?.toJson(),
         "updatedTime": FieldValue.serverTimestamp(),
         if (createdTime == null) "createdTime": FieldValue.serverTimestamp(),
+        "metadata": metadata?.toJson(),
+      };
+
+  Map<String, dynamic> toJson() => {
+        "userId": userId,
+        "address": address,
+        "limits": limits,
+        "purchases": purchases?.toJson(),
+        "updatedTime": updatedTime,
+        "createdTime": createdTime,
+        "metadata": metadata?.toJson(),
+      };
+
+  // stripped updated and created time
+  Map<String, dynamic> toFunctionsJson() => {
+        "userId": userId,
+        "address": address,
+        "limits": limits,
+        "purchases": purchases?.toJson(),
         "metadata": metadata?.toJson(),
       };
 }

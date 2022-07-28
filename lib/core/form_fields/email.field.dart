@@ -79,6 +79,7 @@ class _EmailFormFieldState extends State<EmailFormField> {
           data!.isEmpty || GetUtils.isEmail(data) ? null : 'Invalid Email',
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [inputFormatterRestrictSpaces],
+      autofillHints: const [AutofillHints.email],
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,

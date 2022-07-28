@@ -77,6 +77,7 @@ class _URLFormFieldState extends State<URLFormField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (data) =>
           data!.isEmpty || GetUtils.isURL(data) ? null : 'Invalid URL',
+      autofillHints: const [AutofillHints.url],
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,

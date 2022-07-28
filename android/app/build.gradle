@@ -36,7 +36,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 32
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -51,16 +51,12 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
-    lintOptions {
-        // fix flavor build release issue
-        checkReleaseBuilds false
-    }
 
     defaultConfig {
         applicationId "com.liso.app"
         resValue "string", "app_name", "Liso"
         minSdkVersion 23 // biometrics requirement
-        targetSdkVersion 30
+        targetSdkVersion 32
         multiDexEnabled true // Firebase
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -101,6 +97,9 @@ android {
             applicationId "com.liso.app.debug"
             resValue "string", "app_name", "Liso Debug"
         }
+    }
+    lint {
+        checkReleaseBuilds false
     }
 }
 

@@ -39,7 +39,7 @@ class VaultMember {
     );
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toFirestoreJson() {
     return {
       "userId": userId,
       "address": address,
@@ -50,5 +50,5 @@ class VaultMember {
     };
   }
 
-  String toJsonString() => jsonEncode(toJson());
+  String toJsonString() => jsonEncode(toFirestoreJson());
 }

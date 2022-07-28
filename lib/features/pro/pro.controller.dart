@@ -28,7 +28,8 @@ class ProController extends GetxController with ConsoleMixin {
 
   // GETTERS
 
-  bool get isPro => proEntitlement?.isActive ?? false;
+  bool get isPro =>
+      proEntitlement?.isActive ?? AuthService.to.claims['limits'] == 'pro';
 
   bool get isFreeTrial => !AuthService.to.isSignedIn
       ? false
@@ -60,9 +61,7 @@ class ProController extends GetxController with ConsoleMixin {
 
   ConfigLimitsTier get limits {
     final limits_ = ConfigService.to.limits;
-
     if (!WalletService.to.isReady) return limits_.free;
-
     // check if user is a pro subscriber
     if (isPro) return limits_.pro;
     // check if user is whitelisted by developer

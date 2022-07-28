@@ -108,13 +108,6 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                     text: 'Buy',
                     iconData: Iconsax.shopping_cart,
                     onPressed: () async {
-                      // console.wtf('querying...');
-
-                      // final users = await FirestoreService.to.users.get();
-
-                      // console.wtf(
-                      //     'size: ${users.size}, length: ${users.docs.length}}');
-
                       UIUtils.showSimpleDialog('Buy Crypto', 'Coming soon...');
                     },
                   ),

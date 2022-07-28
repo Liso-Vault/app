@@ -46,6 +46,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               textInputAction: TextInputAction.next,
               validator: Utils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              autofillHints: const [AutofillHints.newPassword],
               decoration: InputDecoration(
                 hintText: 'password'.tr,
                 suffixIcon: IconButton(
@@ -71,6 +72,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               onFieldSubmitted: (text) => controller.confirm(),
               validator: Utils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
+              autofillHints: const [AutofillHints.password],
               decoration: InputDecoration(
                 hintText: 'confirm_password'.tr,
                 suffixIcon: IconButton(
