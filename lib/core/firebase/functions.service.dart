@@ -64,7 +64,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
     }
 
     // console.wtf('${result.data}');
-    return Right(FirebaseUser.fromJson(jsonDecode(result.data)));
+    return Right(FirebaseUser.fromFunctionsJson(jsonDecode(result.data)));
   }
 
   Future<Either<String, bool>> setUser(

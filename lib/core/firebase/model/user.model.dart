@@ -38,6 +38,19 @@ class FirebaseUser {
         purchases: json["purchases"] == null
             ? null
             : FirebaseUserPurchases.fromJson(json["purchases"]),
+        updatedTime: json["updatedTime"],
+        createdTime: json["createdTime"],
+        metadata: FirebaseUserMetadata.fromJson(json["metadata"]),
+      );
+
+  factory FirebaseUser.fromFunctionsJson(Map<String, dynamic> json) =>
+      FirebaseUser(
+        userId: json["userId"],
+        address: json["address"],
+        limits: json["limits"],
+        purchases: json["purchases"] == null
+            ? null
+            : FirebaseUserPurchases.fromJson(json["purchases"]),
         updatedTime: json["updatedTime"] == null
             ? null
             : Timestamp(json["updatedTime"]['_seconds'],
