@@ -39,16 +39,17 @@ class FunctionsService extends GetxService with ConsoleMixin {
       return Left('error fetching remote config: $e');
     }
 
+    // console.wtf('response: ${result.data}');
+
     if (result.data == false) {
       return const Left('failed to fetch remote config');
     }
 
-    // console.wtf('response: ${result.data}');
     return Right(ConfigRoot.fromJson(jsonDecode(result.data)));
   }
 
   Future<Either<String, FirebaseUser>> getUser(String userId) async {
-    console.debug('fetching...');
+    console.debug('fetching: $userId...');
     HttpsCallableResult? result;
 
     try {
@@ -59,11 +60,12 @@ class FunctionsService extends GetxService with ConsoleMixin {
       return Left('error fetching user: $e');
     }
 
+    // console.wtf('result: ${result.data}');
+
     if (result.data == false) {
       return const Left('failed to get user');
     }
 
-    // console.wtf('${result.data}');
     return Right(FirebaseUser.fromFunctionsJson(jsonDecode(result.data)));
   }
 

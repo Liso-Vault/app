@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
+// ignore: library_prefixes
+import 'package:firebase_dart/firebase_dart.dart' as firebaseDesktop;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +18,14 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:secrets/firebase_options.dart';
 import 'package:secrets/secrets.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 import 'core/firebase/analytics.service.dart';
 import 'core/firebase/auth.service.dart';
+import 'core/firebase/auth_desktop.service.dart';
 import 'core/firebase/config/config.service.dart';
 import 'core/firebase/crashlytics.service.dart';
 import 'core/firebase/functions.service.dart';
@@ -56,7 +60,18 @@ void init(Flavor flavor) async {
     GestureBinding.instance.resamplingEnabled = true;
     // init firebase
     await Firebase.initializeApp(options: Secrets.firebaseOptions);
-    await FirebaseAppCheck.instance.activate();
+
+    if (GetPlatform.isWindows) {
+      firebaseDesktop.FirebaseDart.setup();
+
+      await firebaseDesktop.Firebase.initializeApp(
+        options: firebaseDesktop.FirebaseOptions.fromMap(
+          DefaultFirebaseOptions.currentPlatform.asMap,
+        ),
+      );
+    } else {
+      await FirebaseAppCheck.instance.activate();
+    }
     // warm up executor
     await Executor().warmUp(
       log: true,
@@ -72,6 +87,7 @@ void init(Flavor flavor) async {
     Get.lazyPut(() => FirestoreService());
     Get.lazyPut(() => FunctionsService());
     Get.lazyPut(() => AuthService());
+    Get.lazyPut(() => AuthDesktopService());
     Get.lazyPut(() => AlchemyService());
     Get.lazyPut(() => S3Service());
     Get.lazyPut(() => ConfigService());

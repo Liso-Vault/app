@@ -1,32 +1,27 @@
 import 'package:console_mixin/console_mixin.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_dart/firebase_dart.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/analytics.service.dart';
-import 'package:liso/core/firebase/auth_desktop.service.dart';
-import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/joined_vaults/joined_vault.controller.dart';
-import '../../features/s3/s3.service.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
-import 'firestore.service.dart';
+import 'auth.service.dart';
+import 'crashlytics.service.dart';
 
-class AuthService extends GetxService with ConsoleMixin {
-  static AuthService get to => Get.find();
+class AuthDesktopService extends GetxService with ConsoleMixin {
+  static AuthDesktopService get to => Get.find();
 
   // VARIABLES
-  dynamic get instance => GetPlatform.isWindows
-      ? AuthDesktopService.to.instance
-      : FirebaseAuth.instance;
+  FirebaseAuth get instance => FirebaseAuth.instance;
 
   Map<String, dynamic> claims = {};
 
   // PROPERTIES
 
   // GETTERS
-  dynamic get user => instance.currentUser;
+  User? get user => instance.currentUser;
 
   bool get isSignedIn => user != null;
 
@@ -41,19 +36,19 @@ class AuthService extends GetxService with ConsoleMixin {
         SharedVaultsController.to.stop();
         JoinedVaultsController.to.stop();
         ProController.to.logout();
-        AnalyticsService.to.logSignOut();
+        // AnalyticsService.to.logSignOut();
       } else {
         console.info('signed in: ${user_.uid}');
         SharedVaultsController.to.start();
         JoinedVaultsController.to.start();
         ProController.to.login();
 
-        if (!GetPlatform.isWindows) {
-          CrashlyticsService.to.instance.setUserIdentifier(userId);
-          AnalyticsService.to.instance.setUserId(id: user_.uid);
-        }
+        // if (!GetPlatform.isWindows) {
+        //   CrashlyticsService.to.instance.setUserIdentifier(userId);
+        //   AnalyticsService.to.instance.setUserId(id: user_.uid);
+        // }
 
-        AnalyticsService.to.logSignIn();
+        // AnalyticsService.to.logSignIn();
 
         // fetch custom claims
         user_
@@ -62,7 +57,7 @@ class AuthService extends GetxService with ConsoleMixin {
 
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
-        record();
+        AuthService.to.record();
       }
     });
 
@@ -70,34 +65,15 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-  void record({bool enforceDevices = false}) async {
-    if (!WalletService.to.isReady) {
-      return console.error('Cannot record because of null wallet');
-    }
-
-    final info = await S3Service.to.fetchStorageSize();
-    if (info == null) return console.error('error storage info');
-
-    await FirestoreService.to.syncUser(
-      filesCount: info.contents.length,
-      totalSize: info.totalSize,
-      encryptedFilesCount: info.encryptedFiles,
-      enforceDevices: enforceDevices,
-    );
-  }
 
   Future<void> signOut() async {
-    if (GetPlatform.isWindows) return AuthDesktopService.to.signOut();
-
     await instance.signOut();
     console.info('signOut');
   }
 
   Future<void> signIn() async {
-    if (GetPlatform.isWindows) return AuthDesktopService.to.signIn();
-
     if (isSignedIn) {
-      record(enforceDevices: true);
+      AuthService.to.record(enforceDevices: true);
       return console.warning('Already Signed In: $userId');
     }
 
@@ -110,7 +86,7 @@ class AuthService extends GetxService with ConsoleMixin {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      console.error('FirebaseAuthException: ${e.toString()}');
+      console.error('Code: ${e.code}, FirebaseAuthException: ${e.toString()}');
 
       if (e.code == 'user-not-found') {
         try {

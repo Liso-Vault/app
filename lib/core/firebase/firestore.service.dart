@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
+import 'package:liso/core/firebase/auth_desktop.service.dart';
+import 'package:liso/core/firebase/functions.service.dart';
 import 'package:liso/core/firebase/model/user.model.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -104,11 +106,10 @@ class FirestoreService extends GetxService with ConsoleMixin {
     required int totalSize,
     bool enforceDevices = false,
   }) async {
-    if (GetPlatform.isWindows) return console.warning('Not Supported');
     // just to make sure
     if (!AuthService.to.isSignedIn) await AuthService.to.signIn();
 
-    if (enforceDevices) {
+    if (!GetPlatform.isWindows && enforceDevices) {
       final devicesSnapshot = await FirestoreService.to.userDevices.get();
       final devices = devicesSnapshot.docs.map((e) => e.data()).toList();
       final foundDevices =
@@ -132,15 +133,35 @@ class FirestoreService extends GetxService with ConsoleMixin {
       utf8.encode(await LisoManager.compactJson()),
     );
 
-    late FirebaseUser user;
-    final fetchedUser = await userDoc.get();
+    var user = FirebaseUser();
 
-    if (fetchedUser.exists) {
-      user = fetchedUser.data()!;
+    if (GetPlatform.isWindows) {
+      final result = await FunctionsService.to.getUser(
+        AuthDesktopService.to.userId,
+      );
+
+      result.fold(
+        (error) => console.error(error),
+        (response) => user = response,
+      );
+
+      // manually sync purchases
+      if (user.purchases?.rcPurchaserInfo != null) {
+        ProController.to.info.value = PurchaserInfo.fromJson(
+          user.purchases!.rcPurchaserInfo!.toJson(),
+        );
+      }
+    } else {
+      final fetchedUser = await userDoc.get();
+
+      if (fetchedUser.exists) {
+        user = fetchedUser.data()!;
+      }
+    }
+
+    if (user.docId.isNotEmpty) {
       persistence.lastServerDateTime.val =
           user.updatedTime!.toDate().toIso8601String();
-    } else {
-      user = FirebaseUser();
     }
 
     final device = await HiveMetadataDevice.get();
@@ -178,37 +199,48 @@ class FirestoreService extends GetxService with ConsoleMixin {
     user.limits = ProController.to.limits.id;
     user.metadata = metadata;
 
-    user.purchases = FirebaseUserPurchases(
-      rcPurchaserInfo: await Purchases.getPurchaserInfo(),
-    );
-
-    final batch = instance.batch();
-
-    // if new user
-    if (user.createdTime == null) {
-      // update users collection stats counter
-      batch.set(
-        usersStatsDoc,
-        {
-          'count': FieldValue.increment(1),
-          'userId': user.userId,
-          'updatedTime': FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true),
+    if (!GetPlatform.isWindows) {
+      user.purchases = FirebaseUserPurchases(
+        rcPurchaserInfo: await Purchases.getPurchaserInfo(),
       );
     }
 
-    // update user doc
-    batch.set(userDoc, user, SetOptions(merge: true));
-    // record user device
-    batch.set(userDevices.doc(device.id), device);
+    if (GetPlatform.isWindows) {
+      final result = await FunctionsService.to.setUser(user, device);
 
-    // commit batch
-    try {
-      await batch.commit();
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-      return console.error("error batch commit: $e");
+      return result.fold(
+        (error) => console.error('failed to record'),
+        (response) => console.wtf('recorded: $response'),
+      );
+    } else {
+      final batch = instance.batch();
+
+      // if new user
+      if (user.createdTime == null) {
+        // update users collection stats counter
+        batch.set(
+          usersStatsDoc,
+          {
+            'count': FieldValue.increment(1),
+            'userId': user.userId,
+            'updatedTime': FieldValue.serverTimestamp(),
+          },
+          SetOptions(merge: true),
+        );
+      }
+
+      // update user doc
+      batch.set(userDoc, user, SetOptions(merge: true));
+      // record user device
+      batch.set(userDevices.doc(device.id), device);
+
+      // commit batch
+      try {
+        await batch.commit();
+      } catch (e, s) {
+        CrashlyticsService.to.record(e, s);
+        return console.error("error batch commit: $e");
+      }
     }
 
     console.wtf('recorded');
