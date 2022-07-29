@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/persistence/mutable_value.dart';
 import 'package:secrets/secrets.dart';
 
@@ -67,7 +68,8 @@ class Persistence extends GetxController with ConsoleMixin {
   // DELETED IDS
 
   // GETTERS
-  bool get canShare => sync.val && !GetPlatform.isWindows;
+  bool get canShare =>
+      sync.val && AuthService.to.isSignedIn && !GetPlatform.isWindows;
 
   String get shortAddress => walletAddress.val.isEmpty
       ? ''

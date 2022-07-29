@@ -65,11 +65,12 @@ Color get proColor => Get.isDarkMode ? Colors.cyanAccent : Colors.cyan;
 // TODO: set before releasing a new version
 const kReleaseMode = ReleaseMode.production;
 bool get isBeta => kReleaseMode == ReleaseMode.beta;
-const kUseFirebaseEmulator = true;
-
-// FIREBASE EMULATOR
+// firebase emulator settings
+const kUseFirebaseEmulator = false;
 const kFirebaseHost = 'localhost';
-const kFirebasePort = 5001;
+const kFirebaseAuthPort = 9099;
+const kFirebaseFunctionsPort = 5001;
+const kFirebaseFirestorePort = 8085;
 
 // TODO: set to false when publishing on Mac App Store
 const isMacAppStore = true;

@@ -112,16 +112,18 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   trailing: const Icon(Iconsax.arrow_right_3),
                   title: const Text('Shared Vaults'),
                   subtitle: const Text('Manage your shared vaults'),
-                  onTap: () =>
-                      Utils.adaptiveRouteOpen(name: Routes.sharedVaults),
+                  onTap: () => Utils.adaptiveRouteOpen(
+                    name: Routes.sharedVaults,
+                  ),
                 ),
                 ListTile(
                   leading: Icon(LineIcons.plus, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
                   title: const Text('Joined Vaults'),
                   subtitle: const Text('Manage your joined vaults'),
-                  onTap: () =>
-                      Utils.adaptiveRouteOpen(name: Routes.joinedVaults),
+                  onTap: () => Utils.adaptiveRouteOpen(
+                    name: Routes.joinedVaults,
+                  ),
                 ),
               ],
               // ListTile(
@@ -249,7 +251,13 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 value: p.analytics.val,
                 subtitle: const Text('Send anonymous usage statistics'),
                 onChanged: (value) => p.analytics.val = value,
-              )
+              ),
+              ListTile(
+                leading: Icon(LineIcons.infoCircle, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Show Diagnostics Info'),
+                onTap: controller.showDiagnosticInfo,
+              ),
             ],
           );
         }),

@@ -24,7 +24,7 @@ class FunctionsService extends GetxService with ConsoleMixin {
   @override
   void onInit() {
     if (kUseFirebaseEmulator) {
-      instance.useFunctionsEmulator(kFirebaseHost, kFirebasePort);
+      instance.useFunctionsEmulator(kFirebaseHost, kFirebaseFunctionsPort);
     }
 
     super.onInit();

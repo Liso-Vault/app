@@ -74,7 +74,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
   @override
   void onInit() {
     if (kUseFirebaseEmulator) {
-      instance.useFirestoreEmulator(kFirebaseHost, kFirebasePort);
+      instance.useFirestoreEmulator(kFirebaseHost, kFirebaseFirestorePort);
     }
 
     users = usersCol.withConverter<FirebaseUser>(

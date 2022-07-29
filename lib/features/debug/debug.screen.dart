@@ -81,83 +81,91 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       children: [
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Firebase Auth'),
+          title: const Text('Auth Sign Out'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            AuthDesktopService.to.signOut();
+          },
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Auth Sign In'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
             AuthDesktopService.to.signIn();
           },
         ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Get Remote Config'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            final result = await FunctionsService.to.getRemoteConfig();
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Get Remote Config'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     final result = await FunctionsService.to.getRemoteConfig();
 
-            result.fold(
-              (error) => console.error(error),
-              (response) {
-                console.info(
-                    'response: ${response.parameters.secretsConfig.toJson()}');
-              },
-            );
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Get User'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            final result = await FunctionsService.to.getUser(
-              AuthService.to.userId,
-            );
+        //     result.fold(
+        //       (error) => console.error(error),
+        //       (response) {
+        //         console.info(
+        //             'response: ${response.parameters.secretsConfig.toJson()}');
+        //       },
+        //     );
+        //   },
+        // ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Get User'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     final result = await FunctionsService.to.getUser(
+        //       AuthService.to.userId,
+        //     );
 
-            result.fold(
-              (error) => console.error(error),
-              (response) {
-                console.info('response: ${response.toJson()}');
-              },
-            );
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Set User'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            AuthService.to.record();
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Purchaser Info'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            final dateString = DateTime.now().toIso8601String();
+        //     result.fold(
+        //       (error) => console.error(error),
+        //       (response) {
+        //         console.info('response: ${response.toJson()}');
+        //       },
+        //     );
+        //   },
+        // ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Set User'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     AuthService.to.record();
+        //   },
+        // ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Purchaser Info'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     final dateString = DateTime.now().toIso8601String();
 
-            ProController.to.info.value.entitlements.all.addAll(
-              {
-                'pro': EntitlementInfo(
-                  'pro-sub-annual',
-                  true,
-                  true,
-                  dateString,
-                  dateString,
-                  'pro-sub-annual',
-                  false,
-                  ownershipType: OwnershipType.purchased,
-                  store: Store.playStore,
-                  expirationDate: dateString,
-                  unsubscribeDetectedAt: dateString,
-                  billingIssueDetectedAt: dateString,
-                )
-              },
-            );
+        //     ProController.to.info.value.entitlements.all.addAll(
+        //       {
+        //         'pro': EntitlementInfo(
+        //           'pro-sub-annual',
+        //           true,
+        //           true,
+        //           dateString,
+        //           dateString,
+        //           'pro-sub-annual',
+        //           false,
+        //           ownershipType: OwnershipType.purchased,
+        //           store: Store.playStore,
+        //           expirationDate: dateString,
+        //           unsubscribeDetectedAt: dateString,
+        //           billingIssueDetectedAt: dateString,
+        //         )
+        //       },
+        //     );
 
-            console.info(
-                'isPro: ${ProController.to.isPro}, isFreeTrial: ${ProController.to.isFreeTrial}\npurchaser: ${ProController.to.info.value.toJson()}');
-          },
-        ),
+        //     console.info(
+        //         'isPro: ${ProController.to.isPro}, isFreeTrial: ${ProController.to.isFreeTrial}\npurchaser: ${ProController.to.info.value.toJson()}');
+        //   },
+        // ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Restart Vault Controllers'),
@@ -167,44 +175,44 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
             JoinedVaultsController.to.restart();
           },
         ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Show Limits'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            UIUtils.showSimpleDialog(
-              'Limits',
-              jsonEncode(ProController.to.limits.toJson()),
-            );
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Wallet Connect'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: _walletConnect,
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Export Vault JSON'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            final json = await LisoManager.compactJson();
-            console.warning(json);
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Upgrade Screen'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.adaptiveRouteOpen(
-            name: Routes.upgrade,
-            parameters: {
-              'title': 'Title',
-              'body': 'Custom Message',
-            },
-          ),
-        ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Show Limits'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     UIUtils.showSimpleDialog(
+        //       'Limits',
+        //       jsonEncode(ProController.to.limits.toJson()),
+        //     );
+        //   },
+        // ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Wallet Connect'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: _walletConnect,
+        // ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Export Vault JSON'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     final json = await LisoManager.compactJson();
+        //     console.warning(json);
+        //   },
+        // ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Upgrade Screen'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () => Utils.adaptiveRouteOpen(
+        //     name: Routes.upgrade,
+        //     parameters: {
+        //       'title': 'Title',
+        //       'body': 'Custom Message',
+        //     },
+        //   ),
+        // ),
       ],
     );
 

@@ -17,16 +17,15 @@ class AuthService extends GetxService with ConsoleMixin {
   static AuthService get to => Get.find();
 
   // VARIABLES
-  dynamic get instance => GetPlatform.isWindows
-      ? AuthDesktopService.to.instance
-      : FirebaseAuth.instance;
+  FirebaseAuth get instance => FirebaseAuth.instance;
 
   Map<String, dynamic> claims = {};
 
   // PROPERTIES
 
   // GETTERS
-  dynamic get user => instance.currentUser;
+  dynamic get user =>
+      GetPlatform.isWindows ? AuthDesktopService.to.user : instance.currentUser;
 
   bool get isSignedIn => user != null;
 
@@ -36,7 +35,7 @@ class AuthService extends GetxService with ConsoleMixin {
   @override
   void onInit() {
     if (kUseFirebaseEmulator) {
-      instance.useAuthEmulator(kFirebaseHost, kFirebasePort);
+      instance.useAuthEmulator(kFirebaseHost, kFirebaseAuthPort);
     }
 
     instance.authStateChanges().listen((user_) async {
@@ -58,12 +57,10 @@ class AuthService extends GetxService with ConsoleMixin {
         }
 
         AnalyticsService.to.logSignIn();
-
         // fetch custom claims
         user_
             .getIdTokenResult(true)
             .then((value) => claims = value.claims ?? {});
-
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
         record();
@@ -92,7 +89,6 @@ class AuthService extends GetxService with ConsoleMixin {
 
   Future<void> signOut() async {
     if (GetPlatform.isWindows) return AuthDesktopService.to.signOut();
-
     await instance.signOut();
     console.info('signOut');
   }
@@ -113,9 +109,7 @@ class AuthService extends GetxService with ConsoleMixin {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
-      console.error('FirebaseAuthException: ${e.toString()}');
-
+    } on FirebaseAuthException catch (e, s) {
       if (e.code == 'user-not-found') {
         try {
           await instance.createUserWithEmailAndPassword(
@@ -123,12 +117,12 @@ class AuthService extends GetxService with ConsoleMixin {
             password: password,
           );
         } catch (e, s) {
-          console.error('FirebaseAuth signUp error: ${e.toString()}');
           CrashlyticsService.to.record(e, s);
         }
+      } else {
+        CrashlyticsService.to.record(e, s);
       }
     } catch (e, s) {
-      console.error('FirebaseAuth signIn error: ${e.toString()}');
       CrashlyticsService.to.record(e, s);
     }
   }

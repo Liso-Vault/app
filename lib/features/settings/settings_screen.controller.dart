@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -368,6 +369,74 @@ class SettingsScreenController extends GetxController
       actionText: 'Reset',
       actionStyle: ElevatedButton.styleFrom(
         primary: Colors.redAccent,
+      ),
+    );
+  }
+
+  void showDiagnosticInfo() async {
+    final content = ListView(
+      shrinkWrap: true,
+      children: [
+        ListTile(
+          title: const Text('Wallet Address'),
+          subtitle: Text(WalletService.to.longAddress),
+          onTap: () => Utils.copyToClipboard(
+            WalletService.to.longAddress,
+          ),
+        ),
+        ListTile(
+          title: const Text('User ID'),
+          subtitle: Text(AuthService.to.userId),
+          onTap: () => Utils.copyToClipboard(
+            AuthService.to.userId,
+          ),
+        ),
+        ListTile(
+          title: const Text('RC User ID'),
+          subtitle: Text(ProController.to.info.value.originalAppUserId),
+          onTap: () => Utils.copyToClipboard(
+            ProController.to.info.value.originalAppUserId,
+          ),
+        ),
+        ListTile(
+          title: const Text('Pro User'),
+          subtitle: Text(ProController.to.isPro.toString()),
+        ),
+        ListTile(
+          title: const Text('Free Trial'),
+          subtitle: Text(ProController.to.isFreeTrial.toString()),
+        ),
+        ListTile(
+          title: const Text('Entitlement'),
+          subtitle: Text(ProController.to.limits.id),
+        ),
+        ListTile(
+          title: const Text('App Version'),
+          subtitle: Text(Globals.metadata?.app.formattedVersion ?? ''),
+        ),
+      ],
+    );
+
+    await Get.dialog(
+      AlertDialog(
+        title: const Text('Diagnostics Info'),
+        content: Utils.isDrawerExpandable
+            ? content
+            : Container(
+                constraints: const BoxConstraints(maxHeight: 600),
+                width: 400,
+                child: content,
+              ),
+        actions: [
+          TextButton(
+            onPressed: Get.back,
+            child: Text('okay'.tr),
+          ),
+          // TextButton(
+          //   onPressed: () => Utils.copyToClipboard(text),
+          //   child: Text('copy'.tr),
+          // ),
+        ],
       ),
     );
   }
