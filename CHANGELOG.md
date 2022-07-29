@@ -4,7 +4,9 @@
 - Removed! Unecessary password indicators
 - Improved! Wrong password attempts warning
 - Fixed! Stuck progress bar when user cancels biometrics
+- Fixed! Stuck progress bar when used a wrong password to unlock vault
 - Fixed! Switching to master password for failed biometrics
+- Fixed! For android devices without a biometric hardware
 
 ## 0.5.3
 - New! OTP Category

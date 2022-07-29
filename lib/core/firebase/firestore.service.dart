@@ -71,6 +71,10 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() {
+    if (kUseFirebaseEmulator) {
+      instance.useFirestoreEmulator(kFirebaseHost, kFirebasePort);
+    }
+
     users = usersCol.withConverter<FirebaseUser>(
       fromFirestore: (snapshot, _) => FirebaseUser.fromSnapshot(snapshot),
       toFirestore: (object, _) => object.toFirestoreJson(),
@@ -107,6 +111,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
     if (GetPlatform.isWindows) return console.warning('Not Supported');
     // just to make sure
     if (!AuthService.to.isSignedIn) await AuthService.to.signIn();
+    // check one more time
+    if (!AuthService.to.isSignedIn) return console.warning('Not Signed In');
 
     if (enforceDevices) {
       final devicesSnapshot = await FirestoreService.to.userDevices.get();
@@ -169,6 +175,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
         analytics: persistence.analytics.val,
         crashReporting: persistence.crashReporting.val,
         backedUpSeed: persistence.backedUpSeed.val,
+        backedUpPassword: persistence.backedUpPassword.val,
         localeCode: persistence.localeCode.val,
       ),
     );

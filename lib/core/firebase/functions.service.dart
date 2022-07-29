@@ -8,6 +8,8 @@ import 'package:liso/core/firebase/config/models/config_root.model.dart';
 import 'package:liso/core/firebase/model/user.model.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
 
+import '../utils/globals.dart';
+
 class FunctionsService extends GetxService with ConsoleMixin {
   static FunctionsService get to => Get.find();
 
@@ -19,11 +21,14 @@ class FunctionsService extends GetxService with ConsoleMixin {
   FirebaseFunctions get instance => FirebaseFunctions.instance;
 
   // INIT
-  // @override
-  // void onInit() {
-  //   instance.useFunctionsEmulator('localhost', 5001);
-  //   super.onInit();
-  // }
+  @override
+  void onInit() {
+    if (kUseFirebaseEmulator) {
+      instance.useFunctionsEmulator(kFirebaseHost, kFirebasePort);
+    }
+
+    super.onInit();
+  }
 
   // FUNCTIONS
 

@@ -84,17 +84,26 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('weak_passwords'.tr),
-                      if (controller.weakPasswordCount > 0) ...[
-                        Chip(
-                          label: Text(controller.weakPasswordCount.toString()),
+                      Text('password_health'.tr),
+                      if (controller.fragilePasswordCount > 0) ...[
+                        Theme(
+                          data: Get.theme.copyWith(
+                            chipTheme: Get.theme.chipTheme.copyWith(
+                              labelStyle: const TextStyle(color: Colors.amber),
+                            ),
+                          ),
+                          child: Chip(
+                            label: Text(
+                              controller.fragilePasswordCount.toString(),
+                            ),
+                          ),
                         ),
                       ],
                     ],
                   ),
                   leading: const Icon(Iconsax.health),
-                  selected: controller.filterWeakPasswords.value,
-                  onTap: controller.filterWeakPasswordsItems,
+                  selected: controller.filterPasswordHealth(),
+                  onTap: controller.filterPasswordHealthItems,
                 ),
               ),
               Obx(

@@ -32,6 +32,10 @@ class AuthService extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() {
+    if (kUseFirebaseEmulator) {
+      instance.useAuthEmulator(kFirebaseHost, kFirebasePort);
+    }
+
     instance.authStateChanges().listen((user_) async {
       if (user_ == null) {
         console.warning('signed out');
@@ -44,7 +48,7 @@ class AuthService extends GetxService with ConsoleMixin {
         SharedVaultsController.to.start();
         JoinedVaultsController.to.start();
         ProController.to.login();
-        CrashlyticsService.to.instance.setUserIdentifier(userId);
+        CrashlyticsService.to.instance.setUserIdentifier(user_.uid);
         AnalyticsService.to.instance.setUserId(id: user_.uid);
         AnalyticsService.to.logSignIn();
 

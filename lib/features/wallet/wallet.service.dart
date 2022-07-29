@@ -171,16 +171,14 @@ class WalletService extends GetxService with ConsoleMixin {
   Future<Wallet?> initJson(String data, {required String password}) async {
     Wallet? wallet_;
 
-    await Executor().execute(
-      arg1: {'data': data, 'password': password},
-      fun1: walletFromJson,
-    ).then(
-      (value) => wallet_ = value,
-      onError: (e, s) {
-        console.error('wallet initJson error: ${e.toString()}');
-        return Future.error(e.toString());
-      },
-    );
+    try {
+      await Executor().execute(
+        arg1: {'data': data, 'password': password},
+        fun1: walletFromJson,
+      ).then((value) => wallet_ = value);
+    } catch (e) {
+      console.error('error: $e');
+    }
 
     return wallet_;
   }
@@ -265,8 +263,8 @@ class WalletService extends GetxService with ConsoleMixin {
 
 // ISOLATE FUNCTIONS
 
-Wallet walletFromJson(Map<String, dynamic> arg, TypeSendPort port) {
-  return Wallet.fromJson(arg['data'], arg['password']);
+Future<Wallet> walletFromJson(Map<String, dynamic> arg, TypeSendPort port) {
+  return Future.value(Wallet.fromJson(arg['data'], arg['password']));
 }
 
 String walletToJsonString(Wallet arg) {

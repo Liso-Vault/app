@@ -73,11 +73,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
   }
 
   void switchAccounts() {
-    console.info('address: ${WalletService.to.wallet?.privateKey.address}');
-    console.info(
-      'privateKey: ${HEX.encode(WalletService.to.wallet!.privateKey.privateKey)}',
-    );
-    // UIUtils.showSimpleDialog('Switch Accounts', 'Coming soon...');
+    UIUtils.showSimpleDialog('Switch Accounts', 'Coming soon...');
   }
 
   void showQRCode() {

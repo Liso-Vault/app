@@ -174,6 +174,7 @@ class FirebaseUserSettings {
     this.localeCode = '',
     this.sync = false,
     this.backedUpSeed = false,
+    this.backedUpPassword = false,
     this.crashReporting = false,
     this.analytics = false,
     this.biometrics = false,
@@ -184,6 +185,7 @@ class FirebaseUserSettings {
   String? localeCode;
   bool? sync;
   bool? backedUpSeed;
+  bool? backedUpPassword;
   bool? crashReporting;
   bool? analytics;
   bool? biometrics;
@@ -194,6 +196,7 @@ class FirebaseUserSettings {
         theme: json["theme"],
         syncProvider: json["syncProvider"],
         backedUpSeed: json["backedUpSeed"],
+        backedUpPassword: json["backedUpPassword"],
         localeCode: json["localeCode"],
         crashReporting: json["crashReporting"],
         analytics: json["analytics"],
@@ -205,6 +208,7 @@ class FirebaseUserSettings {
         "theme": theme,
         "syncProvider": syncProvider,
         "backedUpSeed": backedUpSeed,
+        "backedUpPassword": backedUpPassword,
         "localeCode": localeCode,
         "crashReporting": crashReporting,
         "analytics": analytics,

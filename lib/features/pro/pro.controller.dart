@@ -279,7 +279,7 @@ class ProController extends GetxController with ConsoleMixin {
         break;
       case PurchasesErrorCode.storeProblemError:
         errorMessage =
-            'There was a problem with ${GetPlatform.isIOS ? 'the App Store' : 'Google Play'}';
+            'There was a problem with ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}';
         break;
       case PurchasesErrorCode.unexpectedBackendResponseError:
         break;

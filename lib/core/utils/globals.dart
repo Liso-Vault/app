@@ -48,6 +48,7 @@ const kNonPasswordFieldIds = [
   'secret',
   'pin',
   'verification_number',
+  'seed',
 ];
 
 // GETTERS
@@ -64,6 +65,11 @@ Color get proColor => Get.isDarkMode ? Colors.cyanAccent : Colors.cyan;
 // TODO: set before releasing a new version
 const kReleaseMode = ReleaseMode.production;
 bool get isBeta => kReleaseMode == ReleaseMode.beta;
+const kUseFirebaseEmulator = true;
+
+// FIREBASE EMULATOR
+const kFirebaseHost = 'localhost';
+const kFirebasePort = 5001;
 
 // TODO: set to false when publishing on Mac App Store
 const isMacAppStore = true;

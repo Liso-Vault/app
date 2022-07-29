@@ -121,10 +121,23 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     final passwords = fields.where((e) {
       if (e.type != LisoFieldType.password.name) return false;
       if (e.data.value!.isEmpty) return false;
-      final isPasswordField = !kNonPasswordFieldIds.contains(e.identifier);
-      if (!isPasswordField) return false;
+      // if not a password field
+      if (kNonPasswordFieldIds.contains(e.identifier)) return false;
       final strength = PasswordStrengthChecker.checkStrength(e.data.value!);
       return strength != PasswordStrength.STRONG;
+    });
+
+    return passwords.isNotEmpty;
+  }
+
+  bool get hasReusedPasswords {
+    final passwords = fields.where((e) {
+      if (e.type != LisoFieldType.password.name) return false;
+      if (e.data.value!.isEmpty) return false;
+      // if not a password field
+      if (kNonPasswordFieldIds.contains(e.identifier)) return false;
+      // TODO: work on detecting re-used passwords
+      return false;
     });
 
     return passwords.isNotEmpty;

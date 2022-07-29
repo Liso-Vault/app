@@ -72,16 +72,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            '${ItemsController.to.data.length}',
-            style: const TextStyle(
-              fontSize: 50,
-              color: Colors.orange,
-              fontWeight: FontWeight.bold,
+          Obx(
+            () => Text(
+              '${ItemsController.to.data.length}',
+              style: const TextStyle(
+                fontSize: 50,
+                color: Colors.orange,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const Text(
-            'Weak Passwords Detected',
+            'Fragile Passwords Detected',
             style: TextStyle(color: Colors.orange, fontSize: 16),
           ),
           const SizedBox(height: 10),
@@ -102,14 +104,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     var childContent = itemsController.obx(
       (_) => !ProController.to.limits.passwordHealth &&
-              drawerController.filterWeakPasswords.value
+              drawerController.filterPasswordHealth.value
           ? weakPasswords
           : listView,
       // onLoading: const BusyIndicator(),
-      onEmpty: drawerController.filterWeakPasswords.value
+      onEmpty: drawerController.filterPasswordHealth.value
           ? const CenteredPlaceholder(
               iconData: LineIcons.check,
-              message: 'No Weak Passwords Detected',
+              message: 'No Fragile Passwords Detected',
             )
           : Obx(
               () => CenteredPlaceholder(
