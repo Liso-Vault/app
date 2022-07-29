@@ -194,10 +194,12 @@ class WalletService extends GetxService with ConsoleMixin {
     // from the first 32 bits of the signature
     cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 
-    AnalyticsService.to.instance.setUserProperty(
-      name: 'wallet_address',
-      value: longAddress,
-    );
+    if (!GetPlatform.isWindows) {
+      AnalyticsService.to.instance.setUserProperty(
+        name: 'wallet_address',
+        value: longAddress,
+      );
+    }
   }
 
   void reset() {

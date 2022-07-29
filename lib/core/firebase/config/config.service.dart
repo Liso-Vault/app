@@ -5,6 +5,7 @@ import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
+import 'package:liso/core/firebase/functions.service.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:secrets/secrets.dart';
 
@@ -36,11 +37,7 @@ class ConfigService extends GetxService with ConsoleMixin {
   Future<void> init() async {
     // pre-populate with local as defaults
     await _populate(local: true);
-
-    if (GetPlatform.isWindows) {
-      // TODO: fetch full remote config from cloud functions using REST API
-      return console.warning('Not Supported');
-    }
+    if (GetPlatform.isWindows) return fetchFromFunctions();
 
     // SETTINGS
     await instance.setConfigSettings(RemoteConfigSettings(
@@ -51,6 +48,28 @@ class ConfigService extends GetxService with ConsoleMixin {
     // workaround for https://github.com/firebase/flutterfire/issues/6196
     // Future.delayed(1.seconds).then((_) => fetch());
     fetch();
+  }
+
+  Future<void> fetchFromFunctions() async {
+    console.info('fetching...');
+
+    final result = await FunctionsService.to.getRemoteConfig();
+
+    result.fold(
+      (error) => console.info('failed to fetch from functions: $error'),
+      (root) {
+        app = root.parameters.appConfig;
+        secrets = root.parameters.secretsConfig;
+        web3 = root.parameters.web3Config;
+        limits = root.parameters.limitsConfig;
+        users = root.parameters.usersConfig;
+        general = root.parameters.generalConfig;
+
+        console.wtf('remote config from functions synced');
+        // re-init s3 minio client
+        S3Service.to.init();
+      },
+    );
   }
 
   Future<void> fetch() async {

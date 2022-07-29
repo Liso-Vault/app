@@ -137,7 +137,7 @@ class ProController extends GetxController with ConsoleMixin {
       info.value = info_;
     });
 
-    sync();
+    _sync();
   }
 
   Future<void> login() async {
@@ -176,7 +176,7 @@ class ProController extends GetxController with ConsoleMixin {
     }
   }
 
-  Future<void> sync() async {
+  Future<void> _sync() async {
     if (!ready) return;
 
     try {

@@ -30,7 +30,9 @@ class App extends StatelessWidget {
 
     // MATERIAL APP
     return GetMaterialApp(
-      navigatorObservers: [AnalyticsService.to.observer],
+      navigatorObservers: [
+        if (!GetPlatform.isWindows) ...[AnalyticsService.to.observer]
+      ],
       debugShowCheckedModeBanner: false,
       // showPerformanceOverlay: true,
       // LOCALE

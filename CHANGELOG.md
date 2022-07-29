@@ -1,7 +1,7 @@
 ## 0.5.4
 - New! All vaults filter
 - New! Autofill Hints
-- Removed! Unecessary password indicators
+- Removed! Unnecessary password indicators
 - Improved! Wrong password attempts warning
 - Fixed! Stuck progress bar when user cancels biometrics
 - Fixed! Stuck progress bar when used a wrong password to unlock vault

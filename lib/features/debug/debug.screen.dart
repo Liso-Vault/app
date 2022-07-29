@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/models/config_app.model.dart';
+import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/firebase/functions.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -12,6 +13,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 
+import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/firebase/model/user.model.dart';
 import '../../core/hive/models/metadata/app.hive.dart';
 import '../../core/hive/models/metadata/device.hive.dart';
@@ -79,6 +81,14 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       children: [
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Firebase Auth'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            AuthDesktopService.to.signIn();
+          },
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Get Remote Config'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
@@ -115,62 +125,37 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Set User'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            final device = await HiveMetadataDevice.get();
-
-            final metadata = FirebaseUserMetadata(
-              app: await HiveMetadataApp.get(),
-              deviceId: device.id,
-              size: FirebaseUserSize(
-                storage: 1000,
-                vault: 10,
-              ),
-              count: FirebaseUserCount(
-                items: 0,
-                groups: 0,
-                categories: 0,
-                files: 0,
-                encryptedFiles: 0,
-                sharedVaults: SharedVaultsController.to.data.length,
-                joinedVaults: JoinedVaultsController.to.data.length,
-              ),
-              settings: FirebaseUserSettings(
-                sync: false,
-                theme: 'false',
-                syncProvider: 'false',
-                biometrics: false,
-                analytics: false,
-                crashReporting: false,
-                backedUpSeed: false,
-                localeCode: 'false',
-              ),
-            );
-
-            final user = FirebaseUser();
-            user.userId = AuthService.to.userId;
-            user.address = WalletService.to.longAddress;
-            user.limits = ProController.to.limits.id;
-            user.metadata = metadata;
-
-            user.purchases = FirebaseUserPurchases(
-              rcPurchaserInfo: await Purchases.getPurchaserInfo(),
-            );
-
-            final result = await FunctionsService.to.setUser(user, device);
-
-            result.fold(
-              (error) => console.error(error),
-              (response) {
-                console.info('response: $response');
-              },
-            );
+            AuthService.to.record();
           },
         ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Show Console'),
+          title: const Text('Purchaser Info'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            // TODO: show console log
+            final dateString = DateTime.now().toIso8601String();
+
+            ProController.to.info.value.entitlements.all.addAll(
+              {
+                'pro': EntitlementInfo(
+                  'pro-sub-annual',
+                  true,
+                  true,
+                  dateString,
+                  dateString,
+                  'pro-sub-annual',
+                  false,
+                  ownershipType: OwnershipType.purchased,
+                  store: Store.playStore,
+                  expirationDate: dateString,
+                  unsubscribeDetectedAt: dateString,
+                  billingIssueDetectedAt: dateString,
+                )
+              },
+            );
+
+            console.info(
+                'isPro: ${ProController.to.isPro}, isFreeTrial: ${ProController.to.isFreeTrial}\npurchaser: ${ProController.to.info.value.toJson()}');
           },
         ),
         ListTile(
