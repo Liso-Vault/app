@@ -3,6 +3,8 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
 
+import '../../../utils/utils.dart';
+
 part 'device.hive.g.dart';
 
 @HiveType(typeId: 222)
@@ -60,25 +62,7 @@ class HiveMetadataDevice extends HiveObject {
       };
 
   static Future<HiveMetadataDevice> get() async {
-    String _platformName() {
-      if (GetPlatform.isAndroid) {
-        return "android";
-      } else if (GetPlatform.isIOS) {
-        return "ios";
-      } else if (GetPlatform.isWindows) {
-        return "windows";
-      } else if (GetPlatform.isMacOS) {
-        return "macos";
-      } else if (GetPlatform.isLinux) {
-        return "linux";
-      } else if (GetPlatform.isFuchsia) {
-        return "fuchsia";
-      } else {
-        return "unknown";
-      }
-    }
-
-    final device = HiveMetadataDevice(platform: _platformName());
+    final device = HiveMetadataDevice(platform: Utils.platformName());
     final deviceInfo = DeviceInfoPlugin();
 
     if (GetPlatform.isIOS) {

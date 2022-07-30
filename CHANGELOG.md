@@ -3,6 +3,12 @@
 - New! Autofill Hints
 - Removed! Unnecessary password indicators
 - Improved! Wrong password attempts warning
+- Improved! Disabled page transitions for snappy UX
+- Improved! Item screen action button for mobile
+- Improved! App theme switcher UI
+- Improved! Pro indicator in drawer
+- Improved! Diagnostics info appended on contact screen
+- Fixed! Drawer items not updating automatically on large screen devices
 - Fixed! Stuck progress bar when user cancels biometrics
 - Fixed! Stuck progress bar when used a wrong password to unlock vault
 - Fixed! Switching to master password for failed biometrics

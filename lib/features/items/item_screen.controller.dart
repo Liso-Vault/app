@@ -12,6 +12,7 @@ import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
+import 'package:liso/features/drawer/drawer.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/tags/tags_input.controller.dart';
@@ -771,8 +772,8 @@ class ItemScreenController extends GetxController
 
   Future<void> _loadTemplate() async {
     final drawerController = Get.find<DrawerMenuController>();
-    final protected_ = drawerController.filterProtected.value ||
-        protectedCategories.contains(category.value);
+    // final protected_ = drawerController.filterProtected.value ||
+    //     protectedCategories.contains(category.value);
 
     item = HiveLisoItem(
       identifier: const Uuid().v4(),
@@ -783,7 +784,7 @@ class ItemScreenController extends GetxController
       attachments: [],
       sharedVaultIds: [],
       favorite: drawerController.filterFavorites.value,
-      protected: protected_,
+      // protected: protected_,
       metadata: await HiveMetadata.get(),
       groupId: drawerController.filterGroupId.value,
     );
@@ -791,6 +792,7 @@ class ItemScreenController extends GetxController
 
   void add() async {
     if (!formKey.currentState!.validate()) return;
+    if (!editMode.value) return console.error('not in edit mode');
     // items limit
     if (ItemsService.to.itemLimitReached) {
       return Utils.adaptiveRouteOpen(
@@ -833,11 +835,13 @@ class ItemScreenController extends GetxController
     await ItemsService.to.box!.add(newItem);
     Persistence.to.changes.val++;
     ItemsController.to.load();
+    DrawerMenuController.to.update();
     Get.back();
   }
 
   void edit() async {
     if (!formKey.currentState!.validate()) return;
+    if (!editMode.value) return console.error('not in edit mode');
 
     item!.iconUrl = iconUrl.value;
     item!.title = titleController.text;
@@ -854,6 +858,7 @@ class ItemScreenController extends GetxController
 
     Persistence.to.changes.val++;
     ItemsController.to.load();
+    DrawerMenuController.to.update();
     Get.back();
   }
 

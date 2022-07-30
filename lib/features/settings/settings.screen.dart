@@ -32,22 +32,43 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         const SizedBox(height: 20),
-        Obx(
-          () => ContextMenuButton(
-            controller.menuItemsTheme,
-            useMouseRegion: true,
-            padding: EdgeInsets.zero,
-            initialItem: controller.menuItemsTheme.firstWhere(
-              (e) => e.title.toLowerCase() == controller.theme.value,
-            ),
-            child: ListTile(
-              leading: Icon(Iconsax.color_swatch, color: themeColor),
-              trailing: const Icon(Iconsax.arrow_right_3),
-              title: Text('theme'.tr),
-              subtitle: Obx(() => Text(controller.theme().tr)),
-            ),
-          ),
-        ),
+        PersistenceBuilder(builder: (p, context) {
+          return ExpansionTile(
+            title: const Text('App Theme'),
+            subtitle: Text(controller.theme().tr),
+            leading: Icon(Iconsax.color_swatch, color: themeColor),
+            childrenPadding: const EdgeInsets.only(left: 20),
+            children: [
+              ListTile(
+                leading: Icon(Iconsax.cpu, color: themeColor),
+                selected: p.theme.val == ThemeMode.system.name,
+                title: Text(ThemeMode.system.name.tr),
+                trailing: p.theme.val == ThemeMode.system.name
+                    ? Icon(LineIcons.check, color: themeColor)
+                    : null,
+                onTap: () => controller.changeTheme(ThemeMode.system),
+              ),
+              ListTile(
+                leading: Icon(Iconsax.moon, color: themeColor),
+                selected: p.theme.val == ThemeMode.dark.name,
+                title: Text(ThemeMode.dark.name.tr),
+                trailing: p.theme.val == ThemeMode.dark.name
+                    ? Icon(LineIcons.check, color: themeColor)
+                    : null,
+                onTap: () => controller.changeTheme(ThemeMode.dark),
+              ),
+              ListTile(
+                leading: Icon(Iconsax.sun_1, color: themeColor),
+                selected: p.theme.val == ThemeMode.light.name,
+                title: Text(ThemeMode.light.name.tr),
+                trailing: p.theme.val == ThemeMode.light.name
+                    ? Icon(LineIcons.check, color: themeColor)
+                    : null,
+                onTap: () => controller.changeTheme(ThemeMode.light),
+              ),
+            ],
+          );
+        }),
         PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Sync Settings'),

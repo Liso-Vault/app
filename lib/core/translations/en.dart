@@ -98,6 +98,7 @@ final en = {
   "system": "System",
   "change_theme": "Change Theme",
   "save": "Save",
+  "edit": "Edit",
   "cloud_sync": "Cloud Sync",
   "sync": "Sync",
   "synchronize": "Synchronize",

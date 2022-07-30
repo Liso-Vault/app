@@ -46,12 +46,10 @@ class AboutScreenController extends GetxController with ConsoleMixin {
       //   leading: const Icon(LineIcons.instagram),
       //   onSelected: () => Utils.openUrl(links.instagram),
       // ),
-      ContextMenuItem(
+      const ContextMenuItem(
         title: 'Email',
-        leading: const Icon(LineIcons.envelope),
-        onSelected: () => Utils.openUrl(
-          'mailto:${ConfigService.to.general.app.emails.support}?subject=${ConfigService.to.appName}%20Support',
-        ),
+        leading: Icon(LineIcons.envelope),
+        onSelected: Utils.contactAppEmail,
       ),
     ];
   }
@@ -107,13 +105,6 @@ class AboutScreenController extends GetxController with ConsoleMixin {
           onSelected: () => Utils.openUrl(links.store.google),
         ),
       ],
-      ContextMenuItem(
-        title: 'Email',
-        leading: const Icon(LineIcons.envelope),
-        onSelected: () => Utils.openUrl(
-          'mailto:${ConfigService.to.general.developer.emails.support}?subject=${ConfigService.to.devName}%20Support',
-        ),
-      ),
     ];
   }
 

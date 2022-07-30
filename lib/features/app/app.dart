@@ -42,8 +42,8 @@ class App extends StatelessWidget {
       // NAVIGATION
       initialRoute: Routes.main,
       getPages: AppPages.routes,
-      defaultTransition: Transition.rightToLeft,
-      transitionDuration: 200.milliseconds,
+      defaultTransition: Transition.native,
+      // transitionDuration: 200.milliseconds,
       // THEME MODE
       themeMode: ThemeMode.values.byName(persistence.theme.val),
       // DARK THEME

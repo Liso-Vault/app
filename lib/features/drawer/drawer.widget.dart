@@ -247,25 +247,34 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   method: 'offAndToNamed',
                 ),
               ),
+              const ListTile(
+                title: Text('Send Feedback'),
+                leading: Icon(Iconsax.message),
+                onTap: Utils.contactAppEmail,
+              ),
               PersistenceBuilder(
                 builder: (p, context) => Obx(
                   () => Column(
                     children: [
-                      if (!ProController.to.isPro) ...[
-                        const Divider(),
-                        ListTile(
-                          title: const ProText(size: 16),
-                          subtitle: const Text(
-                            'Unlock powerful features',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          leading: Icon(LineIcons.rocket, color: proColor),
-                          onTap: () => Utils.adaptiveRouteOpen(
-                            name: Routes.upgrade,
-                            method: 'offAndToNamed',
-                          ),
+                      const Divider(),
+                      ListTile(
+                        title: const ProText(size: 16),
+                        subtitle: Text(
+                          ProController.to.isPro
+                              ? 'Active'
+                              : 'Unlock powerful features',
+                          style: const TextStyle(color: Colors.grey),
                         ),
-                      ],
+                        leading: Icon(LineIcons.rocket, color: proColor),
+                        onTap: () => ProController.to.isPro
+                            ? Utils.openUrl(
+                                ProController.to.info.value.managementURL!,
+                              )
+                            : Utils.adaptiveRouteOpen(
+                                name: Routes.upgrade,
+                                method: 'offAndToNamed',
+                              ),
+                      ),
                     ],
                   ),
                 ),

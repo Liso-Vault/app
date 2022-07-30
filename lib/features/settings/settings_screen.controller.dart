@@ -414,6 +414,10 @@ class SettingsScreenController extends GetxController
           title: const Text('App Version'),
           subtitle: Text(Globals.metadata?.app.formattedVersion ?? ''),
         ),
+        ListTile(
+          title: const Text('Platform'),
+          subtitle: Text(Utils.platformName()),
+        ),
       ],
     );
 

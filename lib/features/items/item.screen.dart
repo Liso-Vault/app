@@ -300,23 +300,25 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ),
       ),
       actions: [
-        Obx(
-          () => Visibility(
-            visible: controller.editMode.value,
-            replacement: IconButton(
-              onPressed: controller.editMode.toggle,
-              icon: const Icon(LineIcons.pen),
-            ),
-            child: IconButton(
-              onPressed: controller.joinedVaultItem
-                  ? null
-                  : mode == 'view'
-                      ? controller.edit
-                      : controller.add,
-              icon: const Icon(LineIcons.check),
+        if (!Utils.isDrawerExpandable) ...[
+          Obx(
+            () => Visibility(
+              visible: controller.editMode.value,
+              replacement: IconButton(
+                onPressed: controller.editMode.toggle,
+                icon: const Icon(LineIcons.pen),
+              ),
+              child: IconButton(
+                onPressed: controller.joinedVaultItem
+                    ? null
+                    : mode == 'view'
+                        ? controller.edit
+                        : controller.add,
+                icon: const Icon(LineIcons.check),
+              ),
             ),
           ),
-        ),
+        ],
         if (mode == 'view') ...[
           ContextMenuButton(
             controller.menuItems,
@@ -325,6 +327,24 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ],
         const SizedBox(width: 10),
       ],
+    );
+
+    final fab = Obx(
+      () => FloatingActionButton.extended(
+        onPressed: () {
+          if (!controller.editMode.value) {
+            controller.editMode.toggle();
+          } else {
+            if (mode == 'view') {
+              controller.edit();
+            } else {
+              controller.add();
+            }
+          }
+        },
+        icon: Icon(controller.editMode() ? LineIcons.check : LineIcons.pen),
+        label: Text(controller.editMode() ? 'save'.tr : 'edit'.tr),
+      ),
     );
 
     final form = Form(
@@ -346,6 +366,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       onWillPop: controller.canPop,
       child: Scaffold(
         appBar: appBar,
+        floatingActionButton: Utils.isDrawerExpandable ? fab : null,
         // grey disabled fields
         body: Theme(
           data: Get.theme.copyWith(disabledColor: Colors.grey),

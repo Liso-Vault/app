@@ -13,8 +13,11 @@ import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../features/general/remote_image.widget.dart';
+import '../../features/pro/pro.controller.dart';
 import '../../features/s3/model/s3_content.model.dart';
+import '../../features/wallet/wallet.service.dart';
 import '../../resources/resources.dart';
+import '../firebase/auth.service.dart';
 import '../firebase/config/config.service.dart';
 import '../persistence/persistence.dart';
 import 'globals.dart';
@@ -309,5 +312,42 @@ class Utils {
     }
 
     return color;
+  }
+
+  static String platformName() {
+    if (GetPlatform.isAndroid) {
+      return "android";
+    } else if (GetPlatform.isIOS) {
+      return "ios";
+    } else if (GetPlatform.isWindows) {
+      return "windows";
+    } else if (GetPlatform.isMacOS) {
+      return "macos";
+    } else if (GetPlatform.isLinux) {
+      return "linux";
+    } else if (GetPlatform.isFuchsia) {
+      return "fuchsia";
+    } else {
+      return "unknown";
+    }
+  }
+
+  static void contactAppEmail() {
+    final body = Uri.encodeComponent("""
+
+
+User ID: ${AuthService.to.userId}
+Address: ${WalletService.to.longAddress}
+RC User ID: ${ProController.to.info.value.originalAppUserId}
+Entitlement: ${ProController.to.limits.id}
+App Version: ${Globals.metadata?.app.formattedVersion}
+Platform: ${Utils.platformName()}
+""");
+
+    final subject = Uri.encodeComponent('${ConfigService.to.appName} Support');
+
+    Utils.openUrl(
+      'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body',
+    );
   }
 }

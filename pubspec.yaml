@@ -25,7 +25,7 @@ dependencies:
   hex: ^0.2.0 # Hex encoding & decoding
   encrypt: ^5.0.1 # File Encryption
   local_auth: ^2.0.2 # check biometric availability
-  walletconnect_dart: ^0.0.11
+  # walletconnect_dart: ^0.0.11
   otp: ^3.1.1
 
   # FIREBASE

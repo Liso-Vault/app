@@ -588,7 +588,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               value: 'restore',
               child: Row(
                 children: [
-                  Icon(Iconsax.refresh, color: themeColor),
+                  Icon(Iconsax.refresh, color: proColor),
                   const SizedBox(width: 10),
                   const Text('Restore Purchases'),
                 ],
