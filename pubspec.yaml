@@ -96,6 +96,7 @@ dependencies:
   random_string_generator: ^2.0.0
   humanizer: ^2.0.0
   worker_manager: ^4.4.2
+  # local_session_timeout: ^0.2.0
 
   # INFO
   device_info_plus: 3.2.4

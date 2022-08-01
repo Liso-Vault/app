@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
@@ -391,6 +393,31 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                           visualDensity: VisualDensity.standard,
                         ),
                       ),
+                      const SizedBox(height: 5),
+                      Obx(
+                        () => Visibility(
+                          visible: controller.isSubscription,
+                          child: RichText(
+                            textAlign: TextAlign.center,
+                            text: TextSpan(
+                              text: 'Cancel anytime',
+                              style: TextStyle(color: themeColor),
+                              children: [
+                                const TextSpan(
+                                  text: ' - ',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                TextSpan(
+                                  text: 'Renews automatically',
+                                  style: TextStyle(
+                                    color: Get.theme.textTheme.bodySmall?.color,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -511,16 +538,6 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           Expanded(child: benefits),
           actionCard,
           const SizedBox(height: 5),
-          Obx(
-            () => Visibility(
-              visible: controller.isSubscription,
-              child: const Text(
-                'Renews automatically. Cancel anytime.',
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.grey, fontSize: 12),
-              ),
-            ),
-          ),
           if (ProController.to.isFreeTrial) ...[
             RichText(
               textAlign: TextAlign.center,

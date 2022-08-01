@@ -143,6 +143,19 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     return passwords.isNotEmpty;
   }
 
+  bool get hasOldPasswords {
+    final passwords = fields.where((e) {
+      if (e.type != LisoFieldType.password.name) return false;
+      if (e.data.value!.isEmpty) return false;
+      // if not a password field
+      if (kNonPasswordFieldIds.contains(e.identifier)) return false;
+      // TODO: work on detecting old passwords
+      return false;
+    });
+
+    return passwords.isNotEmpty;
+  }
+
   @override
   List<Object?> get props => [
         identifier,

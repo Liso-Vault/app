@@ -12,7 +12,6 @@ import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
-import 'package:liso/features/drawer/drawer.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/tags/tags_input.controller.dart';

@@ -18,7 +18,6 @@ import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
-import 'package:supercharged/supercharged.dart';
 
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';

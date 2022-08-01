@@ -260,7 +260,8 @@ class MainScreenController extends GetxController
         if (Globals.timeLockEnabled) {
           final timeLock = persistence.timeLockDuration.val.seconds;
           timeLockTimer = Timer.periodic(timeLock, (timer) {
-            WalletService.to.reset();
+            // WalletService.to.reset();
+            Get.toNamed(Routes.unlock);
             timer.cancel();
           });
         }
