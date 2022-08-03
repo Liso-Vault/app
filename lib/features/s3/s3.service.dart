@@ -27,7 +27,6 @@ import '../../core/utils/globals.dart';
 import '../categories/categories.service.dart';
 import '../groups/groups.service.dart';
 import '../items/items.service.dart';
-import '../wallet/wallet.service.dart';
 import 'model/s3_content.model.dart';
 import 'model/s3_folder_info.model.dart';
 

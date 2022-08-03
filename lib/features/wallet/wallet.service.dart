@@ -36,21 +36,21 @@ class WalletService extends GetxService with ConsoleMixin {
 
   // GETTERS
   Wallet? wallet;
-  Uint8List? cipherKey;
+  // Uint8List? cipherKey;
 
   bool get isReady => wallet != null;
+
+  bool get isSaved => Persistence.to.wallet.val.isNotEmpty;
 
   Uint8List get privateKey => wallet!.privateKey.privateKey;
   String get privateKeyHex => HEX.encode(privateKey);
 
   EthereumAddress get address => wallet!.privateKey.address;
 
-  String get longAddress => address.hexEip55;
+  // String get longAddress => address.hexEip55;
 
-  String get shortAddress =>
-      '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
-
-  bool get isSaved => Persistence.to.wallet.val.isNotEmpty;
+  // String get shortAddress =>
+  //     '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
 
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
@@ -180,31 +180,34 @@ class WalletService extends GetxService with ConsoleMixin {
       console.error('error: $e');
     }
 
+    console.info('init wallet json');
     return wallet_;
   }
 
   Future<void> init(Wallet wallet_) async {
     wallet = wallet_;
     // save to persistence
-    Persistence.to.walletAddress.val = longAddress;
+    Persistence.to.walletAddress.val = address.hexEip55;
     Persistence.to.wallet.val = await compute(walletToJsonString, wallet!);
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     Persistence.to.walletSignature.val = signature;
-    // from the first 32 bits of the signature
-    cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
+    // // from the first 32 bits of the signature
+    // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 
     if (!GetPlatform.isWindows) {
       AnalyticsService.to.instance.setUserProperty(
         name: 'wallet_address',
-        value: longAddress,
+        value: Persistence.to.walletAddress.val,
       );
     }
+
+    console.info('init');
   }
 
   void reset() {
     wallet = null;
-    cipherKey = null;
+    // cipherKey = null;
   }
 
   Future<void> create(String seed, String password, bool isNew) async {
@@ -236,7 +239,7 @@ class WalletService extends GetxService with ConsoleMixin {
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'address') {
-        e.data.value = longAddress;
+        e.data.value = Persistence.to.walletAddress.val;
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'note') {

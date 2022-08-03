@@ -37,7 +37,7 @@ class AppPages {
     GetPage(
       name: Routes.main,
       page: () => MainScreen(),
-      transition: Transition.fadeIn,
+      // transition: Transition.fadeIn,
       middlewares: [
         AuthenticationMiddleware(),
       ],
@@ -45,12 +45,12 @@ class AppPages {
     GetPage(
       name: Routes.welcome,
       page: () => const WelcomeScreen(),
-      transition: Transition.fadeIn,
+      // transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.unlock,
       page: () => const UnlockScreen(),
-      transition: Transition.fadeIn,
+      // transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.createPassword,

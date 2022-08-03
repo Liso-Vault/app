@@ -16,7 +16,6 @@ import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';

@@ -26,15 +26,17 @@
       <meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
       <meta-data android:name="flutterEmbedding" android:value="2" />
     </activity>
-    
+
     <meta-data android:name="com.keevault.flutter_autofill_service.ACTIVITY_NAME" android:value="com.liso.app.AutofillActivity" />
     <meta-data android:name="com.keevault.flutter_autofill_service.SAVE_ACTIVITY_NAME" android:value="com.liso.app.AutofillActivity" />
     <meta-data android:name="com.keevault.flutter_autofill_service.service_short_name" android:value="Liso" />
     <meta-data android:name="com.keevault.flutter_autofill_service.match_header_drawable_name" android:value="ic_notification" />
+    <!-- <meta-data android:name="com.keevault.flutter_autofill_service.select_another_entry_drawable_name" android:value="ic_notification" /> -->
+    <meta-data android:name="com.keevault.flutter_autofill_service.select_another_entry" android:value="Pick again" />
 
-    <service android:name="com.keevault.flutter_autofill_service.FlutterAutofillService" tools:replace="label" android:label="Liso">
+    <service android:name="com.keevault.flutter_autofill_service.FlutterAutofillService" tools:replace="label" android:label="Liso Password Manager">
       <meta-data android:name="com.keevault.flutter_autofill_service.unlock_label" android:value="Autofill with Liso" />
-      <!-- <meta-data android:name="com.keevault.flutter_autofill_service.unlock_drawable_name" android:value="ic_notification" /> -->
+      <meta-data android:name="com.keevault.flutter_autofill_service.unlock_drawable_name" android:value="ic_notification" />
     </service>
   </application>
 </manifest>

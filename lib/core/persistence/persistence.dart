@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,11 @@ class Persistence extends GetxController with ConsoleMixin {
   // DELETED IDS
 
   // GETTERS
+
+  // from the first 32 bits of the signature
+  Uint8List get cipherKey =>
+      Uint8List.fromList(utf8.encode(walletSignature.val).sublist(0, 32));
+
   bool get canShare =>
       sync.val && AuthService.to.isSignedIn && !GetPlatform.isWindows;
 

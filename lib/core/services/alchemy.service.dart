@@ -56,7 +56,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
     final lisoToken = LisoToken();
 
     final result = await alchemy.erc20.balanceOf(
-      address: wallet.address,
+      address: EthereumAddress.fromHex(Persistence.to.walletAddress.val),
       contract: lisoToken.polygonMumbaiContract,
     );
 
@@ -74,7 +74,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
 
   Future<void> loadMaticBalance() async {
     final result = await alchemy.polygon.getBalance(
-      address: WalletService.to.longAddress,
+      address: Persistence.to.walletAddress.val,
     );
 
     result.fold(

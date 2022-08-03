@@ -11,6 +11,7 @@ import '../../features/app/routes.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   static bool initialized = false;
+  static bool signedIn = false;
 
   @override
   RouteSettings? redirect(String? route) {
@@ -23,7 +24,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.welcome);
     }
 
-    if (!WalletService.to.isReady) {
+    if (!signedIn) {
       return const RouteSettings(name: Routes.unlock);
     }
 

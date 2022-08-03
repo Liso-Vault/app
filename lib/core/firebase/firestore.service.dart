@@ -21,7 +21,6 @@ import '../../features/categories/categories.service.dart';
 import '../../features/joined_vaults/model/member.model.dart';
 import '../../features/pro/pro.controller.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
-import '../../features/wallet/wallet.service.dart';
 import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
 import '../services/cipher.service.dart';
@@ -202,7 +201,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     );
 
     user.userId = AuthService.to.userId;
-    user.address = WalletService.to.longAddress;
+    user.address = Persistence.to.walletAddress.val;
     user.limits = ProController.to.limits.id;
     user.metadata = metadata;
 

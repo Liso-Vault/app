@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:liso/core/persistence/persistence.dart' as p;
 
 import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
@@ -77,7 +78,7 @@ class AuthDesktopService extends GetxService with ConsoleMixin {
       return console.warning('Already Signed In: $userId');
     }
 
-    final email = '${WalletService.to.longAddress}@liso.dev';
+    final email = '${p.Persistence.to.walletAddress.val}@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);
 
     try {

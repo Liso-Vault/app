@@ -53,7 +53,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
           } else if (filterSharedVaultId.value.isNotEmpty) {
             return e.sharedVaultIds.contains(filterSharedVaultId.value);
           } else {
-            return false;
+            return true;
           }
         },
       );
@@ -179,7 +179,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   void filterAllItems() {
     clearFilters();
-    done();
   }
 
   void filterByGroupId(String groupId) {
@@ -250,7 +249,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
   }
 
   void clearFilters() {
-    filterGroupId.value = 'personal';
+    // filterGroupId.value = 'personal';
     filterCategory.value = '';
     filterTag.value = '';
     filterSharedVaultId.value = '';
@@ -259,6 +258,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
     filterTrashed.value = false;
     filterDeleted.value = false;
     filterPasswordHealth.value = false;
+    done();
   }
 
   void done() async {

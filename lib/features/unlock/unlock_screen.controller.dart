@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -29,6 +32,7 @@ class UnlockScreenController extends GetxController
   // INIT
   @override
   void onInit() {
+    AuthenticationMiddleware.signedIn = false;
     change(null, status: RxStatus.success());
     super.onInit();
   }
@@ -61,24 +65,50 @@ class UnlockScreenController extends GetxController
     await Get.closeCurrentSnackbar();
     change(null, status: RxStatus.loading());
 
-    if (WalletService.to.isReady) {
-      if (passwordController.text != Persistence.to.walletPassword.val) {
-        return _wrongPassword();
-      }
+    if (passwordController.text != Persistence.to.walletPassword.val) {
+      return _wrongPassword();
+    }
 
+    AuthenticationMiddleware.signedIn = true;
+
+    if (!WalletService.to.isReady) {
+      WalletService.to
+          .initJson(
+        Persistence.to.wallet.val,
+        password: passwordController.text,
+      )
+          .then((wallet) {
+        if (wallet == null) {
+          return UIUtils.showSimpleDialog(
+            'Wrong Password',
+            'Please report to the developer',
+          );
+        }
+
+        WalletService.to.init(wallet);
+      });
+    }
+
+    void _done() async {
+      await HiveService.to.open();
+      change(null, status: RxStatus.success());
       if (passwordMode || regularMode) return Get.back(result: true);
       return Get.offNamedUntil(Routes.main, (route) => false);
     }
 
-    final wallet_ = await WalletService.to.initJson(
-      Persistence.to.wallet.val,
-      password: passwordController.text,
-    );
+    if (Persistence.to.walletSignature.val.isNotEmpty) {
+      return _done();
+    }
 
-    if (wallet_ == null) return _wrongPassword();
-    await WalletService.to.init(wallet_);
-    await HiveService.to.open();
-    return Get.offNamedUntil(Routes.main, (route) => false);
+    // temporary to migrate users from prior v0.6.0
+    Timer.periodic(1.seconds, (timer) async {
+      if (Persistence.to.walletSignature.val.isNotEmpty) {
+        timer.cancel();
+        return _done();
+      } else {
+        console.info('wallet signature still not present');
+      }
+    });
   }
 
   void _wrongPassword() async {

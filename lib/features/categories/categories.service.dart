@@ -5,13 +5,13 @@ import 'dart:typed_data';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
-import 'categories.controller.dart';
-import '../../core/liso/liso_paths.dart';
-import '../../core/utils/globals.dart';
 import '../../core/hive/models/category.hive.dart';
+import '../../core/liso/liso_paths.dart';
+import '../../core/persistence/persistence.dart';
+import '../../core/utils/globals.dart';
+import 'categories.controller.dart';
 
 class CategoriesService extends GetxService with ConsoleMixin {
   static CategoriesService get to => Get.find<CategoriesService>();
@@ -29,7 +29,7 @@ class CategoriesService extends GetxService with ConsoleMixin {
   Future<void> open({Uint8List? cipherKey, bool initialize = true}) async {
     box = await Hive.openBox(
       kHiveBoxCategories,
-      encryptionCipher: HiveAesCipher(cipherKey ?? WalletService.to.cipherKey!),
+      encryptionCipher: HiveAesCipher(cipherKey ?? Persistence.to.cipherKey),
       path: LisoPaths.hivePath,
     );
 

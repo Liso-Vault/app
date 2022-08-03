@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -177,7 +178,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
         Row(
           children: [
             DiceBearAvatar(
-              seed: WalletService.to.longAddress,
+              seed: Persistence.to.walletAddress.val,
               size: 30,
             ),
             const SizedBox(width: 10),
@@ -194,8 +195,8 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 Text(
                   Utils.isDrawerExpandable
-                      ? WalletService.to.shortAddress
-                      : WalletService.to.longAddress,
+                      ? Persistence.to.shortAddress
+                      : Persistence.to.walletAddress.val,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

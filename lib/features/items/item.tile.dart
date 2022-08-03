@@ -335,6 +335,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       leading: leading,
       // for some reason, using subtitle gets a lot of errors so we're not using it
       // subtitle: subTitle,
+      contentPadding: const EdgeInsets.only(left: 16, right: 6),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

@@ -30,7 +30,6 @@ import '../app/routes.dart';
 import '../groups/groups.service.dart';
 import '../menu/menu.item.dart';
 import '../pro/pro.controller.dart';
-import '../wallet/wallet.service.dart';
 
 class SettingsScreenController extends GetxController
     with ConsoleMixin, StateMixin {

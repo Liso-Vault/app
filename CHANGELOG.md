@@ -1,9 +1,10 @@
-## 0.5.4
+## 0.6.0
 - New! Autofill Service on Android
 - New! Autofill Hints
 - New! All vaults filter
 - New! Re-order fields toggle
 - Removed! Unnecessary password indicators
+- Improved! Faster unlock
 - Improved! Wrong password attempts warning
 - Improved! Disabled page transitions for snappy UX
 - Improved! Item screen action button for mobile
