@@ -34,17 +34,20 @@ dependencies:
   firebase_crashlytics: 2.8.6
   firebase_performance: 0.8.2+1
   firebase_remote_config: 2.0.13
-  firebase_auth: 3.4.1
-  cloud_firestore: 3.4.1
+  firebase_auth: 3.6.1
+  cloud_firestore: 3.4.2
   cloud_functions: 3.3.3
   firebase_app_check: 0.0.6+18
   # FIREBASE DESKTOP
   firebase_core_desktop: 1.0.1
-  firebase_auth_desktop: 1.0.1
+  # firebase_auth_desktop: 1.0.1
+  firebase_auth_desktop: #^1.0.1
+    git:
+      url: https://github.com/rebaz94/flutterfire_desktop.git
+      path: ./packages/firebase_auth/firebase_auth_desktop
   firebase_functions_desktop: 0.2.0+2
   firebase_core_platform_interface: 4.5.0
-  # firebase_auth_platform_interface: 6.5.0
-  firebase_auth_platform_interface: 6.3.1
+  firebase_auth_platform_interface: 6.5.1
   # FIREBASE DESKTOP WORKAROUND
   firebase_dart: ^1.0.10+1
 
@@ -53,11 +56,13 @@ dependencies:
   path_provider: ^2.0.11
   path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
-  file_picker: ^4.6.1 # exporting + importing
+  file_picker: ^5.0.1 # exporting + importing vault file
   http: ^0.13.4 # web3dart client
 
   # API
-  minio: ^3.5.0 # S3 API
+  # minio: ^3.5.0 # S3 API
+  minio:
+    git: https://github.com/oliverbytes/minio-dart.git
   coingecko_api: ^1.0.2+2 # Coingecko API
   purchases_flutter: ^3.10.0
 
@@ -70,12 +75,13 @@ dependencies:
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.0.4
-  flutter_quill:
-    git: https://github.com/oliverbytes/flutter-quill.git
+  # flutter_quill:
+  #   git: https://github.com/oliverbytes/flutter-quill.git
+  flutter_quill: ^5.3.2
   badges: ^2.0.3 # pending changes indicator
   cached_network_image: ^3.2.1 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
-  flutter_svg: ^1.0.3 # dice bear avatars
+  flutter_svg: ^1.1.1+1 # dice bear avatars
   qr_flutter: ^4.0.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects
 
@@ -84,7 +90,7 @@ dependencies:
   supercharged: ^2.1.1 # useful utils
   timeago: ^3.2.2
   flutter_local_notifications: ^9.7.0
-  either_dart: ^0.1.4 # functional programming + error handling
+  either_dart: ^0.2.0 # functional programming + error handling
   intl: ^0.17.0 # date formatting
   share_plus: ^4.0.10 # exporting files and sharing texts
   equatable: ^2.0.3
@@ -95,12 +101,13 @@ dependencies:
   console_mixin: ^0.0.1 # logger
   random_string_generator: ^2.0.0
   humanizer: ^2.0.0
-  worker_manager: ^4.4.2
-  # local_session_timeout: ^0.2.0
+  worker_manager: ^4.4.5
+  flutter_autofill_service: ^0.14.0
 
   # INFO
-  device_info_plus: 3.2.4
-  package_info_plus: ^1.4.2
+  device_info_plus: 4.0.1
+  platform_device_id: ^1.0.1
+  package_info_plus: ^1.4.3
   connectivity_plus: ^2.3.6 # internet connectivity checking
 
 dev_dependencies:
@@ -110,7 +117,7 @@ dev_dependencies:
   flutter_lints: ^2.0.1
   hive_generator: ^1.1.3 # hive database
   build_runner: ^2.2.0
-  flutter_native_splash: ^2.2.0+1
+  flutter_native_splash: ^2.2.7
   dart_code_metrics: ^4.16.0 # checking unused stuffs
 
 flutter:

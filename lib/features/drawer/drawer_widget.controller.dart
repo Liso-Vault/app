@@ -96,8 +96,9 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   int get fragilePasswordCount => groupedItems
       .where((e) =>
-          e.hasWeakPasswords ||
-          e.hasReusedPasswords && !e.trashed && !e.deleted)
+          !e.trashed &&
+          !e.deleted &&
+          (e.hasWeakPasswords || e.hasReusedPasswords))
       .length;
 
   int get trashedCount =>

@@ -1,11 +1,14 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
@@ -15,6 +18,9 @@ import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../core/firebase/auth.service.dart';
+import '../../core/hive/models/app_domain.hive.dart';
+import '../../core/services/alchemy.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
@@ -28,8 +34,14 @@ class MainScreenController extends GetxController
   static MainScreenController get to => Get.find();
 
   // VARIABLES
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   Timer? timeLockTimer;
   ItemsSearchDelegate? searchDelegate;
+  AutofillPreferences? pref;
+  AutofillMetadata? metadata;
+  AutofillServiceStatus? status;
+
+  final autofill = AutofillService();
   final persistence = Get.find<Persistence>();
   final itemsController = Get.find<ItemsController>();
   final drawerController = Get.find<DrawerMenuController>();
@@ -154,7 +166,7 @@ class MainScreenController extends GetxController
 
   // INIT
   @override
-  void onInit() {
+  void onInit() async {
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
       windowManager.addListener(this);
       windowManager.setPreventClose(true);
@@ -167,7 +179,6 @@ class MainScreenController extends GetxController
   @override
   void onReady() {
     _initAppLifeCycleEvents();
-    Future.delayed(5.seconds).then((value) => _updateBuildNumber());
     console.info('onReady');
     super.onReady();
   }
@@ -229,9 +240,188 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  void search() async {
+  void postInit() {
+    // firebase auth
+    AuthService.to.signIn();
+    // load listview
+    load();
+
+    if (!Globals.isAutofill) {
+      // load balances
+      AlchemyService.to.init();
+      AlchemyService.to.load();
+      // sync vault
+      S3Service.to.sync();
+    } else {
+      // show all items from all vaults
+      drawerController.filterGroupId.value = '';
+      _autofillAction();
+
+      if (!WalletService.to.isReady) {
+        // TODO: show some message a vault is needed
+      }
+    }
+
+    _updateBuildNumber();
+  }
+
+  void _autofillAction() async {
+    if (!Globals.isAutofill) return;
+    await _updateAutofillStats();
+
+    // SAVE MODE
+    if (metadata?.saveInfo != null) {
+      _saveAutofill();
+    }
+    // FILL MODE
+    else {
+      String query = '';
+
+      if (metadata!.webDomains.isNotEmpty) {
+        query = metadata!.webDomains.first.domain;
+      } else {
+        query = metadata!.packageNames.first;
+      }
+
+      final appDomains = ConfigService.to.appDomains.data.where((e) {
+        // DOMAINS
+        if (metadata?.webDomains != null &&
+            e.domains
+                .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
+                      domain: d.domain,
+                      scheme: d.scheme,
+                    )))
+                .isNotEmpty) {
+          return true;
+        }
+
+        // PACKAGE NAMES
+        if (metadata?.packageNames != null &&
+            e.appIds
+                .where((a) => metadata!.packageNames.contains(a))
+                .isNotEmpty) {
+          return true;
+        }
+
+        return false;
+      }).toList();
+
+      search(query: appDomains.isNotEmpty ? appDomains.first.title : query);
+    }
+  }
+
+  void _saveAutofill() {
+    if (metadata!.webDomains.isEmpty && metadata!.packageNames.isEmpty) {
+      return console.error('invalid autofill metadata');
+    }
+
+    final appDomains = ConfigService.to.appDomains.data.where((e) {
+      // DOMAINS
+      if (metadata?.webDomains != null &&
+          e.domains
+              .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
+                    domain: d.domain,
+                    scheme: d.scheme,
+                  )))
+              .isNotEmpty) {
+        return true;
+      }
+
+      // PACKAGE NAMES
+      if (metadata?.packageNames != null &&
+          e.appIds
+              .where((a) => metadata!.packageNames.contains(a))
+              .isNotEmpty) {
+        return true;
+      }
+
+      return false;
+    }).toList();
+
+    final appIds = metadata?.packageNames != null
+        ? metadata!.packageNames.toList()
+        : <String>[];
+
+    final domains = metadata?.webDomains != null
+        ? metadata!.webDomains
+            .toList()
+            .map((e) => HiveDomain(scheme: e.scheme, domain: e.domain))
+            .toList()
+        : <HiveDomain>[];
+
+    String service = '';
+
+    if (metadata!.packageNames.isNotEmpty) {
+      service = metadata!.packageNames.first;
+    } else if (metadata!.webDomains.isNotEmpty) {
+      service = metadata!.webDomains.first.domain;
+    }
+
+    final appDomain = appDomains.isNotEmpty
+        ? appDomains.first
+        : HiveAppDomain(
+            title: service,
+            appIds: appIds,
+            domains: domains,
+            iconUrl: '',
+          );
+
+    console.info('app domain: ${appDomain.toJson()}');
+
+    final username = metadata?.saveInfo?.username ?? '';
+    final password = metadata?.saveInfo?.password ?? '';
+
+    Utils.adaptiveRouteOpen(
+      name: Routes.item,
+      parameters: {
+        'mode': 'saved_autofill',
+        'category': LisoItemCategory.login.name,
+        'title': '$username ${appDomain.title}',
+        'username': username,
+        'password': password,
+        'app_domain': jsonEncode(appDomain.toJson()),
+      },
+    );
+  }
+
+  Future<void> _updateAutofillStats() async {
+    pref = await autofill.getPreferences();
+    metadata = await autofill.getAutofillMetadata();
+    status = await autofill.status();
+
+    console.warning(''''
+fillRequestedAutomatic: ${await autofill.fillRequestedAutomatic}'
+fillRequestedInteractive: ${await autofill.fillRequestedInteractive}'
+hasAutofillServicesSupport: ${await autofill.hasAutofillServicesSupport}'
+hasEnabledAutofillServices: ${await autofill.hasEnabledAutofillServices}'
+  
+// METADATA
+saveInfo: ${metadata?.saveInfo?.toJson()}'
+packageNames: ${metadata?.packageNames}'
+webDomains: ${metadata?.webDomains}'
+
+// PREFERENCE
+enableDebug: ${pref?.enableDebug}'
+enableSaving: ${pref?.enableSaving}'
+
+// STATUS
+status: ${status.toString()}'
+    ''');
+  }
+
+  void search({String query = ''}) async {
+    if (Get.context == null) {
+      return console.error('Get.context is null');
+    }
+
     searchDelegate = ItemsSearchDelegate(ItemsService.to.data);
-    await showSearch(context: Get.context!, delegate: searchDelegate!);
+
+    await showSearch(
+      context: Get.context!,
+      delegate: searchDelegate!,
+      query: query,
+    );
+
     searchDelegate = null;
   }
 
@@ -253,15 +443,21 @@ class MainScreenController extends GetxController
         timeLockTimer?.cancel();
 
         if (WalletService.to.isSaved && !WalletService.to.isReady) {
-          Get.toNamed(Routes.unlock);
+          Get.toNamed(
+            Routes.unlock,
+            parameters: {'mode': 'regular'},
+          );
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
         // lock after <duration> of inactivity
         if (Globals.timeLockEnabled) {
           final timeLock = persistence.timeLockDuration.val.seconds;
-          timeLockTimer = Timer.periodic(timeLock, (timer) {
-            // WalletService.to.reset();
-            Get.toNamed(Routes.unlock);
+          timeLockTimer = Timer.periodic(timeLock, (timer) async {
+            Get.toNamed(
+              Routes.unlock,
+              parameters: {'mode': 'regular'},
+            );
+
             timer.cancel();
           });
         }

@@ -247,21 +247,19 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           child: const Icon(Iconsax.sort),
         ),
       ),
-      PersistenceBuilder(
-        builder: (p, context) => Badge(
-          showBadge: p.sync.val && p.changes.val > 0,
-          badgeContent: Text(p.changes.val.toString()),
-          position: BadgePosition.topEnd(top: -1, end: -5),
-          // child: ContextMenuButton(
-          //   controller.menuItems,
-          //   child: const Icon(LineIcons.verticalEllipsis),
-          // ),
-          child: IconButton(
-            onPressed: S3Service.to.sync,
-            icon: const Icon(Iconsax.cloud_change),
+      if (!Globals.isAutofill) ...[
+        PersistenceBuilder(
+          builder: (p, context) => Badge(
+            showBadge: p.sync.val && p.changes.val > 0,
+            badgeContent: Text(p.changes.val.toString()),
+            position: BadgePosition.topEnd(top: -1, end: -5),
+            child: IconButton(
+              onPressed: S3Service.to.sync,
+              icon: const Icon(Iconsax.cloud_change),
+            ),
           ),
         ),
-      ),
+      ],
       const SizedBox(width: 10),
     ];
 
@@ -433,7 +431,15 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final appBar = AppBar(
       centerTitle: false,
       title: appBarTitle,
+      automaticallyImplyLeading: !Globals.isAutofill,
       actions: appBarActions,
+      leading: Globals.isAutofill
+          ? null
+          : IconButton(
+              onPressed: () =>
+                  controller.scaffoldKey.currentState?.openDrawer(),
+              icon: const Icon(Icons.menu),
+            ),
     );
 
     // TODO: show only if there are trash items
@@ -442,26 +448,28 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       child: const Icon(Iconsax.trash),
     );
 
-    final fab = Obx(
-      () {
-        if (drawerController.filterTrashed.value) {
-          if (drawerController.trashedCount > 0) {
-            return clearTrashFab;
-          } else {
-            return const SizedBox.shrink();
-          }
-        }
+    final fab = Globals.isAutofill
+        ? null
+        : Obx(
+            () {
+              if (drawerController.filterTrashed.value) {
+                if (drawerController.trashedCount > 0) {
+                  return clearTrashFab;
+                } else {
+                  return const SizedBox.shrink();
+                }
+              }
 
-        return ContextMenuButton(
-          controller.menuItemsCategory,
-          sheetForSmallScreen: true,
-          child: FloatingActionButton(
-            child: const Icon(LineIcons.plus),
-            onPressed: () {},
-          ),
-        );
-      },
-    );
+              return ContextMenuButton(
+                controller.menuItemsCategory,
+                sheetForSmallScreen: true,
+                child: FloatingActionButton(
+                  child: const Icon(LineIcons.plus),
+                  onPressed: () {},
+                ),
+              );
+            },
+          );
 
     if (screen.isDesktop) {
       return Row(
@@ -479,6 +487,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       );
     } else {
       return Scaffold(
+        key: controller.scaffoldKey,
         appBar: appBar,
         body: SafeArea(child: content),
         drawer: const DrawerMenu(),

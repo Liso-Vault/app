@@ -1,6 +1,8 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
 
 import '../../core/hive/models/item.hive.dart';
@@ -41,12 +43,54 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
 
   Widget process() {
     if (query.isEmpty) {
-      return const Center(child: Text("Search items by title."));
+      return const Center(child: Text("Search items"));
     }
 
-    final filteredItems = items
-        .where((e) => e.title.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+    final filteredItems = items.where((e) {
+      if (e.deleted) return false;
+
+      final query_ = query.toLowerCase();
+
+      if (e.appIds != null &&
+          e.appIds!.join(' ').toLowerCase().contains(query_)) {
+        return true;
+      }
+
+      final domains = e.domains == null
+          ? <String>[]
+          : e.domains!.map((e) => e.domain).toList();
+
+      if (domains.contains(query_)) return true;
+
+      if (e.title.toLowerCase().contains(query_)) {
+        return true;
+      }
+
+      if (e.subTitle.toLowerCase().contains(query_)) {
+        return true;
+      }
+
+      if (e.tags.join(' ').toLowerCase().contains(query_)) {
+        return true;
+      }
+
+      // TODO: this can be expensive in performance
+      // search deeply through field values
+      for (var e in e.fields) {
+        if (e.data.value!.toLowerCase().contains(query_)) {
+          return true;
+        }
+      }
+
+      return false;
+    }).toList();
+
+    if (filteredItems.isEmpty) {
+      return CenteredPlaceholder(
+        iconData: Iconsax.search_normal,
+        message: 'no_results'.tr,
+      );
+    }
 
     return ListView.builder(
       itemCount: filteredItems.length,

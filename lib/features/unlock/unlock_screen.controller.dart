@@ -17,6 +17,7 @@ class UnlockScreenController extends GetxController
   // VARIABLES
   final passwordController = TextEditingController();
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
+  final regularMode = Get.parameters['mode'] == 'regular';
 
   // PROPERTIES
   int attemptsLeft = Persistence.to.maxUnlockAttempts.val;
@@ -97,7 +98,7 @@ class UnlockScreenController extends GetxController
     }
 
     await WalletService.to.init(wallet_);
-    if (passwordMode) return Get.back(result: true);
+    if (passwordMode || regularMode) return Get.back(result: true);
     await HiveService.to.open();
     return Get.offNamedUntil(Routes.main, (route) => false);
   }

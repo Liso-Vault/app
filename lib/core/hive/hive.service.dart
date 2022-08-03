@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'package:liso/core/hive/models/app_domain.hive.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/core/hive/models/metadata/app.hive.dart';
@@ -25,6 +26,9 @@ class HiveService extends GetxService with ConsoleMixin {
     Hive.registerAdapter(HiveLisoFieldAdapter());
     Hive.registerAdapter(HiveLisoFieldDataAdapter());
     Hive.registerAdapter(HiveLisoFieldChoicesAdapter());
+    // APP DOMAIN
+    Hive.registerAdapter(HiveAppDomainAdapter());
+    Hive.registerAdapter(HiveDomainAdapter());
     // METADATA
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());

@@ -49,9 +49,11 @@ import 'features/s3/explorer/s3_content_tile.controller.dart';
 import 'features/s3/s3.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
 
-void init(Flavor flavor) async {
+void init(Flavor flavor, {bool autofill = false}) async {
   Flavors.flavor = flavor;
+  Globals.isAutofill = autofill;
   final console = Console(name: 'Main');
+  console.wtf('Flavor: ${flavor.name}');
 
   // CAPTURE DART ERRORS
   runZonedGuarded(() async {

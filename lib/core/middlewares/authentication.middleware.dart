@@ -1,13 +1,10 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/app/routes.dart';
@@ -35,15 +32,8 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       CrashlyticsService.to.configure();
     }
 
-    // load balances
-    AlchemyService.to.init();
-    AlchemyService.to.load();
-    // firebase auth
-    AuthService.to.signIn();
-    // load all list
-    MainScreenController.to.load();
-    // sync vault
-    S3Service.to.sync();
+    // post init
+    MainScreenController.to.postInit();
     initialized = true;
     console.wtf('welcome');
     return super.redirect(route);

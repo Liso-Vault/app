@@ -1,12 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/form_fields/richtext.field.dart';
+import 'package:liso/core/hive/models/app_domain.hive.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
@@ -74,8 +77,11 @@ class ItemScreenController extends GetxController
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
   final editMode = (Get.parameters['mode'] != 'view').obs;
+  final reorderMode = false.obs;
   final otpCode = ''.obs;
   final otpRemainingSeconds = 0.obs;
+  final domains = <HiveDomain>[].obs;
+  final appIds = <String>[].obs;
 
   // GETTERS
 
@@ -118,6 +124,13 @@ class ItemScreenController extends GetxController
       //     onSelected: () {},
       //   ),
       // ]
+      if (editMode.value) ...[
+        ContextMenuItem(
+          title: reorderMode.value ? 'Done Re-order' : 'Re-order Fields',
+          leading: const Icon(Icons.drag_indicator),
+          onSelected: reorderMode.toggle,
+        ),
+      ],
       ContextMenuItem(
         title: 'Details',
         leading: const Icon(Iconsax.code),
@@ -427,21 +440,16 @@ class ItemScreenController extends GetxController
       _loadItem();
     } else if (mode == 'generated') {
       await _populateGeneratedItem();
+    } else if (mode == 'saved_autofill') {
+      await _populateSavedAutofillItem();
     }
 
     originalItem = HiveLisoItem.fromJson(item!.toJson());
     _populateItem();
     change(null, status: RxStatus.success());
-
     // re-populate widgets
-    editMode.listen((value) {
-      _populateItem();
-    });
-
-    if (category.value == LisoItemCategory.otp.name) {
-      _generateOTP();
-    }
-
+    editMode.listen((value) => _populateItem());
+    if (category.value == LisoItemCategory.otp.name) _generateOTP();
     super.onInit();
   }
 
@@ -517,6 +525,44 @@ class ItemScreenController extends GetxController
     );
   }
 
+  Future<void> _populateSavedAutofillItem() async {
+    var fields = categoryObject.fields;
+
+    final appDomain = HiveAppDomain.fromJson(jsonDecode(
+      Get.parameters['app_domain']!,
+    ));
+
+    appIds.value = appDomain.appIds;
+    domains.value = appDomain.domains;
+
+    fields = fields.map((e) {
+      if (e.identifier == 'website') {
+        e.data.value = appDomain.website;
+      } else if (e.identifier == 'username') {
+        e.data.value = Get.parameters['username'];
+      } else if (e.identifier == 'password') {
+        e.data.value = Get.parameters['password'];
+      }
+
+      return e;
+    }).toList();
+
+    item = HiveLisoItem(
+      identifier: const Uuid().v4(),
+      category: category.value,
+      iconUrl: appDomain.iconUrl,
+      title: Get.parameters['title']!,
+      fields: fields,
+      tags: ['saved'],
+      favorite: false,
+      protected: true,
+      metadata: await HiveMetadata.get(),
+      groupId: groupId.value,
+      appIds: appDomain.appIds,
+      domains: domains,
+    );
+  }
+
   Future<void> _populateGeneratedItem() async {
     final value = Get.parameters['value'];
     String identifier = '';
@@ -540,10 +586,6 @@ class ItemScreenController extends GetxController
       category: category.value,
       title: 'Generated ${GetUtils.capitalizeFirst(identifier)}',
       fields: fields,
-      tags: [],
-      attachments: [],
-      sharedVaultIds: [],
-      favorite: false,
       protected: true,
       metadata: await HiveMetadata.get(),
       groupId: groupId.value,
@@ -572,6 +614,8 @@ class ItemScreenController extends GetxController
     attachments.value = List.from(item!.attachments);
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
     tagsController.data.value = item!.tags.toSet().toList();
+    appIds.value = item!.appIds == null ? [] : List.from(item!.appIds!);
+    domains.value = item!.domains == null ? [] : List.from(item!.domains!);
     _buildFieldWidgets();
   }
 
@@ -582,7 +626,7 @@ class ItemScreenController extends GetxController
         Expanded(child: widget),
         Obx(
           () => Visibility(
-            visible: editMode.value,
+            visible: editMode.value && reorderMode.value,
             child: ReorderableDragStartListener(
               index: index,
               child: const Icon(Icons.drag_indicator),
@@ -722,9 +766,11 @@ class ItemScreenController extends GetxController
               ],
             );
           } else {
-            bool obscured = field.type == LisoFieldType.password.name ||
+            final obscured = (field.type == LisoFieldType.password.name ||
                 field.type == LisoFieldType.mnemonicSeed.name ||
-                field.type == LisoFieldType.pin.name;
+                field.type == LisoFieldType.pin.name);
+
+            final obscuredRx = obscured.obs;
 
             final strength = PasswordStrengthChecker.checkStrength(
               field.data.value!,
@@ -738,24 +784,27 @@ class ItemScreenController extends GetxController
               onSecondaryTap: () => Utils.copyToClipboard(field.data.value),
               child: InkWell(
                 onLongPress: () => Utils.copyToClipboard(field.data.value),
-                child: TextFormField(
-                  initialValue: field.data.value,
-                  enabled: false,
-                  obscureText: obscured,
-                  minLines: 1,
-                  maxLines: obscured ? 1 : 10,
-                  decoration: InputDecoration(
-                    labelText: field.data.label,
-                    hintText: field.data.hint,
-                    helperText: ProController.to.limits.passwordHealth &&
-                            isPasswordField &&
-                            obscured &&
-                            field.data.value!.isNotEmpty
-                        ? Utils.strengthName(strength).toUpperCase()
-                        : null,
-                    helperStyle: TextStyle(
-                      color: Utils.strengthColor(strength),
-                      fontWeight: FontWeight.bold,
+                onTap: obscuredRx.value ? obscuredRx.toggle : null,
+                child: Obx(
+                  () => TextFormField(
+                    initialValue: field.data.value,
+                    enabled: false,
+                    obscureText: obscuredRx.value,
+                    minLines: 1,
+                    maxLines: obscuredRx.value ? 1 : 10,
+                    decoration: InputDecoration(
+                      labelText: field.data.label,
+                      hintText: field.data.hint,
+                      helperText: ProController.to.limits.passwordHealth &&
+                              isPasswordField &&
+                              obscured &&
+                              field.data.value!.isNotEmpty
+                          ? Utils.strengthName(strength).toUpperCase()
+                          : null,
+                      helperStyle: TextStyle(
+                        color: Utils.strengthColor(strength),
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -779,9 +828,6 @@ class ItemScreenController extends GetxController
       category: category.value,
       title: '',
       fields: categoryObject.fields,
-      tags: [],
-      attachments: [],
-      sharedVaultIds: [],
       favorite: drawerController.filterFavorites.value,
       // protected: protected_,
       metadata: await HiveMetadata.get(),
@@ -829,6 +875,8 @@ class ItemScreenController extends GetxController
       protected: protected.value,
       metadata: await HiveMetadata.get(),
       groupId: groupId.value,
+      appIds: appIds,
+      domains: domains,
     );
 
     await ItemsService.to.box!.add(newItem);
@@ -836,6 +884,10 @@ class ItemScreenController extends GetxController
     ItemsController.to.load();
     DrawerMenuController.to.update();
     Get.back();
+
+    if (Globals.isAutofill) {
+      AutofillService().onSaveComplete();
+    }
   }
 
   void edit() async {
@@ -853,7 +905,11 @@ class ItemScreenController extends GetxController
     item!.groupId = groupId.value;
     item!.category = category.value;
     item!.metadata = await item!.metadata.getUpdated();
+    item!.appIds = appIds;
+    item!.domains = domains;
     await item!.save();
+
+    console.wtf('appIds: $appIds');
 
     Persistence.to.changes.val++;
     ItemsController.to.load();
@@ -960,6 +1016,8 @@ class ItemScreenController extends GetxController
       protected: protected.value,
       reserved: item!.reserved,
       hidden: item!.hidden,
+      appIds: item!.appIds,
+      domains: item!.domains,
     );
 
     // convert to json string for absolute equality check

@@ -341,8 +341,7 @@ Address: ${WalletService.to.longAddress}
 RC User ID: ${ProController.to.info.value.originalAppUserId}
 Entitlement: ${ProController.to.limits.id}
 App Version: ${Globals.metadata?.app.formattedVersion}
-Platform: ${Utils.platformName()}
-""");
+Platform: ${Utils.platformName()}""");
 
     final subject = Uri.encodeComponent('${ConfigService.to.appName} Support');
 

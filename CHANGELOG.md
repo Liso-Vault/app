@@ -1,6 +1,8 @@
 ## 0.5.4
-- New! All vaults filter
+- New! Autofill Service on Android
 - New! Autofill Hints
+- New! All vaults filter
+- New! Re-order fields toggle
 - Removed! Unnecessary password indicators
 - Improved! Wrong password attempts warning
 - Improved! Disabled page transitions for snappy UX
@@ -8,6 +10,10 @@
 - Improved! App theme switcher UI
 - Improved! Pro indicator in drawer
 - Improved! Diagnostics info appended on contact screen
+- Improved! State is retained after inactivity lock
+- Improved! Deep search of items
+- Improved! Tap the obscured password to unhide
+- Improved! Hide empty elements in view mode
 - Fixed! Drawer items not updating automatically on large screen devices
 - Fixed! Stuck progress bar when user cancels biometrics
 - Fixed! Stuck progress bar when used a wrong password to unlock vault

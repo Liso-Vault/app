@@ -10,6 +10,7 @@ import 'package:liso/features/s3/s3.service.dart';
 import 'package:secrets/secrets.dart';
 
 import 'models/config_app.model.dart';
+import 'models/config_app_domains.model.dart';
 import 'models/config_general.model.dart';
 import 'models/config_limits.model.dart';
 import 'models/config_secrets.model.dart';
@@ -25,6 +26,7 @@ class ConfigService extends GetxService with ConsoleMixin {
   var web3 = const ConfigWeb3();
   var limits = const ConfigLimits();
   var users = const ConfigUsers();
+  var appDomains = const ConfigAppDomains();
 
   // GETTERS
   FirebaseRemoteConfig get instance => FirebaseRemoteConfig.instance;
@@ -64,6 +66,7 @@ class ConfigService extends GetxService with ConsoleMixin {
         limits = root.parameters.limitsConfig;
         users = root.parameters.usersConfig;
         general = root.parameters.generalConfig;
+        appDomains = root.parameters.appDomainsConfig;
 
         console.wtf('remote config from functions synced');
         // re-init s3 minio client
@@ -109,6 +112,10 @@ class ConfigService extends GetxService with ConsoleMixin {
     general = ConfigGeneral.fromJson(local
         ? Secrets.configs.general
         : jsonDecode(instance.getString('general_config')));
+
+    appDomains = ConfigAppDomains.fromJson(local
+        ? Secrets.configs.appDomains
+        : jsonDecode(instance.getString('app_domains_config')));
 
     console.info('populated! local: $local');
     // re-init s3 minio client

@@ -106,7 +106,9 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
     );
 
     return WillPopScope(
-      onWillPop: () => Future.value(controller.passwordMode),
+      onWillPop: () => Future.value(
+        controller.passwordMode || Globals.isAutofill,
+      ),
       child: Scaffold(
         appBar: controller.passwordMode ? AppBar() : null,
         bottomNavigationBar: const VersionText(),

@@ -1,6 +1,8 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/features/debug/debug_screen.controller.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
@@ -11,57 +13,51 @@ import '../shared_vaults/shared_vault.controller.dart';
 class DebugScreen extends StatelessWidget with ConsoleMixin {
   const DebugScreen({Key? key}) : super(key: key);
 
-  // void _walletConnect() async {
-  //   // Create a connector
-  //   final connector = WalletConnect(
-  //     bridge: 'https://bridge.walletconnect.org',
-  //     clientMeta: const PeerMeta(
-  //       name: 'WalletConnect',
-  //       description: 'WalletConnect Developer App',
-  //       url: 'https://walletconnect.org',
-  //       icons: [
-  //         'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
-  //       ],
-  //     ),
-  //   );
-
-  //   // Subscribe to events
-  //   connector.on(
-  //     'connect',
-  //     (session) => console.info('on connect: $session'),
-  //   );
-
-  //   connector.on(
-  //     'session_update',
-  //     (payload) => console.info('on session_update: $payload'),
-  //   );
-
-  //   connector.on(
-  //     'disconnect',
-  //     (session) => console.info('on disconnect: $session'),
-  //   );
-
-  //   console.info(
-  //     'connected: ${connector.connected}, bridgeConnected: ${connector.bridgeConnected}',
-  //   );
-
-  //   // Create a new session
-  //   if (!connector.connected) {
-  //     final session = await connector.createSession(
-  //       chainId: 4160,
-  //       onDisplayUri: (uri) => console.info(uri),
-  //     );
-
-  //     console.info('created session: ${session.accounts}');
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(DebugScreenController());
+
     final content = ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Save Info'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: controller.saveInfo,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Set Autofill Service'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: controller.setAutofillService,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Set Preferences'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: controller.setPreferences,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Result with Datasets'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: controller.datasets,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Result Dataset'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: controller.dataset,
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Save Complete'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: controller.save,
+        ),
+        const Divider(),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Auth Sign Out'),

@@ -150,68 +150,96 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       Obx(
         () => Visibility(
           visible: controller.editMode.value,
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: ContextMenuButton(
-              controller.menuFieldItems,
-              sheetForSmallScreen: true,
-              padding: EdgeInsets.zero,
-              child: OutlinedButton.icon(
-                onPressed: controller.attach,
-                icon: const Icon(Iconsax.add_circle),
-                label: const Text('Custom Field'),
-              ),
-            ),
-          ),
-        ),
-      ),
-      const Divider(),
-      Text(
-        'attachments'.tr,
-        style: TextStyle(color: themeColor, fontSize: 12),
-      ),
-      const SizedBox(height: 5),
-      Obx(
-        () => Opacity(
-          opacity: controller.editMode.value ? 1.0 : 0.6,
-          child: Wrap(
-            spacing: 5,
-            runSpacing: 5,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ...controller.attachmentChips,
+              ContextMenuButton(
+                controller.menuFieldItems,
+                sheetForSmallScreen: true,
+                padding: EdgeInsets.zero,
+                child: OutlinedButton.icon(
+                  onPressed: controller.attach,
+                  icon: const Icon(Iconsax.add_circle),
+                  label: const Text('Custom Field'),
+                ),
+              ),
+              const Divider(),
             ],
           ),
         ),
       ),
-      const Divider(),
       Obx(
-        () => TagsInput(
-          label: 'Tags',
-          enabled: controller.editMode.value,
-          controller: controller.tagsController,
-        ),
-      ),
-      const Divider(),
-      if (Persistence.to.canShare) ...[
-        Text(
-          'shared_vaults'.tr,
-          style: TextStyle(color: themeColor, fontSize: 12),
-        ),
-        const SizedBox(height: 5),
-        Obx(
-          () => Opacity(
-            opacity: controller.editMode.value ? 1.0 : 0.6,
-            child: Wrap(
-              spacing: 5,
-              runSpacing: 5,
-              children: [
-                ...controller.sharedVaultChips,
-              ],
-            ),
+        () => Visibility(
+          visible:
+              controller.editMode.value || controller.attachments.isNotEmpty,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'attachments'.tr,
+                style: TextStyle(color: themeColor, fontSize: 12),
+              ),
+              const SizedBox(height: 5),
+              Opacity(
+                opacity: controller.editMode.value ? 1.0 : 0.6,
+                child: Wrap(
+                  spacing: 5,
+                  runSpacing: 5,
+                  children: [
+                    ...controller.attachmentChips,
+                  ],
+                ),
+              ),
+              const Divider(),
+            ],
           ),
         ),
-        const Divider(),
-      ],
+      ),
+      Obx(
+        () => Visibility(
+          visible: controller.editMode.value ||
+              controller.tagsController.data.isNotEmpty,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TagsInput(
+                label: 'Tags',
+                enabled: controller.editMode.value,
+                controller: controller.tagsController,
+              ),
+              const Divider(),
+            ],
+          ),
+        ),
+      ),
+      Obx(
+        () => Visibility(
+          visible: Persistence.to.canShare &&
+              controller.editMode.value &&
+              controller.sharedVaultIds.isNotEmpty,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'shared_vaults'.tr,
+                style: TextStyle(color: themeColor, fontSize: 12),
+              ),
+              const SizedBox(height: 5),
+              Opacity(
+                opacity: controller.editMode.value ? 1.0 : 0.6,
+                child: Wrap(
+                  spacing: 5,
+                  runSpacing: 5,
+                  children: [
+                    ...controller.sharedVaultChips,
+                  ],
+                ),
+              ),
+              const Divider(),
+            ],
+          ),
+        ),
+      ),
       Obx(
         () => DropdownButtonFormField<String>(
           isExpanded: true,
@@ -320,9 +348,11 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           ),
         ],
         if (mode == 'view') ...[
-          ContextMenuButton(
-            controller.menuItems,
-            child: const Icon(LineIcons.verticalEllipsis),
+          Obx(
+            () => ContextMenuButton(
+              controller.menuItems,
+              child: const Icon(LineIcons.verticalEllipsis),
+            ),
           ),
         ],
         const SizedBox(width: 10),

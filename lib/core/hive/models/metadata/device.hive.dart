@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:platform_device_id/platform_device_id.dart';
 import 'package:hive/hive.dart';
 
 import '../../../utils/utils.dart';
@@ -64,20 +68,20 @@ class HiveMetadataDevice extends HiveObject {
   static Future<HiveMetadataDevice> get() async {
     final device = HiveMetadataDevice(platform: Utils.platformName());
     final deviceInfo = DeviceInfoPlugin();
+    device.id = (await PlatformDeviceId.getDeviceId)!;
+    Console(name: 'HiveMetadataDevice').wtf('Device ID: ${device.id}');
 
     if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;
-      device.id = info.identifierForVendor!;
-      device.osVersion = info.systemVersion!;
-      device.name = info.name!;
-      device.model = info.utsname.machine!;
+      device.osVersion = info.systemVersion ?? '';
+      device.name = info.name ?? '';
+      device.model = info.utsname.machine ?? '';
       device.info = info.toMap();
     } else if (GetPlatform.isAndroid) {
       final info = await deviceInfo.androidInfo;
-      device.id = info.androidId!;
-      device.osVersion = info.version.release!;
-      device.name = info.device!;
-      device.model = info.model!;
+      device.osVersion = info.version.release ?? '';
+      device.name = info.device ?? '';
+      device.model = info.model ?? '';
 
       // strip unecessary info
       final infoMap = info.toMap();
@@ -88,7 +92,6 @@ class HiveMetadataDevice extends HiveObject {
       device.info = infoMap;
     } else if (GetPlatform.isMacOS) {
       final info = await deviceInfo.macOsInfo;
-      device.id = info.systemGUID!;
       device.osVersion = info.osRelease;
       device.name = info.computerName;
       device.model = info.model;
@@ -96,14 +99,11 @@ class HiveMetadataDevice extends HiveObject {
     } else if (GetPlatform.isWindows) {
       final info = await deviceInfo.windowsInfo;
       // generate a usable id
-      device.id =
-          '${info.computerName}-${info.numberOfCores}-${info.systemMemoryInMegabytes}';
       device.name = info.computerName;
       device.info = info.toMap();
     } else if (GetPlatform.isLinux) {
       final info = await deviceInfo.linuxInfo;
-      device.id = info.machineId!;
-      device.osVersion = info.version!;
+      device.osVersion = info.version ?? '';
       device.info = info.toMap();
     }
 

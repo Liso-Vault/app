@@ -55,7 +55,7 @@ android {
     defaultConfig {
         applicationId "com.liso.app"
         resValue "string", "app_name", "Liso"
-        minSdkVersion 23 // biometrics requirement
+        minSdkVersion 26 // biometrics requirement
         targetSdkVersion 32
         multiDexEnabled true // Firebase
         versionCode flutterVersionCode.toInteger()

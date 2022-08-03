@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:liso/core/firebase/config/models/config_app.model.dart';
+import 'package:liso/core/firebase/config/models/config_app_domains.model.dart';
 import 'package:liso/core/firebase/config/models/config_general.model.dart';
 import 'package:liso/core/firebase/config/models/config_limits.model.dart';
 import 'package:liso/core/firebase/config/models/config_secrets.model.dart';
@@ -145,6 +146,7 @@ class Parameters {
     required this.usersConfig,
     required this.limitsConfig,
     required this.appConfig,
+    required this.appDomainsConfig,
   });
 
   ConfigGeneral generalConfig;
@@ -153,6 +155,7 @@ class Parameters {
   ConfigUsers usersConfig;
   ConfigLimits limitsConfig;
   ConfigApp appConfig;
+  ConfigAppDomains appDomainsConfig;
 
   factory Parameters.fromJson(Map<String, dynamic> json) => Parameters(
         generalConfig: ConfigGeneral.fromJson(
@@ -185,6 +188,11 @@ class Parameters {
             ConfigValue.fromJson(json["app_config"]).defaultValue.value,
           ),
         ),
+        appDomainsConfig: ConfigAppDomains.fromJson(
+          jsonDecode(
+            ConfigValue.fromJson(json["app_domains_config"]).defaultValue.value,
+          ),
+        ),
       );
 
   Map<String, dynamic> toJson() => {
@@ -194,6 +202,7 @@ class Parameters {
         "users_config": usersConfig.toJson(),
         "limits_config": limitsConfig.toJson(),
         "app_config": appConfig.toJson(),
+        "app_domains_config": appDomainsConfig.toJson(),
       };
 }
 

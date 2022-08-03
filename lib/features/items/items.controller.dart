@@ -34,6 +34,12 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
     raw.value = ItemsService.to.data;
     Iterable<HiveLisoItem> filteredItems = List.from(raw);
 
+    // FILTER ITEMS WITH USERNAME / PASSWORDS ONLY
+    if (Globals.isAutofill) {
+      filteredItems = filteredItems.where(
+          (e) => e.usernameFields.isNotEmpty || e.passwordFields.isNotEmpty);
+    }
+
     if (drawerController.filterGroupId.value.isNotEmpty) {
       // FILTER BY GROUP
       filteredItems = filteredItems

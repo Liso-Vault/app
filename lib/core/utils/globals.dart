@@ -137,6 +137,7 @@ enum LisoSyncProvider {
 class Globals {
   // VARIABLES
   static bool timeLockEnabled = true;
+  static bool isAutofill = false;
   static HiveMetadata? metadata;
 
   // GETTERS

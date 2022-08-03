@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
+import 'package:liso/core/hive/models/app_domain.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:supercharged/supercharged.dart';
@@ -52,6 +53,11 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   List<String> attachments;
   @HiveField(15)
   HiveMetadata metadata;
+  // // needs migration if index is re-ordered
+  @HiveField(16)
+  List<HiveDomain>? domains;
+  @HiveField(17)
+  List<String>? appIds;
 
   HiveLisoItem({
     required this.identifier,
@@ -70,6 +76,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.sharedVaultIds = const [],
     this.attachments = const [],
     required this.metadata,
+    this.domains = const [],
+    this.appIds = const [],
   });
 
   factory HiveLisoItem.fromJson(Map<String, dynamic> json) => HiveLisoItem(
@@ -92,6 +100,14 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
             List<String>.from(json["shared_vault_ids"].map((x) => x)),
         attachments: List<String>.from(json["attachments"].map((x) => x)),
         metadata: HiveMetadata.fromJson(json["metadata"]),
+        domains: json["domains"] == null
+            ? []
+            : List<HiveDomain>.from(
+                json["domains"].map((x) => HiveDomain.fromJson(x)),
+              ),
+        appIds: json["app_ids"] == null
+            ? []
+            : List<String>.from(json["app_ids"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() {
@@ -112,6 +128,10 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "shared_vault_ids": List<dynamic>.from(sharedVaultIds.map((x) => x)),
       "attachments": List<dynamic>.from(attachments.map((x) => x)),
       "metadata": metadata.toJson(),
+      "domains": domains == null
+          ? []
+          : List<dynamic>.from(domains!.map((x) => x.toJson())),
+      "app_ids": appIds == null ? [] : List<dynamic>.from(tags.map((x) => x)),
     };
   }
 
@@ -174,6 +194,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         sharedVaultIds,
         attachments,
         metadata,
+        appIds,
+        domains,
       ];
 
   List<Widget> get widgets => fields.map((e) => e.widget).toList();
@@ -204,6 +226,40 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     }
 
     return value;
+  }
+
+  List<HiveLisoField> get usernameFields {
+    return fields.where((e) {
+      if (e.data.value!.isEmpty) return false;
+      if (e.type != LisoFieldType.textField.name &&
+          e.type != LisoFieldType.phone.name &&
+          e.type != LisoFieldType.email.name) return false;
+
+      final isUsername = (e.type == LisoFieldType.textField.name &&
+          (e.identifier == 'username' ||
+              e.data.label!.toLowerCase().contains('username')));
+
+      if (e.type == LisoFieldType.email.name ||
+          e.type == LisoFieldType.phone.name ||
+          isUsername) {
+        return true;
+      }
+
+      if (GetUtils.isEmail(e.data.value!) ||
+          GetUtils.isPhoneNumber(e.data.value!)) return true;
+
+      return false;
+    }).toList();
+  }
+
+  List<HiveLisoField> get passwordFields {
+    return fields.where((e) {
+      if (e.type != LisoFieldType.password.name) return false;
+      if (e.data.value!.isEmpty) return false;
+      // if not a password field
+      if (kNonPasswordFieldIds.contains(e.identifier)) return false;
+      return true;
+    }).toList();
   }
 
   // TODO: bind corresponding significant data
