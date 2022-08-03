@@ -20,6 +20,8 @@
 - Fixed! Stuck progress bar when used a wrong password to unlock vault
 - Fixed! Switching to master password for failed biometrics
 - Fixed! For android devices without a biometric hardware
+- Fixed! Exporting vault & wallet on mobile
+- Fixed! Item filters
 
 ## 0.5.3
 - New! OTP Category

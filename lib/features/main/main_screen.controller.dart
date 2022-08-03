@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
@@ -441,7 +442,11 @@ status: ${status.toString()}'
       if (msg == AppLifecycleState.resumed.toString()) {
         timeLockTimer?.cancel();
 
-        if (WalletService.to.isSaved && !WalletService.to.isReady) {
+        final loggedOut =
+            WalletService.to.isSaved && !AuthenticationMiddleware.signedIn;
+        console.info('loggedOut: $loggedOut');
+
+        if (loggedOut) {
           Get.toNamed(
             Routes.unlock,
             parameters: {'mode': 'regular'},
@@ -449,15 +454,17 @@ status: ${status.toString()}'
         }
       } else if (msg == AppLifecycleState.inactive.toString()) {
         // lock after <duration> of inactivity
-        if (Globals.timeLockEnabled) {
-          final timeLock = persistence.timeLockDuration.val.seconds;
-          timeLockTimer = Timer.periodic(timeLock, (timer) async {
-            Get.toNamed(
-              Routes.unlock,
-              parameters: {'mode': 'regular'},
-            );
+        if (Globals.timeLockEnabled && AuthenticationMiddleware.signedIn) {
+          final timeLockDuration = persistence.timeLockDuration.val.seconds;
+          console.info(
+            'Time lock timer started! Triggers in: ${timeLockDuration.inSeconds} seconds',
+          );
 
+          timeLockTimer = Timer.periodic(timeLockDuration, (timer) async {
+            // sign out
+            AuthenticationMiddleware.signedIn = false;
             timer.cancel();
+            console.info('Time lock timer triggered! Logged out');
           });
         }
       }

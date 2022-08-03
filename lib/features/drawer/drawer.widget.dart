@@ -249,6 +249,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               const ListTile(
                 title: Text('Send Feedback'),
+                subtitle: Text('Feel free to roast the app 🙏'),
                 leading: Icon(Iconsax.message),
                 onTap: Utils.contactAppEmail,
               ),

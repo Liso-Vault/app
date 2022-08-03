@@ -103,27 +103,37 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
 
     final scaffold = Scaffold(
       appBar: AppBar(
-        leading: const AppBarLeadingButton(),
+        leading: Obx(
+          () => Visibility(
+            visible: !controller.busy.value,
+            child: const AppBarLeadingButton(),
+          ),
+        ),
         actions: [
-          PopupMenuButton<String>(
-            icon: const Icon(LineIcons.verticalEllipsis),
-            onSelected: (item) {
-              if (item == 'configure') {
-                Utils.adaptiveRouteOpen(name: Routes.syncProvider);
-              }
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              PopupMenuItem<String>(
-                value: 'configure',
-                child: Row(
-                  children: [
-                    Icon(Iconsax.refresh, color: themeColor),
-                    const SizedBox(width: 10),
-                    const Text('Configure'),
-                  ],
-                ),
+          Obx(
+            () => Visibility(
+              visible: !controller.busy.value,
+              child: PopupMenuButton<String>(
+                icon: const Icon(LineIcons.verticalEllipsis),
+                onSelected: (item) {
+                  if (item == 'configure') {
+                    Utils.adaptiveRouteOpen(name: Routes.syncProvider);
+                  }
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'configure',
+                    child: Row(
+                      children: [
+                        Icon(Iconsax.refresh, color: themeColor),
+                        const SizedBox(width: 10),
+                        const Text('Configure'),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
           const SizedBox(width: 10),
         ],

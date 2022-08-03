@@ -116,6 +116,13 @@ class SettingsScreenController extends GetxController
         subject: exportFileName,
         text: GetPlatform.isIOS ? null : 'Liso Wallet',
       );
+
+      NotificationsManager.notify(
+        title: 'Exported Wallet File',
+        body: exportFileName,
+      );
+
+      return change(null, status: RxStatus.success());
     }
 
     change('Choose export path...', status: RxStatus.loading());
@@ -188,8 +195,13 @@ class SettingsScreenController extends GetxController
           text: GetPlatform.isIOS ? null : '${ConfigService.to.appName} Vault',
         );
 
-        console.info('done');
-        Get.back();
+        NotificationsManager.notify(
+          title: 'Exported Vault',
+          body: exportFileName,
+        );
+
+        Get.back(); // close dialog
+        return change(null, status: RxStatus.success());
       }
 
       change('Choose export path...', status: RxStatus.loading());
