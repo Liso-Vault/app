@@ -23,6 +23,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 
@@ -168,7 +169,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     // add self as a member of the shared vault
     // TODO: allow user to set permissions using Choice Chips UI
     final member = VaultMember(
-      address: WalletService.to.longAddress,
+      address: Persistence.to.walletAddress.val,
       userId: AuthService.to.userId,
       permissions: ['update', 'delete'].join(','),
     );

@@ -66,7 +66,7 @@ class ProController extends GetxController with ConsoleMixin {
     if (isPro) return limits_.pro;
     // check if user is whitelisted by developer
     final users = ConfigService.to.users.users.where(
-      (e) => e.address == WalletService.to.longAddress,
+      (e) => e.address == Persistence.to.walletAddress.val,
     );
 
     if (users.isNotEmpty) {

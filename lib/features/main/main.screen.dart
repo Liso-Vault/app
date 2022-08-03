@@ -41,6 +41,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
   @override
   Widget? builder() {
+    var scaffoldKey = GlobalKey<ScaffoldState>();
     final itemsController = Get.find<ItemsController>();
     final drawerController = Get.find<DrawerMenuController>();
 
@@ -436,8 +437,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       leading: Globals.isAutofill
           ? null
           : IconButton(
-              onPressed: () =>
-                  controller.scaffoldKey.currentState?.openDrawer(),
+              onPressed: () => scaffoldKey.currentState?.openDrawer(),
               icon: const Icon(Icons.menu),
             ),
     );
@@ -487,7 +487,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       );
     } else {
       return Scaffold(
-        key: controller.scaffoldKey,
+        key: scaffoldKey,
         appBar: appBar,
         body: SafeArea(child: content),
         drawer: const DrawerMenu(),

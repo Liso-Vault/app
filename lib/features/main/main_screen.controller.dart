@@ -34,7 +34,6 @@ class MainScreenController extends GetxController
   static MainScreenController get to => Get.find();
 
   // VARIABLES
-  final scaffoldKey = GlobalKey<ScaffoldState>();
   Timer? timeLockTimer;
   ItemsSearchDelegate? searchDelegate;
   AutofillPreferences? pref;

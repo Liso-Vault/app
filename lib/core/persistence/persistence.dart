@@ -20,6 +20,7 @@ class Persistence extends GetxController with ConsoleMixin {
   // WALLET JSON
   final wallet = ''.val('wallet');
   final walletPassword = ''.val('wallet-password');
+  final walletSignature = ''.val('wallet-signature');
   final walletAddress = ''.val('wallet-address');
   // GENERAL
   final localeCode = 'en'.val('locale-code');

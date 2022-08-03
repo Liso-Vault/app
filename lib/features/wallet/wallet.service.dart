@@ -188,9 +188,9 @@ class WalletService extends GetxService with ConsoleMixin {
     // save to persistence
     Persistence.to.walletAddress.val = longAddress;
     Persistence.to.wallet.val = await compute(walletToJsonString, wallet!);
-
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
+    Persistence.to.walletSignature.val = signature;
     // from the first 32 bits of the signature
     cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 

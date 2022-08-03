@@ -337,7 +337,7 @@ class Utils {
 
 
 User ID: ${AuthService.to.userId}
-Address: ${WalletService.to.longAddress}
+Address: ${Persistence.to.walletAddress.val}
 RC User ID: ${ProController.to.info.value.originalAppUserId}
 Entitlement: ${ProController.to.limits.id}
 App Version: ${Globals.metadata?.app.formattedVersion}

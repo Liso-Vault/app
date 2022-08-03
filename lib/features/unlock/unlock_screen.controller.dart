@@ -61,45 +61,50 @@ class UnlockScreenController extends GetxController
     await Get.closeCurrentSnackbar();
     change(null, status: RxStatus.loading());
 
+    if (WalletService.to.isReady) {
+      if (passwordController.text != Persistence.to.walletPassword.val) {
+        return _wrongPassword();
+      }
+
+      if (passwordMode || regularMode) return Get.back(result: true);
+      return Get.offNamedUntil(Routes.main, (route) => false);
+    }
+
     final wallet_ = await WalletService.to.initJson(
       Persistence.to.wallet.val,
       password: passwordController.text,
     );
 
-    if (wallet_ == null) {
-      change(null, status: RxStatus.success());
-      passwordController.clear();
-      canProceed.value = false;
-
-      String message = 'Please enter your master password';
-
-      if (!passwordMode) {
-        attemptsLeft--;
-
-        if (attemptsLeft <= 0) {
-          await LisoManager.reset();
-          return Get.offNamedUntil(Routes.main, (route) => false);
-        }
-
-        if (attemptsLeft < 3) {
-          message =
-              '$attemptsLeft ${'attempts_left'.tr} until your vault resets';
-        }
-      }
-
-      UIUtils.showSnackBar(
-        title: 'Incorrect Master Password',
-        message: message,
-        icon: const Icon(Iconsax.warning_2, color: Colors.red),
-        seconds: 4,
-      );
-
-      return;
-    }
-
+    if (wallet_ == null) return _wrongPassword();
     await WalletService.to.init(wallet_);
-    if (passwordMode || regularMode) return Get.back(result: true);
     await HiveService.to.open();
     return Get.offNamedUntil(Routes.main, (route) => false);
+  }
+
+  void _wrongPassword() async {
+    change(null, status: RxStatus.success());
+    passwordController.clear();
+    canProceed.value = false;
+    String message = 'Please enter your master password';
+
+    if (!passwordMode) {
+      attemptsLeft--;
+
+      if (attemptsLeft <= 0) {
+        await LisoManager.reset();
+        return Get.offNamedUntil(Routes.main, (route) => false);
+      }
+
+      if (attemptsLeft < 3) {
+        message = '$attemptsLeft ${'attempts_left'.tr} until your vault resets';
+      }
+    }
+
+    UIUtils.showSnackBar(
+      title: 'Incorrect Master Password',
+      message: message,
+      icon: const Icon(Iconsax.warning_2, color: Colors.red),
+      seconds: 4,
+    );
   }
 }

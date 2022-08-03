@@ -59,7 +59,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // GETTERS
   S3Content get lisoContent => S3Content(path: vaultPath);
 
-  String get rootPath => '${WalletService.to.longAddress}/';
+  String get rootPath => '${Persistence.to.walletAddress.val}/';
   String get vaultPath => join(rootPath, kVaultFileName).replaceAll('\\', '/');
   String get backupsPath => join(rootPath, 'Backups').replaceAll('\\', '/');
   String get historyPath => join(rootPath, 'History').replaceAll('\\', '/');
