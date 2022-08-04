@@ -49,6 +49,8 @@ class LisoManager {
     await HiveService.to.clear();
     // clean temp folder
     await LisoPaths.cleanTemp();
+    // reset variables
+    S3Service.to.backedUp = false;
     console.info('reset!');
   }
 

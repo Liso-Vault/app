@@ -4,10 +4,10 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/firebase/auth_desktop.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
+import 'package:liso/core/persistence/persistence.dart' as p;
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:liso/core/persistence/persistence.dart' as p;
 
 import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/s3/s3.service.dart';

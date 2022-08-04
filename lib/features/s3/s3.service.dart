@@ -6,6 +6,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
@@ -14,6 +15,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart' as minio;
@@ -36,6 +38,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // VARIABLES
   Minio? client;
   bool ready = false;
+  bool backedUp = false;
   final config = Get.find<ConfigService>();
   final persistence = Get.find<Persistence>();
   List<S3Content> contentsCache = [];
@@ -105,6 +108,19 @@ class S3Service extends GetxService with ConsoleMixin {
       console.error('Exception: $e, Stacktrace: $s');
       CrashlyticsService.to.record(e, s);
     }
+  }
+
+  Map<String, String> _objectMetadata() {
+    final app = Globals.metadata!.app;
+
+    return {
+      'userId': AuthService.to.userId,
+      'address': Persistence.to.walletAddress.val,
+      'appName': app.appName,
+      'appPackageName': app.packageName,
+      'appVersion': app.version,
+      'appBuildNumber': app.buildNumber,
+    };
   }
 
   void _syncProgress(double value, String? message) {
@@ -342,6 +358,79 @@ class S3Service extends GetxService with ConsoleMixin {
     await local.addAll(newList);
   }
 
+  // currently doesn't work on Filebase
+  Future<Either<dynamic, String>> backup(
+      S3Content content, Uint8List encryptedBytes) async {
+    if (!ready) init();
+    if (!persistence.sync.val && ready) return const Left('offline');
+    if (backedUp) return const Left('already backed up for todays session');
+    console.info('backup: ${content.path}...');
+
+    // REMOVE OLDEST BACKUP IF NECESSARY
+    final result = await folderInfo(S3Service.to.backupsPath);
+
+    if (result.isLeft) {
+      console.error('backups folder info error: ${result.left}');
+      return Left(result.isLeft);
+    }
+
+    final info = result.right;
+
+    console.wtf('# BACKUPS #');
+    console.wtf(
+        'limits: ${ProController.to.limits.backups}, backups: ${info.contents.length}');
+
+    for (var e in info.contents) {
+      console.wtf('${e.name} - ${e.object?.lastModified}');
+    }
+
+    if (info.contents.length >= ProController.to.limits.backups) {
+      final result = await remove(info.contents.first);
+      // abort backup if error in removing oldest backup
+      if (result.isLeft) {
+        console.error('error removing last backup: ${result.left}');
+        return Left(result.left);
+      } else {
+        console.wtf(
+            'removed backup: ${result.right} - ${info.contents.first.name}');
+      }
+    }
+
+    // DO THE ACTUAL BACKUP
+    String eTag = '';
+
+    try {
+      eTag = await client!.putObject(
+        config.secrets.s3.preferredBucket,
+        join(
+          backupsPath,
+          '${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
+        ).replaceAll('\\', '/'),
+        Stream<Uint8List>.value(encryptedBytes),
+        onProgress: (size) => uploadedSize.value = size,
+        metadata: _objectMetadata(),
+      );
+    } catch (e) {
+      return Left(e);
+    }
+
+    backedUp = true;
+    return Right(eTag);
+
+    // try {
+    //   final result = await client!.copyObject(
+    //     config.secrets.s3.preferredBucket,
+    //     content.path,
+    //     backupsPath,
+    //     // CopyConditions(),
+    //   );
+
+    //   return Right(result);
+    // } catch (e) {
+    //   return Left(e);
+    // }
+  }
+
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
     if (!ready) init();
@@ -351,16 +440,6 @@ class S3Service extends GetxService with ConsoleMixin {
     }
 
     console.info('up syncing...');
-    // TODO: enable when S3 copy method is ready
-    // final backupResult = await backup(lisoContent);
-    // // ignore backup error and continue
-    // if (backupResult.isLeft) {
-    //   console.warning('Failed to backup: ${backupResult.left}');
-    // } else {
-    //   console.info(
-    //     'success! eTag: ${backupResult.right.eTag}, lastModified: ${backupResult.right.lastModified}',
-    //   );
-    // }
 
     // UPLOAD
     _syncProgress(0.7, null);
@@ -370,6 +449,15 @@ class S3Service extends GetxService with ConsoleMixin {
       utf8.encode(vaultJsonString),
     );
 
+    // BACKUP
+    backup(lisoContent, encryptedBytes).then((result) {
+      if (result.isLeft) {
+        console.warning('Failed to backup: ${result.left}');
+      } else {
+        console.info('backed up! eTag: ${result.right}');
+      }
+    });
+
     String eTag = '';
 
     try {
@@ -378,6 +466,7 @@ class S3Service extends GetxService with ConsoleMixin {
         vaultPath,
         Stream<Uint8List>.value(encryptedBytes),
         onProgress: (size) => uploadedSize.value = size,
+        metadata: _objectMetadata(),
       );
     } catch (e) {
       return Left(e);
@@ -446,6 +535,7 @@ class S3Service extends GetxService with ConsoleMixin {
           s3path,
           Stream<Uint8List>.value(encryptedBytes),
           onProgress: (size) => uploadedSize.value = size,
+          metadata: _objectMetadata(),
         );
       } catch (e) {
         return Left(e);
@@ -456,27 +546,6 @@ class S3Service extends GetxService with ConsoleMixin {
 
     console.wtf('done');
     return const Right(true);
-  }
-
-  // currently doesn't work on Filebase
-  Future<Either<dynamic, minio.CopyObjectResult>> backup(
-      S3Content content) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('backup: ${content.path}...');
-
-    try {
-      final result = await client!.copyObject(
-        config.secrets.s3.preferredBucket,
-        content.path,
-        backupsPath,
-        // CopyConditions(),
-      );
-
-      return Right(result);
-    } catch (e) {
-      return Left(e);
-    }
   }
 
   Future<Either<dynamic, minio.StatObjectResult>> stat(
@@ -677,6 +746,7 @@ class S3Service extends GetxService with ConsoleMixin {
         s3Path,
         Stream<Uint8List>.value(file.readAsBytesSync()),
         onProgress: (size) => uploadedSize.value = size,
+        metadata: _objectMetadata(),
       );
     } catch (e) {
       return Left(e);
@@ -703,6 +773,7 @@ class S3Service extends GetxService with ConsoleMixin {
         config.secrets.s3.preferredBucket,
         join(s3Path, '$name/').replaceAll('\\', '/'),
         Stream<Uint8List>.value(Uint8List(0)),
+        metadata: _objectMetadata(),
       );
     } catch (e) {
       return Left(e);

@@ -1,3 +1,7 @@
+## 0.6.1
+- New! Automatic vault backups
+- Fixed! Send feedback feature
+
 ## 0.6.0
 - New! Autofill Service on Android
 - New! Autofill Hints

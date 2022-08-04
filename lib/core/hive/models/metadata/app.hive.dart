@@ -29,7 +29,7 @@ class HiveMetadataApp extends HiveObject {
         buildNumber: json["buildNumber"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, String> toJson() => {
         "appName": appName,
         "packageName": packageName,
         "version": version,
@@ -49,5 +49,5 @@ class HiveMetadataApp extends HiveObject {
     );
   }
 
-  static Future<Map<String, dynamic>> getJson() async => (await get()).toJson();
+  static Future<Map<String, String>> getJson() async => (await get()).toJson();
 }

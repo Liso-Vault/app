@@ -34,13 +34,13 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
           leading: const Icon(Iconsax.import_1),
           onSelected: () => controller.restore(content),
         ),
-        if (!explorerController.currentPath.value.contains('Backups/')) ...[
-          ContextMenuItem(
-            title: 'Backup',
-            leading: const Icon(Iconsax.document_copy),
-            onSelected: () => controller.backup(content),
-          ),
-        ]
+        // if (!explorerController.currentPath.value.contains('Backups/')) ...[
+        //   ContextMenuItem(
+        //     title: 'Backup',
+        //     leading: const Icon(Iconsax.document_copy),
+        //     onSelected: () => controller.backup(content),
+        //   ),
+        // ]
       ] else ...[
         if (content.isFile && !isPicker) ...[
           ContextMenuItem(

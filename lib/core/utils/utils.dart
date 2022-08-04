@@ -254,15 +254,6 @@ class Utils {
     return Icon(iconData);
   }
 
-  static Future<void> openUrl(
-    String url, {
-    LaunchMode mode = LaunchMode.externalApplication,
-  }) async {
-    final canLaunch = await canLaunchUrlString(url);
-    if (!canLaunch) console.error('cannot launch: $url');
-    launchUrlString(url, mode: mode);
-  }
-
   static String generatePassword() {
     return RandomStringGenerator(
       fixedLength: 15,
@@ -341,16 +332,18 @@ class Utils {
     body += 'Platform: ${Utils.platformName()}';
 
     final subject = Uri.encodeComponent('${ConfigService.to.appName} Support');
-    final url =
-        'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body';
+    final email = ConfigService.to.general.app.emails.support;
+    final url = 'mailto:$email?subject=$subject&body=$body';
 
-    if (!await canLaunchUrlString(url)) {
-      return UIUtils.showSimpleDialog(
-        'No Mail App',
-        'Please install an email client to send an email',
-      );
-    }
+    openUrl(url);
+  }
 
-    Utils.openUrl(url);
+  static Future<void> openUrl(
+    String url, {
+    LaunchMode mode = LaunchMode.externalApplication,
+  }) async {
+    final canLaunch = await canLaunchUrlString(url);
+    if (!canLaunch) console.error('cannot launch: $url');
+    launchUrlString(url, mode: mode);
   }
 }

@@ -96,17 +96,17 @@ class S3ContentTileController extends GetxController
     ));
   }
 
-  void backup(S3Content content) async {
-    final result = await S3Service.to.backup(content);
+  // void backup(S3Content content) async {
+  //   final result = await S3Service.to.backup(content);
 
-    result.either(
-      (error) => UIUtils.showSimpleDialog(
-        'Error Backup',
-        error,
-      ),
-      (response) => console.info('backup success: $response'),
-    );
-  }
+  //   result.either(
+  //     (error) => UIUtils.showSimpleDialog(
+  //       'Error Backup',
+  //       error,
+  //     ),
+  //     (response) => console.info('backup success: $response'),
+  //   );
+  // }
 
   void restore(S3Content content) {
     // use S3Service.to.sync with a custom s3path

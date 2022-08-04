@@ -73,15 +73,19 @@ class Persistence extends GetxController with ConsoleMixin {
   // GETTERS
 
   // from the first 32 bits of the signature
-  Uint8List get cipherKey =>
-      Uint8List.fromList(utf8.encode(walletSignature.val).sublist(0, 32));
+  Uint8List get cipherKey {
+    if (walletSignature.val.isEmpty) {
+      throw 'empty wallet signature = null cipher';
+    }
+
+    return Uint8List.fromList(utf8.encode(walletSignature.val).sublist(0, 32));
+  }
 
   bool get canShare =>
       sync.val && AuthService.to.isSignedIn && !GetPlatform.isWindows;
 
-  String get shortAddress => walletAddress.val.isEmpty
-      ? ''
-      : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
+  String get shortAddress =>
+      '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
 
   // FUNCTIONS
   static Future<void> open() async {

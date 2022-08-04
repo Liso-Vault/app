@@ -101,7 +101,7 @@ class UnlockScreenController extends GetxController
       return _done();
     }
 
-    // temporary to migrate users from prior v0.6.0
+    // temporary to migrate users prior v0.6.0
     Timer.periodic(1.seconds, (timer) async {
       if (Persistence.to.walletSignature.val.isNotEmpty &&
           Persistence.to.walletPrivateKeyHex.val.isNotEmpty) {
