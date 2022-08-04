@@ -382,7 +382,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: items.length,
-        padding: const EdgeInsets.symmetric(horizontal: 30),
+        padding: const EdgeInsets.only(left: 30, right: 15),
         itemBuilder: (context, index) => items[index],
       ),
     );

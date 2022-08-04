@@ -85,6 +85,8 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   void _open() async {
     if (Globals.isAutofill && GetPlatform.isAndroid) return _fill();
     if (item.protected && !(await _unlock())) return;
+    // if newly opened and hive hasn't finished init
+    if (item.key == null) return console.error('key is null');
 
     // route parameters
     final parameters = {

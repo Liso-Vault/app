@@ -331,21 +331,26 @@ class Utils {
     }
   }
 
-  static void contactAppEmail() {
-    final body = Uri.encodeComponent("""
-
-
-User ID: ${AuthService.to.userId}
-Address: ${Persistence.to.walletAddress.val}
-RC User ID: ${ProController.to.info.value.originalAppUserId}
-Entitlement: ${ProController.to.limits.id}
-App Version: ${Globals.metadata?.app.formattedVersion}
-Platform: ${Utils.platformName()}""");
+  static void contactAppEmail() async {
+    String body = '\n\n';
+    body +=
+        'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}\n';
+    body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}\n';
+    body += 'Entitlement: ${ProController.to.limits.id}\n';
+    body += 'App Version: ${Globals.metadata?.app.formattedVersion}\n';
+    body += 'Platform: ${Utils.platformName()}';
 
     final subject = Uri.encodeComponent('${ConfigService.to.appName} Support');
+    final url =
+        'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body';
 
-    Utils.openUrl(
-      'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body',
-    );
+    if (!await canLaunchUrlString(url)) {
+      return UIUtils.showSimpleDialog(
+        'No Mail App',
+        'Please install an email client to send an email',
+      );
+    }
+
+    Utils.openUrl(url);
   }
 }

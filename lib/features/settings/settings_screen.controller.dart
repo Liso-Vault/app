@@ -80,7 +80,7 @@ class SettingsScreenController extends GetxController
     if (mode.name == Persistence.to.theme.val) return;
     Persistence.to.theme.val = mode.name;
     theme.value = mode.name;
-    if (GetPlatform.isDesktop) Get.back();
+    if (!Utils.isDrawerExpandable) Get.back();
     Get.changeThemeMode(mode);
     // reload items listview to refresh the backgrounds of tags
     ItemsController.to.data.clear();
@@ -384,9 +384,10 @@ class SettingsScreenController extends GetxController
     );
   }
 
-  void showDiagnosticInfo() async {
+  void showDiagnosticInfo() {
     final content = ListView(
       shrinkWrap: true,
+      controller: ScrollController(),
       children: [
         ListTile(
           title: const Text('Wallet Address'),
@@ -432,27 +433,29 @@ class SettingsScreenController extends GetxController
       ],
     );
 
-    await Get.dialog(
-      AlertDialog(
-        title: const Text('Diagnostics Info'),
-        content: Utils.isDrawerExpandable
-            ? content
-            : Container(
-                constraints: const BoxConstraints(maxHeight: 600),
-                width: 400,
-                child: content,
-              ),
-        actions: [
-          TextButton(
-            onPressed: Get.back,
-            child: Text('okay'.tr),
-          ),
-          // TextButton(
-          //   onPressed: () => Utils.copyToClipboard(text),
-          //   child: Text('copy'.tr),
-          // ),
-        ],
+    final dialog = AlertDialog(
+      title: const Text('Diagnostics Info'),
+      content: Container(
+        constraints: const BoxConstraints(maxHeight: 600),
+        width: 400,
+        child: content,
       ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('okay'.tr),
+        ),
+        // TextButton(
+        //   onPressed: () => Utils.copyToClipboard(text),
+        //   child: Text('copy'.tr),
+        // ),
+      ],
     );
+
+    try {
+      Get.dialog(dialog);
+    } catch (e) {
+      console.error(e.toString());
+    }
   }
 }
