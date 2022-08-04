@@ -39,6 +39,7 @@ class CipherService extends GetxService with ConsoleMixin {
       encrypter_ = Encrypter(AES(Key(cipherKey)));
     }
 
+    // TODO: fix Invalid argument(s): Invalid or corrupted pad block
     return encrypter_.decryptBytes(Encrypted(bytes), iv: iv);
   }
 

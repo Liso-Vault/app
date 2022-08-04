@@ -250,8 +250,18 @@ class MainScreenController extends GetxController
       // load balances
       AlchemyService.to.init();
       AlchemyService.to.load();
-      // sync vault
-      S3Service.to.sync();
+
+      // incase cipher key is still empty for some reason
+      // retry again after a few seconds
+      if (persistence.cipherKey.isEmpty) {
+        Future.delayed(3.seconds).then((x) {
+          // sync vault
+          S3Service.to.sync();
+        });
+      } else {
+        // sync vault
+        S3Service.to.sync();
+      }
     } else {
       // show all items from all vaults
       drawerController.filterGroupId.value = '';
