@@ -42,8 +42,8 @@ class WalletService extends GetxService with ConsoleMixin {
 
   bool get isSaved => Persistence.to.wallet.val.isNotEmpty;
 
-  Uint8List get privateKey => wallet!.privateKey.privateKey;
-  String get privateKeyHex => HEX.encode(privateKey);
+  // Uint8List get privateKey => wallet!.privateKey.privateKey;
+  // String get privateKeyHex => HEX.encode(privateKey);
 
   EthereumAddress get address => wallet!.privateKey.address;
 
@@ -136,7 +136,9 @@ class WalletService extends GetxService with ConsoleMixin {
     Uint8List? privateKey_,
   }) async {
     final messageBytes = Uint8List.fromList(utf8.encode(message));
-    final privateKeyHex = HEX.encode(privateKey_ ?? privateKey);
+    final privateKeyHex = privateKey_ != null
+        ? HEX.encode(privateKey_)
+        : Persistence.to.walletPrivateKeyHex.val;
     // console.info('message: $message');
 
     final signature = await compute(signMessage, {
@@ -192,6 +194,8 @@ class WalletService extends GetxService with ConsoleMixin {
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     Persistence.to.walletSignature.val = signature;
+    Persistence.to.walletPrivateKeyHex.val =
+        HEX.encode(wallet!.privateKey.privateKey);
     // // from the first 32 bits of the signature
     // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 
@@ -235,7 +239,7 @@ class WalletService extends GetxService with ConsoleMixin {
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'private_key') {
-        e.data.value = privateKeyHex;
+        e.data.value = Persistence.to.walletPrivateKeyHex.val;
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'address') {

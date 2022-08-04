@@ -96,17 +96,19 @@ class UnlockScreenController extends GetxController
       return Get.offNamedUntil(Routes.main, (route) => false);
     }
 
-    if (Persistence.to.walletSignature.val.isNotEmpty) {
+    if (Persistence.to.walletSignature.val.isNotEmpty &&
+        Persistence.to.walletPrivateKeyHex.val.isNotEmpty) {
       return _done();
     }
 
     // temporary to migrate users from prior v0.6.0
     Timer.periodic(1.seconds, (timer) async {
-      if (Persistence.to.walletSignature.val.isNotEmpty) {
+      if (Persistence.to.walletSignature.val.isNotEmpty &&
+          Persistence.to.walletPrivateKeyHex.val.isNotEmpty) {
         timer.cancel();
         return _done();
       } else {
-        console.info('wallet signature still not present');
+        console.info('wallet still not saved to persistence');
       }
     });
   }

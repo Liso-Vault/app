@@ -16,8 +16,12 @@ dependencies:
   # CRYTPOGRAPHY + SECURITY
   secrets:
     path: ../secrets
-  alchemy_web3:
-    git: https://github.com/oliverbytes/alchemy_web3.git
+  # alchemy_web3:
+    # git: https://github.com/oliverbytes/alchemy_web3.git
+  alchemy_web3: 
+    git: 
+      url: https://github.com/oliverbytes/alchemy_web3.git
+      ref: ee496edc0bc0a1d64d7cc5c7ea8662b4b8d4f0fc
   web3dart: ^2.3.5 # Ethereum
   eth_sig_util: ^0.0.9 # Ethereum signature
   bip39: ^1.0.6 # Mnemonic Seed Phrases
