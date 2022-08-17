@@ -93,34 +93,39 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
           )
         : null;
 
-    return ListTile(
-      title: Text(
-        content.maskedName,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      subtitle: subTitle,
-      iconColor: themeColor,
-      leading: Utils.s3ContentIcon(content),
-      trailing: ContextMenuButton(
-        menuItems,
-        child: const Icon(LineIcons.verticalEllipsis),
-      ),
-      onTap: () {
-        if (content.isFile) {
-          if (isPicker) {
-            return Get.back(result: content.object!.eTag);
-          }
-
-          if (content.isVaultFile) {
-            controller.askToImport(content);
-          } else {
-            controller.askToDownload(content);
-          }
-        } else {
-          explorerController.load(path: content.path);
+    void _open() {
+      if (content.isFile) {
+        if (isPicker) {
+          return Get.back(result: content.object!.eTag);
         }
-      },
+
+        if (content.isVaultFile) {
+          controller.askToImport(content);
+        } else {
+          controller.askToDownload(content);
+        }
+      } else {
+        explorerController.load(path: content.path);
+      }
+    }
+
+    return Obx(
+      () => ListTile(
+        title: Text(
+          content.maskedName,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        subtitle: controller.busy.value ? Text(controller.state) : subTitle,
+        iconColor: themeColor,
+        leading: Utils.s3ContentIcon(content),
+        enabled: !controller.busy.value,
+        onTap: _open,
+        trailing: ContextMenuButton(
+          menuItems,
+          child: const Icon(LineIcons.verticalEllipsis),
+        ),
+      ),
     );
   }
 }

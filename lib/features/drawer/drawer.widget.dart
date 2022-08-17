@@ -287,7 +287,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 title: const Text('Send Feedback'),
-                subtitle: const Text("We're happy to chat with you"),
+                subtitle: Text("Help us improve ${ConfigService.to.appName}"),
                 leading: const Icon(Iconsax.message),
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
               ),

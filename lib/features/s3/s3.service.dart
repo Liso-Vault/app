@@ -64,7 +64,6 @@ class S3Service extends GetxService with ConsoleMixin {
   String get rootPath => '${Persistence.to.walletAddress.val}/';
   String get vaultPath => join(rootPath, kVaultFileName).replaceAll('\\', '/');
   String get backupsPath => join(rootPath, 'Backups').replaceAll('\\', '/');
-  String get historyPath => join(rootPath, 'History').replaceAll('\\', '/');
   String get sharedPath => join(rootPath, 'Shared').replaceAll('\\', '/');
   String get sharedVaultsPath =>
       join(sharedPath, 'Vaults').replaceAll('\\', '/');
@@ -358,7 +357,6 @@ class S3Service extends GetxService with ConsoleMixin {
     await local.addAll(newList);
   }
 
-  // currently doesn't work on Filebase
   Future<Either<dynamic, String>> backup(
       S3Content content, Uint8List encryptedBytes) async {
     if (!ready) init();
@@ -378,7 +376,8 @@ class S3Service extends GetxService with ConsoleMixin {
 
     console.wtf('# BACKUPS #');
     console.wtf(
-        'limits: ${ProController.to.limits.backups}, backups: ${info.contents.length}');
+      'limits: ${ProController.to.limits.backups}, backups: ${info.contents.length}',
+    );
 
     for (var e in info.contents) {
       console.wtf('${e.name} - ${e.object?.lastModified}');
@@ -392,7 +391,8 @@ class S3Service extends GetxService with ConsoleMixin {
         return Left(result.left);
       } else {
         console.wtf(
-            'removed backup: ${result.right} - ${info.contents.first.name}');
+          'removed backup: ${result.right} - ${info.contents.first.name}',
+        );
       }
     }
 

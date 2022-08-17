@@ -839,7 +839,7 @@ class ItemScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (!editMode.value) return console.error('not in edit mode');
     // items limit
-    if (ItemsService.to.itemLimitReached) {
+    if (ItemsController.to.itemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -851,7 +851,7 @@ class ItemScreenController extends GetxController
     }
 
     // protected items limit
-    if (protected.value && ItemsService.to.protectedItemLimitReached) {
+    if (protected.value && ItemsController.to.protectedItemLimitReached) {
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
@@ -919,7 +919,7 @@ class ItemScreenController extends GetxController
 
   void onProtectedChanged(bool? value) {
     // protected items limit
-    if (value! && ItemsService.to.protectedItemLimitReached) {
+    if (value! && ItemsController.to.protectedItemLimitReached) {
       Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {

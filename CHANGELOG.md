@@ -1,7 +1,8 @@
 ## 0.7.0
 - New! Automatic vault backups
+- New! Restore from a backed-up vault
 - New! Send Feedback Screen
-- New! Rate Liso on the app store
+- Improved! Files Explorer UX
 - Fixed! Stuck syncing after restore / unlock
 - Fixed! Send feedback feature
 - Fixed! Protected toggle is covered by Save button

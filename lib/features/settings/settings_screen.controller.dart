@@ -411,7 +411,7 @@ class SettingsScreenController extends GetxController
           ),
         ),
         ListTile(
-          title: const Text('Pro User'),
+          title: Text('${ConfigService.to.appName} Pro'),
           subtitle: Text(ProController.to.isPro.toString()),
         ),
         // ListTile(
@@ -419,7 +419,7 @@ class SettingsScreenController extends GetxController
         //   subtitle: Text(ProController.to.isFreeTrial.toString()),
         // ),
         ListTile(
-          title: const Text('Entitlement'),
+          title: const Text('Limits'),
           subtitle: Text(ProController.to.limits.id),
         ),
         ListTile(

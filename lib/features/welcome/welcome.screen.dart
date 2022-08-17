@@ -36,10 +36,12 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             ),
             const SizedBox(height: 40),
             GradientWidget(
-              gradient: LinearGradient(colors: [
-                kAppColor,
-                proColor,
-              ]),
+              gradient: const LinearGradient(
+                colors: [
+                  kAppColor,
+                  Color(0xFF00CBDA),
+                ],
+              ),
               child: Text(
                 ConfigService.to.general.app.shortDescription,
                 textAlign: TextAlign.center,
@@ -127,7 +129,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
         end: Alignment.topRight,
         colors: [
           Colors.black,
-          Color(0xff102121),
+          Color(0xFF173030),
         ],
       ),
     );

@@ -127,7 +127,7 @@ class RestoreScreenController extends GetxController
 
     Future<void> _proceed() async {
       // parse and import vault file
-      await LisoManager.importVaultFile(
+      await LisoManager.importVault(
         vault,
         cipherKey: cipherKey,
       );

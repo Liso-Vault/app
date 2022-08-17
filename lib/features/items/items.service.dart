@@ -13,7 +13,6 @@ import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/globals.dart';
-import '../pro/pro.controller.dart';
 
 class ItemsService extends GetxService with ConsoleMixin {
   static ItemsService get to => Get.find<ItemsService>();
@@ -25,12 +24,6 @@ class ItemsService extends GetxService with ConsoleMixin {
   // GETTERS
   List<HiveLisoItem> get data =>
       box != null && box!.isOpen ? box!.values.toList() : [];
-
-  bool get itemLimitReached => data.length >= ProController.to.limits.items;
-
-  bool get protectedItemLimitReached =>
-      data.where((e) => e.protected).length >=
-      ProController.to.limits.protectedItems;
 
   // FUNCTIONS
 

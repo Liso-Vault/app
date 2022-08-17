@@ -13,6 +13,7 @@ import 'package:liso/features/pro/pro.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
+import '../../core/utils/ui_utils.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/pro.widget.dart';
@@ -147,39 +148,38 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               ],
-              // ListTile(
-              //   title: const Text('Backed Up Vaults'),
-              //   subtitle: const Text('Go back in time and undo your changes'),
-              //   leading: Icon(Iconsax.clock, color: themeColor),
-              //   trailing: const Icon(Iconsax.arrow_right_3),
-              //   onTap: () async {
-              //     if (!p.sync.val) {
-              //       return UIUtils.showSimpleDialog(
-              //         'Sync Required',
-              //         'Please turn on ${config.appName} Cloud Sync to use this feature',
-              //       );
-              //     }
+              ListTile(
+                title: const Text('Backed Up Vaults'),
+                subtitle: const Text('Go back in time to undo your changes'),
+                leading: Icon(Iconsax.box, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                onTap: () async {
+                  if (!p.sync.val) {
+                    return UIUtils.showSimpleDialog(
+                      'Sync Required',
+                      'Please turn on ${config.appName} Cloud Sync to use this feature',
+                    );
+                  }
 
-              //     Utils.adaptiveRouteOpen(
-              //       name: Routes.s3Explorer,
-              //       parameters: {'type': 'time_machine'},
-              //     );
-              //   },
-              // ),
-
-              // ListTile(
-              //   leading: Icon(Iconsax.import_1, color: themeColor),
-              //   trailing: const Icon(Iconsax.arrow_right_3),
-              //   title: const Text('Import Items'),
-              //   subtitle: const Text('Import items from external sources'),
-              //   // enabled: false,
-              //   onTap: () {
-              //     UIUtils.showSimpleDialog(
-              //       'Import Items',
-              //       "Soon, you'll be able to import items from 1Password, LastPass, etc...",
-              //     );
-              //   },
-              // ),
+                  Utils.adaptiveRouteOpen(
+                    name: Routes.s3Explorer,
+                    parameters: {'type': 'time_machine'},
+                  );
+                },
+              ),
+              ListTile(
+                leading: Icon(Iconsax.import_1, color: themeColor),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Import Items'),
+                subtitle: const Text('Import items from external sources'),
+                // enabled: false,
+                onTap: () {
+                  UIUtils.showSimpleDialog(
+                    'Import Items',
+                    "Soon, you'll be able to import items from 1Password, LastPass, etc...",
+                  );
+                },
+              ),
               ContextMenuButton(
                 padding: EdgeInsets.zero,
                 [

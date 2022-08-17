@@ -39,7 +39,7 @@ class S3ExplorerScreenController extends GetxController
   bool get isPicker => Get.parameters['type'] == 'picker';
 
   String get rootPath =>
-      isTimeMachine ? S3Service.to.historyPath : S3Service.to.filesPath;
+      isTimeMachine ? '${S3Service.to.backupsPath}/' : S3Service.to.filesPath;
 
   List<ContextMenuItem> get menuItemsUploadType {
     return [

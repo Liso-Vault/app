@@ -146,9 +146,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.direct_inbox,
-              title: 'Automatic Vault Backups',
+              title: 'Automatic Backups',
               trailing: Text(
-                _formatKNumber(limit.backups),
+                '${_formatKNumber(limit.backups)} Vaults',
                 style: kTrailingStyle,
               ),
             ),
@@ -643,7 +643,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         end: Alignment.topRight,
         colors: [
           Colors.black,
-          Color(0xff102121),
+          Color(0xFF173030),
         ],
       ),
     );

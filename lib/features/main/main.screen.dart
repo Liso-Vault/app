@@ -88,7 +88,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             style: TextStyle(color: Colors.orange, fontSize: 16),
           ),
           const SizedBox(height: 10),
-          OutlinedButton(
+          OutlinedButton.icon(
+            icon: const Icon(Iconsax.search_status),
+            label: const Text('Identify'),
             onPressed: () => Utils.adaptiveRouteOpen(
               name: Routes.upgrade,
               parameters: {
@@ -97,7 +99,6 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     'Monitor the health of your passwords. Upgrade to Pro to take advantage of this powerful feature.',
               },
             ),
-            child: const Text('Upgrade To Identify'),
           ),
         ],
       ),

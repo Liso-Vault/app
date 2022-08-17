@@ -78,8 +78,10 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                     padding: const EdgeInsets.only(top: 10),
                     child: Text(
                       'Please give us your star rating',
-                      style:
-                          TextStyle(color: Colors.pink.shade200, fontSize: 11),
+                      style: TextStyle(
+                        color: Colors.pink.shade200,
+                        fontSize: 11,
+                      ),
                     ),
                   ),
                 ),
@@ -87,15 +89,23 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
               Obx(
                 () => Visibility(
                   visible: controller.showRateButton,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: ElevatedButton.icon(
-                      onPressed: controller.review,
-                      icon: const Icon(Icons.star_border),
-                      label: Text(
-                        'Rate ${ConfigService.to.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}',
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      ElevatedButton.icon(
+                        onPressed: controller.review,
+                        icon: const Icon(Icons.star_border),
+                        label: Text(
+                          'Rate & Review ${ConfigService.to.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}',
+                        ),
                       ),
-                    ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Help spread the word about why people should consider using ${ConfigService.to.appName} as their password manager.',
+                        style: const TextStyle(color: Colors.grey),
+                      ),
+                    ],
                   ),
                 ),
               ),

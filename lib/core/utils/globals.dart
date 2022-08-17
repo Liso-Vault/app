@@ -60,7 +60,7 @@ bool get isLocalAuthSupported =>
 
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
-Color get proColor => Get.isDarkMode ? Colors.tealAccent : Colors.teal;
+Color get proColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 // TODO: set before releasing a new version
 const kReleaseMode = ReleaseMode.production;
