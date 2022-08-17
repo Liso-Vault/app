@@ -31,11 +31,11 @@ class ProController extends GetxController with ConsoleMixin {
   bool get isPro =>
       proEntitlement?.isActive ?? AuthService.to.claims['limits'] == 'pro';
 
-  bool get isFreeTrial => !AuthService.to.isSignedIn
-      ? false
-      : AuthService.to.user!.metadata.creationTime!.isBefore(
-          DateTime.tryParse(Persistence.to.lastServerDateTime.val) ??
-              DateTime.now());
+  // bool get isFreeTrial => !AuthService.to.isSignedIn
+  //     ? false
+  //     : AuthService.to.user!.metadata.creationTime!.isBefore(
+  //         DateTime.tryParse(Persistence.to.lastServerDateTime.val) ??
+  //             DateTime.now());
 
   DateTime get freeTrialExpirationDateTime =>
       (AuthService.to.user?.metadata.creationTime ?? DateTime.now()).add(
@@ -89,8 +89,8 @@ class ProController extends GetxController with ConsoleMixin {
       return limits_.holder;
     }
 
-    // check if user is still in trial mode
-    if (isFreeTrial) return limits_.trial;
+    // // check if user is still in trial mode
+    // if (isFreeTrial) return limits_.trial;
 
     // free user
     return limits_.free;

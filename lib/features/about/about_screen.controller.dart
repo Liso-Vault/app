@@ -49,7 +49,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
       const ContextMenuItem(
         title: 'Email',
         leading: Icon(LineIcons.envelope),
-        onSelected: Utils.contactAppEmail,
+        onSelected: Utils.contactEmail,
       ),
     ];
   }

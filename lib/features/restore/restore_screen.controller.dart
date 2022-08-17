@@ -206,8 +206,4 @@ class RestoreScreenController extends GetxController
   }
 }
 
-enum RestoreMode {
-  file,
-  cloud,
-  s3,
-}
+enum RestoreMode { file, cloud, s3 }

@@ -14,14 +14,14 @@ class ProText extends StatelessWidget {
       children: [
         Text(
           ConfigService.to.appName,
-          style: TextStyle(fontSize: size, fontWeight: FontWeight.w500),
+          style: TextStyle(fontSize: size, fontWeight: FontWeight.bold),
         ),
         const SizedBox(width: 4),
         Text(
           'Pro',
           style: TextStyle(
             fontSize: size,
-            fontWeight: FontWeight.w500,
+            fontWeight: FontWeight.bold,
             color: proColor,
           ),
         ),

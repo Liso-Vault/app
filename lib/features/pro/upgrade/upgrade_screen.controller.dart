@@ -25,11 +25,24 @@ class UpgradeScreenController extends GetxController
   // GETTERS
   String get identifier => package.value.identifier;
 
-  bool get isSubscription => package.value.product.identifier.contains('.sub.');
+  Product get product => package.value.product;
+
+  bool get isSubscription => product.identifier.contains('.sub.');
 
   String get priceString =>
-      package.value.product.introductoryPrice?.priceString ??
-      package.value.product.priceString;
+      product.introductoryPrice?.priceString ?? product.priceString;
+
+  String get periodUnitName {
+    if (product.identifier.contains('annual')) {
+      return 'year';
+    } else if (product.identifier.contains('month')) {
+      return 'month';
+    }
+
+    return 'error';
+  }
+
+  bool get isFreeTrial => product.introductoryPrice?.price == 0;
 
   int get limitIndex {
     int index = 3;
@@ -69,16 +82,17 @@ class UpgradeScreenController extends GetxController
       ];
 
   ConfigLimitsTier get selectedLimit {
-    var limit_ = ConfigService.to.limits.free;
+    final limits = ConfigService.to.limits;
+    var limit_ = limits.free;
 
     if (tabIndex.value == 0) {
-      limit_ = ConfigService.to.limits.pro;
+      limit_ = limits.pro;
     } else if (tabIndex.value == 1) {
-      limit_ = ConfigService.to.limits.staker;
+      limit_ = limits.staker;
     } else if (tabIndex.value == 2) {
-      limit_ = ConfigService.to.limits.holder;
+      limit_ = limits.holder;
     } else if (tabIndex.value == 3) {
-      limit_ = ConfigService.to.limits.free;
+      limit_ = limits.free;
     }
 
     return limit_;

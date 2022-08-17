@@ -63,7 +63,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
         ),
         const SizedBox(height: 5),
         const Text(
-          "Please carefully write down your seed and store it in a safe location",
+          "This is the only key to access and decrypt your vault so please carefully write it down and store it in a safe location",
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),

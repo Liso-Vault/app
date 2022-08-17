@@ -1,3 +1,4 @@
+import 'package:app_review/app_review.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -48,7 +49,28 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             );
           },
         ),
+        if (GetPlatform.isAndroid ||
+            GetPlatform.isIOS ||
+            GetPlatform.isMacOS) ...[
+          ListTile(
+            leading: Icon(
+              GetPlatform.isAndroid ? LineIcons.googlePlay : LineIcons.appStore,
+              color: themeColor,
+            ),
+            trailing: const Icon(Iconsax.arrow_right_3),
+            title: Text(
+                '${ConfigService.to.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
+            onTap: () {
+              final store = ConfigService.to.general.app.links.store;
 
+              if (GetPlatform.isAndroid) {
+                Utils.openUrl(store.google);
+              } else if (GetPlatform.isIOS || GetPlatform.isMacOS) {
+                Utils.openUrl(store.apple);
+              }
+            },
+          ),
+        ],
         ListTile(
           leading: Icon(Iconsax.chrome, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
@@ -58,7 +80,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             config.general.app.links.website,
           ),
         ),
-
         ListTile(
           leading: Icon(LineIcons.rocket, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
@@ -67,7 +88,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             config.general.app.links.roadmap,
           ),
         ),
-
         ContextMenuButton(
           controller.communityMenuItems,
           useMouseRegion: true,
@@ -79,14 +99,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             onTap: () {},
           ),
         ),
-
         ListTile(
           leading: Icon(LineIcons.productHunt, color: themeColor),
           title: Text('${config.appName} Product Hunt'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.productHunt),
         ),
-
         ListTile(
           leading: Icon(LineIcons.git, color: themeColor),
           title: Text('${config.appName} GitCoin Grants'),
@@ -94,21 +112,18 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           onTap: () => Utils.openUrl(
               'https://gitcoin.co/grants/5819/liso-decentralized-password-manager'),
         ),
-        //
         ListTile(
           leading: Icon(LineIcons.github, color: themeColor),
           title: Text('${config.appName} GitHub'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.github),
         ),
-
         ListTile(
           leading: Icon(Iconsax.security_user, color: themeColor),
           title: Text('${config.appName} Privacy'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.privacy),
         ),
-
         ListTile(
           leading: Icon(Iconsax.book_1, color: themeColor),
           title: Text('${config.appName} Terms'),
@@ -133,14 +148,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           //   onTap: () => Utils.openUrl(kAppGithubReleasesUrl),
           // ),
         ],
-
         ListTile(
           leading: Icon(Iconsax.code_1, color: themeColor),
           title: Text('licenses'.tr),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => controller.showLicenses(context),
         ),
-
         ContextMenuButton(
           controller.developerMenuItems,
           useMouseRegion: true,
@@ -152,7 +165,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             onTap: () {},
           ),
         ),
-
         const SizedBox(height: 50),
       ],
     );

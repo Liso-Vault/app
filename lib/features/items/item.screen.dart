@@ -314,7 +314,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           textAlign: TextAlign.center,
         ),
       ],
-      const SizedBox(height: 30),
+      const SizedBox(height: 80),
     ];
 
     final appBar = AppBar(
@@ -377,7 +377,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
-    final form = Form(
+    final content = Form(
       key: controller.formKey,
       child: ListView.builder(
         shrinkWrap: true,
@@ -387,21 +387,27 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
-    final content = controller.obx(
-      (_) => form,
-      onLoading: const BusyIndicator(),
+    final scaffold = Scaffold(
+      appBar: appBar,
+      floatingActionButton: Utils.isDrawerExpandable ? fab : null,
+      // grey disabled fields
+      body: Theme(
+        data: Get.theme.copyWith(disabledColor: Colors.grey),
+        child: controller.obx(
+          (_) => content,
+          onLoading: const BusyIndicator(),
+        ),
+      ),
     );
 
-    return WillPopScope(
-      onWillPop: controller.canPop,
-      child: Scaffold(
-        appBar: appBar,
-        floatingActionButton: Utils.isDrawerExpandable ? fab : null,
-        // grey disabled fields
-        body: Theme(
-          data: Get.theme.copyWith(disabledColor: Colors.grey),
-          child: content,
+    return Obx(
+      () => Visibility(
+        visible: !controller.editMode.value,
+        replacement: WillPopScope(
+          onWillPop: controller.canPop,
+          child: scaffold,
         ),
+        child: scaffold,
       ),
     );
   }

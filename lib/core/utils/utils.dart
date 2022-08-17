@@ -5,10 +5,12 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/hive/models/metadata/device.hive.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -322,28 +324,39 @@ class Utils {
     }
   }
 
-  static void contactAppEmail() async {
-    String body = '\n\n';
+  static void contactEmail({
+    required String subject,
+    required String preBody,
+    required double rating,
+  }) async {
+    String ratingEmojis = '';
+
+    for (var i = 0; i < rating.toInt(); i++) {
+      ratingEmojis += '✩';
+    }
+
+    String body = '$preBody\n\n';
     body +=
         'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}\n';
     body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}\n';
     body += 'Entitlement: ${ProController.to.limits.id}\n';
     body += 'App Version: ${Globals.metadata?.app.formattedVersion}\n';
-    body += 'Platform: ${Utils.platformName()}';
+    body += 'Platform: ${Utils.platformName()}\n';
+    body += 'Rating: $ratingEmojis\n';
+    body += 'Pro: ${ProController.to.isPro}\n';
 
-    final subject = Uri.encodeComponent('${ConfigService.to.appName} Support');
-    final email = ConfigService.to.general.app.emails.support;
-    final url = 'mailto:$email?subject=$subject&body=$body';
-
-    openUrl(url);
+    final url =
+        'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body';
+    openUrl(Uri.encodeFull(url));
   }
 
   static Future<void> openUrl(
     String url, {
-    LaunchMode mode = LaunchMode.externalApplication,
+    LaunchMode mode = LaunchMode.platformDefault,
   }) async {
+    console.info('launching: $url');
     final canLaunch = await canLaunchUrlString(url);
-    if (!canLaunch) console.error('cannot launch: $url');
+    if (!canLaunch) console.error('cannot launch');
     launchUrlString(url, mode: mode);
   }
 }

@@ -16,6 +16,7 @@ import '../attachments/attachments.screen.dart';
 import '../categories/categories.screen.dart';
 import '../cipher/cipher.screen.dart';
 import '../devices/devices.screen.dart';
+import '../feedback/feedback.screen.dart';
 import '../groups/groups.screen.dart';
 import '../items/item.screen.dart';
 import '../joined_vaults/explorer/vault_explorer.screen.dart';
@@ -37,7 +38,6 @@ class AppPages {
     GetPage(
       name: Routes.main,
       page: () => MainScreen(),
-      // transition: Transition.fadeIn,
       middlewares: [
         AuthenticationMiddleware(),
       ],
@@ -45,12 +45,10 @@ class AppPages {
     GetPage(
       name: Routes.welcome,
       page: () => const WelcomeScreen(),
-      // transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.unlock,
       page: () => const UnlockScreen(),
-      // transition: Transition.fadeIn,
     ),
     GetPage(
       name: Routes.createPassword,
@@ -110,6 +108,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.upgrade,
+      preventDuplicates: true,
       page: () => const UpgradeScreen(),
     ),
     GetPage(
@@ -119,34 +118,47 @@ class AppPages {
     GetPage(
       name: Routes.categories,
       page: () => const CategoriesScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.vaults,
       page: () => const GroupsScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.sharedVaults,
       page: () => const SharedVaultsScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.joinedVaults,
       page: () => const JoinedVaultsScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.vaultExplorer,
       page: () => const VaultExplorerScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.devices,
       page: () => const DevicesScreen(),
+      preventDuplicates: true,
+    ),
+    GetPage(
+      name: Routes.feedback,
+      page: () => const FeedbackScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.disabledBeta,
       page: () => const DisabledBetaScreen(),
+      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.debug,
       page: () => const DebugScreen(),
+      preventDuplicates: true,
     ),
   ];
 }

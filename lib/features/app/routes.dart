@@ -23,6 +23,7 @@ abstract class Routes {
   static const joinedVaults = '/joined_vaults';
   static const vaultExplorer = '/vault_explorer';
   static const devices = '/devices';
+  static const feedback = '/feedback';
   static const disabledBeta = '/disabled_beta';
   static const debug = '/debug';
 

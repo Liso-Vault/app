@@ -76,7 +76,7 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: const Text('Cipher Tool'),
+      title: const Text('Encryption Tool'),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );

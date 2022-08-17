@@ -139,35 +139,22 @@ class WalletService extends GetxService with ConsoleMixin {
     final privateKeyHex = privateKey_ != null
         ? HEX.encode(privateKey_)
         : Persistence.to.walletPrivateKeyHex.val;
-    // console.info('message: $message');
 
-    final signature = await compute(signMessage, {
-      'privateKey': privateKeyHex,
-      'message': messageBytes,
-    });
+    String signature_ = '';
 
-    // final recovered = EthSigUtil.recoverSignature(
-    //   signature: signature,
-    //   message: messageBytes,
-    // );
+    if (personal) {
+      signature_ = await compute(signPersonalMessage, {
+        'privateKey': privateKeyHex,
+        'message': messageBytes,
+      });
+    } else {
+      signature_ = await compute(signMessage, {
+        'privateKey': privateKeyHex,
+        'message': messageBytes,
+      });
+    }
 
-    // console.info('EthSigUtil signature: $signature');
-    // console.wtf('EthSigUtil recovered: $recovered');
-
-    final personalSignature = await compute(signPersonalMessage, {
-      'privateKey': privateKeyHex,
-      'message': messageBytes,
-    });
-
-    // final personalRecovered = EthSigUtil.recoverPersonalSignature(
-    //   signature: personalSignature,
-    //   message: messageBytes,
-    // );
-
-    // console.info('EthSigUtil personalSignature: $personalSignature');
-    // console.wtf('EthSigUtil personalRecovered: $personalRecovered');
-
-    return personal ? personalSignature : signature;
+    return signature_;
   }
 
   Future<Wallet?> initJson(String data, {required String password}) async {
@@ -180,6 +167,7 @@ class WalletService extends GetxService with ConsoleMixin {
       ).then((value) => wallet_ = value);
     } catch (e) {
       console.error('error: $e');
+      return null;
     }
 
     console.info('init wallet json');
@@ -188,14 +176,14 @@ class WalletService extends GetxService with ConsoleMixin {
 
   Future<void> init(Wallet wallet_) async {
     wallet = wallet_;
+    Persistence.to.walletPrivateKeyHex.val =
+        HEX.encode(wallet!.privateKey.privateKey);
     // save to persistence
     Persistence.to.walletAddress.val = address.hexEip55;
     Persistence.to.wallet.val = await compute(walletToJsonString, wallet!);
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     Persistence.to.walletSignature.val = signature;
-    Persistence.to.walletPrivateKeyHex.val =
-        HEX.encode(wallet!.privateKey.privateKey);
     // // from the first 32 bits of the signature
     // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 
@@ -205,8 +193,6 @@ class WalletService extends GetxService with ConsoleMixin {
         value: Persistence.to.walletAddress.val,
       );
     }
-
-    console.info('init');
   }
 
   void reset() {

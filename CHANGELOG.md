@@ -1,6 +1,10 @@
-## 0.6.1
+## 0.7.0
 - New! Automatic vault backups
+- New! Send Feedback Screen
+- New! Rate Liso on the app store
+- Fixed! Stuck syncing after restore / unlock
 - Fixed! Send feedback feature
+- Fixed! Protected toggle is covered by Save button
 
 ## 0.6.0
 - New! Autofill Service on Android

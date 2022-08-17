@@ -33,6 +33,8 @@ class Persistence extends GetxController with ConsoleMixin {
   final lastServerDateTime = ''.val('last-server-datetime');
   final backedUpSeed = false.val('backed-up-seed-phrase');
   final backedUpPassword = false.val('backed-up-password');
+  final notificationId = 0.val('notification-id');
+  final upgradeScreenShown = false.val('upgrade-screen-shown');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window-width');
   final windowHeight = 850.0.val('window-height');
@@ -41,8 +43,6 @@ class Persistence extends GetxController with ConsoleMixin {
   // SECURITY
   final maxUnlockAttempts = 10.val('max-unlock-attempts');
   final timeLockDuration = 120.val('time-lock-duration'); // in seconds
-  // NOTIFICATION
-  final notificationId = 0.val('notification-id');
   // SYNC
   final sync = true.val('sync');
   final syncProvider = LisoSyncProvider.sia.name.val('sync-provider');
@@ -84,8 +84,9 @@ class Persistence extends GetxController with ConsoleMixin {
   bool get canShare =>
       sync.val && AuthService.to.isSignedIn && !GetPlatform.isWindows;
 
-  String get shortAddress =>
-      '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
+  String get shortAddress => walletAddress.val.isEmpty
+      ? 'error'
+      : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
 
   // FUNCTIONS
   static Future<void> open() async {

@@ -414,10 +414,10 @@ class SettingsScreenController extends GetxController
           title: const Text('Pro User'),
           subtitle: Text(ProController.to.isPro.toString()),
         ),
-        ListTile(
-          title: const Text('Free Trial'),
-          subtitle: Text(ProController.to.isFreeTrial.toString()),
-        ),
+        // ListTile(
+        //   title: const Text('Free Trial'),
+        //   subtitle: Text(ProController.to.isFreeTrial.toString()),
+        // ),
         ListTile(
           title: const Text('Entitlement'),
           subtitle: Text(ProController.to.limits.id),

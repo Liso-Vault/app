@@ -11,7 +11,7 @@ class SeedChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: Utils.isDrawerExpandable ? 1 : 5,
+      spacing: Utils.isDrawerExpandable ? 5 : 5,
       runSpacing: Utils.isDrawerExpandable ? 5 : 10,
       alignment: WrapAlignment.center,
       children: seeds
@@ -22,7 +22,7 @@ class SeedChips extends StatelessWidget {
               label: Text(
                 '${e.key + 1}. ${e.value}',
                 style: TextStyle(
-                  fontSize: Utils.isDrawerExpandable ? null : 18,
+                  fontSize: Utils.isDrawerExpandable ? 15 : 18,
                 ),
               ),
             ),

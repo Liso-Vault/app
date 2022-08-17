@@ -1,7 +1,9 @@
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 
 import '../../core/firebase/auth.service.dart';
 import '../../core/services/local_auth.service.dart';
@@ -27,6 +29,11 @@ class WelcomeScreenController extends GetxController
   // FUNCTIONS
 
   void create() async {
+    // show upgrade screen
+    if (!Persistence.to.upgradeScreenShown.val && !ProController.to.isPro) {
+      await Utils.adaptiveRouteOpen(name: Routes.upgrade);
+    }
+
     change(null, status: RxStatus.loading());
     await AuthService.to.signOut(); // just to make sure
 
@@ -45,7 +52,7 @@ class WelcomeScreenController extends GetxController
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 
-  void import() async {
+  void restore() async {
     await AuthService.to.signOut(); // just to make sure
     Utils.adaptiveRouteOpen(name: Routes.restore);
   }

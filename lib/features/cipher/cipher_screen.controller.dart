@@ -73,7 +73,7 @@ class CipherScreenController extends GetxController
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Cipher Tool',
+          'title': 'Encryption Tool',
           'body':
               'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${ConfigService.to.appName} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
         },

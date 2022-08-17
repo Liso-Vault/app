@@ -204,13 +204,17 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             child: Card(
               elevation: 1.0,
               child: ListTile(
-                selected: true,
-                dense: Utils.isDrawerExpandable,
+                iconColor: kAppColor,
+                // dense: Utils.isDrawerExpandable,
+                contentPadding: const EdgeInsets.all(10),
                 selectedTileColor: themeColor.withOpacity(0.05),
                 // TODO: localize
-                title: const Text("Backup Your Seed Phrase"),
+                title: const Text(
+                  "Backup Your Seed Phrase",
+                  style: TextStyle(color: kAppColor),
+                ),
                 subtitle: const Text(
-                  "Please confirm you've backed up your seed phrase",
+                  "This is the only key to access and decrypt your vault",
                 ),
                 leading: const Icon(Iconsax.key),
                 trailing: OutlinedButton(

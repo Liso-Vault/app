@@ -53,7 +53,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   // INIT
   @override
   void onInit() {
-    seed.value = bip39.generateMnemonic(strength: 256);
+    seed.value = bip39.generateMnemonic();
     super.onInit();
   }
 

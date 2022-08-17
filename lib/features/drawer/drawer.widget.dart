@@ -10,6 +10,7 @@ import 'package:liso/features/general/pro.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 
 import '../../../core/utils/utils.dart';
+import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../pro/pro.controller.dart';
 import 'drawer_widget.controller.dart';
@@ -39,7 +40,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('all'.tr),
+                      const Text('All Items'),
                       if (controller.itemsCount > 0) ...[
                         Chip(label: Text(controller.itemsCount.toString())),
                       ],
@@ -247,24 +248,28 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   method: 'offAndToNamed',
                 ),
               ),
-              const ListTile(
-                title: Text('Send Feedback'),
-                subtitle: Text('Feel free to roast the app 🙏'),
-                leading: Icon(Iconsax.message),
-                onTap: Utils.contactAppEmail,
-              ),
+              const Divider(),
               PersistenceBuilder(
                 builder: (p, context) => Obx(
                   () => Column(
                     children: [
-                      const Divider(),
                       ListTile(
-                        title: const ProText(size: 16),
+                        title: Row(
+                          children: [
+                            if (!ProController.to.isPro) ...[
+                              const Text('Free Trial '),
+                            ],
+                            const ProText(size: 16)
+                          ],
+                        ),
                         subtitle: Text(
                           ProController.to.isPro
                               ? 'Active'
-                              : 'Unlock powerful features',
-                          style: const TextStyle(color: Colors.grey),
+                              : 'Unlock All Access',
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                         leading: Icon(LineIcons.rocket, color: proColor),
                         onTap: () => ProController.to.isPro
@@ -280,6 +285,12 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               ),
+              ListTile(
+                title: const Text('Send Feedback'),
+                subtitle: const Text("We're happy to chat with you"),
+                leading: const Icon(Iconsax.message),
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+              ),
             ],
           ),
           ExpansionTile(
@@ -293,7 +304,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               ListTile(
-                title: const Text('Cipher Tool'),
+                title: const Text('Encryption Tool'),
                 leading: const Icon(Iconsax.convert_3d_cube),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: Routes.cipher,

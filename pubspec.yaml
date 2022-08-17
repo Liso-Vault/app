@@ -88,6 +88,7 @@ dependencies:
   flutter_svg: ^1.1.2 # dice bear avatars
   qr_flutter: ^4.0.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects
+  flutter_rating_bar: ^4.0.1
 
   # TOOLS
   url_launcher: ^6.1.5
@@ -107,6 +108,7 @@ dependencies:
   humanizer: ^2.0.0
   worker_manager: ^4.4.6
   flutter_autofill_service: ^0.14.0
+  app_review: ^2.1.2+1
 
   # INFO
   device_info_plus: 4.0.1

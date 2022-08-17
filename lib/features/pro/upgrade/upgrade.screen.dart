@@ -8,11 +8,12 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/pro.widget.dart';
 import 'package:liso/features/pro/pro.controller.dart';
+import 'package:liso/features/pro/upgrade/feature.tile.dart';
 
 import '../../../core/firebase/config/config.service.dart';
 import '../../../core/persistence/persistence.dart';
 import '../../../core/utils/utils.dart';
-import '../../general/appbar_leading.widget.dart';
+import '../../app/routes.dart';
 import '../../general/busy_indicator.widget.dart';
 import 'upgrade_screen.controller.dart';
 
@@ -45,11 +46,11 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           shrinkWrap: true,
           controller: ScrollController(),
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 15),
+            const Padding(
+              padding: EdgeInsets.only(left: 15),
               child: Text(
-                'benefits'.tr,
-                style: const TextStyle(color: Colors.grey),
+                'Unlock All Access',
+                style: TextStyle(color: Colors.grey),
               ),
             ),
             if (limit.id != 'pro' && limit.id != 'free') ...[
@@ -63,171 +64,152 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 ),
               ),
             ],
-            ListTile(
-              leading: Icon(Iconsax.document_cloud, color: proColor),
-              title: const Text('Max Storage Size'),
-              onTap: () {},
-              trailing: Text(
-                filesize(limit.storageSize),
-                style: kTrailingStyle,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Iconsax.people, color: proColor),
-              title: const Text('Max Shared Vault Members'),
-              onTap: () {},
-              trailing: Text(
-                _formatKNumber(limit.sharedMembers),
-                style: kTrailingStyle,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Iconsax.cpu, color: proColor),
-              title: const Text('Max Devices'),
-              onTap: () {},
-              trailing: Text(
-                _formatKNumber(limit.devices),
-                style: kTrailingStyle,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Iconsax.key, color: proColor),
-              title: const Text('Encrypted Files'),
-              trailing: Text(
-                _formatKNumber(limit.encryptedFiles),
-                style: kTrailingStyle,
-              ),
-              onTap: () {},
-            ),
-            ListTile(
-              trailing: Icon(
-                limit.breachScanner ? LineIcons.check : LineIcons.times,
-                color: limit.breachScanner ? proColor : Colors.grey,
-              ),
-              leading: Icon(Iconsax.scan, color: proColor),
-              title: const Text('Breach Scanner'),
-              onTap: () {},
-            ),
-            ListTile(
-              trailing: Icon(
-                limit.passwordHealth ? LineIcons.check : LineIcons.times,
-                color: limit.passwordHealth ? proColor : Colors.grey,
-              ),
-              leading: Icon(Iconsax.health, color: proColor),
-              title: const Text('Password Health'),
-              onTap: () {},
-            ),
-            ListTile(
-              trailing: Icon(
-                limit.otpGenerator ? LineIcons.check : LineIcons.times,
-                color: limit.otpGenerator ? proColor : Colors.grey,
-              ),
-              leading: Icon(Iconsax.password_check, color: proColor),
-              title: const Text('OTP Authenticator'),
-              onTap: () {},
-            ),
-            ListTile(
-              trailing: Icon(
-                limit.prioritySupport ? LineIcons.check : LineIcons.times,
-                color: limit.prioritySupport ? proColor : Colors.grey,
-              ),
-              leading: Icon(
-                Iconsax.message_question,
-                color: proColor,
-              ),
-              title: const Text('Priority Support'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Iconsax.document, color: proColor),
-              title: const Text('Max Items'),
-              onTap: () {},
+            FeatureTile(
+              iconData: Iconsax.document,
+              title: 'Total Items',
               trailing: Text(
                 _formatKNumber(limit.items),
                 style: kTrailingStyle,
               ),
             ),
-            ListTile(
-              leading: Icon(Iconsax.shield_tick, color: proColor),
-              title: const Text('Max Protected Items'),
-              onTap: () {},
+            FeatureTile(
+              iconData: Iconsax.cpu,
+              title: 'Synced Devices',
+              trailing: Text(
+                _formatKNumber(limit.devices),
+                style: kTrailingStyle,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.password_check,
+              title: 'OTP Authenticator',
+              trailing: Icon(
+                limit.otpGenerator ? LineIcons.check : LineIcons.times,
+                color: limit.otpGenerator ? proColor : Colors.grey,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.document_cloud,
+              title: 'Cloud Storage',
+              trailing: Text(
+                filesize(1073741824),
+                style: kTrailingStyle,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.shield_tick,
+              title: 'Encrypted Files',
+              trailing: Text(
+                _formatKNumber(limit.encryptedFiles),
+                style: kTrailingStyle,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.people,
+              title: 'Shared Vault Members',
+              trailing: Text(
+                _formatKNumber(limit.sharedMembers),
+                style: kTrailingStyle,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.lock,
+              title: 'Protected Items',
               trailing: Text(
                 _formatKNumber(limit.protectedItems),
                 style: kTrailingStyle,
               ),
             ),
-            ListTile(
+            FeatureTile(
+              iconData: Iconsax.health,
+              title: 'Protected Health',
+              trailing: Icon(
+                limit.passwordHealth ? LineIcons.check : LineIcons.times,
+                color: limit.passwordHealth ? proColor : Colors.grey,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.message_question,
+              title: 'Priority Support',
+              trailing: Icon(
+                limit.prioritySupport ? LineIcons.check : LineIcons.times,
+                color: limit.prioritySupport ? proColor : Colors.grey,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.security_card,
+              title: 'File Encryption Tool',
               trailing: Icon(
                 limit.cipherTool ? LineIcons.check : LineIcons.times,
                 color: limit.cipherTool ? proColor : Colors.grey,
               ),
-              leading: Icon(Iconsax.security_card, color: proColor),
-              title: const Text('Cipher Tool'),
-              onTap: () {},
             ),
-            ListTile(
-              leading: Icon(Iconsax.weight, color: proColor),
-              title: const Text('Max Upload File Size'),
-              onTap: () {},
-              trailing: Text(
-                filesize(limit.uploadSize),
-                style: kTrailingStyle,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Iconsax.document_1, color: proColor),
-              title: const Text('Max Files'),
-              onTap: () {},
-              trailing: Text(
-                _formatKNumber(limit.files),
-                style: kTrailingStyle,
-              ),
-            ),
-            ListTile(
-              leading: Icon(Iconsax.import, color: proColor),
-              title: const Text('Max Backups'),
-              onTap: () {},
+            FeatureTile(
+              iconData: Iconsax.direct_inbox,
+              title: 'Automatic Vault Backups',
               trailing: Text(
                 _formatKNumber(limit.backups),
                 style: kTrailingStyle,
               ),
             ),
-            ListTile(
-              leading: Icon(Iconsax.trash, color: proColor),
-              title: const Text('Max Trash Due Days'),
-              onTap: () {},
+            FeatureTile(
+              iconData: Iconsax.weight,
+              title: 'Upload File Size',
               trailing: Text(
-                _formatKNumber(limit.trashDays),
+                filesize(limit.uploadSize),
                 style: kTrailingStyle,
               ),
             ),
-            ListTile(
-              leading: Icon(Iconsax.briefcase, color: proColor),
-              title: const Text('Custom Vaults'),
+            FeatureTile(
+              iconData: Iconsax.document_1,
+              title: 'Uploaded Files',
+              trailing: Text(
+                _formatKNumber(limit.files),
+                style: kTrailingStyle,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.trash,
+              title: 'Undo Trashed Items',
+              trailing: Text(
+                '${_formatKNumber(limit.trashDays)} Days',
+                style: kTrailingStyle,
+              ),
+            ),
+            FeatureTile(
+              iconData: Iconsax.box_1,
+              title: 'Custom Vaults',
               trailing: Text(
                 _formatKNumber(limit.customVaults),
                 style: kTrailingStyle,
               ),
-              onTap: () {},
             ),
-            ListTile(
-              leading: Icon(Iconsax.briefcase, color: proColor),
-              title: const Text('Custom Categories'),
+            FeatureTile(
+              iconData: Iconsax.category,
+              title: 'Custom Categories',
               trailing: Text(
                 _formatKNumber(limit.customCategories),
                 style: kTrailingStyle,
               ),
-              onTap: () {},
             ),
-            ListTile(
-              trailing: Icon(
-                limit.nfcKeycard ? LineIcons.check : LineIcons.times,
-                color: limit.nfcKeycard ? proColor : Colors.grey,
-              ),
-              leading: Icon(Iconsax.card, color: proColor),
-              title: const Text('NFC Keycard'),
-              onTap: () {},
-            ),
+            // ListTile(
+            //   trailing: Icon(
+            //     limit.breachScanner ? LineIcons.check : LineIcons.times,
+            //     color: limit.breachScanner ? proColor : Colors.grey,
+            //   ),
+            //   leading: Icon(Iconsax.scan, color: proColor),
+            //   title: const Text('Breach Scanner'),
+            //   onTap: () {},
+            // ),
+            // ListTile(
+            //   trailing: Icon(
+            //     limit.nfcKeycard ? LineIcons.check : LineIcons.times,
+            //     color: limit.nfcKeycard ? proColor : Colors.grey,
+            //   ),
+            //   leading: Icon(Iconsax.card, color: proColor),
+            //   title: const Text('NFC Keycard Support'),
+            //   onTap: () {},
+            // ),
           ],
         );
       },
@@ -255,30 +237,41 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 ? '${intro.cycles} ${intro.periodUnit.name.tr}s'
                 : intro.periodUnit.name.tr;
 
-            title = RichText(
-              text: TextSpan(
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                  color: Get.theme.textTheme.titleLarge?.color,
+            title = Obx(
+              () => RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Get.theme.textTheme.titleLarge?.color,
+                  ),
+                  children: [
+                    TextSpan(text: product.priceString),
+                    TextSpan(text: ' / ${controller.periodUnitName.tr}'),
+                  ],
                 ),
-                children: [
-                  TextSpan(text: product.priceString),
-                  TextSpan(text: ' / ${intro.periodUnit.name.tr}'),
-                ],
               ),
             );
 
             final percentageDifference_ =
                 ((product.price - intro.price) / product.price) * 100;
 
-            secondary = Text(
-              '✔️ Save ${percentageDifference_.round()}%\nOr ${product.price - intro.price} ${product.currencyCode}',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: themeColor,
-                fontStyle: FontStyle.italic,
-                fontSize: 12,
+            secondary = Card(
+              elevation: 1.0,
+              margin: EdgeInsets.zero,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(10, 2, 10, 5),
+                child: Text(
+                  controller.isFreeTrial
+                      ? '${intro.periodNumberOfUnits} ${GetUtils.capitalizeFirst(intro.periodUnit.name)}\nFree Trial'
+                      : '${percentageDifference_.round()}%\nOFF',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: themeColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                  ),
+                ),
               ),
             );
 
@@ -293,14 +286,38 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   const TextSpan(text: 'Start with '),
                   TextSpan(
                     text: intro.priceString,
-                    style: TextStyle(
-                      color: Get.theme.textTheme.bodyText1?.color,
+                    style: const TextStyle(
+                      color: kAppColor,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   TextSpan(text: ' on the first $periodCycle'),
                 ],
               ),
             );
+
+            if (controller.isFreeTrial) {
+              final monthlyPrice = product.price / 12;
+              final currencySymbol = product.priceString.substring(0, 1);
+
+              subTitle = RichText(
+                text: TextSpan(
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.grey,
+                  ),
+                  children: [
+                    TextSpan(
+                      text:
+                          '$currencySymbol${currencyFormatter.format(monthlyPrice)}',
+                      style: const TextStyle(color: kAppColor),
+                    ),
+                    const TextSpan(text: ' / month billed annually'),
+                  ],
+                ),
+              );
+            }
           }
 
           return Obx(
@@ -311,6 +328,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               secondary: secondary,
               groupValue: controller.identifier,
               activeColor: proColor,
+              contentPadding: EdgeInsets.zero,
               onChanged: (value) => controller.package.value =
                   ProController.to.packages.firstWhere(
                 (e) => e.identifier == value,
@@ -339,16 +357,17 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     final actionCardContent = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (isCryptoSupported) ...[
-          TabBar(
-            tabs: controller.tabBarItems,
-            onTap: (index) => controller.tabIndex.value = index,
-            indicator: UnderlineTabIndicator(
-              borderSide: BorderSide(color: proColor),
-            ),
-          ),
-          const SizedBox(height: 10),
-        ],
+        // temporarily remove until crypto features are matured
+        // if (isCryptoSupported) ...[
+        //   TabBar(
+        //     tabs: controller.tabBarItems,
+        //     onTap: (index) => controller.tabIndex.value = index,
+        //     indicator: UnderlineTabIndicator(
+        //       borderSide: BorderSide(color: proColor),
+        //     ),
+        //   ),
+        //   const SizedBox(height: 10),
+        // ],
         if (isPurchasesSupported) ...[
           Obx(
             () {
@@ -367,54 +386,49 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text(
-                        ProController.to.packages.length > 1
-                            ? 'Choose your plan'
-                            : 'Unlock Powerful Features',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 15,
-                        ),
-                      ),
+                      // Text(
+                      //   'Cancel anytime',
+                      //   textAlign: TextAlign.center,
+                      //   style: TextStyle(
+                      //     color: proColor,
+                      //     fontSize: 15,
+                      //   ),
+                      // ),
                       productsListView,
                       const SizedBox(height: 5),
-                      ElevatedButton.icon(
+                      ElevatedButton(
                         onPressed: controller.purchase,
-                        icon: const Icon(LineIcons.rocket),
-                        label: const Text(
-                          // 'Subscribe for ${controller.priceString}',
-                          'Subscribe Now',
-                        ),
                         style: ElevatedButton.styleFrom(
                           primary: proColor,
                           visualDensity: VisualDensity.standard,
+                          padding: const EdgeInsets.symmetric(vertical: 10),
+                        ),
+                        child: Column(
+                          children: [
+                            Text(
+                              '${controller.isFreeTrial ? 'Try Free' : 'Subscribe'} & Cancel Anytime',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                            if (controller.isFreeTrial) ...[
+                              const Text(
+                                "We'll remind you before your trial ends",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                       const SizedBox(height: 5),
-                      Obx(
-                        () => Visibility(
-                          visible: controller.isSubscription,
-                          child: RichText(
-                            textAlign: TextAlign.center,
-                            text: TextSpan(
-                              text: 'Cancel anytime',
-                              style: TextStyle(color: themeColor),
-                              children: [
-                                const TextSpan(
-                                  text: ' - ',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                TextSpan(
-                                  text: 'Renews automatically',
-                                  style: TextStyle(
-                                    color: Get.theme.textTheme.bodySmall?.color,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      const Text(
+                        "2 taps to start, super easy to cancel",
+                        textAlign: TextAlign.center,
                       ),
                     ],
                   ),
@@ -519,8 +533,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
 
     final actionCard = Card(
       elevation: 4.0,
+      color: Get.isDarkMode ? const Color(0xFF0B1717) : null,
       child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: controller.obx(
           (state) => actionCardContent,
           onLoading: BusyIndicator(color: proColor),
@@ -529,50 +544,65 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final content = Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(left: 5, right: 5, bottom: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Expanded(child: benefits),
           actionCard,
-          const SizedBox(height: 5),
-          if (ProController.to.isFreeTrial) ...[
-            RichText(
-              textAlign: TextAlign.center,
-              text: TextSpan(
-                text: '✔️ Free Trial',
-                style: TextStyle(fontSize: 12, color: proColor),
-                children: [
-                  TextSpan(
-                    text:
-                        ' is on and will expire on ${ProController.to.freeTrialExpirationDateTimeString}',
-                    style: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 12,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
+          // const SizedBox(height: 5),
+          // if (ProController.to.isFreeTrial) ...[
+          //   RichText(
+          //     textAlign: TextAlign.center,
+          //     text: TextSpan(
+          //       text: '✔️ Free Trial',
+          //       style: TextStyle(fontSize: 12, color: proColor),
+          //       children: [
+          //         TextSpan(
+          //           text:
+          //               ' is on and will expire on ${ProController.to.freeTrialExpirationDateTimeString}',
+          //           style: const TextStyle(
+          //             color: Colors.grey,
+          //             fontSize: 12,
+          //           ),
+          //         )
+          //       ],
+          //     ),
+          //   ),
+          // ],
           Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextButton(
-                style: TextButton.styleFrom(primary: proColor),
+                style: TextButton.styleFrom(
+                  primary: proColor,
+                  textStyle: const TextStyle(fontSize: 10),
+                ),
                 onPressed: () => Utils.openUrl(
                   ConfigService.to.general.app.links.terms,
                 ),
                 child: const Text('Terms of Use'),
               ),
-              const Text('and'),
+              const Text('|'),
               TextButton(
-                style: TextButton.styleFrom(primary: proColor),
+                style: TextButton.styleFrom(
+                  primary: proColor,
+                  textStyle: const TextStyle(fontSize: 10),
+                ),
                 onPressed: () => Utils.openUrl(
                   ConfigService.to.general.app.links.privacy,
                 ),
                 child: const Text('Privacy Policy'),
+              ),
+              const Text('|'),
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: proColor,
+                  textStyle: const TextStyle(fontSize: 10),
+                ),
+                onPressed: controller.restore,
+                child: const Text('Restore Purchases'),
               ),
             ],
           ),
@@ -581,7 +611,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      leading: const AppBarLeadingButton(),
+      backgroundColor: Get.isDarkMode ? Colors.transparent : null,
+      elevation: Get.isDarkMode ? 0 : 1.0,
+      automaticallyImplyLeading: false,
       centerTitle: false,
       title: Row(
         children: [
@@ -591,35 +623,40 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         ],
       ),
       actions: [
-        PopupMenuButton<String>(
-          icon: const Icon(LineIcons.verticalEllipsis),
-          onSelected: (item) {
-            if (item == 'restore') {
-              controller.restore();
-            }
+        IconButton(
+          icon: const Icon(LineIcons.times),
+          onPressed: () {
+            Persistence.to.upgradeScreenShown.val = true;
+            Get.back();
           },
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            PopupMenuItem<String>(
-              value: 'restore',
-              child: Row(
-                children: [
-                  Icon(Iconsax.refresh, color: proColor),
-                  const SizedBox(width: 10),
-                  const Text('Restore Purchases'),
-                ],
-              ),
-            ),
-          ],
         ),
-        const SizedBox(width: 10),
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Need Help ?'),
+        ),
       ],
     );
 
-    return DefaultTabController(
-      length: controller.tabBarItems.length,
-      child: Scaffold(
-        appBar: appBar,
-        body: content,
+    const darkDecoration = BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.bottomLeft,
+        end: Alignment.topRight,
+        colors: [
+          Colors.black,
+          Color(0xff102121),
+        ],
+      ),
+    );
+
+    return Container(
+      decoration: Get.isDarkMode ? darkDecoration : null,
+      child: DefaultTabController(
+        length: controller.tabBarItems.length,
+        child: Scaffold(
+          appBar: appBar,
+          body: content,
+          backgroundColor: Get.isDarkMode ? Colors.transparent : null,
+        ),
       ),
     );
   }

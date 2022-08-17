@@ -246,9 +246,9 @@ class S3Service extends GetxService with ConsoleMixin {
     if (downloadResult.isLeft) return Left(downloadResult.left);
     _syncProgress(0.3, null);
 
-    final decryptedBytes = CipherService.to.decrypt(
-      await downloadResult.right.readAsBytes(),
-    );
+    final encryptedBytes = await downloadResult.right.readAsBytes();
+    await Future.delayed(1.seconds); // fix Invalid or corrupted pad block]
+    final decryptedBytes = CipherService.to.decrypt(encryptedBytes);
 
     final decryptedJson = utf8.decode(decryptedBytes);
     // fix decoding with double quotes

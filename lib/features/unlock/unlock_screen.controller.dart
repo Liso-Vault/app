@@ -69,8 +69,6 @@ class UnlockScreenController extends GetxController
       return _wrongPassword();
     }
 
-    AuthenticationMiddleware.signedIn = true;
-
     if (!WalletService.to.isReady) {
       WalletService.to
           .initJson(
@@ -90,15 +88,11 @@ class UnlockScreenController extends GetxController
     }
 
     void _done() async {
+      AuthenticationMiddleware.signedIn = true;
       await HiveService.to.open();
       change(null, status: RxStatus.success());
       if (passwordMode || regularMode) return Get.back(result: true);
       return Get.offNamedUntil(Routes.main, (route) => false);
-    }
-
-    if (Persistence.to.walletSignature.val.isNotEmpty &&
-        Persistence.to.walletPrivateKeyHex.val.isNotEmpty) {
-      return _done();
     }
 
     // temporary to migrate users prior v0.6.0

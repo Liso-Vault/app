@@ -25,8 +25,7 @@ class CipherService extends GetxService with ConsoleMixin {
     if (cipherKey == null) {
       return encrypter.encryptBytes(bytes, iv: iv).bytes;
     } else {
-      final key_ = Key(cipherKey);
-      return Encrypter(AES(key_)).encryptBytes(bytes, iv: iv).bytes;
+      return Encrypter(AES(Key(cipherKey))).encryptBytes(bytes, iv: iv).bytes;
     }
   }
 
