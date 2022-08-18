@@ -223,7 +223,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
         itemCount: ProController.to.packages.length,
         itemBuilder: (_, index) {
           final package = ProController.to.packages[index];
-          final product = package.product;
+          final product = package.storeProduct;
           final packageType = package.packageType.name.toLowerCase();
 
           Widget title = Text('Just ${product.priceString} ${packageType.tr}');

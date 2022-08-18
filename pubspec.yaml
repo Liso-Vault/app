@@ -28,32 +28,32 @@ dependencies:
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
   encrypt: ^5.0.1 # File Encryption
-  local_auth: ^2.1.1 # check biometric availability
+  local_auth: ^2.1.2 # check biometric availability
   # walletconnect_dart: ^0.0.11
   otp: ^3.1.1
 
   # FIREBASE
-  firebase_core: 1.20.0
-  firebase_analytics: 9.3.0
-  firebase_crashlytics: 2.8.6
-  firebase_performance: 0.8.2+1
-  firebase_remote_config: 2.0.13
-  firebase_auth: 3.6.2
-  cloud_firestore: 3.4.3
-  cloud_functions: 3.3.3
-  firebase_app_check: 0.0.6+18
+  firebase_core: 1.20.1
+  firebase_analytics: 9.3.1
+  firebase_crashlytics: 2.8.7
+  firebase_performance: 0.8.2+2
+  firebase_remote_config: 2.0.14
+  firebase_auth: 3.6.3
+  cloud_firestore: 3.4.4
+  cloud_functions: 3.3.4
+  firebase_app_check: 0.0.6+19
   # FIREBASE DESKTOP
-  firebase_core_desktop: 1.0.1
+  firebase_core_desktop: 1.0.2
   # firebase_auth_desktop: 1.0.1
   firebase_auth_desktop: #^1.0.1
     git:
       url: https://github.com/rebaz94/flutterfire_desktop.git
       path: ./packages/firebase_auth/firebase_auth_desktop
-  firebase_functions_desktop: 0.2.0+2
+  firebase_functions_desktop: 0.2.0+3
   firebase_core_platform_interface: 4.5.0
-  firebase_auth_platform_interface: 6.5.2
+  firebase_auth_platform_interface: 6.5.3
   # FIREBASE DESKTOP WORKAROUND
-  firebase_dart: ^1.0.10+1
+  firebase_dart: ^1.0.11
 
   # IO
   hive: ^2.2.3 # database
@@ -68,24 +68,22 @@ dependencies:
   minio:
     git: https://github.com/oliverbytes/minio-dart.git
   coingecko_api: ^1.0.2+2 # Coingecko API
-  purchases_flutter: ^3.10.0
+  purchases_flutter: ^4.1.2
 
   # UI
   line_icons: ^2.0.1 # icons
   font_awesome_flutter: ^10.1.0 # icons
   iconsax: ^0.0.8
   flex_color_scheme: 5.1.0 # themes
-  simple_animations: ^4.2.0
+  simple_animations: ^4.1.0
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.0.4
-  # flutter_quill:
-  #   git: https://github.com/oliverbytes/flutter-quill.git
   flutter_quill: ^5.4.1
   badges: ^2.0.3 # pending changes indicator
   cached_network_image: ^3.2.1 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
-  flutter_svg: ^1.1.2 # dice bear avatars
+  flutter_svg: ^1.1.4 # dice bear avatars
   qr_flutter: ^4.0.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects
   flutter_rating_bar: ^4.0.1
@@ -93,11 +91,11 @@ dependencies:
   # TOOLS
   url_launcher: ^6.1.5
   supercharged: ^2.1.1 # useful utils
-  timeago: ^3.2.2
-  flutter_local_notifications: ^9.7.0
+  timeago: ^3.3.0
+  flutter_local_notifications: ^9.8.0+1
   either_dart: ^0.2.0 # functional programming + error handling
   intl: ^0.17.0 # date formatting
-  share_plus: ^4.0.10 # exporting files and sharing texts
+  share_plus: ^4.0.10+1 # exporting files and sharing texts
   equatable: ^2.0.3
   app_settings: ^4.1.8
   uuid: ^3.0.6 # unique identifiers for items
@@ -113,10 +111,10 @@ dependencies:
   xml2json: ^5.3.4
 
   # INFO
-  device_info_plus: 4.0.1
+  device_info_plus: 4.1.2
   platform_device_id: ^1.0.1
-  package_info_plus: ^1.4.3
-  connectivity_plus: ^2.3.6 # internet connectivity checking
+  package_info_plus: ^1.4.3+1
+  connectivity_plus: ^2.3.6+1 # internet connectivity checking
 
 dev_dependencies:
   # flutter_test:

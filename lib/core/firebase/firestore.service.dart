@@ -152,7 +152,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
       // manually sync purchases
       if (user.purchases?.rcPurchaserInfo != null) {
-        ProController.to.info.value = PurchaserInfo.fromJson(
+        ProController.to.info.value = CustomerInfo.fromJson(
           user.purchases!.rcPurchaserInfo!.toJson(),
         );
       }
@@ -207,7 +207,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
     if (!GetPlatform.isWindows) {
       user.purchases = FirebaseUserPurchases(
-        rcPurchaserInfo: await Purchases.getPurchaserInfo(),
+        rcPurchaserInfo: await Purchases.getCustomerInfo(),
       );
     }
 

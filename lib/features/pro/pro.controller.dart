@@ -23,7 +23,7 @@ class ProController extends GetxController with ConsoleMixin {
   // VARIABLES
 
   // PROPERTIES
-  final info = Rx<PurchaserInfo>(PurchaserInfo.fromJson(kPurchaserInfoInitial));
+  final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
 
   // GETTERS
@@ -101,7 +101,7 @@ class ProController extends GetxController with ConsoleMixin {
   @override
   void onClose() {
     if (!ready) return;
-    Purchases.removePurchaserInfoUpdateListener((info_) {
+    Purchases.removeCustomerInfoUpdateListener((info_) {
       info.value = info_;
     });
 
@@ -128,12 +128,11 @@ class ProController extends GetxController with ConsoleMixin {
     if (!ready) return;
     await Purchases.setDebugLogsEnabled(true);
 
-    await Purchases.setup(
-      ConfigService.to.secrets.revenuecat.apiKey,
-      appUserId: AuthService.to.user?.uid,
+    await Purchases.configure(
+      PurchasesConfiguration(ConfigService.to.secrets.revenuecat.apiKey),
     );
 
-    Purchases.addPurchaserInfoUpdateListener((info_) {
+    Purchases.addCustomerInfoUpdateListener((info_) {
       info.value = info_;
     });
 
@@ -180,7 +179,7 @@ class ProController extends GetxController with ConsoleMixin {
     if (!ready) return;
 
     try {
-      info.value = await Purchases.getPurchaserInfo();
+      info.value = await Purchases.getCustomerInfo();
       // console.warning('sync: ${jsonEncode(info.value.toJson())}');
     } on PlatformException catch (e) {
       return console.error('sync error: $e');
@@ -190,7 +189,7 @@ class ProController extends GetxController with ConsoleMixin {
   Future<void> purchase(Package package) async {
     if (!ready) return;
     Globals.timeLockEnabled = false; // temporarily disable
-    PurchaserInfo? info_;
+    CustomerInfo? info_;
 
     try {
       info_ = await Purchases.purchasePackage(package);
@@ -208,10 +207,10 @@ class ProController extends GetxController with ConsoleMixin {
 
   Future<void> restore() async {
     if (!ready) return;
-    PurchaserInfo? info_;
+    CustomerInfo? info_;
 
     try {
-      info_ = await Purchases.restoreTransactions();
+      info_ = await Purchases.restorePurchases();
       console.warning('restore: ${jsonEncode(info_.toJson())}');
     } on PlatformException catch (e) {
       _showError(e);
@@ -356,8 +355,8 @@ const kPackageInitial = {
     "description": "",
     "title": "",
     "price": 0.0,
-    "price_string": "",
-    "currency_code": "",
+    "priceString": "",
+    "currencyCode": "",
     "introPrice": {
       "price": 0.0,
       "priceString": "",

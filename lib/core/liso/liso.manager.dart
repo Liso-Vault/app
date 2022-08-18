@@ -13,6 +13,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/s3/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../features/groups/groups.service.dart';
 import '../../features/items/items.service.dart';
@@ -51,6 +52,8 @@ class LisoManager {
     await LisoPaths.cleanTemp();
     // reset variables
     S3Service.to.backedUp = false;
+    // invalidate purchases
+    await Purchases.invalidateCustomerInfoCache();
     console.info('reset!');
   }
 

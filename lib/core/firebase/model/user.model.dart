@@ -242,11 +242,11 @@ class FirebaseUserPurchases {
     this.rcPurchaserInfo,
   });
 
-  PurchaserInfo? rcPurchaserInfo;
+  CustomerInfo? rcPurchaserInfo;
 
   factory FirebaseUserPurchases.fromJson(Map<String, dynamic> json) =>
       FirebaseUserPurchases(
-        rcPurchaserInfo: PurchaserInfo.fromJson(json["rcPurchaserInfo"]),
+        rcPurchaserInfo: CustomerInfo.fromJson(json["rcPurchaserInfo"]),
       );
 
   Map<String, dynamic> toJson() => {

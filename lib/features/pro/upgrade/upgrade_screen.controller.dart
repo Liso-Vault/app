@@ -25,7 +25,7 @@ class UpgradeScreenController extends GetxController
   // GETTERS
   String get identifier => package.value.identifier;
 
-  Product get product => package.value.product;
+  StoreProduct get product => package.value.storeProduct;
 
   bool get isSubscription => product.identifier.contains('.sub.');
 

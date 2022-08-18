@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -9,6 +10,8 @@ import 'package:liso/features/s3/provider/custom_provider_screen.controller.dart
 
 import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
+import '../../../core/utils/utils.dart';
+import '../../app/routes.dart';
 
 class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
   const CustomSyncProviderScreen({Key? key}) : super(key: key);
@@ -112,6 +115,10 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final actions = [
+      TextButton(
+        onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+        child: const Text('Help ?'),
+      ),
       Obx(
         () => controller.busy.value
             ? const Padding(
@@ -126,15 +133,14 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
               )
             : TextButton.icon(
                 onPressed: controller.testConnection,
-                icon: const Icon(LineIcons.check),
-                label: const Text('Test'),
+                icon: const Icon(Iconsax.cloud_connection),
+                label: const Text('Connect'),
               ),
       ),
-      const SizedBox(width: 5),
     ];
 
     final appBar = AppBar(
-      title: const Text('Custom Provider'),
+      title: const Text('S3 Config'),
       leading: const AppBarLeadingButton(),
       actions: actions,
     );
