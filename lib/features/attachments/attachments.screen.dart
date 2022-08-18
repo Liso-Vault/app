@@ -5,6 +5,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/attachments/attachment.tile.dart';
 
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../s3/s3.service.dart';
@@ -74,6 +76,10 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Help ?'),
+        ),
         IconButton(
           onPressed: () => Get.back(result: controller.data),
           icon: const Icon(LineIcons.check),

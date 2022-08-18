@@ -65,7 +65,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                     child: TextFormField(
                       controller: controller.filePathController,
                       validator: (text) =>
-                          text!.isEmpty ? 'Select your vault file' : null,
+                          text!.isEmpty ? 'Import your vault file' : null,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       decoration: const InputDecoration(
                         hintText: 'Path to your <vault>.$kVaultExtension file',
@@ -110,32 +110,16 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
           ),
         ),
         actions: [
-          Obx(
-            () => Visibility(
-              visible: !controller.busy.value,
-              child: PopupMenuButton<String>(
-                icon: const Icon(LineIcons.verticalEllipsis),
-                onSelected: (item) {
-                  if (item == 'configure') {
-                    Utils.adaptiveRouteOpen(name: Routes.syncProvider);
-                  }
-                },
-                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                  PopupMenuItem<String>(
-                    value: 'configure',
-                    child: Row(
-                      children: [
-                        Icon(Iconsax.refresh, color: themeColor),
-                        const SizedBox(width: 10),
-                        const Text('Configure'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          IconButton(
+            icon: const Icon(Iconsax.setting_3),
+            onPressed: () {
+              Utils.adaptiveRouteOpen(name: Routes.syncProvider);
+            },
           ),
-          const SizedBox(width: 10),
+          TextButton(
+            onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+            child: const Text('Need Help ?'),
+          ),
         ],
       ),
       body: controller.obx(

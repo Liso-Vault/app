@@ -172,13 +172,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Import Items'),
                 subtitle: const Text('Import items from external sources'),
-                // enabled: false,
-                onTap: () {
-                  UIUtils.showSimpleDialog(
-                    'Import Items',
-                    "Soon, you'll be able to import items from 1Password, LastPass, etc...",
-                  );
-                },
+                onTap: () => Utils.adaptiveRouteOpen(name: Routes.import),
               ),
               ContextMenuButton(
                 padding: EdgeInsets.zero,
@@ -340,6 +334,12 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
         title: Text('settings'.tr),
         centerTitle: false,
         leading: const AppBarLeadingButton(),
+        actions: [
+          TextButton(
+            onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+            child: const Text('Need Help ?'),
+          ),
+        ],
       ),
       body: controller.obx(
         (_) => listView,

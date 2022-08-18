@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import 'cipher_screen.controller.dart';
@@ -79,6 +81,12 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
       title: const Text('Encryption Tool'),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
+      actions: [
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Need Help ?'),
+        ),
+      ],
     );
 
     return Scaffold(

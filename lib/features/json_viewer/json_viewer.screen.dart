@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
+
 class JSONViewerScreen extends StatelessWidget {
   final Map<String, dynamic> data;
 
@@ -12,6 +15,12 @@ class JSONViewerScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('JSON Viewer'),
         centerTitle: false,
+        actions: [
+          TextButton(
+            onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+            child: const Text('Need Help ?'),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),

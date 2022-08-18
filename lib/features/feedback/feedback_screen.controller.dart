@@ -45,6 +45,7 @@ class FeedbackScreenController extends GetxController
       subject: '${ConfigService.to.appName} $feedbackType',
       preBody: textController.text,
       rating: rating.value,
+      previousRoute: Get.previousRoute,
     );
   }
 

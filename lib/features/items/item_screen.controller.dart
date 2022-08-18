@@ -142,7 +142,12 @@ class ItemScreenController extends GetxController
           leading: const Icon(Iconsax.slash),
           onSelected: Get.back,
         ),
-      ]
+      ],
+      ContextMenuItem(
+        title: 'Need Help?',
+        leading: const Icon(Iconsax.message_question),
+        onSelected: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+      ),
     ];
   }
 

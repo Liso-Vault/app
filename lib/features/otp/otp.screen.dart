@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import 'otp_screen.controller.dart';
 
@@ -59,6 +61,12 @@ class OTPScreen extends StatelessWidget with ConsoleMixin {
       title: const Text('OTP Generator'),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
+      actions: [
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Need Help ?'),
+        ),
+      ],
     );
 
     return Scaffold(

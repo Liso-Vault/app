@@ -16,6 +16,7 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
+import '../app/routes.dart';
 import '../general/card_button.widget.dart';
 import '../menu/menu.button.dart';
 import 'nfts/nfts.screen.dart';
@@ -168,7 +169,10 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
             UIUtils.showSimpleDialog('Scan QR', 'Coming soon...');
           },
         ),
-        const SizedBox(width: 5),
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Need Help ?'),
+        ),
       ],
     );
 

@@ -11,6 +11,7 @@ abstract class Routes {
   static const seed = '/seed';
   static const seedGenerator = '/seed_generator';
   static const restore = '/restore';
+  static const import = '/import';
   static const export = '/export';
   static const item = '/item';
   static const reset = '/reset';

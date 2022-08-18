@@ -11,6 +11,7 @@ import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
 
@@ -110,7 +111,15 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
         controller.passwordMode || Globals.isAutofill,
       ),
       child: Scaffold(
-        appBar: controller.passwordMode ? AppBar() : null,
+        appBar: AppBar(
+          automaticallyImplyLeading: controller.passwordMode,
+          actions: [
+            TextButton(
+              onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+              child: const Text('Need Help ?'),
+            ),
+          ],
+        ),
         bottomNavigationBar: const VersionText(),
         body: Center(
           child: Container(

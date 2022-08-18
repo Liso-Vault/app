@@ -60,6 +60,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             const SizedBox(height: 20),
             Wrap(
               spacing: 10,
+              runSpacing: 10,
               alignment: WrapAlignment.center,
               children: [
                 SizedBox(

@@ -109,6 +109,8 @@ dependencies:
   worker_manager: ^4.4.6
   flutter_autofill_service: ^0.14.0
   app_review: ^2.1.2+1
+  csv: ^5.0.1
+  xml2json: ^5.3.4
 
   # INFO
   device_info_plus: 4.0.1

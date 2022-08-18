@@ -178,6 +178,12 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
       appBar: AppBar(
         title: const Text('Sync Provider'),
         leading: const AppBarLeadingButton(),
+        actions: [
+          TextButton(
+            onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+            child: const Text('Need Help ?'),
+          ),
+        ],
       ),
       body: content,
     );

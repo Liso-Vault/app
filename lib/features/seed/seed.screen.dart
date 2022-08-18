@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import '../menu/menu.button.dart';
 import 'seed_screen.controller.dart';
@@ -111,7 +113,10 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
             controller.menuItems,
             child: const Icon(LineIcons.verticalEllipsis),
           ),
-          const SizedBox(width: 10),
+          TextButton(
+            onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+            child: const Text('Need Help ?'),
+          ),
         ],
       ),
       body: Center(

@@ -92,6 +92,12 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       leading: controller.enforce
           ? const SizedBox.shrink()
           : const AppBarLeadingButton(),
+      actions: [
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Need Help ?'),
+        ),
+      ],
     );
 
     final bottomBar = controller.enforce

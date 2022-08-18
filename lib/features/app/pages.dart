@@ -3,6 +3,7 @@ import 'package:liso/features/about/about.screen.dart';
 import 'package:liso/features/beta/disabled_beta.screen.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/debug/debug.screen.dart';
+import 'package:liso/features/import/import.screen.dart';
 import 'package:liso/features/main/main.screen.dart';
 import 'package:liso/features/restore/restore.screen.dart';
 import 'package:liso/features/seed/seed.screen.dart';
@@ -65,6 +66,10 @@ class AppPages {
     GetPage(
       name: Routes.restore,
       page: () => const RestoreScreen(),
+    ),
+    GetPage(
+      name: Routes.import,
+      page: () => const ImportScreen(),
     ),
     GetPage(
       name: Routes.seed,

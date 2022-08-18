@@ -7,6 +7,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
@@ -108,6 +109,12 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
       title: Text('custom_categories'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
+      actions: [
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Help ?'),
+        ),
+      ],
     );
 
     final floatingActionButton = FloatingActionButton(

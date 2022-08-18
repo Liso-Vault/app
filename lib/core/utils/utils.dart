@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/metadata/device.hive.dart';
+import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:random_string_generator/random_string_generator.dart';
@@ -328,6 +329,7 @@ class Utils {
     required String subject,
     required String preBody,
     required double rating,
+    required String previousRoute,
   }) async {
     String ratingEmojis = '';
 
@@ -336,14 +338,19 @@ class Utils {
     }
 
     String body = '$preBody\n\n';
-    body +=
-        'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}\n';
-    body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}\n';
-    body += 'Entitlement: ${ProController.to.limits.id}\n';
+
+    if (AuthService.to.isSignedIn) {
+      body += 'Rating: $ratingEmojis\n';
+      body +=
+          'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}\n';
+      body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}\n';
+      body += 'Entitlement: ${ProController.to.limits.id}\n';
+      body += 'Pro: ${ProController.to.isPro}\n';
+    }
+
     body += 'App Version: ${Globals.metadata?.app.formattedVersion}\n';
     body += 'Platform: ${Utils.platformName()}\n';
-    body += 'Rating: $ratingEmojis\n';
-    body += 'Pro: ${ProController.to.isPro}\n';
+    body += 'Route: $previousRoute\n';
 
     final url =
         'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body';

@@ -54,9 +54,9 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                 decoration: const InputDecoration(
                     labelText: 'Write your concern here...',
                     alignLabelWithHint: true,
-                    helperMaxLines: 2,
+                    helperMaxLines: 5,
                     helperText:
-                        "Please don't hesitate to send us your feedback and we'll be happy to chat with you."),
+                        "Please don't hesitate to send us your feedback and we'll be happy to chat with you. Expect a reply within 24-48 hours."),
               ),
               const SizedBox(height: 20),
               RatingBar.builder(
@@ -114,7 +114,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: const Text('Send Feedback'),
+      title: Text('Contact ${ConfigService.to.appName}'),
       leading: const AppBarLeadingButton(),
       actions: [
         TextButton.icon(

@@ -9,6 +9,7 @@ import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import '../../core/utils/globals.dart';
+import '../app/routes.dart';
 import 'create_password_screen.controller.dart';
 
 class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
@@ -112,7 +113,15 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
     );
 
     return Scaffold(
-      appBar: AppBar(leading: const AppBarLeadingButton()),
+      appBar: AppBar(
+        leading: const AppBarLeadingButton(),
+        actions: [
+          TextButton(
+            onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+            child: const Text('Need Help ?'),
+          ),
+        ],
+      ),
       body: Center(
         child: Container(
           constraints: Styles.containerConstraints,

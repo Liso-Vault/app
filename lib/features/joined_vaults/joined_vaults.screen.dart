@@ -179,6 +179,12 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
       ),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
+      actions: [
+        TextButton(
+          onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+          child: const Text('Need Help ?'),
+        ),
+      ],
     );
 
     final floatingActionButton = FloatingActionButton(
