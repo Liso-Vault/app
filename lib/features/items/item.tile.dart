@@ -344,10 +344,14 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(item.title, overflow: TextOverflow.ellipsis, maxLines: 1),
+          Text(
+            item.title.isNotEmpty ? item.title : '(Untitled)',
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
           if (item.subTitle.trim().isNotEmpty) ...[
             Text(
-              item.subTitle,
+              item.subTitle.isNotEmpty ? item.subTitle : '(Untitled)',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: const TextStyle(color: Colors.grey),

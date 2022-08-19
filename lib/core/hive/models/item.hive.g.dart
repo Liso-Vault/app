@@ -33,7 +33,7 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       sharedVaultIds: (fields[13] as List).cast<String>(),
       attachments: (fields[14] as List).cast<String>(),
       metadata: fields[15] as HiveMetadata,
-      uris: (fields[18] as List?)?.cast<Uri?>(),
+      uris: (fields[18] as List?)?.cast<String>(),
       appIds: (fields[17] as List?)?.cast<String>(),
     );
   }

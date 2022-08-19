@@ -14,11 +14,17 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
   // PROPERTIES
   final supported = false.obs;
   final enabled = false.obs;
+  final saving = false.obs;
 
   @override
   void onInit() async {
     supported.value = await autofill.hasAutofillServicesSupport;
+    if (!supported.value) return;
+
     enabled.value = await autofill.hasEnabledAutofillServices;
+
+    final pref = await autofill.getPreferences();
+    saving.value = pref.enableSaving;
 
     console.info(
       'supported: ${supported.value}, enabled: ${enabled.value}',
@@ -37,5 +43,14 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
           ? '${ConfigService.to.appName} will now automatically suggest to fill and save forms for you'
           : 'You can enable this setting again anytime',
     );
+  }
+
+  void toggleSaving(bool value) async {
+    saving.value = value;
+
+    await autofill.setPreferences(AutofillPreferences(
+      enableDebug: false,
+      enableSaving: value,
+    ));
   }
 }

@@ -296,12 +296,16 @@ class MainScreenController extends GetxController
       final appDomains = ConfigService.to.appDomains.data.where((e) {
         // DOMAINS
         if (metadata?.webDomains != null &&
-            e.uris
-                .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
-                      scheme: d!.scheme,
-                      domain: d.host,
-                    )))
-                .isNotEmpty) {
+            e.uris.where((e) {
+              final uri = Uri.tryParse(e);
+              if (uri == null) false;
+              final domain = AutofillWebDomain(
+                scheme: uri!.scheme,
+                domain: uri.host,
+              );
+
+              return metadata!.webDomains.contains(domain);
+            }).isNotEmpty) {
           return true;
         }
 
@@ -328,12 +332,16 @@ class MainScreenController extends GetxController
     final appDomains = ConfigService.to.appDomains.data.where((e) {
       // DOMAINS
       if (metadata?.webDomains != null &&
-          e.uris
-              .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
-                    domain: d!.host,
-                    scheme: d.scheme,
-                  )))
-              .isNotEmpty) {
+          e.uris.where((e) {
+            final uri = Uri.tryParse(e);
+            if (uri == null) false;
+            final domain = AutofillWebDomain(
+              scheme: uri!.scheme,
+              domain: uri.host,
+            );
+
+            return metadata!.webDomains.contains(domain);
+          }).isNotEmpty) {
         return true;
       }
 
@@ -355,9 +363,9 @@ class MainScreenController extends GetxController
     final uris = metadata?.webDomains != null
         ? metadata!.webDomains
             .toList()
-            .map((e) => Uri(scheme: e.scheme, host: e.domain))
+            .map((e) => '${e.scheme}://${e.domain}')
             .toList()
-        : <Uri>[];
+        : <String>[];
 
     String service = '';
 

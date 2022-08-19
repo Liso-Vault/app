@@ -19,7 +19,7 @@ class HiveAppDomainAdapter extends TypeAdapter<HiveAppDomain> {
     return HiveAppDomain(
       title: fields[0] as String,
       iconUrl: fields[1] as String,
-      uris: (fields[4] as List).cast<Uri?>(),
+      uris: (fields[4] as List).cast<String>(),
       appIds: (fields[3] as List).cast<String>(),
     );
   }

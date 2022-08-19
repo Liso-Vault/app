@@ -2,7 +2,9 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
+import 'package:liso/features/groups/groups.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
@@ -40,10 +42,35 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             ),
             const SizedBox(height: 20),
             Obx(
+              () => DropdownButtonFormField<String>(
+                value: controller.destinationGroupId.value,
+                onChanged: (value) =>
+                    controller.destinationGroupId.value = value!,
+                decoration: const InputDecoration(
+                  labelText: 'Destination Vault',
+                ),
+                items: {
+                  ...GroupsController.to.combined,
+                  HiveLisoGroup(
+                    id: 'smart-destination-vault',
+                    name:
+                        'Let ${ConfigService.to.appName} assign/create automatically',
+                    metadata: null,
+                  )
+                }
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e.id,
+                        child: Text(e.reservedName),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            Obx(
               () => DropdownButtonFormField<ExportedSourceFormat>(
                 value: controller.sourceFormat.value,
-                onChanged: (sourceFormat) =>
-                    controller.sourceFormat.value = sourceFormat!,
+                onChanged: (value) => controller.sourceFormat.value = value!,
                 decoration: const InputDecoration(labelText: 'Source & Format'),
                 items: sourceFormats
                     .map(

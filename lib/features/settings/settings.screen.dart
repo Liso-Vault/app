@@ -259,6 +259,23 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     ),
                   ),
                 ),
+                Visibility(
+                  visible: LisoAutofillService.to.enabled.value,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15),
+                    child: SwitchListTile(
+                      title: const Text('Auto Save'),
+                      subtitle: Text(
+                        'Automatically save passwords to ${ConfigService.to.appName}',
+                      ),
+                      secondary: Icon(Iconsax.setting_2, color: themeColor),
+                      value: LisoAutofillService.to.saving.value,
+                      onChanged: (value) =>
+                          LisoAutofillService.to.toggleSaving(value),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

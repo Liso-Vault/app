@@ -7,7 +7,6 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get_utils/src/get_utils/get_utils.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
-import 'package:liso/core/hive/models/app_domain.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:supercharged/supercharged.dart';
@@ -59,7 +58,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   @HiveField(17)
   List<String>? appIds;
   @HiveField(18)
-  List<Uri?>? uris;
+  List<String>? uris;
 
   HiveLisoItem({
     required this.identifier,
@@ -104,7 +103,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         metadata: HiveMetadata.fromJson(json["metadata"]),
         uris: json["uris"] == null
             ? []
-            : List<Uri>.from(json["uris"].map((x) => Uri.tryParse(x))),
+            : List<String>.from(json["uris"].map((x) => x)),
         appIds: json["app_ids"] == null
             ? []
             : List<String>.from(json["app_ids"].map((x) => x)),
@@ -128,10 +127,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "shared_vault_ids": List<dynamic>.from(sharedVaultIds.map((x) => x)),
       "attachments": List<dynamic>.from(attachments.map((x) => x)),
       "metadata": metadata.toJson(),
-      "uris": uris == null
-          ? []
-          : List<dynamic>.from(uris!.map((x) => x.toString())),
-      "app_ids": appIds == null ? [] : List<dynamic>.from(tags.map((x) => x)),
+      "uris": uris == null ? [] : List<dynamic>.from(uris!.map((x) => x)),
+      "app_ids":
+          appIds == null ? [] : List<dynamic>.from(appIds!.map((x) => x)),
     };
   }
 

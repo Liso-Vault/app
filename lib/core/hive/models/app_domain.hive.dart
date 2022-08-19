@@ -14,7 +14,7 @@ class HiveAppDomain extends HiveObject with EquatableMixin {
   @HiveField(3)
   List<String> appIds;
   @HiveField(4)
-  List<Uri?> uris;
+  List<String> uris;
 
   HiveAppDomain({
     required this.title,
@@ -28,14 +28,14 @@ class HiveAppDomain extends HiveObject with EquatableMixin {
         iconUrl: json["icon_url"],
         uris: json["uris"] == null
             ? []
-            : List<Uri>.from(json["uris"].map((x) => Uri.tryParse(x))),
+            : List<String>.from(json["uris"].map((x) => x)),
         appIds: List<String>.from(json["app_ids"].map((x) => x)),
       );
 
   Map<String, dynamic> toJson() => {
         "title": title,
         "icon_url": iconUrl,
-        "uris": List<dynamic>.from(uris.map((x) => x.toString())),
+        "uris": List<dynamic>.from(uris.map((x) => x)),
         "app_ids": List<dynamic>.from(appIds.map((x) => x)),
       };
 

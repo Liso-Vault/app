@@ -80,7 +80,7 @@ class ItemScreenController extends GetxController
   final reorderMode = false.obs;
   final otpCode = ''.obs;
   final otpRemainingSeconds = 0.obs;
-  final uris = <Uri?>[].obs;
+  final uris = <String>[].obs;
   final appIds = <String>[].obs;
 
   // GETTERS
@@ -182,14 +182,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Textarea Field',
-          leading: const Icon(Iconsax.text),
+          title: 'TextArea Field',
+          leading: const Icon(Iconsax.note_text),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.textArea.name,
-              data: HiveLisoFieldData(label: 'Textarea Field'),
+              data: HiveLisoFieldData(label: 'TextArea Field'),
             );
 
             widgets.add(_buildFieldWidget(field.widget, widgets.length));
