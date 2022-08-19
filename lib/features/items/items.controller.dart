@@ -63,7 +63,7 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
         filteredItems.where((e) => e.daysLeftToDelete <= 0 && e.trashed);
 
     if (itemsToDelete.isNotEmpty) {
-      await ItemsService.to.hidelete(itemsToDelete);
+      await ItemsService.to.hideleteItems(itemsToDelete);
     }
 
     // FILTER BY TOGGLE

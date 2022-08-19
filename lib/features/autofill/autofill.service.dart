@@ -3,7 +3,7 @@ import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 
-import '../firebase/config/config.service.dart';
+import '../../core/firebase/config/config.service.dart';
 
 class LisoAutofillService extends GetxService with ConsoleMixin {
   static LisoAutofillService get to => Get.find();

@@ -1,12 +1,11 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/services/autofill.service.dart';
+import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';

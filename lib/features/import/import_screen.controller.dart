@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso.manager.dart';
+import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/import/importers/bitwarden.importer.dart';
 import 'package:liso/features/import/importers/chrome.importer.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 
 import '../../core/utils/globals.dart';
@@ -81,6 +83,12 @@ class ImportScreenController extends GetxController
 
     console.info('success csv import: $success');
     change(null, status: RxStatus.success());
+
+    if (success) {
+      DrawerMenuController.to.filterGroupId.value = destinationGroupId.value;
+      MainScreenController.to.recentlyImported.value = true;
+      MainScreenController.to.load();
+    }
   }
 
   void _importJSON(String contents) {

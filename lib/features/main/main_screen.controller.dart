@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -17,10 +19,12 @@ import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:path/path.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../core/firebase/auth.service.dart';
 import '../../core/hive/models/app_domain.hive.dart';
+import '../../core/liso/liso_paths.dart';
 import '../../core/services/alchemy.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
@@ -62,6 +66,7 @@ class MainScreenController extends GetxController
   }
 
   // PROPERTIES
+  final recentlyImported = false.obs;
 
   // GETTERS
   List<ContextMenuItem> get menuItems {
@@ -500,8 +505,8 @@ status: ${status.toString()}'
   void emptyTrash() {
     void _empty() async {
       Get.back();
-      final trashedKeys = ItemsService.to.data.where((e) => e.trashed);
-      await ItemsService.to.hidelete(trashedKeys);
+      final items = ItemsService.to.data.where((e) => e.trashed);
+      await ItemsService.to.hideleteItems(items);
       load();
 
       UIUtils.showSnackBar(
@@ -518,10 +523,7 @@ status: ${status.toString()}'
       title: const Text('Empty Trash'),
       content: Utils.isDrawerExpandable
           ? dialogContent
-          : const SizedBox(
-              width: 450,
-              child: dialogContent,
-            ),
+          : const SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -530,6 +532,89 @@ status: ${status.toString()}'
         TextButton(
           onPressed: _empty,
           child: const Text('Empty Trash'),
+        ),
+      ],
+    ));
+  }
+
+  void emptyDeleted() {
+    void _empty() async {
+      Get.back();
+      final items = ItemsService.to.data.where((e) => e.deleted);
+      await ItemsService.to.deleteItems(items);
+      load();
+
+      UIUtils.showSnackBar(
+        title: 'Empty Deleted',
+        message: 'Your deleted items are now emptied',
+      );
+    }
+
+    const dialogContent = Text(
+      'Are you sure you want to permanently empty the deleted items?',
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Empty Deleted'),
+      content: Utils.isDrawerExpandable
+          ? dialogContent
+          : const SizedBox(width: 450, child: dialogContent),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _empty,
+          child: const Text('Empty Deleted'),
+        ),
+      ],
+    ));
+  }
+
+  void showConfirmImportDialog() {
+    final backupFile = File(join(
+      LisoPaths.tempPath,
+      'backup.$kVaultExtension',
+    ));
+
+    void _confirm() {
+      recentlyImported.value = false;
+      // delete local backup as it's no longer needed
+      backupFile.delete();
+      Get.back();
+    }
+
+    void _undo() async {
+      Get.back();
+      final vault = await LisoManager.parseVaultFile(backupFile);
+      await LisoManager.importVault(vault);
+      recentlyImported.value = false;
+      load();
+
+      UIUtils.showSnackBar(
+        title: 'Reverted Items',
+        message: 'Recently imported items were reverted.',
+      );
+    }
+
+    const dialogContent = Text(
+      'Please decide to keep or undo your changes.',
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Imported Items'),
+      content: Utils.isDrawerExpandable
+          ? dialogContent
+          : const SizedBox(width: 450, child: dialogContent),
+      actions: [
+        TextButton(
+          onPressed: _undo,
+          child: const Text('Undo'),
+        ),
+        TextButton(
+          onPressed: _confirm,
+          child: const Text('Keep'),
         ),
       ],
     ));

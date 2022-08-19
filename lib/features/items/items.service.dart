@@ -56,10 +56,17 @@ class ItemsService extends GetxService with ConsoleMixin {
     console.info('clear');
   }
 
-  Future<void> hidelete(Iterable<HiveLisoItem> items_) async {
+  Future<void> hideleteItems(Iterable<HiveLisoItem> items_) async {
     for (var e in items_) {
       e.deleted = true;
       await e.save();
+    }
+  }
+
+  Future<void> deleteItems(Iterable<HiveLisoItem> items_) async {
+    for (var e in items_) {
+      Persistence.to.addToDeletedItems(e.identifier);
+      await e.delete();
     }
   }
 

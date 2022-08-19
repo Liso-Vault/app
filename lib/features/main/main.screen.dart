@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/services/autofill.service.dart';
+import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
@@ -231,6 +231,39 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     trailing: OutlinedButton(
                       onPressed: controller.showSeed,
                       child: const Text('Backup'),
+                    ),
+                  ),
+                ),
+              ),
+              Obx(
+                () => Visibility(
+                  visible: controller.recentlyImported.value,
+                  child: Card(
+                    elevation: 2.0,
+                    margin: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                      left: 15,
+                      right: 15,
+                    ),
+                    child: ListTile(
+                      iconColor: kAppColor,
+                      // dense: Utils.isDrawerExpandable,
+                      contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      selectedTileColor: themeColor.withOpacity(0.05),
+                      // TODO: localize
+                      title: const Text(
+                        "Recently Imported Items",
+                        style: TextStyle(color: kAppColor),
+                      ),
+                      subtitle: const Text(
+                        "Are you happy with the recent import? If not, feel free to undo your changes.",
+                      ),
+                      // leading: const Icon(Iconsax.key),
+                      trailing: OutlinedButton(
+                        onPressed: controller.showConfirmImportDialog,
+                        child: const Text('Decide'),
+                      ),
                     ),
                   ),
                 ),
@@ -464,12 +497,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    drawerController.filterGroupLabel,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: Text(
+                      drawerController.filterGroupLabel,
+                      overflow: TextOverflow.fade,
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 5),
@@ -496,18 +531,23 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     // TODO: show only if there are trash items
-    final clearTrashFab = FloatingActionButton(
-      onPressed: controller.emptyTrash,
-      child: const Icon(Iconsax.trash),
-    );
 
     final fab = Globals.isAutofill
         ? null
         : Obx(
             () {
-              if (drawerController.filterTrashed.value) {
+              if (drawerController.filterTrashed.value ||
+                  drawerController.filterDeleted.value) {
                 if (drawerController.trashedCount > 0) {
-                  return clearTrashFab;
+                  return FloatingActionButton(
+                    onPressed: controller.emptyTrash,
+                    child: const Icon(Iconsax.trash),
+                  );
+                } else if (drawerController.deletedCount > 0) {
+                  return FloatingActionButton(
+                    onPressed: controller.emptyDeleted,
+                    child: const Icon(Iconsax.trash),
+                  );
                 } else {
                   return const SizedBox.shrink();
                 }

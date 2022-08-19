@@ -1,7 +1,6 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -102,7 +101,6 @@ class ChromeImporter {
     );
 
     await ItemsService.to.box!.addAll(items);
-    MainScreenController.to.load();
 
     UIUtils.showSimpleDialog(
       'Import Successful',

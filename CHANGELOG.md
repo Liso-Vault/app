@@ -1,4 +1,6 @@
 ## 0.7.0
+
+- New! Import items from other password managers with undo functionality
 - New! Automatic vault backups
 - New! Restore a backed-up vault
 - New! Autofill service setting
@@ -10,6 +12,7 @@
 - Fixed! Protected toggle is covered by Save button
 
 ## 0.6.0
+
 - New! Autofill Service on Android
 - New! Autofill Hints
 - New! All vaults filter
@@ -35,6 +38,7 @@
 - Fixed! Item filters
 
 ## 0.5.3
+
 - New! OTP Category
 - New! OTP Generator from Secret Key
 - New! Toggle Field
@@ -51,6 +55,7 @@
 - And lots of fixes and improvements
 
 ## 0.5.1
+
 - New! Custom Fields
 - New! Permanently delete items feature
 - Improved! View mode feature before editing
@@ -61,6 +66,7 @@
 - Lots of minor fixes and improvements
 
 ## 0.5.0
+
 - New! Custom Categories
 - New! Reorderable Fields
 - New! Purge Vault Feature
@@ -81,6 +87,7 @@
 - And lots of bug fixes and improvements
 
 ## 0.4.0
+
 - New! Shared Vaults
 - New! Joined Vaults
 - New! Custom Vaults
@@ -108,13 +115,15 @@
 - Improved! State Management
 
 ## 0.3.2
+
 - New! Support for IPFS, Storj, and SkyNet Cloud Providers
 - Fixed max storage upload check! Thanks to Shizzle026
 - Fixed overriden duplicate item on sync! Thanks to Jayb
 - Improved Icon Colors
 
 ## 0.3.1
-- View Wallet Balance, Assets, NFTs, Activity, 
+
+- View Wallet Balance, Assets, NFTs, Activity,
 - Switch Networks
 - New Cipher Tool for encrypting/decrypting stuffs
 - Updated In-App Icons
@@ -125,6 +134,7 @@
 - Ability to duplicate an item (Thanks to Jib)
 
 ## 0.3.0
+
 - First Beta
 
 An open-source data management application that focuses mainly on securely storing private information and files
