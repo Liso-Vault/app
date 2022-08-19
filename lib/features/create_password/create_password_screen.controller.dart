@@ -8,6 +8,8 @@ import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/auth.service.dart';
+import '../../core/firebase/config/config.service.dart';
+import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.dart';
 
 class CreatePasswordScreenController extends GetxController
@@ -81,6 +83,13 @@ class CreatePasswordScreenController extends GetxController
     );
 
     change(null, status: RxStatus.success());
+
+    NotificationsManager.notify(
+      title:
+          'Welcome ${isNewVault ? ' ' : 'back '}to ${ConfigService.to.appName}',
+      body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
+    );
+
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

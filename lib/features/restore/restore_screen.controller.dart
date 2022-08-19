@@ -16,6 +16,8 @@ import 'package:path/path.dart';
 
 import '../../core/liso/liso.manager.dart';
 import '../../core/liso/liso_paths.dart';
+import '../../core/middlewares/authentication.middleware.dart';
+import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
@@ -134,16 +136,30 @@ class RestoreScreenController extends GetxController
       // turn on sync setting if successfully imported via cloud
       Persistence.to.sync.val =
           restoreMode.value == RestoreMode.cloud ? true : false;
-      change(null, status: RxStatus.success());
 
       if (isLocalAuthSupported) {
-        final authenticated = await LocalAuthService.to.authenticate();
-        if (!authenticated) return;
+        final authenticated = await LocalAuthService.to.authenticate(
+          subTitle: 'Restore your vault',
+          body: 'Authenticate to verify and approve this action',
+        );
+
+        if (!authenticated) return change(null, status: RxStatus.success());
+        Get.back(); // close dialog
+        AuthenticationMiddleware.signedIn = true;
         final password = Utils.generatePassword();
         await WalletService.to.create(seed, password, false);
+        change(null, status: RxStatus.success());
         Persistence.to.backedUpSeed.val = true;
+
+        NotificationsManager.notify(
+          title: 'Welcome back to ${ConfigService.to.appName}',
+          body: 'Your vault has been restored',
+        );
+
         Get.offNamedUntil(Routes.main, (route) => false);
       } else {
+        change(null, status: RxStatus.success());
+
         Utils.adaptiveRouteOpen(
           name: Routes.createPassword,
           parameters: {'seed': seed, 'from': 'restore_screen'},

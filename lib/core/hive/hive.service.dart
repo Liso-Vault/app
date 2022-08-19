@@ -28,7 +28,7 @@ class HiveService extends GetxService with ConsoleMixin {
     Hive.registerAdapter(HiveLisoFieldChoicesAdapter());
     // APP DOMAIN
     Hive.registerAdapter(HiveAppDomainAdapter());
-    Hive.registerAdapter(HiveDomainAdapter());
+    // Hive.registerAdapter(HiveDomainAdapter());
     // METADATA
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());

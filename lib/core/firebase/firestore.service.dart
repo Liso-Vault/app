@@ -164,7 +164,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
       }
     }
 
-    if (user.docId.isNotEmpty) {
+    if (user.docId.isNotEmpty && user.updatedTime != null) {
       persistence.lastServerDateTime.val =
           user.updatedTime!.toDate().toIso8601String();
     }

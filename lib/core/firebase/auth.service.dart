@@ -8,7 +8,6 @@ import 'package:liso/core/persistence/persistence.dart' as p;
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/s3/s3.service.dart';

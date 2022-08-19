@@ -6,6 +6,7 @@ import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
+import '../../core/utils/styles.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -18,68 +19,74 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
   Widget build(BuildContext context) {
     final controller = Get.put(ImportScreenController());
 
-    final content = Form(
-      key: controller.formKey,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(Iconsax.import_1, size: 100, color: themeColor),
-          const SizedBox(height: 20),
-          const Text(
-            'Import Items',
-            style: TextStyle(fontSize: 20),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            "Import items from external sources to ${ConfigService.to.appName}",
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.grey),
-          ),
-          const SizedBox(height: 20),
-          DropdownButtonFormField<String>(
-            value: controller.source,
-            onChanged: (value) => controller.source = value!,
-            decoration: const InputDecoration(labelText: 'Source & Format'),
-            items: kSourceFormats
-                .map(
-                  (e) => DropdownMenuItem(
-                    value: e,
-                    child: Text(e),
-                  ),
-                )
-                .toList(),
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  controller: controller.filePathController,
-                  validator: (text) => text!.isEmpty
-                      ? 'Choose the exported file to import'
-                      : null,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(
-                    hintText: 'Path to your exported file',
-                    label: Text('Exported File Path'),
+    final content = Container(
+      constraints: Styles.containerConstraints,
+      child: Form(
+        key: controller.formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(Iconsax.import_1, size: 100, color: themeColor),
+            const SizedBox(height: 20),
+            const Text(
+              'Import Items',
+              style: TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              "Import items from external sources to ${ConfigService.to.appName}",
+              textAlign: TextAlign.center,
+              style: const TextStyle(color: Colors.grey),
+            ),
+            const SizedBox(height: 20),
+            Obx(
+              () => DropdownButtonFormField<ExportedSourceFormat>(
+                value: controller.sourceFormat.value,
+                onChanged: (sourceFormat) =>
+                    controller.sourceFormat.value = sourceFormat!,
+                decoration: const InputDecoration(labelText: 'Source & Format'),
+                items: sourceFormats
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e.title),
+                      ),
+                    )
+                    .toList(),
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: controller.filePathController,
+                    validator: (text) => text!.isEmpty
+                        ? 'Choose the exported file to import'
+                        : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: const InputDecoration(
+                      hintText: 'Path to your exported file',
+                      label: Text('Exported File Path'),
+                    ),
                   ),
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Iconsax.import_1),
-                onPressed: controller.importFile,
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: 200,
-            child: ElevatedButton.icon(
-              onPressed: controller.continuePressed,
-              label: Text('continue'.tr),
-              icon: const Icon(Iconsax.arrow_circle_right),
+                IconButton(
+                  icon: const Icon(Iconsax.import_1),
+                  onPressed: controller.importFile,
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                onPressed: controller.continuePressed,
+                label: Text('continue'.tr),
+                icon: const Icon(Iconsax.arrow_circle_right),
+              ),
+            ),
+          ],
+        ),
       ),
     );
 
@@ -109,9 +116,11 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
-    return WillPopScope(
-      onWillPop: () => controller.canPop,
-      child: scaffold,
-    );
+    // return WillPopScope(
+    //   onWillPop: () => controller.canPop,
+    //   child: scaffold,
+    // );
+
+    return scaffold;
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/services/autofill.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
@@ -11,6 +12,7 @@ import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
@@ -200,30 +202,76 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         const ConnectivityBar(),
         PersistenceBuilder(
-          builder: (p, context) => Visibility(
-            visible: !p.backedUpSeed.val,
-            child: Card(
-              elevation: 1.0,
-              child: ListTile(
-                iconColor: kAppColor,
-                // dense: Utils.isDrawerExpandable,
-                contentPadding: const EdgeInsets.all(10),
-                selectedTileColor: themeColor.withOpacity(0.05),
-                // TODO: localize
-                title: const Text(
-                  "Backup Your Seed Phrase",
-                  style: TextStyle(color: kAppColor),
-                ),
-                subtitle: const Text(
-                  "This is the only key to access and decrypt your vault",
-                ),
-                leading: const Icon(Iconsax.key),
-                trailing: OutlinedButton(
-                  onPressed: controller.showSeed,
-                  child: const Text('Backup'),
+          builder: (p, context) => Column(
+            children: [
+              Visibility(
+                visible: !p.backedUpSeed.val,
+                child: Card(
+                  elevation: 2.0,
+                  margin: const EdgeInsets.only(
+                    top: 5,
+                    bottom: 5,
+                    left: 15,
+                    right: 15,
+                  ),
+                  child: ListTile(
+                    iconColor: kAppColor,
+                    // dense: Utils.isDrawerExpandable,
+                    contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    selectedTileColor: themeColor.withOpacity(0.05),
+                    // TODO: localize
+                    title: const Text(
+                      "Backup Your Seed Phrase",
+                      style: TextStyle(color: kAppColor),
+                    ),
+                    subtitle: const Text(
+                      "This is the only key to access and decrypt your vault",
+                    ),
+                    // leading: const Icon(Iconsax.key),
+                    trailing: OutlinedButton(
+                      onPressed: controller.showSeed,
+                      child: const Text('Backup'),
+                    ),
+                  ),
                 ),
               ),
-            ),
+              // show only when seed is already backed up to not overcrowd
+              Obx(
+                () => Visibility(
+                  visible: LisoAutofillService.to.supported.value &&
+                      !LisoAutofillService.to.enabled.value &&
+                      p.backedUpSeed.val,
+                  child: Card(
+                    elevation: 2.0,
+                    margin: const EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                      left: 15,
+                      right: 15,
+                    ),
+                    child: ListTile(
+                      iconColor: kAppColor,
+                      // dense: Utils.isDrawerExpandable,
+                      contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      selectedTileColor: themeColor.withOpacity(0.05),
+                      // TODO: localize
+                      title: Text(
+                        "Enable ${ConfigService.to.appName} Autofill Service",
+                        style: const TextStyle(color: kAppColor),
+                      ),
+                      subtitle: Text(
+                        "Automatically fill and save forms with ${ConfigService.to.appName} Autofill Service",
+                      ),
+                      // leading: const Icon(Iconsax.key),
+                      trailing: OutlinedButton(
+                        onPressed: LisoAutofillService.to.set,
+                        child: const Text('Enable'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Expanded(child: childContent),

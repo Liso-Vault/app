@@ -33,7 +33,7 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       sharedVaultIds: (fields[13] as List).cast<String>(),
       attachments: (fields[14] as List).cast<String>(),
       metadata: fields[15] as HiveMetadata,
-      domains: (fields[16] as List?)?.cast<HiveDomain>(),
+      uris: (fields[18] as List?)?.cast<Uri?>(),
       appIds: (fields[17] as List?)?.cast<String>(),
     );
   }
@@ -74,10 +74,10 @@ class HiveLisoItemAdapter extends TypeAdapter<HiveLisoItem> {
       ..write(obj.attachments)
       ..writeByte(15)
       ..write(obj.metadata)
-      ..writeByte(16)
-      ..write(obj.domains)
       ..writeByte(17)
-      ..write(obj.appIds);
+      ..write(obj.appIds)
+      ..writeByte(18)
+      ..write(obj.uris);
   }
 
   @override

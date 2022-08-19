@@ -21,6 +21,7 @@ class UnlockScreenController extends GetxController
   final passwordController = TextEditingController();
   final passwordMode = Get.parameters['mode'] == 'password_prompt';
   final regularMode = Get.parameters['mode'] == 'regular';
+  final reason = Get.parameters['reason'];
 
   // PROPERTIES
   int attemptsLeft = Persistence.to.maxUnlockAttempts.val;
@@ -49,7 +50,13 @@ class UnlockScreenController extends GetxController
   // biometric storage
   void authenticate() async {
     if (!isLocalAuthSupported) return console.warning('local auth unsupported');
-    if (!(await LocalAuthService.to.authenticate())) {
+
+    final authenticated = await LocalAuthService.to.authenticate(
+      subTitle: reason ?? 'Unlock your vault',
+      body: 'Authenticate to verify and approve this action',
+    );
+
+    if (!authenticated) {
       return console.warning('local auth failed to authenticate');
     }
 

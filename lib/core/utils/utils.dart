@@ -5,13 +5,10 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/hive/models/metadata/device.hive.dart';
-import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
 

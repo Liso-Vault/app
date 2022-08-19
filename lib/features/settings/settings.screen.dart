@@ -1,10 +1,12 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/services/autofill.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -233,6 +235,34 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ],
           );
         }),
+        Obx(
+          () => Visibility(
+            visible: LisoAutofillService.to.supported.value,
+            child: ExpansionTile(
+              title: const Text('Autofill Settings'),
+              subtitle: Text(
+                '${ConfigService.to.appName} autofill service settings',
+              ),
+              leading: Icon(Iconsax.rulerpen, color: themeColor),
+              childrenPadding: const EdgeInsets.only(left: 20),
+              children: [
+                ListTile(
+                  leading: Icon(Iconsax.setting_2, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  title: Text('${ConfigService.to.appName} Autofill Service'),
+                  onTap: LisoAutofillService.to.set,
+                  subtitle: Obx(
+                    () => Text(
+                      LisoAutofillService.to.enabled.value
+                          ? 'Enabled'
+                          : 'Set ${ConfigService.to.appName} as your autofill service',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Other Settings'),

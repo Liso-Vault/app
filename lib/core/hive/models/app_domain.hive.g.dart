@@ -19,7 +19,7 @@ class HiveAppDomainAdapter extends TypeAdapter<HiveAppDomain> {
     return HiveAppDomain(
       title: fields[0] as String,
       iconUrl: fields[1] as String,
-      domains: (fields[2] as List).cast<HiveDomain>(),
+      uris: (fields[4] as List).cast<Uri?>(),
       appIds: (fields[3] as List).cast<String>(),
     );
   }
@@ -32,10 +32,10 @@ class HiveAppDomainAdapter extends TypeAdapter<HiveAppDomain> {
       ..write(obj.title)
       ..writeByte(1)
       ..write(obj.iconUrl)
-      ..writeByte(2)
-      ..write(obj.domains)
       ..writeByte(3)
-      ..write(obj.appIds);
+      ..write(obj.appIds)
+      ..writeByte(4)
+      ..write(obj.uris);
   }
 
   @override
@@ -45,35 +45,6 @@ class HiveAppDomainAdapter extends TypeAdapter<HiveAppDomain> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is HiveAppDomainAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
-}
-
-class HiveDomainAdapter extends TypeAdapter<HiveDomain> {
-  @override
-  final int typeId = 31;
-
-  @override
-  HiveDomain read(BinaryReader reader) {
-    final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{
-      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
-    };
-    return HiveDomain();
-  }
-
-  @override
-  void write(BinaryWriter writer, HiveDomain obj) {
-    writer.writeByte(0);
-  }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is HiveDomainAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

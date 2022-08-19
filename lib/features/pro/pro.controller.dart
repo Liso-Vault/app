@@ -31,22 +31,6 @@ class ProController extends GetxController with ConsoleMixin {
   bool get isPro =>
       proEntitlement?.isActive ?? AuthService.to.claims['limits'] == 'pro';
 
-  // bool get isFreeTrial => !AuthService.to.isSignedIn
-  //     ? false
-  //     : AuthService.to.user!.metadata.creationTime!.isBefore(
-  //         DateTime.tryParse(Persistence.to.lastServerDateTime.val) ??
-  //             DateTime.now());
-
-  DateTime get freeTrialExpirationDateTime =>
-      (AuthService.to.user?.metadata.creationTime ?? DateTime.now()).add(
-        Duration(
-          days: ConfigService.to.limits.settings.trialDays,
-        ),
-      );
-
-  String get freeTrialExpirationDateTimeString =>
-      DateFormat.yMMMMd().add_jm().format(freeTrialExpirationDateTime);
-
   EntitlementInfo? get proEntitlement => info.value.entitlements.all['pro'];
 
   List<Package> get packages =>
@@ -88,9 +72,6 @@ class ProController extends GetxController with ConsoleMixin {
     if (Persistence.to.lastLisoBalance.val > limits_.holder.tokenThreshold) {
       return limits_.holder;
     }
-
-    // // check if user is still in trial mode
-    // if (isFreeTrial) return limits_.trial;
 
     // free user
     return limits_.free;

@@ -28,18 +28,22 @@ class LocalAuthService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
 
-  Future<bool> authenticate() async {
+  Future<bool> authenticate({
+    String? title,
+    String? subTitle,
+    required String body,
+  }) async {
     bool authenticated = false;
 
     try {
       // TODO: localize
       authenticated = await auth.authenticate(
-        localizedReason: 'Decrypt and access your local vault',
+        localizedReason: body,
         options: const AuthenticationOptions(stickyAuth: true),
         authMessages: [
           AndroidAuthMessages(
-            signInTitle: 'Authenticate ${ConfigService.to.appName}',
-            biometricHint: 'Unlock your vault',
+            signInTitle: '${ConfigService.to.appName} Biometrics',
+            biometricHint: subTitle,
             cancelButton: 'Cancel',
           ),
           const IOSAuthMessages(cancelButton: 'Cancel'),

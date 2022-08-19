@@ -80,7 +80,7 @@ class ItemScreenController extends GetxController
   final reorderMode = false.obs;
   final otpCode = ''.obs;
   final otpRemainingSeconds = 0.obs;
-  final domains = <HiveDomain>[].obs;
+  final uris = <Uri?>[].obs;
   final appIds = <String>[].obs;
 
   // GETTERS
@@ -533,16 +533,17 @@ class ItemScreenController extends GetxController
   Future<void> _populateSavedAutofillItem() async {
     var fields = categoryObject.fields;
 
-    final appDomain = HiveAppDomain.fromJson(jsonDecode(
-      Get.parameters['app_domain']!,
-    ));
+    final paramDomain = Get.parameters['app_domain']!;
+    final appDomain = HiveAppDomain.fromJson(jsonDecode(paramDomain));
 
     appIds.value = appDomain.appIds;
-    domains.value = appDomain.domains;
+    uris.value = appDomain.uris;
 
     fields = fields.map((e) {
       if (e.identifier == 'website') {
-        e.data.value = appDomain.website;
+        if (appDomain.uris.isNotEmpty) {
+          e.data.value = appDomain.uris.first.toString();
+        }
       } else if (e.identifier == 'username') {
         e.data.value = Get.parameters['username'];
       } else if (e.identifier == 'password') {
@@ -564,7 +565,7 @@ class ItemScreenController extends GetxController
       metadata: await HiveMetadata.get(),
       groupId: groupId.value,
       appIds: appDomain.appIds,
-      domains: domains,
+      uris: uris,
     );
   }
 
@@ -620,7 +621,7 @@ class ItemScreenController extends GetxController
     sharedVaultIds.value = List.from(item!.sharedVaultIds);
     tagsController.data.value = item!.tags.toSet().toList();
     appIds.value = item!.appIds == null ? [] : List.from(item!.appIds!);
-    domains.value = item!.domains == null ? [] : List.from(item!.domains!);
+    uris.value = item!.uris == null ? [] : List.from(item!.uris!);
     _buildFieldWidgets();
   }
 
@@ -881,7 +882,7 @@ class ItemScreenController extends GetxController
       metadata: await HiveMetadata.get(),
       groupId: groupId.value,
       appIds: appIds,
-      domains: domains,
+      uris: uris,
     );
 
     await ItemsService.to.box!.add(newItem);
@@ -911,7 +912,7 @@ class ItemScreenController extends GetxController
     item!.category = category.value;
     item!.metadata = await item!.metadata.getUpdated();
     item!.appIds = appIds;
-    item!.domains = domains;
+    item!.uris = uris;
     await item!.save();
 
     console.wtf('appIds: $appIds');
@@ -1022,7 +1023,7 @@ class ItemScreenController extends GetxController
       reserved: item!.reserved,
       hidden: item!.hidden,
       appIds: item!.appIds,
-      domains: item!.domains,
+      uris: item!.uris,
     );
 
     // convert to json string for absolute equality check

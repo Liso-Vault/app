@@ -56,11 +56,9 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
         return true;
       }
 
-      final domains = e.domains == null
-          ? <String>[]
-          : e.domains!.map((e) => e.domain).toList();
-
-      if (domains.contains(query_)) return true;
+      if (e.uris != null && e.uris!.contains(Uri.tryParse(query_))) {
+        return true;
+      }
 
       if (e.title.toLowerCase().contains(query_)) {
         return true;

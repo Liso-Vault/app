@@ -171,7 +171,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
         ),
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: const Text('Need Help ?'),
+          child: const Text('Help ?'),
         ),
       ],
     );

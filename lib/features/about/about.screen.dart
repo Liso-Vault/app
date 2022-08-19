@@ -1,4 +1,3 @@
-import 'package:app_review/app_review.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

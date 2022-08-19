@@ -132,10 +132,10 @@ status: ${status.toString()}'
     final appDomains = ConfigService.to.appDomains.data.where((e) {
       // DOMAINS
       if (metadata?.webDomains != null &&
-          e.domains
+          e.uris
               .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
-                    domain: d.domain,
-                    scheme: d.scheme,
+                    scheme: d!.scheme,
+                    domain: d.host,
                   )))
               .isNotEmpty) {
         return true;
@@ -156,12 +156,12 @@ status: ${status.toString()}'
         ? metadata!.packageNames.toList()
         : <String>[];
 
-    final domains = metadata?.webDomains != null
+    final uris = metadata?.webDomains != null
         ? metadata!.webDomains
             .toList()
-            .map((e) => HiveDomain(scheme: e.scheme, domain: e.domain))
+            .map((e) => Uri(scheme: e.scheme, host: e.domain))
             .toList()
-        : <HiveDomain>[];
+        : <Uri>[];
 
     String service = '';
 
@@ -176,7 +176,7 @@ status: ${status.toString()}'
         : HiveAppDomain(
             title: service,
             appIds: appIds,
-            domains: domains,
+            uris: uris,
             iconUrl: '',
           );
 

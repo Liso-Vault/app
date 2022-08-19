@@ -296,10 +296,10 @@ class MainScreenController extends GetxController
       final appDomains = ConfigService.to.appDomains.data.where((e) {
         // DOMAINS
         if (metadata?.webDomains != null &&
-            e.domains
+            e.uris
                 .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
-                      domain: d.domain,
-                      scheme: d.scheme,
+                      scheme: d!.scheme,
+                      domain: d.host,
                     )))
                 .isNotEmpty) {
           return true;
@@ -328,9 +328,9 @@ class MainScreenController extends GetxController
     final appDomains = ConfigService.to.appDomains.data.where((e) {
       // DOMAINS
       if (metadata?.webDomains != null &&
-          e.domains
+          e.uris
               .where((d) => metadata!.webDomains.contains(AutofillWebDomain(
-                    domain: d.domain,
+                    domain: d!.host,
                     scheme: d.scheme,
                   )))
               .isNotEmpty) {
@@ -352,12 +352,12 @@ class MainScreenController extends GetxController
         ? metadata!.packageNames.toList()
         : <String>[];
 
-    final domains = metadata?.webDomains != null
+    final uris = metadata?.webDomains != null
         ? metadata!.webDomains
             .toList()
-            .map((e) => HiveDomain(scheme: e.scheme, domain: e.domain))
+            .map((e) => Uri(scheme: e.scheme, host: e.domain))
             .toList()
-        : <HiveDomain>[];
+        : <Uri>[];
 
     String service = '';
 
@@ -372,7 +372,7 @@ class MainScreenController extends GetxController
         : HiveAppDomain(
             title: service,
             appIds: appIds,
-            domains: domains,
+            uris: uris,
             iconUrl: '',
           );
 
@@ -531,7 +531,10 @@ status: ${status.toString()}'
     // prompt password from unlock screen
     final unlocked = await Get.toNamed(
           Routes.unlock,
-          parameters: {'mode': 'password_prompt'},
+          parameters: {
+            'mode': 'password_prompt',
+            'reason': 'Show Master Seed Phrase',
+          },
         ) ??
         false;
 

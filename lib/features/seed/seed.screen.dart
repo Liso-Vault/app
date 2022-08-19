@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 

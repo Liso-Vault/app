@@ -185,7 +185,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   Future<bool> _unlock() async {
     final unlocked = await Get.toNamed(
           Routes.unlock,
-          parameters: {'mode': 'password_prompt'},
+          parameters: {
+            'mode': 'password_prompt',
+            'reason': 'Protected Item',
+          },
         ) ??
         false;
 

@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +12,7 @@ import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/services/autofill.service.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
@@ -36,6 +38,7 @@ class SettingsScreenController extends GetxController
   static SettingsScreenController get to => Get.find();
 
   // VARIABLES
+
   List<ContextMenuItem> get menuItemsTheme {
     return [
       ContextMenuItem(
@@ -64,7 +67,7 @@ class SettingsScreenController extends GetxController
 
   // INIT
   @override
-  void onInit() {
+  void onInit() async {
     change(null, status: RxStatus.success());
     super.onInit();
   }
@@ -92,7 +95,10 @@ class SettingsScreenController extends GetxController
     // prompt password from unlock screen
     final unlocked = await Get.toNamed(
           Routes.unlock,
-          parameters: {'mode': 'password_prompt'},
+          parameters: {
+            'mode': 'password_prompt',
+            'reason': 'Export Wallet File',
+          },
         ) ??
         false;
 
@@ -155,7 +161,10 @@ class SettingsScreenController extends GetxController
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
+            parameters: {
+              'mode': 'password_prompt',
+              'reason': 'Export Vault File',
+            },
           ) ??
           false;
 
@@ -250,7 +259,10 @@ class SettingsScreenController extends GetxController
     // prompt password from unlock screen
     final unlocked = await Get.toNamed(
           Routes.unlock,
-          parameters: {'mode': 'password_prompt'},
+          parameters: {
+            'mode': 'password_prompt',
+            'reason': 'Show Master Seed Phrase',
+          },
         ) ??
         false;
 
@@ -267,7 +279,10 @@ class SettingsScreenController extends GetxController
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
+            parameters: {
+              'mode': 'password_prompt',
+              'reason': 'Purge Items',
+            },
           ) ??
           false;
 
@@ -308,7 +323,10 @@ class SettingsScreenController extends GetxController
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
+            parameters: {
+              'mode': 'password_prompt',
+              'reason': 'Delete Remote Data',
+            },
           ) ??
           false;
 
@@ -352,7 +370,10 @@ class SettingsScreenController extends GetxController
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
-            parameters: {'mode': 'password_prompt'},
+            parameters: {
+              'mode': 'password_prompt',
+              'reason': 'Reset your vault',
+            },
           ) ??
           false;
 
@@ -384,14 +405,16 @@ class SettingsScreenController extends GetxController
     );
   }
 
-  void showDiagnosticInfo() {
+  void showDiagnosticInfo() async {
     final content = ListView(
       shrinkWrap: true,
       controller: ScrollController(),
+      padding: EdgeInsets.zero,
       children: [
         ListTile(
           title: const Text('Wallet Address'),
           subtitle: Text(Persistence.to.walletAddress.val),
+          dense: true,
           onTap: () => Utils.copyToClipboard(
             Persistence.to.walletAddress.val,
           ),
@@ -399,6 +422,7 @@ class SettingsScreenController extends GetxController
         ListTile(
           title: const Text('User ID'),
           subtitle: Text(AuthService.to.userId),
+          dense: true,
           onTap: () => Utils.copyToClipboard(
             AuthService.to.userId,
           ),
@@ -406,6 +430,7 @@ class SettingsScreenController extends GetxController
         ListTile(
           title: const Text('RC User ID'),
           subtitle: Text(ProController.to.info.value.originalAppUserId),
+          dense: true,
           onTap: () => Utils.copyToClipboard(
             ProController.to.info.value.originalAppUserId,
           ),
@@ -413,6 +438,7 @@ class SettingsScreenController extends GetxController
         ListTile(
           title: Text('${ConfigService.to.appName} Pro'),
           subtitle: Text(ProController.to.isPro.toString()),
+          dense: true,
         ),
         // ListTile(
         //   title: const Text('Free Trial'),
@@ -421,15 +447,27 @@ class SettingsScreenController extends GetxController
         ListTile(
           title: const Text('Limits'),
           subtitle: Text(ProController.to.limits.id),
+          dense: true,
         ),
         ListTile(
           title: const Text('App Version'),
           subtitle: Text(Globals.metadata?.app.formattedVersion ?? ''),
+          dense: true,
         ),
         ListTile(
           title: const Text('Platform'),
           subtitle: Text(Utils.platformName()),
+          dense: true,
         ),
+        if (GetPlatform.isAndroid) ...[
+          ListTile(
+            title: const Text('Autofill Services'),
+            subtitle: Text(
+              'Supported: ${LisoAutofillService.to.supported.value}, Enabled: ${LisoAutofillService.to.enabled.value}',
+            ),
+            dense: true,
+          ),
+        ]
       ],
     );
 

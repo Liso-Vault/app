@@ -1,8 +1,10 @@
 ## 0.7.0
 - New! Automatic vault backups
-- New! Restore from a backed-up vault
-- New! Send Feedback Screen
+- New! Restore a backed-up vault
+- New! Autofill service setting
+- New! Contact Screen
 - Improved! Files Explorer UX
+- Improved! Descriptive biometric prompts
 - Fixed! Stuck syncing after restore / unlock
 - Fixed! Send feedback feature
 - Fixed! Protected toggle is covered by Save button

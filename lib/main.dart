@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/services/alchemy.service.dart';
+import 'package:liso/core/services/autofill.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/groups/groups.service.dart';
@@ -86,6 +87,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.lazyPut(() => WalletService());
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => CipherService());
+    Get.lazyPut(() => LisoAutofillService());
     Get.lazyPut(() => FirestoreService());
     Get.lazyPut(() => FunctionsService());
     Get.lazyPut(() => AuthService());

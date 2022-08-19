@@ -2,7 +2,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';

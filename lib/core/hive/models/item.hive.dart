@@ -53,11 +53,13 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   List<String> attachments;
   @HiveField(15)
   HiveMetadata metadata;
-  // // needs migration if index is re-ordered
-  @HiveField(16)
-  List<HiveDomain>? domains;
+  // needs migration if index is re-ordered
+  // @HiveField(16)
+  // List<HiveDomain>? domains;
   @HiveField(17)
   List<String>? appIds;
+  @HiveField(18)
+  List<Uri?>? uris;
 
   HiveLisoItem({
     required this.identifier,
@@ -76,7 +78,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     this.sharedVaultIds = const [],
     this.attachments = const [],
     required this.metadata,
-    this.domains = const [],
+    this.uris = const [],
     this.appIds = const [],
   });
 
@@ -100,11 +102,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
             List<String>.from(json["shared_vault_ids"].map((x) => x)),
         attachments: List<String>.from(json["attachments"].map((x) => x)),
         metadata: HiveMetadata.fromJson(json["metadata"]),
-        domains: json["domains"] == null
+        uris: json["uris"] == null
             ? []
-            : List<HiveDomain>.from(
-                json["domains"].map((x) => HiveDomain.fromJson(x)),
-              ),
+            : List<Uri>.from(json["uris"].map((x) => Uri.tryParse(x))),
         appIds: json["app_ids"] == null
             ? []
             : List<String>.from(json["app_ids"].map((x) => x)),
@@ -128,9 +128,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       "shared_vault_ids": List<dynamic>.from(sharedVaultIds.map((x) => x)),
       "attachments": List<dynamic>.from(attachments.map((x) => x)),
       "metadata": metadata.toJson(),
-      "domains": domains == null
+      "uris": uris == null
           ? []
-          : List<dynamic>.from(domains!.map((x) => x.toJson())),
+          : List<dynamic>.from(uris!.map((x) => x.toString())),
       "app_ids": appIds == null ? [] : List<dynamic>.from(tags.map((x) => x)),
     };
   }
@@ -195,7 +195,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
         attachments,
         metadata,
         appIds,
-        domains,
+        uris,
       ];
 
   List<Widget> get widgets => fields.map((e) => e.widget).toList();

@@ -10,7 +10,6 @@ import 'package:liso/features/general/pro.widget.dart';
 import 'package:liso/features/s3/s3.service.dart';
 
 import '../../../core/utils/utils.dart';
-import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../pro/pro.controller.dart';
 import 'drawer_widget.controller.dart';
