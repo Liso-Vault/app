@@ -243,17 +243,21 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       Obx(
         () => DropdownButtonFormField<String>(
           isExpanded: true,
-          value: controller.groupId.value,
+          value: controller.groupId.value.isNotEmpty
+              ? controller.groupId.value
+              : GroupsController.to.reserved.first.id,
           onChanged: controller.reserved.value || !controller.editMode.value
               ? null
               : (value) => controller.groupId.value = value!,
           decoration: const InputDecoration(labelText: 'Vault'),
           items: [
             ...GroupsController.to.combined
-                .map((e) => DropdownMenuItem<String>(
-                      value: e.id,
-                      child: Text(e.reservedName),
-                    ))
+                .map(
+                  (e) => DropdownMenuItem<String>(
+                    value: e.id,
+                    child: Text(e.reservedName),
+                  ),
+                )
                 .toList()
           ],
         ),

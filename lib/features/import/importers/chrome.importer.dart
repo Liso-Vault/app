@@ -1,9 +1,9 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/items.service.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/hive/models/item.hive.dart';
@@ -13,7 +13,7 @@ import '../../categories/categories.controller.dart';
 import '../../groups/groups.controller.dart';
 import '../import_screen.controller.dart';
 
-const kChromeCSVColumns = [
+const validColumns = [
   'name',
   'url',
   'username',
@@ -24,21 +24,22 @@ class ChromeImporter {
   static final console = Console(name: 'ChromeImporter');
 
   static Future<bool> importCSV(String csv) async {
+    final sourceFormat = ImportScreenController.to.sourceFormat.value;
     const csvConverter = CsvToListConverter();
     final values = csvConverter.convert(csv);
-    final columns = values.first.sublist(0, kChromeCSVColumns.length);
+    final columns = values.first.sublist(0, validColumns.length);
 
-    if (!listEquals(columns, kChromeCSVColumns)) {
+    if (!listEquals(columns, validColumns)) {
       await UIUtils.showSimpleDialog(
         'Invalid CSV Columns',
-        'Please import a valid LastPass CSV exported file',
+        'Please import a valid ${sourceFormat.title} exported file',
       );
 
       return false;
     }
 
     final metadata = await HiveMetadata.get();
-    final sourceFormat = ImportScreenController.to.sourceFormat.value;
+
     String groupId = ImportScreenController.to.destinationGroupId.value;
 
     final items = values.map(
@@ -59,12 +60,12 @@ class ChromeImporter {
         final username = row[2];
         final password = row[3];
 
-        // print csv values
-        console.warning('name: $name');
-        console.warning('url: $url');
-        console.warning('username: $username');
-        console.warning('password: $password');
-        console.info('############');
+        // // print csv values
+        // console.warning('name: $name');
+        // console.warning('url: $url');
+        // console.warning('username: $username');
+        // console.warning('password: $password');
+        // console.info('############');
 
         final fields = category.fields.map((e) {
           if (e.identifier == 'website') {
@@ -102,9 +103,9 @@ class ChromeImporter {
 
     await ItemsService.to.box!.addAll(items);
 
-    UIUtils.showSimpleDialog(
-      'Import Successful',
-      'Imported ${items.length} items via ${sourceFormat.title}',
+    NotificationsManager.notify(
+      title: 'Import Successful',
+      body: 'Imported ${items.length} items via ${sourceFormat.title}',
     );
 
     return true;

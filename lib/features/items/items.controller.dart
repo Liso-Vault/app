@@ -36,7 +36,7 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
 
   Future<void> load() async {
     change(null, status: RxStatus.loading());
-    final drawerController = DrawerMenuController.to;
+    final drawerController = Get.find<DrawerMenuController>();
     raw.value = ItemsService.to.data;
     Iterable<HiveLisoItem> filteredItems = List.from(raw);
 

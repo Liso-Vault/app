@@ -1,12 +1,12 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
+import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/menu/menu.button.dart';
@@ -17,7 +17,6 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../autofill/autofill_picker/autofill_picker.dialog.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
@@ -37,53 +36,11 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     this.joinedVaultItem = false,
   }) : super(key: key);
 
-  void _fill() async {
-    // USERNAME FIELDS
-    final usernameFields = item.usernameFields;
-    console.wtf('usernames: ${usernameFields.length}');
-
-    for (var e in usernameFields) {
-      console.warning('username: ${e.data.value!}');
-    }
-
-    // PASSWORD FIELDS
-    final passwordFields = item.passwordFields;
-    console.wtf('passwords: ${passwordFields.length}');
-
-    for (var e in passwordFields) {
-      console.warning('password: ${e.data.value!}');
-    }
-
-    // if single username and password fields found. return right away
-    if (usernameFields.length <= 1 && passwordFields.length <= 1) {
-      final username =
-          usernameFields.isNotEmpty ? usernameFields.first.data.value! : '';
-      final password =
-          passwordFields.isNotEmpty ? passwordFields.first.data.value! : '';
-
-      final response = await AutofillService().resultWithDatasets([
-        PwDataset(
-          label: item.title,
-          username: username,
-          password: password,
-        )
-      ]);
-
-      return console.warning('resultWithDatasets: $response');
-    }
-
-    // if more than 1 username or password, let the user select
-    final dataset = await Get.dialog(AutofillPickerDialog(item: item));
-
-    if (dataset != null) {
-      console.info('dataset: $dataset');
-      final response = await AutofillService().resultWithDatasets(dataset);
-      console.warning('resultWithDatasets: $response');
-    }
-  }
-
   void _open() async {
-    if (Globals.isAutofill && GetPlatform.isAndroid) return _fill();
+    if (Globals.isAutofill) {
+      return LisoAutofillService.to.fill(item);
+    }
+
     if (item.protected && !(await _unlock())) return;
     // if newly opened and hive hasn't finished init
     if (item.key == null) return console.error('key is null');

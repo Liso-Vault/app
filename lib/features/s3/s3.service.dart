@@ -374,14 +374,14 @@ class S3Service extends GetxService with ConsoleMixin {
 
     final info = result.right;
 
-    console.wtf('# BACKUPS #');
-    console.wtf(
-      'limits: ${ProController.to.limits.backups}, backups: ${info.contents.length}',
-    );
+    // console.wtf('# BACKUPS #');
+    // console.wtf(
+    //   'limits: ${ProController.to.limits.backups}, backups: ${info.contents.length}',
+    // );
 
-    for (var e in info.contents) {
-      console.wtf('${e.name} - ${e.object?.lastModified}');
-    }
+    // for (var e in info.contents) {
+    //   console.wtf('${e.name} - ${e.object?.lastModified}');
+    // }
 
     if (info.contents.length >= ProController.to.limits.backups) {
       final result = await remove(info.contents.first);

@@ -14,7 +14,9 @@ import 'package:path/path.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
+import '../app/routes.dart';
 import '../groups/groups.controller.dart';
+import 'importers/apple.importer.dart';
 import 'importers/lastpass.importer.dart';
 
 class ExportedSourceFormat {
@@ -31,7 +33,9 @@ final sourceFormats = [
   ExportedSourceFormat('Bitwarden', 'json'),
   ExportedSourceFormat('Bitwarden', 'csv'),
   ExportedSourceFormat('Chrome', 'csv'),
+  ExportedSourceFormat('Brave', 'csv'),
   ExportedSourceFormat('LastPass', 'csv'),
+  ExportedSourceFormat('Apple', 'csv'),
 ];
 
 const kAllowedExtensions = ['json', 'csv', 'xml'];
@@ -75,10 +79,12 @@ class ImportScreenController extends GetxController
 
     if (formatId == 'bitwarden-csv') {
       success = await BitwardenImporter.importCSV(contents);
-    } else if (formatId == 'chrome-csv') {
+    } else if (formatId == 'chrome-csv' || formatId == 'brave-csv') {
       success = await ChromeImporter.importCSV(contents);
     } else if (formatId == 'lastpass-csv') {
       success = await LastPassImporter.importCSV(contents);
+    } else if (formatId == 'apple-csv') {
+      success = await AppleImporter.importCSV(contents);
     }
 
     console.info('success csv import: $success');
@@ -88,6 +94,8 @@ class ImportScreenController extends GetxController
       DrawerMenuController.to.filterGroupId.value = destinationGroupId.value;
       MainScreenController.to.recentlyImported.value = true;
       MainScreenController.to.load();
+
+      Get.offNamedUntil(Routes.main, (route) => false);
     }
   }
 

@@ -99,7 +99,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   leading: Icon(Iconsax.setting, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
                   title: const Text('Configuration'),
-                  subtitle: const Text('Manage your sync configuration'),
+                  subtitle: const Text('Change your sync configuration'),
                   onTap: () => Utils.adaptiveRouteOpen(
                     name: Routes.syncProvider,
                   ),
@@ -148,26 +148,26 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     name: Routes.joinedVaults,
                   ),
                 ),
-              ],
-              ListTile(
-                title: const Text('Backed Up Vaults'),
-                subtitle: const Text('Go back in time to undo your changes'),
-                leading: Icon(Iconsax.box, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
-                onTap: () async {
-                  if (!p.sync.val) {
-                    return UIUtils.showSimpleDialog(
-                      'Sync Required',
-                      'Please turn on ${config.appName} Cloud Sync to use this feature',
-                    );
-                  }
+                ListTile(
+                  title: const Text('Backed Up Vaults'),
+                  subtitle: const Text('Go back in time to undo your changes'),
+                  leading: Icon(Iconsax.box, color: themeColor),
+                  trailing: const Icon(Iconsax.arrow_right_3),
+                  onTap: () async {
+                    if (!p.sync.val) {
+                      return UIUtils.showSimpleDialog(
+                        'Sync Required',
+                        'Please turn on ${config.appName} Cloud Sync to use this feature',
+                      );
+                    }
 
-                  Utils.adaptiveRouteOpen(
-                    name: Routes.s3Explorer,
-                    parameters: {'type': 'time_machine'},
-                  );
-                },
-              ),
+                    Utils.adaptiveRouteOpen(
+                      name: Routes.s3Explorer,
+                      parameters: {'type': 'time_machine'},
+                    );
+                  },
+                ),
+              ],
               ListTile(
                 leading: Icon(Iconsax.import_1, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
@@ -352,14 +352,16 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               onTap: controller.reset,
               onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),
             ),
-            ListTile(
-              iconColor: Colors.red,
-              leading: const Icon(Iconsax.warning_2),
-              trailing: const Icon(Iconsax.arrow_right_3),
-              title: const Text('Delete Remote Data'),
-              subtitle: const Text('Delete remote vault and files'),
-              onTap: controller.unsync,
-            ),
+            if (Persistence.to.canShare) ...[
+              ListTile(
+                iconColor: Colors.red,
+                leading: const Icon(Iconsax.warning_2),
+                trailing: const Icon(Iconsax.arrow_right_3),
+                title: const Text('Delete Remote Data'),
+                subtitle: const Text('Delete remote vault and files'),
+                onTap: controller.unsync,
+              ),
+            ],
             if (kDebugMode) ...[
               ListTile(
                 leading: const Icon(Iconsax.code),

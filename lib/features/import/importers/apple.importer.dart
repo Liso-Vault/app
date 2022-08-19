@@ -6,18 +6,11 @@ import '../../../core/utils/ui_utils.dart';
 import '../import_screen.controller.dart';
 
 const validColumns = [
-  'url',
-  'username',
-  'password',
-  'totp',
-  'extra',
-  'name',
-  'grouping',
-  'fav'
+  //
 ];
 
-class LastPassImporter {
-  static final console = Console(name: 'LastPassImporter');
+class AppleImporter {
+  static final console = Console(name: 'AppleImporter');
 
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;

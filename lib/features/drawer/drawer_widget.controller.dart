@@ -34,7 +34,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
       toolsExpanded = false;
 
   // PROPERTIES
-  final filterGroupId = 'personal'.obs;
+  final filterGroupId = GroupsController.to.reserved.first.id.obs;
   final filterFavorites = false.obs;
   final filterProtected = false.obs;
   final filterTrashed = false.obs;

@@ -44,11 +44,19 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             Obx(
               () => DropdownButtonFormField<String>(
                 value: controller.destinationGroupId.value,
-                onChanged: (value) =>
-                    controller.destinationGroupId.value = value!,
                 decoration: const InputDecoration(
                   labelText: 'Destination Vault',
                 ),
+                onChanged: (value) async {
+                  if (value == 'new-vault') {
+                    await Get.toNamed(Routes.vaults);
+                    controller.destinationGroupId.value =
+                        GroupsController.to.combined.first.id;
+                    return;
+                  }
+
+                  controller.destinationGroupId.value = value!;
+                },
                 items: {
                   ...GroupsController.to.combined,
                   HiveLisoGroup(
@@ -56,7 +64,12 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                     name:
                         'Let ${ConfigService.to.appName} assign/create automatically',
                     metadata: null,
-                  )
+                  ),
+                  HiveLisoGroup(
+                    id: 'new-vault',
+                    name: 'New Vault',
+                    metadata: null,
+                  ),
                 }
                     .map(
                       (e) => DropdownMenuItem(
@@ -143,11 +156,9 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
       ),
     );
 
-    // return WillPopScope(
-    //   onWillPop: () => controller.canPop,
-    //   child: scaffold,
-    // );
-
-    return scaffold;
+    return WillPopScope(
+      onWillPop: () => controller.canPop,
+      child: scaffold,
+    );
   }
 }

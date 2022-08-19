@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
@@ -9,12 +8,12 @@ import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
@@ -23,7 +22,6 @@ import 'package:path/path.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../core/firebase/auth.service.dart';
-import '../../core/hive/models/app_domain.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/services/alchemy.service.dart';
 import '../../core/utils/ui_utils.dart';
@@ -41,9 +39,6 @@ class MainScreenController extends GetxController
   // VARIABLES
   Timer? timeLockTimer;
   ItemsSearchDelegate? searchDelegate;
-  AutofillPreferences? pref;
-  AutofillMetadata? metadata;
-  AutofillServiceStatus? status;
 
   final autofill = AutofillService();
   final persistence = Get.find<Persistence>();
@@ -251,7 +246,15 @@ class MainScreenController extends GetxController
     // load listview
     load();
 
-    if (!Globals.isAutofill) {
+    if (Globals.isAutofill) {
+      // show all items from all vaults
+      drawerController.filterGroupId.value = '';
+      LisoAutofillService.to.request();
+
+      if (!WalletService.to.isReady) {
+        // TODO: show some message a vault is required
+      }
+    } else {
       // load balances
       AlchemyService.to.init();
       AlchemyService.to.load();
@@ -267,169 +270,9 @@ class MainScreenController extends GetxController
         // sync vault
         S3Service.to.sync();
       }
-    } else {
-      // show all items from all vaults
-      drawerController.filterGroupId.value = '';
-      _autofillAction();
-
-      if (!WalletService.to.isReady) {
-        // TODO: show some message a vault is needed
-      }
     }
 
     _updateBuildNumber();
-  }
-
-  void _autofillAction() async {
-    if (!Globals.isAutofill) return;
-    await _updateAutofillStats();
-
-    // SAVE MODE
-    if (metadata?.saveInfo != null) {
-      _saveAutofill();
-    }
-    // FILL MODE
-    else {
-      String query = '';
-
-      if (metadata!.webDomains.isNotEmpty) {
-        query = metadata!.webDomains.first.domain;
-      } else {
-        query = metadata!.packageNames.first;
-      }
-
-      final appDomains = ConfigService.to.appDomains.data.where((e) {
-        // DOMAINS
-        if (metadata?.webDomains != null &&
-            e.uris.where((e) {
-              final uri = Uri.tryParse(e);
-              if (uri == null) false;
-              final domain = AutofillWebDomain(
-                scheme: uri!.scheme,
-                domain: uri.host,
-              );
-
-              return metadata!.webDomains.contains(domain);
-            }).isNotEmpty) {
-          return true;
-        }
-
-        // PACKAGE NAMES
-        if (metadata?.packageNames != null &&
-            e.appIds
-                .where((a) => metadata!.packageNames.contains(a))
-                .isNotEmpty) {
-          return true;
-        }
-
-        return false;
-      }).toList();
-
-      search(query: appDomains.isNotEmpty ? appDomains.first.title : query);
-    }
-  }
-
-  void _saveAutofill() {
-    if (metadata!.webDomains.isEmpty && metadata!.packageNames.isEmpty) {
-      return console.error('invalid autofill metadata');
-    }
-
-    final appDomains = ConfigService.to.appDomains.data.where((e) {
-      // DOMAINS
-      if (metadata?.webDomains != null &&
-          e.uris.where((e) {
-            final uri = Uri.tryParse(e);
-            if (uri == null) false;
-            final domain = AutofillWebDomain(
-              scheme: uri!.scheme,
-              domain: uri.host,
-            );
-
-            return metadata!.webDomains.contains(domain);
-          }).isNotEmpty) {
-        return true;
-      }
-
-      // PACKAGE NAMES
-      if (metadata?.packageNames != null &&
-          e.appIds
-              .where((a) => metadata!.packageNames.contains(a))
-              .isNotEmpty) {
-        return true;
-      }
-
-      return false;
-    }).toList();
-
-    final appIds = metadata?.packageNames != null
-        ? metadata!.packageNames.toList()
-        : <String>[];
-
-    final uris = metadata?.webDomains != null
-        ? metadata!.webDomains
-            .toList()
-            .map((e) => '${e.scheme}://${e.domain}')
-            .toList()
-        : <String>[];
-
-    String service = '';
-
-    if (metadata!.packageNames.isNotEmpty) {
-      service = metadata!.packageNames.first;
-    } else if (metadata!.webDomains.isNotEmpty) {
-      service = metadata!.webDomains.first.domain;
-    }
-
-    final appDomain = appDomains.isNotEmpty
-        ? appDomains.first
-        : HiveAppDomain(
-            title: service,
-            appIds: appIds,
-            uris: uris,
-            iconUrl: '',
-          );
-
-    console.info('app domain: ${appDomain.toJson()}');
-
-    final username = metadata?.saveInfo?.username ?? '';
-    final password = metadata?.saveInfo?.password ?? '';
-
-    Utils.adaptiveRouteOpen(
-      name: Routes.item,
-      parameters: {
-        'mode': 'saved_autofill',
-        'category': LisoItemCategory.login.name,
-        'title': '$username ${appDomain.title}',
-        'username': username,
-        'password': password,
-        'app_domain': jsonEncode(appDomain.toJson()),
-      },
-    );
-  }
-
-  Future<void> _updateAutofillStats() async {
-    pref = await autofill.getPreferences();
-    metadata = await autofill.getAutofillMetadata();
-    status = await autofill.status();
-
-    console.warning(''''
-fillRequestedAutomatic: ${await autofill.fillRequestedAutomatic}'
-fillRequestedInteractive: ${await autofill.fillRequestedInteractive}'
-hasAutofillServicesSupport: ${await autofill.hasAutofillServicesSupport}'
-hasEnabledAutofillServices: ${await autofill.hasEnabledAutofillServices}'
-  
-// METADATA
-saveInfo: ${metadata?.saveInfo?.toJson()}'
-packageNames: ${metadata?.packageNames}'
-webDomains: ${metadata?.webDomains}'
-
-// PREFERENCE
-enableDebug: ${pref?.enableDebug}'
-enableSaving: ${pref?.enableSaving}'
-
-// STATUS
-status: ${status.toString()}'
-    ''');
   }
 
   void search({String query = ''}) async {
