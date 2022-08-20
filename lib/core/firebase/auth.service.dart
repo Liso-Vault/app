@@ -64,7 +64,7 @@ class AuthService extends GetxService with ConsoleMixin {
             .then((value) => claims = value.claims ?? {});
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
-        record();
+        syncFirestore();
       }
     });
 
@@ -72,7 +72,7 @@ class AuthService extends GetxService with ConsoleMixin {
   }
 
   // FUNCTIONS
-  void record({bool enforceDevices = false}) async {
+  void syncFirestore() async {
     if (!WalletService.to.isReady) {
       return console.error('Cannot record because of null wallet');
     }
@@ -84,8 +84,9 @@ class AuthService extends GetxService with ConsoleMixin {
       filesCount: info.contents.length,
       totalSize: info.totalSize,
       encryptedFilesCount: info.encryptedFiles,
-      enforceDevices: enforceDevices,
     );
+
+    await FirestoreService.to.enforceDevices();
   }
 
   Future<void> signOut() async {
@@ -98,7 +99,6 @@ class AuthService extends GetxService with ConsoleMixin {
     if (GetPlatform.isWindows) return AuthDesktopService.to.signIn();
 
     if (isSignedIn) {
-      record(enforceDevices: true);
       return console.warning('Already Signed In: $userId');
     }
 

@@ -128,7 +128,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
         }
 
         Get.dialog(AlertDialog(
-          title: const Text('Vault Credentials'),
+          title: Text(vault.name),
           content: Utils.isDrawerExpandable
               ? content
               : SizedBox(width: 450, child: content),
@@ -156,7 +156,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: 'delete'.tr,
           leading: const Icon(Iconsax.trash),
-          onSelected: controller.delete,
+          onSelected: () => controller.delete(vault),
         ),
       ];
 

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/auth_desktop.service.dart';
 import 'package:liso/core/firebase/functions.service.dart';
+import 'package:liso/core/firebase/model/session.model.dart';
 import 'package:liso/core/firebase/model/user.model.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -21,13 +22,13 @@ import '../../features/categories/categories.service.dart';
 import '../../features/joined_vaults/model/member.model.dart';
 import '../../features/pro/pro.controller.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
-import '../hive/models/metadata/app.hive.dart';
 import '../hive/models/metadata/device.hive.dart';
 import '../services/cipher.service.dart';
 import 'crashlytics.service.dart';
 
 const kSharedVaultsCollection = 'shared_vaults';
 const kVaultMembersCollection = 'members';
+const kUserSessionsCollection = 'sessions';
 const kUsersCollection = 'users';
 const kStatsDoc = '---stats---';
 
@@ -53,6 +54,8 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
   late CollectionReference<HiveMetadataDevice> userDevices;
 
+  late CollectionReference<FirebaseUserSession> userSessions;
+
   late Query<VaultMember> vaultMembers;
 
   // PROPERTIES
@@ -68,6 +71,12 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
   DocumentReference<Map<String, dynamic>> get vaultsStatsDoc =>
       vaultsCol.doc(kStatsDoc);
+
+  CollectionReference<Map<String, dynamic>> get userSessionsCol =>
+      userDoc.collection(kUserSessionsCollection);
+
+  DocumentReference<Map<String, dynamic>> get userSessionsStatsDoc =>
+      userSessionsCol.doc(kStatsDoc);
 
   // INIT
   @override
@@ -97,7 +106,32 @@ class FirestoreService extends GetxService with ConsoleMixin {
           toFirestore: (object, _) => object.toJson(),
         );
 
+    userSessions = userDoc.collection('sessions').withConverter(
+          fromFirestore: (snapshot, _) =>
+              FirebaseUserSession.fromSnapshot(snapshot),
+          toFirestore: (object, _) => object.toJson(),
+        );
+
     super.onInit();
+  }
+
+  Future<void> enforceDevices() async {
+    if (GetPlatform.isWindows) return;
+
+    final devicesSnapshot = await FirestoreService.to.userDevices.get();
+    final devices = devicesSnapshot.docs.map((e) => e.data()).toList();
+    final foundDevices =
+        devices.where((e) => e.id == Globals.metadata?.device.id);
+    final totalDevices = devices.length + (foundDevices.isEmpty ? 1 : 0);
+
+    if (totalDevices > ProController.to.limits.devices) {
+      // open a locked page to manage devices and with button to upgrade
+      return Get.toNamed(
+        Routes.devices,
+        parameters: {'enforce': 'true'},
+        preventDuplicates: true,
+      );
+    }
   }
 
   // FUNCTIONS
@@ -107,38 +141,13 @@ class FirestoreService extends GetxService with ConsoleMixin {
     required int filesCount,
     required int encryptedFilesCount,
     required int totalSize,
-    bool enforceDevices = false,
   }) async {
     // just to make sure
     if (!AuthService.to.isSignedIn) await AuthService.to.signIn();
     // check one more time
     if (!AuthService.to.isSignedIn) return console.warning('Not Signed In');
-
-    if (!GetPlatform.isWindows && enforceDevices) {
-      final devicesSnapshot = await FirestoreService.to.userDevices.get();
-      final devices = devicesSnapshot.docs.map((e) => e.data()).toList();
-      final foundDevices =
-          devices.where((e) => e.id == Globals.metadata?.device.id);
-      final totalDevices = devices.length + (foundDevices.isEmpty ? 1 : 0);
-
-      if (totalDevices > ProController.to.limits.devices) {
-        // open a locked page to manage devices and with button to upgrade
-        return Get.toNamed(
-          Routes.devices,
-          parameters: {'enforce': 'true'},
-          preventDuplicates: true,
-        );
-      }
-    }
-
-    final persistence = Get.find<Persistence>();
-
-    // calculate vault byte size
-    final encryptedVaultBytes = CipherService.to.encrypt(
-      utf8.encode(await LisoManager.compactJson()),
-    );
-
     var user = FirebaseUser();
+    final persistence = Get.find<Persistence>();
 
     if (GetPlatform.isWindows) {
       final result = await FunctionsService.to.getUser(
@@ -171,8 +180,13 @@ class FirestoreService extends GetxService with ConsoleMixin {
 
     final device = await HiveMetadataDevice.get();
 
+    // calculate vault byte size
+    final encryptedVaultBytes = CipherService.to.encrypt(
+      utf8.encode(await LisoManager.compactJson()),
+    );
+
     final metadata = FirebaseUserMetadata(
-      app: await HiveMetadataApp.get(),
+      app: Globals.metadata!.app,
       deviceId: device.id,
       size: FirebaseUserSize(
         storage: totalSize,
@@ -239,6 +253,19 @@ class FirestoreService extends GetxService with ConsoleMixin {
       batch.set(userDoc, user, SetOptions(merge: true));
       // record user device
       batch.set(userDevices.doc(device.id), device);
+      // record user session
+      final session = await FirebaseUserSession.get();
+      batch.set(userSessions.doc(Globals.sessionId), session);
+      // increment sessions
+      batch.set(
+        userSessionsStatsDoc,
+        {
+          'count': FieldValue.increment(1),
+          'deviceId': device.id,
+          'updatedTime': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
 
       // commit batch
       try {

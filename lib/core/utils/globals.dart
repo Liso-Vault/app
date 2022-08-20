@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:uuid/uuid.dart';
 
 // HIVE DATABASE
 const kHiveBoxGroups = 'groups';
@@ -138,6 +139,7 @@ class Globals {
   // VARIABLES
   static bool timeLockEnabled = true;
   static bool isAutofill = false;
+  static String sessionId = const Uuid().v4();
   static HiveMetadata? metadata;
 
   // GETTERS

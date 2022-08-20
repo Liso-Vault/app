@@ -304,12 +304,12 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
     ));
   }
 
-  void delete() {
+  void delete(SharedVault object_) {
     void _delete() async {
       Get.back();
 
       final batch = FirestoreService.to.instance.batch();
-      final doc = FirestoreService.to.sharedVaults.doc(object!.docId);
+      final doc = FirestoreService.to.sharedVaults.doc(object_.docId);
       // update user doc
       batch.delete(doc);
       // update users collection stats counter
@@ -334,7 +334,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       await S3Service.to.remove(S3Content(
         path: join(
           S3Service.to.sharedPath,
-          '${object!.docId}.$kVaultExtension',
+          '${object_.docId}.$kVaultExtension',
         ),
       ));
 
@@ -342,11 +342,11 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
     }
 
     final dialogContent = Text(
-      'Are you sure you want to delete the shared vault "${object!.name}"?',
+      'Are you sure you want to delete "${object_.name}"?',
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Delete Shared Vault'),
+      title: Text('Delete ${object_.name}'),
       content: Utils.isDrawerExpandable
           ? dialogContent
           : SizedBox(

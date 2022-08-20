@@ -58,7 +58,7 @@ class AuthDesktopService extends GetxService with ConsoleMixin {
 
         // delay just to make sure everything is ready before we record
         await Future.delayed(2.seconds);
-        AuthService.to.record();
+        AuthService.to.syncFirestore();
       }
     });
 
@@ -74,7 +74,6 @@ class AuthDesktopService extends GetxService with ConsoleMixin {
 
   Future<void> signIn() async {
     if (isSignedIn) {
-      AuthService.to.record(enforceDevices: true);
       return console.warning('Already Signed In: $userId');
     }
 
