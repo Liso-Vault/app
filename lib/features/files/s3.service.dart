@@ -275,9 +275,9 @@ class S3Service extends GetxService with ConsoleMixin {
       (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
     );
 
-    // remove permanently flagged deleted items
+    // exclude permanently flagged deleted items
     final deletedIds =
-        (vault.persistence['deleted-group-ids'] ?? '').split(',');
+        "${Persistence.to.deletedGroupIds},${vault.persistence['deleted-group-ids']}";
     merged.removeWhere((e) => deletedIds.contains(e.id));
 
     // leave only the most updated items
@@ -306,9 +306,9 @@ class S3Service extends GetxService with ConsoleMixin {
       (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
     );
 
-    // remove permanently flagged deleted items
+    // exclude permanently flagged deleted items
     final deletedIds =
-        (vault.persistence['deleted-category-ids'] ?? '').split(',');
+        "${Persistence.to.deletedCategoryIds},${vault.persistence['deleted-category-ids']}";
     merged.removeWhere((e) => deletedIds.contains(e.id));
 
     // leave only the most updated items
@@ -328,8 +328,9 @@ class S3Service extends GetxService with ConsoleMixin {
   Future<void> _mergeItems(LisoVault vault) async {
     final server = vault.items;
     final local = ItemsService.to.box!;
-    console
-        .wtf('merged items local: ${local.length}, server: ${server.length}');
+    console.wtf(
+      'merged items local: ${local.length}, server: ${server.length}',
+    );
 
     // merge server and local items
     final merged = [...server, ...local.values];
@@ -338,10 +339,10 @@ class S3Service extends GetxService with ConsoleMixin {
       (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
     );
 
-    // remove permanently flagged deleted items
-    final deletedIds = (vault.persistence['deleted-item-ids'] ?? '').split(',');
+    // exclude permanently flagged deleted items
+    final deletedIds =
+        "${Persistence.to.deletedItemIds},${vault.persistence['deleted-item-ids']}";
     merged.removeWhere((e) => deletedIds.contains(e.identifier));
-
     // leave only the most updated items
     final newList = <HiveLisoItem>[];
 

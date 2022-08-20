@@ -12,9 +12,12 @@ import '../../features/app/routes.dart';
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   static bool initialized = false;
   static bool signedIn = false;
+  static bool skipRedirect = false;
 
   @override
   RouteSettings? redirect(String? route) {
+    if (skipRedirect) return super.redirect(route);
+
     if (kReleaseMode == ReleaseMode.beta &&
         !ConfigService.to.app.beta.enabled) {
       return const RouteSettings(name: Routes.disabledBeta);

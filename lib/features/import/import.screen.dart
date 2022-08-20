@@ -1,4 +1,5 @@
 import 'package:console_mixin/console_mixin.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -49,7 +50,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 onChanged: (value) async {
                   if (value == 'new-vault') {
-                    await Get.toNamed(Routes.vaults);
+                    await Utils.adaptiveRouteOpen(name: Routes.vaults);
                     controller.destinationGroupId.value =
                         GroupsController.to.combined.first.id;
                     return;
@@ -61,8 +62,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                   ...GroupsController.to.combined,
                   HiveLisoGroup(
                     id: 'smart-destination-vault',
-                    name:
-                        'Let ${ConfigService.to.appName} assign/create automatically',
+                    name: 'Smart - assign/create automatically',
                     metadata: null,
                   ),
                   HiveLisoGroup(
@@ -155,6 +155,9 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
         onLoading: const BusyIndicator(),
       ),
     );
+
+    // allow closing of screen
+    if (kDebugMode) return scaffold;
 
     return WillPopScope(
       onWillPop: () => controller.canPop,

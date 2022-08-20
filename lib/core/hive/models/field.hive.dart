@@ -152,6 +152,7 @@ enum LisoFieldType {
   email,
   url,
   password,
+  totp,
   pin,
   choices,
   coordinates, // {latitude, longitude}

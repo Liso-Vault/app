@@ -237,7 +237,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               ),
               Obx(
                 () => Visibility(
-                  visible: controller.recentlyImported.value,
+                  visible: controller.importedItemIds.isNotEmpty,
                   child: Card(
                     elevation: 2.0,
                     margin: const EdgeInsets.only(
@@ -498,6 +498,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
+                    flex: Utils.isDrawerExpandable ? 1 : 0,
                     child: Text(
                       drawerController.filterGroupLabel,
                       overflow: TextOverflow.fade,

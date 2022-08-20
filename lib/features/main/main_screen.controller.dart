@@ -61,7 +61,7 @@ class MainScreenController extends GetxController
   }
 
   // PROPERTIES
-  final recentlyImported = false.obs;
+  final importedItemIds = <String>[].obs;
 
   // GETTERS
   List<ContextMenuItem> get menuItems {
@@ -240,6 +240,11 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
+  void navigate({bool skipRedirect = false}) {
+    AuthenticationMiddleware.skipRedirect = skipRedirect;
+    Get.offNamedUntil(Routes.main, (route) => false);
+  }
+
   void postInit() {
     // firebase auth
     AuthService.to.signIn();
@@ -273,6 +278,7 @@ class MainScreenController extends GetxController
     }
 
     _updateBuildNumber();
+    console.info('postInit');
   }
 
   void search({String query = ''}) async {
@@ -422,7 +428,7 @@ class MainScreenController extends GetxController
     ));
 
     void _confirm() {
-      recentlyImported.value = false;
+      importedItemIds.clear();
       // delete local backup as it's no longer needed
       backupFile.delete();
       Get.back();
@@ -430,9 +436,15 @@ class MainScreenController extends GetxController
 
     void _undo() async {
       Get.back();
+
+      // delete imported items permanently
+      for (var e in importedItemIds) {
+        Persistence.to.addToDeletedItems(e);
+      }
+
       final vault = await LisoManager.parseVaultFile(backupFile);
       await LisoManager.importVault(vault);
-      recentlyImported.value = false;
+      importedItemIds.clear();
       load();
 
       UIUtils.showSnackBar(

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/items.service.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/hive/models/item.hive.dart';
@@ -26,8 +27,10 @@ class ChromeImporter {
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
     const csvConverter = CsvToListConverter();
-    final values = csvConverter.convert(csv);
-    final columns = values.first.sublist(0, validColumns.length);
+    var values = csvConverter.convert(csv);
+    final columns = values.first.map((e) => e.trim()).toList();
+    // exclude first row (column titles)
+    values = values.sublist(1, values.length);
 
     if (!listEquals(columns, validColumns)) {
       await UIUtils.showSimpleDialog(
@@ -39,11 +42,15 @@ class ChromeImporter {
     }
 
     final metadata = await HiveMetadata.get();
-
     String groupId = ImportScreenController.to.destinationGroupId.value;
 
     final items = values.map(
-      (row) {
+      (row) async {
+        final name = row[0];
+        final url = row[1];
+        final username = row[2];
+        final password = row[3];
+
         // group
         if (groupId == 'smart-vault-destination') {
           // use personal
@@ -55,18 +62,6 @@ class ChromeImporter {
           (e) => e.id == LisoItemCategory.login.name,
         );
 
-        final name = row[0];
-        final url = row[1];
-        final username = row[2];
-        final password = row[3];
-
-        // // print csv values
-        // console.warning('name: $name');
-        // console.warning('url: $url');
-        // console.warning('username: $username');
-        // console.warning('password: $password');
-        // console.info('############');
-
         final fields = category.fields.map((e) {
           if (e.identifier == 'website') {
             e.data.value = url;
@@ -75,7 +70,7 @@ class ChromeImporter {
           } else if (e.identifier == 'password') {
             e.data.value = password;
           } else if (e.identifier == 'note') {
-            e.data.value = 'Imported via ${sourceFormat.title}';
+            e.data.value = '';
           }
 
           return e;
@@ -89,19 +84,25 @@ class ChromeImporter {
           fields: fields,
           // TODO: obtain iconUrl based on url
           // iconUrl: iconUrl.value,
-          uris: [url],
+          uris: url.isNotEmpty ? [url] : [],
           // appIds: appIds, // TODO: obtain app id from app uri
+          // protected: reprompt == '1',
+          // favorite: favorite == '1',
           metadata: metadata,
           tags: [sourceFormat.id.toLowerCase()],
         );
       },
-    ).toList();
-
-    console.info(
-      'items: ${items.length}, groupId: $groupId, format: $sourceFormat',
     );
 
-    await ItemsService.to.box!.addAll(items);
+    console.info(
+      'items: ${items.length}, groupId: $groupId, format: ${sourceFormat.title}',
+    );
+
+    final items_ = await Future.wait(items);
+    await ItemsService.to.box!.addAll(items_);
+
+    final itemIds = items_.map((e) => e.identifier);
+    MainScreenController.to.importedItemIds.addAll(itemIds);
 
     NotificationsManager.notify(
       title: 'Import Successful',

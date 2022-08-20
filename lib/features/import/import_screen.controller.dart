@@ -14,7 +14,6 @@ import 'package:path/path.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
-import '../app/routes.dart';
 import '../groups/groups.controller.dart';
 import 'importers/apple.importer.dart';
 import 'importers/lastpass.importer.dart';
@@ -30,7 +29,6 @@ class ExportedSourceFormat {
 }
 
 final sourceFormats = [
-  ExportedSourceFormat('Bitwarden', 'json'),
   ExportedSourceFormat('Bitwarden', 'csv'),
   ExportedSourceFormat('Chrome', 'csv'),
   ExportedSourceFormat('Brave', 'csv'),
@@ -45,7 +43,6 @@ class ImportScreenController extends GetxController
   static ImportScreenController get to => Get.find();
 
   // VARIABLES
-
   final formKey = GlobalKey<FormState>();
   final filePathController = TextEditingController();
   final sourceFormat = sourceFormats.first.obs;
@@ -92,10 +89,8 @@ class ImportScreenController extends GetxController
 
     if (success) {
       DrawerMenuController.to.filterGroupId.value = destinationGroupId.value;
-      MainScreenController.to.recentlyImported.value = true;
       MainScreenController.to.load();
-
-      Get.offNamedUntil(Routes.main, (route) => false);
+      MainScreenController.to.navigate(skipRedirect: true);
     }
   }
 
@@ -137,6 +132,8 @@ class ImportScreenController extends GetxController
     change(null, status: RxStatus.loading());
     // create a backup
     await LisoManager.createBackup();
+    // if recently imported and trying to import again, cancel previous chance to undo
+    MainScreenController.to.importedItemIds.clear();
     // read contents of file
     final contents = await file.readAsString();
     // catch empty exported file
@@ -165,12 +162,21 @@ class ImportScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     if (!formKey.currentState!.validate()) return;
 
+    String body = "";
+
+    if (sourceFormat.value.id == 'bitwarden-csv') {
+      body =
+          "Please note that importing a ${sourceFormat.value.title} file doesn't include non-login types.\n\n";
+    }
+
+    body +=
+        "Are you sure you want to import the items from this exported ${sourceFormat.value.title} file to your vault?";
+
     await UIUtils.showImageDialog(
       Icon(Iconsax.import, size: 100, color: themeColor),
       title: 'Import Items',
       subTitle: basename(filePathController.text),
-      body:
-          "Are you sure you want to import the items from this exported file to your vault?",
+      body: body,
       action: _proceed,
       actionText: 'Import',
       closeText: 'Cancel',

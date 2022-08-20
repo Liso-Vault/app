@@ -13,6 +13,7 @@ import 'package:liso/features/app/routes.dart';
 import '../../core/hive/hive.service.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/globals.dart';
+import '../main/main_screen.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class UnlockScreenController extends GetxController
@@ -99,7 +100,7 @@ class UnlockScreenController extends GetxController
       await HiveService.to.open();
       change(null, status: RxStatus.success());
       if (passwordMode || regularMode) return Get.back(result: true);
-      return Get.offNamedUntil(Routes.main, (route) => false);
+      return MainScreenController.to.navigate();
     }
 
     // temporary to migrate users prior v0.6.0
@@ -125,7 +126,7 @@ class UnlockScreenController extends GetxController
 
       if (attemptsLeft <= 0) {
         await LisoManager.reset();
-        return Get.offNamedUntil(Routes.main, (route) => false);
+        return MainScreenController.to.navigate();
       }
 
       if (attemptsLeft < 3) {

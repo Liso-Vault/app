@@ -23,6 +23,7 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../files/s3.service.dart';
+import '../main/main_screen.controller.dart';
 
 class RestoreScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -156,7 +157,7 @@ class RestoreScreenController extends GetxController
           body: 'Your vault has been restored',
         );
 
-        Get.offNamedUntil(Routes.main, (route) => false);
+        MainScreenController.to.navigate();
       } else {
         change(null, status: RxStatus.success());
 

@@ -158,7 +158,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 sheetForSmallScreen: true,
                 padding: EdgeInsets.zero,
                 child: OutlinedButton.icon(
-                  onPressed: controller.attach,
+                  onPressed: () {},
                   icon: const Icon(Iconsax.add_circle),
                   label: const Text('Custom Field'),
                 ),

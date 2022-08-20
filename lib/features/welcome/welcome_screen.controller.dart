@@ -11,6 +11,7 @@ import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../main/main_screen.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class WelcomeScreenController extends GetxController
@@ -61,7 +62,7 @@ class WelcomeScreenController extends GetxController
       body: 'Your vault has been created',
     );
 
-    Get.offNamedUntil(Routes.main, (route) => false);
+    MainScreenController.to.navigate();
   }
 
   void restore() async {

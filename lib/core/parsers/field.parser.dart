@@ -6,6 +6,7 @@ import 'package:liso/core/form_fields/slider.field.dart';
 import 'package:liso/core/form_fields/textarea.field.dart';
 import 'package:liso/core/form_fields/textfield.field.dart';
 import 'package:liso/core/form_fields/toggle.field.dart';
+import 'package:liso/core/form_fields/totp.field.dart';
 import 'package:secrets/secrets.dart';
 
 import '../form_fields/address.field.dart';
@@ -143,6 +144,13 @@ class FieldParser {
     // PIN
     else if (field.type == LisoFieldType.pin.name) {
       return PINFormField(
+        field,
+        fieldController: TextEditingController(text: field.data.value),
+      );
+    }
+    // TOTP
+    else if (field.type == LisoFieldType.totp.name) {
+      return TOTPFormField(
         field,
         fieldController: TextEditingController(text: field.data.value),
       );

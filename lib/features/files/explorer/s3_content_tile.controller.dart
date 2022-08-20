@@ -174,7 +174,7 @@ class S3ContentTileController extends GetxController
       body: '${content.name} successfully restored!',
     );
 
-    Get.offNamedUntil(Routes.main, (route) => false);
+    MainScreenController.to.navigate();
   }
 
   // TODO: confirmation dialog

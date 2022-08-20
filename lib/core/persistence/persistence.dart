@@ -136,6 +136,6 @@ class Persistence extends GetxController with ConsoleMixin {
     final ids = deletedItemIds.val.split(',');
     ids.add(id);
     deletedItemIds.val = ids.join(',');
-    console.wtf('deletedItemIds: ${deletedItemIds.val}');
+    console.wtf('deletedItemIds');
   }
 }

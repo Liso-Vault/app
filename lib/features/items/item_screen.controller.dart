@@ -238,6 +238,20 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
+          title: 'TOTP Field',
+          leading: const Icon(Iconsax.shield),
+          onSelected: () {
+            final field = HiveLisoField(
+              identifier: const Uuid().v4(),
+              reserved: false,
+              type: LisoFieldType.totp.name,
+              data: HiveLisoFieldData(label: 'TOTP Field'),
+            );
+
+            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+          },
+        ),
+        ContextMenuItem(
           title: 'URL Field',
           leading: const Icon(Iconsax.link),
           onSelected: () {
