@@ -5,6 +5,7 @@
 - New! Restore a backed-up vault
 - New! Autofill service setting
 - New! Contact Screen
+- New! Update Shared Vault details
 - Improved! Files Explorer UX
 - Improved! Descriptive biometric prompts
 - Fixed! Stuck syncing after restore / unlock

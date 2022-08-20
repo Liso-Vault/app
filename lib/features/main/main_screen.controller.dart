@@ -29,7 +29,7 @@ import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
-import '../s3/s3.service.dart';
+import '../files/s3.service.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenController extends GetxController

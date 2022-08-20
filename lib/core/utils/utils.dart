@@ -14,7 +14,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../features/general/remote_image.widget.dart';
 import '../../features/pro/pro.controller.dart';
-import '../../features/s3/model/s3_content.model.dart';
+import '../../features/files/model/s3_content.model.dart';
 import '../../resources/resources.dart';
 import '../firebase/auth.service.dart';
 import '../firebase/config/config.service.dart';

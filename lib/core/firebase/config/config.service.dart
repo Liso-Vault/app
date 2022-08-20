@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/core/firebase/functions.service.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:secrets/secrets.dart';
 
 import 'models/config_app.model.dart';

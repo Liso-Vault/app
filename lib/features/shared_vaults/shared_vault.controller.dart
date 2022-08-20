@@ -75,6 +75,7 @@ class SharedVaultsController extends GetxController
   Future<bool> exists(String name) async {
     final doc = await FirestoreService.to.sharedVaults
         .where('name', isEqualTo: name)
+        .where('userId', isEqualTo: AuthService.to.userId)
         .get();
 
     return doc.docs.isNotEmpty;

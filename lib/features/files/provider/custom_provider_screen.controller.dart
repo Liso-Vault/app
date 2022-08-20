@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:minio/minio.dart';
 
 import '../../../core/utils/globals.dart';

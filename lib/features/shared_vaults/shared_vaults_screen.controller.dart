@@ -16,6 +16,7 @@ import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
+import 'package:path/path.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
@@ -25,6 +26,8 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
+import '../files/model/s3_content.model.dart';
+import '../files/s3.service.dart';
 import '../pro/pro.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
@@ -35,6 +38,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   final nameController = TextEditingController();
   final descriptionController = TextEditingController();
   final cipherKeyController = TextEditingController();
+
+  SharedVault? object;
+  bool createMode = true;
 
   // PROPERTIES
 
@@ -55,7 +61,55 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
   // FUNCTIONS
 
+  void edit(SharedVault object_) async {
+    createMode = false;
+    object = object_;
+    nameController.text = object!.name;
+    descriptionController.text = object!.description;
+    console.wtf('doc: ${object_.docId}');
+    _showForm();
+  }
+
   void create() async {
+    createMode = true;
+    object = null;
+    nameController.clear();
+    descriptionController.clear();
+    cipherKeyController.clear();
+    _showForm();
+  }
+
+  void _showForm() async {
+    void _done() {
+      // clear fields
+      nameController.clear();
+      descriptionController.clear();
+      cipherKeyController.clear();
+
+      NotificationsManager.notify(
+        title: 'Shared Vault ${createMode ? 'Created' : 'Updated'}',
+        body: nameController.text,
+      );
+
+      Get.back();
+    }
+
+    void _edit() async {
+      if (!formKey.currentState!.validate()) return;
+      final doc = FirestoreService.to.vaultsCol.doc(object?.docId);
+
+      await doc.set(
+        {
+          'name': nameController.text,
+          'description': descriptionController.text,
+          'updatedTime': FieldValue.serverTimestamp(),
+        },
+        SetOptions(merge: true),
+      );
+
+      _done();
+    }
+
     void _create() async {
       if (!formKey.currentState!.validate()) return;
 
@@ -70,8 +124,6 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
           '"${nameController.text}" already exists.',
         );
       }
-
-      Get.back(); // close dialog
 
       if (SharedVaultsController.to.data.length >=
           ProController.to.limits.sharedVaults) {
@@ -160,11 +212,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       ItemsController.to.load();
       console.wtf('created liso item');
 
-      // send notification
-      NotificationsManager.notify(
-        title: 'Shared Vault Created',
-        body: nameController.text,
-      );
+      _done();
     }
 
     final content = Column(
@@ -195,46 +243,48 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
             hintText: 'optional',
           ),
         ),
-        TextFormField(
-          controller: cipherKeyController,
-          autofocus: true,
-          maxLength: 44,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          validator: (data) {
-            const errorString =
-                'Cipher Key must be base64 encoded and 32 bits in length';
+        if (createMode) ...[
+          TextFormField(
+            controller: cipherKeyController,
+            autofocus: true,
+            maxLength: 44,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (data) {
+              const errorString =
+                  'Cipher Key must be base64 encoded and 32 bits in length';
 
-            late Uint8List decoded;
+              late Uint8List decoded;
 
-            try {
-              decoded = base64Decode(data!);
-            } catch (e) {
+              try {
+                decoded = base64Decode(data!);
+              } catch (e) {
+                return errorString;
+              }
+
+              if (decoded.length == 32) return null;
               return errorString;
-            }
-
-            if (decoded.length == 32) return null;
-            return errorString;
-          },
-          decoration: InputDecoration(
-            labelText: 'Cipher Key',
-            hintText: '32 Bit Base64 Cipher Key',
-            helperText:
-                'Cipher Key will be automatically be saved as a ${ConfigService.to.appName} Item',
-            suffixIcon: IconButton(
-              onPressed: () {
-                cipherKeyController.text = base64Encode(
-                  Hive.generateSecureKey(),
-                );
-              },
-              icon: const Icon(Iconsax.key),
+            },
+            decoration: InputDecoration(
+              labelText: 'Cipher Key',
+              hintText: '32 Bit Base64 Cipher Key',
+              helperText:
+                  'The Cipher Key will be automatically be saved as a ${ConfigService.to.appName} Item',
+              suffixIcon: IconButton(
+                icon: const Icon(Iconsax.key),
+                onPressed: () {
+                  cipherKeyController.text = base64Encode(
+                    Hive.generateSecureKey(),
+                  );
+                },
+              ),
             ),
           ),
-        )
+        ],
       ],
     );
 
     Get.dialog(AlertDialog(
-      title: Text('new_shared_vault'.tr),
+      title: Text('${createMode ? 'New' : 'Update'} Shared Vault'),
       content: Form(
         key: formKey,
         child: Utils.isDrawerExpandable
@@ -247,8 +297,70 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _create,
-          child: Text('create'.tr),
+          onPressed: createMode ? _create : _edit,
+          child: Text(createMode ? 'create' : 'update'.tr),
+        ),
+      ],
+    ));
+  }
+
+  void delete() {
+    void _delete() async {
+      Get.back();
+
+      final batch = FirestoreService.to.instance.batch();
+      final doc = FirestoreService.to.sharedVaults.doc(object!.docId);
+      // update user doc
+      batch.delete(doc);
+      // update users collection stats counter
+      batch.set(
+        FirestoreService.to.vaultsStatsDoc,
+        {
+          'count': FieldValue.increment(-1),
+          'updatedTime': FieldValue.serverTimestamp(),
+          'userId': AuthService.to.userId
+        },
+        SetOptions(merge: true),
+      );
+
+      // commit batch
+      try {
+        await batch.commit();
+      } catch (e, s) {
+        CrashlyticsService.to.record(e, s);
+        return console.error("error batch commit: $e");
+      }
+
+      await S3Service.to.remove(S3Content(
+        path: join(
+          S3Service.to.sharedPath,
+          '${object!.docId}.$kVaultExtension',
+        ),
+      ));
+
+      console.info('deleted: ${doc.id}');
+    }
+
+    final dialogContent = Text(
+      'Are you sure you want to delete the shared vault "${object!.name}"?',
+    );
+
+    Get.dialog(AlertDialog(
+      title: const Text('Delete Shared Vault'),
+      content: Utils.isDrawerExpandable
+          ? dialogContent
+          : SizedBox(
+              width: 450,
+              child: dialogContent,
+            ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('cancel'.tr),
+        ),
+        TextButton(
+          onPressed: _delete,
+          child: Text('confirm_delete'.tr),
         ),
       ],
     ));

@@ -31,7 +31,7 @@ import '../json_viewer/json_viewer.screen.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import '../pro/pro.controller.dart';
-import '../s3/s3.service.dart';
+import '../files/s3.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'items.controller.dart';
 import 'items.service.dart';

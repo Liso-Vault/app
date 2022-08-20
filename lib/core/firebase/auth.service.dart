@@ -10,7 +10,7 @@ import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/joined_vaults/joined_vault.controller.dart';
-import '../../features/s3/s3.service.dart';
+import '../../features/files/s3.service.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import 'firestore.service.dart';
 

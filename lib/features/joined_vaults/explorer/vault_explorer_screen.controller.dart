@@ -14,7 +14,7 @@ import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../menu/menu.item.dart';
-import '../../s3/s3.service.dart';
+import '../../files/s3.service.dart';
 import '../../search/search.delegate.dart';
 import '../../shared_vaults/model/shared_vault.model.dart';
 

@@ -12,7 +12,7 @@ import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/core/liso/vault.model.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';

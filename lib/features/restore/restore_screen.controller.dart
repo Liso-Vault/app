@@ -22,7 +22,7 @@ import '../../core/services/local_auth.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../s3/s3.service.dart';
+import '../files/s3.service.dart';
 
 class RestoreScreenController extends GetxController
     with StateMixin, ConsoleMixin {

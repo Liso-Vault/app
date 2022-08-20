@@ -9,8 +9,8 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/s3/model/s3_content.model.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/model/s3_content.model.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -40,72 +40,6 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
     Widget itemBuilder(context, index) {
       final vault = sharedController.data[index];
-
-      void _open() async {
-        //
-      }
-
-      void _confirmDelete() {
-        void _delete() async {
-          Get.back();
-
-          final batch = FirestoreService.to.instance.batch();
-          final doc = FirestoreService.to.sharedVaults.doc(vault.docId);
-          // update user doc
-          batch.delete(doc);
-          // update users collection stats counter
-          batch.set(
-            FirestoreService.to.vaultsStatsDoc,
-            {
-              'count': FieldValue.increment(-1),
-              'updatedTime': FieldValue.serverTimestamp(),
-              'userId': AuthService.to.userId
-            },
-            SetOptions(merge: true),
-          );
-
-          // commit batch
-          try {
-            await batch.commit();
-          } catch (e, s) {
-            CrashlyticsService.to.record(e, s);
-            return console.error("error batch commit: $e");
-          }
-
-          await S3Service.to.remove(S3Content(
-            path: join(
-              S3Service.to.sharedPath,
-              '${vault.docId}.$kVaultExtension',
-            ),
-          ));
-
-          console.info('deleted: ${doc.id}');
-        }
-
-        final dialogContent = Text(
-          'Are you sure you want to delete the shared vault "${vault.name}"?',
-        );
-
-        Get.dialog(AlertDialog(
-          title: const Text('Delete Shared Vault'),
-          content: Utils.isDrawerExpandable
-              ? dialogContent
-              : SizedBox(
-                  width: 450,
-                  child: dialogContent,
-                ),
-          actions: [
-            TextButton(
-              onPressed: Get.back,
-              child: Text('cancel'.tr),
-            ),
-            TextButton(
-              onPressed: _delete,
-              child: Text('confirm_delete'.tr),
-            ),
-          ],
-        ));
-      }
 
       void shareDialog() async {
         final result = await ItemsService.to.obtainFieldValue(
@@ -222,12 +156,12 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: 'delete'.tr,
           leading: const Icon(Iconsax.trash),
-          onSelected: _confirmDelete,
+          onSelected: controller.delete,
         ),
       ];
 
       return ListTile(
-        onTap: _open,
+        onTap: () => controller.edit(vault),
         title: Text(vault.name),
         subtitle: vault.description.isNotEmpty ? Text(vault.description) : null,
         leading: vault.iconUrl.isEmpty

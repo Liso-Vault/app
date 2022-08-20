@@ -17,7 +17,7 @@ import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/joined_vaults/model/member.model.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';

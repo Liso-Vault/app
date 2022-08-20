@@ -25,7 +25,7 @@ import '../general/remote_image.widget.dart';
 import '../groups/groups.controller.dart';
 import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import '../pro/pro.controller.dart';
-import '../s3/s3.service.dart';
+import '../files/s3.service.dart';
 import '../shared_vaults/model/shared_vault.model.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'main_screen.controller.dart';

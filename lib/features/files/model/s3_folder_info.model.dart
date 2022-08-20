@@ -1,4 +1,4 @@
-import 'package:liso/features/s3/model/s3_content.model.dart';
+import 'package:liso/features/files/model/s3_content.model.dart';
 
 class S3FolderInfo {
   List<S3Content> contents;

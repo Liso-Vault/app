@@ -19,7 +19,7 @@ import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 

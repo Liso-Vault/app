@@ -8,7 +8,7 @@ import '../../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
-import '../s3/model/s3_content.model.dart';
+import '../files/model/s3_content.model.dart';
 
 class AttachmentTile extends StatelessWidget with ConsoleMixin {
   final S3Content content;

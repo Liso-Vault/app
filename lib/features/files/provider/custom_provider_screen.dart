@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/features/general/section.widget.dart';
-import 'package:liso/features/s3/provider/custom_provider_screen.controller.dart';
+import 'package:liso/features/files/provider/custom_provider_screen.controller.dart';
 
 import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';

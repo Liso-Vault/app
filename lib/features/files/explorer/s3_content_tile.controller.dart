@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
+import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 

@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:path/path.dart';
 
 import '../../../core/services/cipher.service.dart';

@@ -7,7 +7,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/pro.widget.dart';
-import 'package:liso/features/s3/s3.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../core/persistence/persistence_builder.widget.dart';

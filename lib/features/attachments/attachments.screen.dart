@@ -9,7 +9,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
-import '../s3/s3.service.dart';
+import '../files/s3.service.dart';
 import 'attachments_screen.controller.dart';
 
 class AttachmentsScreen extends StatelessWidget with ConsoleMixin {

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/s3/explorer/s3_content_tile.controller.dart';
-import 'package:liso/features/s3/explorer/s3_exporer_screen.controller.dart';
+import 'package:liso/features/files/explorer/s3_content_tile.controller.dart';
+import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
