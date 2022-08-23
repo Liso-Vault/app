@@ -1,11 +1,13 @@
 ## 0.7.0
 
-- New! Import items from other password managers with undo functionality
+- New! Import items from Bitwarden, LastPass, Safari, Chrome, Brave, Opera, Firefox, and Edge
 - New! Automatic vault backups
+- New! Categories: Insurance, Health Insurance, and Custom
 - New! Restore a backed-up vault
 - New! Autofill service setting
 - New! Contact Screen
 - New! Update Shared Vault details
+- Improved! Category/Template picker for large screen devices
 - Improved! Files Explorer UX
 - Improved! Descriptive biometric prompts
 - Fixed! Stuck syncing after restore / unlock

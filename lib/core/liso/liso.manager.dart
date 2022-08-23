@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
@@ -35,6 +36,7 @@ class LisoManager {
   static Future<void> reset() async {
     console.info('resetting...');
     // clear filters
+    DrawerMenuController.to.filterGroupId.value = 'personal';
     DrawerMenuController.to.clearFilters();
     // reset persistence
     await Persistence.reset();
@@ -62,11 +64,17 @@ class LisoManager {
   }
 
   static Future<String> compactJson() async {
+    final persistenceMap = Persistence.box!.toMap();
+    // exclude sensitive data
+    persistenceMap.remove('wallet-password');
+    persistenceMap.remove('wallet-signature');
+    persistenceMap.remove('wallet-private-key-hex');
+
     final vault = LisoVault(
       groups: GroupsService.to.data,
       categories: CategoriesService.to.data,
       items: ItemsService.to.data,
-      persistence: Persistence.box!.toMap(),
+      persistence: persistenceMap,
       version: kVaultFormatVersion,
       metadata: await HiveMetadata.get(),
     );

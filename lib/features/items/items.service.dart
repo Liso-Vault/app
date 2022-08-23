@@ -70,6 +70,16 @@ class ItemsService extends GetxService with ConsoleMixin {
     }
   }
 
+  Future<void> moveToGroup(
+    Iterable<HiveLisoItem> items_,
+    String groupId,
+  ) async {
+    for (var e in items_) {
+      e.groupId = groupId;
+      await e.save();
+    }
+  }
+
   Future<void> import(List<HiveLisoItem> data, {Uint8List? cipherKey}) async {
     await open(cipherKey: cipherKey);
     await box?.clear();

@@ -1,24 +1,16 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/features/items/items.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/files/model/s3_content.model.dart';
-import 'package:liso/features/files/s3.service.dart';
-import 'package:path/path.dart';
+import 'package:liso/features/items/items.service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../core/firebase/auth.service.dart';
 import '../../core/firebase/config/config.service.dart';
-import '../../core/firebase/crashlytics.service.dart';
 import '../../core/persistence/persistence.dart';
-import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';

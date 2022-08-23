@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
+import 'package:liso/features/general/widget_refresher.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
@@ -43,42 +44,53 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             ),
             const SizedBox(height: 20),
             Obx(
-              () => DropdownButtonFormField<String>(
-                value: controller.destinationGroupId.value,
-                decoration: const InputDecoration(
-                  labelText: 'Destination Vault',
-                ),
-                onChanged: (value) async {
-                  if (value == 'new-vault') {
-                    await Utils.adaptiveRouteOpen(name: Routes.vaults);
-                    controller.destinationGroupId.value =
-                        GroupsController.to.combined.first.id;
-                    return;
-                  }
+              () {
+                final dropdownRefresher = Get.put(WidgetRefresherController());
 
-                  controller.destinationGroupId.value = value!;
-                },
-                items: {
-                  ...GroupsController.to.combined,
-                  HiveLisoGroup(
-                    id: 'smart-destination-vault',
-                    name: 'Smart - assign/create automatically',
-                    metadata: null,
-                  ),
-                  HiveLisoGroup(
-                    id: 'new-vault',
-                    name: 'New Vault',
-                    metadata: null,
-                  ),
-                }
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e.id,
-                        child: Text(e.reservedName),
+                return WidgetRefresher(
+                  controller: dropdownRefresher,
+                  child: DropdownButtonFormField<String>(
+                    value: controller.destinationGroupId.value,
+                    decoration: const InputDecoration(
+                      labelText: 'Destination Vault',
+                    ),
+                    onChanged: (value) async {
+                      if (value == 'new-vault') {
+                        controller.destinationGroupId.value =
+                            GroupsController.to.reserved.first.id;
+                        // hack to refresh dropdown text
+                        dropdownRefresher.reload();
+
+                        return await Utils.adaptiveRouteOpen(
+                          name: Routes.vaults,
+                        );
+                      }
+
+                      controller.destinationGroupId.value = value!;
+                    },
+                    items: {
+                      ...GroupsController.to.combined,
+                      HiveLisoGroup(
+                        id: kSmartGroupId,
+                        name: 'Smart - assign/create automatically',
+                        metadata: null,
                       ),
-                    )
-                    .toList(),
-              ),
+                      HiveLisoGroup(
+                        id: 'new-vault',
+                        name: 'New Vault',
+                        metadata: null,
+                      ),
+                    }
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e.id,
+                            child: Text(e.reservedName),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                );
+              },
             ),
             Obx(
               () => DropdownButtonFormField<ExportedSourceFormat>(

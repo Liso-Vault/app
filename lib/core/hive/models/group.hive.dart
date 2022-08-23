@@ -62,12 +62,9 @@ class HiveLisoGroup extends HiveObject with EquatableMixin {
   List<Object?> get props => [id, name, description];
 
   // GETTERS
-  String get reservedName =>
-      GroupsController.to.reservedIds.contains(id) ? id.tr : name;
+  String get reservedName => isReserved ? id.tr : name;
 
-  String get reservedDescription => GroupsController.to.reservedIds.contains(id)
-      ? '${id}_desc'.tr
-      : description;
+  String get reservedDescription => isReserved ? '${id}_desc'.tr : description;
 
   bool get isReserved => GroupsController.to.reservedIds.contains(id);
 }

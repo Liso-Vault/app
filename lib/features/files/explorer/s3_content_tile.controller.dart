@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -19,7 +19,6 @@ import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
-import '../../app/routes.dart';
 import '../../attachments/attachments_screen.controller.dart';
 import '../model/s3_content.model.dart';
 import '../s3.service.dart';

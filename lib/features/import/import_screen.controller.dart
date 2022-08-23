@@ -16,7 +16,9 @@ import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 import '../groups/groups.controller.dart';
 import 'importers/apple.importer.dart';
+import 'importers/firefox.importer.dart';
 import 'importers/lastpass.importer.dart';
+import 'importers/nordpass.importer.dart';
 
 class ExportedSourceFormat {
   final String name;
@@ -29,14 +31,20 @@ class ExportedSourceFormat {
 }
 
 final sourceFormats = [
-  ExportedSourceFormat('Bitwarden', 'csv'),
-  ExportedSourceFormat('Chrome', 'csv'),
-  ExportedSourceFormat('Brave', 'csv'),
-  ExportedSourceFormat('LastPass', 'csv'),
   ExportedSourceFormat('Apple', 'csv'),
+  ExportedSourceFormat('Chrome', 'csv'),
+  ExportedSourceFormat('Bitwarden', 'csv'),
+  ExportedSourceFormat('LastPass', 'csv'),
+  // ExportedSourceFormat('NordPass', 'csv'),
+  ExportedSourceFormat('Brave', 'csv'),
+  ExportedSourceFormat('Opera', 'csv'),
+  ExportedSourceFormat('Edge', 'csv'),
+  ExportedSourceFormat('Firefox', 'csv'),
 ];
 
 const kAllowedExtensions = ['json', 'csv', 'xml'];
+
+const kSmartGroupId = 'smart-destination-vault';
 
 class ImportScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -74,21 +82,33 @@ class ImportScreenController extends GetxController
     final formatId = sourceFormat.value.id;
     bool success = false;
 
+    const chromeBasedFormats = [
+      'chrome-csv',
+      'brave-csv',
+      'opera-csv',
+      'edge-csv'
+    ];
+
     if (formatId == 'bitwarden-csv') {
       success = await BitwardenImporter.importCSV(contents);
-    } else if (formatId == 'chrome-csv' || formatId == 'brave-csv') {
+    } else if (chromeBasedFormats.contains(formatId)) {
       success = await ChromeImporter.importCSV(contents);
     } else if (formatId == 'lastpass-csv') {
       success = await LastPassImporter.importCSV(contents);
     } else if (formatId == 'apple-csv') {
       success = await AppleImporter.importCSV(contents);
+    } else if (formatId == 'firefox-csv') {
+      success = await FirefoxImporter.importCSV(contents);
+    } else if (formatId == 'nordpass-csv') {
+      success = await NordPassImporter.importCSV(contents);
     }
 
     console.info('success csv import: $success');
     change(null, status: RxStatus.success());
 
     if (success) {
-      DrawerMenuController.to.filterGroupId.value = destinationGroupId.value;
+      DrawerMenuController.to.clearFilters();
+      DrawerMenuController.to.filterGroupId.value = ''; // all
       MainScreenController.to.load();
       MainScreenController.to.navigate(skipRedirect: true);
     }
@@ -167,6 +187,9 @@ class ImportScreenController extends GetxController
     if (sourceFormat.value.id == 'bitwarden-csv') {
       body =
           "Please note that importing a ${sourceFormat.value.title} file doesn't include non-login types.\n\n";
+    } else if (sourceFormat.value.id == 'lastpass-csv') {
+      body =
+          "Please note that importing a ${sourceFormat.value.title} file doesn't include (password prompt / protected item) settings.\n\n";
     }
 
     body +=

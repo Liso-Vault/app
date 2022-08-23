@@ -7,6 +7,7 @@ import 'package:liso/features/general/appbar_leading.widget.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/utils/globals.dart';
+import '../app/routes.dart';
 import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
@@ -72,6 +73,14 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
             AuthDesktopService.to.signIn();
+          },
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Templates'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () async {
+            Get.toNamed(Routes.categoryPicker);
           },
         ),
         // ListTile(

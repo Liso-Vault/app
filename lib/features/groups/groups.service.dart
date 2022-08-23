@@ -39,10 +39,7 @@ class GroupsService extends GetxService with ConsoleMixin {
 
   void _migrate() async {
     // TODO: temporarily remove previously added groups
-    final groupsToDelete = data
-        .where((e) => GroupsController.to.reservedIds.contains(e.id))
-        .map((e) => e.key);
-
+    final groupsToDelete = data.where((e) => e.isReserved).map((e) => e.key);
     await box?.deleteAll(groupsToDelete);
     console.info('length: ${data.length}');
     GroupsController.to.load();

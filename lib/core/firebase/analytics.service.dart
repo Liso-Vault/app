@@ -19,10 +19,7 @@ class AnalyticsService extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() async {
-    if (GetPlatform.isWindows) {
-      return;
-    }
-
+    if (GetPlatform.isWindows) return;
     await instance.setAnalyticsCollectionEnabled(Persistence.to.analytics.val);
     await instance.logAppOpen();
     super.onInit();
@@ -30,18 +27,12 @@ class AnalyticsService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
   void logSignIn() async {
-    if (GetPlatform.isWindows) {
-      return;
-    }
-
+    if (GetPlatform.isWindows) return;
     await instance.logLogin();
   }
 
   void logSignOut() async {
-    if (GetPlatform.isWindows) {
-      return;
-    }
-
+    if (GetPlatform.isWindows) return;
     await instance.logEvent(name: 'logout');
   }
 }

@@ -60,6 +60,7 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 vertical: 20,
+                horizontal: 20,
               ),
               child: Column(
                 children: [

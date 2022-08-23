@@ -5,13 +5,16 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/categories/categories.controller.dart';
+import 'package:liso/features/general/widget_refresher.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/tags/tags_input.widget.dart';
 
 import '../../core/hive/models/category.hive.dart';
+import '../../core/hive/models/group.hive.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import '../general/busy_indicator.widget.dart';
 import '../general/remote_image.widget.dart';
 import 'item_screen.controller.dart';
@@ -241,26 +244,52 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
         ),
       ),
       Obx(
-        () => DropdownButtonFormField<String>(
-          isExpanded: true,
-          value: controller.groupId.value.isNotEmpty
+        () {
+          final dropdownRefresher = Get.put(WidgetRefresherController());
+          var groupId = controller.groupId.value.isNotEmpty
               ? controller.groupId.value
-              : GroupsController.to.reserved.first.id,
-          onChanged: controller.reserved.value || !controller.editMode.value
-              ? null
-              : (value) => controller.groupId.value = value!,
-          decoration: const InputDecoration(labelText: 'Vault'),
-          items: [
-            ...GroupsController.to.combined
-                .map(
-                  (e) => DropdownMenuItem<String>(
-                    value: e.id,
-                    child: Text(e.reservedName),
-                  ),
-                )
-                .toList()
-          ],
-        ),
+              : GroupsController.to.reserved.first.id;
+
+          return WidgetRefresher(
+            controller: dropdownRefresher,
+            child: DropdownButtonFormField<String>(
+              isExpanded: true,
+              value: groupId,
+              onChanged: controller.reserved.value || !controller.editMode.value
+                  ? null
+                  : (value) async {
+                      if (value == 'new-vault') {
+                        controller.groupId.value =
+                            GroupsController.to.reserved.first.id;
+                        // hack to refresh dropdown text
+                        dropdownRefresher.reload();
+                        return await Utils.adaptiveRouteOpen(
+                          name: Routes.vaults,
+                        );
+                      }
+
+                      controller.groupId.value = value!;
+                      console.wtf('changed: $value');
+                    },
+              decoration: const InputDecoration(labelText: 'Vault'),
+              items: {
+                ...GroupsController.to.combined,
+                HiveLisoGroup(
+                  id: 'new-vault',
+                  name: 'New Vault',
+                  metadata: null,
+                ),
+              }
+                  .map(
+                    (e) => DropdownMenuItem<String>(
+                      value: e.id,
+                      child: Text(e.reservedName),
+                    ),
+                  )
+                  .toList(),
+            ),
+          );
+        },
       ),
       const SizedBox(height: 10),
       Obx(
@@ -321,8 +350,16 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       const SizedBox(height: 80),
     ];
 
+    // if it's a custom category, use the title field as the app bar title
+    String titleString = controller.categoryObject.reservedName;
+
+    if (controller.categoryObject.id == LisoItemCategory.custom.name &&
+        controller.titleController.text.isNotEmpty) {
+      titleString = controller.titleController.text;
+    }
+
     final appBar = AppBar(
-      title: Text(controller.categoryObject.reservedName),
+      title: Text(titleString),
       leading: IconButton(
         onPressed: () async {
           if (await controller.canPop()) Get.back();

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/menu/context.menu.dart';
+import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/menu/menu.sheet.dart';
 
 import '../../core/utils/utils.dart';
+import '../app/routes.dart';
 import 'menu.item.dart';
 
 class ContextMenuButton extends StatelessWidget with ConsoleMixin {
@@ -15,6 +17,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
   final EdgeInsets padding;
   final bool enabled;
   final bool sheetForSmallScreen;
+  final bool gridForLargeScreen;
 
   const ContextMenuButton(
     this.contextItems, {
@@ -25,6 +28,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     this.padding = const EdgeInsets.all(8.0),
     this.enabled = true,
     this.sheetForSmallScreen = false,
+    this.gridForLargeScreen = false,
   }) : super(key: key);
 
   @override
@@ -42,6 +46,15 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
                   contextItems,
                   initialItem: initialItem,
                 ).show()
+            : null,
+        child: AbsorbPointer(child: wrappedChild),
+      );
+    }
+    // if large screen
+    else if (!Utils.isDrawerExpandable && gridForLargeScreen) {
+      return InkWell(
+        onTap: enabled
+            ? () => Utils.adaptiveRouteOpen(name: Routes.categoryPicker)
             : null,
         child: AbsorbPointer(child: wrappedChild),
       );

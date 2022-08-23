@@ -20,7 +20,7 @@ import '../app/routes.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
-import '../menu/context.menu.dart';
+import '../menu/menu.sheet.dart';
 import '../menu/menu.item.dart';
 import '../shared_vaults/model/shared_vault.model.dart';
 

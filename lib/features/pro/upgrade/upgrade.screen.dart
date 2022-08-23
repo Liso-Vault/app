@@ -66,7 +66,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ],
             FeatureTile(
               iconData: Iconsax.document,
-              title: 'Total Items',
+              title: 'Items',
               trailing: Text(
                 _formatKNumber(limit.items),
                 style: kTrailingStyle,
@@ -74,7 +74,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.cpu,
-              title: 'Synced Devices',
+              title: 'Devices',
               trailing: Text(
                 _formatKNumber(limit.devices),
                 style: kTrailingStyle,
@@ -106,7 +106,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.people,
-              title: 'Shared Vault Members',
+              title: 'Shared Members',
               trailing: Text(
                 _formatKNumber(limit.sharedMembers),
                 style: kTrailingStyle,
@@ -122,7 +122,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.health,
-              title: 'Protected Health',
+              title: 'Password Health',
               trailing: Icon(
                 limit.passwordHealth ? LineIcons.check : LineIcons.times,
                 color: limit.passwordHealth ? proColor : Colors.grey,
@@ -146,9 +146,9 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.direct_inbox,
-              title: 'Automatic Backups',
+              title: 'Vault Backups',
               trailing: Text(
-                '${_formatKNumber(limit.backups)} Vaults',
+                _formatKNumber(limit.backups),
                 style: kTrailingStyle,
               ),
             ),
@@ -170,7 +170,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.trash,
-              title: 'Undo Trashed Items',
+              title: 'Undo Trash',
               trailing: Text(
                 '${_formatKNumber(limit.trashDays)} Days',
                 style: kTrailingStyle,
@@ -210,6 +210,31 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             //   title: const Text('NFC Keycard Support'),
             //   onTap: () {},
             // ),
+            FeatureTile(
+              iconData: Iconsax.rulerpen,
+              title: 'Autosave + Autofill',
+              trailing: Icon(LineIcons.check, color: proColor),
+            ),
+            FeatureTile(
+              iconData: Iconsax.lock,
+              title: 'Generate Passwords',
+              trailing: Icon(LineIcons.check, color: proColor),
+            ),
+            FeatureTile(
+              iconData: Iconsax.finger_cricle,
+              title: 'Biometric Auth',
+              trailing: Icon(LineIcons.check, color: proColor),
+            ),
+            FeatureTile(
+              iconData: Iconsax.airplane,
+              title: 'Offline Mode',
+              trailing: Icon(LineIcons.check, color: proColor),
+            ),
+            FeatureTile(
+              iconData: Iconsax.data,
+              title: 'Self-Hostable',
+              trailing: Icon(LineIcons.check, color: proColor),
+            ),
           ],
         );
       },

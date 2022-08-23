@@ -269,7 +269,7 @@ class S3Service extends GetxService with ConsoleMixin {
     // merge server and local items
     final merged = [...server, ...local.values];
     // TODO: temporarily remove previously added groups
-    merged.removeWhere((e) => GroupsController.to.reservedIds.contains(e.id));
+    merged.removeWhere((e) => e.isReserved);
     // sort all from most to least updated time
     merged.sort(
       (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),

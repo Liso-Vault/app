@@ -19,6 +19,7 @@ abstract class Routes {
   static const upgrade = '/upgrade';
   static const otp = '/otp';
   static const categories = '/categories';
+  static const categoryPicker = '/category_picker';
   static const vaults = '/vaults';
   static const sharedVaults = '/shared_vaults';
   static const joinedVaults = '/joined_vaults';

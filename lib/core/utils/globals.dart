@@ -109,6 +109,8 @@ enum LisoItemCategory {
   email,
   otp,
   note,
+  insurance,
+  healthInsurance,
   cashCard,
   bankAccount,
   identity,
@@ -125,6 +127,7 @@ enum LisoItemCategory {
   database,
   server,
   encryption,
+  custom,
 }
 
 enum LisoSyncProvider {

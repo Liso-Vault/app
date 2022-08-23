@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
+import 'package:liso/features/items/items.controller.dart';
+import 'package:liso/features/items/items.service.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 
+import '../../core/hive/models/item.hive.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -27,18 +32,27 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final group = groupsController.data[index];
 
-      void _delete() async {
+      void _delete(Iterable<HiveLisoItem> items) async {
+        // revert group filter
+        final defaultGroupId = GroupsController.to.reserved.first.id;
+        DrawerMenuController.to.filterGroupId.value = defaultGroupId;
+        // move items to the default group
+        await ItemsService.to.hideleteItems(items);
         group.metadata = await group.metadata!.getUpdated();
         group.deleted = true;
         await group.save();
         Persistence.to.changes.val++;
         groupsController.load();
+        MainScreenController.to.load();
         console.info('deleted');
       }
 
       void _confirmDelete() async {
+        final items =
+            ItemsController.to.data.where((e) => e.groupId == group.id);
+
         final dialogContent = Text(
-          'Are you sure you want to delete the custom vault "${group.name}"?',
+          'Are you sure you want to delete the custom vault: "${group.name}" and it\'s ${items.length} items?',
         );
 
         Get.dialog(AlertDialog(
@@ -56,7 +70,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
             ),
             TextButton(
               onPressed: () {
-                _delete();
+                _delete(items);
                 Get.back();
               },
               child: Text('confirm_delete'.tr),

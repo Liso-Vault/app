@@ -3,6 +3,7 @@ import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../core/hive/models/field.hive.dart';
 import '../../../core/hive/models/group.hive.dart';
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
@@ -42,6 +43,8 @@ class BitwardenImporter {
     values = values.sublist(1, values.length);
 
     if (!listEquals(columns, validColumns)) {
+      console.error('$columns -> $validColumns');
+
       await UIUtils.showSimpleDialog(
         'Invalid CSV Columns',
         'Please import a valid ${sourceFormat.title} exported file',
@@ -51,7 +54,9 @@ class BitwardenImporter {
     }
 
     final metadata = await HiveMetadata.get();
-    String groupId = ImportScreenController.to.destinationGroupId.value;
+    final destinationGroupId =
+        ImportScreenController.to.destinationGroupId.value;
+    String groupId = destinationGroupId;
 
     final items = values.map(
       (row) async {
@@ -60,7 +65,7 @@ class BitwardenImporter {
         final type = row[2];
         final name = row[3];
         final notes = row[4];
-        final customFields = row[5]; // TODO: work on custom fields
+        final String bitwardenFields = row[5];
         final reprompt = row[6];
         final url = row[7];
         final username = row[8];
@@ -68,38 +73,53 @@ class BitwardenImporter {
         final totp = row[10];
 
         // generate group if doesn't exist
-        if (groupId == 'smart-vault-destination' && folder.isNotEmpty) {
-          // generate the id
-          groupId = '${folder.toLowerCase().trim()}-${sourceFormat.id}';
-          final exists =
-              GroupsController.to.data.where((e) => e.id == groupId).isEmpty;
+        if (destinationGroupId == kSmartGroupId) {
+          if (folder.isEmpty) {
+            // use personal
+            groupId = GroupsController.to.reserved.first.id;
+          } else {
+            // generate the id
+            groupId = '${folder.toLowerCase().trim()}-${sourceFormat.id}';
 
-          if (!exists) {
-            await GroupsService.to.box!.add(
-              HiveLisoGroup(
-                id: groupId,
-                name: folder,
-                description: 'Imported via ${sourceFormat.title}',
-                metadata: metadata,
-              ),
-            );
+            final exists = GroupsController.to.data
+                .where((e) => e.id == groupId)
+                .isNotEmpty;
 
-            console.wtf('generated group: $groupId');
+            if (!exists) {
+              await GroupsService.to.box!.add(
+                HiveLisoGroup(
+                  id: groupId,
+                  name: folder,
+                  description: 'Imported via ${sourceFormat.title}',
+                  metadata: metadata,
+                ),
+              );
+
+              console.wtf('generated group: $groupId');
+            }
           }
         }
 
         // category
-        String categoryId = LisoItemCategory.login.name;
+        var itemCategory = LisoItemCategory.login;
 
         if (type == 'note') {
-          categoryId = LisoItemCategory.note.name;
+          itemCategory = LisoItemCategory.note;
         }
 
-        final category = CategoriesController.to.combined.firstWhere(
-          (e) => e.id == categoryId,
+        // holder for custom field rows Key:Value
+        var customFieldRows = bitwardenFields.split('\n');
+
+        console.wtf(
+          'category: ${itemCategory.name}, folder: $folder, custom fields: ${customFieldRows.length}',
         );
 
-        final fields = category.fields.map((e) {
+        final category = CategoriesController.to.reserved.firstWhere(
+          (e) => e.id == itemCategory.name,
+        );
+
+        // TODO: parse null, booleans
+        var fields = category.fields.map((e) {
           if (e.identifier == 'website') {
             e.data.value = url;
           } else if (e.identifier == 'username') {
@@ -108,12 +128,33 @@ class BitwardenImporter {
             e.data.value = password;
           } else if (e.identifier == 'totp') {
             e.data.value = totp.trim();
+          }
+
+          if (category.id == LisoItemCategory.note.name) {
+            if (e.identifier == 'secure_note') {
+              e.data.value = '[{"insert":"$notes\\n"}]';
+            }
           } else if (e.identifier == 'note') {
             e.data.value = notes;
           }
 
           return e;
         }).toList();
+
+        final customFields = customFieldRows.map((e) {
+          final pair = e.split(':');
+          final label = pair.first;
+          final value = pair.last;
+
+          return HiveLisoField(
+            identifier: const Uuid().v4(), // generate
+            type: LisoFieldType.textField.name,
+            data: HiveLisoFieldData(label: label, value: value),
+          );
+        }).toList();
+
+        // insert before the default note field
+        fields.insertAll(fields.length - 1, customFields);
 
         return HiveLisoItem(
           identifier: const Uuid().v4(),

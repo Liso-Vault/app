@@ -79,7 +79,7 @@ class Utils {
     ));
   }
 
-  static Icon categoryIcon(String category, {Color? color}) {
+  static Icon categoryIcon(String category, {Color? color, double? size}) {
     IconData? iconData;
 
     if (category == LisoItemCategory.cryptoWallet.name) {
@@ -92,6 +92,10 @@ class Utils {
       iconData = Iconsax.user;
     } else if (category == LisoItemCategory.note.name) {
       iconData = Iconsax.note_text;
+    } else if (category == LisoItemCategory.insurance.name) {
+      iconData = Iconsax.shield_tick;
+    } else if (category == LisoItemCategory.healthInsurance.name) {
+      iconData = Iconsax.health;
     } else if (category == LisoItemCategory.cashCard.name) {
       iconData = Iconsax.card;
     } else if (category == LisoItemCategory.bankAccount.name) {
@@ -126,11 +130,13 @@ class Utils {
       iconData = Iconsax.key;
     } else if (category == LisoItemCategory.otp.name) {
       iconData = LineIcons.mobilePhone;
+    } else if (category == LisoItemCategory.custom.name) {
+      iconData = Iconsax.category;
     } else {
       iconData = Iconsax.category;
     }
 
-    return Icon(iconData, color: color);
+    return Icon(iconData, color: color, size: size);
   }
 
   static Future<dynamic>? adaptiveRouteOpen({

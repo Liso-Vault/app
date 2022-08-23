@@ -274,6 +274,10 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       identifier = 'first_name';
     } else if (category == LisoItemCategory.note.name) {
       identifier = 'note';
+    } else if (category == LisoItemCategory.insurance.name) {
+      identifier = 'policy_number';
+    } else if (category == LisoItemCategory.healthInsurance.name) {
+      identifier = 'policy_number';
     } else if (category == LisoItemCategory.cashCard.name) {
       identifier = 'holder_name';
     } else if (category == LisoItemCategory.bankAccount.name) {
@@ -305,6 +309,8 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
     } else if (category == LisoItemCategory.wirelessRouter.name) {
       identifier = 'base_station_name';
     } else if (category == LisoItemCategory.encryption.name) {
+      identifier = 'note';
+    } else if (category == LisoItemCategory.custom.name) {
       identifier = 'note';
     } else {
       identifier = 'note';

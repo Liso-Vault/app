@@ -210,16 +210,17 @@ class RestoreScreenController extends GetxController
       return;
     }
 
-    final valid = extension(result.files.single.path!) != '.$kVaultExtension';
+    final filePath = result.files.single.path!;
+    final valid = extension(filePath) == '.$kVaultExtension';
 
     if (!valid) {
       return UIUtils.showSimpleDialog(
         'Invalid Vault',
-        'You can only restore a valid & encrypted <vault>.$kVaultExtension file',
+        'You can only restore an encrypted <vault>.$kVaultExtension file',
       );
     }
 
-    filePathController.text = result.files.single.path!;
+    filePathController.text = filePath;
   }
 }
 

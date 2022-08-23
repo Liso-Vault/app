@@ -27,12 +27,14 @@ class ChromeImporter {
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
     const csvConverter = CsvToListConverter();
-    var values = csvConverter.convert(csv);
+    var values = csvConverter.convert(csv, eol: '\n');
     final columns = values.first.map((e) => e.trim()).toList();
     // exclude first row (column titles)
     values = values.sublist(1, values.length);
 
     if (!listEquals(columns, validColumns)) {
+      console.error('$columns -> $validColumns');
+
       await UIUtils.showSimpleDialog(
         'Invalid CSV Columns',
         'Please import a valid ${sourceFormat.title} exported file',
@@ -42,7 +44,9 @@ class ChromeImporter {
     }
 
     final metadata = await HiveMetadata.get();
-    String groupId = ImportScreenController.to.destinationGroupId.value;
+    final destinationGroupId =
+        ImportScreenController.to.destinationGroupId.value;
+    String groupId = destinationGroupId;
 
     final items = values.map(
       (row) async {
@@ -52,13 +56,13 @@ class ChromeImporter {
         final password = row[3];
 
         // group
-        if (groupId == 'smart-vault-destination') {
+        if (destinationGroupId == kSmartGroupId) {
           // use personal
-          groupId = GroupsController.to.combined.first.id;
+          groupId = GroupsController.to.reserved.first.id;
         }
 
         // category
-        final category = CategoriesController.to.combined.firstWhere(
+        final category = CategoriesController.to.reserved.firstWhere(
           (e) => e.id == LisoItemCategory.login.name,
         );
 

@@ -67,7 +67,6 @@ class HiveMetadataDevice extends HiveObject {
     final device = HiveMetadataDevice(platform: Utils.platformName());
     final deviceInfo = DeviceInfoPlugin();
     device.id = (await PlatformDeviceId.getDeviceId)!;
-    Console(name: 'HiveMetadataDevice').wtf('Device ID: ${device.id}');
 
     if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;

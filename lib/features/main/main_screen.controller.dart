@@ -23,6 +23,7 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../core/firebase/auth.service.dart';
 import '../../core/liso/liso_paths.dart';
+import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/alchemy.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
@@ -358,9 +359,9 @@ class MainScreenController extends GetxController
       await ItemsService.to.hideleteItems(items);
       load();
 
-      UIUtils.showSnackBar(
-        title: 'Empty Trash',
-        message: 'Your trash is now emptied',
+      NotificationsManager.notify(
+        title: 'Trash Emptied',
+        body: 'Your trash is now empty',
       );
     }
 
@@ -393,9 +394,9 @@ class MainScreenController extends GetxController
       await ItemsService.to.deleteItems(items);
       load();
 
-      UIUtils.showSnackBar(
-        title: 'Empty Deleted',
-        message: 'Your deleted items are now emptied',
+      NotificationsManager.notify(
+        title: 'Deleted Items Emptied',
+        body: 'Your deleted items is now empty',
       );
     }
 

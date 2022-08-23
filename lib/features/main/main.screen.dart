@@ -50,8 +50,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final addItemButton = ContextMenuButton(
       controller.menuItemsCategory,
       sheetForSmallScreen: true,
+      gridForLargeScreen: true,
       padding: EdgeInsets.zero,
-      child: TextButton.icon(
+      child: OutlinedButton.icon(
         icon: const Icon(Iconsax.add_circle),
         onPressed: () {},
         label: Text(
@@ -257,7 +258,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                         style: TextStyle(color: kAppColor),
                       ),
                       subtitle: const Text(
-                        "Are you happy with the recent import? If not, feel free to undo your changes.",
+                        "Are you satisfied with the recent import? If not, you can undo your changes.",
                       ),
                       // leading: const Icon(Iconsax.key),
                       trailing: OutlinedButton(
@@ -557,6 +558,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               return ContextMenuButton(
                 controller.menuItemsCategory,
                 sheetForSmallScreen: true,
+                gridForLargeScreen: true,
                 child: FloatingActionButton(
                   child: const Icon(LineIcons.plus),
                   onPressed: () {},

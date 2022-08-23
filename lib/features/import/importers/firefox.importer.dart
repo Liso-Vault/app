@@ -1,36 +1,41 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
+import 'package:liso/core/notifications/notifications.manager.dart';
+import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/items/items.service.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
-import '../../../core/notifications/notifications.manager.dart';
-import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../categories/categories.controller.dart';
 import '../../groups/groups.controller.dart';
-import '../../items/items.service.dart';
-import '../../main/main_screen.controller.dart';
 import '../import_screen.controller.dart';
 
 const validColumns = [
-  'Title',
-  'URL',
-  'Username',
-  'Password',
-  'Notes',
-  'OTPAuth'
+  'url',
+  'username',
+  'password',
+  'httpRealm',
+  'formActionOrigin',
+  'guid',
+  'timeCreated',
+  'timeLastUsed',
+  'timePasswordChanged',
 ];
 
-class AppleImporter {
-  static final console = Console(name: 'AppleImporter');
+class FirefoxImporter {
+  static final console = Console(name: 'FirefoxImporter');
 
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
     const csvConverter = CsvToListConverter();
-    final values = csvConverter.convert(csv, eol: '\n');
-    final columns = values.first.sublist(0, validColumns.length);
+    var values = csvConverter.convert(csv);
+    final columns = values.first.map((e) => e.trim()).toList();
+    // exclude first row (column titles)
+    values = values.sublist(1, values.length);
 
     if (!listEquals(columns, validColumns)) {
       console.error('$columns -> $validColumns');
@@ -50,15 +55,12 @@ class AppleImporter {
 
     final items = values.map(
       (row) async {
-        final name = row[0];
-        final url = row[1];
-        final username = row[2];
-        final password = row[3];
-        final notes = row[4];
-        final otpAuth = row[5];
+        final url = row[0];
+        final username = row[1];
+        final password = row[2];
 
         // group
-        if (groupId == kSmartGroupId) {
+        if (destinationGroupId == kSmartGroupId) {
           // use personal
           groupId = GroupsController.to.reserved.first.id;
         }
@@ -75,28 +77,20 @@ class AppleImporter {
             e.data.value = username;
           } else if (e.identifier == 'password') {
             e.data.value = password;
-          } else if (e.identifier == 'note') {
-            e.data.value = notes;
-          } else if (e.identifier == 'totp') {
-            // TODO: extract totp from &secret param of otpAuth
-            // e.data.value = password;
           }
 
           return e;
         }).toList();
 
-        final uris = <String>[url];
-        if (otpAuth.isNotEmpty) uris.add(otpAuth);
-
         return HiveLisoItem(
           identifier: const Uuid().v4(),
           groupId: groupId,
           category: category.id,
-          title: name,
+          title: url,
           fields: fields,
           // TODO: obtain iconUrl based on url
           // iconUrl: iconUrl.value,
-          uris: uris,
+          uris: url.isNotEmpty ? [url] : [],
           // appIds: appIds, // TODO: obtain app id from app uri
           // protected: reprompt == '1',
           // favorite: favorite == '1',

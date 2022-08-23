@@ -15,6 +15,7 @@ import 'package:liso/features/welcome/welcome.screen.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../attachments/attachments.screen.dart';
 import '../categories/categories.screen.dart';
+import '../categories/picker/category_picker.screen.dart';
 import '../cipher/cipher.screen.dart';
 import '../devices/devices.screen.dart';
 import '../feedback/feedback.screen.dart';
@@ -123,6 +124,11 @@ class AppPages {
     GetPage(
       name: Routes.categories,
       page: () => const CategoriesScreen(),
+      preventDuplicates: true,
+    ),
+    GetPage(
+      name: Routes.categoryPicker,
+      page: () => const CategoryPickerScreen(),
       preventDuplicates: true,
     ),
     GetPage(
