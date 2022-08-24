@@ -104,11 +104,11 @@ dependencies:
   console_mixin: ^0.0.1 # logger
   random_string_generator: ^2.0.0
   humanizer: ^2.0.0
-  worker_manager: ^4.4.6
-  flutter_autofill_service: ^0.14.0
-  app_review: ^2.1.2+1
-  csv: ^5.0.1
-  xml2json: ^5.3.4
+  worker_manager: ^4.4.6 # multi threading
+  flutter_autofill_service: ^0.14.0 # android autofill plugun
+  app_review: ^2.1.2+1 # request for review on the app store
+  csv: ^5.0.1 # csv parsing tool
+  sentry_flutter: ^6.9.1 # crash reporting tool for windows
 
   # INFO
   device_info_plus: 4.1.2

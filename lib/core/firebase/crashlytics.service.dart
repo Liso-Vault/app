@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../persistence/persistence.dart';
 
@@ -43,7 +44,7 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
     ));
   }
 
-  static void recordStatic(FlutterErrorDetails details) {
+  static void recordStatic(FlutterErrorDetails details) async {
     final console = Console(name: 'CrashlyticsService');
     final errorString = details.summary.value.toString();
 
@@ -65,7 +66,16 @@ class CrashlyticsService extends GetxService with ConsoleMixin {
       }
     }
 
-    if (GetPlatform.isWindows) return console.warning('Not Supported');
+    // send to sentry
+    if (GetPlatform.isWindows) {
+      await Sentry.captureException(
+        details.exception,
+        stackTrace: details.stack,
+      );
+
+      return;
+    }
+
     FirebaseCrashlytics.instance.recordFlutterError(details);
   }
 }

@@ -8,6 +8,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   local_auth_windows
   platform_device_id_windows
   screen_retriever
+  sentry_flutter
   url_launcher_windows
   window_manager
 )

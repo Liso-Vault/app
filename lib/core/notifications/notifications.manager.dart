@@ -1,4 +1,5 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 
@@ -10,6 +11,8 @@ class NotificationsManager {
   static void cancelAll() => plugin.cancelAll();
 
   static void init() async {
+    if (GetPlatform.isWindows) return console.warning('not supported');
+
     const iosSettings = IOSInitializationSettings(
       onDidReceiveLocalNotification: onForegroundPayload,
     );
@@ -35,6 +38,8 @@ class NotificationsManager {
     required final String body,
     String payload = '',
   }) async {
+    if (GetPlatform.isWindows) return console.warning('not supported');
+
     const iosDetails = IOSNotificationDetails();
     const macosDetails = MacOSNotificationDetails();
     const linuxDetails = LinuxNotificationDetails();

@@ -9,22 +9,26 @@ class ConfigSecrets {
     this.s3 = const ConfigSecretsS3(),
     this.revenuecat = const ConfigSecretsRevenuecat(),
     this.alchemy = const ConfigSecretsAlchemy(),
+    this.sentry = const ConfigSecretsSentry(),
   });
 
   final ConfigSecretsS3 s3;
   final ConfigSecretsRevenuecat revenuecat;
   final ConfigSecretsAlchemy alchemy;
+  final ConfigSecretsSentry sentry;
 
   factory ConfigSecrets.fromJson(Map<String, dynamic> json) => ConfigSecrets(
         s3: ConfigSecretsS3.fromJson(json["s3"]),
         revenuecat: ConfigSecretsRevenuecat.fromJson(json["revenuecat"]),
         alchemy: ConfigSecretsAlchemy.fromJson(json["alchemy"]),
+        sentry: ConfigSecretsSentry.fromJson(json["sentry"]),
       );
 
   Map<String, dynamic> toJson() => {
         "s3": s3.toJson(),
         "revenuecat": revenuecat.toJson(),
         "alchemy": alchemy.toJson(),
+        "sentry": sentry.toJson(),
       };
 }
 
@@ -111,4 +115,21 @@ class ConfigSecretsS3 {
       return 'liso-${Persistence.to.syncProvider.val}';
     }
   }
+}
+
+class ConfigSecretsSentry {
+  const ConfigSecretsSentry({
+    this.dsn = '',
+  });
+
+  final String dsn;
+
+  factory ConfigSecretsSentry.fromJson(Map<String, dynamic> json) =>
+      ConfigSecretsSentry(
+        dsn: json["dsn"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "dsn": dsn,
+      };
 }

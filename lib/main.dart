@@ -21,6 +21,7 @@ import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:secrets/firebase_options.dart';
 import 'package:secrets/secrets.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:worker_manager/worker_manager.dart';
 
@@ -61,6 +62,16 @@ void init(Flavor flavor, {bool autofill = false}) async {
     WidgetsFlutterBinding.ensureInitialized();
     // improve performance
     GestureBinding.instance.resamplingEnabled = true;
+    // init sentry
+    if (GetPlatform.isWindows) {
+      await SentryFlutter.init(
+        (options) {
+          options.dsn =
+              'https://2e0eed62c73845d3ac78dd47d374568a@o219011.ingest.sentry.io/6683557';
+        },
+      );
+    }
+
     // init firebase
     await Firebase.initializeApp(options: Secrets.firebaseOptions);
 

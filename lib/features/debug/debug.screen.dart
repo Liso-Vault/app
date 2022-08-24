@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/features/debug/debug_screen.controller.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/middlewares/authentication.middleware.dart';
@@ -80,7 +81,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Sign Out'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            // Get.toNamed(Routes.categoryPicker);
             AuthenticationMiddleware.signedIn = false;
           },
         ),

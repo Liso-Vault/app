@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
@@ -65,7 +69,13 @@ class HiveMetadataDevice extends HiveObject {
   static Future<HiveMetadataDevice> get() async {
     final device = HiveMetadataDevice(platform: Utils.platformName());
     final deviceInfo = DeviceInfoPlugin();
-    device.id = (await PlatformDeviceId.getDeviceId)!;
+
+    if (!GetPlatform.isWindows) {
+      device.id = (await PlatformDeviceId.getDeviceId)!;
+    } else {
+      device.id = await getWindowsDeviceID();
+      Console(name: 'Windows Device ID').wtf(device.id);
+    }
 
     if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;
@@ -78,7 +88,6 @@ class HiveMetadataDevice extends HiveObject {
       device.osVersion = info.version.release ?? '';
       device.name = info.device ?? '';
       device.model = info.model ?? '';
-
       // strip unecessary info
       final infoMap = info.toMap();
       infoMap.remove('supportedAbis');
@@ -94,7 +103,6 @@ class HiveMetadataDevice extends HiveObject {
       device.info = info.toMap();
     } else if (GetPlatform.isWindows) {
       final info = await deviceInfo.windowsInfo;
-      // generate a usable id
       device.name = info.computerName;
       device.info = info.toMap();
     } else if (GetPlatform.isLinux) {
@@ -104,6 +112,28 @@ class HiveMetadataDevice extends HiveObject {
     }
 
     return device;
+  }
+
+  // manually obtain device id via process to avoid flashing window bug
+  // https://github.com/BestBurning/platform_device_id/issues/15
+  static Future<String> getWindowsDeviceID() async {
+    final process = await Process.start(
+      'wmic',
+      ['csproduct', 'get', 'UUID'],
+      mode: ProcessStartMode.detachedWithStdio,
+    );
+
+    final result = await process.stdout.transform(utf8.decoder).toList();
+    String deviceId = '';
+
+    for (var element in result) {
+      final item = element.replaceAll(RegExp('\r|\n|\\s|UUID|uuid'), '');
+      if (item.isNotEmpty) {
+        deviceId = item;
+      }
+    }
+
+    return deviceId;
   }
 
   static Future<Map<String, dynamic>> getJson() async => (await get()).toJson();

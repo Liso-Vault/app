@@ -56,7 +56,9 @@ class LisoManager {
     // reset variables
     S3Service.to.backedUp = false;
     // invalidate purchases
-    await Purchases.invalidateCustomerInfoCache();
+    if (!GetPlatform.isWindows) {
+      await Purchases.invalidateCustomerInfoCache();
+    }
     // sign out
     AuthenticationMiddleware.signedIn = false;
     console.info('reset!');

@@ -6,6 +6,7 @@ import 'package:liso/core/translations/data.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/general/unknown.screen.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../../core/firebase/analytics.service.dart';
 import '../../core/utils/globals.dart';
@@ -31,7 +32,11 @@ class App extends StatelessWidget {
     // MATERIAL APP
     return GetMaterialApp(
       navigatorObservers: [
-        if (!GetPlatform.isWindows) ...[AnalyticsService.to.observer]
+        if (!GetPlatform.isWindows) ...[
+          AnalyticsService.to.observer,
+        ] else ...[
+          SentryNavigatorObserver(),
+        ]
       ],
       debugShowCheckedModeBanner: false,
       // showPerformanceOverlay: true,

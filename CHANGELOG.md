@@ -7,12 +7,14 @@
 - New! Autofill service setting
 - New! Contact Screen
 - New! Update Shared Vault details
+- New! Sentry crash reporting for Windows
 - Improved! Category/Template picker for large screen devices
 - Improved! Files Explorer UX
 - Improved! Descriptive biometric prompts
 - Fixed! Stuck syncing after restore / unlock
 - Fixed! Send feedback feature
 - Fixed! Protected toggle is covered by Save button
+- Fixed! Random CMD window flashing on Windows
 
 ## 0.6.0
 
