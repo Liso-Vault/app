@@ -8,7 +8,6 @@ import 'package:liso/features/general/appbar_leading.widget.dart';
 import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/globals.dart';
-import '../app/routes.dart';
 import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 

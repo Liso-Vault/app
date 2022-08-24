@@ -4,7 +4,6 @@ import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive.service.dart';

@@ -1,8 +1,7 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/menu/menu.sheet.dart';
 
 import '../../core/utils/utils.dart';

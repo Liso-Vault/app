@@ -13,7 +13,6 @@ import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';

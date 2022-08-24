@@ -65,25 +65,25 @@ class NordPassImporter {
 
     final items = values.map(
       (row) async {
-        final name = row[0];
+        // final name = row[0];
         final url = row[1];
         final username = row[2];
         final password = row[3];
-        final note = row[4];
-        final cardHolderName = row[5];
-        final cardNumber = row[6];
-        final cvc = row[7];
-        final expiryDate = row[8];
-        final zipCode = row[9];
-        final folder = row[10];
-        final fullName = row[11];
-        final phoneNumber = row[12];
-        final email = row[13];
-        final address1 = row[14];
-        final address2 = row[15];
-        final city = row[16];
-        final country = row[17];
-        final state = row[18];
+        // final note = row[4];
+        // final cardHolderName = row[5];
+        // final cardNumber = row[6];
+        // final cvc = row[7];
+        // final expiryDate = row[8];
+        // final zipCode = row[9];
+        // final folder = row[10];
+        // final fullName = row[11];
+        // final phoneNumber = row[12];
+        // final email = row[13];
+        // final address1 = row[14];
+        // final address2 = row[15];
+        // final city = row[16];
+        // final country = row[17];
+        // final state = row[18];
 
         // group
         if (destinationGroupId == kSmartGroupId) {
