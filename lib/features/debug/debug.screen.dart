@@ -6,6 +6,7 @@ import 'package:liso/features/debug/debug_screen.controller.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
+import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/globals.dart';
 import '../app/routes.dart';
 import '../joined_vaults/joined_vault.controller.dart';
@@ -77,10 +78,11 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Templates'),
+          title: const Text('Sign Out'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () async {
-            Get.toNamed(Routes.categoryPicker);
+            // Get.toNamed(Routes.categoryPicker);
+            AuthenticationMiddleware.signedIn = false;
           },
         ),
         // ListTile(

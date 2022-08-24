@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
@@ -38,7 +39,7 @@ class MainScreenController extends GetxController
   static MainScreenController get to => Get.find();
 
   // VARIABLES
-  Timer? timeLockTimer;
+  DateTime? lastInactiveTime;
   ItemsSearchDelegate? searchDelegate;
 
   final autofill = AutofillService();
@@ -190,7 +191,6 @@ class MainScreenController extends GetxController
       windowManager.removeListener(this);
     }
 
-    timeLockTimer?.cancel();
     super.onClose();
   }
 
@@ -242,6 +242,7 @@ class MainScreenController extends GetxController
   // FUNCTIONS
 
   void navigate({bool skipRedirect = false}) {
+    console.info('navigate! skipRedirect: $skipRedirect');
     AuthenticationMiddleware.skipRedirect = skipRedirect;
     Get.offNamedUntil(Routes.main, (route) => false);
   }
@@ -311,35 +312,40 @@ class MainScreenController extends GetxController
     // auto-lock after app is inactive
     SystemChannels.lifecycle.setMessageHandler((msg) async {
       console.warning(msg!);
+      // ignore if not logged in
+      if (!WalletService.to.isReady) {
+        console.warning('lifecycle: wallet is not ready');
+        return Future.value(msg);
+      }
 
+      if (!Globals.timeLockEnabled) {
+        console.warning('lifecycle: timeLock is disabled');
+        return Future.value(msg);
+      }
+
+      final timeLockDuration = persistence.timeLockDuration.val.seconds;
+
+      // RESUMED
       if (msg == AppLifecycleState.resumed.toString()) {
-        timeLockTimer?.cancel();
+        final expirationTime = lastInactiveTime!.add(timeLockDuration);
 
-        final loggedOut =
-            WalletService.to.isSaved && !AuthenticationMiddleware.signedIn;
-        console.info('loggedOut: $loggedOut');
+        console.wtf(
+          'lifecycle: expires in ${DateFormat.yMMMMd().add_jms().format(expirationTime)}',
+        );
 
-        if (loggedOut) {
-          Get.toNamed(
-            Routes.unlock,
-            parameters: {'mode': 'regular'},
-          );
+        // expired
+        if (expirationTime.isBefore(DateTime.now())) {
+          console.wtf('lifecycle: expired time lock');
+          Get.toNamed(Routes.unlock, parameters: {'mode': 'regular'});
         }
-      } else if (msg == AppLifecycleState.inactive.toString()) {
-        // lock after <duration> of inactivity
-        if (Globals.timeLockEnabled && AuthenticationMiddleware.signedIn) {
-          final timeLockDuration = persistence.timeLockDuration.val.seconds;
-          console.info(
-            'Time lock timer started! Triggers in: ${timeLockDuration.inSeconds} seconds',
-          );
+      }
+      // INACTIVE
+      else if (msg == AppLifecycleState.inactive.toString()) {
+        lastInactiveTime = DateTime.now();
 
-          timeLockTimer = Timer.periodic(timeLockDuration, (timer) async {
-            // sign out
-            AuthenticationMiddleware.signedIn = false;
-            timer.cancel();
-            console.info('Time lock timer triggered! Logged out');
-          });
-        }
+        console.wtf(
+          'lifecycle: locking in ${timeLockDuration.inSeconds} seconds of inactivity',
+        );
       }
 
       return Future.value(msg);

@@ -2,6 +2,7 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
+import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
@@ -62,6 +63,7 @@ class WelcomeScreenController extends GetxController
       body: 'Your vault has been created',
     );
 
+    AuthenticationMiddleware.signedIn = true;
     MainScreenController.to.navigate();
   }
 

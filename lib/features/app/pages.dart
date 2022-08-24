@@ -114,7 +114,6 @@ class AppPages {
     ),
     GetPage(
       name: Routes.upgrade,
-      preventDuplicates: true,
       page: () => const UpgradeScreen(),
     ),
     GetPage(
@@ -124,52 +123,42 @@ class AppPages {
     GetPage(
       name: Routes.categories,
       page: () => const CategoriesScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.categoryPicker,
       page: () => const CategoryPickerScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.vaults,
       page: () => const GroupsScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.sharedVaults,
       page: () => const SharedVaultsScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.joinedVaults,
       page: () => const JoinedVaultsScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.vaultExplorer,
       page: () => const VaultExplorerScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.devices,
       page: () => const DevicesScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.feedback,
       page: () => const FeedbackScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.disabledBeta,
       page: () => const DisabledBetaScreen(),
-      preventDuplicates: true,
     ),
     GetPage(
       name: Routes.debug,
       page: () => const DebugScreen(),
-      preventDuplicates: true,
     ),
   ];
 }

@@ -95,17 +95,19 @@ class UnlockScreenController extends GetxController
     }
 
     void _done() async {
-      AuthenticationMiddleware.signedIn = true;
       await HiveService.to.open();
       change(null, status: RxStatus.success());
+      AuthenticationMiddleware.signedIn = true;
       if (passwordMode || regularMode) return Get.back(result: true);
       return MainScreenController.to.navigate();
     }
 
     // temporary to migrate users prior v0.6.0
     Timer.periodic(1.seconds, (timer) async {
-      if (Persistence.to.walletSignature.val.isNotEmpty &&
-          Persistence.to.walletPrivateKeyHex.val.isNotEmpty) {
+      final ready = Persistence.to.walletSignature.val.isNotEmpty &&
+          Persistence.to.walletPrivateKeyHex.val.isNotEmpty;
+
+      if (ready) {
         timer.cancel();
         return _done();
       } else {

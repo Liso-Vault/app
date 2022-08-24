@@ -9,6 +9,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:timeago/timeago.dart' as timeago;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
 
@@ -340,20 +341,22 @@ class Utils {
       ratingEmojis += '✩';
     }
 
-    String body = '$preBody\n\n';
+    final ln = GetPlatform.isIOS ? '\r\n' : '\n';
+
+    String body = '$preBody$ln$ln';
 
     if (AuthService.to.isSignedIn) {
-      body += 'Rating: $ratingEmojis\n';
+      body += 'Rating: $ratingEmojis$ln';
       body +=
-          'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}\n';
-      body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}\n';
-      body += 'Entitlement: ${ProController.to.limits.id}\n';
-      body += 'Pro: ${ProController.to.isPro}\n';
+          'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}$ln';
+      body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
+      body += 'Entitlement: ${ProController.to.limits.id}$ln';
+      body += 'Pro: ${ProController.to.isPro}$ln';
     }
 
-    body += 'App Version: ${Globals.metadata?.app.formattedVersion}\n';
-    body += 'Platform: ${Utils.platformName()}\n';
-    body += 'Route: $previousRoute\n';
+    body += 'App Version: ${Globals.metadata?.app.formattedVersion}$ln';
+    body += 'Platform: ${Utils.platformName()}$ln';
+    body += 'Route: $previousRoute$ln';
 
     final url =
         'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body';
@@ -368,5 +371,15 @@ class Utils {
     final canLaunch = await canLaunchUrlString(url);
     if (!canLaunch) console.error('cannot launch');
     launchUrlString(url, mode: mode);
+  }
+
+  static Future<void> openUri(
+    Uri uri, {
+    LaunchMode mode = LaunchMode.platformDefault,
+  }) async {
+    console.info('launching: $uri');
+    final canLaunch = await canLaunchUrl(uri);
+    if (!canLaunch) console.error('cannot launch');
+    launchUrl(uri, mode: mode);
   }
 }
