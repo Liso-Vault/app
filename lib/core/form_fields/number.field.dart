@@ -79,7 +79,7 @@ class _NumberFormFieldState extends State<NumberFormField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       inputFormatters: [
         inputFormatterRestrictSpaces,
-        FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+        inputFormatterNumericOnly,
       ],
       validator: (data) => data!.isEmpty || GetUtils.isNumericOnly(data)
           ? null

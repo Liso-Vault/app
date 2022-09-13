@@ -222,7 +222,7 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
       actions: [
         if (Get.parameters['return'] != null) ...[
           IconButton(
-            icon: const Icon(LineIcons.check),
+            icon: const Icon(Icons.check),
             onPressed: () => Get.back(
               result: controller.password.value,
             ),

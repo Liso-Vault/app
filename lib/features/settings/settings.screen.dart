@@ -46,7 +46,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 selected: p.theme.val == ThemeMode.system.name,
                 title: Text(ThemeMode.system.name.tr),
                 trailing: p.theme.val == ThemeMode.system.name
-                    ? Icon(LineIcons.check, color: themeColor)
+                    ? Icon(Icons.check, color: themeColor)
                     : null,
                 onTap: () => controller.changeTheme(ThemeMode.system),
               ),
@@ -55,7 +55,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 selected: p.theme.val == ThemeMode.dark.name,
                 title: Text(ThemeMode.dark.name.tr),
                 trailing: p.theme.val == ThemeMode.dark.name
-                    ? Icon(LineIcons.check, color: themeColor)
+                    ? Icon(Icons.check, color: themeColor)
                     : null,
                 onTap: () => controller.changeTheme(ThemeMode.dark),
               ),
@@ -64,7 +64,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 selected: p.theme.val == ThemeMode.light.name,
                 title: Text(ThemeMode.light.name.tr),
                 trailing: p.theme.val == ThemeMode.light.name
-                    ? Icon(LineIcons.check, color: themeColor)
+                    ? Icon(Icons.check, color: themeColor)
                     : null,
                 onTap: () => controller.changeTheme(ThemeMode.light),
               ),

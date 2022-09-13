@@ -256,7 +256,10 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                         title: Row(
                           children: [
                             if (!ProController.to.isPro) ...[
-                              const Text('Free Trial '),
+                              const Text(
+                                'Try ',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
                             ],
                             const ProText(size: 16)
                           ],

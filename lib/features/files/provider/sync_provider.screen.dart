@@ -58,27 +58,27 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
         "image": Images.sia,
         "url": "https://sia.tech/",
       },
-      LisoSyncProvider.storj.name: {
-        "name": "Storj",
-        "description":
-            "Storj is an open source decentralized cloud storage network. Filebase integrates natively with the Storj, allowing for a simple and affordable way to upload your data onto the Storj network.",
-        "image": Images.storj,
-        "url": "https://storj.io/",
-      },
-      LisoSyncProvider.ipfs.name: {
-        "name": "IPFS",
-        "description":
-            "InterPlanetary File System, or IPFS, is a distributed and decentralized storage network for storing and accessing files, websites, data, and applications. IPFS uses peer-to-peer network technology to connect a series of nodes located across the world that make up the IPFS network.",
-        "image": Images.ipfs,
-        "url": "https://ipfs.io/",
-      },
-      LisoSyncProvider.skynet.name: {
-        "name": "Sia",
-        "description":
-            "Skynet is a decentralized storage platform that leverages the Sia network. This technology is built for high availability, scalability, and easy file sharing.",
-        "image": Images.skynet,
-        "url": "https://skynetlabs.com/",
-      },
+      // LisoSyncProvider.storj.name: {
+      //   "name": "Storj",
+      //   "description":
+      //       "Storj is an open source decentralized cloud storage network. Filebase integrates natively with the Storj, allowing for a simple and affordable way to upload your data onto the Storj network.",
+      //   "image": Images.storj,
+      //   "url": "https://storj.io/",
+      // },
+      // LisoSyncProvider.ipfs.name: {
+      //   "name": "IPFS",
+      //   "description":
+      //       "InterPlanetary File System, or IPFS, is a distributed and decentralized storage network for storing and accessing files, websites, data, and applications. IPFS uses peer-to-peer network technology to connect a series of nodes located across the world that make up the IPFS network.",
+      //   "image": Images.ipfs,
+      //   "url": "https://ipfs.io/",
+      // },
+      // LisoSyncProvider.skynet.name: {
+      //   "name": "Skynet",
+      //   "description":
+      //       "Skynet is a decentralized storage platform that leverages the Sia network. This technology is built for high availability, scalability, and easy file sharing.",
+      //   "image": Images.skynet,
+      //   "url": "https://skynetlabs.com/",
+      // },
     };
 
     final content = SingleChildScrollView(
@@ -141,27 +141,27 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
               groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
               onChanged: _switchProvider,
             ),
-            RadioListTile<LisoSyncProvider>(
-              title: const Text('Storj'),
-              secondary: Image.asset(Images.storj, height: 25),
-              value: LisoSyncProvider.storj,
-              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
-              onChanged: _switchProvider,
-            ),
-            RadioListTile<LisoSyncProvider>(
-              title: const Text('IPFS'),
-              secondary: Image.asset(Images.ipfs, height: 25),
-              value: LisoSyncProvider.ipfs,
-              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
-              onChanged: _switchProvider,
-            ),
-            RadioListTile<LisoSyncProvider>(
-              title: const Text('Skynet'),
-              secondary: Image.asset(Images.skynet, height: 25),
-              value: LisoSyncProvider.skynet,
-              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
-              onChanged: _switchProvider,
-            ),
+            // RadioListTile<LisoSyncProvider>(
+            //   title: const Text('Storj'),
+            //   secondary: Image.asset(Images.storj, height: 25),
+            //   value: LisoSyncProvider.storj,
+            //   groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
+            //   onChanged: _switchProvider,
+            // ),
+            // RadioListTile<LisoSyncProvider>(
+            //   title: const Text('IPFS'),
+            //   secondary: Image.asset(Images.ipfs, height: 25),
+            //   value: LisoSyncProvider.ipfs,
+            //   groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
+            //   onChanged: _switchProvider,
+            // ),
+            // RadioListTile<LisoSyncProvider>(
+            //   title: const Text('Skynet'),
+            //   secondary: Image.asset(Images.skynet, height: 25),
+            //   value: LisoSyncProvider.skynet,
+            //   groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
+            //   onChanged: _switchProvider,
+            // ),
             RadioListTile<LisoSyncProvider>(
               title: const Text('Custom'),
               secondary: const Icon(Iconsax.setting_2),

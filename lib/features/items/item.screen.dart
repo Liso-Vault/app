@@ -383,7 +383,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                     : mode == 'view'
                         ? controller.edit
                         : controller.add,
-                icon: const Icon(LineIcons.check),
+                icon: const Icon(Icons.check),
               ),
             ),
           ),
@@ -413,7 +413,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
             }
           }
         },
-        icon: Icon(controller.editMode() ? LineIcons.check : LineIcons.pen),
+        icon: Icon(controller.editMode() ? Icons.check : LineIcons.pen),
         label: Text(controller.editMode() ? 'save'.tr : 'edit'.tr),
       ),
     );

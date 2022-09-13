@@ -82,7 +82,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
         ),
         IconButton(
           onPressed: () => Get.back(result: controller.data),
-          icon: const Icon(LineIcons.check),
+          icon: const Icon(Icons.check),
         ),
         const SizedBox(width: 10),
       ],

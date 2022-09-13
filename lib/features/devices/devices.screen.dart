@@ -47,7 +47,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       return ListTile(
         title: Text(device.model),
         selected: isThisDevice,
-        leading: Icon(isThisDevice ? LineIcons.check : LineIcons.laptop),
+        leading: Icon(isThisDevice ? Icons.check : LineIcons.laptop),
         trailing: ContextMenuButton(
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),

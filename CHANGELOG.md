@@ -1,3 +1,7 @@
+## 0.7.1
+
+- Minor updates
+
 ## 0.7.0
 
 - New! Import items from Bitwarden, LastPass, Safari, Chrome, Brave, Opera, Firefox, and Edge

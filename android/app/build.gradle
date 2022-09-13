@@ -98,6 +98,7 @@ android {
             resValue "string", "app_name", "Liso Debug"
         }
     }
+    
     lint {
         checkReleaseBuilds false
     }

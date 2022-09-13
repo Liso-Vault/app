@@ -115,7 +115,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       // onLoading: const BusyIndicator(),
       onEmpty: drawerController.filterPasswordHealth.value
           ? const CenteredPlaceholder(
-              iconData: LineIcons.check,
+              iconData: Icons.check,
               message: 'No Fragile Passwords Detected',
             )
           : Obx(

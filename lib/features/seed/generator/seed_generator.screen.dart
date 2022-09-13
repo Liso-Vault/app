@@ -148,7 +148,7 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
         if (Get.parameters['return'] != null) ...[
           IconButton(
             onPressed: () => Get.back(result: controller.seed.value),
-            icon: const Icon(LineIcons.check),
+            icon: const Icon(Icons.check),
           ),
         ],
         const SizedBox(width: 10),

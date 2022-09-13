@@ -84,7 +84,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.password_check,
               title: 'OTP Authenticator',
               trailing: Icon(
-                limit.otpGenerator ? LineIcons.check : LineIcons.times,
+                limit.otpGenerator ? Icons.check : LineIcons.times,
                 color: limit.otpGenerator ? proColor : Colors.grey,
               ),
             ),
@@ -124,7 +124,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.health,
               title: 'Password Health',
               trailing: Icon(
-                limit.passwordHealth ? LineIcons.check : LineIcons.times,
+                limit.passwordHealth ? Icons.check : LineIcons.times,
                 color: limit.passwordHealth ? proColor : Colors.grey,
               ),
             ),
@@ -132,7 +132,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.message_question,
               title: 'Priority Support',
               trailing: Icon(
-                limit.prioritySupport ? LineIcons.check : LineIcons.times,
+                limit.prioritySupport ? Icons.check : LineIcons.times,
                 color: limit.prioritySupport ? proColor : Colors.grey,
               ),
             ),
@@ -140,7 +140,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.security_card,
               title: 'File Encryption Tool',
               trailing: Icon(
-                limit.cipherTool ? LineIcons.check : LineIcons.times,
+                limit.cipherTool ? Icons.check : LineIcons.times,
                 color: limit.cipherTool ? proColor : Colors.grey,
               ),
             ),
@@ -194,7 +194,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             // ListTile(
             //   trailing: Icon(
-            //     limit.breachScanner ? LineIcons.check : LineIcons.times,
+            //     limit.breachScanner ? Icons.check : LineIcons.times,
             //     color: limit.breachScanner ? proColor : Colors.grey,
             //   ),
             //   leading: Icon(Iconsax.scan, color: proColor),
@@ -203,7 +203,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             // ),
             // ListTile(
             //   trailing: Icon(
-            //     limit.nfcKeycard ? LineIcons.check : LineIcons.times,
+            //     limit.nfcKeycard ? Icons.check : LineIcons.times,
             //     color: limit.nfcKeycard ? proColor : Colors.grey,
             //   ),
             //   leading: Icon(Iconsax.card, color: proColor),
@@ -213,27 +213,27 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             FeatureTile(
               iconData: Iconsax.rulerpen,
               title: 'Autosave + Autofill',
-              trailing: Icon(LineIcons.check, color: proColor),
+              trailing: Icon(Icons.check, color: proColor),
             ),
             FeatureTile(
               iconData: Iconsax.lock,
               title: 'Generate Passwords',
-              trailing: Icon(LineIcons.check, color: proColor),
+              trailing: Icon(Icons.check, color: proColor),
             ),
             FeatureTile(
               iconData: Iconsax.finger_cricle,
               title: 'Biometric Auth',
-              trailing: Icon(LineIcons.check, color: proColor),
+              trailing: Icon(Icons.check, color: proColor),
             ),
             FeatureTile(
               iconData: Iconsax.airplane,
               title: 'Offline Mode',
-              trailing: Icon(LineIcons.check, color: proColor),
+              trailing: Icon(Icons.check, color: proColor),
             ),
             FeatureTile(
               iconData: Iconsax.data,
               title: 'Self-Hostable',
-              trailing: Icon(LineIcons.check, color: proColor),
+              trailing: Icon(Icons.check, color: proColor),
             ),
           ],
         );
@@ -367,7 +367,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
     final current = Center(
       child: Column(
         children: [
-          Icon(LineIcons.check, color: proColor, size: 100),
+          Icon(Icons.check, color: proColor, size: 100),
           const SizedBox(height: 10),
           Text(
             controller.limitIndex == 1

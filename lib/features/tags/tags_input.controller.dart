@@ -108,7 +108,7 @@ class TagsInputController extends GetxController {
               ),
               IconButton(
                 onPressed: Get.back,
-                icon: const Icon(LineIcons.check),
+                icon: const Icon(Icons.check),
               ),
               IconButton(
                 onPressed: Get.back,

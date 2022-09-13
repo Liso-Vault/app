@@ -66,8 +66,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     if (GetPlatform.isWindows) {
       await SentryFlutter.init(
         (options) {
-          options.dsn =
-              'https://2e0eed62c73845d3ac78dd47d374568a@o219011.ingest.sentry.io/6683557';
+          options.dsn = Secrets.configs.secrets['sentry']?['dsn'];
         },
       );
     }
