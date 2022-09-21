@@ -1,9 +1,8 @@
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/globals.dart';
 
 import '../../core/animations/animations.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'menu.item.dart';
 
 class ContextMenuSheet extends StatelessWidget with ConsoleMixin {

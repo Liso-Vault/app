@@ -2,14 +2,13 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/attachments/attachment.tile.dart';
 
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../files/s3.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
-import '../files/s3.service.dart';
 import 'attachments_screen.controller.dart';
 
 class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
