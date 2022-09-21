@@ -1,11 +1,9 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/general/appbar_leading.widget.dart';
-import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/files/provider/custom_provider_screen.controller.dart';
+import 'package:liso/features/general/appbar_leading.widget.dart';
 
 import '../../../core/persistence/persistence_builder.widget.dart';
 import '../../../core/utils/globals.dart';
@@ -26,10 +24,6 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Section(
-              text: 'S3 Configuration',
-              fontSize: 15,
-            ),
             TextFormField(
               controller: controller.endpointController,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
@@ -39,6 +33,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 hintText: 's3.filebase.com',
               ),
             ),
+            const SizedBox(height: 15),
             TextFormField(
               controller: controller.accessKeyController,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
@@ -47,6 +42,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Access Key',
               ),
             ),
+            const SizedBox(height: 15),
             TextFormField(
               controller: controller.secretKeyController,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
@@ -55,6 +51,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Secret Key',
               ),
             ),
+            const SizedBox(height: 15),
             TextFormField(
               controller: controller.bucketController,
               validator: (data) => data!.isNotEmpty ? null : 'required'.tr,
@@ -63,6 +60,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Bucket',
               ),
             ),
+            const SizedBox(height: 15),
             TextFormField(
               controller: controller.portController,
               // TODO: validator
@@ -76,6 +74,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 hintText: '8080',
               ),
             ),
+            const SizedBox(height: 15),
             TextFormField(
               controller: controller.regionController,
               // TODO: validator
@@ -83,6 +82,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Region',
               ),
             ),
+            const SizedBox(height: 15),
             TextFormField(
               controller: controller.sessionTokenController,
               // TODO: validator
@@ -90,12 +90,13 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Session Token',
               ),
             ),
+            const Divider(),
             PersistenceBuilder(
               builder: (p, context) => SwitchListTile(
                 title: const Text('Enable Trace'),
                 value: Persistence.to.s3EnableTrace.val,
                 onChanged: (value) => Persistence.to.s3EnableTrace.val = value,
-                contentPadding: EdgeInsets.zero,
+                // contentPadding: EdgeInsets.zero,
               ),
             ),
             const Divider(),
@@ -104,7 +105,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 title: const Text('Use SSL'),
                 value: p.s3UseSsl.val,
                 onChanged: (value) => p.s3UseSsl.val = value,
-                contentPadding: EdgeInsets.zero,
+                // contentPadding: EdgeInsets.zero,
               ),
             ),
             const Divider(),
@@ -130,16 +131,16 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               )
-            : TextButton.icon(
+            : IconButton(
                 onPressed: controller.testConnection,
-                icon: const Icon(Iconsax.cloud_connection),
-                label: const Text('Connect'),
+                icon: const Icon(Icons.check),
               ),
       ),
+      const SizedBox(width: 10),
     ];
 
     final appBar = AppBar(
-      title: const Text('S3 Config'),
+      title: const Text('S3 Configuration'),
       leading: const AppBarLeadingButton(),
       actions: actions,
     );

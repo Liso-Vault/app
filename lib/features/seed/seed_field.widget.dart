@@ -73,12 +73,16 @@ class SeedField extends StatelessWidget with ConsoleMixin {
       ContextMenuItem(
         title: 'QR Code',
         leading: const Icon(Iconsax.barcode),
-        onSelected: () => UIUtils.showQR(
-          fieldController!.text,
-          title: 'Your Seed QR Code',
-          subTitle:
-              "Make sure you're in a safe location and free from prying eyes",
-        ),
+        onSelected: () {
+          if (fieldController!.text.isEmpty) return;
+
+          UIUtils.showQR(
+            fieldController!.text,
+            title: 'Your Seed QR Code',
+            subTitle:
+                "Make sure you're in a safe location and free from prying eyes",
+          );
+        },
       ),
       ContextMenuItem(
         title: 'Copy',

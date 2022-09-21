@@ -12,7 +12,7 @@ class VersionText extends StatelessWidget {
       child: Align(
         alignment: Alignment.bottomRight,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 5, right: 10),
+          padding: const EdgeInsets.only(bottom: 25, right: 15),
           child: Text(
             Globals.metadata?.app.formattedVersion ?? '',
             style: const TextStyle(color: Colors.grey, fontSize: 10),

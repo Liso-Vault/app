@@ -57,7 +57,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
 
         Get.dialog(AlertDialog(
           title: const Text('Delete Custom Vault'),
-          content: Utils.isDrawerExpandable
+          content: Utils.isSmallScreen
               ? dialogContent
               : SizedBox(
                   width: 450,

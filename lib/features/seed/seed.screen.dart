@@ -56,11 +56,14 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Iconsax.key_square, size: 100, color: themeColor),
+        Icon(Iconsax.key_square, size: 150, color: themeColor),
         const SizedBox(height: 20),
         const Text(
           'Master Seed Phrase',
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         const SizedBox(height: 5),
         const Text(
@@ -74,6 +77,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
         if (!Persistence.to.backedUpSeed.val) ...[
           ObxValue(
             (RxBool data) => CheckboxListTile(
+              checkboxShape: const CircleBorder(),
               title: const Text("I have backed up my seed in a safe location"),
               value: data(),
               onChanged: data,
@@ -82,6 +86,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
           ),
           ObxValue(
             (RxBool data) => CheckboxListTile(
+              checkboxShape: const CircleBorder(),
               title: const Text("I have written down my seed"),
               value: data(),
               onChanged: data,

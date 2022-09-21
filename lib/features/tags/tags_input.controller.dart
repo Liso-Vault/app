@@ -133,7 +133,7 @@ class TagsInputController extends GetxController {
     // pre-load suggestions
     suggestions.value = _query('');
 
-    if (Utils.isDrawerExpandable) {
+    if (Utils.isSmallScreen) {
       await Get.bottomSheet(content);
     } else {
       Get.dialog(Dialog(

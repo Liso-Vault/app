@@ -114,7 +114,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     return Get.dialog(AlertDialog(
       title: Text('delete'.tr),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -154,7 +154,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final isLargeScreen = !Utils.isDrawerExpandable;
+    final isLargeScreen = !Utils.isSmallScreen;
 
     final menuItems = [
       if (!joinedVaultItem) ...[
@@ -297,7 +297,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       leading: leading,
       // for some reason, using subtitle gets a lot of errors so we're not using it
       // subtitle: subTitle,
-      contentPadding: const EdgeInsets.only(left: 16, right: 6),
+      // contentPadding: const EdgeInsets.only(left: 16, right: 6),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -305,13 +305,14 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             item.title.isNotEmpty ? item.title : '(Untitled)',
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
+            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           if (item.subTitle.trim().isNotEmpty) ...[
             Text(
               item.subTitle.isNotEmpty ? item.subTitle : '(Untitled)',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(fontSize: 13),
             ),
           ],
           const SizedBox(height: 3),

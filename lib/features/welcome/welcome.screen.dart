@@ -6,10 +6,8 @@ import 'package:liso/core/utils/styles.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
-import '../general/gradient.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../general/version.widget.dart';
 import 'welcome_screen.controller.dart';
@@ -29,33 +27,28 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            if (Utils.isSmallScreen) ...[
+              const SizedBox(height: 100),
+            ],
             RemoteImage(
               url: ConfigService.to.general.app.image,
-              height: 200,
+              height: 150,
               placeholder: Image.asset(Images.logo, height: 200),
             ),
             const SizedBox(height: 40),
-            GradientWidget(
-              gradient: const LinearGradient(
-                colors: [
-                  kAppColor,
-                  Color(0xFF00CBDA),
-                ],
-              ),
-              child: Text(
-                ConfigService.to.general.app.shortDescription,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
+            const Text(
+              'Start securing your data & files now',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 10),
             Text(
               ConfigService.to.general.app.longDescription,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: Colors.grey, fontSize: 15),
+              style: const TextStyle(fontSize: 15),
             ),
             const SizedBox(height: 20),
             Wrap(
@@ -91,7 +84,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
       children: [
         const Text(
           'By proceeding, you agree to our',
-          style: TextStyle(color: Colors.grey, fontSize: 11),
+          style: TextStyle(fontSize: 11),
         ),
         Row(
           mainAxisSize: MainAxisSize.min,
@@ -107,7 +100,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             ),
             const Text(
               'and',
-              style: TextStyle(color: Colors.grey, fontSize: 11),
+              style: TextStyle(fontSize: 11),
             ),
             TextButton(
               onPressed: () => Utils.openUrl(
@@ -120,7 +113,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             ),
           ],
         ),
-        const VersionText()
+        const VersionText(),
       ],
     );
 

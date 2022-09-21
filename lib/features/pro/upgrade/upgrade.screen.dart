@@ -47,7 +47,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
           controller: ScrollController(),
           children: [
             const Padding(
-              padding: EdgeInsets.only(left: 15),
+              padding: EdgeInsets.only(left: 15, top: 15),
               child: Text(
                 'Unlock All Access',
                 style: TextStyle(color: Colors.grey),
@@ -293,8 +293,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: themeColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12,
                   ),
                 ),
               ),
@@ -637,7 +637,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
 
     final appBar = AppBar(
       backgroundColor: Get.isDarkMode ? Colors.transparent : null,
-      elevation: Get.isDarkMode ? 0 : 1.0,
+      elevation: 0,
       automaticallyImplyLeading: false,
       centerTitle: false,
       title: Row(

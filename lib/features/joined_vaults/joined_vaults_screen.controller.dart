@@ -303,7 +303,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       title: Text('join_shared_vault'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),

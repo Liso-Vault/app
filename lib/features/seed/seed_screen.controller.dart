@@ -132,7 +132,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: const Text('Enter Your Seed'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,

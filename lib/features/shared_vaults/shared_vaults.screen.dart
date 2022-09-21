@@ -121,7 +121,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
         Get.dialog(AlertDialog(
           title: Text(vault.name),
-          content: Utils.isDrawerExpandable
+          content: Utils.isSmallScreen
               ? content
               : SizedBox(width: 450, child: content),
           actions: [

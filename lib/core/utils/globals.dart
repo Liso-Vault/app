@@ -26,8 +26,6 @@ const kVaultFileName = 'vault.$kVaultExtension';
 const kMinWindowSize = Size(400, 850);
 const kDesktopChangePoint = 800.0; // responsive setting
 // COLORS
-const kAppColor = Color(0xff02f297);
-const kAppColorDarker = Color(0xFF00BC74);
 // INPUT FORMATTERS
 final inputFormatterRestrictSpaces =
     FilteringTextInputFormatter.deny(RegExp(r'\s'));
@@ -57,6 +55,9 @@ bool get isPurchasesSupported => !GetPlatform.isWindows;
 
 bool get isLocalAuthSupported =>
     GetPlatform.isMobile && Persistence.to.biometrics.val;
+
+const kAppColor = Color(0xff02f297);
+const kAppColorDarker = Color(0xFF00A465);
 
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 

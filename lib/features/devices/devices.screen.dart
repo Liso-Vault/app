@@ -45,7 +45,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       final isThisDevice = device.id == Globals.metadata?.device.id;
 
       return ListTile(
-        title: Text(device.model),
+        title: Text(device.model, maxLines: 1),
         selected: isThisDevice,
         leading: Icon(isThisDevice ? Icons.check : LineIcons.laptop),
         trailing: ContextMenuButton(
@@ -54,6 +54,8 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
         ),
         subtitle: Text(
           device.id,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
           style: const TextStyle(fontSize: 12),
         ),
         onTap: () {

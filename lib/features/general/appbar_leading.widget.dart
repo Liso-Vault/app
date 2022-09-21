@@ -15,7 +15,7 @@ class AppBarLeadingButton extends StatelessWidget {
     return IconButton(
       onPressed: action ?? Get.back,
       icon: Icon(
-        Utils.isDrawerExpandable ? Iconsax.arrow_left_2 : LineIcons.times,
+        Utils.isSmallScreen ? Iconsax.arrow_left_2 : LineIcons.times,
       ),
     );
   }

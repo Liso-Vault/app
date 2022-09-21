@@ -42,7 +42,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
 
         Get.dialog(AlertDialog(
           title: const Text('Delete Category'),
-          content: Utils.isDrawerExpandable
+          content: Utils.isSmallScreen
               ? dialogContent
               : SizedBox(width: 450, child: dialogContent),
           actions: [

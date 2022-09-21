@@ -107,9 +107,8 @@ class WalletScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: const Text('Receive'),
-      content: Utils.isDrawerExpandable
-          ? content
-          : SizedBox(width: 450, child: content),
+      content:
+          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -260,7 +259,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
       title: Text('sign_text'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),

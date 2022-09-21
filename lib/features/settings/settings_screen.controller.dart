@@ -82,12 +82,19 @@ class SettingsScreenController extends GetxController
     if (mode.name == Persistence.to.theme.val) return;
     Persistence.to.theme.val = mode.name;
     theme.value = mode.name;
-    if (!Utils.isDrawerExpandable) Get.back();
     Get.changeThemeMode(mode);
     // reload items listview to refresh the backgrounds of tags
     ItemsController.to.data.clear();
     await Future.delayed(200.milliseconds);
     ItemsController.to.load();
+
+    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+      MainScreenController.to.window.setBrightness(
+        mode == ThemeMode.dark ? Brightness.dark : Brightness.light,
+      );
+    }
+
+    if (!Utils.isSmallScreen) Get.back();
   }
 
   void exportWallet() async {

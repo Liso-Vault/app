@@ -263,6 +263,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   void done() async {
     await ItemsController.to.load();
-    if (Utils.isDrawerExpandable) Get.back();
+    if (Utils.isSmallScreen) Get.back();
   }
 }

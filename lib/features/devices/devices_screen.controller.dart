@@ -105,7 +105,7 @@ class DevicesScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: Text('unsync_device'.tr),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,

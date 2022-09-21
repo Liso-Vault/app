@@ -95,20 +95,27 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (p.syncProvider.val != LisoSyncProvider.custom.name) ...[
-              Image.asset(image!, height: 100),
+              Image.asset(image!, height: 150),
               const SizedBox(height: 20),
               Text(
                 name!,
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 30),
+                style: const TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                description!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: Colors.grey),
+              const SizedBox(height: 15),
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: Text(
+                  description!,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 15),
+                ),
               ),
-              TextButton(
+              const SizedBox(height: 15),
+              OutlinedButton(
                 onPressed: () => Utils.openUrl(url!),
                 child: const Text('Learn more'),
               ),
@@ -176,6 +183,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: const Text('Sync Provider'),
         leading: const AppBarLeadingButton(),
         actions: [

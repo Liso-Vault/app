@@ -102,7 +102,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
         Get.dialog(AlertDialog(
           title: const Text('Leave Shared Vault'),
-          content: Utils.isDrawerExpandable
+          content: Utils.isSmallScreen
               ? dialogContent
               : SizedBox(
                   width: 450,

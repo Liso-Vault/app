@@ -29,11 +29,14 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Iconsax.import_1, size: 100, color: themeColor),
+            Icon(Iconsax.import_1, size: 150, color: themeColor),
             const SizedBox(height: 20),
             Text(
               'restore_vault'.tr,
-              style: const TextStyle(fontSize: 20),
+              style: const TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 5),
             const Text(
@@ -52,35 +55,34 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                     iconData: Iconsax.cloud,
                   ),
                   RestoreMode.file: const SegmentedControlItem(
-                    text: 'Liso File',
+                    text: 'Vault File',
                     iconData: Iconsax.document_code,
                   ),
                 },
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 30),
             Obx(() {
               if (controller.restoreMode.value == RestoreMode.file) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: TextFormField(
-                        controller: controller.filePathController,
-                        validator: (text) =>
-                            text!.isEmpty ? 'Import your vault file' : null,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: const InputDecoration(
-                          hintText:
-                              'Path to your <vault>.$kVaultExtension file',
-                          label: Text('Vault File Path'),
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 20),
+                  child: TextFormField(
+                    controller: controller.filePathController,
+                    validator: (text) =>
+                        text!.isEmpty ? 'Import your vault file' : null,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    decoration: InputDecoration(
+                      hintText: 'Path to your <vault>.$kVaultExtension file',
+                      label: const Text('Vault File Path'),
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 5),
+                        child: IconButton(
+                          icon: const Icon(Iconsax.import_1),
+                          onPressed: controller.importFile,
                         ),
                       ),
                     ),
-                    IconButton(
-                      icon: const Icon(Iconsax.import_1),
-                      onPressed: controller.importFile,
-                    ),
-                  ],
+                  ),
                 );
               } else {
                 return const SizedBox.shrink();

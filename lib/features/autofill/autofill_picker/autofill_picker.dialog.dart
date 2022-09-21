@@ -74,7 +74,7 @@ class AutofillPickerDialog extends StatelessWidget {
               : 'Select Password',
         ),
       ),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? content
           : Container(
               constraints: const BoxConstraints(maxHeight: 600),

@@ -30,6 +30,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             initiallyExpanded: true,
+            // childrenPadding: EdgeInsets.zero,
             children: [
               Obx(
                 () => ListTile(

@@ -33,13 +33,15 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
         const SizedBox(height: 20),
         Text(
           ConfigService.to.appName,
-          style: const TextStyle(fontSize: 25),
+          style: const TextStyle(
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         if (!controller.passwordMode) ...[
-          TextFormField(
-            initialValue: Persistence.to.shortAddress,
-            readOnly: true,
-            textAlign: TextAlign.center,
+          const SizedBox(height: 20),
+          Text(
+            Persistence.to.shortAddress,
             style: const TextStyle(color: Colors.grey),
           ),
           // const Divider(),
@@ -59,6 +61,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
             ),
           ),
         ] else ...[
+          const SizedBox(height: 20),
           Obx(
             () => TextFormField(
               autofocus: true,

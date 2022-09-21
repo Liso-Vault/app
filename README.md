@@ -56,22 +56,22 @@
 Liso is not just a secure vault but also a great password manager and 2FA authenticator in one.
 
 Features:
-◆ Military-grade AES-256 Bit encryption
-◆ Air-gapped / Offline mode
-◆ Securely sync to multiple devices
-◆ Self-hostable for 100% control
-◆ Fingerprint/Face biometric authentication
-◆ 2FA/MFA Authenticator
-◆ Monitor weak passwords
-◆ Password-protect items
-◆ Protect your files with the built-in encryption tool
-◆ Generate strong passwords
-◆ Free private cloud storage for any file types
-◆ Private photo and video storage with encryption
-◆ Fill forms quickly with Auto Fill
-◆ Also available for desktop, tablets, and mobile devices on other platforms
-◆ Migrate from Bitwarden, LastPass, Chrome, Safari, and other browsers
-◆ Powered by modern & secure Web3 technologies
+- Military-grade AES-256 Bit encryption
+- Air-gapped / Offline mode
+- Securely sync to multiple devices
+- Self-hostable for 100% control
+- Fingerprint/Face biometric authentication
+- 2FA/MFA Authenticator
+- Monitor weak passwords
+- Password-protect items
+- Protect your files with the built-in encryption tool
+- Generate strong passwords
+- Free private cloud storage for any file types
+- Private photo and video storage with encryption
+- Fill forms quickly with Auto Fill
+- Also available for desktop, tablets, and mobile devices on other platforms
+- Migrate from Bitwarden, LastPass, Chrome, Safari, and other browsers
+- Powered by modern & secure Web3 technologies
 
 Learn more: https://liso.dev
 

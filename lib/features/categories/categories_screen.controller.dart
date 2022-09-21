@@ -169,9 +169,8 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: Text('${createMode ? 'new' : 'update'}_category'.tr),
-      content: Utils.isDrawerExpandable
-          ? content
-          : SizedBox(width: 450, child: content),
+      content:
+          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,

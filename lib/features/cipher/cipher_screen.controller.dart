@@ -265,7 +265,7 @@ class CipherScreenController extends GetxController
       title: Text('encrypt_text'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),
@@ -318,7 +318,7 @@ class CipherScreenController extends GetxController
       title: Text('decrypt_text'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),

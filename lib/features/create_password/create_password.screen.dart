@@ -24,11 +24,14 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LineIcon(Iconsax.password_check, size: 100, color: themeColor),
+          LineIcon(Iconsax.password_check, size: 150, color: themeColor),
           const SizedBox(height: 20),
           Text(
             'master_password'.tr,
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           const SizedBox(height: 15),
           const Text(
@@ -36,7 +39,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
             style: TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
-          const Divider(),
+          const SizedBox(height: 20),
           Obx(
             () => TextFormField(
               autofocus: true,
@@ -62,7 +65,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           Obx(
             () => TextFormField(
               controller: controller.passwordConfirmController,
@@ -88,7 +91,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 15),
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -100,7 +103,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
                   icon: const Icon(Iconsax.arrow_circle_right),
                 ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 15),
               TextButton.icon(
                 onPressed: controller.generate,
                 label: Text('generate'.tr),

@@ -117,7 +117,7 @@ class CustomSyncProviderScreenController extends GetxController
 
       Get.dialog(AlertDialog(
         title: const Text('Connection Success'),
-        content: Utils.isDrawerExpandable
+        content: Utils.isSmallScreen
             ? dialogContent
             : const SizedBox(width: 450, child: dialogContent),
         actions: [

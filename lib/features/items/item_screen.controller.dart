@@ -86,7 +86,7 @@ class ItemScreenController extends GetxController
   // GETTERS
 
   List<HiveLisoField> get parseFields => widgets.map((e) {
-        final formWidget = (e as dynamic).children.first.child;
+        final formWidget = (e as dynamic).children.first.child.child;
         final field = formWidget.field as HiveLisoField;
 
         if (formWidget?.value is Map<String, dynamic>) {
@@ -178,7 +178,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Text Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -192,7 +200,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'TextArea Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -206,7 +222,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Password Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -220,7 +244,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Phone Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -234,7 +266,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'PIN Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -248,7 +288,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'TOTP Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -262,7 +310,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'URL Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -276,7 +332,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Date Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -290,7 +354,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Email Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -304,7 +376,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Number Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -318,7 +398,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Passport Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -334,7 +422,15 @@ class ItemScreenController extends GetxController
               ),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -348,7 +444,15 @@ class ItemScreenController extends GetxController
               data: HiveLisoFieldData(label: 'Address Field'),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
         ContextMenuItem(
@@ -364,7 +468,15 @@ class ItemScreenController extends GetxController
               ),
             );
 
-            widgets.add(_buildFieldWidget(field.widget, widgets.length));
+            widgets.add(
+              _buildFieldWidget(
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: field.widget,
+                ),
+                widgets.length,
+              ),
+            );
           },
         ),
       ];
@@ -694,6 +806,7 @@ class ItemScreenController extends GetxController
                 Section(text: field.data.label!),
                 // STREET 1
                 if (street1.isNotEmpty) ...[
+                  const SizedBox(height: 15),
                   GestureDetector(
                     onSecondaryTap: () => Utils.copyToClipboard(street1),
                     child: InkWell(
@@ -709,6 +822,7 @@ class ItemScreenController extends GetxController
                   ),
                 ],
                 if (street2.isNotEmpty) ...[
+                  const SizedBox(height: 15),
                   GestureDetector(
                     onSecondaryTap: () => Utils.copyToClipboard(street2),
                     child: InkWell(
@@ -724,6 +838,7 @@ class ItemScreenController extends GetxController
                   ),
                 ],
                 if (city.isNotEmpty) ...[
+                  const SizedBox(height: 15),
                   GestureDetector(
                     onSecondaryTap: () => Utils.copyToClipboard(city),
                     child: InkWell(
@@ -739,6 +854,7 @@ class ItemScreenController extends GetxController
                   ),
                 ],
                 if (state.isNotEmpty) ...[
+                  const SizedBox(height: 15),
                   GestureDetector(
                     onSecondaryTap: () => Utils.copyToClipboard(state),
                     child: InkWell(
@@ -754,6 +870,7 @@ class ItemScreenController extends GetxController
                   ),
                 ],
                 if (zip.isNotEmpty) ...[
+                  const SizedBox(height: 15),
                   GestureDetector(
                     onSecondaryTap: () => Utils.copyToClipboard(zip),
                     child: InkWell(
@@ -769,6 +886,7 @@ class ItemScreenController extends GetxController
                   ),
                 ],
                 if (country.isNotEmpty) ...[
+                  const SizedBox(height: 15),
                   GestureDetector(
                     onSecondaryTap: () => Utils.copyToClipboard(country),
                     child: InkWell(
@@ -832,6 +950,11 @@ class ItemScreenController extends GetxController
             );
           }
         }
+
+        widget = Padding(
+          padding: const EdgeInsets.only(top: 15),
+          child: widget,
+        );
 
         return _buildFieldWidget(widget, e.key);
       },
@@ -1004,7 +1127,7 @@ class ItemScreenController extends GetxController
       title: const Text('Custom Icon'),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),
@@ -1048,7 +1171,7 @@ class ItemScreenController extends GetxController
 
       await Get.dialog(AlertDialog(
         title: const Text('Unsaved Changes'),
-        content: Utils.isDrawerExpandable
+        content: Utils.isSmallScreen
             ? dialogContent
             : const SizedBox(width: 450, child: dialogContent),
         actions: [
@@ -1115,7 +1238,7 @@ class ItemScreenController extends GetxController
       title: const Text('Field Properties'),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),

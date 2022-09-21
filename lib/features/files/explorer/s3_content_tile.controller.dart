@@ -57,7 +57,7 @@ class S3ContentTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Share Securely'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -95,7 +95,7 @@ class S3ContentTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: Text("${'restore'.tr} Backup"),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? content
           : SizedBox(
               width: 450,
@@ -212,7 +212,7 @@ class S3ContentTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: Text('delete'.tr),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,
@@ -236,7 +236,7 @@ class S3ContentTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Download'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
       actions: [

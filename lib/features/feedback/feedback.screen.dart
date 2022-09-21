@@ -23,6 +23,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 20),
               DropdownButtonFormField<String>(
                 value: controller.feedbackType,
                 onChanged: (value) => controller.feedbackType = value!,
@@ -42,6 +43,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
               TextFormField(
                 autofocus: true,
                 controller: controller.textController,

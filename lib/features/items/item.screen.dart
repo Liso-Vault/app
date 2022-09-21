@@ -87,7 +87,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           ),
         ],
       ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 15),
       Obx(
         () => Visibility(
           visible: !controller.editMode.value &&
@@ -116,7 +116,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                       const SizedBox(
                         width: 30,
                         height: 30,
-                        child: CircularProgressIndicator(strokeWidth: 2),
+                        child: CircularProgressIndicator(strokeWidth: 3),
                       ),
                       Text(
                         controller.otpRemainingSeconds.value.toString(),
@@ -243,6 +243,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           ),
         ),
       ),
+      const SizedBox(height: 20),
       Obx(
         () {
           final dropdownRefresher = Get.put(WidgetRefresherController());
@@ -291,7 +292,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           );
         },
       ),
-      const SizedBox(height: 10),
+      const SizedBox(height: 20),
       Obx(
         () => DropdownButtonFormField<HiveLisoCategory>(
           isExpanded: true,
@@ -313,22 +314,21 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       const SizedBox(height: 10),
       ObxValue(
         (RxBool data) => CheckboxListTile(
+          checkboxShape: const CircleBorder(),
           title: Text('favorite'.tr),
           value: data(),
           onChanged:
               controller.editMode.value ? (value) => data.value = value! : null,
-          activeColor: Colors.pink,
-          contentPadding: EdgeInsets.zero,
         ),
         controller.favorite,
       ),
       ObxValue(
         (RxBool data) => CheckboxListTile(
+          checkboxShape: const CircleBorder(),
           title: Text('protected'.tr),
           value: data(),
           onChanged:
               controller.editMode.value ? controller.onProtectedChanged : null,
-          contentPadding: EdgeInsets.zero,
         ),
         controller.protected,
       ),
@@ -365,11 +365,11 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           if (await controller.canPop()) Get.back();
         },
         icon: Icon(
-          Utils.isDrawerExpandable ? Iconsax.arrow_left_2 : LineIcons.times,
+          Utils.isSmallScreen ? Iconsax.arrow_left_2 : LineIcons.times,
         ),
       ),
       actions: [
-        if (!Utils.isDrawerExpandable) ...[
+        if (!Utils.isSmallScreen) ...[
           Obx(
             () => Visibility(
               visible: controller.editMode.value,
@@ -423,14 +423,14 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: items.length,
-        padding: const EdgeInsets.only(left: 30, right: 15),
+        padding: const EdgeInsets.all(20),
         itemBuilder: (context, index) => items[index],
       ),
     );
 
     final scaffold = Scaffold(
       appBar: appBar,
-      floatingActionButton: Utils.isDrawerExpandable ? fab : null,
+      floatingActionButton: Utils.isSmallScreen ? fab : null,
       // grey disabled fields
       body: Theme(
         data: Get.theme.copyWith(disabledColor: Colors.grey),

@@ -38,7 +38,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     );
 
     // if mobile / small screen
-    if (Utils.isDrawerExpandable && sheetForSmallScreen) {
+    if (Utils.isSmallScreen && sheetForSmallScreen) {
       return InkWell(
         onTap: enabled
             ? () => ContextMenuSheet(
@@ -50,7 +50,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       );
     }
     // if large screen
-    else if (!Utils.isDrawerExpandable && gridForLargeScreen) {
+    else if (!Utils.isSmallScreen && gridForLargeScreen) {
       return InkWell(
         onTap: enabled
             ? () => Utils.adaptiveRouteOpen(name: Routes.categoryPicker)
@@ -91,7 +91,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       },
     ).toList();
 
-    if (!useMouseRegion || Utils.isDrawerExpandable) {
+    if (!useMouseRegion || Utils.isSmallScreen) {
       return PopupMenuButton(
         onSelected: (ContextMenuItem menu) => menu.onSelected?.call(),
         itemBuilder: (context) => popupItems,

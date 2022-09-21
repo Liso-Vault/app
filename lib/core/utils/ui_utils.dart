@@ -25,7 +25,7 @@ class UIUtils {
       shouldIconPulse: true,
       margin: const EdgeInsets.all(8),
       snackPosition:
-          Utils.isDrawerExpandable ? SnackPosition.BOTTOM : SnackPosition.TOP,
+          Utils.isSmallScreen ? SnackPosition.BOTTOM : SnackPosition.TOP,
     );
   }
 
@@ -41,7 +41,7 @@ class UIUtils {
     await Get.dialog(
       AlertDialog(
         title: Text(title),
-        content: Utils.isDrawerExpandable
+        content: Utils.isSmallScreen
             ? content
             : Container(
                 constraints: const BoxConstraints(maxHeight: 600),
@@ -125,7 +125,7 @@ class UIUtils {
       AlertDialog(
         title: null,
         actionsAlignment: MainAxisAlignment.center,
-        content: Utils.isDrawerExpandable
+        content: Utils.isSmallScreen
             ? bodyContent
             : SizedBox(width: 400, child: bodyContent),
       ),
@@ -164,7 +164,7 @@ class UIUtils {
         title,
         textAlign: TextAlign.center,
       ),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? content
           : Container(
               constraints: const BoxConstraints(maxHeight: 600),

@@ -22,12 +22,13 @@ class App extends StatelessWidget {
       fabUseShape: false,
       thinBorderWidth: 0.2,
       thickBorderWidth: 0.5,
-      inputDecoratorUnfocusedHasBorder: true,
-      inputDecoratorIsFilled: false,
-      inputDecoratorRadius: 5,
-      inputDecoratorBorderType: FlexInputBorderType.underline,
-      inputDecoratorUnfocusedBorderIsColored: false,
+      inputDecoratorRadius: 15,
+      inputDecoratorUnfocusedHasBorder: false,
+      popupMenuRadius: 15,
+      dialogRadius: 10,
     );
+
+    const scheme = FlexScheme.jungle;
 
     // MATERIAL APP
     return GetMaterialApp(
@@ -48,31 +49,21 @@ class App extends StatelessWidget {
       initialRoute: Routes.main,
       getPages: AppPages.routes,
       defaultTransition: Transition.native,
-      // transitionDuration: 200.milliseconds,
-      // THEME MODE
       themeMode: ThemeMode.values.byName(persistence.theme.val),
       // DARK THEME
       darkTheme: FlexColorScheme.dark(
-        fontFamily: 'Lato',
-        scheme: FlexScheme.green,
+        scheme: scheme,
         colors: FlexSchemeColor.from(primary: kAppColor),
-        visualDensity: VisualDensity.compact,
-        appBarElevation: 0.3,
         subThemesData: subThemes,
-        onSurface: Colors.grey.shade500, // popupmenu background color
-        scaffoldBackground: const Color(0xFF161616),
         background: const Color(0xFF1C1C1C), // drawer background color
       ).toTheme,
       // LIGHT THEME
       theme: FlexColorScheme.light(
-        fontFamily: 'Lato',
-        scheme: FlexScheme.green,
-        colors: FlexSchemeColor.from(primary: kAppColorDarker),
+        scheme: scheme,
+        colors: FlexSchemeColor.from(primary: const Color(0xFF00A465)),
+        appBarElevation: GetPlatform.isDesktop ? 0 : 2.0,
         appBarStyle: FlexAppBarStyle.background,
-        appBarElevation: 0.3,
-        visualDensity: VisualDensity.compact,
         subThemesData: subThemes,
-        onPrimary: Colors.white, // button text color
       ).toTheme,
       // UNKNOWN ROUTE FALLBACK SCREEN
       unknownRoute: GetPage(

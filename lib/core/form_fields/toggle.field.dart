@@ -55,7 +55,7 @@ class _ToggleFieldFormState extends State<ToggleFieldForm> {
           child: SwitchListTile(
             value: widget.field.data.value == 'true',
             title: Text(widget.field.data.label!),
-            contentPadding: EdgeInsets.zero,
+            // contentPadding: EdgeInsets.zero,
             onChanged: (value) {
               setState(() {
                 widget.field.data.value = value.toString();

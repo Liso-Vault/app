@@ -66,6 +66,8 @@ class MainScreenController extends GetxController
   final importedItemIds = <String>[].obs;
 
   // GETTERS
+  WindowManager get window => windowManager;
+
   List<ContextMenuItem> get menuItems {
     return [
       if (persistence.sync.val) ...[
@@ -170,8 +172,8 @@ class MainScreenController extends GetxController
   @override
   void onInit() async {
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
-      windowManager.addListener(this);
-      windowManager.setPreventClose(true);
+      window.addListener(this);
+      window.setPreventClose(true);
     }
 
     console.info('onInit');
@@ -180,6 +182,12 @@ class MainScreenController extends GetxController
 
   @override
   void onReady() {
+    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+      window.setBrightness(
+        Get.isDarkMode ? Brightness.dark : Brightness.light,
+      );
+    }
+
     _initAppLifeCycleEvents();
     console.info('onReady');
     super.onReady();
@@ -188,7 +196,7 @@ class MainScreenController extends GetxController
   @override
   void onClose() {
     if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
-      windowManager.removeListener(this);
+      window.removeListener(this);
     }
 
     super.onClose();
@@ -196,13 +204,13 @@ class MainScreenController extends GetxController
 
   @override
   void onWindowClose() async {
-    bool preventClosing = await windowManager.isPreventClose();
+    bool preventClosing = await window.isPreventClose();
     final confirmClose = !Get.isDialogOpen! &&
         preventClosing &&
         persistence.changes.val > 0 &&
         persistence.sync.val;
 
-    if (!confirmClose) return windowManager.destroy();
+    if (!confirmClose) return window.destroy();
 
     final content = Text(
       'There are ${persistence.changes.val} unsynced changes you may want to sync first before exiting.',
@@ -210,9 +218,8 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Unsynced Changes'),
-      content: Utils.isDrawerExpandable
-          ? content
-          : SizedBox(width: 450, child: content),
+      content:
+          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -221,7 +228,7 @@ class MainScreenController extends GetxController
         TextButton(
           child: const Text('Force Close'),
           onPressed: () {
-            if (GetPlatform.isDesktop) windowManager.destroy();
+            if (GetPlatform.isDesktop) window.destroy();
           },
         ),
       ],
@@ -232,7 +239,7 @@ class MainScreenController extends GetxController
 
   @override
   void onWindowResized() async {
-    final size = await windowManager.getSize();
+    final size = await window.getSize();
     persistence.windowWidth.val = size.width;
     persistence.windowHeight.val = size.height;
     console.warning('window resized: $size');
@@ -327,6 +334,7 @@ class MainScreenController extends GetxController
 
       // RESUMED
       if (msg == AppLifecycleState.resumed.toString()) {
+        if (lastInactiveTime == null) return Future.value(msg);
         final expirationTime = lastInactiveTime!.add(timeLockDuration);
 
         console.wtf(
@@ -377,7 +385,7 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Empty Trash'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -412,7 +420,7 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Empty Deleted'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -466,7 +474,7 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Imported Items'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [

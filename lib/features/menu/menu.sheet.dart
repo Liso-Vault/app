@@ -30,7 +30,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
       final item = contextItems[index];
 
       final tile = ListTile(
-        iconColor: themeColor,
+        // iconColor: themeColor,
         title: Text(item.title),
         leading: item.leading,
         trailing: item.trailing,

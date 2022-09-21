@@ -278,7 +278,7 @@ class S3ExplorerScreenController extends GetxController
       title: Text('new_folder'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),

@@ -198,7 +198,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
                 Text(
-                  Utils.isDrawerExpandable
+                  Utils.isSmallScreen
                       ? Persistence.to.shortAddress
                       : Persistence.to.walletAddress.val,
                   overflow: TextOverflow.ellipsis,

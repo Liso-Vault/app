@@ -30,11 +30,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
+        const SizedBox(height: 20),
         ListTile(
-          leading: RemoteImage(
-            url: config.general.app.image,
+          leading: Image.asset(
+            Images.logo,
             height: 20,
-            placeholder: Image.asset(Images.logo, height: 20),
+            color: themeColor,
           ),
           title: Text(
             '${config.appName} ${Globals.metadata?.app.formattedVersion}',
@@ -163,6 +164,21 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () {},
           ),
+        ),
+        const Divider(),
+        ListTile(
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: RemoteImage(
+              url: 'https://i.imgur.com/4vTQ7Fg.png',
+              width: 20,
+              placeholder: Image.asset(Images.logo, height: 20),
+            ),
+          ),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: const Text('NexSnap - Screenshot Designer'),
+          subtitle: const Text('Another app from us'),
+          onTap: () => Utils.openUrl('https://nexsnap.app'),
         ),
         const SizedBox(height: 50),
       ],

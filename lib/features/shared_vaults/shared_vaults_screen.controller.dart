@@ -287,7 +287,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       title: Text('${createMode ? 'New' : 'Update'} Shared Vault'),
       content: Form(
         key: formKey,
-        child: Utils.isDrawerExpandable
+        child: Utils.isSmallScreen
             ? content
             : SizedBox(width: 450, child: content),
       ),
@@ -347,7 +347,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: Text('Delete ${object_.name}'),
-      content: Utils.isDrawerExpandable
+      content: Utils.isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,

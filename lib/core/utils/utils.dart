@@ -27,7 +27,7 @@ class Utils {
   static final console = Console(name: 'Utils');
 
   // GETTERS
-  static bool get isDrawerExpandable =>
+  static bool get isSmallScreen =>
       Get.mediaQuery.size.width < kDesktopChangePoint;
 
   // FUNCTIONS
@@ -85,52 +85,75 @@ class Utils {
 
     if (category == LisoItemCategory.cryptoWallet.name) {
       iconData = Iconsax.wallet;
+      color = Colors.redAccent;
     } else if (category == LisoItemCategory.login.name) {
       iconData = Iconsax.login;
+      color = Colors.blueAccent;
     } else if (category == LisoItemCategory.password.name) {
       iconData = Iconsax.password_check;
+      color = Colors.teal;
     } else if (category == LisoItemCategory.identity.name) {
       iconData = Iconsax.user;
+      color = Colors.purpleAccent;
     } else if (category == LisoItemCategory.note.name) {
       iconData = Iconsax.note_text;
+      color = Colors.pinkAccent;
     } else if (category == LisoItemCategory.insurance.name) {
       iconData = Iconsax.shield_tick;
+      color = Colors.pinkAccent;
     } else if (category == LisoItemCategory.healthInsurance.name) {
       iconData = Iconsax.health;
+      color = Colors.pink;
     } else if (category == LisoItemCategory.cashCard.name) {
       iconData = Iconsax.card;
+      color = Colors.deepOrange;
     } else if (category == LisoItemCategory.bankAccount.name) {
       iconData = Iconsax.bank;
+      color = Colors.amberAccent;
     } else if (category == LisoItemCategory.medicalRecord.name) {
       iconData = Iconsax.health;
+      color = Colors.red;
     } else if (category == LisoItemCategory.passport.name) {
       iconData = Iconsax.airplane_square;
+      color = Colors.purple;
     } else if (category == LisoItemCategory.server.name) {
       iconData = Iconsax.cloud;
+      color = Colors.blueAccent;
     } else if (category == LisoItemCategory.softwareLicense.name) {
       iconData = Iconsax.code_1;
+      color = Colors.indigoAccent;
     } else if (category == LisoItemCategory.apiCredential.name) {
       iconData = Iconsax.code;
+      color = Colors.lime;
     } else if (category == LisoItemCategory.database.name) {
       iconData = Iconsax.document;
+      color = Colors.orangeAccent;
     } else if (category == LisoItemCategory.driversLicense.name) {
       iconData = Iconsax.car;
+      color = Colors.teal;
     } else if (category == LisoItemCategory.email.name) {
       iconData = Iconsax.message;
+      color = Colors.green;
     } else if (category == LisoItemCategory.membership.name) {
       iconData = Iconsax.personalcard;
+      color = Colors.red;
     } else if (category == LisoItemCategory.outdoorLicense.name) {
       iconData = Iconsax.activity;
+      color = Colors.pink;
     } else if (category == LisoItemCategory.rewardsProgram.name) {
       iconData = Iconsax.award;
+      color = Colors.amber;
     } else if (category == LisoItemCategory.socialSecurity.name) {
       iconData = Iconsax.security_card;
+      color = Colors.blue;
     } else if (category == LisoItemCategory.wirelessRouter.name) {
       iconData = Iconsax.home_wifi;
+      color = Colors.green;
     } else if (category == LisoItemCategory.encryption.name) {
       iconData = Iconsax.key;
     } else if (category == LisoItemCategory.otp.name) {
       iconData = LineIcons.mobilePhone;
+      color = Colors.deepPurple;
     } else if (category == LisoItemCategory.custom.name) {
       iconData = Iconsax.category;
     } else {
@@ -147,7 +170,7 @@ class Utils {
     dynamic arguments,
   }) {
     // Regular navigation for mobile
-    if (isDrawerExpandable) {
+    if (isSmallScreen) {
       switch (method) {
         case 'toNamed':
           return Get.toNamed(

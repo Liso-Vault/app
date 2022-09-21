@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
@@ -12,7 +11,6 @@ import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
@@ -20,12 +18,12 @@ import '../app/routes.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../files/s3.service.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../groups/groups.controller.dart';
 import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import '../pro/pro.controller.dart';
-import '../files/s3.service.dart';
 import '../shared_vaults/model/shared_vault.model.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'main_screen.controller.dart';
@@ -63,12 +61,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     final listView = Obx(
-      () => ListView.builder(
+      () => ListView.separated(
+        separatorBuilder: (context, index) => const Divider(height: 0),
         shrinkWrap: true,
         itemCount: itemsController.data.length,
         itemBuilder: (_, index) => ItemTile(itemsController.data[index]),
         physics: const AlwaysScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.symmetric(vertical: 20),
       ),
     );
 
@@ -216,14 +215,12 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     right: 15,
                   ),
                   child: ListTile(
-                    iconColor: kAppColor,
-                    // dense: Utils.isDrawerExpandable,
                     contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                     selectedTileColor: themeColor.withOpacity(0.05),
                     // TODO: localize
                     title: const Text(
                       "Backup Your Seed Phrase",
-                      style: TextStyle(color: kAppColor),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: const Text(
                       "This is the only key to access and decrypt your vault",
@@ -248,15 +245,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                       right: 15,
                     ),
                     child: ListTile(
-                      iconColor: kAppColor,
-                      // dense: Utils.isDrawerExpandable,
                       contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                       selectedTileColor: themeColor.withOpacity(0.05),
                       // TODO: localize
-                      title: const Text(
-                        "Recently Imported Items",
-                        style: TextStyle(color: kAppColor),
-                      ),
+                      title: const Text("Recently Imported Items"),
                       subtitle: const Text(
                         "Are you satisfied with the recent import? If not, you can undo your changes.",
                       ),
@@ -270,41 +262,37 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 ),
               ),
               // show only when seed is already backed up to not overcrowd
-              Obx(
-                () => Visibility(
-                  visible: LisoAutofillService.to.supported.value &&
-                      !LisoAutofillService.to.enabled.value &&
-                      p.backedUpSeed.val,
-                  child: Card(
-                    elevation: 2.0,
-                    margin: const EdgeInsets.only(
-                      top: 5,
-                      bottom: 5,
-                      left: 15,
-                      right: 15,
-                    ),
-                    child: ListTile(
-                      iconColor: kAppColor,
-                      // dense: Utils.isDrawerExpandable,
-                      contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                      selectedTileColor: themeColor.withOpacity(0.05),
-                      // TODO: localize
-                      title: Text(
-                        "Enable ${ConfigService.to.appName} Autofill Service",
-                        style: const TextStyle(color: kAppColor),
-                      ),
-                      subtitle: Text(
-                        "Automatically fill and save forms with ${ConfigService.to.appName} Autofill Service",
-                      ),
-                      // leading: const Icon(Iconsax.key),
-                      trailing: OutlinedButton(
-                        onPressed: LisoAutofillService.to.set,
-                        child: const Text('Enable'),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // Obx(
+              //   () => Visibility(
+              //     visible: LisoAutofillService.to.supported.value &&
+              //         !LisoAutofillService.to.enabled.value &&
+              //         p.backedUpSeed.val,
+              //     child: Card(
+              //       elevation: 2.0,
+              //       margin: const EdgeInsets.only(
+              //         top: 5,
+              //         bottom: 5,
+              //         left: 15,
+              //         right: 15,
+              //       ),
+              //       child: ListTile(
+              //         contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              //         selectedTileColor: themeColor.withOpacity(0.05),
+              //         // TODO: localize
+              //         title: Text(
+              //             "Enable ${ConfigService.to.appName} Autofill Service"),
+              //         subtitle: Text(
+              //           "Automatically fill and save forms with ${ConfigService.to.appName} Autofill Service",
+              //         ),
+              //         // leading: const Icon(Iconsax.key),
+              //         trailing: OutlinedButton(
+              //           onPressed: LisoAutofillService.to.set,
+              //           child: const Text('Enable'),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -312,7 +300,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: const EdgeInsets.all(7),
+            padding: const EdgeInsets.only(left: 20, bottom: 10, top: 10),
             child: filters,
           ),
         ),
@@ -499,13 +487,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    flex: Utils.isDrawerExpandable ? 1 : 0,
+                    flex: Utils.isSmallScreen ? 1 : 0,
                     child: Text(
                       drawerController.filterGroupLabel,
                       overflow: TextOverflow.fade,
                       style: const TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
@@ -524,7 +512,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       title: appBarTitle,
       automaticallyImplyLeading: !Globals.isAutofill,
       actions: appBarActions,
-      leading: Globals.isAutofill
+      leading: Globals.isAutofill || !Utils.isSmallScreen
           ? null
           : IconButton(
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
