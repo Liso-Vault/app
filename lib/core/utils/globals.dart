@@ -132,9 +132,9 @@ enum LisoItemCategory {
 
 enum LisoSyncProvider {
   sia,
-  ipfs,
-  storj,
-  skynet,
+  // ipfs,
+  // storj,
+  // skynet,
   custom,
 }
 

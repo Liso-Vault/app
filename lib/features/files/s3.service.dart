@@ -75,7 +75,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
   void init() {
     try {
-      if (persistence.syncProvider.val == LisoSyncProvider.custom.name) {
+      if (persistence.newSyncProvider == LisoSyncProvider.custom.name) {
         // CUSTOM SYNC PROVIDER
         client = Minio(
           endPoint: persistence.s3Endpoint.val,

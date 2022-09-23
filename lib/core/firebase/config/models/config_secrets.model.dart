@@ -109,10 +109,10 @@ class ConfigSecretsS3 {
   String toJsonString() => jsonEncode(toJson());
 
   String get preferredBucket {
-    if (Persistence.to.syncProvider.val == LisoSyncProvider.custom.name) {
+    if (Persistence.to.newSyncProvider == LisoSyncProvider.custom.name) {
       return Persistence.to.s3Bucket.val;
     } else {
-      return 'liso-${Persistence.to.syncProvider.val}';
+      return 'liso-${Persistence.to.newSyncProvider}';
     }
   }
 }

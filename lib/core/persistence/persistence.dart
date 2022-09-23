@@ -72,6 +72,10 @@ class Persistence extends GetxController with ConsoleMixin {
 
   // GETTERS
 
+  String get newSyncProvider => syncProvider.val == LisoSyncProvider.custom.name
+      ? LisoSyncProvider.custom.name
+      : LisoSyncProvider.sia.name;
+
   // from the first 32 bits of the signature
   Uint8List get cipherKey {
     if (walletSignature.val.isEmpty) {

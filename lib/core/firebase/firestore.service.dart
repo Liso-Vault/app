@@ -204,7 +204,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
       settings: FirebaseUserSettings(
         sync: persistence.sync.val,
         theme: persistence.theme.val,
-        syncProvider: persistence.syncProvider.val,
+        syncProvider: persistence.newSyncProvider,
         biometrics: persistence.biometrics.val,
         analytics: persistence.analytics.val,
         crashReporting: persistence.crashReporting.val,

@@ -84,7 +84,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
     final content = SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: PersistenceBuilder(builder: (p, context) {
-        final provider = providersMap[p.syncProvider.val];
+        final provider = providersMap[p.newSyncProvider];
 
         final name = provider?['name'];
         final description = provider?['description'];
@@ -94,7 +94,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
         return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (p.syncProvider.val != LisoSyncProvider.custom.name) ...[
+            if (p.newSyncProvider != LisoSyncProvider.custom.name) ...[
               Image.asset(image!, height: 150),
               const SizedBox(height: 20),
               Text(
@@ -145,7 +145,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
               title: const Text('Sia'),
               secondary: Image.asset(Images.sia, height: 25),
               value: LisoSyncProvider.sia,
-              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.newSyncProvider),
               onChanged: _switchProvider,
             ),
             // RadioListTile<LisoSyncProvider>(
@@ -173,7 +173,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
               title: const Text('Custom'),
               secondary: const Icon(Iconsax.setting_2),
               value: LisoSyncProvider.custom,
-              groupValue: LisoSyncProvider.values.byName(p.syncProvider.val),
+              groupValue: LisoSyncProvider.values.byName(p.newSyncProvider),
               onChanged: _switchProvider,
             ),
           ],
