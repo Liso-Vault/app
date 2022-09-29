@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/core/firebase/functions.service.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/files/s3.service.dart';
 import 'package:secrets/secrets.dart';
 
@@ -32,6 +33,7 @@ class ConfigService extends GetxService with ConsoleMixin {
   FirebaseRemoteConfig get instance => FirebaseRemoteConfig.instance;
   String get appName => general.app.name;
   String get devName => general.developer.name;
+  bool get isReady => secrets.supabase.url.isNotEmpty;
 
   // INIT
 
@@ -54,7 +56,6 @@ class ConfigService extends GetxService with ConsoleMixin {
 
   Future<void> fetchFromFunctions() async {
     console.info('fetching...');
-
     final result = await FunctionsService.to.getRemoteConfig();
 
     result.fold(
@@ -67,6 +68,9 @@ class ConfigService extends GetxService with ConsoleMixin {
         users = root.parameters.usersConfig;
         general = root.parameters.generalConfig;
         appDomains = root.parameters.appDomainsConfig;
+
+        // cache
+        SecretPersistence.to.configSecrets.val = jsonEncode(secrets.toJson());
 
         console.wtf('remote config from functions synced');
         // re-init s3 minio client
@@ -93,8 +97,11 @@ class ConfigService extends GetxService with ConsoleMixin {
         ? Secrets.configs.app
         : jsonDecode(instance.getString('app_config')));
 
+    // cache
     secrets = ConfigSecrets.fromJson(local
-        ? Secrets.configs.secrets
+        ? SecretPersistence.to.configSecrets.val.isEmpty
+            ? Secrets.configs.secrets
+            : jsonDecode(SecretPersistence.to.configSecrets.val)
         : jsonDecode(instance.getString('secrets_config')));
 
     web3 = ConfigWeb3.fromJson(local
@@ -116,6 +123,11 @@ class ConfigService extends GetxService with ConsoleMixin {
     appDomains = ConfigAppDomains.fromJson(local
         ? Secrets.configs.appDomains
         : jsonDecode(instance.getString('app_domains_config')));
+
+    if (!local) {
+      SecretPersistence.to.configSecrets.val =
+          instance.getString('secrets_config');
+    }
 
     console.info('populated! local: $local');
     // re-init s3 minio client

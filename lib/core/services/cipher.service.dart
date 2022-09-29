@@ -5,9 +5,9 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:path/path.dart';
 
+import '../persistence/persistence.secret.dart';
 import '../utils/globals.dart';
 
 class CipherService extends GetxService with ConsoleMixin {
@@ -17,7 +17,7 @@ class CipherService extends GetxService with ConsoleMixin {
   final iv = IV.fromLength(16);
 
   // GETTERS
-  Key get key => Key(Persistence.to.cipherKey);
+  Key get key => Key(SecretPersistence.to.cipherKey);
   Encrypter get encrypter => Encrypter(AES(key));
 
   // FUNCTIONS

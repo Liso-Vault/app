@@ -23,6 +23,7 @@ import '../../features/joined_vaults/model/member.model.dart';
 import '../../features/pro/pro.controller.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import '../hive/models/metadata/device.hive.dart';
+import '../persistence/persistence.secret.dart';
 import '../services/cipher.service.dart';
 import 'crashlytics.service.dart';
 
@@ -215,7 +216,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     );
 
     user.userId = AuthService.to.userId;
-    user.address = Persistence.to.walletAddress.val;
+    user.address = SecretPersistence.to.walletAddress.val;
     user.limits = ProController.to.limits.id;
     user.metadata = metadata;
 

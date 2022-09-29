@@ -1,15 +1,18 @@
+import 'dart:convert';
+
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/features/debug/debug_screen.controller.dart';
-import 'package:liso/features/general/appbar_leading.widget.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/globals.dart';
+import '../general/appbar_leading.widget.dart';
 import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
+import 'debug_screen.controller.dart';
 
 class DebugScreen extends StatelessWidget with ConsoleMixin {
   const DebugScreen({Key? key}) : super(key: key);
@@ -189,18 +192,14 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         //     console.warning(json);
         //   },
         // ),
-        // ListTile(
-        //   leading: Icon(Iconsax.code, color: themeColor),
-        //   title: const Text('Upgrade Screen'),
-        //   trailing: const Icon(Iconsax.arrow_right_3),
-        //   onTap: () => Utils.adaptiveRouteOpen(
-        //     name: Routes.upgrade,
-        //     parameters: {
-        //       'title': 'Title',
-        //       'body': 'Custom Message',
-        //     },
-        //   ),
-        // ),
+        ListTile(
+          leading: Icon(Iconsax.code, color: themeColor),
+          title: const Text('Generate Key'),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () {
+            console.wtf(base64Encode(Hive.generateSecureKey()));
+          },
+        ),
       ],
     );
 

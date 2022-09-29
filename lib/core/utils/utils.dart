@@ -20,6 +20,7 @@ import '../../resources/resources.dart';
 import '../firebase/auth.service.dart';
 import '../firebase/config/config.service.dart';
 import '../persistence/persistence.dart';
+import '../persistence/persistence.secret.dart';
 import 'globals.dart';
 
 class Utils {
@@ -371,7 +372,7 @@ class Utils {
     if (AuthService.to.isSignedIn) {
       body += 'Rating: $ratingEmojis$ln';
       body +=
-          'User ID: ${AuthService.to.userId}\nAddress: ${Persistence.to.walletAddress.val}$ln';
+          'User ID: ${AuthService.to.userId}\nAddress: ${SecretPersistence.to.walletAddress.val}$ln';
       body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
       body += 'Entitlement: ${ProController.to.limits.id}$ln';
       body += 'Pro: ${ProController.to.isPro}$ln';

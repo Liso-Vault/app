@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
@@ -13,6 +12,7 @@ import 'package:liso/features/wallet/transactions/transactions.screen.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
@@ -182,7 +182,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
         Row(
           children: [
             DiceBearAvatar(
-              seed: Persistence.to.walletAddress.val,
+              seed: SecretPersistence.to.walletAddress.val,
               size: 30,
             ),
             const SizedBox(width: 10),
@@ -199,8 +199,8 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 Text(
                   Utils.isSmallScreen
-                      ? Persistence.to.shortAddress
-                      : Persistence.to.walletAddress.val,
+                      ? SecretPersistence.to.shortAddress
+                      : SecretPersistence.to.walletAddress.val,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

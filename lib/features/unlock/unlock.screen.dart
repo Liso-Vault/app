@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/version.widget.dart';
 import 'package:liso/resources/resources.dart';
 
 import '../../core/firebase/config/config.service.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/remote_image.widget.dart';
@@ -41,7 +41,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
         if (!controller.passwordMode) ...[
           const SizedBox(height: 20),
           Text(
-            Persistence.to.shortAddress,
+            SecretPersistence.to.shortAddress,
             style: const TextStyle(color: Colors.grey),
           ),
           // const Divider(),

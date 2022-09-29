@@ -10,6 +10,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 
 import '../../core/hive/hive.service.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/globals.dart';
 import '../main/main_screen.controller.dart';
@@ -61,7 +62,7 @@ class UnlockScreenController extends GetxController
     }
 
     // set the password then programmatically unlock
-    passwordController.text = Persistence.to.walletPassword.val;
+    passwordController.text = SecretPersistence.to.walletPassword.val;
     // delay to show that password has been inserted
     await Future.delayed(100.milliseconds);
     unlock();
@@ -72,14 +73,14 @@ class UnlockScreenController extends GetxController
     await Get.closeCurrentSnackbar();
     change(null, status: RxStatus.loading());
 
-    if (passwordController.text != Persistence.to.walletPassword.val) {
+    if (passwordController.text != SecretPersistence.to.walletPassword.val) {
       return _wrongPassword();
     }
 
     if (!WalletService.to.isReady) {
       WalletService.to
           .initJson(
-        Persistence.to.wallet.val,
+        SecretPersistence.to.wallet.val,
         password: passwordController.text,
       )
           .then((wallet) {
@@ -104,8 +105,8 @@ class UnlockScreenController extends GetxController
 
     // temporary to migrate users prior v0.6.0
     Timer.periodic(1.seconds, (timer) async {
-      final ready = Persistence.to.walletSignature.val.isNotEmpty &&
-          Persistence.to.walletPrivateKeyHex.val.isNotEmpty;
+      final ready = SecretPersistence.to.walletSignature.val.isNotEmpty &&
+          SecretPersistence.to.walletPrivateKeyHex.val.isNotEmpty;
 
       if (ready) {
         timer.cancel();

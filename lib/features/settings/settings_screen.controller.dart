@@ -11,20 +11,21 @@ import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.service.dart';
+import 'package:liso/features/files/s3.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/files/s3.service.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/liso/liso.manager.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/services/cipher.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -113,14 +114,14 @@ class SettingsScreenController extends GetxController
     change('Exporting...', status: RxStatus.loading());
 
     final exportFileName =
-        '${Persistence.to.walletAddress.val}.wallet.$kWalletExtension';
+        '${SecretPersistence.to.walletAddress.val}.wallet.$kWalletExtension';
 
     final tempFile = File(join(
       LisoPaths.temp!.path,
       exportFileName,
     ));
 
-    await tempFile.writeAsString(Persistence.to.wallet.val);
+    await tempFile.writeAsString(SecretPersistence.to.wallet.val);
 
     if (GetPlatform.isMobile) {
       await Share.shareFiles(
@@ -181,7 +182,7 @@ class SettingsScreenController extends GetxController
       // File Name
       final dateFormat = DateFormat('MMM-dd-yyyy_hh-mm_aaa');
       final exportFileName =
-          '${Persistence.to.walletAddress.val}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
+          '${SecretPersistence.to.walletAddress.val}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
 
       // Vault Compaction
       String vaultString = await LisoManager.compactJson();
@@ -419,10 +420,10 @@ class SettingsScreenController extends GetxController
       children: [
         ListTile(
           title: const Text('Wallet Address'),
-          subtitle: Text(Persistence.to.walletAddress.val),
+          subtitle: Text(SecretPersistence.to.walletAddress.val),
           dense: true,
           onTap: () => Utils.copyToClipboard(
-            Persistence.to.walletAddress.val,
+            SecretPersistence.to.walletAddress.val,
           ),
         ),
         ListTile(

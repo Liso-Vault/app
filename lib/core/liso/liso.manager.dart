@@ -67,6 +67,7 @@ class LisoManager {
   static Future<String> compactJson() async {
     final persistenceMap = Persistence.box!.toMap();
     // exclude sensitive data
+    // TODO:xxx transfer this to the new secret persistence
     persistenceMap.remove('wallet-password');
     persistenceMap.remove('wallet-signature');
     persistenceMap.remove('wallet-private-key-hex');

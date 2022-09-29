@@ -4,14 +4,14 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/firebase/auth_desktop.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/persistence/persistence.dart' as p;
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/files/s3.service.dart';
+import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
+import '../persistence/persistence.secret.dart';
 import 'firestore.service.dart';
 
 class AuthService extends GetxService with ConsoleMixin {
@@ -102,7 +102,7 @@ class AuthService extends GetxService with ConsoleMixin {
       return console.warning('Already Signed In: $userId');
     }
 
-    final email = '${p.Persistence.to.walletAddress.val}@liso.dev';
+    final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);
 
     try {

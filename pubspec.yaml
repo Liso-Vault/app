@@ -54,6 +54,8 @@ dependencies:
   firebase_auth_platform_interface: 6.5.3
   # FIREBASE DESKTOP WORKAROUND
   firebase_dart: ^1.0.11
+  # SUPABASE
+  supabase: ^0.3.6
 
   # IO
   hive: ^2.2.3 # database

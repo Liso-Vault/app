@@ -4,18 +4,14 @@ import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
-import 'package:filesize/filesize.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
-import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
-import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/pro/pro.controller.dart';
-import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:minio/minio.dart';
 import 'package:minio/models.dart' as minio;
 import 'package:path/path.dart';
@@ -24,6 +20,7 @@ import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/liso/vault.model.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.service.dart';
 import '../groups/groups.service.dart';
@@ -35,7 +32,7 @@ class S3Service extends GetxService with ConsoleMixin {
   static S3Service get to => Get.find();
 
   // VARIABLES
-  Minio? client;
+  // Minio? client;
   bool ready = false;
   bool backedUp = false;
   final config = Get.find<ConfigService>();
@@ -60,7 +57,7 @@ class S3Service extends GetxService with ConsoleMixin {
   // GETTERS
   S3Content get lisoContent => S3Content(path: vaultPath);
 
-  String get rootPath => '${Persistence.to.walletAddress.val}/';
+  String get rootPath => '${SecretPersistence.to.walletAddress.val}/';
   String get vaultPath => join(rootPath, kVaultFileName).replaceAll('\\', '/');
   String get backupsPath => join(rootPath, 'Backups').replaceAll('\\', '/');
   String get sharedPath => join(rootPath, 'Shared').replaceAll('\\', '/');
@@ -74,38 +71,38 @@ class S3Service extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   void init() {
-    try {
-      if (persistence.newSyncProvider == LisoSyncProvider.custom.name) {
-        // CUSTOM SYNC PROVIDER
-        client = Minio(
-          endPoint: persistence.s3Endpoint.val,
-          accessKey: persistence.s3AccessKey.val,
-          secretKey: persistence.s3SecretKey.val,
-          port: int.tryParse(persistence.s3Port.val),
-          region: persistence.s3Region.val.isEmpty
-              ? null
-              : persistence.s3Region.val,
-          sessionToken: persistence.s3SessionToken.val.isEmpty
-              ? null
-              : persistence.s3SessionToken.val,
-          enableTrace: persistence.s3EnableTrace.val,
-          useSSL: persistence.s3UseSsl.val,
-        );
-      } else {
-        // DEFAULT SYNC PROVIDER
-        client = Minio(
-          endPoint: config.secrets.s3.endpoint,
-          accessKey: config.secrets.s3.key,
-          secretKey: config.secrets.s3.secret,
-        );
-      }
+    // try {
+    //   if (persistence.newSyncProvider == LisoSyncProvider.custom.name) {
+    //     // CUSTOM SYNC PROVIDER
+    //     client = Minio(
+    //       endPoint: persistence.s3Endpoint.val,
+    //       accessKey: persistence.s3AccessKey.val,
+    //       secretKey: persistence.s3SecretKey.val,
+    //       port: int.tryParse(persistence.s3Port.val),
+    //       region: persistence.s3Region.val.isEmpty
+    //           ? null
+    //           : persistence.s3Region.val,
+    //       sessionToken: persistence.s3SessionToken.val.isEmpty
+    //           ? null
+    //           : persistence.s3SessionToken.val,
+    //       enableTrace: persistence.s3EnableTrace.val,
+    //       useSSL: persistence.s3UseSsl.val,
+    //     );
+    //   } else {
+    //     // DEFAULT SYNC PROVIDER
+    //     client = Minio(
+    //       endPoint: config.secrets.s3.endpoint,
+    //       accessKey: config.secrets.s3.key,
+    //       secretKey: config.secrets.s3.secret,
+    //     );
+    //   }
 
-      ready = true;
-      console.info('init');
-    } catch (e, s) {
-      console.error('Exception: $e, Stacktrace: $s');
-      CrashlyticsService.to.record(e, s);
-    }
+    //   ready = true;
+    //   console.info('init');
+    // } catch (e, s) {
+    //   console.error('Exception: $e, Stacktrace: $s');
+    //   CrashlyticsService.to.record(e, s);
+    // }
   }
 
   Map<String, String> _objectMetadata() {
@@ -113,7 +110,7 @@ class S3Service extends GetxService with ConsoleMixin {
 
     return {
       'userId': AuthService.to.userId,
-      'address': Persistence.to.walletAddress.val,
+      'address': SecretPersistence.to.walletAddress.val,
       'appName': app.appName,
       'appPackageName': app.packageName,
       'appVersion': app.version,
@@ -127,34 +124,34 @@ class S3Service extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, bool>> purge() async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('listing: $rootPath...');
-    minio.ListObjectsResult? result;
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('listing: $rootPath...');
+    // minio.ListObjectsResult? result;
 
-    try {
-      result = await client!.listAllObjectsV2(
-        config.secrets.s3.preferredBucket,
-        prefix: rootPath,
-        recursive: true,
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   result = await client!.listAllObjectsV2(
+    //     config.secrets.s3.preferredBucket,
+    //     prefix: rootPath,
+    //     recursive: true,
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
-    final objects = [...result.prefixes, ...result.objects.map((e) => e.key!)];
+    // final objects = [...result.prefixes, ...result.objects.map((e) => e.key!)];
 
-    console.info('objects: ${objects.length} -> $objects');
-    console.info('purging: $rootPath...');
+    // console.info('objects: ${objects.length} -> $objects');
+    // console.info('purging: $rootPath...');
 
-    try {
-      await client!.removeObjects(
-        config.secrets.s3.preferredBucket,
-        objects,
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   await client!.removeObjects(
+    //     config.secrets.s3.preferredBucket,
+    //     objects,
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
     return const Right(true);
   }
@@ -399,20 +396,20 @@ class S3Service extends GetxService with ConsoleMixin {
     // DO THE ACTUAL BACKUP
     String eTag = '';
 
-    try {
-      eTag = await client!.putObject(
-        config.secrets.s3.preferredBucket,
-        join(
-          backupsPath,
-          '${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
-        ).replaceAll('\\', '/'),
-        Stream<Uint8List>.value(encryptedBytes),
-        onProgress: (size) => uploadedSize.value = size,
-        metadata: _objectMetadata(),
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   eTag = await client!.putObject(
+    //     config.secrets.s3.preferredBucket,
+    //     join(
+    //       backupsPath,
+    //       '${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
+    //     ).replaceAll('\\', '/'),
+    //     Stream<Uint8List>.value(encryptedBytes),
+    //     onProgress: (size) => uploadedSize.value = size,
+    //     metadata: _objectMetadata(),
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
     backedUp = true;
     return Right(eTag);
@@ -433,154 +430,156 @@ class S3Service extends GetxService with ConsoleMixin {
 
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    if (!inSync.value) {
-      return const Left('not in sync with server');
-    }
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // if (!inSync.value) {
+    //   return const Left('not in sync with server');
+    // }
 
-    console.info('up syncing...');
+    // console.info('up syncing...');
 
-    // UPLOAD
-    _syncProgress(0.7, null);
-    final vaultJsonString = await LisoManager.compactJson();
+    // // UPLOAD
+    // _syncProgress(0.7, null);
+    // final vaultJsonString = await LisoManager.compactJson();
 
-    final encryptedBytes = CipherService.to.encrypt(
-      utf8.encode(vaultJsonString),
-    );
+    // final encryptedBytes = CipherService.to.encrypt(
+    //   utf8.encode(vaultJsonString),
+    // );
 
-    // BACKUP
-    backup(lisoContent, encryptedBytes).then((result) {
-      if (result.isLeft) {
-        console.warning('Failed to backup: ${result.left}');
-      } else {
-        console.info('backed up! eTag: ${result.right}');
-      }
-    });
+    // // BACKUP
+    // backup(lisoContent, encryptedBytes).then((result) {
+    //   if (result.isLeft) {
+    //     console.warning('Failed to backup: ${result.left}');
+    //   } else {
+    //     console.info('backed up! eTag: ${result.right}');
+    //   }
+    // });
 
-    String eTag = '';
+    // String eTag = '';
 
-    try {
-      eTag = await client!.putObject(
-        config.secrets.s3.preferredBucket,
-        vaultPath,
-        Stream<Uint8List>.value(encryptedBytes),
-        onProgress: (size) => uploadedSize.value = size,
-        metadata: _objectMetadata(),
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   eTag = await client!.putObject(
+    //     config.secrets.s3.preferredBucket,
+    //     vaultPath,
+    //     Stream<Uint8List>.value(encryptedBytes),
+    //     onProgress: (size) => uploadedSize.value = size,
+    //     metadata: _objectMetadata(),
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
-    _syncProgress(0.9, null);
-    console.info('uploaded: $eTag');
+    // _syncProgress(0.9, null);
+    // console.info('uploaded: $eTag');
     return const Right(true);
   }
 
   Future<Either<dynamic, bool>> syncSharedVaults() async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
 
-    if (SharedVaultsController.to.data.isEmpty) {
-      return const Left('nothing to sync');
-    }
+    // if (SharedVaultsController.to.data.isEmpty) {
+    //   return const Left('nothing to sync');
+    // }
 
-    if (syncingSharedVaults.value) {
-      return const Left('still syncing shared vaults');
-    }
+    // if (syncingSharedVaults.value) {
+    //   return const Left('still syncing shared vaults');
+    // }
 
-    console.info(
-      'syncing ${SharedVaultsController.to.data.length} shared vaults...',
-    );
+    // console.info(
+    //   'syncing ${SharedVaultsController.to.data.length} shared vaults...',
+    // );
 
-    for (final sharedVault in SharedVaultsController.to.data) {
-      final sharedItems = ItemsService.to.data
-          .where((item) => item.sharedVaultIds.contains(sharedVault.docId))
-          .toList();
+    // for (final sharedVault in SharedVaultsController.to.data) {
+    //   final sharedItems = ItemsService.to.data
+    //       .where((item) => item.sharedVaultIds.contains(sharedVault.docId))
+    //       .toList();
 
-      final cipherKeyResult = await ItemsService.to.obtainFieldValue(
-        itemId: sharedVault.docId,
-        fieldId: 'key',
-      );
+    //   final cipherKeyResult = await ItemsService.to.obtainFieldValue(
+    //     itemId: sharedVault.docId,
+    //     fieldId: 'key',
+    //   );
 
-      if (cipherKeyResult.isLeft) {
-        // UIUtils.showSimpleDialog(
-        //   'Cipher Key Not Found',
-        //   cipherKeyResult.left,
-        // );
+    //   if (cipherKeyResult.isLeft) {
+    //     // UIUtils.showSimpleDialog(
+    //     //   'Cipher Key Not Found',
+    //     //   cipherKeyResult.left,
+    //     // );
 
-        console.error('Cipher Key Not Found');
-        return const Left('value');
-      }
+    //     console.error('Cipher Key Not Found');
+    //     return const Left('value');
+    //   }
 
-      final sharedItemsJson = List<dynamic>.from(
-        sharedItems.map((x) => x.toJson()),
-      );
+    //   final sharedItemsJson = List<dynamic>.from(
+    //     sharedItems.map((x) => x.toJson()),
+    //   );
 
-      final sharedItemsJsonString = jsonEncode(sharedItemsJson);
-      final bytes = Uint8List.fromList(utf8.encode(sharedItemsJsonString));
+    //   final sharedItemsJsonString = jsonEncode(sharedItemsJson);
+    //   final bytes = Uint8List.fromList(utf8.encode(sharedItemsJsonString));
 
-      final encryptedBytes = CipherService.to.encrypt(
-        bytes,
-        cipherKey: base64Decode(cipherKeyResult.right),
-      );
+    //   final encryptedBytes = CipherService.to.encrypt(
+    //     bytes,
+    //     cipherKey: base64Decode(cipherKeyResult.right),
+    //   );
 
-      String eTag = '';
-      final s3path = join(sharedPath, '${sharedVault.docId}.$kVaultExtension');
-      console.warning('uploading: $s3path');
+    //   String eTag = '';
+    //   final s3path = join(sharedPath, '${sharedVault.docId}.$kVaultExtension');
+    //   console.warning('uploading: $s3path');
 
-      try {
-        eTag = await client!.putObject(
-          config.secrets.s3.preferredBucket,
-          s3path,
-          Stream<Uint8List>.value(encryptedBytes),
-          onProgress: (size) => uploadedSize.value = size,
-          metadata: _objectMetadata(),
-        );
-      } catch (e) {
-        return Left(e);
-      }
+    //   try {
+    //     eTag = await client!.putObject(
+    //       config.secrets.s3.preferredBucket,
+    //       s3path,
+    //       Stream<Uint8List>.value(encryptedBytes),
+    //       onProgress: (size) => uploadedSize.value = size,
+    //       metadata: _objectMetadata(),
+    //     );
+    //   } catch (e) {
+    //     return Left(e);
+    //   }
 
-      console.info('uploaded: $eTag');
-    }
+    //   console.info('uploaded: $eTag');
+    // }
 
-    console.wtf('done');
+    // console.wtf('done');
     return const Right(true);
   }
 
   Future<Either<dynamic, minio.StatObjectResult>> stat(
       S3Content content) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info(
-      'stat: ${config.secrets.s3.preferredBucket}->${basename(content.path)}...',
-    );
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info(
+    //   'stat: ${config.secrets.s3.preferredBucket}->${basename(content.path)}...',
+    // );
 
-    try {
-      final result = await client!.statObject(
-        config.secrets.s3.preferredBucket,
-        content.path,
-      );
+    // try {
+    //   final result = await client!.statObject(
+    //     config.secrets.s3.preferredBucket,
+    //     content.path,
+    //   );
 
-      return Right(result);
-    } catch (e) {
-      return Left(e);
-    }
+    //   return Right(result);
+    // } catch (e) {
+    //   return Left(e);
+    // }
+
+    return const Left('');
   }
 
   Future<Either<dynamic, bool>> remove(S3Content content) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('removing: ${content.path}...');
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('removing: ${content.path}...');
 
-    try {
-      await client!.removeObject(
-        config.secrets.s3.preferredBucket,
-        content.path,
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   await client!.removeObject(
+    //     config.secrets.s3.preferredBucket,
+    //     content.path,
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
     return const Right(true);
   }
@@ -590,108 +589,112 @@ class S3Service extends GetxService with ConsoleMixin {
     S3ContentType? filterType,
     List<String> filterExtensions = const [],
   }) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('fetch: $path...');
-    minio.ListObjectsResult? result;
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('fetch: $path...');
+    // minio.ListObjectsResult? result;
 
-    try {
-      result = await client!.listAllObjectsV2(
-        config.secrets.s3.preferredBucket,
-        prefix: path,
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   result = await client!.listAllObjectsV2(
+    //     config.secrets.s3.preferredBucket,
+    //     prefix: path,
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
-    console.info(
-      'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
-    );
+    // console.info(
+    //   'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
+    // );
 
-    // remove current directory
-    result.objects.removeWhere(
-      (e) => e.key == path || !e.key!.contains(rootPath),
-    );
+    // // remove current directory
+    // result.objects.removeWhere(
+    //   (e) => e.key == path || !e.key!.contains(rootPath),
+    // );
 
     List<S3Content> contents = [];
-    // convert prefixes to content
-    if (filterType == null || filterType == S3ContentType.directory) {
-      contents.addAll(_prefixesToContents(result.prefixes));
-    }
+    // // convert prefixes to content
+    // if (filterType == null || filterType == S3ContentType.directory) {
+    //   contents.addAll(_prefixesToContents(result.prefixes));
+    // }
 
-    // convert objects to content
-    if (filterType == null || filterType == S3ContentType.file) {
-      var filtered = result.objects;
-      // filter by extension
-      if (filterExtensions.isNotEmpty) {
-        filtered = result.objects
-            .where((e) => filterExtensions.contains(extension(e.key!)))
-            .toList();
-      }
+    // // convert objects to content
+    // if (filterType == null || filterType == S3ContentType.file) {
+    //   var filtered = result.objects;
+    //   // filter by extension
+    //   if (filterExtensions.isNotEmpty) {
+    //     filtered = result.objects
+    //         .where((e) => filterExtensions.contains(extension(e.key!)))
+    //         .toList();
+    //   }
 
-      contents.addAll(_objectsToContents(filtered));
-    }
+    //   contents.addAll(_objectsToContents(filtered));
+    // }
 
     return Right(contents);
   }
 
   Future<Either<dynamic, S3FolderInfo>> folderInfo(String s3Path) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('folder size: $s3Path...');
-    minio.ListObjectsResult? result;
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('folder size: $s3Path...');
+    // minio.ListObjectsResult? result;
 
-    try {
-      result = await client!.listAllObjectsV2(
-        config.secrets.s3.preferredBucket,
-        prefix: s3Path,
-        recursive: true,
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   result = await client!.listAllObjectsV2(
+    //     config.secrets.s3.preferredBucket,
+    //     prefix: s3Path,
+    //     recursive: true,
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
-    console.info(
-      'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
-    );
+    // console.info(
+    //   'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
+    // );
 
-    int totalSize = 0;
-    int encryptedFiles = 0;
+    // int totalSize = 0;
+    // int encryptedFiles = 0;
 
-    final contents = _objectsToContents(result.objects);
+    // final contents = _objectsToContents(result.objects);
 
-    for (var e in contents) {
-      totalSize += e.size;
-      if (e.isEncrypted) encryptedFiles++;
-    }
+    // for (var e in contents) {
+    //   totalSize += e.size;
+    //   if (e.isEncrypted) encryptedFiles++;
+    // }
 
-    console.info('total size: $totalSize');
+    // console.info('total size: $totalSize');
 
-    return Right(S3FolderInfo(
-      contents: contents,
-      totalSize: totalSize,
-      encryptedFiles: encryptedFiles,
-    ));
+    // return Right(S3FolderInfo(
+    //   contents: contents,
+    //   totalSize: totalSize,
+    //   encryptedFiles: encryptedFiles,
+    // ));
+
+    return Right(S3FolderInfo());
   }
 
   Future<Either<dynamic, String>> getPreSignedUrl(String s3Path) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('pre signing: $s3Path...');
-    String? result;
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('pre signing: $s3Path...');
+    // String? result;
 
-    try {
-      result = await client!.presignedGetObject(
-        config.secrets.s3.preferredBucket,
-        s3Path,
-        expires: 1.hours.inSeconds,
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   result = await client!.presignedGetObject(
+    //     config.secrets.s3.preferredBucket,
+    //     s3Path,
+    //     expires: 1.hours.inSeconds,
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
-    console.info('presigned url: $result');
-    return Right(result);
+    // console.info('presigned url: $result');
+    // return Right(result);
+
+    return const Right('');
   }
 
   Future<Either<dynamic, File>> downloadFile({
@@ -699,34 +702,34 @@ class S3Service extends GetxService with ConsoleMixin {
     required String filePath,
     bool force = false,
   }) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready && !force) return const Left('offline');
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready && !force) return const Left('offline');
 
-    console.info(
-      'downloading: ${config.secrets.s3.preferredBucket} -> $s3Path',
-    );
+    // console.info(
+    //   'downloading: ${config.secrets.s3.preferredBucket} -> $s3Path',
+    // );
 
-    MinioByteStream? stream;
+    // MinioByteStream? stream;
 
-    try {
-      stream = await client!.getObject(
-        config.secrets.s3.preferredBucket,
-        s3Path,
-      );
-    } catch (e, s) {
-      console.error('downloadFile error -> $e');
+    // try {
+    //   stream = await client!.getObject(
+    //     config.secrets.s3.preferredBucket,
+    //     s3Path,
+    //   );
+    // } catch (e, s) {
+    //   console.error('downloadFile error -> $e');
 
-      if (!e.toString().contains('The specified key does not exist')) {
-        CrashlyticsService.to.record(e, s);
-      }
+    //   if (!e.toString().contains('The specified key does not exist')) {
+    //     CrashlyticsService.to.record(e, s);
+    //   }
 
-      return Left(e);
-    }
+    //   return Left(e);
+    // }
 
-    console.info('download size: ${filesize(stream.contentLength)}');
+    // console.info('download size: ${filesize(stream.contentLength)}');
     final file = File(filePath);
-    await stream.pipe(file.openWrite());
-    console.info('downloaded to: $filePath');
+    // await stream.pipe(file.openWrite());
+    // console.info('downloaded to: $filePath');
     return Right(file);
   }
 
@@ -734,27 +737,27 @@ class S3Service extends GetxService with ConsoleMixin {
     File file, {
     required String s3Path,
   }) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('uploading...');
-    uploadTotalSize.value = await file.length();
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('uploading...');
+    // uploadTotalSize.value = await file.length();
     String eTag = '';
 
-    try {
-      eTag = await client!.putObject(
-        config.secrets.s3.preferredBucket,
-        s3Path,
-        Stream<Uint8List>.value(file.readAsBytesSync()),
-        onProgress: (size) => uploadedSize.value = size,
-        metadata: _objectMetadata(),
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   eTag = await client!.putObject(
+    //     config.secrets.s3.preferredBucket,
+    //     s3Path,
+    //     Stream<Uint8List>.value(file.readAsBytesSync()),
+    //     onProgress: (size) => uploadedSize.value = size,
+    //     metadata: _objectMetadata(),
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
-    // reset download indicators
-    uploadTotalSize.value = 0;
-    uploadedSize.value = 0;
+    // // reset download indicators
+    // uploadTotalSize.value = 0;
+    // uploadedSize.value = 0;
 
     return Right(eTag);
   }
@@ -763,41 +766,43 @@ class S3Service extends GetxService with ConsoleMixin {
     String name, {
     required String s3Path,
   }) async {
-    if (!ready) init();
-    if (!persistence.sync.val && ready) return const Left('offline');
-    console.info('creating folder...');
+    // if (!ready) init();
+    // if (!persistence.sync.val && ready) return const Left('offline');
+    // console.info('creating folder...');
     String eTag = '';
 
-    try {
-      eTag = await client!.putObject(
-        config.secrets.s3.preferredBucket,
-        join(s3Path, '$name/').replaceAll('\\', '/'),
-        Stream<Uint8List>.value(Uint8List(0)),
-        metadata: _objectMetadata(),
-      );
-    } catch (e) {
-      return Left(e);
-    }
+    // try {
+    //   eTag = await client!.putObject(
+    //     config.secrets.s3.preferredBucket,
+    //     join(s3Path, '$name/').replaceAll('\\', '/'),
+    //     Stream<Uint8List>.value(Uint8List(0)),
+    //     metadata: _objectMetadata(),
+    //   );
+    // } catch (e) {
+    //   return Left(e);
+    // }
 
     return Right(eTag);
   }
 
   Future<S3FolderInfo?> fetchStorageSize() async {
-    final result = await folderInfo(S3Service.to.rootPath);
+    // final result = await folderInfo(S3Service.to.rootPath);
 
-    if (result.isLeft) {
-      console.error('fetchStorageSize: ${result.left}');
-      return null;
-    }
+    // if (result.isLeft) {
+    //   console.error('fetchStorageSize: ${result.left}');
+    //   return null;
+    // }
 
-    final info = result.right;
-    storageSize.value = info.totalSize;
-    objectsCount.value = info.contents.length;
-    encryptedFiles.value = info.encryptedFiles;
-    // cache objects
-    contentsCache = info.contents;
+    // final info = result.right;
+    // storageSize.value = info.totalSize;
+    // objectsCount.value = info.contents.length;
+    // encryptedFiles.value = info.encryptedFiles;
+    // // cache objects
+    // contentsCache = info.contents;
 
-    return info;
+    // return info;
+
+    return null;
   }
 
   // UTILS

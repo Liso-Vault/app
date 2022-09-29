@@ -12,6 +12,7 @@ const kHiveBoxGroups = 'groups';
 const kHiveBoxCategories = 'categories';
 const kHiveBoxItems = 'items';
 const kHiveBoxPersistence = 'persistence';
+const kHiveBoxSecretPersistence = 'secret_persistence';
 // BIOMETRIC STORAGE
 const kBiometricPasswordKey = 'biometric_password';
 const kBiometricSeedKey = 'biometric_seed';

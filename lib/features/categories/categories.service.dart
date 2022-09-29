@@ -9,7 +9,7 @@ import 'package:path/path.dart';
 
 import '../../core/hive/models/category.hive.dart';
 import '../../core/liso/liso_paths.dart';
-import '../../core/persistence/persistence.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 import 'categories.controller.dart';
 
@@ -29,7 +29,8 @@ class CategoriesService extends GetxService with ConsoleMixin {
   Future<void> open({Uint8List? cipherKey, bool initialize = true}) async {
     box = await Hive.openBox(
       kHiveBoxCategories,
-      encryptionCipher: HiveAesCipher(cipherKey ?? Persistence.to.cipherKey),
+      encryptionCipher:
+          HiveAesCipher(cipherKey ?? SecretPersistence.to.cipherKey),
       path: LisoPaths.hivePath,
     );
 

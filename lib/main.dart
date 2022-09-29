@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/core/services/cipher.service.dart';
@@ -36,6 +37,7 @@ import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
 import 'core/services/local_auth.service.dart';
+import 'core/services/supabase.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/categories/categories.controller.dart';
@@ -66,7 +68,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     if (GetPlatform.isWindows) {
       await SentryFlutter.init(
         (options) {
-          options.dsn = Secrets.configs.secrets['sentry']?['dsn'];
+          options.dsn = Secrets.configs.secrets['sentry']?['dsn'] as String;
         },
       );
     }
@@ -94,6 +96,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     // GetX services
     Get.lazyPut(() => CrashlyticsService());
     Get.lazyPut(() => Persistence());
+    Get.lazyPut(() => SecretPersistence());
     Get.lazyPut(() => WalletService());
     Get.lazyPut(() => ConnectivityService());
     Get.lazyPut(() => CipherService());
@@ -112,6 +115,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.lazyPut(() => CategoriesService());
 
     // permanent controllers
+    Get.put(SupabaseService());
     Get.put(AnalyticsService());
     Get.put(ItemsController());
     Get.put(GroupsController());
@@ -130,6 +134,8 @@ void init(Flavor flavor, {bool autofill = false}) async {
     await Globals.init();
     await LisoPaths.init();
     await Persistence.open();
+    await SecretPersistence.open();
+    await SecretPersistence.migrate();
     HiveService.init();
     await ConfigService.to.init();
     await ProController.to.init();

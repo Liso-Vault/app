@@ -1,7 +1,6 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/files/provider/custom_provider_screen.controller.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
 
@@ -91,16 +90,16 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
               ),
             ),
             const Divider(),
-            PersistenceBuilder(
+            SecretPersistenceBuilder(
               builder: (p, context) => SwitchListTile(
                 title: const Text('Enable Trace'),
-                value: Persistence.to.s3EnableTrace.val,
-                onChanged: (value) => Persistence.to.s3EnableTrace.val = value,
+                value: p.s3EnableTrace.val,
+                onChanged: (value) => p.s3EnableTrace.val = value,
                 // contentPadding: EdgeInsets.zero,
               ),
             ),
             const Divider(),
-            PersistenceBuilder(
+            SecretPersistenceBuilder(
               builder: (p, context) => SwitchListTile(
                 title: const Text('Use SSL'),
                 value: p.s3UseSsl.val,

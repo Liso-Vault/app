@@ -2,7 +2,7 @@ import 'package:alchemy_web3/alchemy_web3.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 
-import '../../../core/persistence/persistence.dart';
+import '../../../core/persistence/persistence.secret.dart';
 
 class NFTsScreenController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -31,7 +31,7 @@ class NFTsScreenController extends GetxController
 
   Future<void> loadNFTs() async {
     final result = await alchemy.enhanced.nft.getNFTs(
-      owner: Persistence.to.walletAddress.val,
+      owner: SecretPersistence.to.walletAddress.val,
     );
 
     result.fold(

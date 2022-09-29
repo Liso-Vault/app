@@ -8,6 +8,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/files/s3.service.dart';
 import 'package:minio/minio.dart';
 
+import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 
@@ -15,7 +16,7 @@ class CustomSyncProviderScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();
-  final persistence = Get.find<Persistence>();
+  final persistence = Get.find<SecretPersistence>();
 
   final endpointController = TextEditingController();
   final accessKeyController = TextEditingController();
@@ -57,7 +58,7 @@ class CustomSyncProviderScreenController extends GetxController
 
   // FUNCTIONS
   void save() {
-    persistence.syncProvider.val = LisoSyncProvider.custom.name;
+    Persistence.to.syncProvider.val = LisoSyncProvider.custom.name;
     persistence.s3Endpoint.val = endpointController.text;
     persistence.s3AccessKey.val = accessKeyController.text;
     persistence.s3SecretKey.val = secretKeyController.text;

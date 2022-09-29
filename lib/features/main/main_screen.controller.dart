@@ -25,6 +25,7 @@ import 'package:window_manager/window_manager.dart';
 import '../../core/firebase/auth.service.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/services/alchemy.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
@@ -275,7 +276,7 @@ class MainScreenController extends GetxController
 
       // incase cipher key is still empty for some reason
       // retry again after a few seconds
-      if (persistence.cipherKey.isEmpty) {
+      if (SecretPersistence.to.cipherKey.isEmpty) {
         Future.delayed(3.seconds).then((x) {
           // sync vault
           S3Service.to.sync();

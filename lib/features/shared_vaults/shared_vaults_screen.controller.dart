@@ -21,7 +21,7 @@ import 'package:path/path.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/persistence/persistence.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -140,7 +140,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       // add to firestore
       final vault = SharedVault(
         userId: AuthService.to.userId,
-        address: Persistence.to.walletAddress.val,
+        address: SecretPersistence.to.walletAddress.val,
         name: nameController.text,
         description: descriptionController.text,
       );

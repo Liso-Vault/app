@@ -14,6 +14,7 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/config/models/config_limits.model.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/persistence/persistence.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 import '../connectivity/connectivity.service.dart';
 
@@ -50,7 +51,7 @@ class ProController extends GetxController with ConsoleMixin {
     if (isPro) return limits_.pro;
     // check if user is whitelisted by developer
     final users = ConfigService.to.users.users.where(
-      (e) => e.address == Persistence.to.walletAddress.val,
+      (e) => e.address == SecretPersistence.to.walletAddress.val,
     );
 
     if (users.isNotEmpty) {
@@ -125,7 +126,7 @@ class ProController extends GetxController with ConsoleMixin {
     await Purchases.logIn(AuthService.to.userId);
 
     await Purchases.setAttributes({
-      'wallet-address': Persistence.to.walletAddress.val,
+      'wallet-address': SecretPersistence.to.walletAddress.val,
     });
   }
 

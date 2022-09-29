@@ -11,7 +11,7 @@ import 'package:liso/features/wallet/transactions/transactions_screen.controller
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../core/persistence/persistence.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.item.dart';
@@ -85,20 +85,20 @@ class WalletScreenController extends GetxController with ConsoleMixin {
           width: 200,
           child: Center(
             child: QrImage(
-              data: Persistence.to.walletAddress.val,
+              data: SecretPersistence.to.walletAddress.val,
               backgroundColor: Colors.white,
             ),
           ),
         ),
         const SizedBox(height: 20),
         Text(
-          Persistence.to.walletAddress.val,
+          SecretPersistence.to.walletAddress.val,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
         TextButton.icon(
           onPressed: () =>
-              Utils.copyToClipboard(Persistence.to.walletAddress.val),
+              Utils.copyToClipboard(SecretPersistence.to.walletAddress.val),
           icon: const Icon(Iconsax.copy),
           label: const Text('Copy Address'),
         ),

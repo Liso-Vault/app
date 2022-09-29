@@ -20,6 +20,7 @@ import 'package:worker_manager/worker_manager.dart';
 import '../../core/hive/hive.service.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/hive/models/metadata/metadata.hive.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.controller.dart';
 import '../items/items.service.dart';
@@ -39,7 +40,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   bool get isReady => wallet != null;
 
-  bool get isSaved => Persistence.to.wallet.val.isNotEmpty;
+  bool get isSaved => SecretPersistence.to.wallet.val.isNotEmpty;
 
   // Uint8List get privateKey => wallet!.privateKey.privateKey;
   // String get privateKeyHex => HEX.encode(privateKey);
@@ -137,7 +138,7 @@ class WalletService extends GetxService with ConsoleMixin {
     final messageBytes = Uint8List.fromList(utf8.encode(message));
     final privateKeyHex = privateKey_ != null
         ? HEX.encode(privateKey_)
-        : Persistence.to.walletPrivateKeyHex.val;
+        : SecretPersistence.to.walletPrivateKeyHex.val;
 
     String signature_ = '';
 
@@ -175,21 +176,21 @@ class WalletService extends GetxService with ConsoleMixin {
 
   Future<void> init(Wallet wallet_) async {
     wallet = wallet_;
-    Persistence.to.walletPrivateKeyHex.val =
+    SecretPersistence.to.walletPrivateKeyHex.val =
         HEX.encode(wallet!.privateKey.privateKey);
     // save to persistence
-    Persistence.to.walletAddress.val = address.hexEip55;
-    Persistence.to.wallet.val = await compute(walletToJsonString, wallet!);
+    SecretPersistence.to.walletAddress.val = address.hexEip55;
+    SecretPersistence.to.wallet.val = await compute(walletToJsonString, wallet!);
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
-    Persistence.to.walletSignature.val = signature;
+    SecretPersistence.to.walletSignature.val = signature;
     // // from the first 32 bits of the signature
     // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 
     if (!GetPlatform.isWindows) {
       AnalyticsService.to.instance.setUserProperty(
         name: 'wallet_address',
-        value: Persistence.to.walletAddress.val,
+        value: SecretPersistence.to.walletAddress.val,
       );
     }
   }
@@ -205,7 +206,7 @@ class WalletService extends GetxService with ConsoleMixin {
     // just to make sure the Wallet is ready before proceeding
     await Future.delayed(200.milliseconds);
     // save password
-    Persistence.to.walletPassword.val = password;
+    SecretPersistence.to.walletPassword.val = password;
     // open Hive Boxes
     await HiveService.to.open();
     if (!isNew) return;
@@ -224,11 +225,11 @@ class WalletService extends GetxService with ConsoleMixin {
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'private_key') {
-        e.data.value = Persistence.to.walletPrivateKeyHex.val;
+        e.data.value = SecretPersistence.to.walletPrivateKeyHex.val;
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'address') {
-        e.data.value = Persistence.to.walletAddress.val;
+        e.data.value = SecretPersistence.to.walletAddress.val;
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'note') {

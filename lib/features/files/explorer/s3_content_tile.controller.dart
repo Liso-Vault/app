@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
@@ -14,6 +13,7 @@ import 'package:share_plus/share_plus.dart';
 import '../../../core/liso/liso.manager.dart';
 import '../../../core/liso/liso_paths.dart';
 import '../../../core/notifications/notifications.manager.dart';
+import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
@@ -157,13 +157,13 @@ class S3ContentTileController extends GetxController
     // parse vault file
     final vault = await LisoManager.parseVaultFile(
       vaultFile,
-      cipherKey: Persistence.to.cipherKey,
+      cipherKey: SecretPersistence.to.cipherKey,
     );
 
     // import vault object & reload
     await LisoManager.importVault(
       vault,
-      cipherKey: Persistence.to.cipherKey,
+      cipherKey: SecretPersistence.to.cipherKey,
     );
 
     MainScreenController.to.load();

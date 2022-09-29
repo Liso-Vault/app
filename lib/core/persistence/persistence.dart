@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,7 @@ class Persistence extends GetxController with ConsoleMixin {
   static Box? box;
 
   // WALLET JSON
+  final migratedSecrets = false.val('migrated-secrets');
   final wallet = ''.val('wallet');
   final walletPassword = ''.val('wallet-password');
   final walletSignature = ''.val('wallet-signature');
@@ -48,7 +48,7 @@ class Persistence extends GetxController with ConsoleMixin {
   final syncProvider = LisoSyncProvider.sia.name.val('sync-provider');
   final biometrics = true.val('biometrics');
   final s3ObjectsCache = ''.val('s3-objects-cache');
-  // CUSTOM SYNC PROVIDER
+  // // CUSTOM SYNC PROVIDER
   final s3Endpoint = ''.val('s3-endpoint');
   final s3AccessKey = ''.val('s3-access-key');
   final s3SecretKey = ''.val('s3-secret-key');
@@ -76,21 +76,21 @@ class Persistence extends GetxController with ConsoleMixin {
       ? LisoSyncProvider.custom.name
       : LisoSyncProvider.sia.name;
 
-  // from the first 32 bits of the signature
-  Uint8List get cipherKey {
-    if (walletSignature.val.isEmpty) {
-      throw 'empty wallet signature = null cipher';
-    }
+  // // from the first 32 bits of the signature
+  // Uint8List get cipherKey {
+  //   if (walletSignature.val.isEmpty) {
+  //     throw 'empty wallet signature = null cipher';
+  //   }
 
-    return Uint8List.fromList(utf8.encode(walletSignature.val).sublist(0, 32));
-  }
+  //   return Uint8List.fromList(utf8.encode(walletSignature.val).sublist(0, 32));
+  // }
 
   bool get canShare =>
       sync.val && AuthService.to.isSignedIn && !GetPlatform.isWindows;
 
-  String get shortAddress => walletAddress.val.isEmpty
-      ? 'error'
-      : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
+  // String get shortAddress => walletAddress.val.isEmpty
+  //     ? 'error'
+  //     : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
 
   // FUNCTIONS
   static Future<void> open() async {

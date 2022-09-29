@@ -8,6 +8,7 @@ import '../../contracts/liso.dart';
 import '../../features/wallet/wallet.service.dart';
 import '../firebase/config/config.service.dart';
 import '../firebase/config/models/config_web3.model.dart';
+import '../persistence/persistence.secret.dart';
 
 class AlchemyService extends GetxService with ConsoleMixin {
   static AlchemyService get to => Get.find();
@@ -56,7 +57,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
     final lisoToken = LisoToken();
 
     final result = await alchemy.erc20.balanceOf(
-      address: EthereumAddress.fromHex(Persistence.to.walletAddress.val),
+      address: EthereumAddress.fromHex(SecretPersistence.to.walletAddress.val),
       contract: lisoToken.polygonMumbaiContract,
     );
 
@@ -74,7 +75,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
 
   Future<void> loadMaticBalance() async {
     final result = await alchemy.polygon.getBalance(
-      address: Persistence.to.walletAddress.val,
+      address: SecretPersistence.to.walletAddress.val,
     );
 
     result.fold(

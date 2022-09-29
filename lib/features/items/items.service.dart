@@ -12,6 +12,7 @@ import 'package:path/path.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/persistence/persistence.dart';
+import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 
 class ItemsService extends GetxService with ConsoleMixin {
@@ -30,7 +31,8 @@ class ItemsService extends GetxService with ConsoleMixin {
   Future<void> open({Uint8List? cipherKey}) async {
     box = await Hive.openBox(
       kHiveBoxItems,
-      encryptionCipher: HiveAesCipher(cipherKey ?? Persistence.to.cipherKey),
+      encryptionCipher:
+          HiveAesCipher(cipherKey ?? SecretPersistence.to.cipherKey),
       path: LisoPaths.hivePath,
     );
 
