@@ -27,7 +27,7 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../files/s3.service.dart';
+import '../files/sync.service.dart';
 import '../json_viewer/json_viewer.screen.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
@@ -542,7 +542,7 @@ class ItemScreenController extends GetxController
 
   List<Widget> get attachmentChips {
     List<Widget> chips = attachments.map<Widget>((attachment) {
-      final content = S3Service.to.contentsCache.firstWhere(
+      final content = SyncService.to.contentsCache.firstWhere(
         (e) => e.object!.eTag == attachment,
       );
 

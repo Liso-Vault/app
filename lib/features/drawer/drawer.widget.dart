@@ -6,8 +6,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/general/pro.widget.dart';
-import 'package:liso/features/files/s3.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 
 import '../../../core/utils/utils.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
@@ -192,7 +193,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                             Chip(
                               label: Obx(
                                 () => Text(
-                                  '${filesize(S3Service.to.storageSize.value, 0)}/${filesize(ProController.to.limits.storageSize, 0)}',
+                                  '${filesize(StorageService.to.rootInfo.value.data.size, 0)}/${filesize(ProController.to.limits.storageSize, 0)}',
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               ),
@@ -203,7 +204,8 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                           padding: const EdgeInsets.only(top: 5),
                           child: Obx(
                             () => LinearProgressIndicator(
-                              value: S3Service.to.storageSize.value.toDouble() /
+                              value: StorageService.to.rootInfo.value.data.size
+                                      .toDouble() /
                                   ProController.to.limits.storageSize,
                               backgroundColor: Colors.grey.withOpacity(0.1),
                             ),

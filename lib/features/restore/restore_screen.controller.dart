@@ -1,28 +1,28 @@
 import 'dart:io';
 
 import 'package:console_mixin/console_mixin.dart';
+import 'package:either_dart/either.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-import 'package:minio/minio.dart';
 import 'package:path/path.dart';
 
 import '../../core/liso/liso.manager.dart';
-import '../../core/liso/liso_paths.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/local_auth.service.dart';
+import '../../core/supabase/supabase.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../files/s3.service.dart';
 import '../main/main_screen.controller.dart';
 
 class RestoreScreenController extends GetxController
@@ -38,9 +38,6 @@ class RestoreScreenController extends GetxController
   final syncProvider = LisoSyncProvider.sia.name.obs;
 
   // GETTERS
-  String get vaultFilePath => restoreMode.value == RestoreMode.file
-      ? filePathController.text
-      : LisoPaths.tempVaultFilePath;
 
   Future<bool> get canPop async => !busy.value;
 
@@ -59,34 +56,35 @@ class RestoreScreenController extends GetxController
 
   // FUNCTIONS
 
-  Future<bool> _downloadVault(String address) async {
-    final s3VaultPath = join(address, kVaultFileName).replaceAll('\\', '/');
-
-    final result = await S3Service.to.downloadFile(
-      s3Path: s3VaultPath,
-      filePath: LisoPaths.tempVaultFilePath,
-      force: true,
+  Future<Either<String, Uint8List>> _downloadVault(String address) async {
+    final statResult = await SupabaseService.to.statObject(
+      kVaultFileName,
+      address: address,
     );
 
-    if (result.isRight || result.left == null) return true;
-    final newUser = result.left is MinioError &&
-        result.left.message!.contains('does not exist');
-
-    if (newUser) {
-      UIUtils.showSimpleDialog(
-        'Vault Not Found',
-        "Please make sure you selected the right provider. Or if you're new to ${ConfigService.to.appName}, consider creating a vault and start securing your data.",
-      );
-    } else {
-      UIUtils.showSimpleDialog(
-        'Error Downloading',
-        '${result.left} > _downloadVault()',
+    if (statResult.isLeft || statResult.right.status != 200) {
+      return Left(
+        "If you're new to ${ConfigService.to.appName}, consider creating a vault first.",
       );
     }
 
-    // delete temp downloaded vault
-    FileUtils.delete(vaultFilePath);
-    return false;
+    final presignResult = await SupabaseService.to.presignUrl(
+      object: kVaultFileName,
+      address: address,
+      method: 'GET',
+    );
+
+    if (presignResult.isLeft || presignResult.right.status != 200) {
+      return const Left("Failed to presign 1");
+    }
+
+    final response = await http.get(Uri.parse(presignResult.right.data.url));
+
+    if (response.statusCode != 200) {
+      return Left("Failed to presign: ${response.statusCode}");
+    }
+
+    return Right(response.bodyBytes);
   }
 
   Future<void> continuePressed() async {
@@ -96,21 +94,34 @@ class RestoreScreenController extends GetxController
 
     final seed = seedController.text;
     final credentials = WalletService.to.mnemonicToPrivateKey(seed);
+    final address = credentials.address.hexEip55;
+
+    Uint8List bytes;
 
     // download vault file
     if (restoreMode.value == RestoreMode.cloud) {
-      if (!(await _downloadVault(credentials.address.hexEip55))) {
-        return change(null, status: RxStatus.success());
+      final result = await _downloadVault(address);
+
+      if (result.isLeft) {
+        change(null, status: RxStatus.success());
+
+        return UIUtils.showSimpleDialog(
+          'Failed Restoring Vault',
+          result.left,
+        );
       }
+
+      bytes = result.right;
+    } else {
+      bytes = await File(filePathController.text).readAsBytes();
     }
 
     final cipherKey = await WalletService.to.credentialsToCipherKey(
       credentials,
     );
 
-    final vaultFile = File(vaultFilePath);
     final canDecrypt = await CipherService.to.canDecrypt(
-      vaultFile,
+      bytes,
       cipherKey,
     );
 
@@ -123,8 +134,8 @@ class RestoreScreenController extends GetxController
       );
     }
 
-    final vault = await LisoManager.parseVaultFile(
-      vaultFile,
+    final vault = await LisoManager.parseVaultBytes(
+      bytes,
       cipherKey: cipherKey,
     );
 
@@ -171,7 +182,7 @@ class RestoreScreenController extends GetxController
     await UIUtils.showImageDialog(
       Icon(Iconsax.import, size: 100, color: themeColor),
       title: 'restore_vault'.tr,
-      subTitle: basename(vaultFile.path),
+      subTitle: address,
       body:
           "Device: ${vault.metadata!.device.name}\nApp Version: ${vault.metadata!.app.formattedVersion}\nLast Modified: ${vault.metadata!.updatedTime}\nVault Version: ${vault.version}",
       action: _proceed,
@@ -224,4 +235,4 @@ class RestoreScreenController extends GetxController
   }
 }
 
-enum RestoreMode { file, cloud, s3 }
+enum RestoreMode { file, cloud }

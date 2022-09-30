@@ -17,29 +17,22 @@ class CipherService extends GetxService with ConsoleMixin {
   final iv = IV.fromLength(16);
 
   // GETTERS
-  Key get key => Key(SecretPersistence.to.cipherKey);
-  Encrypter get encrypter => Encrypter(AES(key));
 
   // FUNCTIONS
   Uint8List encrypt(List<int> bytes, {Uint8List? cipherKey}) {
-    if (cipherKey == null) {
-      return encrypter.encryptBytes(bytes, iv: iv).bytes;
-    } else {
-      return Encrypter(AES(Key(cipherKey))).encryptBytes(bytes, iv: iv).bytes;
-    }
+    final encrypter = Encrypter(
+      AES(Key(cipherKey ?? SecretPersistence.to.cipherKey)),
+    );
+
+    return encrypter.encryptBytes(bytes, iv: iv).bytes;
   }
 
   List<int> decrypt(Uint8List bytes, {Uint8List? cipherKey}) {
-    late Encrypter encrypter_;
+    final encrypter = Encrypter(
+      AES(Key(cipherKey ?? SecretPersistence.to.cipherKey)),
+    );
 
-    if (cipherKey == null) {
-      encrypter_ = encrypter;
-    } else {
-      encrypter_ = Encrypter(AES(Key(cipherKey)));
-    }
-
-    // TODO: fix Invalid argument(s): Invalid or corrupted pad block
-    return encrypter_.decryptBytes(Encrypted(bytes), iv: iv);
+    return encrypter.decryptBytes(Encrypted(bytes), iv: iv);
   }
 
   Future<File> encryptFile(
@@ -58,21 +51,21 @@ class CipherService extends GetxService with ConsoleMixin {
   }
 
   Future<File> decryptFile(File file, {Uint8List? cipherKey}) async {
-    final output = decrypt(await file.readAsBytes(), cipherKey: cipherKey);
+    final bytes = decrypt(await file.readAsBytes(), cipherKey: cipherKey);
 
-    final outputFile = File(join(
-      LisoPaths.temp!.path,
-      basename(file.path).replaceAll(kEncryptedExtensionExtra, ''),
-    ));
+    final outputFile = File(
+      join(
+        LisoPaths.temp!.path,
+        basename(file.path).replaceAll(kEncryptedExtensionExtra, ''),
+      ),
+    );
 
-    return await outputFile.writeAsBytes(output);
+    return await outputFile.writeAsBytes(bytes);
   }
 
   // Checks
-  Future<bool> canDecrypt(File file, Uint8List cipherKey) async {
-    final key_ = Key(cipherKey);
-    final encrypter_ = Encrypter(AES(key_));
-    final bytes = await file.readAsBytes();
+  Future<bool> canDecrypt(Uint8List bytes, Uint8List cipherKey) async {
+    final encrypter_ = Encrypter(AES(Key(cipherKey)));
 
     try {
       encrypter_.decryptBytes(Encrypted(bytes), iv: iv);

@@ -9,7 +9,7 @@ import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
 import '../../menu/menu.button.dart';
-import '../s3.service.dart';
+import '../sync.service.dart';
 import 's3_content.tile.dart';
 import 's3_exporer_screen.controller.dart';
 
@@ -119,8 +119,7 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
             padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
             child: Obx(
               () => Text(
-                controller.currentPath.value
-                    .replaceAll(S3Service.to.rootPath, 'Root/'),
+                controller.currentPath.value,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: themeColor,

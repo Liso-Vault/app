@@ -12,11 +12,11 @@ import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
-import 'package:path/path.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
@@ -27,7 +27,7 @@ import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
 import '../files/model/s3_content.model.dart';
-import '../files/s3.service.dart';
+import '../files/sync.service.dart';
 import '../pro/pro.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
@@ -331,12 +331,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         return console.error("error batch commit: $e");
       }
 
-      await S3Service.to.remove(S3Content(
-        path: join(
-          S3Service.to.sharedPath,
-          '${object_.docId}.$kVaultExtension',
-        ),
-      ));
+      final object =
+          '${SyncService.to.sharedPath}/${object_.docId}.$kVaultExtension';
+      await StorageService.to.remove(object);
 
       console.info('deleted: ${doc.id}');
     }

@@ -18,7 +18,7 @@ import '../app/routes.dart';
 import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../files/s3.service.dart';
+import '../files/sync.service.dart';
 import '../general/custom_chip.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../groups/groups.controller.dart';
@@ -130,7 +130,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     // enable pull to refresh if mobile
     if (GetPlatform.isMobile) {
       childContent = RefreshIndicator(
-        onRefresh: S3Service.to.sync,
+        onRefresh: SyncService.to.sync,
         child: childContent,
       );
     }
@@ -196,7 +196,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       children: [
         Obx(
           () => Visibility(
-            visible: S3Service.to.syncing.value,
+            visible: SyncService.to.syncing.value,
             child: const LinearProgressIndicator(),
           ),
         ),
@@ -330,7 +330,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             badgeContent: Text(p.changes.val.toString()),
             position: BadgePosition.topEnd(top: -1, end: -5),
             child: IconButton(
-              onPressed: S3Service.to.sync,
+              onPressed: SyncService.to.sync,
               icon: const Icon(Iconsax.cloud_change),
             ),
           ),

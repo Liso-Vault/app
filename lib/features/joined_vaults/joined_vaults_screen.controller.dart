@@ -13,7 +13,7 @@ import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
-import 'package:liso/features/files/s3.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
@@ -23,8 +23,10 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.secret.dart';
+import '../../core/supabase/supabase.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
+import '../files/storage.service.dart';
 
 class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   static JoinedVaultsScreenController get to => Get.find();
@@ -137,11 +139,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
 
     // download vault file
     final s3Path = '${vault.address}/Shared/${vault.docId}.$kVaultExtension';
-
-    final result = await S3Service.to.downloadFile(
-      s3Path: s3Path,
-      filePath: LisoPaths.tempVaultFilePath,
-    );
+    final result = await StorageService.to.download(object: s3Path);
 
     if (result.isLeft) {
       return UIUtils.showSimpleDialog(

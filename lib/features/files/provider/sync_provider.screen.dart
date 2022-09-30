@@ -5,7 +5,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/appbar_leading.widget.dart';
-import 'package:liso/features/files/s3.service.dart';
 
 import '../../../core/persistence/persistence.dart';
 import '../../../core/persistence/persistence_builder.widget.dart';
@@ -26,7 +25,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
       void _switch() {
         if (provider != LisoSyncProvider.custom) {
           persistence.syncProvider.val = provider!.name;
-          return S3Service.to.init();
+          // return SyncService.to.init();
         }
 
         // custom

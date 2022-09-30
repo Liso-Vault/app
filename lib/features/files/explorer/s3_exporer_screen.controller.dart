@@ -8,7 +8,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
-import 'package:liso/features/files/s3.service.dart';
+import 'package:liso/features/files/storage.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 import 'package:path/path.dart';
 
 import '../../../core/services/cipher.service.dart';
@@ -38,8 +39,9 @@ class S3ExplorerScreenController extends GetxController
   bool get isTimeMachine => Get.parameters['type'] == 'time_machine';
   bool get isPicker => Get.parameters['type'] == 'picker';
 
-  String get rootPath =>
-      isTimeMachine ? '${S3Service.to.backupsPath}/' : S3Service.to.filesPath;
+  String get rootPath => isTimeMachine
+      ? '${SyncService.to.backupsPath}/'
+      : SyncService.to.filesPath;
 
   List<ContextMenuItem> get menuItemsUploadType {
     return [
@@ -51,21 +53,7 @@ class S3ExplorerScreenController extends GetxController
       ContextMenuItem(
         title: 'Encrypted File',
         leading: const Icon(Iconsax.shield_tick),
-        onSelected: () {
-          if (S3Service.to.encryptedFiles >=
-              ProController.to.limits.encryptedFiles) {
-            return Utils.adaptiveRouteOpen(
-              name: Routes.upgrade,
-              parameters: {
-                'title': 'Encrypted Files',
-                'body':
-                    'Maximum encrypted files of ${ProController.to.limits.encryptedFiles} limit reached. Upgrade to Pro to unlock unlimited encrypted files feature.',
-              },
-            );
-          }
-
-          pickFile(encryptFile: true);
-        },
+        onSelected: () => pickFile(encryptFile: true),
       ),
     ];
   }
@@ -98,7 +86,7 @@ class S3ExplorerScreenController extends GetxController
   }) async {
     if (!pulled) change(true, status: RxStatus.loading());
 
-    final result = await S3Service.to.fetch(
+    final result = await StorageService.to.fetch(
       path: path,
       filterExtensions: isTimeMachine ? ['.$kVaultExtension'] : [],
     );
@@ -123,7 +111,7 @@ class S3ExplorerScreenController extends GetxController
       },
     );
 
-    S3Service.to.fetchStorageSize();
+    StorageService.to.init();
   }
 
   void pickFile({bool encryptFile = false}) async {
@@ -184,7 +172,8 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void _upload(File file, {bool encryptFile = false}) async {
-    final assumedTotal = S3Service.to.storageSize.value + await file.length();
+    final assumedTotal =
+        StorageService.to.rootInfo.value.data.size + await file.length();
 
     if (assumedTotal >= ProController.to.limits.uploadSize) {
       return Utils.adaptiveRouteOpen(
@@ -203,12 +192,9 @@ class S3ExplorerScreenController extends GetxController
       file = await CipherService.to.encryptFile(file);
     }
 
-    final result = await S3Service.to.uploadFile(
-      file,
-      s3Path: join(
-        currentPath.value,
-        basename(file.path),
-      ).replaceAll('\\', '/'),
+    final result = await StorageService.to.upload(
+      await file.readAsBytes(),
+      object: '${currentPath.value}/${basename(file.path)}',
     );
 
     if (result.isLeft) {
@@ -238,7 +224,7 @@ class S3ExplorerScreenController extends GetxController
       // TODO: check if folder already exists
       change(true, status: RxStatus.loading());
 
-      final result = await S3Service.to.createFolder(
+      final result = await StorageService.to.createFolder(
         name,
         s3Path: currentPath.value,
       );

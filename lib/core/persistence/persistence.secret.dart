@@ -16,6 +16,7 @@ class SecretPersistence extends GetxController with ConsoleMixin {
   static SecretPersistence get to => Get.find();
   static Box? box;
 
+  // SYNC
   // WALLET JSON
   final wallet = ''.val('wallet');
   final walletPassword = ''.val('wallet-password');
@@ -43,7 +44,11 @@ class SecretPersistence extends GetxController with ConsoleMixin {
       throw 'empty wallet signature = null cipher';
     }
 
-    return Uint8List.fromList(utf8.encode(walletSignature.val).sublist(0, 32));
+    final key = Uint8List.fromList(
+      utf8.encode(walletSignature.val).sublist(0, 32),
+    );
+
+    return key;
   }
 
   String get shortAddress => walletAddress.val.isEmpty

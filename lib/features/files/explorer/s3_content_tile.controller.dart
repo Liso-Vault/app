@@ -5,7 +5,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
+import 'package:liso/core/supabase/supabase.service.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
+import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
@@ -21,7 +23,7 @@ import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../attachments/attachments_screen.controller.dart';
 import '../model/s3_content.model.dart';
-import '../s3.service.dart';
+import '../sync.service.dart';
 
 class S3ContentTileController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -41,12 +43,12 @@ class S3ContentTileController extends GetxController
   // FUNCTIONS
   void share(S3Content content) async {
     change('Sharing...', status: RxStatus.loading());
-    final result = await S3Service.to.getPreSignedUrl(content.path);
+    final result = await SupabaseService.to.presignUrl(object: content.path);
     change('', status: RxStatus.success());
 
     if (result.isLeft) {
       return UIUtils.showSimpleDialog(
-        'Create Folder Failed',
+        'Sharing Failed',
         'Error: ${result.left}',
       );
     }
@@ -70,7 +72,7 @@ class S3ContentTileController extends GetxController
             child: const Text('Share URL'),
             onPressed: () {
               Get.back();
-              Share.share(result.right);
+              Share.share(result.right.data.url);
             },
           ),
         ] else ...[
@@ -121,12 +123,8 @@ class S3ContentTileController extends GetxController
     // purge all items
     await HiveService.to.purge();
     // download chosen vault file
-    final downloadPath = join(LisoPaths.temp!.path, content.name);
-
-    final downloadResult = await S3Service.to.downloadFile(
-      s3Path: content.path,
-      filePath: downloadPath,
-    );
+    final downloadResult =
+        await StorageService.to.download(object: content.path);
 
     if (downloadResult.isLeft) {
       change('Failed to download', status: RxStatus.success());
@@ -137,12 +135,10 @@ class S3ContentTileController extends GetxController
       );
     }
 
-    final vaultFile = downloadResult.right;
-
     // re-upload to overwrite current vault file
-    final uploadResult = await S3Service.to.uploadFile(
-      vaultFile,
-      s3Path: S3Service.to.vaultPath,
+    final uploadResult = await StorageService.to.upload(
+      downloadResult.right,
+      object: kVaultFileName,
     );
 
     if (uploadResult.isLeft) {
@@ -155,8 +151,8 @@ class S3ContentTileController extends GetxController
     }
 
     // parse vault file
-    final vault = await LisoManager.parseVaultFile(
-      vaultFile,
+    final vault = await LisoManager.parseVaultBytes(
+      downloadResult.right,
       cipherKey: SecretPersistence.to.cipherKey,
     );
 
@@ -186,7 +182,7 @@ class S3ContentTileController extends GetxController
     void _delete() async {
       Get.back();
       change('Deleting...', status: RxStatus.loading());
-      final result = await S3Service.to.remove(content);
+      final result = await StorageService.to.remove(content.path);
 
       if (result.isLeft) {
         change(false, status: RxStatus.success());
@@ -259,10 +255,7 @@ class S3ContentTileController extends GetxController
     change('Downloading...', status: RxStatus.loading());
     final downloadPath = join(LisoPaths.temp!.path, content.name);
 
-    final result = await S3Service.to.downloadFile(
-      s3Path: content.path,
-      filePath: downloadPath,
-    );
+    final result = await StorageService.to.download(object: content.path);
 
     if (result.isLeft) {
       change('', status: RxStatus.success());
@@ -274,11 +267,11 @@ class S3ContentTileController extends GetxController
     }
 
     // decrypt file after downloading
-    File file = result.right;
+    var file = File(downloadPath);
 
-    if (content.isEncrypted) {
-      file = await CipherService.to.decryptFile(file);
-    }
+    await file.writeAsBytes(content.isEncrypted
+        ? CipherService.to.decrypt(result.right)
+        : result.right);
 
     final fileName = basename(file.path);
     Globals.timeLockEnabled = false; // temporarily disable

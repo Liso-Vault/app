@@ -8,11 +8,12 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/core/liso/vault.model.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
-import 'package:liso/features/files/s3.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -39,8 +40,10 @@ class LisoManager {
     DrawerMenuController.to.clearFilters();
     // reset persistence
     await Persistence.reset();
-    // reset s3 minio client
-    S3Service.to.init();
+    await SecretPersistence.reset();
+    // TODO: self-hosting
+    // // reset s3 minio client
+    // SyncService.to.init();
     // reset wallet
     WalletService.to.reset();
     // delete FilePicker caches
@@ -54,7 +57,7 @@ class LisoManager {
     // clean temp folder
     await LisoPaths.cleanTemp();
     // reset variables
-    S3Service.to.backedUp = false;
+    SyncService.to.backedUp = false;
     // invalidate purchases
     if (!GetPlatform.isWindows) {
       await Purchases.invalidateCustomerInfoCache();
@@ -91,16 +94,16 @@ class LisoManager {
     await ItemsService.to.import(vault.items, cipherKey: cipherKey);
   }
 
-  static Future<LisoVault> parseVaultFile(
-    File file, {
+  static Future<LisoVault> parseVaultBytes(
+    Uint8List bytes, {
     Uint8List? cipherKey,
   }) async {
-    final decryptedFile = await CipherService.to.decryptFile(
-      file,
+    final decryptedBytes = CipherService.to.decrypt(
+      bytes,
       cipherKey: cipherKey,
     );
 
-    final jsonString = await decryptedFile.readAsString();
+    final jsonString = utf8.decode(decryptedBytes);
     final jsonMap = jsonDecode(jsonString); // TODO: isolate
     return LisoVault.fromJson(jsonMap);
   }

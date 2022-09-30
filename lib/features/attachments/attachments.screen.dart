@@ -6,7 +6,7 @@ import 'package:liso/features/attachments/attachment.tile.dart';
 
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../files/s3.service.dart';
+import '../files/sync.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import 'attachments_screen.controller.dart';
@@ -21,7 +21,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final eTag = controller.data[index];
 
-      final contents = S3Service.to.contentsCache.where(
+      final contents = SyncService.to.contentsCache.where(
         (e) => e.object!.eTag == eTag,
       );
 

@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
+import 'package:liso/core/supabase/supabase.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/middlewares/authentication.middleware.dart';
@@ -194,10 +197,15 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         // ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Generate Key'),
+          title: const Text('Test Supabase'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () {
-            console.wtf(base64Encode(Hive.generateSecureKey()));
+            // SecretPersistence.to.vaultPresignedPutResponse.val = '';
+            // SecretPersistence.to.vaultPresignedGetResponse.val = '';
+
+            SyncService.to.upSync();
+
+            // SupabaseService.to.init();
           },
         ),
       ],

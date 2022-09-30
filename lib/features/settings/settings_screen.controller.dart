@@ -16,7 +16,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.service.dart';
-import 'package:liso/features/files/s3.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -339,7 +339,7 @@ class SettingsScreenController extends GetxController
 
       if (!unlocked) return;
 
-      final result = await S3Service.to.purge();
+      final result = await SyncService.to.purge();
 
       if (result.isLeft) {
         return UIUtils.showSimpleDialog(

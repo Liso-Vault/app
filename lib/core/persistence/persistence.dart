@@ -93,6 +93,28 @@ class Persistence extends GetxController with ConsoleMixin {
   //     : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';
 
   // FUNCTIONS
+  void addToDeletedGroups(String id) {
+    final ids = deletedGroupIds.val.split(',');
+    ids.add(id);
+    deletedGroupIds.val = ids.join(',');
+    console.wtf('deletedGroupIds: ${deletedGroupIds.val}');
+  }
+
+  void addToDeletedCategories(String id) {
+    final ids = deletedCategoryIds.val.split(',');
+    ids.add(id);
+    deletedCategoryIds.val = ids.join(',');
+    console.wtf('deletedCategoryIds: ${deletedCategoryIds.val}');
+  }
+
+  void addToDeletedItems(String id) {
+    final ids = deletedItemIds.val.split(',');
+    ids.add(id);
+    deletedItemIds.val = ids.join(',');
+    console.wtf('deletedItemIds');
+  }
+
+  // STATIC
   static Future<void> open() async {
     box = await Hive.openBox(
       kHiveBoxPersistence,
@@ -120,26 +142,5 @@ class Persistence extends GetxController with ConsoleMixin {
     if (defaultLocaleCode != null && localeCode == null) {
       box?.put('locale code', defaultLocaleCode);
     }
-  }
-
-  void addToDeletedGroups(String id) {
-    final ids = deletedGroupIds.val.split(',');
-    ids.add(id);
-    deletedGroupIds.val = ids.join(',');
-    console.wtf('deletedGroupIds: ${deletedGroupIds.val}');
-  }
-
-  void addToDeletedCategories(String id) {
-    final ids = deletedCategoryIds.val.split(',');
-    ids.add(id);
-    deletedCategoryIds.val = ids.join(',');
-    console.wtf('deletedCategoryIds: ${deletedCategoryIds.val}');
-  }
-
-  void addToDeletedItems(String id) {
-    final ids = deletedItemIds.val.split(',');
-    ids.add(id);
-    deletedItemIds.val = ids.join(',');
-    console.wtf('deletedItemIds');
   }
 }

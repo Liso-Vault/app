@@ -32,7 +32,7 @@ import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
-import '../files/s3.service.dart';
+import '../files/sync.service.dart';
 import '../search/search.delegate.dart';
 
 class MainScreenController extends GetxController
@@ -75,7 +75,7 @@ class MainScreenController extends GetxController
         ContextMenuItem(
           title: 'sync'.tr,
           leading: const Icon(Iconsax.cloud_change),
-          onSelected: S3Service.to.sync,
+          onSelected: SyncService.to.sync,
         ),
       ],
       // ContextMenuItem(
@@ -279,11 +279,11 @@ class MainScreenController extends GetxController
       if (SecretPersistence.to.cipherKey.isEmpty) {
         Future.delayed(3.seconds).then((x) {
           // sync vault
-          S3Service.to.sync();
+          SyncService.to.sync();
         });
       } else {
         // sync vault
-        S3Service.to.sync();
+        SyncService.to.sync();
       }
     }
 
@@ -458,7 +458,10 @@ class MainScreenController extends GetxController
         Persistence.to.addToDeletedItems(e);
       }
 
-      final vault = await LisoManager.parseVaultFile(backupFile);
+      final vault = await LisoManager.parseVaultBytes(
+        await backupFile.readAsBytes(),
+      );
+
       await LisoManager.importVault(vault);
       importedItemIds.clear();
       load();

@@ -7,9 +7,10 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
 import 'package:liso/core/firebase/functions.service.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
-import 'package:liso/features/files/s3.service.dart';
 import 'package:secrets/secrets.dart';
 
+import '../../../features/pro/pro.controller.dart';
+import '../../supabase/supabase.service.dart';
 import 'models/config_app.model.dart';
 import 'models/config_app_domains.model.dart';
 import 'models/config_general.model.dart';
@@ -71,10 +72,8 @@ class ConfigService extends GetxService with ConsoleMixin {
 
         // cache
         SecretPersistence.to.configSecrets.val = jsonEncode(secrets.toJson());
-
         console.wtf('remote config from functions synced');
-        // re-init s3 minio client
-        S3Service.to.init();
+        postInit();
       },
     );
   }
@@ -124,13 +123,19 @@ class ConfigService extends GetxService with ConsoleMixin {
         ? Secrets.configs.appDomains
         : jsonDecode(instance.getString('app_domains_config')));
 
+    // cache secrets config
     if (!local) {
       SecretPersistence.to.configSecrets.val =
           instance.getString('secrets_config');
     }
 
     console.info('populated! local: $local');
-    // re-init s3 minio client
-    S3Service.to.init();
+    postInit();
+  }
+
+  void postInit() {
+    // initialize supabase
+    SupabaseService.to.init();
+    ProController.to.init();
   }
 }

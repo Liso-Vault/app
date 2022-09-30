@@ -11,10 +11,12 @@ import 'package:liso/features/items/items.service.dart';
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/liso/liso_paths.dart';
 import '../../../core/services/cipher.service.dart';
+import '../../../core/supabase/supabase.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
+import '../../files/storage.service.dart';
 import '../../menu/menu.item.dart';
-import '../../files/s3.service.dart';
+import '../../files/sync.service.dart';
 import '../../search/search.delegate.dart';
 import '../../shared_vaults/model/shared_vault.model.dart';
 
@@ -122,9 +124,8 @@ class VaultExplorerScreenController extends GetxController
     // download vault file
     final s3Path = '${vault.address}/Shared/${vault.docId}.$kVaultExtension';
 
-    final result = await S3Service.to.downloadFile(
-      s3Path: s3Path,
-      filePath: LisoPaths.tempVaultFilePath,
+    final result = await StorageService.to.download(
+      object: s3Path,
     );
 
     if (result.isLeft) {
@@ -195,14 +196,13 @@ class VaultExplorerScreenController extends GetxController
       );
     }
 
-    final decryptedFile = await CipherService.to.decryptFile(
+    final decryptedBytes = CipherService.to.decrypt(
       result.right,
       cipherKey: cipherKey,
     );
 
     // parse vault
-    final vaultString = await decryptedFile.readAsString();
-    final vaultJson = jsonDecode(vaultString);
+    final vaultJson = jsonDecode(utf8.decode(decryptedBytes));
     // deserialize
     items = List<HiveLisoItem>.from(
       vaultJson.map((x) => HiveLisoItem.fromJson(x)),

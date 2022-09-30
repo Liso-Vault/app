@@ -140,7 +140,6 @@ class FirestoreService extends GetxService with ConsoleMixin {
   // data will be used for airdrops, and other promotions
   Future<void> syncUser({
     required int filesCount,
-    required int encryptedFilesCount,
     required int totalSize,
   }) async {
     // just to make sure
@@ -198,7 +197,6 @@ class FirestoreService extends GetxService with ConsoleMixin {
         groups: GroupsService.to.data.length,
         categories: CategoriesService.to.data.length,
         files: filesCount,
-        encryptedFiles: encryptedFilesCount,
         sharedVaults: SharedVaultsController.to.data.length,
         joinedVaults: JoinedVaultsController.to.data.length,
       ),

@@ -4,7 +4,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 
 import '../app/routes.dart';
-import '../files/s3.service.dart';
+import '../files/sync.service.dart';
 
 class AttachmentsScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -41,7 +41,7 @@ class AttachmentsScreenController extends GetxController
     final exists = data.contains(eTag);
 
     if (exists) {
-      final content = S3Service.to.contentsCache.firstWhere(
+      final content = SyncService.to.contentsCache.firstWhere(
         (e) => e.object!.eTag == eTag,
       );
 

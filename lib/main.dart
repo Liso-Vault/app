@@ -37,20 +37,21 @@ import 'core/liso/liso_paths.dart';
 import 'core/notifications/notifications.manager.dart';
 import 'core/persistence/persistence.dart';
 import 'core/services/local_auth.service.dart';
-import 'core/services/supabase.service.dart';
+import 'core/supabase/supabase.service.dart';
 import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/categories/categories.controller.dart';
 import 'features/categories/categories.service.dart';
 import 'features/connectivity/connectivity.service.dart';
 import 'features/drawer/drawer_widget.controller.dart';
+import 'features/files/storage.service.dart';
 import 'features/groups/groups.controller.dart';
 import 'features/items/items.controller.dart';
 import 'features/items/items.service.dart';
 import 'features/joined_vaults/joined_vault.controller.dart';
 import 'features/main/main_screen.controller.dart';
 import 'features/files/explorer/s3_content_tile.controller.dart';
-import 'features/files/s3.service.dart';
+import 'features/files/sync.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
 
 void init(Flavor flavor, {bool autofill = false}) async {
@@ -106,7 +107,8 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.lazyPut(() => AuthService());
     Get.lazyPut(() => AuthDesktopService());
     Get.lazyPut(() => AlchemyService());
-    Get.lazyPut(() => S3Service());
+    Get.lazyPut(() => SyncService());
+    Get.lazyPut(() => StorageService());
     Get.lazyPut(() => ConfigService());
     Get.lazyPut(() => LocalAuthService());
     Get.lazyPut(() => HiveService());
@@ -138,7 +140,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
     await SecretPersistence.migrate();
     HiveService.init();
     await ConfigService.to.init();
-    await ProController.to.init();
 
     // init
     NotificationsManager.init();

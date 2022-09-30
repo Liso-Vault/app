@@ -5,10 +5,10 @@ import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/firebase/auth_desktop.service.dart';
 import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../features/files/s3.service.dart';
 import '../../features/joined_vaults/joined_vault.controller.dart';
 import '../../features/shared_vaults/shared_vault.controller.dart';
 import '../persistence/persistence.secret.dart';
@@ -77,13 +77,13 @@ class AuthService extends GetxService with ConsoleMixin {
       return console.error('Cannot record because of null wallet');
     }
 
-    final info = await S3Service.to.fetchStorageSize();
-    if (info == null) return console.error('error storage info');
+    final storage = Get.find<StorageService>();
+    await storage.init();
+    final data = storage.rootInfo.value.data;
 
     await FirestoreService.to.syncUser(
-      filesCount: info.contents.length,
-      totalSize: info.totalSize,
-      encryptedFilesCount: info.encryptedFiles,
+      filesCount: data.count,
+      totalSize: data.size,
     );
 
     await FirestoreService.to.enforceDevices();
