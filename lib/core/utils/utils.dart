@@ -15,12 +15,12 @@ import 'package:window_manager/window_manager.dart';
 
 import '../../features/general/remote_image.widget.dart';
 import '../../features/pro/pro.controller.dart';
-import '../../features/files/model/s3_content.model.dart';
 import '../../resources/resources.dart';
 import '../firebase/auth.service.dart';
 import '../firebase/config/config.service.dart';
 import '../persistence/persistence.dart';
 import '../persistence/persistence.secret.dart';
+import '../supabase/model/object.model.dart';
 import 'globals.dart';
 
 class Utils {
@@ -235,12 +235,12 @@ class Utils {
     return 'Invalid Folder Name';
   }
 
-  static Widget s3ContentIcon(S3Content content) {
-    if (!content.isFile) return const Icon(Iconsax.folder_open5);
+  static Widget s3ContentIcon(S3Object object) {
+    if (!object.isFile) return const Icon(Iconsax.folder_open5);
     var iconData = Iconsax.document_1;
-    if (content.fileType == null) return Icon(iconData);
+    if (object.fileType == null) return Icon(iconData);
 
-    switch (content.fileType!) {
+    switch (object.fileType!) {
       case 'liso':
         return RemoteImage(
           url: ConfigService.to.general.app.image,
@@ -372,7 +372,7 @@ class Utils {
     if (AuthService.to.isSignedIn) {
       body += 'Rating: $ratingEmojis$ln';
       body +=
-          'User ID: ${AuthService.to.userId}\nAddress: ${SecretPersistence.to.walletAddress.val}$ln';
+          'User ID: ${AuthService.to.userId}\nAddress: ${SecretPersistence.to.longAddress}$ln';
       body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
       body += 'Entitlement: ${ProController.to.limits.id}$ln';
       body += 'Pro: ${ProController.to.isPro}$ln';

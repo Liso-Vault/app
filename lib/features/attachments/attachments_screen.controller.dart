@@ -4,6 +4,7 @@ import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/core/utils/utils.dart';
 
 import '../app/routes.dart';
+import '../files/storage.service.dart';
 import '../files/sync.service.dart';
 
 class AttachmentsScreenController extends GetxController
@@ -41,8 +42,8 @@ class AttachmentsScreenController extends GetxController
     final exists = data.contains(eTag);
 
     if (exists) {
-      final content = SyncService.to.contentsCache.firstWhere(
-        (e) => e.object!.eTag == eTag,
+      final content = StorageService.to.rootInfo.value.data.objects.firstWhere(
+        (e) => e.etag == eTag,
       );
 
       return UIUtils.showSimpleDialog(

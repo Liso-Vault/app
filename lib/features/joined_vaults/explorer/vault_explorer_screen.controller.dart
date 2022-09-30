@@ -9,14 +9,11 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/items/items.service.dart';
 
 import '../../../core/hive/models/item.hive.dart';
-import '../../../core/liso/liso_paths.dart';
 import '../../../core/services/cipher.service.dart';
-import '../../../core/supabase/supabase.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../files/storage.service.dart';
 import '../../menu/menu.item.dart';
-import '../../files/sync.service.dart';
 import '../../search/search.delegate.dart';
 import '../../shared_vaults/model/shared_vault.model.dart';
 

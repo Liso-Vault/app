@@ -8,60 +8,45 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/files/storage.service.dart';
-import 'package:liso/features/files/sync.service.dart';
 import 'package:path/path.dart';
 
 import '../../../core/services/cipher.service.dart';
+import '../../../core/supabase/model/object.model.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
 import '../../menu/menu.item.dart';
 import '../../pro/pro.controller.dart';
-import '../model/s3_content.model.dart';
 
 class S3ExplorerScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   static S3ExplorerScreenController get to => Get.find();
 
   // VARIABLES
+  final storage = Get.find<StorageService>();
+  String rootPrefix = '';
 
   // PROPERTIES
-  final data = <S3Content>[].obs;
-  final currentPath = ''.obs;
+  final data = <S3Object>[].obs;
+  final currentPrefix = ''.obs;
   final busy = false.obs;
 
   // PROPERTIES
 
   // GETTERS
-  bool get isInRoot => currentPath.value == rootPath;
+  bool get isRoot => currentPrefix.value == rootPrefix;
   bool get isTimeMachine => Get.parameters['type'] == 'time_machine';
   bool get isPicker => Get.parameters['type'] == 'picker';
-
-  String get rootPath => isTimeMachine
-      ? '${SyncService.to.backupsPath}/'
-      : SyncService.to.filesPath;
-
-  List<ContextMenuItem> get menuItemsUploadType {
-    return [
-      ContextMenuItem(
-        title: 'File',
-        leading: const Icon(Iconsax.document_upload),
-        onSelected: pickFile,
-      ),
-      ContextMenuItem(
-        title: 'Encrypted File',
-        leading: const Icon(Iconsax.shield_tick),
-        onSelected: () => pickFile(encryptFile: true),
-      ),
-    ];
-  }
+  String get rootFolderName => isTimeMachine ? 'Backups' : 'Files';
 
   // INIT
   @override
   void onInit() {
-    load(path: rootPath);
+    rootPrefix = '${SecretPersistence.to.longAddress}/$rootFolderName/';
+    navigate(prefix: rootPrefix);
     super.onInit();
   }
 
@@ -72,49 +57,47 @@ class S3ExplorerScreenController extends GetxController
   }
 
   // FUNCTIONS
-  Future<void> pulledRefresh() async {
-    await load(path: currentPath.value, pulled: true);
+
+  void up() {
+    final prefix = currentPrefix.value.split('/');
+    prefix.removeLast();
+    prefix.removeLast();
+
+    navigate(prefix: '${prefix.join('/')}/');
   }
 
-  Future<void> reload() async => await load(path: currentPath.value);
+  void navigate({required String prefix}) async {
+    List<S3Object> objects = List.from(storage.rootInfo.value.data.objects);
 
-  Future<void> up() async => await load(path: '${dirname(currentPath.value)}/');
+    objects = objects.where((e) {
+      final path = e.key.replaceAll(prefix, '');
+      return e.key.startsWith(prefix) &&
+          '/'.allMatches(path).length == 1 &&
+          e.key != prefix;
+    }).toList();
 
-  Future<void> load({
-    required String path,
-    bool pulled = false,
-  }) async {
+    for (var e in objects) {
+      console.info('key: ${e.name}');
+    }
+
+    data.clear();
+    await Future.delayed(100.milliseconds);
+    data.value = objects;
+    currentPrefix.value = prefix;
+
+    change(
+      null,
+      status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
+    );
+  }
+
+  Future<void> load({bool pulled = false}) async {
     if (!pulled) change(true, status: RxStatus.loading());
-
-    final result = await StorageService.to.fetch(
-      path: path,
-      filterExtensions: isTimeMachine ? ['.$kVaultExtension'] : [],
-    );
-
-    result.either(
-      (error) {
-        UIUtils.showSimpleDialog(
-          'Fetch Error',
-          '$error -> load()',
-        );
-
-        change(false, status: RxStatus.success());
-      },
-      (response) {
-        data.value = response;
-        currentPath.value = path;
-
-        change(
-          false,
-          status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
-        );
-      },
-    );
-
-    StorageService.to.init();
+    await StorageService.to.load();
+    navigate(prefix: currentPrefix.value);
   }
 
-  void pickFile({bool encryptFile = false}) async {
+  void pickFile() async {
     change(true, status: RxStatus.loading());
     Globals.timeLockEnabled = false; // disable
     FilePickerResult? result;
@@ -168,10 +151,10 @@ class S3ExplorerScreenController extends GetxController
     }
 
     change(false, status: RxStatus.success());
-    _upload(file, encryptFile: encryptFile);
+    _upload(file);
   }
 
-  void _upload(File file, {bool encryptFile = false}) async {
+  void _upload(File file) async {
     final assumedTotal =
         StorageService.to.rootInfo.value.data.size + await file.length();
 
@@ -188,13 +171,11 @@ class S3ExplorerScreenController extends GetxController
 
     change(true, status: RxStatus.loading());
     // encrypt file before uploading
-    if (encryptFile) {
-      file = await CipherService.to.encryptFile(file);
-    }
+    file = await CipherService.to.encryptFile(file);
 
     final result = await StorageService.to.upload(
       await file.readAsBytes(),
-      object: '${currentPath.value}/${basename(file.path)}',
+      object: '${currentPrefix.value}/${basename(file.path)}',
     );
 
     if (result.isLeft) {
@@ -212,7 +193,7 @@ class S3ExplorerScreenController extends GetxController
     );
 
     change(false, status: RxStatus.success());
-    await reload();
+    await load();
   }
 
   void newFolder() async {
@@ -226,7 +207,7 @@ class S3ExplorerScreenController extends GetxController
 
       final result = await StorageService.to.createFolder(
         name,
-        s3Path: currentPath.value,
+        s3Path: currentPrefix.value,
       );
 
       if (result.isLeft) {
@@ -244,7 +225,7 @@ class S3ExplorerScreenController extends GetxController
       );
 
       change(false, status: RxStatus.success());
-      await reload();
+      await load();
     }
 
     final content = TextFormField(

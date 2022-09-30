@@ -17,14 +17,12 @@ import 'package:liso/features/pro/pro.controller.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
 import '../../core/liso/liso.manager.dart';
-import '../../core/liso/liso_paths.dart';
 import '../../core/liso/vault.model.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.service.dart';
 import '../groups/groups.service.dart';
 import '../items/items.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
-import 'model/s3_content.model.dart';
 
 class SyncService extends GetxService with ConsoleMixin {
   static SyncService get to => Get.find();
@@ -34,7 +32,6 @@ class SyncService extends GetxService with ConsoleMixin {
   bool backedUp = false;
   final config = Get.find<ConfigService>();
   final persistence = Get.find<Persistence>();
-  List<S3Content> contentsCache = [];
   final syncTimeoutDuration = 20.seconds;
 
   // PROPERTIES
@@ -45,12 +42,11 @@ class SyncService extends GetxService with ConsoleMixin {
   final progressText = 'Syncing...'.obs;
 
   // GETTERS
-  S3Content get lisoContent => S3Content(path: kVaultFileName);
 
-  String backupsPath = 'Backups';
-  String sharedPath = 'Shared';
-  String filesPath = 'Files';
-  String sharedVaultsPath = 'Shared/Vaults';
+  // String backupsPath = 'Backups';
+  // String sharedPath = 'Shared';
+  // String filesPath = 'Files';
+  // String sharedVaultsPath = 'Shared/Vaults';
 
   // INIT
 
@@ -74,7 +70,7 @@ class SyncService extends GetxService with ConsoleMixin {
     console.info('syncing...');
     syncing.value = true;
 
-    final statResult = await SupabaseService.to.statObject(lisoContent.path);
+    final statResult = await SupabaseService.to.statObject(kVaultFileName);
 
     if (statResult.isLeft) {
       syncing.value = false;
@@ -238,42 +234,25 @@ class SyncService extends GetxService with ConsoleMixin {
     await local.addAll(newList);
   }
 
-  Future<void> backup(S3Content content, Uint8List encryptedBytes) async {
+  Future<void> backup(String object, Uint8List encryptedBytes) async {
     if (!persistence.sync.val) return console.warning('offline');
     if (backedUp) {
       return console.warning('already backed up for todays session');
     }
 
-    console.info('backup: ${content.path}...');
+    console.info('backup: $object...');
 
     // REMOVE OLDEST BACKUP IF NECESSARY
-    final result = await StorageService.to.folderInfo(
-      backupsPath,
-    );
-
-    if (result.isLeft) {
-      return console.error('backups folder info error: ${result.left}');
-    }
-
-    final info = result.right;
-
-    // console.wtf('# BACKUPS #');
-    // console.wtf(
-    //   'limits: ${ProController.to.limits.backups}, backups: ${info.contents.length}',
-    // );
-
-    // for (var e in info.contents) {
-    //   console.wtf('${e.name} - ${e.object?.lastModified}');
-    // }
-
-    if (info.contents.length >= ProController.to.limits.backups) {
-      final result = await StorageService.to.remove(info.contents.first.path);
+    if (StorageService.to.backups.length >= ProController.to.limits.backups) {
+      final result = await StorageService.to.remove(
+        StorageService.to.backups.first.key,
+      );
       // abort backup if error in removing oldest backup
       if (result.isLeft) {
         return console.error('error removing last backup: ${result.left}');
       } else {
         console.wtf(
-          'removed backup: ${result.right} - ${info.contents.first.name}',
+          'removed backup: ${result.right} - ${StorageService.to.backups.first.name}',
         );
       }
     }
@@ -282,7 +261,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
     final presignResult = await SupabaseService.to.presignUrl(
       object:
-          '$backupsPath/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
+          'Backups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
       method: 'PUT',
     );
 
@@ -317,7 +296,7 @@ class SyncService extends GetxService with ConsoleMixin {
     );
 
     // BACKUP
-    backup(lisoContent, encryptedBytes);
+    backup(kVaultFileName, encryptedBytes);
 
     final presignResult = await SupabaseService.to.presignUrl(
       object: kVaultFileName,
@@ -381,7 +360,7 @@ class SyncService extends GetxService with ConsoleMixin {
       );
 
       final presignResult = await SupabaseService.to.presignUrl(
-        object: '$sharedPath/${sharedVault.docId}.$kVaultExtension',
+        object: 'Shared/${sharedVault.docId}.$kVaultExtension',
         method: 'PUT',
       );
 
@@ -437,7 +416,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
   //   return {
   //     'userId': AuthService.to.userId,
-  //     'address': SecretPersistence.to.walletAddress.val,
+  //     'address': SecretPersistence.to.longAddress,
   //     'appName': app.appName,
   //     'appPackageName': app.packageName,
   //     'appVersion': app.version,

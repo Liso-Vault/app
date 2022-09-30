@@ -114,7 +114,7 @@ class SettingsScreenController extends GetxController
     change('Exporting...', status: RxStatus.loading());
 
     final exportFileName =
-        '${SecretPersistence.to.walletAddress.val}.wallet.$kWalletExtension';
+        '${SecretPersistence.to.longAddress}.wallet.$kWalletExtension';
 
     final tempFile = File(join(
       LisoPaths.temp!.path,
@@ -182,7 +182,7 @@ class SettingsScreenController extends GetxController
       // File Name
       final dateFormat = DateFormat('MMM-dd-yyyy_hh-mm_aaa');
       final exportFileName =
-          '${SecretPersistence.to.walletAddress.val}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
+          '${SecretPersistence.to.longAddress}-${dateFormat.format(DateTime.now())}.${encrypt ? kVaultExtension : 'json'}';
 
       // Vault Compaction
       String vaultString = await LisoManager.compactJson();
@@ -420,10 +420,10 @@ class SettingsScreenController extends GetxController
       children: [
         ListTile(
           title: const Text('Wallet Address'),
-          subtitle: Text(SecretPersistence.to.walletAddress.val),
+          subtitle: Text(SecretPersistence.to.longAddress),
           dense: true,
           onTap: () => Utils.copyToClipboard(
-            SecretPersistence.to.walletAddress.val,
+            SecretPersistence.to.longAddress,
           ),
         ),
         ListTile(

@@ -82,7 +82,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.password_check,
-              title: 'OTP Authenticator',
+              title: '2FA Authenticator',
               trailing: Icon(
                 limit.otpGenerator ? Icons.check : LineIcons.times,
                 color: limit.otpGenerator ? proColor : Colors.grey,
@@ -93,14 +93,6 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               title: 'Cloud Storage',
               trailing: Text(
                 filesize(1073741824),
-                style: kTrailingStyle,
-              ),
-            ),
-            FeatureTile(
-              iconData: Iconsax.shield_tick,
-              title: 'Encrypted Files',
-              trailing: Text(
-                _formatKNumber(limit.encryptedFiles),
                 style: kTrailingStyle,
               ),
             ),

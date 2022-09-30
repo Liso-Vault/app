@@ -26,7 +26,6 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
-import '../files/model/s3_content.model.dart';
 import '../files/sync.service.dart';
 import '../pro/pro.controller.dart';
 
@@ -140,7 +139,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       // add to firestore
       final vault = SharedVault(
         userId: AuthService.to.userId,
-        address: SecretPersistence.to.walletAddress.val,
+        address: SecretPersistence.to.longAddress,
         name: nameController.text,
         description: descriptionController.text,
       );
@@ -331,8 +330,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         return console.error("error batch commit: $e");
       }
 
-      final object =
-          '${SyncService.to.sharedPath}/${object_.docId}.$kVaultExtension';
+      final object = 'Shared/${object_.docId}.$kVaultExtension';
       await StorageService.to.remove(object);
 
       console.info('deleted: ${doc.id}');

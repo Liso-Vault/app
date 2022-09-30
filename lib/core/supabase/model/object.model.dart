@@ -1,3 +1,9 @@
+import 'package:path/path.dart';
+
+import '../../../features/files/explorer/file_extensions.dart';
+import '../../utils/globals.dart';
+import '../../utils/utils.dart';
+
 class S3Object {
   const S3Object({
     this.type = '',
@@ -7,10 +13,10 @@ class S3Object {
     this.lastModified,
   });
 
-  final String? type;
-  final String? key;
-  final String? etag;
-  final int? size;
+  final String type;
+  final String key;
+  final String etag;
+  final int size;
   final DateTime? lastModified;
 
   factory S3Object.fromJson(Map<String, dynamic> json) => S3Object(
@@ -30,4 +36,35 @@ class S3Object {
         "size": size,
         "lastModified": lastModified?.toIso8601String(),
       };
+
+  String get name => basename(key);
+
+  bool get isVaultFile => fileExtension == kVaultExtension;
+
+  bool get isFile => extension(key).isNotEmpty;
+
+  bool get isEncrypted => key.contains(kEncryptedExtensionExtra);
+
+  String get fileExtension => extension(maskedName).replaceAll('.', '');
+
+  String get updatedTimeAgo => Utils.timeAgo(lastModified!, short: false);
+
+  String get maskedName => name.replaceAll(kEncryptedExtensionExtra, '');
+
+  String? get fileType {
+    final extensionType = kFileExtensionsMap[fileExtension]?.first;
+    return extensionType;
+  }
+}
+
+enum S3ObjectType {
+  file,
+  directory,
+}
+
+enum S3FileType {
+  text,
+  image,
+  pdf,
+  unknown,
 }

@@ -50,7 +50,7 @@ import 'features/items/items.controller.dart';
 import 'features/items/items.service.dart';
 import 'features/joined_vaults/joined_vault.controller.dart';
 import 'features/main/main_screen.controller.dart';
-import 'features/files/explorer/s3_content_tile.controller.dart';
+import 'features/files/explorer/s3_object_tile.controller.dart';
 import 'features/files/sync.service.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
 
@@ -129,7 +129,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.put(ProController());
 
     // create controllers
-    Get.create(() => S3ContentTileController());
+    Get.create(() => S3ObjectTileController());
 
     // initializations
     CrashlyticsService.to.init();

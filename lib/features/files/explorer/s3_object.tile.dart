@@ -4,21 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/files/explorer/s3_content_tile.controller.dart';
+import 'package:liso/core/supabase/model/object.model.dart';
+import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';
 import '../../menu/menu.item.dart';
-import '../model/s3_content.model.dart';
 
-class S3ContentTile extends GetWidget<S3ContentTileController>
-    with ConsoleMixin {
-  final S3Content content;
+class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
+  final S3Object object;
 
-  const S3ContentTile(
-    this.content, {
+  const S3ObjectTile(
+    this.object, {
     Key? key,
   }) : super(key: key);
 
@@ -28,11 +27,11 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
     final explorerController = Get.find<S3ExplorerScreenController>();
 
     final menuItems = [
-      if (content.isVaultFile && !isPicker) ...[
+      if (object.isVaultFile && !isPicker) ...[
         ContextMenuItem(
           title: 'Restore',
           leading: const Icon(Iconsax.import_1),
-          onSelected: () => controller.restore(content),
+          onSelected: () => controller.restore(object),
         ),
         // if (!explorerController.currentPath.value.contains('Backups/')) ...[
         //   ContextMenuItem(
@@ -42,16 +41,16 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
         //   ),
         // ]
       ] else ...[
-        if (content.isFile && !isPicker) ...[
+        if (object.isFile && !isPicker) ...[
           ContextMenuItem(
             title: 'Download',
             leading: const Icon(Iconsax.import_1),
-            onSelected: () => controller.askToDownload(content),
+            onSelected: () => controller.askToDownload(object),
           ),
           ContextMenuItem(
             title: 'Share',
             leading: const Icon(Iconsax.share),
-            onSelected: () => controller.share(content),
+            onSelected: () => controller.share(object),
           ),
         ],
         // if (Persistence.to.syncProvider.val ==
@@ -70,55 +69,56 @@ class S3ContentTile extends GetWidget<S3ContentTileController>
         ContextMenuItem(
           title: 'Delete',
           leading: const Icon(Iconsax.trash),
-          onSelected: () => controller.confirmDelete(content),
+          onSelected: () => controller.confirmDelete(object),
         ),
       ],
     ];
 
-    final subTitle = content.size > 0
+    final subTitle = object.size > 0
         ? Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
-                  Text(filesize(content.size)),
-                  if (content.isEncrypted) ...[
+                  Text(filesize(object.size)),
+                  if (object.isEncrypted) ...[
                     const SizedBox(width: 10),
                     Icon(Iconsax.shield_tick, color: themeColor, size: 10)
                   ],
                 ],
               ),
-              if (content.object != null) Text(content.updatedTimeAgo),
+              Text(object.updatedTimeAgo),
             ],
           )
         : null;
 
     void _open() {
-      if (content.isFile) {
+      if (object.isFile) {
         if (isPicker) {
-          return Get.back(result: content.object!.eTag);
+          return Get.back(result: object.etag);
         }
 
-        if (content.isVaultFile) {
-          controller.askToImport(content);
+        if (object.isVaultFile) {
+          controller.askToImport(object);
         } else {
-          controller.askToDownload(content);
+          controller.askToDownload(object);
         }
       } else {
-        explorerController.load(path: content.path);
+        explorerController.navigate(prefix: object.key);
       }
     }
 
     return Obx(
       () => ListTile(
         title: Text(
-          content.maskedName,
+          object.maskedName,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        subtitle: controller.busy.value ? Text(controller.state) : subTitle,
+        // subtitle: controller.busy.value ? Text(controller.state) : subTitle,
+        subtitle: Text(object.key),
         iconColor: themeColor,
-        leading: Utils.s3ContentIcon(content),
+        leading: Utils.s3ContentIcon(object),
         enabled: !controller.busy.value,
         onTap: _open,
         trailing: ContextMenuButton(

@@ -182,7 +182,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
         Row(
           children: [
             DiceBearAvatar(
-              seed: SecretPersistence.to.walletAddress.val,
+              seed: SecretPersistence.to.longAddress,
               size: 30,
             ),
             const SizedBox(width: 10),
@@ -200,7 +200,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                 Text(
                   Utils.isSmallScreen
                       ? SecretPersistence.to.shortAddress
-                      : SecretPersistence.to.walletAddress.val,
+                      : SecretPersistence.to.longAddress,
                   overflow: TextOverflow.ellipsis,
                 ),
               ],

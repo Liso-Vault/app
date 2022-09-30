@@ -1,12 +1,7 @@
-import 'dart:convert';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/persistence/persistence.secret.dart';
-import 'package:liso/core/supabase/supabase.service.dart';
 import 'package:liso/features/files/sync.service.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';

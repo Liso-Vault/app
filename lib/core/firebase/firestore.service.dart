@@ -214,7 +214,7 @@ class FirestoreService extends GetxService with ConsoleMixin {
     );
 
     user.userId = AuthService.to.userId;
-    user.address = SecretPersistence.to.walletAddress.val;
+    user.address = SecretPersistence.to.longAddress;
     user.limits = ProController.to.limits.id;
     user.metadata = metadata;
 

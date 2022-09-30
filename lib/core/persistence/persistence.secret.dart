@@ -51,6 +51,9 @@ class SecretPersistence extends GetxController with ConsoleMixin {
     return key;
   }
 
+  String get longAddress =>
+      walletAddress.val.isEmpty ? 'error' : walletAddress.val;
+
   String get shortAddress => walletAddress.val.isEmpty
       ? 'error'
       : '${walletAddress.val.substring(0, 11)}...${walletAddress.val.substring(walletAddress.val.length - 11)}';

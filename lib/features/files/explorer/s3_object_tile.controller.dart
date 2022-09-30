@@ -17,15 +17,14 @@ import '../../../core/liso/liso_paths.dart';
 import '../../../core/notifications/notifications.manager.dart';
 import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/services/cipher.service.dart';
+import '../../../core/supabase/model/object.model.dart';
 import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../attachments/attachments_screen.controller.dart';
-import '../model/s3_content.model.dart';
-import '../sync.service.dart';
 
-class S3ContentTileController extends GetxController
+class S3ObjectTileController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   String explorerType = '';
@@ -41,9 +40,9 @@ class S3ContentTileController extends GetxController
   }
 
   // FUNCTIONS
-  void share(S3Content content) async {
+  void share(S3Object object) async {
     change('Sharing...', status: RxStatus.loading());
-    final result = await SupabaseService.to.presignUrl(object: content.path);
+    final result = await SupabaseService.to.presignUrl(object: object.key);
     change('', status: RxStatus.success());
 
     if (result.isLeft) {
@@ -54,7 +53,7 @@ class S3ContentTileController extends GetxController
     }
 
     final dialogContent = Text(
-      '${content.name} will only be available to download for 1 hour from now.',
+      '${object.name} will only be available to download for 1 hour from now.',
     );
 
     Get.dialog(AlertDialog(
@@ -88,11 +87,11 @@ class S3ContentTileController extends GetxController
     ));
   }
 
-  void askToImport(S3Content s3content) {
+  void askToImport(S3Object object) {
     if (busy.value) return;
 
     final content = Text(
-      'Are you sure you want to restore from this backed-up vault ${s3content.name}?\n\nIf you choose to proceed: Your current vault will be overwritten alongside with all the items in it.',
+      'Are you sure you want to restore from this backed-up vault ${object.name}?\n\nIf you choose to proceed: Your current vault will be overwritten alongside with all the items in it.',
     );
 
     Get.dialog(AlertDialog(
@@ -110,21 +109,20 @@ class S3ContentTileController extends GetxController
         ),
         TextButton(
           child: Text('proceed'.tr),
-          onPressed: () => restore(s3content),
+          onPressed: () => restore(object),
         ),
       ],
     ));
   }
 
-  void restore(S3Content content) async {
+  void restore(S3Object object) async {
     Get.back();
 
     change('Restoring...', status: RxStatus.loading());
     // purge all items
     await HiveService.to.purge();
     // download chosen vault file
-    final downloadResult =
-        await StorageService.to.download(object: content.path);
+    final downloadResult = await StorageService.to.download(object: object.key);
 
     if (downloadResult.isLeft) {
       change('Failed to download', status: RxStatus.success());
@@ -166,23 +164,23 @@ class S3ContentTileController extends GetxController
 
     NotificationsManager.notify(
       title: 'Vault Restored',
-      body: '${content.name} successfully restored!',
+      body: '${object.name} successfully restored!',
     );
 
     MainScreenController.to.navigate();
   }
 
   // TODO: confirmation dialog
-  void confirmDelete(S3Content content) async {
+  void confirmDelete(S3Object object) async {
     if (explorerType == 'picker') {
-      AttachmentsScreenController.to.data.remove(content.object!.eTag);
+      AttachmentsScreenController.to.data.remove(object.etag);
       return;
     }
 
     void _delete() async {
       Get.back();
       change('Deleting...', status: RxStatus.loading());
-      final result = await StorageService.to.remove(content.path);
+      final result = await StorageService.to.remove(object.key);
 
       if (result.isLeft) {
         change(false, status: RxStatus.success());
@@ -195,15 +193,15 @@ class S3ContentTileController extends GetxController
 
       NotificationsManager.notify(
         title: 'Deleted',
-        body: content.name,
+        body: object.name,
       );
 
       change('false', status: RxStatus.success());
-      await S3ExplorerScreenController.to.reload();
+      await S3ExplorerScreenController.to.load();
     }
 
     final dialogContent = Text(
-      'Are you sure you want to delete "${content.name}"?',
+      'Are you sure you want to delete "${object.name}"?',
     );
 
     Get.dialog(AlertDialog(
@@ -227,8 +225,8 @@ class S3ContentTileController extends GetxController
     ));
   }
 
-  void askToDownload(S3Content content) {
-    final dialogContent = Text('Save "${content.maskedName}" to local disk?');
+  void askToDownload(S3Object object) {
+    final dialogContent = Text('Save "${object.maskedName}" to local disk?');
 
     Get.dialog(AlertDialog(
       title: const Text('Download'),
@@ -244,18 +242,18 @@ class S3ContentTileController extends GetxController
           child: const Text('Download'),
           onPressed: () {
             Get.back();
-            _download(content);
+            _download(object);
           },
         ),
       ],
     ));
   }
 
-  void _download(S3Content content) async {
+  void _download(S3Object object) async {
     change('Downloading...', status: RxStatus.loading());
-    final downloadPath = join(LisoPaths.temp!.path, content.name);
+    final downloadPath = join(LisoPaths.temp!.path, object.name);
 
-    final result = await StorageService.to.download(object: content.path);
+    final result = await StorageService.to.download(object: object.key);
 
     if (result.isLeft) {
       change('', status: RxStatus.success());
@@ -269,7 +267,7 @@ class S3ContentTileController extends GetxController
     // decrypt file after downloading
     var file = File(downloadPath);
 
-    await file.writeAsBytes(content.isEncrypted
+    await file.writeAsBytes(object.isEncrypted
         ? CipherService.to.decrypt(result.right)
         : result.right);
 

@@ -77,7 +77,7 @@ class AuthDesktopService extends GetxService with ConsoleMixin {
       return console.warning('Already Signed In: $userId');
     }
 
-    final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
+    final email = '${SecretPersistence.to.longAddress}@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);
 
     try {

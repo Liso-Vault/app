@@ -78,7 +78,7 @@ class AuthService extends GetxService with ConsoleMixin {
     }
 
     final storage = Get.find<StorageService>();
-    await storage.init();
+    await storage.load();
     final data = storage.rootInfo.value.data;
 
     await FirestoreService.to.syncUser(
@@ -102,7 +102,7 @@ class AuthService extends GetxService with ConsoleMixin {
       return console.warning('Already Signed In: $userId');
     }
 
-    final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
+    final email = '${SecretPersistence.to.longAddress}@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);
 
     try {

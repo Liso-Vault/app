@@ -180,7 +180,8 @@ class WalletService extends GetxService with ConsoleMixin {
         HEX.encode(wallet!.privateKey.privateKey);
     // save to persistence
     SecretPersistence.to.walletAddress.val = address.hexEip55;
-    SecretPersistence.to.wallet.val = await compute(walletToJsonString, wallet!);
+    SecretPersistence.to.wallet.val =
+        await compute(walletToJsonString, wallet!);
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     SecretPersistence.to.walletSignature.val = signature;
@@ -190,7 +191,7 @@ class WalletService extends GetxService with ConsoleMixin {
     if (!GetPlatform.isWindows) {
       AnalyticsService.to.instance.setUserProperty(
         name: 'wallet_address',
-        value: SecretPersistence.to.walletAddress.val,
+        value: SecretPersistence.to.longAddress,
       );
     }
   }
@@ -229,7 +230,7 @@ class WalletService extends GetxService with ConsoleMixin {
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'address') {
-        e.data.value = SecretPersistence.to.walletAddress.val;
+        e.data.value = SecretPersistence.to.longAddress;
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'note') {

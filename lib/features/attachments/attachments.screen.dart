@@ -6,6 +6,7 @@ import 'package:liso/features/attachments/attachment.tile.dart';
 
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
+import '../files/storage.service.dart';
 import '../files/sync.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
@@ -21,8 +22,8 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final eTag = controller.data[index];
 
-      final contents = SyncService.to.contentsCache.where(
-        (e) => e.object!.eTag == eTag,
+      final contents = StorageService.to.rootInfo.value.data.objects.where(
+        (e) => e.etag == eTag,
       );
 
       // Missing attachment file

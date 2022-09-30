@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:filesize/filesize.dart';
@@ -8,12 +6,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/core/supabase/supabase.service.dart';
 
 import '../../core/supabase/model/generic_response.model.dart';
 import '../../core/supabase/model/list_objects_response.model.dart';
-import 'model/s3_content.model.dart';
-import 'model/s3_folder_info.model.dart';
+import '../../core/supabase/model/object.model.dart';
 
 class StorageService extends GetxService with ConsoleMixin {
   static StorageService get to => Get.find();
@@ -26,12 +24,19 @@ class StorageService extends GetxService with ConsoleMixin {
   // PROPERTIES
 
   // GETTERS
+  List<S3Object> get backups {
+    final path = '${SecretPersistence.to.longAddress}/Backups/';
+
+    return StorageService.to.rootInfo.value.data.objects
+        .where((e) => e.key.startsWith(path))
+        .toList();
+  }
 
   // INIT
 
   // FUNCTIONS
 
-  Future<void> init() async {
+  Future<void> load() async {
     final result = await SupabaseService.to.listObjects();
     if (result.isLeft) console.error('failed to list objects');
     rootInfo.value = result.right;
@@ -44,9 +49,9 @@ class StorageService extends GetxService with ConsoleMixin {
     return Right(result.right);
   }
 
-  Future<Either<dynamic, List<S3Content>>> fetch({
+  Future<Either<dynamic, List<S3Object>>> fetch({
     required String path,
-    S3ContentType? filterType,
+    S3ObjectType? filterType,
     List<String> filterExtensions = const [],
   }) async {
     // if (!ready) init();
@@ -72,7 +77,7 @@ class StorageService extends GetxService with ConsoleMixin {
     //   (e) => e.key == path || !e.key!.contains(rootPath),
     // );
 
-    List<S3Content> contents = [];
+    List<S3Object> contents = [];
     // // convert prefixes to content
     // if (filterType == null || filterType == S3ContentType.directory) {
     //   contents.addAll(_prefixesToContents(result.prefixes));
@@ -92,47 +97,6 @@ class StorageService extends GetxService with ConsoleMixin {
     // }
 
     return Right(contents);
-  }
-
-  Future<Either<dynamic, S3FolderInfo>> folderInfo(String s3Path) async {
-    // if (!ready) init();
-    // if (!persistence.sync.val && ready) return const Left('offline');
-    // console.info('folder size: $s3Path...');
-    // minio.ListObjectsResult? result;
-
-    // try {
-    //   result = await client!.listAllObjectsV2(
-    //     config.secrets.s3.preferredBucket,
-    //     prefix: s3Path,
-    //     recursive: true,
-    //   );
-    // } catch (e) {
-    //   return Left(e);
-    // }
-
-    // console.info(
-    //   'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
-    // );
-
-    // int totalSize = 0;
-    // int encryptedFiles = 0;
-
-    // final contents = _objectsToContents(result.objects);
-
-    // for (var e in contents) {
-    //   totalSize += e.size;
-    //   if (e.isEncrypted) encryptedFiles++;
-    // }
-
-    // console.info('total size: $totalSize');
-
-    // return Right(S3FolderInfo(
-    //   contents: contents,
-    //   totalSize: totalSize,
-    //   encryptedFiles: encryptedFiles,
-    // ));
-
-    return Right(S3FolderInfo());
   }
 
   Future<Either<dynamic, Uint8List>> download({

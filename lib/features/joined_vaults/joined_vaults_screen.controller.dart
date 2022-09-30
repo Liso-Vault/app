@@ -9,11 +9,9 @@ import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/firestore.service.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.controller.dart';
-import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
@@ -23,7 +21,6 @@ import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/supabase/supabase.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../files/storage.service.dart';
@@ -166,7 +163,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     // add self as a member of the shared vault
     // TODO: allow user to set permissions using Choice Chips UI
     final member = VaultMember(
-      address: SecretPersistence.to.walletAddress.val,
+      address: SecretPersistence.to.longAddress,
       userId: AuthService.to.userId,
       permissions: ['update', 'delete'].join(','),
     );

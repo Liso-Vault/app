@@ -9,8 +9,7 @@ import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
 import '../../menu/menu.button.dart';
-import '../sync.service.dart';
-import 's3_content.tile.dart';
+import 's3_object.tile.dart';
 import 's3_exporer_screen.controller.dart';
 
 class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
@@ -22,16 +21,12 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
 
     Widget itemBuilder(context, index) {
       final content = controller.data[index];
-
-      return S3ContentTile(
-        // key: ValueKey(content),
-        content,
-      );
+      return S3ObjectTile(content);
     }
 
     final listView = Obx(
       () => RefreshIndicator(
-        onRefresh: controller.pulledRefresh,
+        onRefresh: () => controller.load(pulled: true),
         child: ListView.builder(
           shrinkWrap: true,
           itemCount: controller.data.length,
@@ -47,15 +42,14 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
         iconData: Iconsax.document_cloud,
-        message:
-            controller.isTimeMachine ? 'No backed up vaults' : 'no_files'.tr,
+        message: 'empty'.tr,
       ),
     );
 
     // enable pull to refresh if mobile
     if (GetPlatform.isMobile) {
       content = RefreshIndicator(
-        onRefresh: controller.pulledRefresh,
+        onRefresh: () => controller.load(pulled: true),
         child: content,
       );
     }
@@ -71,9 +65,8 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
       actions: [
         Obx(
           () => IconButton(
-            onPressed: !controller.isInRoot && !controller.busy()
-                ? controller.up
-                : null,
+            onPressed:
+                !controller.isRoot && !controller.busy() ? controller.up : null,
             icon: const Icon(LineIcons.alternateLevelUp),
           ),
         ),
@@ -87,7 +80,7 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
         ],
         Obx(
           () => IconButton(
-            onPressed: !controller.busy() ? controller.reload : null,
+            onPressed: !controller.busy() ? controller.load : null,
             icon: const Icon(Iconsax.refresh),
           ),
         ),
@@ -99,12 +92,9 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
       () => Visibility(
         visible: !controller.isTimeMachine && !controller.busy(),
         replacement: const SizedBox.shrink(),
-        child: ContextMenuButton(
-          controller.menuItemsUploadType,
-          child: FloatingActionButton(
-            onPressed: controller.busy() ? null : controller.pickFile,
-            child: const Icon(Iconsax.export_1),
-          ),
+        child: FloatingActionButton(
+          onPressed: controller.busy() ? null : controller.pickFile,
+          child: const Icon(Iconsax.export_1),
         ),
       ),
     );
@@ -119,7 +109,8 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
             padding: const EdgeInsets.only(left: 15, top: 10, right: 15),
             child: Obx(
               () => Text(
-                controller.currentPath.value,
+                controller.currentPrefix.value.replaceAll(
+                    controller.rootPrefix, '${controller.rootFolderName}/'),
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: themeColor,
