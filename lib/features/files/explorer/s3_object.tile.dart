@@ -7,9 +7,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/supabase/model/object.model.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
-import 'package:secrets/secrets.dart';
 
-import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';
@@ -31,11 +29,11 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
     final menuItems = [
       if (object.isVaultFile && !isPicker) ...[
         ContextMenuItem(
-          title: 'Restore',
+          title: 'Switch',
           leading: const Icon(Iconsax.import_1),
-          onSelected: () => controller.restore(object),
+          onSelected: () => controller.confirmSwitch(object),
         ),
-        // if (!explorerController.currentPath.value.contains('Backups/')) ...[
+        // if (!explorerController.currentPath.value.contains('$kDirBackups/')) ...[
         //   ContextMenuItem(
         //     title: 'Backup',
         //     leading: const Icon(Iconsax.document_copy),
@@ -47,7 +45,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
           ContextMenuItem(
             title: 'Download',
             leading: const Icon(Iconsax.import_1),
-            onSelected: () => controller.askToDownload(object),
+            onSelected: () => controller.confirmDownload(object),
           ),
           ContextMenuItem(
             title: 'Share',
@@ -101,9 +99,9 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         }
 
         if (object.isVaultFile) {
-          controller.askToImport(object);
+          controller.confirmSwitch(object);
         } else {
-          controller.askToDownload(object);
+          controller.confirmDownload(object);
         }
       } else {
         explorerController.navigate(prefix: object.key);

@@ -10,6 +10,7 @@ import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/files/storage.service.dart';
+import 'package:liso/features/files/sync.service.dart';
 import 'package:path/path.dart';
 
 import '../../../core/services/cipher.service.dart';
@@ -39,7 +40,7 @@ class S3ExplorerScreenController extends GetxController
   bool get isRoot => currentPrefix.value == rootPrefix;
   bool get isTimeMachine => Get.parameters['type'] == 'time_machine';
   bool get isPicker => Get.parameters['type'] == 'picker';
-  String get rootFolderName => isTimeMachine ? 'Backups' : 'Files';
+  String get rootFolderName => isTimeMachine ? kDirBackups : kDirFiles;
 
   // INIT
   @override

@@ -24,6 +24,7 @@ import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../files/storage.service.dart';
+import '../files/sync.service.dart';
 
 class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   static JoinedVaultsScreenController get to => Get.find();
@@ -135,8 +136,9 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     }
 
     // download vault file
-    final object = 'Shared/${vault.docId}.$kVaultExtension';
-    final result = await StorageService.to.download(object: object);
+    final result = await StorageService.to.download(
+      object: '$kDirShared/${vault.docId}.$kVaultExtension',
+    );
 
     if (result.isLeft) {
       return UIUtils.showSimpleDialog(

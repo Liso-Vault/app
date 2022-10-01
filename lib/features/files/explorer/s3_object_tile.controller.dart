@@ -92,87 +92,85 @@ class S3ObjectTileController extends GetxController
     ));
   }
 
-  void askToImport(S3Object object) {
-    if (busy.value) return;
+  void confirmSwitch(S3Object object) {
+    void proceed() async {
+      change('Switching...', status: RxStatus.loading());
+      // purge all items
+      await HiveService.to.purge();
+      // download chosen vault file
+      final downloadResult = await StorageService.to.download(
+        object: object.key,
+      );
 
-    final content = Text(
-      'Are you sure you want to restore from this backed-up vault ${object.name}?\n\nIf you choose to proceed: Your current vault will be overwritten alongside with all the items in it.',
+      if (downloadResult.isLeft) {
+        change('Failed to download', status: RxStatus.success());
+
+        return UIUtils.showSimpleDialog(
+          'Failed To Download',
+          '${downloadResult.left} -> download()',
+        );
+      }
+
+      // re-upload to overwrite current vault file
+      final uploadResult = await StorageService.to.upload(
+        downloadResult.right,
+        object: kVaultFileName,
+      );
+
+      if (uploadResult.isLeft) {
+        change('Failed to upload', status: RxStatus.success());
+
+        return UIUtils.showSimpleDialog(
+          'Upload Failed',
+          'Error: ${uploadResult.left}',
+        );
+      }
+
+      // parse vault file
+      final vault = await LisoManager.parseVaultBytes(
+        downloadResult.right,
+        cipherKey: SecretPersistence.to.cipherKey,
+      );
+
+      // import vault object & reload
+      await LisoManager.importVault(
+        vault,
+        cipherKey: SecretPersistence.to.cipherKey,
+      );
+
+      MainScreenController.to.load();
+
+      NotificationsManager.notify(
+        title: 'Successfully Switched',
+        body: 'Successfully switched to vault: ${object.name}',
+      );
+
+      MainScreenController.to.navigate();
+    }
+
+    final dialogContent = Text(
+      'Are you sure you want to switch to this version of your vault? Last modified: ${object.lastModified}',
     );
 
     Get.dialog(AlertDialog(
-      title: Text("${'restore'.tr} Backup"),
+      title: const Text('Switch Vault'),
       content: Utils.isSmallScreen
-          ? content
-          : SizedBox(
-              width: 450,
-              child: content,
-            ),
+          ? dialogContent
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
           child: Text('cancel'.tr),
         ),
         TextButton(
-          child: Text('proceed'.tr),
-          onPressed: () => restore(object),
+          child: const Text('Switch'),
+          onPressed: () {
+            Get.back();
+            proceed();
+          },
         ),
       ],
     ));
-  }
-
-  void restore(S3Object object) async {
-    Get.back();
-
-    change('Restoring...', status: RxStatus.loading());
-    // purge all items
-    await HiveService.to.purge();
-    // download chosen vault file
-    final downloadResult = await StorageService.to.download(object: object.key);
-
-    if (downloadResult.isLeft) {
-      change('Failed to download', status: RxStatus.success());
-
-      return UIUtils.showSimpleDialog(
-        'Failed To Download',
-        '${downloadResult.left} -> download()',
-      );
-    }
-
-    // re-upload to overwrite current vault file
-    final uploadResult = await StorageService.to.upload(
-      downloadResult.right,
-      object: kVaultFileName,
-    );
-
-    if (uploadResult.isLeft) {
-      change('Failed to upload', status: RxStatus.success());
-
-      return UIUtils.showSimpleDialog(
-        'Upload Failed',
-        'Error: ${uploadResult.left}',
-      );
-    }
-
-    // parse vault file
-    final vault = await LisoManager.parseVaultBytes(
-      downloadResult.right,
-      cipherKey: SecretPersistence.to.cipherKey,
-    );
-
-    // import vault object & reload
-    await LisoManager.importVault(
-      vault,
-      cipherKey: SecretPersistence.to.cipherKey,
-    );
-
-    MainScreenController.to.load();
-
-    NotificationsManager.notify(
-      title: 'Vault Restored',
-      body: '${object.name} successfully restored!',
-    );
-
-    MainScreenController.to.navigate();
   }
 
   // TODO: confirmation dialog
@@ -230,7 +228,66 @@ class S3ObjectTileController extends GetxController
     ));
   }
 
-  void askToDownload(S3Object object) {
+  void confirmDownload(S3Object object) {
+    void proceed() async {
+      change('Downloading...', status: RxStatus.loading());
+      final downloadPath = join(LisoPaths.temp!.path, object.maskedName);
+      final result = await StorageService.to.download(object: object.key);
+
+      if (result.isLeft) {
+        change('', status: RxStatus.success());
+
+        return UIUtils.showSimpleDialog(
+          'Failed To Download',
+          '${result.left} -> download()',
+        );
+      }
+
+      // decrypt file after downloading
+      var file = File(downloadPath);
+
+      await file.writeAsBytes(object.isEncrypted
+          ? CipherService.to.decrypt(result.right)
+          : result.right);
+
+      final fileName = basename(file.path);
+
+      Globals.timeLockEnabled = false; // temporarily disable
+
+      if (GetPlatform.isMobile) {
+        await Share.shareFiles(
+          [file.path],
+          subject: fileName,
+          text: GetPlatform.isIOS ? null : fileName,
+        );
+
+        Globals.timeLockEnabled = true; // re-enable
+        return change('', status: RxStatus.success());
+      }
+
+      // choose directory and export file
+      final exportPath = await FilePicker.platform.getDirectoryPath(
+        dialogTitle: 'Choose Export Path',
+      );
+
+      Globals.timeLockEnabled = true; // re-enable
+      // user cancelled picker
+      if (exportPath == null) {
+        return change(null, status: RxStatus.success());
+      }
+
+      console.info('export path: $exportPath');
+      await Future.delayed(1.seconds); // just for style
+      await FileUtils.move(file, join(exportPath, fileName));
+
+      NotificationsManager.notify(
+        title: 'Downloaded',
+        body: fileName,
+      );
+
+      change('', status: RxStatus.success());
+    }
+
     final dialogContent = Text('Save "${object.maskedName}" to local disk?');
 
     Get.dialog(AlertDialog(
@@ -247,69 +304,10 @@ class S3ObjectTileController extends GetxController
           child: const Text('Download'),
           onPressed: () {
             Get.back();
-            _download(object);
+            proceed();
           },
         ),
       ],
     ));
-  }
-
-  void _download(S3Object object) async {
-    change('Downloading...', status: RxStatus.loading());
-    final downloadPath = join(LisoPaths.temp!.path, object.maskedName);
-    final result = await StorageService.to.download(object: object.key);
-
-    if (result.isLeft) {
-      change('', status: RxStatus.success());
-
-      return UIUtils.showSimpleDialog(
-        'Failed To Download',
-        '${result.left} -> download()',
-      );
-    }
-
-    // decrypt file after downloading
-    var file = File(downloadPath);
-
-    await file.writeAsBytes(object.isEncrypted
-        ? CipherService.to.decrypt(result.right)
-        : result.right);
-
-    final fileName = basename(file.path);
-
-    Globals.timeLockEnabled = false; // temporarily disable
-
-    if (GetPlatform.isMobile) {
-      await Share.shareFiles(
-        [file.path],
-        subject: fileName,
-        text: GetPlatform.isIOS ? null : fileName,
-      );
-
-      Globals.timeLockEnabled = true; // re-enable
-      return change('', status: RxStatus.success());
-    }
-
-    // choose directory and export file
-    final exportPath = await FilePicker.platform.getDirectoryPath(
-      dialogTitle: 'Choose Export Path',
-    );
-
-    Globals.timeLockEnabled = true; // re-enable
-    // user cancelled picker
-    if (exportPath == null) {
-      return change(null, status: RxStatus.success());
-    }
-
-    console.info('export path: $exportPath');
-    await Future.delayed(1.seconds); // just for style
-    await FileUtils.move(file, join(exportPath, fileName));
-
-    NotificationsManager.notify(
-      title: 'Downloaded',
-      body: fileName,
-    );
-
-    change('', status: RxStatus.success());
   }
 }

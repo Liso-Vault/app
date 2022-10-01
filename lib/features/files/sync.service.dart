@@ -24,6 +24,10 @@ import '../groups/groups.service.dart';
 import '../items/items.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 
+const kDirBackups = 'Backups';
+const kDirShared = 'Shared';
+const kDirFiles = 'Files';
+
 class SyncService extends GetxService with ConsoleMixin {
   static SyncService get to => Get.find();
 
@@ -42,11 +46,6 @@ class SyncService extends GetxService with ConsoleMixin {
   final progressText = 'Syncing...'.obs;
 
   // GETTERS
-
-  // String backupsPath = 'Backups';
-  // String sharedPath = 'Shared';
-  // String filesPath = 'Files';
-  // String sharedVaultsPath = 'Shared/Vaults';
 
   // INIT
 
@@ -261,7 +260,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
     final presignResult = await SupabaseService.to.presignUrl(
       object:
-          'Backups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
+          '$kDirBackups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
       method: 'PUT',
     );
 
@@ -360,7 +359,7 @@ class SyncService extends GetxService with ConsoleMixin {
       );
 
       final presignResult = await SupabaseService.to.presignUrl(
-        object: 'Shared/${sharedVault.docId}.$kVaultExtension',
+        object: '$kDirShared/${sharedVault.docId}.$kVaultExtension',
         method: 'PUT',
       );
 

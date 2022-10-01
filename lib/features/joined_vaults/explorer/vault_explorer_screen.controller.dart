@@ -13,6 +13,7 @@ import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../files/storage.service.dart';
+import '../../files/sync.service.dart';
 import '../../menu/menu.item.dart';
 import '../../search/search.delegate.dart';
 import '../../shared_vaults/model/shared_vault.model.dart';
@@ -121,7 +122,7 @@ class VaultExplorerScreenController extends GetxController
     // download vault file
 
     final result = await StorageService.to.download(
-      object: 'Shared/${vault.docId}.$kVaultExtension',
+      object: '$kDirShared/${vault.docId}.$kVaultExtension',
     );
 
     if (result.isLeft) {

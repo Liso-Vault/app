@@ -26,6 +26,7 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
+import '../files/sync.service.dart';
 import '../pro/pro.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
@@ -329,8 +330,9 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         return console.error("error batch commit: $e");
       }
 
-      final object = 'Shared/${object_.docId}.$kVaultExtension';
-      await StorageService.to.remove(object);
+      await StorageService.to.remove(
+        '$kDirShared/${object_.docId}.$kVaultExtension',
+      );
 
       console.info('deleted: ${doc.id}');
     }
