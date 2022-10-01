@@ -40,6 +40,8 @@ class SupabaseService extends GetxService with ConsoleMixin {
 
   Future<Either<Object?, StatObjectResponse>> statObject(String object,
       {String? address}) async {
+    // strip root address
+    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
     console.info('stat: $object....');
 
     final response = await client.functions.invoke(
@@ -50,13 +52,15 @@ class SupabaseService extends GetxService with ConsoleMixin {
       },
     );
 
+    // console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
-    // console.debug('raw: ${response.data}');
     return Right(StatObjectResponse.fromJson(response.data));
   }
 
   Future<Either<Object?, ListObjectsResponse>> listObjects(
       {String path = ''}) async {
+    // strip root address
+    path = path.replaceAll('${SecretPersistence.to.longAddress}/', '');
     console.info('list objects: $path....');
 
     final response = await client.functions.invoke(
@@ -67,13 +71,18 @@ class SupabaseService extends GetxService with ConsoleMixin {
       },
     );
 
+    // console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
-    // console.debug('raw: ${response.data}');
     return Right(ListObjectsResponse.fromJson(response.data));
   }
 
   Future<Either<Object?, GenericResponse>> deleteObjects(
       List<String> objects) async {
+    // strip root address
+    objects = objects
+        .map((e) => e.replaceAll('${SecretPersistence.to.longAddress}/', ''))
+        .toList();
+
     console.info('delete objects: $objects....');
 
     final response = await client.functions.invoke(
@@ -84,13 +93,15 @@ class SupabaseService extends GetxService with ConsoleMixin {
       },
     );
 
-    console.debug('raw: ${response.data}, errors: ${response.error}');
+    // console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
     return Right(GenericResponse.fromJson(response.data));
   }
 
   Future<Either<Object?, ListObjectsResponse>> deleteDirectory(
       String path) async {
+    // strip root address
+    path = path.replaceAll('${SecretPersistence.to.longAddress}/', '');
     console.info('delete directory: $path....');
 
     final response = await client.functions.invoke(
@@ -101,8 +112,8 @@ class SupabaseService extends GetxService with ConsoleMixin {
       },
     );
 
+    // console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
-    // console.debug('raw: ${response.data}');
     return Right(ListObjectsResponse.fromJson(response.data));
   }
 
@@ -110,7 +121,10 @@ class SupabaseService extends GetxService with ConsoleMixin {
     required String object,
     String? address,
     String method = "GET",
+    int expirySeconds = 300,
   }) async {
+    // strip root address
+    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
     console.info('presigning: $object....');
 
     final response = await client.functions.invoke(
@@ -119,12 +133,12 @@ class SupabaseService extends GetxService with ConsoleMixin {
         "address": address ?? spersistence.walletAddress.val,
         "object": object,
         "method": method,
-        "expirySeconds": 5.minutes.inSeconds,
+        "expirySeconds": expirySeconds,
       },
     );
 
+    // console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
-    // console.debug('raw: ${response.data}');
     return Right(PresignUrlResponse.fromJson(response.data));
   }
 }

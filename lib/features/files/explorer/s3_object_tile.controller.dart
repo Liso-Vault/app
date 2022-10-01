@@ -42,13 +42,18 @@ class S3ObjectTileController extends GetxController
   // FUNCTIONS
   void share(S3Object object) async {
     change('Sharing...', status: RxStatus.loading());
-    final result = await SupabaseService.to.presignUrl(object: object.key);
+
+    final result = await SupabaseService.to.presignUrl(
+      object: object.key,
+      expirySeconds: 1.hours.inSeconds,
+    );
+
     change('', status: RxStatus.success());
 
-    if (result.isLeft) {
+    if (result.isLeft || result.right.status != 200) {
       return UIUtils.showSimpleDialog(
         'Sharing Failed',
-        'Error: ${result.left}',
+        'Please try again later',
       );
     }
 
@@ -79,7 +84,7 @@ class S3ObjectTileController extends GetxController
             child: const Text('Copy URL'),
             onPressed: () {
               Get.back();
-              Utils.copyToClipboard(result.right);
+              Utils.copyToClipboard(result.right.data.url);
             },
           ),
         ]
@@ -251,8 +256,7 @@ class S3ObjectTileController extends GetxController
 
   void _download(S3Object object) async {
     change('Downloading...', status: RxStatus.loading());
-    final downloadPath = join(LisoPaths.temp!.path, object.name);
-
+    final downloadPath = join(LisoPaths.temp!.path, object.maskedName);
     final result = await StorageService.to.download(object: object.key);
 
     if (result.isLeft) {
@@ -272,6 +276,7 @@ class S3ObjectTileController extends GetxController
         : result.right);
 
     final fileName = basename(file.path);
+
     Globals.timeLockEnabled = false; // temporarily disable
 
     if (GetPlatform.isMobile) {

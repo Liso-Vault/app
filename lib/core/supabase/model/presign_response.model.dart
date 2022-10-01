@@ -38,9 +38,11 @@ class PresignedData {
   final DateTime? expirationDate;
 
   factory PresignedData.fromJson(Map<String, dynamic> json) => PresignedData(
-        url: json["url"],
-        method: json["method"],
-        expirationDate: DateTime.parse(json["expirationDate"]),
+        url: json["url"] ?? '',
+        method: json["method"] ?? '',
+        expirationDate: json["expirationDate"] != null
+            ? DateTime.parse(json["expirationDate"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {

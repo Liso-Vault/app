@@ -44,8 +44,6 @@ class StorageService extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, GenericResponse>> remove(String object) async {
     if (!persistence.sync.val) return const Left('offline');
-    // strip root address
-    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
     final result = await SupabaseService.to.deleteObjects([object]);
     if (result.isLeft) return Left(result.left);
     console.warning('response: ${result.right.data}');
@@ -57,8 +55,6 @@ class StorageService extends GetxService with ConsoleMixin {
     bool force = false,
   }) async {
     if (!persistence.sync.val && !force) return const Left('offline');
-    // strip root address
-    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
 
     final presignResult = await SupabaseService.to.presignUrl(
       object: object,
@@ -88,8 +84,6 @@ class StorageService extends GetxService with ConsoleMixin {
     required String object,
   }) async {
     if (!persistence.sync.val) return const Left('offline');
-    // strip root address
-    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
     console.info('uploading: $object...');
 
     final presignResult = await SupabaseService.to.presignUrl(
