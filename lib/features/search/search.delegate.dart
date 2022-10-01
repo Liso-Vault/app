@@ -56,7 +56,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
         return true;
       }
 
-      if (e.uris != null && e.uris!.contains(Uri.tryParse(query_))) {
+      if (e.uris != null && e.uris!.contains(Uri.tryParse(query_).toString())) {
         return true;
       }
 

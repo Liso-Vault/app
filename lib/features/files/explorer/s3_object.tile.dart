@@ -5,8 +5,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/supabase/model/object.model.dart';
-import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
+import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
@@ -92,7 +92,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
           )
         : null;
 
-    void _open() {
+    void open() {
       if (object.isFile) {
         if (isPicker) {
           return Get.back(result: object.etag);
@@ -115,12 +115,11 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        // subtitle: controller.busy.value ? Text(controller.state) : subTitle,
-        subtitle: Text(object.key),
+        subtitle: controller.busy.value ? Text(controller.state) : subTitle,
         iconColor: themeColor,
         leading: Utils.s3ContentIcon(object),
         enabled: !controller.busy.value,
-        onTap: _open,
+        onTap: open,
         trailing: ContextMenuButton(
           menuItems,
           child: const Icon(LineIcons.verticalEllipsis),

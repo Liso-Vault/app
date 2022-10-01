@@ -17,7 +17,7 @@ class TagsInputController extends GetxController {
   void add() async {
     final formKey = GlobalKey<FormState>();
 
-    List<String> _query(String query) {
+    List<String> query(String query) {
       final usedTags = ItemsService.to.data
           .map((e) => e.tags
               .where((tag) => tag.isNotEmpty && !data.contains(tag))
@@ -41,10 +41,10 @@ class TagsInputController extends GetxController {
       return filteredTags.toList();
     }
 
-    void _add(String tag) {
+    void add(String tag) {
       data.add(tag);
       queryController.clear();
-      suggestions.value = _query('');
+      suggestions.value = query('');
     }
 
     final textField = TextFormField(
@@ -54,12 +54,12 @@ class TagsInputController extends GetxController {
         labelText: 'Add a tag',
         hintText: 'Add or query some tags',
       ),
-      onChanged: (value) => suggestions.value = _query(value),
+      onChanged: (value) => suggestions.value = query(value),
       validator: (value) =>
           value!.length >= 3 ? null : 'Must be at least 3 letter word',
       onFieldSubmitted: (tag) {
         if (!formKey.currentState!.validate()) return;
-        _add(tag);
+        add(tag);
       },
     );
 
@@ -72,7 +72,7 @@ class TagsInputController extends GetxController {
 
             return ListTile(
               title: Text(tag),
-              onTap: () => _add(tag),
+              onTap: () => add(tag),
             );
           },
         ),
@@ -131,7 +131,7 @@ class TagsInputController extends GetxController {
     );
 
     // pre-load suggestions
-    suggestions.value = _query('');
+    suggestions.value = query('');
 
     if (Utils.isSmallScreen) {
       await Get.bottomSheet(content);

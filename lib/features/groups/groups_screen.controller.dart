@@ -38,7 +38,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
     object = object_;
     nameController.text = object!.name;
     descriptionController.text = object!.description;
-    _showForm();
+    showForm();
   }
 
   void create() async {
@@ -46,11 +46,11 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
     object = null;
     nameController.clear();
     descriptionController.clear();
-    _showForm();
+    showForm();
   }
 
-  void _showForm() async {
-    void _done() {
+  void showForm() async {
+    void done() {
       Persistence.to.changes.val++;
       GroupsController.to.load();
       // clear fields
@@ -65,7 +65,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
       Get.back();
     }
 
-    void _create() async {
+    void create() async {
       if (!formKey.currentState!.validate()) return;
 
       final exists = GroupsController.to.combined
@@ -100,16 +100,16 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         metadata: await HiveMetadata.get(),
       ));
 
-      _done();
+      done();
     }
 
-    void _edit() async {
+    void edit() async {
       if (!formKey.currentState!.validate()) return;
       object!.name = nameController.text;
       object!.description = descriptionController.text;
       object!.metadata = await HiveMetadata.get();
       object!.save();
-      _done();
+      done();
     }
 
     final content = Form(
@@ -156,7 +156,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: createMode ? _create : _edit,
+          onPressed: createMode ? create : edit,
           child: Text(createMode ? 'create' : 'update'.tr),
         ),
       ],

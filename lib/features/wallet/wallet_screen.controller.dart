@@ -231,7 +231,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
     final formKey = GlobalKey<FormState>();
     final textController = TextEditingController();
 
-    void _sign() async {
+    void sign() async {
       if (!formKey.currentState!.validate()) return;
 
       final signature = await WalletService.to.sign(textController.text);
@@ -269,7 +269,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _sign,
+          onPressed: sign,
           child: Text('sign'.tr),
         ),
       ],

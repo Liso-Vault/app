@@ -110,7 +110,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
           ],
         );
 
-        void _send() {
+        void send() {
           Get.back();
 
           UIUtils.showSimpleDialog(
@@ -130,7 +130,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
               child: Text('cancel'.tr),
             ),
             TextButton(
-              onPressed: _send,
+              onPressed: send,
               child: const Text('Send'),
             ),
           ],

@@ -5,7 +5,6 @@ import 'package:liso/core/utils/utils.dart';
 
 import '../app/routes.dart';
 import '../files/storage.service.dart';
-import '../files/sync.service.dart';
 
 class AttachmentsScreenController extends GetxController
     with StateMixin, ConsoleMixin {

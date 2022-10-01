@@ -8,9 +8,8 @@ import 'package:liso/core/utils/globals.dart';
 import '../../general/appbar_leading.widget.dart';
 import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
-import '../../menu/menu.button.dart';
-import 's3_object.tile.dart';
 import 's3_exporer_screen.controller.dart';
+import 's3_object.tile.dart';
 
 class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
   const S3ExplorerScreen({Key? key}) : super(key: key);

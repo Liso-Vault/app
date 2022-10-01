@@ -21,8 +21,8 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
   Widget build(BuildContext context) {
     final persistence = Get.find<Persistence>();
 
-    void _switchProvider(LisoSyncProvider? provider) {
-      void _switch() {
+    void switchProvider(LisoSyncProvider? provider) {
+      void confirm() {
         if (provider != LisoSyncProvider.custom) {
           persistence.syncProvider.val = provider!.name;
           // return SyncService.to.init();
@@ -35,7 +35,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
         );
       }
 
-      if (!AuthService.to.isSignedIn) return _switch();
+      if (!AuthService.to.isSignedIn) return confirm();
 
       UIUtils.showSimpleDialog(
         'Switch Sync Provider',
@@ -44,7 +44,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
         actionText: 'Switch',
         action: () {
           Get.back(); // close dialog
-          _switch();
+          confirm();
         },
       );
     }
@@ -145,7 +145,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
               secondary: Image.asset(Images.sia, height: 25),
               value: LisoSyncProvider.sia,
               groupValue: LisoSyncProvider.values.byName(p.newSyncProvider),
-              onChanged: _switchProvider,
+              onChanged: switchProvider,
             ),
             // RadioListTile<LisoSyncProvider>(
             //   title: const Text('Storj'),
@@ -173,7 +173,7 @@ class SyncProviderScreen extends StatelessWidget with ConsoleMixin {
               secondary: const Icon(Iconsax.setting_2),
               value: LisoSyncProvider.custom,
               groupValue: LisoSyncProvider.values.byName(p.newSyncProvider),
-              onChanged: _switchProvider,
+              onChanged: switchProvider,
             ),
           ],
         );

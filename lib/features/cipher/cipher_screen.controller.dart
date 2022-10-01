@@ -233,7 +233,7 @@ class CipherScreenController extends GetxController
     final formKey = GlobalKey<FormState>();
     final textController = TextEditingController();
 
-    void _encrypt() async {
+    void encrypt() async {
       if (!formKey.currentState!.validate()) return;
 
       final encrypted = CipherService.to.encrypt(
@@ -275,7 +275,7 @@ class CipherScreenController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _encrypt,
+          onPressed: encrypt,
           child: Text('encrypt'.tr),
         ),
       ],
@@ -286,7 +286,7 @@ class CipherScreenController extends GetxController
     final formKey = GlobalKey<FormState>();
     final textController = TextEditingController();
 
-    void _decrypt() async {
+    void decrypt() async {
       if (!formKey.currentState!.validate()) return;
 
       final encrypted = CipherService.to.decrypt(
@@ -328,7 +328,7 @@ class CipherScreenController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _decrypt,
+          onPressed: decrypt,
           child: Text('decrypt'.tr),
         ),
       ],

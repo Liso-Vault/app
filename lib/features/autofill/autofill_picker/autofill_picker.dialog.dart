@@ -16,10 +16,10 @@ class AutofillPickerDialog extends StatelessWidget {
     controller.item = item;
     controller.load();
 
-    Widget _itemBuilder(_, index) {
+    Widget itemBuilder(_, index) {
       final field = controller.data[index];
 
-      void _done() {
+      void done() {
         Get.back(
           result: [
             PwDataset(
@@ -31,13 +31,13 @@ class AutofillPickerDialog extends StatelessWidget {
         );
       }
 
-      void _select() {
+      void select() {
         if (controller.mode.value == AutofillPickerMode.username) {
           controller.username = field.data.value!;
 
           if (item.passwordFields.length <= 1) {
             controller.password = item.passwordFields.first.data.value!;
-            return _done();
+            return done();
           }
 
           // change to password mode
@@ -46,14 +46,14 @@ class AutofillPickerDialog extends StatelessWidget {
           controller.load();
         } else {
           controller.password = field.data.value!;
-          return _done();
+          return done();
         }
       }
 
       return ListTile(
         title: Text(field.data.label!),
         subtitle: Text(field.data.value!),
-        onTap: _select,
+        onTap: select,
       );
     }
 
@@ -61,7 +61,7 @@ class AutofillPickerDialog extends StatelessWidget {
       () => ListView.builder(
         shrinkWrap: true,
         itemCount: controller.data.length,
-        itemBuilder: _itemBuilder,
+        itemBuilder: itemBuilder,
         padding: const EdgeInsets.symmetric(vertical: 15),
       ),
     );

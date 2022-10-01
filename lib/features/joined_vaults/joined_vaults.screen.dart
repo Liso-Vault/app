@@ -33,13 +33,13 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final vault = joinedController.data[index];
 
-      void _open() async {
+      void open() async {
         VaultExplorerScreenController.vault = vault;
         Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
       }
 
-      void _confirmLeave() {
-        void _leave() async {
+      void confirmLeave() {
+        void leave() async {
           // TODO: delete self as member
 
           final membersCol = FirestoreService.to.sharedVaults
@@ -114,7 +114,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
               child: Text('cancel'.tr),
             ),
             TextButton(
-              onPressed: _leave,
+              onPressed: leave,
               child: Text('leave'.tr),
             ),
           ],
@@ -125,12 +125,12 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: 'leave'.tr,
           leading: const Icon(Iconsax.logout),
-          onSelected: _confirmLeave,
+          onSelected: confirmLeave,
         ),
       ];
 
       return ListTile(
-        onTap: _open,
+        onTap: open,
         title: Text(vault.name),
         subtitle: vault.description.isNotEmpty ? Text(vault.description) : null,
         leading: vault.iconUrl.isEmpty

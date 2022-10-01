@@ -164,7 +164,7 @@ class SettingsScreenController extends GetxController
   }
 
   void exportVault({bool encrypt = true}) {
-    void _export() async {
+    void export() async {
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
@@ -257,7 +257,7 @@ class SettingsScreenController extends GetxController
           ? "Remember, your master mnemonic seed phrase that you backed up is the only key to decrypt your vault file"
           : "Please keep in mind this is an unencrypted vault file and leaking it will be exposed to hackers.",
       closeText: 'Cancel',
-      action: _export,
+      action: export,
       actionText: 'Export',
     );
   }
@@ -282,7 +282,7 @@ class SettingsScreenController extends GetxController
   }
 
   void purge() async {
-    void _reset() async {
+    void reset() async {
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
@@ -317,16 +317,16 @@ class SettingsScreenController extends GetxController
       body:
           'Please proceed with caution.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
-      action: _reset,
+      action: reset,
       actionText: 'Purge',
       actionStyle: ElevatedButton.styleFrom(
-        primary: Colors.orange,
+        backgroundColor: Colors.orange,
       ),
     );
   }
 
   void unsync() async {
-    void _unsync() async {
+    void confirm() async {
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
@@ -364,16 +364,16 @@ class SettingsScreenController extends GetxController
       body:
           'This cannot be undone. Your local and offline vault will still remain.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
-      action: _unsync,
+      action: confirm,
       actionText: 'Proceed',
       actionStyle: ElevatedButton.styleFrom(
-        primary: Colors.redAccent,
+        backgroundColor: Colors.redAccent,
       ),
     );
   }
 
   void reset() {
-    void _reset() async {
+    void confirm() async {
       // prompt password from unlock screen
       final unlocked = await Get.toNamed(
             Routes.unlock,
@@ -404,10 +404,10 @@ class SettingsScreenController extends GetxController
       body:
           'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
-      action: _reset,
+      action: confirm,
       actionText: 'Reset',
       actionStyle: ElevatedButton.styleFrom(
-        primary: Colors.redAccent,
+        backgroundColor: Colors.redAccent,
       ),
     );
   }

@@ -177,7 +177,7 @@ class S3ObjectTileController extends GetxController
       return;
     }
 
-    void _delete() async {
+    void delete() async {
       Get.back();
       change('Deleting...', status: RxStatus.loading());
       final result = await StorageService.to.remove(object.key);
@@ -218,7 +218,7 @@ class S3ObjectTileController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _delete,
+          onPressed: delete,
           child: Text('confirm_delete'.tr),
         ),
       ],

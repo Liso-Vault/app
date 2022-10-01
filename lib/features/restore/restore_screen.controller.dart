@@ -139,7 +139,7 @@ class RestoreScreenController extends GetxController
       cipherKey: cipherKey,
     );
 
-    Future<void> _proceed() async {
+    Future<void> proceed() async {
       // parse and import vault file
       await LisoManager.importVault(
         vault,
@@ -185,7 +185,7 @@ class RestoreScreenController extends GetxController
       subTitle: address,
       body:
           "Device: ${vault.metadata!.device.name}\nApp Version: ${vault.metadata!.app.formattedVersion}\nLast Modified: ${vault.metadata!.updatedTime}\nVault Version: ${vault.version}",
-      action: _proceed,
+      action: proceed,
       actionText: 'Restore',
       closeText: 'Cancel',
       onClose: () {

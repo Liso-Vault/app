@@ -28,7 +28,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
       () {
         final limit = controller.selectedLimit;
 
-        String _formatKNumber(int number) {
+        String formatKNumber(int number) {
           if (number == 1000000) {
             return 'Unlimited';
           } else {
@@ -68,7 +68,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.document,
               title: 'Items',
               trailing: Text(
-                _formatKNumber(limit.items),
+                formatKNumber(limit.items),
                 style: kTrailingStyle,
               ),
             ),
@@ -76,7 +76,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.cpu,
               title: 'Devices',
               trailing: Text(
-                _formatKNumber(limit.devices),
+                formatKNumber(limit.devices),
                 style: kTrailingStyle,
               ),
             ),
@@ -100,7 +100,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.people,
               title: 'Shared Members',
               trailing: Text(
-                _formatKNumber(limit.sharedMembers),
+                formatKNumber(limit.sharedMembers),
                 style: kTrailingStyle,
               ),
             ),
@@ -108,7 +108,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.lock,
               title: 'Protected Items',
               trailing: Text(
-                _formatKNumber(limit.protectedItems),
+                formatKNumber(limit.protectedItems),
                 style: kTrailingStyle,
               ),
             ),
@@ -140,7 +140,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.direct_inbox,
               title: 'Vault Backups',
               trailing: Text(
-                _formatKNumber(limit.backups),
+                formatKNumber(limit.backups),
                 style: kTrailingStyle,
               ),
             ),
@@ -156,7 +156,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.document_1,
               title: 'Uploaded Files',
               trailing: Text(
-                _formatKNumber(limit.files),
+                formatKNumber(limit.files),
                 style: kTrailingStyle,
               ),
             ),
@@ -164,7 +164,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.trash,
               title: 'Undo Trash',
               trailing: Text(
-                '${_formatKNumber(limit.trashDays)} Days',
+                '${formatKNumber(limit.trashDays)} Days',
                 style: kTrailingStyle,
               ),
             ),
@@ -172,7 +172,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.box_1,
               title: 'Custom Vaults',
               trailing: Text(
-                _formatKNumber(limit.customVaults),
+                formatKNumber(limit.customVaults),
                 style: kTrailingStyle,
               ),
             ),
@@ -180,7 +180,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               iconData: Iconsax.category,
               title: 'Custom Categories',
               trailing: Text(
-                _formatKNumber(limit.customCategories),
+                formatKNumber(limit.customCategories),
                 style: kTrailingStyle,
               ),
             ),
@@ -416,7 +416,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       ElevatedButton(
                         onPressed: controller.purchase,
                         style: ElevatedButton.styleFrom(
-                          primary: proColor,
+                          backgroundColor: proColor,
                           visualDensity: VisualDensity.standard,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                         ),
@@ -466,7 +466,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                         ElevatedButton.icon(
                           label: const Text('Stake \$LISO'),
                           icon: const Icon(Iconsax.lock),
-                          style: ElevatedButton.styleFrom(primary: proColor),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: proColor),
                           onPressed: () {
                             UIUtils.showSimpleDialog(
                               'Stake \$LISO Tokens',
@@ -494,7 +495,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                         ElevatedButton.icon(
                           label: const Text('Buy \$LISO'),
                           icon: const Icon(Iconsax.bitcoin_card),
-                          style: ElevatedButton.styleFrom(primary: proColor),
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: proColor),
                           onPressed: () {
                             UIUtils.showSimpleDialog(
                               'Buy \$LISO Tokens',
@@ -518,7 +520,8 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                       ElevatedButton.icon(
                         label: Text('Keep ${ConfigService.to.appName} Free'),
                         icon: const Icon(LineIcons.heart),
-                        style: ElevatedButton.styleFrom(primary: proColor),
+                        style:
+                            ElevatedButton.styleFrom(backgroundColor: proColor),
                         onPressed: Get.back,
                       ),
                     ],
@@ -593,7 +596,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             children: [
               TextButton(
                 style: TextButton.styleFrom(
-                  primary: proColor,
+                  foregroundColor: proColor,
                   textStyle: const TextStyle(fontSize: 10),
                 ),
                 onPressed: () => Utils.openUrl(
@@ -604,7 +607,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               const Text('|'),
               TextButton(
                 style: TextButton.styleFrom(
-                  primary: proColor,
+                  foregroundColor: proColor,
                   textStyle: const TextStyle(fontSize: 10),
                 ),
                 onPressed: () => Utils.openUrl(
@@ -615,7 +618,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               const Text('|'),
               TextButton(
                 style: TextButton.styleFrom(
-                  primary: proColor,
+                  foregroundColor: proColor,
                   textStyle: const TextStyle(fontSize: 10),
                 ),
                 onPressed: controller.restore,

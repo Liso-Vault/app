@@ -7,7 +7,6 @@ import 'package:liso/features/attachments/attachment.tile.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../files/storage.service.dart';
-import '../files/sync.service.dart';
 import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import 'attachments_screen.controller.dart';

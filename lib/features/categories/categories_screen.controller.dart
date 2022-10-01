@@ -51,7 +51,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
   }
 
   void _showForm() async {
-    void _done() {
+    void done() {
       Persistence.to.changes.val++;
       CategoriesController.to.load();
       // clear fields
@@ -66,7 +66,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
       Get.back();
     }
 
-    void _create() async {
+    void create() async {
       if (!formKey.currentState!.validate()) return;
 
       final exists = CategoriesController.to.combined
@@ -103,10 +103,10 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         metadata: await HiveMetadata.get(),
       ));
 
-      _done();
+      done();
     }
 
-    void _edit() async {
+    void edit() async {
       if (!formKey.currentState!.validate()) return;
       object!.name = nameController.text;
       object!.description = descriptionController.text;
@@ -114,7 +114,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
       object!.significant = template!.significant;
       object!.metadata = await HiveMetadata.get();
       object!.save();
-      _done();
+      done();
     }
 
     final content = Form(
@@ -177,7 +177,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: createMode ? _create : _edit,
+          onPressed: createMode ? create : edit,
           child: Text(createMode ? 'create' : 'update'.tr),
         ),
       ],

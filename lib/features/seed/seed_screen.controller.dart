@@ -25,7 +25,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
           ContextMenuItem(
             title: 'Custom',
             leading: const Icon(Iconsax.key),
-            onSelected: _custom,
+            onSelected: custom,
           ),
         ],
         ContextMenuItem(
@@ -111,11 +111,11 @@ class SeedScreenController extends GetxController with ConsoleMixin {
     seed.value = seed_;
   }
 
-  void _custom() {
+  void custom() {
     final formKey = GlobalKey<FormState>();
     final controller = TextEditingController();
 
-    void _use() {
+    void use() {
       if (!formKey.currentState!.validate()) return;
       seed.value = controller.text;
       Get.back();
@@ -125,7 +125,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
       key: formKey,
       child: SeedField(
         fieldController: controller,
-        onFieldSubmitted: (text) => _use(),
+        onFieldSubmitted: (text) => use(),
         showGenerate: false,
       ),
     );
@@ -144,7 +144,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _use,
+          onPressed: use,
           child: Text('use'.tr),
         ),
       ],

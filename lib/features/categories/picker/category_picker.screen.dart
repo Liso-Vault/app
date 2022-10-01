@@ -18,7 +18,7 @@ class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final category = controller.data[index];
 
-      void _open() async {
+      void open() async {
         Get.back();
 
         Utils.adaptiveRouteOpen(
@@ -35,7 +35,7 @@ class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
 
       return Card(
         child: InkWell(
-          onTap: _open,
+          onTap: open,
           child: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(

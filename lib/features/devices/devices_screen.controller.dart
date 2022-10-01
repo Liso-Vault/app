@@ -89,7 +89,7 @@ class DevicesScreenController extends GetxController
   }
 
   void unsync(HiveMetadataDevice device) {
-    void _unsync() async {
+    void confirm() async {
       await FirestoreService.to.userDevices.doc(device.docId).delete();
       data.remove(device);
       Get.back(); // close dialog
@@ -117,7 +117,7 @@ class DevicesScreenController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _unsync,
+          onPressed: confirm,
           child: Text('unsync'.tr),
         ),
       ],

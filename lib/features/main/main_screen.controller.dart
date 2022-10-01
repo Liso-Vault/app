@@ -368,7 +368,7 @@ class MainScreenController extends GetxController
   }
 
   void emptyTrash() {
-    void _empty() async {
+    void empty() async {
       Get.back();
       final items = ItemsService.to.data.where((e) => e.trashed);
       await ItemsService.to.hideleteItems(items);
@@ -395,7 +395,7 @@ class MainScreenController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _empty,
+          onPressed: empty,
           child: const Text('Empty Trash'),
         ),
       ],
@@ -403,7 +403,7 @@ class MainScreenController extends GetxController
   }
 
   void emptyDeleted() {
-    void _empty() async {
+    void empty() async {
       Get.back();
       final items = ItemsService.to.data.where((e) => e.deleted);
       await ItemsService.to.deleteItems(items);
@@ -430,7 +430,7 @@ class MainScreenController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _empty,
+          onPressed: empty,
           child: const Text('Empty Deleted'),
         ),
       ],
@@ -443,14 +443,14 @@ class MainScreenController extends GetxController
       'backup.$kVaultExtension',
     ));
 
-    void _confirm() {
+    void confirm() {
       importedItemIds.clear();
       // delete local backup as it's no longer needed
       backupFile.delete();
       Get.back();
     }
 
-    void _undo() async {
+    void undo() async {
       Get.back();
 
       // delete imported items permanently
@@ -483,11 +483,11 @@ class MainScreenController extends GetxController
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
-          onPressed: _undo,
+          onPressed: undo,
           child: const Text('Undo'),
         ),
         TextButton(
-          onPressed: _confirm,
+          onPressed: confirm,
           child: const Text('Keep'),
         ),
       ],

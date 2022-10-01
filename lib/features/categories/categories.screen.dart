@@ -27,7 +27,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final category = categoriesController.data[index];
 
-      void _delete() async {
+      void delete() async {
         category.metadata = await category.metadata!.getUpdated();
         category.deleted = true;
         await category.save();
@@ -35,7 +35,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
         categoriesController.load();
       }
 
-      void _confirmDelete() async {
+      void confirmDelete() async {
         final dialogContent = Text(
           'Are you sure you want to delete the category "${category.name}"?',
         );
@@ -49,7 +49,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
             TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
             TextButton(
               onPressed: () {
-                _delete();
+                delete();
                 Get.back();
               },
               child: Text('confirm_delete'.tr),
@@ -62,7 +62,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: 'delete'.tr,
           leading: const Icon(Iconsax.trash),
-          onSelected: _confirmDelete,
+          onSelected: confirmDelete,
         ),
       ];
 

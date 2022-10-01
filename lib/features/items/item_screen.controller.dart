@@ -28,7 +28,6 @@ import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../files/sync.service.dart';
 import '../json_viewer/json_viewer.screen.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
@@ -583,7 +582,7 @@ class ItemScreenController extends GetxController
     change(null, status: RxStatus.success());
     // re-populate widgets
     editMode.listen((value) => _populateItem());
-    if (category.value == LisoItemCategory.otp.name) _generateOTP();
+    if (category.value == LisoItemCategory.otp.name) generateOTP();
     super.onInit();
   }
 
@@ -594,7 +593,7 @@ class ItemScreenController extends GetxController
   }
 
   // FUNCTIONS
-  void _generateOTP() async {
+  void generateOTP() async {
     final interval =
         item!.fields.firstWhere((e) => e.identifier == 'interval').data.value!;
 
@@ -620,7 +619,7 @@ class ItemScreenController extends GetxController
       algorithm = Algorithm.SHA512;
     }
 
-    void _generate() {
+    void generate() {
       if (editMode.value) return;
 
       final totpString = OTP.generateTOTPCodeString(
@@ -635,7 +634,7 @@ class ItemScreenController extends GetxController
       otpCode.value = totpString;
     }
 
-    _generate();
+    generate();
 
     otpRemainingSeconds.value = OTP.remainingSeconds(interval: intervalInt);
 
@@ -645,13 +644,13 @@ class ItemScreenController extends GetxController
         otpRemainingSeconds.value--;
         if (otpRemainingSeconds.value <= 0) {
           otpRemainingSeconds.value = intervalInt;
-          _generate();
+          generate();
 
           otpTimer = Timer.periodic(
             Duration(seconds: intervalInt),
             (_) {
               otpRemainingSeconds.value = intervalInt;
-              _generate();
+              generate();
             },
           );
         }
@@ -1106,7 +1105,7 @@ class ItemScreenController extends GetxController
     final formKey = GlobalKey<FormState>();
     final iconController = TextEditingController(text: item!.iconUrl);
 
-    void _save() async {
+    void save() async {
       if (!formKey.currentState!.validate()) return;
       iconUrl.value = iconController.text;
       Get.back();
@@ -1136,7 +1135,7 @@ class ItemScreenController extends GetxController
       ),
       actions: [
         TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
-        TextButton(onPressed: _save, child: Text('save'.tr)),
+        TextButton(onPressed: save, child: Text('save'.tr)),
       ],
     ));
   }
@@ -1209,7 +1208,7 @@ class ItemScreenController extends GetxController
     final labelController = TextEditingController(text: field.data.label);
     final hintController = TextEditingController(text: field.data.hint);
 
-    void _update() async {
+    void update() async {
       if (!formKey.currentState!.validate()) return;
       field.data.label = labelController.text;
       field.data.hint = hintController.text;
@@ -1251,7 +1250,7 @@ class ItemScreenController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _update,
+          onPressed: update,
           child: Text('update'.tr),
         ),
       ],

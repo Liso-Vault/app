@@ -5,7 +5,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
@@ -18,7 +17,6 @@ import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
-import '../../menu/menu.item.dart';
 import '../../pro/pro.controller.dart';
 
 class S3ExplorerScreenController extends GetxController
@@ -200,7 +198,7 @@ class S3ExplorerScreenController extends GetxController
     final formKey = GlobalKey<FormState>();
     final folderController = TextEditingController();
 
-    void _createDirectory(String name) async {
+    void createDirectory(String name) async {
       if (!formKey.currentState!.validate()) return;
       // TODO: check if folder already exists
       change(true, status: RxStatus.loading());
@@ -263,7 +261,7 @@ class S3ExplorerScreenController extends GetxController
 
             if (!exists) {
               Get.back();
-              _createDirectory(folderController.text);
+              createDirectory(folderController.text);
             } else {
               UIUtils.showSimpleDialog(
                 'Folder Already Exists',

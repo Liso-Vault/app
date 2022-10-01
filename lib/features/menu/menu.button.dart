@@ -104,7 +104,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     // using MouseRegion
     Offset position = const Offset(0, 0);
 
-    void _showMenu() async {
+    void showContextMenu() async {
       final selectedItem = await showMenu(
         context: Get.context!,
         items: popupItems,
@@ -123,7 +123,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     return MouseRegion(
       onHover: (event) => position = event.position,
       child: InkWell(
-        onTap: enabled ? _showMenu : null,
+        onTap: enabled ? showContextMenu : null,
         child: AbsorbPointer(child: wrappedChild),
       ),
     );

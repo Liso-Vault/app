@@ -25,7 +25,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    Widget _itemBuilder(context, index) {
+    Widget itemBuilder(context, index) {
       final item = contextItems[index];
 
       final tile = ListTile(
@@ -52,7 +52,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
       child: ListView.builder(
         shrinkWrap: true,
         itemCount: contextItems.length,
-        itemBuilder: _itemBuilder,
+        itemBuilder: itemBuilder,
       ),
     );
   }

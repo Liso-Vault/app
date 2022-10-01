@@ -95,7 +95,7 @@ class UnlockScreenController extends GetxController
       });
     }
 
-    void _done() async {
+    void done() async {
       await HiveService.to.open();
       change(null, status: RxStatus.success());
       AuthenticationMiddleware.signedIn = true;
@@ -110,7 +110,7 @@ class UnlockScreenController extends GetxController
 
       if (ready) {
         timer.cancel();
-        return _done();
+        return done();
       } else {
         console.info('wallet still not saved to persistence');
       }

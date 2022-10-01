@@ -26,7 +26,6 @@ import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../categories/categories.controller.dart';
-import '../files/sync.service.dart';
 import '../pro/pro.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
@@ -79,7 +78,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   }
 
   void _showForm() async {
-    void _done() {
+    void done() {
       // clear fields
       nameController.clear();
       descriptionController.clear();
@@ -93,7 +92,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       Get.back();
     }
 
-    void _edit() async {
+    void edit() async {
       if (!formKey.currentState!.validate()) return;
       final doc = FirestoreService.to.vaultsCol.doc(object?.docId);
 
@@ -106,10 +105,10 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
         SetOptions(merge: true),
       );
 
-      _done();
+      done();
     }
 
-    void _create() async {
+    void create() async {
       if (!formKey.currentState!.validate()) return;
 
       // check if name already exists
@@ -211,7 +210,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       ItemsController.to.load();
       console.wtf('created liso item');
 
-      _done();
+      done();
     }
 
     final content = Column(
@@ -296,7 +295,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: createMode ? _create : _edit,
+          onPressed: createMode ? create : edit,
           child: Text(createMode ? 'create' : 'update'.tr),
         ),
       ],
@@ -304,7 +303,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   }
 
   void delete(SharedVault object_) {
-    void _delete() async {
+    void confirm() async {
       Get.back();
 
       final batch = FirestoreService.to.instance.batch();
@@ -354,7 +353,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
           child: Text('cancel'.tr),
         ),
         TextButton(
-          onPressed: _delete,
+          onPressed: confirm,
           child: Text('confirm_delete'.tr),
         ),
       ],

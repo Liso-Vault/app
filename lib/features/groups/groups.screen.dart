@@ -32,7 +32,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final group = groupsController.data[index];
 
-      void _delete(Iterable<HiveLisoItem> items) async {
+      void delete(Iterable<HiveLisoItem> items) async {
         // revert group filter
         final defaultGroupId = GroupsController.to.reserved.first.id;
         DrawerMenuController.to.filterGroupId.value = defaultGroupId;
@@ -47,7 +47,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
         console.info('deleted');
       }
 
-      void _confirmDelete() async {
+      void confirmDelete() async {
         final items =
             ItemsController.to.data.where((e) => e.groupId == group.id);
 
@@ -70,7 +70,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
             ),
             TextButton(
               onPressed: () {
-                _delete(items);
+                delete(items);
                 Get.back();
               },
               child: Text('confirm_delete'.tr),
@@ -83,7 +83,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
         ContextMenuItem(
           title: 'delete'.tr,
           leading: const Icon(Iconsax.trash),
-          onSelected: _confirmDelete,
+          onSelected: confirmDelete,
         ),
       ];
 
