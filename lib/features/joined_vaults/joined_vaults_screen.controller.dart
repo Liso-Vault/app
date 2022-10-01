@@ -135,8 +135,8 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     }
 
     // download vault file
-    final s3Path = '${vault.address}/Shared/${vault.docId}.$kVaultExtension';
-    final result = await StorageService.to.download(object: s3Path);
+    final object = 'Shared/${vault.docId}.$kVaultExtension';
+    final result = await StorageService.to.download(object: object);
 
     if (result.isLeft) {
       return UIUtils.showSimpleDialog(

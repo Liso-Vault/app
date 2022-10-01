@@ -84,8 +84,8 @@ class SupabaseService extends GetxService with ConsoleMixin {
       },
     );
 
+    console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
-    // console.debug('raw: ${response.data}');
     return Right(GenericResponse.fromJson(response.data));
   }
 

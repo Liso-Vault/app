@@ -119,10 +119,9 @@ class VaultExplorerScreenController extends GetxController
   void init() async {
     change(null, status: RxStatus.loading());
     // download vault file
-    final s3Path = '${vault.address}/Shared/${vault.docId}.$kVaultExtension';
 
     final result = await StorageService.to.download(
-      object: s3Path,
+      object: 'Shared/${vault.docId}.$kVaultExtension',
     );
 
     if (result.isLeft) {

@@ -252,7 +252,7 @@ class SyncService extends GetxService with ConsoleMixin {
         return console.error('error removing last backup: ${result.left}');
       } else {
         console.wtf(
-          'removed backup: ${result.right} - ${StorageService.to.backups.first.name}',
+          'removed backup: ${result.right.data} - ${StorageService.to.backups.first.name}',
         );
       }
     }

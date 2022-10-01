@@ -19,7 +19,7 @@ const kBiometricSeedKey = 'biometric_seed';
 // FILE EXTENSIONS
 const kVaultExtension = 'liso';
 const kWalletExtension = 'json';
-const kEncryptedExtensionExtra = '.liso.enc';
+const kEncryptedExtensionExtra = '.$kVaultExtension.enc';
 // FILE NAMES
 const kMetadataFileName = 'metadata.json';
 const kVaultFileName = 'vault.$kVaultExtension';

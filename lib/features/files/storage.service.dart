@@ -44,59 +44,12 @@ class StorageService extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, GenericResponse>> remove(String object) async {
     if (!persistence.sync.val) return const Left('offline');
+    // strip root address
+    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
     final result = await SupabaseService.to.deleteObjects([object]);
     if (result.isLeft) return Left(result.left);
+    console.warning('response: ${result.right.data}');
     return Right(result.right);
-  }
-
-  Future<Either<dynamic, List<S3Object>>> fetch({
-    required String path,
-    S3ObjectType? filterType,
-    List<String> filterExtensions = const [],
-  }) async {
-    // if (!ready) init();
-    // if (!persistence.sync.val && ready) return const Left('offline');
-    // console.info('fetch: $path...');
-    // minio.ListObjectsResult? result;
-
-    // try {
-    //   result = await client!.listAllObjectsV2(
-    //     config.secrets.s3.preferredBucket,
-    //     prefix: path,
-    //   );
-    // } catch (e) {
-    //   return Left(e);
-    // }
-
-    // console.info(
-    //   'prefixes: ${result.prefixes.length}, objects: ${result.objects.length}',
-    // );
-
-    // // remove current directory
-    // result.objects.removeWhere(
-    //   (e) => e.key == path || !e.key!.contains(rootPath),
-    // );
-
-    List<S3Object> contents = [];
-    // // convert prefixes to content
-    // if (filterType == null || filterType == S3ContentType.directory) {
-    //   contents.addAll(_prefixesToContents(result.prefixes));
-    // }
-
-    // // convert objects to content
-    // if (filterType == null || filterType == S3ContentType.file) {
-    //   var filtered = result.objects;
-    //   // filter by extension
-    //   if (filterExtensions.isNotEmpty) {
-    //     filtered = result.objects
-    //         .where((e) => filterExtensions.contains(extension(e.key!)))
-    //         .toList();
-    //   }
-
-    //   contents.addAll(_objectsToContents(filtered));
-    // }
-
-    return Right(contents);
   }
 
   Future<Either<dynamic, Uint8List>> download({
@@ -104,6 +57,8 @@ class StorageService extends GetxService with ConsoleMixin {
     bool force = false,
   }) async {
     if (!persistence.sync.val && !force) return const Left('offline');
+    // strip root address
+    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
 
     final presignResult = await SupabaseService.to.presignUrl(
       object: object,
@@ -133,7 +88,9 @@ class StorageService extends GetxService with ConsoleMixin {
     required String object,
   }) async {
     if (!persistence.sync.val) return const Left('offline');
-    console.info('uploading...');
+    // strip root address
+    object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
+    console.info('uploading: $object...');
 
     final presignResult = await SupabaseService.to.presignUrl(
       object: object,
@@ -144,60 +101,18 @@ class StorageService extends GetxService with ConsoleMixin {
       return const Left('failed to presign');
     }
 
-    console.info('uploading: $object...');
+    console.info('uploading: $object -> ${presignResult.right.data.url}');
     // TODO: pass object metadata
     final response = await http.put(
       Uri.parse(presignResult.right.data.url),
       body: bytes,
     );
 
-    if (response.statusCode != 200) {
-      console.error(
-          'upload status: ${response.statusCode}, body: ${response.body}');
-      return Left(response.body);
-    }
+    console.wtf(
+      'upload status: ${response.statusCode} -> body: ${response.body}',
+    );
 
+    if (response.statusCode != 200) return Left(response.body);
     return const Right(true);
   }
-
-  Future<Either<dynamic, bool>> createFolder(
-    String name, {
-    required String s3Path,
-  }) async {
-    if (!persistence.sync.val) return const Left('offline');
-    console.info('creating folder...');
-
-    // try {
-    //   eTag = await client!.putObject(
-    //     config.secrets.s3.preferredBucket,
-    //     join(s3Path, '$name/').replaceAll('\\', '/'),
-    //     Stream<Uint8List>.value(Uint8List(0)),
-    //     metadata: _objectMetadata(),
-    //   );
-    // } catch (e) {
-    //   return Left(e);
-    // }
-
-    return const Right(true);
-  }
-
-  // Future<S3FolderInfo?> fetchStorageSize() async {
-  //   final result = await folderInfo(''); // root path
-
-  //   if (result.isLeft) {
-  //     console.error('fetchStorageSize: ${result.left}');
-  //     return null;
-  //   }
-
-  //   // final info = result.right;
-  //   // storageSize.value = info.totalSize;
-  //   // objectsCount.value = info.contents.length;
-  //   // encryptedFiles.value = info.encryptedFiles;
-  //   // // cache objects
-  //   // contentsCache = info.contents;
-
-  //   // return info;
-
-  //   return null;
-  // }
 }

@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/notifications/notifications.manager.dart';
@@ -69,14 +70,13 @@ class S3ExplorerScreenController extends GetxController
 
     objects = objects.where((e) {
       final path = e.key.replaceAll(prefix, '');
-      return e.key.startsWith(prefix) &&
-          '/'.allMatches(path).length == 1 &&
-          e.key != prefix;
-    }).toList();
+      final isFolder = '/'.allMatches(path).length == 1 && !e.isFile;
+      final isFile = '/'.allMatches(path).isEmpty && e.isFile;
 
-    for (var e in objects) {
-      console.info('key: ${e.name}');
-    }
+      return e.key != prefix &&
+          e.key.startsWith(prefix) &&
+          (isFolder || isFile);
+    }).toList();
 
     data.clear();
     await Future.delayed(100.milliseconds);
@@ -91,7 +91,7 @@ class S3ExplorerScreenController extends GetxController
 
   Future<void> load({bool pulled = false}) async {
     if (!pulled) change(true, status: RxStatus.loading());
-    await StorageService.to.load();
+    await storage.load();
     navigate(prefix: currentPrefix.value);
   }
 
@@ -153,8 +153,7 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void _upload(File file) async {
-    final assumedTotal =
-        StorageService.to.rootInfo.value.data.size + await file.length();
+    final assumedTotal = storage.rootInfo.value.data.size + await file.length();
 
     if (assumedTotal >= ProController.to.limits.uploadSize) {
       return Utils.adaptiveRouteOpen(
@@ -168,12 +167,12 @@ class S3ExplorerScreenController extends GetxController
     }
 
     change(true, status: RxStatus.loading());
-    // encrypt file before uploading
-    file = await CipherService.to.encryptFile(file);
+    final encryptedBytes = CipherService.to.encrypt(await file.readAsBytes());
+    final fileName = basename(file.path) + kEncryptedExtensionExtra;
 
-    final result = await StorageService.to.upload(
-      await file.readAsBytes(),
-      object: '${currentPrefix.value}/${basename(file.path)}',
+    final result = await storage.upload(
+      encryptedBytes,
+      object: '${currentPrefix.value}$fileName',
     );
 
     if (result.isLeft) {
@@ -187,7 +186,7 @@ class S3ExplorerScreenController extends GetxController
 
     NotificationsManager.notify(
       title: 'Successfully Uploaded',
-      body: basename(file.path),
+      body: fileName,
     );
 
     change(false, status: RxStatus.success());
@@ -200,12 +199,12 @@ class S3ExplorerScreenController extends GetxController
 
     void createDirectory(String name) async {
       if (!formKey.currentState!.validate()) return;
-      // TODO: check if folder already exists
       change(true, status: RxStatus.loading());
 
-      final result = await StorageService.to.createFolder(
-        name,
-        s3Path: currentPrefix.value,
+      // TODO: check if folder already exists
+      final result = await storage.upload(
+        Uint8List(0),
+        object: '${currentPrefix.value}$name/',
       );
 
       if (result.isLeft) {

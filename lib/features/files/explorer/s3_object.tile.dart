@@ -7,7 +7,9 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/supabase/model/object.model.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
+import 'package:secrets/secrets.dart';
 
+import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../menu/menu.button.dart';
