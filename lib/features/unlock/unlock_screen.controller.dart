@@ -8,19 +8,22 @@ import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/core/utils/utils.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/persistence/persistence.secret.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/globals.dart';
+import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
+import '../pro/pro.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class UnlockScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
-  final passwordMode = Get.parameters['mode'] == 'password_prompt';
+  final promptMode = Get.parameters['mode'] == 'password_prompt';
   final regularMode = Get.parameters['mode'] == 'regular';
   final reason = Get.parameters['reason'];
 
@@ -99,7 +102,13 @@ class UnlockScreenController extends GetxController
       await HiveService.to.open();
       change(null, status: RxStatus.success());
       AuthenticationMiddleware.signedIn = true;
-      if (passwordMode || regularMode) return Get.back(result: true);
+
+      if (!promptMode && !regularMode) {
+        Persistence.to.sessionCount.val++;
+        console.wtf('session count: ${Persistence.to.sessionCount.val}');
+      }
+
+      if (promptMode || regularMode) return Get.back(result: true);
       return MainScreenController.to.navigate();
     }
 
@@ -123,7 +132,7 @@ class UnlockScreenController extends GetxController
     canProceed.value = false;
     String message = 'Please enter your master password';
 
-    if (!passwordMode) {
+    if (!promptMode) {
       attemptsLeft--;
 
       if (attemptsLeft <= 0) {

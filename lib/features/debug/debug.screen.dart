@@ -2,6 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/files/sync.service.dart';
 
 import '../../core/firebase/auth_desktop.service.dart';
@@ -195,12 +196,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Test Supabase'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () {
-            // SecretPersistence.to.vaultPresignedPutResponse.val = '';
-            // SecretPersistence.to.vaultPresignedGetResponse.val = '';
-
-            SyncService.to.upSync();
-
-            // SupabaseService.to.init();
+            //
           },
         ),
       ],

@@ -49,9 +49,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             );
           },
         ),
-        if (GetPlatform.isAndroid ||
-            GetPlatform.isIOS ||
-            GetPlatform.isMacOS) ...[
+        if (isReviewable) ...[
           ListTile(
             leading: Icon(
               GetPlatform.isAndroid ? LineIcons.googlePlay : LineIcons.appStore,

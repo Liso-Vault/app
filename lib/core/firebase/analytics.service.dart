@@ -1,7 +1,9 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
+
+import '../persistence/persistence.dart';
+import '../utils/globals.dart';
 
 class AnalyticsService extends GetxService with ConsoleMixin {
   static AnalyticsService get to => Get.find();
@@ -19,20 +21,34 @@ class AnalyticsService extends GetxService with ConsoleMixin {
   // INIT
   @override
   void onInit() async {
-    if (GetPlatform.isWindows) return;
+    if (isWindowsLinux) return;
     await instance.setAnalyticsCollectionEnabled(Persistence.to.analytics.val);
     await instance.logAppOpen();
     super.onInit();
   }
 
   // FUNCTIONS
-  void logSignIn() async {
-    if (GetPlatform.isWindows) return;
-    await instance.logLogin();
+  void logSignIn() {
+    if (isWindowsLinux) return;
+    instance.logLogin();
   }
 
-  void logSignOut() async {
-    if (GetPlatform.isWindows) return;
-    await instance.logEvent(name: 'logout');
+  void logSignOut() {
+    if (isWindowsLinux) return;
+    instance.logEvent(name: 'logout');
+  }
+
+  void logSearch(String query) {
+    if (isWindowsLinux) return;
+    instance.logSearch(searchTerm: query);
+  }
+
+  void logEvent(
+    String name, {
+    Map<String, Object?>? parameters,
+    AnalyticsCallOptions? callOptions,
+  }) {
+    if (isWindowsLinux) return;
+    instance.logEvent(name: name);
   }
 }

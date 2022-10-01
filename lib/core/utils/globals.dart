@@ -52,7 +52,20 @@ const kNonPasswordFieldIds = [
 
 // GETTERS
 
-bool get isPurchasesSupported => !GetPlatform.isWindows;
+bool get isReviewable => isApple || GetPlatform.isAndroid;
+bool get isApple => GetPlatform.isMacOS || GetPlatform.isIOS;
+bool get isLinux => GetPlatform.isLinux && !GetPlatform.isWeb;
+bool get isWindows => GetPlatform.isWindows && !GetPlatform.isWeb;
+bool get isMac => GetPlatform.isMacOS && !GetPlatform.isWeb;
+
+bool get isWindowsLinux =>
+    !GetPlatform.isWeb && (GetPlatform.isWindows || GetPlatform.isLinux);
+
+bool get isDesktop =>
+    !GetPlatform.isWeb &&
+    (GetPlatform.isMacOS || GetPlatform.isWindows || GetPlatform.isLinux);
+
+bool get isPurchasesSupported => GetPlatform.isMacOS || GetPlatform.isMobile;
 
 bool get isLocalAuthSupported =>
     GetPlatform.isMobile && Persistence.to.biometrics.val;

@@ -11,6 +11,7 @@ import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/utils.dart';
@@ -257,6 +258,38 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                         onPressed: controller.showConfirmImportDialog,
                         child: const Text('Decide'),
                       ),
+                    ),
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: p.rateCardVisibility.val &&
+                    p.sessionCount.val > 15 &&
+                    isReviewable,
+                child: Card(
+                  elevation: 2.0,
+                  margin: const EdgeInsets.only(
+                    top: 5,
+                    bottom: 5,
+                    left: 15,
+                    right: 15,
+                  ),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    selectedTileColor: themeColor.withOpacity(0.05),
+                    // TODO: localize
+                    title: Text(
+                        "Rate & review ${ConfigService.to.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
+                    subtitle: Text(
+                      "Help spread awareness on why people should consider using ${ConfigService.to.appName} as their secure vault.",
+                    ),
+                    // leading: const Icon(Iconsax.key),
+                    trailing: OutlinedButton(
+                      onPressed: () {
+                        Utils.rateAndReview();
+                        p.rateCardVisibility.val = false;
+                      },
+                      child: const Text('Rate'),
                     ),
                   ),
                 ),

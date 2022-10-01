@@ -1,3 +1,13 @@
+## 0.8.1
+
+- Fixed a security flaw reported by an anonymous user
+- Faster browsing files
+- Encrypted file uploads are now free and default
+- Temporarily removed self-hosting option
+
+Notes:
+- Reupload your non-encrypted files for maximum security
+
 ## 0.7.1
 
 - Minor updates

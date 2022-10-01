@@ -116,16 +116,16 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
           ),
         ),
         actions: [
-          Obx(
-            () => Visibility(
-              visible: !controller.busy.value,
-              child: IconButton(
-                icon: const Icon(Iconsax.setting_3),
-                onPressed: () =>
-                    Utils.adaptiveRouteOpen(name: Routes.syncProvider),
-              ),
-            ),
-          ),
+          // Obx(
+          //   () => Visibility(
+          //     visible: !controller.busy.value,
+          //     child: IconButton(
+          //       icon: const Icon(Iconsax.setting_3),
+          //       onPressed: () =>
+          //           Utils.adaptiveRouteOpen(name: Routes.syncProvider),
+          //     ),
+          //   ),
+          // ),
           TextButton(
             onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
             child: const Text('Need Help ?'),

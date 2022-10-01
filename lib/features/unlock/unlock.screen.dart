@@ -38,7 +38,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
             fontWeight: FontWeight.bold,
           ),
         ),
-        if (!controller.passwordMode) ...[
+        if (!controller.promptMode) ...[
           const SizedBox(height: 20),
           Text(
             SecretPersistence.to.shortAddress,
@@ -54,7 +54,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
               onPressed: controller.authenticate,
               label: Text('authenticate'.tr),
               icon: Icon(
-                controller.passwordMode
+                controller.promptMode
                     ? Iconsax.arrow_circle_right
                     : LineIcons.lockOpen,
               ),
@@ -94,10 +94,9 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
             width: 200,
             child: Obx(
               () => ElevatedButton.icon(
-                label:
-                    Text(controller.passwordMode ? 'proceed'.tr : 'unlock'.tr),
+                label: Text(controller.promptMode ? 'proceed'.tr : 'unlock'.tr),
                 icon: Icon(
-                  controller.passwordMode
+                  controller.promptMode
                       ? Iconsax.arrow_circle_right
                       : LineIcons.lockOpen,
                 ),
@@ -111,11 +110,11 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
 
     return WillPopScope(
       onWillPop: () => Future.value(
-        controller.passwordMode || Globals.isAutofill,
+        controller.promptMode || Globals.isAutofill,
       ),
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: controller.passwordMode,
+          automaticallyImplyLeading: controller.promptMode,
           actions: [
             TextButton(
               onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),

@@ -20,10 +20,10 @@ class S3Object {
   final DateTime? lastModified;
 
   factory S3Object.fromJson(Map<String, dynamic> json) => S3Object(
-        type: json["type"],
-        key: json["key"],
-        etag: json["etag"],
-        size: json["size"],
+        type: json["type"] ?? '',
+        key: json["key"] ?? '',
+        etag: json["etag"] ?? '',
+        size: json["size"] ?? 0,
         lastModified: json["lastModified"] != null
             ? DateTime.parse(json["lastModified"])
             : null,

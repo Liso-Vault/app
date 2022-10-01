@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:liso/features/about/about.screen.dart';
-import 'package:liso/features/beta/disabled_beta.screen.dart';
+import 'package:liso/features/update/update.screen.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/debug/debug.screen.dart';
 import 'package:liso/features/import/import.screen.dart';
@@ -88,14 +88,14 @@ class AppPages {
       name: Routes.about,
       page: () => const AboutScreen(),
     ),
-    GetPage(
-      name: Routes.syncProvider,
-      page: () => const SyncProviderScreen(),
-    ),
-    GetPage(
-      name: Routes.customSyncProvider,
-      page: () => const CustomSyncProviderScreen(),
-    ),
+    // GetPage(
+    //   name: Routes.syncProvider,
+    //   page: () => const SyncProviderScreen(),
+    // ),
+    // GetPage(
+    //   name: Routes.customSyncProvider,
+    //   page: () => const CustomSyncProviderScreen(),
+    // ),
     GetPage(
       name: Routes.s3Explorer,
       page: () => const S3ExplorerScreen(),
@@ -153,8 +153,8 @@ class AppPages {
       page: () => const FeedbackScreen(),
     ),
     GetPage(
-      name: Routes.disabledBeta,
-      page: () => const DisabledBetaScreen(),
+      name: Routes.update,
+      page: () => const UpdateScreen(),
     ),
     GetPage(
       name: Routes.debug,

@@ -222,11 +222,11 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               title: 'Offline Mode',
               trailing: Icon(Icons.check, color: proColor),
             ),
-            FeatureTile(
-              iconData: Iconsax.data,
-              title: 'Self-Hostable',
-              trailing: Icon(Icons.check, color: proColor),
-            ),
+            // FeatureTile(
+            //   iconData: Iconsax.data,
+            //   title: 'Self-Hostable',
+            //   trailing: Icon(Icons.check, color: proColor),
+            // ),
           ],
         );
       },

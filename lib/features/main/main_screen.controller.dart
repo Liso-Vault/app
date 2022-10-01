@@ -18,6 +18,7 @@ import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
+import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:window_manager/window_manager.dart';
@@ -206,7 +207,7 @@ class MainScreenController extends GetxController
   @override
   void onWindowClose() async {
     bool preventClosing = await window.isPreventClose();
-    final confirmClose = !Get.isDialogOpen! &&
+    final confirmClose = Get.isDialogOpen == false &&
         preventClosing &&
         persistence.changes.val > 0 &&
         persistence.sync.val;
@@ -255,7 +256,7 @@ class MainScreenController extends GetxController
     Get.offNamedUntil(Routes.main, (route) => false);
   }
 
-  void postInit() {
+  void postInit() async {
     // firebase auth
     AuthService.to.signIn();
     // load listview
@@ -284,6 +285,14 @@ class MainScreenController extends GetxController
       } else {
         // sync vault
         SyncService.to.sync();
+      }
+
+      // show upgrade screen every after 5th times opened
+      if (!ProController.to.isPro &&
+          (Persistence.to.sessionCount.val % 5) == 0) {
+        await Future.delayed(1.seconds);
+        Utils.adaptiveRouteOpen(name: Routes.upgrade);
+        console.info('showUpgradeScreen');
       }
     }
 

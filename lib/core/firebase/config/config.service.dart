@@ -9,8 +9,10 @@ import 'package:liso/core/firebase/functions.service.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:secrets/secrets.dart';
 
+import '../../../features/app/routes.dart';
 import '../../../features/pro/pro.controller.dart';
 import '../../supabase/supabase.service.dart';
+import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
 import 'models/config_app_domains.model.dart';
 import 'models/config_general.model.dart';
@@ -137,5 +139,11 @@ class ConfigService extends GetxService with ConsoleMixin {
     // initialize supabase
     SupabaseService.to.init();
     ProController.to.init();
+
+    // check if update is required
+    if (app.build.min > int.parse(Globals.metadata!.app.buildNumber)) {
+      console.error('### must update');
+      Get.toNamed(Routes.update);
+    }
   }
 }

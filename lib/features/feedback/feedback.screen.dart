@@ -104,7 +104,7 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                       ),
                       const SizedBox(height: 10),
                       Text(
-                        'Help spread the word about why people should consider using ${ConfigService.to.appName} as their password manager.',
+                        'Help spread awareness on why people should consider using ${ConfigService.to.appName} as their secure vault.',
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ],

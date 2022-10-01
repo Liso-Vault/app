@@ -1,3 +1,4 @@
+import 'package:app_review/app_review.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/app/pages.dart';
 import 'package:random_string_generator/random_string_generator.dart';
@@ -33,15 +35,22 @@ class Utils {
 
   // FUNCTIONS
 
-  static void copyToClipboard(text) async {
-    await Clipboard.setData(ClipboardData(text: text));
-    // TODO: localize
-    UIUtils.showSnackBar(
-      title: 'Copied',
-      message: 'Successfully copied to clipboard',
-      icon: const Icon(LineIcons.copy),
-      seconds: 4,
-    );
+  static void copyToClipboard(String text) async {
+    if (text.isEmpty) return;
+
+    try {
+      await Clipboard.setData(ClipboardData(text: text));
+
+      // TODO: localize
+      UIUtils.showSnackBar(
+        title: 'Copied',
+        message: 'Successfully copied to clipboard',
+        icon: const Icon(LineIcons.copy),
+        seconds: 4,
+      );
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+    }
   }
 
   static String timeAgo(DateTime dateTime, {bool short = true}) {
@@ -405,5 +414,29 @@ class Utils {
     final canLaunch = await canLaunchUrl(uri);
     if (!canLaunch) console.error('cannot launch');
     launchUrl(uri, mode: mode);
+  }
+
+  static void rateAndReview() async {
+    final store = ConfigService.to.general.app.links.store;
+    final available = await AppReview.isRequestReviewAvailable;
+    console.info('review available: $available');
+
+    if (GetPlatform.isAndroid) {
+      if (available) {
+        final result = await AppReview.openAndroidReview();
+        console.info('review result: $result');
+      } else {
+        Utils.openUrl(store.google);
+      }
+    } else if (GetPlatform.isIOS) {
+      if (available) {
+        final result = await AppReview.openIosReview();
+        console.info('review result: $result');
+      } else {
+        Utils.openUrl(store.apple);
+      }
+    } else if (GetPlatform.isMacOS) {
+      Utils.openUrl(store.apple);
+    }
   }
 }

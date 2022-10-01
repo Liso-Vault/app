@@ -95,15 +95,15 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
                   ),
                 ],
-                ListTile(
-                  leading: Icon(Iconsax.setting, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                  title: const Text('Configuration'),
-                  subtitle: const Text('Change your sync configuration'),
-                  onTap: () => Utils.adaptiveRouteOpen(
-                    name: Routes.syncProvider,
-                  ),
-                ),
+                // ListTile(
+                //   leading: Icon(Iconsax.setting, color: themeColor),
+                //   trailing: const Icon(Iconsax.arrow_right_3),
+                //   title: const Text('Configuration'),
+                //   subtitle: const Text('Change your sync configuration'),
+                //   onTap: () => Utils.adaptiveRouteOpen(
+                //     name: Routes.syncProvider,
+                //   ),
+                // ),
               ],
             ],
           );

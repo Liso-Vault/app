@@ -8,6 +8,7 @@ import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/widget_refresher.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
+import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:liso/features/tags/tags_input.widget.dart';
 
 import '../../core/hive/models/category.hive.dart';
@@ -218,8 +219,10 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       Obx(
         () => Visibility(
           visible: Persistence.to.canShare &&
-              controller.editMode.value &&
-              controller.sharedVaultIds.isNotEmpty,
+              ((!controller.editMode.value &&
+                      controller.sharedVaultChips.isNotEmpty) ||
+                  (controller.editMode.value &&
+                      SharedVaultsController.to.data.isNotEmpty)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

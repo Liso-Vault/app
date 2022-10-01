@@ -1,4 +1,3 @@
-import 'package:app_review/app_review.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -51,27 +50,6 @@ class FeedbackScreenController extends GetxController
 
   void review() async {
     Utils.copyToClipboard(textController.text);
-
-    final store = ConfigService.to.general.app.links.store;
-    final available = await AppReview.isRequestReviewAvailable;
-    console.info('review available: $available');
-
-    if (GetPlatform.isAndroid) {
-      if (available) {
-        final result = await AppReview.openAndroidReview();
-        console.info('review result: $result');
-      } else {
-        Utils.openUrl(store.google);
-      }
-    } else if (GetPlatform.isIOS) {
-      if (available) {
-        final result = await AppReview.openIosReview();
-        console.info('review result: $result');
-      } else {
-        Utils.openUrl(store.apple);
-      }
-    } else if (GetPlatform.isMacOS) {
-      Utils.openUrl(store.apple);
-    }
+    Utils.rateAndReview();
   }
 }

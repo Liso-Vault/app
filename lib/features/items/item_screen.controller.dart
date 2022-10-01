@@ -543,12 +543,20 @@ class ItemScreenController extends GetxController
   List<Widget> get attachmentChips {
     // TODO: attachment cache
     List<Widget> chips = attachments.map<Widget>((attachment) {
-      final content = StorageService.to.rootInfo.value.data.objects.firstWhere(
+      final itemsFound = StorageService.to.rootInfo.value.data.objects.where(
         (e) => e.etag == attachment,
       );
 
+      if (itemsFound.isEmpty) {
+        return Chip(
+          label: const Text('file not found'),
+          onDeleted:
+              editMode.value ? () => attachments.remove(attachment) : null,
+        );
+      }
+
       return Chip(
-        label: Text(content.name),
+        label: Text(itemsFound.first.name),
         onDeleted: editMode.value ? () => attachments.remove(attachment) : null,
       );
     }).toList();
@@ -921,9 +929,11 @@ class ItemScreenController extends GetxController
 
             // add a quick copy value feature when tapped
             widget = GestureDetector(
-              onSecondaryTap: () => Utils.copyToClipboard(field.data.value),
+              onSecondaryTap: () =>
+                  Utils.copyToClipboard(field.data.value ?? ''),
               child: InkWell(
-                onLongPress: () => Utils.copyToClipboard(field.data.value),
+                onLongPress: () =>
+                    Utils.copyToClipboard(field.data.value ?? ''),
                 onTap: obscuredRx.value ? obscuredRx.toggle : null,
                 child: Obx(
                   () => TextFormField(

@@ -26,12 +26,12 @@ abstract class Routes {
   static const vaultExplorer = '/vault_explorer';
   static const devices = '/devices';
   static const feedback = '/feedback';
-  static const disabledBeta = '/disabled_beta';
+  static const update = '/update';
   static const debug = '/debug';
 
   // SYNC
-  static const syncProvider = '/sync_provider';
-  static const customSyncProvider = '/custom_sync_provider';
+  // static const syncProvider = '/sync_provider';
+  // static const customSyncProvider = '/custom_sync_provider';
 
   // S3
   static const s3Explorer = '/s3_explorer';
