@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/core/supabase/model/object.model.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
@@ -53,19 +54,6 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
             onSelected: () => controller.share(object),
           ),
         ],
-        // if (Persistence.to.syncProvider.val ==
-        //     LisoSyncProvider.ipfs.name) ...[
-        //   ContextMenuItem(
-        //     title: 'Copy IPFS CID',
-        //     leading: const Icon(Iconsax.copy),
-        //     onSelected: () => Utils.copyToClipboard(content.object?.eTag),
-        //   ),
-        //   ContextMenuItem(
-        //     title: 'Copy IPFS URL',
-        //     leading: const Icon(Iconsax.copy),
-        //     onSelected: () => Utils.copyToClipboard(content.object?.eTag),
-        //   ),
-        // ],
         ContextMenuItem(
           title: 'Delete',
           leading: const Icon(Iconsax.trash),
@@ -93,18 +81,16 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         : null;
 
     void open() {
-      if (object.isFile) {
-        if (isPicker) {
-          return Get.back(result: object.etag);
-        }
+      if (!object.isFile) {
+        return explorerController.navigate(prefix: object.key);
+      }
 
-        if (object.isVaultFile) {
-          controller.confirmSwitch(object);
-        } else {
-          controller.confirmDownload(object);
-        }
+      if (isPicker) return Get.back(result: object.etag);
+
+      if (object.isVaultFile) {
+        controller.confirmSwitch(object);
       } else {
-        explorerController.navigate(prefix: object.key);
+        controller.confirmDownload(object);
       }
     }
 
@@ -116,6 +102,9 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
           overflow: TextOverflow.ellipsis,
         ),
         subtitle: controller.busy.value ? Text(controller.state) : subTitle,
+        // subtitle: Text(
+        //   object.key.replaceAll('${SecretPersistence.to.longAddress}/', ''),
+        // ),
         iconColor: themeColor,
         leading: Utils.s3ContentIcon(object),
         enabled: !controller.busy.value,

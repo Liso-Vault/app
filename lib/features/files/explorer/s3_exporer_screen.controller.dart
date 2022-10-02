@@ -58,12 +58,10 @@ class S3ExplorerScreenController extends GetxController
 
   // FUNCTIONS
 
-  void up() {
-    final prefix = currentPrefix.value.split('/');
-    prefix.removeLast();
-    prefix.removeLast();
-
-    navigate(prefix: '${prefix.join('/')}/');
+  Future<void> load({bool pulled = false}) async {
+    if (!pulled) change(true, status: RxStatus.loading());
+    await storage.load();
+    navigate(prefix: currentPrefix.value);
   }
 
   void navigate({required String prefix}) async {
@@ -90,10 +88,12 @@ class S3ExplorerScreenController extends GetxController
     );
   }
 
-  Future<void> load({bool pulled = false}) async {
-    if (!pulled) change(true, status: RxStatus.loading());
-    await storage.load();
-    navigate(prefix: currentPrefix.value);
+  void up() {
+    final prefix = currentPrefix.value.split('/');
+    prefix.removeLast();
+    prefix.removeLast();
+
+    navigate(prefix: '${prefix.join('/')}/');
   }
 
   void pickFile() async {
