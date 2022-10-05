@@ -1,4 +1,4 @@
-## 0.8.1
+## 0.8.0
 
 - Fixed a security flaw reported by an anonymous user
 - Faster browsing files
