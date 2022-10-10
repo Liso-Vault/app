@@ -1,9 +1,15 @@
+import 'package:app_review/app_review.dart';
+import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../firebase/config/config.service.dart';
+
 class UIUtils {
+  static final console = Console(name: 'UIUtils');
+
   static Future<void> showSnackBar({
     required String title,
     required String message,
@@ -178,5 +184,29 @@ class UIUtils {
         ),
       ],
     ));
+  }
+
+  static void rateAndReview() async {
+    final store = ConfigService.to.general.app.links.store;
+    final available = await AppReview.isRequestReviewAvailable;
+    console.info('review available: $available');
+
+    if (GetPlatform.isAndroid) {
+      if (available) {
+        final result = await AppReview.openAndroidReview();
+        console.info('review result: $result');
+      } else {
+        Utils.openUrl(store.google);
+      }
+    } else if (GetPlatform.isIOS) {
+      if (available) {
+        final result = await AppReview.openIosReview();
+        console.info('review result: $result');
+      } else {
+        Utils.openUrl(store.apple);
+      }
+    } else if (GetPlatform.isMacOS) {
+      Utils.openUrl(store.apple);
+    }
   }
 }

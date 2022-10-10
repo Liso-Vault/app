@@ -50,6 +50,6 @@ class FeedbackScreenController extends GetxController
 
   void review() async {
     Utils.copyToClipboard(textController.text);
-    Utils.rateAndReview();
+    UIUtils.rateAndReview();
   }
 }

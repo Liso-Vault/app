@@ -14,6 +14,7 @@ import 'package:liso/features/menu/menu.button.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/group.hive.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
+import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../connectivity/connectivity_bar.widget.dart';
@@ -286,7 +287,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     // leading: const Icon(Iconsax.key),
                     trailing: OutlinedButton(
                       onPressed: () {
-                        Utils.rateAndReview();
+                        UIUtils.rateAndReview();
                         p.rateCardVisibility.val = false;
                       },
                       child: const Text('Rate'),

@@ -292,7 +292,6 @@ class MainScreenController extends GetxController
           (Persistence.to.sessionCount.val % 5) == 0) {
         await Future.delayed(1.seconds);
         Utils.adaptiveRouteOpen(name: Routes.upgrade);
-        console.info('showUpgradeScreen');
       }
     }
 
