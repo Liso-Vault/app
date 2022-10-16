@@ -9,7 +9,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/core/supabase/supabase.service.dart';
 
-import '../../core/supabase/model/generic_response.model.dart';
+import '../../core/supabase/model/server_response.model.dart';
 import '../../core/supabase/model/list_objects_response.model.dart';
 import '../../core/supabase/model/object.model.dart';
 
@@ -42,7 +42,7 @@ class StorageService extends GetxService with ConsoleMixin {
     rootInfo.value = result.right;
   }
 
-  Future<Either<dynamic, GenericResponse>> remove(String object) async {
+  Future<Either<dynamic, ServerResponse>> remove(String object) async {
     if (!persistence.sync.val) return const Left('offline');
     final result = await SupabaseService.to.deleteObjects([object]);
     if (result.isLeft) return Left(result.left);
@@ -59,6 +59,7 @@ class StorageService extends GetxService with ConsoleMixin {
     final presignResult = await SupabaseService.to.presignUrl(
       object: object,
       method: 'GET',
+      expirySeconds: 1200,
     );
 
     if (presignResult.isLeft || presignResult.right.status != 200) {
@@ -67,11 +68,21 @@ class StorageService extends GetxService with ConsoleMixin {
     }
 
     console.info('downloading: $object...');
-    final response = await http.get(Uri.parse(presignResult.right.data.url));
+
+    late http.Response response;
+
+    try {
+      response = await http.get(Uri.parse(presignResult.right.data.url));
+    } catch (e) {
+      console.error('download error: $e, url: ${presignResult.right.data.url}');
+      return Left(e);
+    }
 
     if (response.statusCode != 200) {
       console.error(
-          'download status: ${response.statusCode}, body: ${response.body}');
+        'download status: ${response.statusCode}, body: ${response.body}',
+      );
+
       return Left(response.body);
     }
 

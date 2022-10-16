@@ -1,7 +1,7 @@
 import 'error.model.dart';
 
-class GenericResponse {
-  GenericResponse({
+class ServerResponse {
+  ServerResponse({
     this.status = 0,
     this.data = const {},
     this.errors = const [],
@@ -11,8 +11,7 @@ class GenericResponse {
   final Map<String, dynamic> data;
   final List<SupabaseFunctionError> errors;
 
-  factory GenericResponse.fromJson(Map<String, dynamic> json) =>
-      GenericResponse(
+  factory ServerResponse.fromJson(Map<String, dynamic> json) => ServerResponse(
         status: json["status"],
         data: json["data"],
         errors: List<SupabaseFunctionError>.from(

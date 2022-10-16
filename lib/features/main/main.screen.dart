@@ -13,6 +13,7 @@ import 'package:liso/features/menu/menu.button.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/group.hive.dart';
+import '../../core/persistence/persistence.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
@@ -359,13 +360,16 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       ),
       if (!Globals.isAutofill) ...[
         PersistenceBuilder(
-          builder: (p, context) => Badge(
-            showBadge: p.sync.val && p.changes.val > 0,
-            badgeContent: Text(p.changes.val.toString()),
-            position: BadgePosition.topEnd(top: -1, end: -5),
-            child: IconButton(
-              onPressed: SyncService.to.sync,
-              icon: const Icon(Iconsax.cloud_change),
+          builder: (p, context) => Visibility(
+            visible: Persistence.to.sync.val,
+            child: Badge(
+              showBadge: p.sync.val && p.changes.val > 0,
+              badgeContent: Text(p.changes.val.toString()),
+              position: BadgePosition.topEnd(top: -1, end: -5),
+              child: IconButton(
+                onPressed: SyncService.to.sync,
+                icon: const Icon(Iconsax.cloud_change),
+              ),
             ),
           ),
         ),

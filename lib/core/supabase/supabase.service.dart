@@ -8,7 +8,7 @@ import 'package:liso/core/supabase/model/stat_response.model.dart';
 import 'package:supabase/supabase.dart';
 
 import '../firebase/config/config.service.dart';
-import 'model/generic_response.model.dart';
+import 'model/server_response.model.dart';
 
 const kFunctionPresignUrl = 'presign-url';
 const kFunctionListObjects = 'list-objects';
@@ -76,7 +76,7 @@ class SupabaseService extends GetxService with ConsoleMixin {
     return Right(ListObjectsResponse.fromJson(response.data));
   }
 
-  Future<Either<Object?, GenericResponse>> deleteObjects(
+  Future<Either<Object?, ServerResponse>> deleteObjects(
       List<String> objects) async {
     // strip root address
     objects = objects
@@ -95,7 +95,7 @@ class SupabaseService extends GetxService with ConsoleMixin {
 
     // console.debug('raw: ${response.data}, errors: ${response.error}');
     if (response.error != null) return Left(response.error);
-    return Right(GenericResponse.fromJson(response.data));
+    return Right(ServerResponse.fromJson(response.data));
   }
 
   Future<Either<Object?, ListObjectsResponse>> deleteDirectory(
@@ -121,7 +121,7 @@ class SupabaseService extends GetxService with ConsoleMixin {
     required String object,
     String? address,
     String method = "GET",
-    int expirySeconds = 300,
+    int expirySeconds = 1000,
   }) async {
     // strip root address
     object = object.replaceAll('${SecretPersistence.to.longAddress}/', '');
