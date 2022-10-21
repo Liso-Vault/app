@@ -45,7 +45,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   void initAuthState() {
     client!.auth.onAuthStateChange.listen((data) {
       console.info(
-        'onAuthStateChange! ${data.event}: user id: ${data.session?.user.id}, expires at: ${DateTime.fromMillisecondsSinceEpoch(data.session!.expiresAt! * 1000)}',
+        'onAuthStateChange! ${data.event}: user id: ${data.session?.user.id}}',
       );
 
       persistence.supabaseSession.val =
@@ -64,9 +64,11 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
           AnalyticsService.to.logSignIn();
 
           // refresh token 2 minutes before expiration time
-          final refreshAfter = (data.session!.expiresIn! - 120);
-          Future.delayed(refreshAfter.seconds)
-              .then((value) => recoverSession());
+          if (data.session?.expiresIn != null) {
+            final refreshAfter = (data.session!.expiresIn! - 120);
+            Future.delayed(refreshAfter.seconds)
+                .then((value) => recoverSession());
+          }
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
         EasyDebounce.debounce('auth-sign-out', 5.seconds, () {
