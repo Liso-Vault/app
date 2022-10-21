@@ -39,24 +39,13 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     );
 
     initAuthState();
-    var sessionString = persistence.supabaseSession.val;
-    if (sessionString.isEmpty) return console.warning('no supabase session');
-
-    try {
-      final session = await client!.auth.recoverSession(sessionString);
-      console.info('recovered session! user id: ${session.user?.id}');
-    } on AuthException catch (e) {
-      console.error('recover session error: $e');
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-      console.error('recover session exception: $e');
-    }
+    recoverSession();
   }
 
   void initAuthState() {
     client!.auth.onAuthStateChange.listen((data) {
       console.info(
-        'onAuthStateChange! ${data.event}: user id: ${data.session?.user.id}',
+        'onAuthStateChange! ${data.event}: user id: ${data.session?.user.id}, expires at: ${DateTime.fromMillisecondsSinceEpoch(data.session!.expiresAt! * 1000)}',
       );
 
       persistence.supabaseSession.val =
@@ -73,9 +62,14 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
 
           ProController.to.login(user!);
           AnalyticsService.to.logSignIn();
+
+          // refresh token 2 minutes before expiration time
+          final refreshAfter = (data.session!.expiresIn! - 120);
+          Future.delayed(refreshAfter.seconds)
+              .then((value) => recoverSession());
         });
       } else if (data.event == AuthChangeEvent.signedOut) {
-        EasyDebounce.debounce('auth-sign-out', 1.seconds, () {
+        EasyDebounce.debounce('auth-sign-out', 5.seconds, () {
           ProController.to.logout();
           AnalyticsService.to.logSignOut();
         });
@@ -85,6 +79,21 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
         //
       }
     });
+  }
+
+  Future<void> recoverSession() async {
+    var sessionString = persistence.supabaseSession.val;
+    if (sessionString.isEmpty) return console.warning('no supabase session');
+
+    try {
+      final session = await client!.auth.recoverSession(sessionString);
+      console.info('recovered session! user id: ${session.user?.id}');
+    } on AuthException catch (e) {
+      console.error('recover session error: $e');
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+      console.error('recover session exception: $e');
+    }
   }
 
   Future<void> signIn(String email, String password) async {

@@ -72,7 +72,7 @@ dependencies:
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.0.4
-  flutter_quill: ^6.0.9
+  flutter_quill: ^6.0.10
   badges: ^2.0.3 # pending changes indicator
   cached_network_image: ^3.2.2 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
@@ -107,11 +107,11 @@ dependencies:
   # INFO
   device_info_plus: ^7.0.1
   platform_device_id: ^1.0.1
-  package_info_plus: ^1.4.3+1
-  connectivity_plus: ^3.0.1 # internet connectivity checking
+  package_info_plus: ^3.0.1
+  connectivity_plus: ^3.0.2 # internet connectivity checking
 
-dependency_overrides:
-  device_info_plus: ^7.0.1
+dependency_overrides: 
+  package_info_plus: ^3.0.1
 
 dev_dependencies:
   # flutter_test:

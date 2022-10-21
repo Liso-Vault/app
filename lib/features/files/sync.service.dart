@@ -55,13 +55,6 @@ class SyncService extends GetxService with ConsoleMixin {
 
   // FUNCTIONS
 
-  Future<Either<dynamic, bool>> purge() async {
-    if (!isReady) return const Left('offline');
-    final result = await SupabaseFunctionsService.to.deleteDirectory('');
-    if (result.isLeft) return Left(result.left);
-    return const Right(true);
-  }
-
   Future<Either<dynamic, bool>> sync() async {
     if (!isReady) return const Right(false);
 
@@ -100,6 +93,8 @@ class SyncService extends GetxService with ConsoleMixin {
       onTimeout: () => const Left('Timed Out'),
     );
 
+    // stop syncing indicator
+    syncing.value = false;
     if (downResult.isLeft) return Left(downResult.left);
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
@@ -110,7 +105,6 @@ class SyncService extends GetxService with ConsoleMixin {
       onTimeout: () => const Left('Timed Out'),
     );
 
-    syncing.value = false;
     // reload all list
     MainScreenController.to.load();
 
@@ -141,104 +135,6 @@ class SyncService extends GetxService with ConsoleMixin {
     return const Right(true);
   }
 
-  Future<void> _mergeGroups(LisoVault vault) async {
-    final server = vault.groups;
-    final local = GroupsService.to.box!;
-    console
-        .wtf('merged groups local: ${local.length}, server: ${server.length}');
-
-    // merge server and local items
-    final merged = [...server, ...local.values];
-    // TODO: temporarily remove previously added groups
-    merged.removeWhere((e) => e.isReserved);
-    // sort all from most to least updated time
-    merged.sort(
-      (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
-    );
-
-    // exclude permanently flagged deleted items
-    final deletedIds =
-        "${Persistence.to.deletedGroupIds},${vault.persistence['deleted-group-ids']}";
-    merged.removeWhere((e) => deletedIds.contains(e.id));
-
-    // leave only the most updated items
-    final newList = <HiveLisoGroup>[];
-
-    for (final item in merged) {
-      final exists = newList.where((e) => e.id == item.id).isNotEmpty;
-      if (exists) continue;
-      newList.addIf(!newList.contains(item), item);
-    }
-
-    console.wtf('merged groups: ${newList.length}');
-    await local.clear();
-    await local.addAll(newList);
-  }
-
-  Future<void> _mergeCategories(LisoVault vault) async {
-    final server = vault.categories ?? [];
-    final local = CategoriesService.to.box!;
-    console.wtf(
-        'merged categories local: ${local.length}, server: ${server.length}');
-    // merge server and local items
-    final merged = [...server, ...local.values];
-    // sort all from most to least updated time
-    merged.sort(
-      (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
-    );
-
-    // exclude permanently flagged deleted items
-    final deletedIds =
-        "${Persistence.to.deletedCategoryIds},${vault.persistence['deleted-category-ids']}";
-    merged.removeWhere((e) => deletedIds.contains(e.id));
-
-    // leave only the most updated items
-    final newList = <HiveLisoCategory>[];
-
-    for (final item in merged) {
-      final exists = newList.where((e) => e.id == item.id).isNotEmpty;
-      if (exists) continue;
-      newList.addIf(!newList.contains(item), item);
-    }
-
-    console.wtf('merged categories: ${newList.length}');
-    await local.clear();
-    await local.addAll(newList);
-  }
-
-  Future<void> _mergeItems(LisoVault vault) async {
-    final server = vault.items;
-    final local = ItemsService.to.box!;
-    console.wtf(
-      'merged items local: ${local.length}, server: ${server.length}',
-    );
-
-    // merge server and local items
-    final merged = [...server, ...local.values];
-    // sort all from most to least updated time
-    merged.sort(
-      (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
-    );
-
-    // exclude permanently flagged deleted items
-    final deletedIds =
-        "${Persistence.to.deletedItemIds},${vault.persistence['deleted-item-ids']}";
-    merged.removeWhere((e) => deletedIds.contains(e.identifier));
-    // leave only the most updated items
-    final newList = <HiveLisoItem>[];
-
-    for (final item in merged) {
-      final exists =
-          newList.where((e) => e.identifier == item.identifier).isNotEmpty;
-      if (exists) continue;
-      newList.addIf(!newList.contains(item), item);
-    }
-
-    console.wtf('merged items: ${newList.length}');
-    await local.clear();
-    await local.addAll(newList);
-  }
-
   Future<void> backup(String object, Uint8List encryptedBytes) async {
     if (!isReady) return console.warning('offline');
     if (backedUp) {
@@ -263,7 +159,6 @@ class SyncService extends GetxService with ConsoleMixin {
     }
 
     // DO THE ACTUAL BACKUP
-
     final presignResult = await SupabaseFunctionsService.to.presignUrl(
       object:
           '$kDirBackups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
@@ -384,5 +279,112 @@ class SyncService extends GetxService with ConsoleMixin {
 
     console.wtf('done');
     return const Right(true);
+  }
+
+  Future<Either<dynamic, bool>> purge() async {
+    if (!isReady) return const Left('offline');
+    final result = await SupabaseFunctionsService.to.deleteDirectory('');
+    if (result.isLeft) return Left(result.left);
+    return const Right(true);
+  }
+
+  // MERGING
+
+  Future<void> _mergeGroups(LisoVault vault) async {
+    final server = vault.groups;
+    final local = GroupsService.to.box!;
+    console
+        .wtf('merged groups local: ${local.length}, server: ${server.length}');
+
+    // merge server and local items
+    final merged = [...server, ...local.values];
+    // TODO: temporarily remove previously added groups
+    merged.removeWhere((e) => e.isReserved);
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
+    );
+
+    // exclude permanently flagged deleted items
+    final deletedIds =
+        "${Persistence.to.deletedGroupIds},${vault.persistence['deleted-group-ids']}";
+    merged.removeWhere((e) => deletedIds.contains(e.id));
+
+    // leave only the most updated items
+    final newList = <HiveLisoGroup>[];
+
+    for (final item in merged) {
+      final exists = newList.where((e) => e.id == item.id).isNotEmpty;
+      if (exists) continue;
+      newList.addIf(!newList.contains(item), item);
+    }
+
+    console.wtf('merged groups: ${newList.length}');
+    await local.clear();
+    await local.addAll(newList);
+  }
+
+  Future<void> _mergeCategories(LisoVault vault) async {
+    final server = vault.categories ?? [];
+    final local = CategoriesService.to.box!;
+    console.wtf(
+        'merged categories local: ${local.length}, server: ${server.length}');
+    // merge server and local items
+    final merged = [...server, ...local.values];
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) => b.metadata!.updatedTime.compareTo(a.metadata!.updatedTime),
+    );
+
+    // exclude permanently flagged deleted items
+    final deletedIds =
+        "${Persistence.to.deletedCategoryIds},${vault.persistence['deleted-category-ids']}";
+    merged.removeWhere((e) => deletedIds.contains(e.id));
+
+    // leave only the most updated items
+    final newList = <HiveLisoCategory>[];
+
+    for (final item in merged) {
+      final exists = newList.where((e) => e.id == item.id).isNotEmpty;
+      if (exists) continue;
+      newList.addIf(!newList.contains(item), item);
+    }
+
+    console.wtf('merged categories: ${newList.length}');
+    await local.clear();
+    await local.addAll(newList);
+  }
+
+  Future<void> _mergeItems(LisoVault vault) async {
+    final server = vault.items;
+    final local = ItemsService.to.box!;
+    console.wtf(
+      'merged items local: ${local.length}, server: ${server.length}',
+    );
+
+    // merge server and local items
+    final merged = [...server, ...local.values];
+    // sort all from most to least updated time
+    merged.sort(
+      (a, b) => b.metadata.updatedTime.compareTo(a.metadata.updatedTime),
+    );
+
+    // exclude permanently flagged deleted items
+    final deletedIds =
+        "${Persistence.to.deletedItemIds},${vault.persistence['deleted-item-ids']}";
+    merged.removeWhere((e) => deletedIds.contains(e.identifier));
+    // leave only the most updated items
+    final newList = <HiveLisoItem>[];
+
+    for (final item in merged) {
+      final exists =
+          newList.where((e) => e.identifier == item.identifier).isNotEmpty;
+      if (exists) continue;
+      newList.addIf(!newList.contains(item), item);
+    }
+
+    console.wtf('merged items: ${newList.length}');
+    await local.clear();
+    await local.addAll(newList);
   }
 }

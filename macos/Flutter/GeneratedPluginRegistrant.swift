@@ -12,7 +12,7 @@ import firebase_analytics
 import firebase_core
 import firebase_crashlytics
 import flutter_local_notifications
-import package_info_plus_macos
+import package_info_plus
 import pasteboard
 import path_provider_macos
 import platform_device_id
