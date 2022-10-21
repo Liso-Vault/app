@@ -55,7 +55,11 @@ class MainScreenController extends GetxController
         .map(
           (e) => ContextMenuItem(
             title: e.reservedName,
-            leading: Utils.categoryIcon(e.id, color: themeColor),
+            leading: Utils.categoryIcon(
+              e.id,
+              color: themeColor,
+              size: popupIconSize,
+            ),
             onSelected: () => Utils.adaptiveRouteOpen(
               name: Routes.item,
               parameters: {'mode': 'add', 'category': e.id},
@@ -104,7 +108,7 @@ class MainScreenController extends GetxController
     return [
       ContextMenuItem(
         title: 'title'.tr,
-        leading: const Icon(Iconsax.text),
+        leading: Icon(Iconsax.text, size: popupIconSize),
         trailing: sortName.contains('title') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -115,7 +119,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'category'.tr,
-        leading: const Icon(Iconsax.category),
+        leading: Icon(Iconsax.category, size: popupIconSize),
         trailing: sortName.contains('category') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -126,7 +130,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_modified'.tr,
-        leading: const Icon(Iconsax.calendar),
+        leading: Icon(Iconsax.calendar, size: popupIconSize),
         trailing: sortName.contains('dateModified') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -137,7 +141,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_created'.tr,
-        leading: const Icon(Iconsax.calendar_tick),
+        leading: Icon(Iconsax.calendar_tick, size: popupIconSize),
         trailing: sortName.contains('dateCreated') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -148,7 +152,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'favorite'.tr,
-        leading: const Icon(Iconsax.heart),
+        leading: Icon(Iconsax.heart, size: popupIconSize),
         trailing: sortName.contains('favorite') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -159,7 +163,7 @@ class MainScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'protected'.tr,
-        leading: const Icon(Iconsax.lock),
+        leading: Icon(Iconsax.lock, size: popupIconSize),
         trailing: sortName.contains('protected') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =

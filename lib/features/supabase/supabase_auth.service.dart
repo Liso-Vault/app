@@ -41,11 +41,16 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
     initAuthState();
     var sessionString = persistence.supabaseSession.val;
     if (sessionString.isEmpty) return console.warning('no supabase session');
-    final session = await client!.auth.recoverSession(sessionString);
 
-    console.info(
-      'authenticated: $authenticated, session user id: ${session.user?.id}',
-    );
+    try {
+      final session = await client!.auth.recoverSession(sessionString);
+      console.info('recovered session! user id: ${session.user?.id}');
+    } on AuthException catch (e) {
+      console.error('recover session error: $e');
+    } catch (e, s) {
+      CrashlyticsService.to.record(e, s);
+      console.error('recover session exception: $e');
+    }
   }
 
   void initAuthState() {
@@ -99,7 +104,7 @@ class SupabaseAuthService extends GetxService with ConsoleMixin {
   }
 
   Future<void> authenticate() async {
-    // if (authenticated) return console.info('already authenticated');
+    if (authenticated) return console.info('already authenticated');
     final address = SecretPersistence.to.walletAddress.val;
     final email = '$address@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);

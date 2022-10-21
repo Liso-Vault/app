@@ -11,6 +11,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.dart';
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -141,13 +142,13 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
         if (Persistence.to.canShare) ...[
           ContextMenuItem(
             title: 'share'.tr,
-            leading: const Icon(Iconsax.share),
+            leading: Icon(Iconsax.share, size: popupIconSize),
             onSelected: shareDialog,
           ),
         ],
         ContextMenuItem(
           title: 'delete'.tr,
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: () => controller.delete(vault),
         ),
       ];

@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/utils/globals.dart';
 
+import '../../core/utils/utils.dart';
 import '../general/appbar_leading.widget.dart';
 import 'feedback_screen.controller.dart';
 
@@ -110,6 +112,26 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
                     ],
                   ),
                 ),
+              ),
+              const Divider(height: 50),
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff7289da),
+                ),
+                onPressed: () {
+                  Utils.copyToClipboard(controller.textController.text);
+
+                  Utils.openUrl(
+                    ConfigService.to.general.app.links.discord,
+                  );
+                },
+                icon: const Icon(LineIcons.discord),
+                label: const Text('Send feedback via Discord'),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Help spread awareness on why people should consider using ${ConfigService.to.appName} as their secure vault.',
+                style: const TextStyle(color: Colors.grey),
               ),
             ],
           )),

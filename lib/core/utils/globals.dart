@@ -1,10 +1,12 @@
 // COMPANY
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 // HIVE DATABASE
@@ -86,6 +88,11 @@ const kAppColorDarker = Color(0xFF00A465);
 Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 Color get proColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
+
+double get popupItemHeight =>
+    Utils.isSmallScreen ? kMinInteractiveDimension : 30;
+
+double? get popupIconSize => Utils.isSmallScreen ? null : 20;
 
 // TODO: set before releasing a new version
 const releaseMode = ReleaseMode.production;

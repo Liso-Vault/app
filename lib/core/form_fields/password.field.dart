@@ -56,26 +56,25 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         onSelected: () => setState(() {
           obscureText = !obscureText;
         }),
-        leading: Icon(
-          obscureText ? Iconsax.eye : Iconsax.eye_slash,
-        ),
+        leading: Icon(obscureText ? Iconsax.eye : Iconsax.eye_slash,
+            size: popupIconSize),
       ),
       if (widget.isPasswordField && !widget.field.readOnly) ...[
         ContextMenuItem(
           title: 'Generate',
-          leading: const Icon(Iconsax.password_check),
+          leading: Icon(Iconsax.password_check, size: popupIconSize),
           onSelected: _generate,
         ),
       ],
       ContextMenuItem(
         title: 'Copy',
-        leading: const Icon(Iconsax.copy),
+        leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
       ),
       if (!ProController.to.limits.passwordHealth) ...[
         ContextMenuItem(
           title: 'Password Health',
-          leading: const Icon(Iconsax.health),
+          leading: Icon(Iconsax.health, size: popupIconSize),
           onSelected: () => Utils.adaptiveRouteOpen(
             name: Routes.upgrade,
             parameters: {
@@ -89,14 +88,14 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       if (!widget.field.readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: const Icon(LineIcons.times),
+          leading: Icon(LineIcons.times, size: popupIconSize),
           onSelected: widget.fieldController.clear,
         ),
       ],
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
-          leading: const Icon(Iconsax.setting),
+          leading: Icon(Iconsax.setting, size: popupIconSize),
           onSelected: () async {
             await ItemScreenController.to.showFieldProperties(formWidget);
             setState(() {});
@@ -104,7 +103,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         ),
         ContextMenuItem(
           title: 'Remove',
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
         ),
       ]

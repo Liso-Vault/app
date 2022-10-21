@@ -6,6 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/general/remote_image.widget.dart';
 
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -61,7 +62,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
       final menuItems = [
         ContextMenuItem(
           title: 'delete'.tr,
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: confirmDelete,
         ),
       ];

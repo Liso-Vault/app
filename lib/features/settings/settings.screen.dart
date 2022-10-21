@@ -182,17 +182,17 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   ContextMenuItem(
                     title: 'Encrypted',
                     onSelected: () => controller.exportVault(),
-                    leading: const Icon(Iconsax.shield_tick),
+                    leading: Icon(Iconsax.shield_tick, size: popupIconSize),
                   ),
                   ContextMenuItem(
                     title: 'Unencrypted',
                     onSelected: () => controller.exportVault(encrypt: false),
-                    leading: const Icon(Iconsax.document),
+                    leading: Icon(Iconsax.document, size: popupIconSize),
                   )
                 ],
                 child: ListTile(
                   leading: Icon(Iconsax.box_1, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
+                  trailing: Icon(Iconsax.arrow_right_3, size: popupIconSize),
                   title: Text('export_vault'.tr),
                   subtitle:
                       const Text('Save <vault>.liso to an external source'),

@@ -8,6 +8,7 @@ import 'package:liso/features/app/routes.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:liso/features/seed/seed_field.widget.dart';
 
+import '../../core/utils/globals.dart';
 import '../items/items.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../menu/menu.item.dart';
@@ -19,23 +20,23 @@ class SeedScreenController extends GetxController with ConsoleMixin {
         if (!isDisplayMode) ...[
           ContextMenuItem(
             title: 'Generate',
-            leading: const Icon(Iconsax.chart),
+            leading: Icon(Iconsax.chart, size: popupIconSize),
             onSelected: _generate,
           ),
           ContextMenuItem(
             title: 'Custom',
-            leading: const Icon(Iconsax.key),
+            leading: Icon(Iconsax.key, size: popupIconSize),
             onSelected: custom,
           ),
         ],
         ContextMenuItem(
           title: 'QR Code',
-          leading: const Icon(Iconsax.barcode),
+          leading: Icon(Iconsax.barcode, size: popupIconSize),
           onSelected: _showQR,
         ),
         ContextMenuItem(
           title: 'Copy',
-          leading: const Icon(Iconsax.copy),
+          leading: Icon(Iconsax.copy, size: popupIconSize),
           onSelected: () => Utils.copyToClipboard(seed.value),
         ),
       ];

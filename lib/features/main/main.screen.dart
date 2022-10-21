@@ -404,12 +404,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             final isSelected = group.id == drawerController.filterGroupId.value;
 
             return PopupMenuItem<HiveLisoGroup>(
+              height: popupItemHeight,
               onTap: () => drawerController.filterByGroupId(group.id),
               child: Row(
                 children: [
                   Icon(
                     Iconsax.briefcase,
                     color: isSelected ? themeColor : null,
+                    size: popupIconSize,
                   ),
                   const SizedBox(width: 15),
                   Expanded(
@@ -435,6 +437,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                   vault.docId == drawerController.filterSharedVaultId.value;
 
               return PopupMenuItem<SharedVault>(
+                height: popupItemHeight,
                 onTap: () =>
                     drawerController.filterBySharedVaultId(vault.docId),
                 child: Row(
@@ -443,6 +446,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                         ? Icon(
                             Iconsax.share,
                             color: isSelected ? themeColor : null,
+                            size: popupIconSize,
                           )
                         : RemoteImage(
                             url: vault.iconUrl,
@@ -467,6 +471,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           final joinedGroups = JoinedVaultsController.to.data.map(
             (vault) {
               return PopupMenuItem<SharedVault>(
+                height: popupItemHeight,
                 onTap: () async {
                   await Future.delayed(const Duration(milliseconds: 10));
                   VaultExplorerScreenController.vault = vault;
@@ -475,7 +480,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 child: Row(
                   children: [
                     vault.iconUrl.isEmpty
-                        ? const Icon(LineIcons.briefcase)
+                        ? Icon(LineIcons.briefcase, size: popupIconSize)
                         : RemoteImage(
                             url: vault.iconUrl,
                             width: 35,
@@ -503,12 +508,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           return PopupMenuButton<dynamic>(
             itemBuilder: (_) => [
               PopupMenuItem<HiveLisoGroup>(
+                height: popupItemHeight,
                 onTap: () => drawerController.filterByGroupId(''),
                 child: Row(
                   children: [
                     Icon(
                       Iconsax.briefcase,
                       color: isAllSelected ? themeColor : null,
+                      size: popupIconSize,
                     ),
                     const SizedBox(width: 15),
                     Expanded(

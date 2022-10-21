@@ -161,19 +161,19 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         if (item.trashed) ...[
           ContextMenuItem(
             title: 'restore'.tr,
-            leading: const Icon(Iconsax.refresh),
+            leading: Icon(Iconsax.refresh, size: popupIconSize),
             onSelected: _restore,
           ),
           if (!item.deleted) ...[
             ContextMenuItem(
               title: 'delete'.tr,
-              leading: const Icon(Iconsax.trash),
+              leading: Icon(Iconsax.trash, size: popupIconSize),
               onSelected: _confirmDelete,
             ),
           ] else ...[
             ContextMenuItem(
               title: 'Permanent Delete',
-              leading: const Icon(Iconsax.trash),
+              leading: Icon(Iconsax.trash, size: popupIconSize),
               onSelected: _confirmDelete,
             ),
           ]
@@ -183,18 +183,19 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             leading: FaIcon(
               item.favorite ? Iconsax.heart_remove : Iconsax.heart_add,
               color: item.favorite ? Colors.pink : themeColor,
+              size: popupIconSize,
             ),
             onSelected: _favorite,
           ),
           if (!item.reserved) ...[
             ContextMenuItem(
               title: 'duplicate'.tr,
-              leading: const Icon(Iconsax.copy),
+              leading: Icon(Iconsax.copy, size: popupIconSize),
               onSelected: _duplicate,
             ),
             ContextMenuItem(
               title: 'move_to_trash'.tr,
-              leading: const Icon(Iconsax.trash),
+              leading: Icon(Iconsax.trash, size: popupIconSize),
               onSelected: _trash,
             ),
           ],

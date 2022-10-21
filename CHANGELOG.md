@@ -1,3 +1,16 @@
+## 1.0.0
+- ditched firebase db and auth for supabase
+- updated packages
+- fixed syncing issues
+- more error handling dialogs
+- refetch failed config fetch if failed
+- cache remote config
+- set license key
+- fetch pro status via gumroad & revenuecat no matter the platform
+- fixed inaccurate connectivity bar
+- temporarily removed device management
+- temporarily removed shared vaults feature
+
 ## 0.8.0
 
 - Fixed a security flaw reported by an anonymous user

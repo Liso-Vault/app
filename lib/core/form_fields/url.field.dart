@@ -6,6 +6,7 @@ import 'package:liso/core/hive/models/field.hive.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
+import '../utils/globals.dart';
 import '../utils/utils.dart';
 
 class URLFormField extends StatefulWidget {
@@ -38,20 +39,20 @@ class _URLFormFieldState extends State<URLFormField> {
     return [
       ContextMenuItem(
         title: 'Copy',
-        leading: const Icon(Iconsax.copy),
+        leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
       ),
       if (!widget.field.readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: const Icon(LineIcons.times),
+          leading: Icon(LineIcons.times, size: popupIconSize),
           onSelected: widget.fieldController.clear,
         ),
       ],
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
-          leading: const Icon(Iconsax.setting),
+          leading: Icon(Iconsax.setting, size: popupIconSize),
           onSelected: () async {
             await ItemScreenController.to.showFieldProperties(formWidget);
             setState(() {});
@@ -59,7 +60,7 @@ class _URLFormFieldState extends State<URLFormField> {
         ),
         ContextMenuItem(
           title: 'Remove',
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
         ),
       ]

@@ -30,13 +30,13 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
       if (object.isVaultFile && !isPicker) ...[
         ContextMenuItem(
           title: 'Switch',
-          leading: const Icon(Iconsax.import_1),
+          leading: Icon(Iconsax.import_1, size: popupIconSize),
           onSelected: () => controller.confirmSwitch(object),
         ),
         // if (!explorerController.currentPath.value.contains('$kDirBackups/')) ...[
         //   ContextMenuItem(
         //     title: 'Backup',
-        //     leading: const Icon(Iconsax.document_copy),
+        //     leading: Icon(Iconsax.document_copy, size: popupIconSize),
         //     onSelected: () => controller.backup(content),
         //   ),
         // ]
@@ -44,18 +44,18 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         if (object.isFile && !isPicker) ...[
           ContextMenuItem(
             title: 'Download',
-            leading: const Icon(Iconsax.import_1),
+            leading: Icon(Iconsax.import_1, size: popupIconSize),
             onSelected: () => controller.confirmDownload(object),
           ),
           ContextMenuItem(
             title: 'Share',
-            leading: const Icon(Iconsax.share),
+            leading: Icon(Iconsax.share, size: popupIconSize),
             onSelected: () => controller.share(object),
           ),
         ],
         ContextMenuItem(
           title: 'Delete',
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: () => controller.confirmDelete(object),
         ),
       ],

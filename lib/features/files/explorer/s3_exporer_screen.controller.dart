@@ -69,7 +69,6 @@ class S3ExplorerScreenController extends GetxController
     List<S3Object> objects = List.from(storage.rootInfo.value.data.objects);
 
     objects = objects.where((e) {
-      console.warning(e.key);
       final currentPath = e.key.replaceAll(prefix, '');
       final isFolder = '/'.allMatches(currentPath).length == 1 && !e.isFile;
       final isFile = '/'.allMatches(currentPath).isEmpty && e.isFile;

@@ -25,7 +25,7 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
     final menuItems = [
       ContextMenuItem(
         title: 'Remove',
-        leading: const Icon(Iconsax.trash),
+        leading: Icon(Iconsax.trash, size: popupIconSize),
         onSelected: onDelete,
       ),
     ];

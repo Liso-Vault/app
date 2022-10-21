@@ -7,6 +7,7 @@ import 'package:liso/features/general/section.widget.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
+import '../utils/globals.dart';
 
 class SectionFormField extends StatefulWidget {
   final HiveLisoField field;
@@ -30,7 +31,7 @@ class _SectionFormFieldState extends State<SectionFormField> {
     return [
       ContextMenuItem(
         title: 'Properties',
-        leading: const Icon(Iconsax.setting),
+        leading: Icon(Iconsax.setting, size: popupIconSize),
         onSelected: () async {
           await ItemScreenController.to.showFieldProperties(formWidget);
           setState(() {});
@@ -38,7 +39,7 @@ class _SectionFormFieldState extends State<SectionFormField> {
       ),
       ContextMenuItem(
         title: 'Remove',
-        leading: const Icon(Iconsax.trash),
+        leading: Icon(Iconsax.trash, size: popupIconSize),
         onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
       ),
     ];

@@ -4,6 +4,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
+import 'package:liso/core/utils/globals.dart';
 
 import '../../features/general/section.widget.dart';
 import '../../features/items/item_screen.controller.dart';
@@ -62,7 +63,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
     return [
       ContextMenuItem(
         title: 'Copy',
-        leading: const Icon(Iconsax.copy),
+        leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () {
           final address = widget.value;
           final addressString =
@@ -73,7 +74,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
       if (!widget.field.readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: const Icon(LineIcons.times),
+          leading: Icon(LineIcons.times, size: popupIconSize),
           onSelected: () {
             widget.street1Controller.clear();
             widget.street2Controller.clear();
@@ -87,7 +88,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
-          leading: const Icon(Iconsax.setting),
+          leading: Icon(Iconsax.setting, size: popupIconSize),
           onSelected: () async {
             await ItemScreenController.to.showFieldProperties(formWidget);
             setState(() {});
@@ -95,7 +96,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
         ),
         ContextMenuItem(
           title: 'Remove',
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: () => ItemScreenController.to.widgets.remove(
             formWidget,
           ),

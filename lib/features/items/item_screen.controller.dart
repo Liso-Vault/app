@@ -114,7 +114,7 @@ class ItemScreenController extends GetxController
     return [
       ContextMenuItem(
         title: '${'copy'.tr} ${item?.significant['name']}',
-        leading: const Icon(Iconsax.copy),
+        leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(item!.significant.values.first),
       ),
       // if (item.categoryObject == LisoItemCategory.cryptoWallet) ...[
@@ -127,25 +127,25 @@ class ItemScreenController extends GetxController
       if (editMode.value) ...[
         ContextMenuItem(
           title: reorderMode.value ? 'Done Re-order' : 'Re-order Fields',
-          leading: const Icon(Icons.drag_indicator),
+          leading: Icon(Icons.drag_indicator, size: popupIconSize),
           onSelected: reorderMode.toggle,
         ),
       ],
       ContextMenuItem(
         title: 'Details',
-        leading: const Icon(Iconsax.code),
+        leading: Icon(Iconsax.code, size: popupIconSize),
         onSelected: () => Get.to(() => JSONViewerScreen(data: item!.toJson())),
       ),
       if (kDebugMode) ...[
         ContextMenuItem(
           title: 'Force Close',
-          leading: const Icon(Iconsax.slash),
+          leading: Icon(Iconsax.slash, size: popupIconSize),
           onSelected: Get.back,
         ),
       ],
       ContextMenuItem(
         title: 'Need Help?',
-        leading: const Icon(Iconsax.message_question),
+        leading: Icon(Iconsax.message_question, size: popupIconSize),
         onSelected: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
       ),
     ];
@@ -155,12 +155,12 @@ class ItemScreenController extends GetxController
     return [
       ContextMenuItem(
         title: 'Copy',
-        leading: const Icon(Iconsax.copy),
+        leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(titleController.text),
       ),
       ContextMenuItem(
         title: 'Clear',
-        leading: const Icon(LineIcons.times),
+        leading: Icon(LineIcons.times, size: popupIconSize),
         onSelected: titleController.clear,
       ),
     ];
@@ -169,7 +169,7 @@ class ItemScreenController extends GetxController
   List<ContextMenuItem> get menuFieldItems => [
         ContextMenuItem(
           title: 'Text Field',
-          leading: const Icon(Iconsax.text),
+          leading: Icon(Iconsax.text, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -191,7 +191,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'TextArea Field',
-          leading: const Icon(Iconsax.note_text),
+          leading: Icon(Iconsax.note_text, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -213,7 +213,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Password Field',
-          leading: const Icon(Iconsax.password_check),
+          leading: Icon(Iconsax.password_check, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -235,7 +235,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Phone Field',
-          leading: const Icon(LineIcons.phone),
+          leading: Icon(LineIcons.phone, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -257,7 +257,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'PIN Field',
-          leading: const Icon(Iconsax.code),
+          leading: Icon(Iconsax.code, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -279,7 +279,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'TOTP Field',
-          leading: const Icon(Iconsax.shield),
+          leading: Icon(Iconsax.shield, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -301,7 +301,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'URL Field',
-          leading: const Icon(Iconsax.link),
+          leading: Icon(Iconsax.link, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -323,7 +323,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Date Field',
-          leading: const Icon(Iconsax.calendar),
+          leading: Icon(Iconsax.calendar, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -345,7 +345,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Email Field',
-          leading: const Icon(Iconsax.message),
+          leading: Icon(Iconsax.message, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -367,7 +367,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Number Field',
-          leading: const Icon(Icons.numbers),
+          leading: Icon(Icons.numbers, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -389,7 +389,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Passport Field',
-          leading: const Icon(Iconsax.card),
+          leading: Icon(Iconsax.card, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -411,7 +411,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Toggle Field',
-          leading: const Icon(Icons.toggle_on),
+          leading: Icon(Icons.toggle_on, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -435,7 +435,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Address Field',
-          leading: const Icon(Iconsax.location),
+          leading: Icon(Iconsax.location, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -457,7 +457,7 @@ class ItemScreenController extends GetxController
         ),
         ContextMenuItem(
           title: 'Section',
-          leading: const Icon(Icons.text_fields),
+          leading: Icon(Icons.text_fields, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
@@ -485,13 +485,13 @@ class ItemScreenController extends GetxController
     return [
       ContextMenuItem(
         title: 'change'.tr,
-        leading: const Icon(Iconsax.gallery),
+        leading: Icon(Iconsax.gallery, size: popupIconSize),
         onSelected: _pickIcon,
       ),
       if (iconUrl.value.isNotEmpty) ...[
         ContextMenuItem(
           title: 'remove'.tr,
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: () => iconUrl.value = '',
         ),
       ]
@@ -518,7 +518,7 @@ class ItemScreenController extends GetxController
       return ContextMenuItem(
         title: vault.name,
         value: vault.docId,
-        leading: const Icon(Iconsax.share), // TODO: RemoteImage
+        leading: Icon(Iconsax.share, size: popupIconSize), // TODO: RemoteImage
         onSelected: () {
           if (sharedVaultIds.contains(vault.docId)) return;
           sharedVaultIds.add(vault.docId);

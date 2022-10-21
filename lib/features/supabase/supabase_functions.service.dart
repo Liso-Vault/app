@@ -227,7 +227,7 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
       return console.error('server error: ${serverResponse.errors}');
     }
 
-    console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
+    // console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
     final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
     ProController.to.licenseKey.value = syncUserResponse.licenseKey;
 

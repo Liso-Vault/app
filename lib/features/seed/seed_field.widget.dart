@@ -8,6 +8,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
+import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -61,18 +62,18 @@ class SeedField extends StatelessWidget with ConsoleMixin {
       ContextMenuItem(
         title: 'Hide',
         onSelected: () => blur.value = true,
-        leading: const Icon(Iconsax.eye_slash),
+        leading: Icon(Iconsax.eye_slash, size: popupIconSize),
       ),
       if (showGenerate && !readOnly) ...[
         ContextMenuItem(
           title: 'Generate',
-          leading: const Icon(Iconsax.password_check),
+          leading: Icon(Iconsax.password_check, size: popupIconSize),
           onSelected: _generate,
         ),
       ],
       ContextMenuItem(
         title: 'QR Code',
-        leading: const Icon(Iconsax.barcode),
+        leading: Icon(Iconsax.barcode, size: popupIconSize),
         onSelected: () {
           if (fieldController!.text.isEmpty) return;
 
@@ -86,13 +87,13 @@ class SeedField extends StatelessWidget with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'Copy',
-        leading: const Icon(Iconsax.copy),
+        leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(fieldController!.text),
       ),
       if (!readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: const Icon(LineIcons.times),
+          leading: Icon(LineIcons.times, size: popupIconSize),
           onSelected: fieldController!.clear,
         ),
       ],

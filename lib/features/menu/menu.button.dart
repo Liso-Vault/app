@@ -72,6 +72,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
         }
 
         return PopupMenuItem<ContextMenuItem>(
+          height: popupItemHeight,
           value: e,
           child: Row(
             children: [

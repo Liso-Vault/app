@@ -46,7 +46,7 @@ class VaultExplorerScreenController extends GetxController
     return [
       ContextMenuItem(
         title: 'title'.tr,
-        leading: const Icon(Iconsax.text),
+        leading: Icon(Iconsax.text, size: popupIconSize),
         trailing: sortName.contains('title') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('title') || ascending
@@ -56,7 +56,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_modified'.tr,
-        leading: const Icon(Iconsax.calendar),
+        leading: Icon(Iconsax.calendar, size: popupIconSize),
         trailing: sortName.contains('dateModified') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('dateModified') || ascending
@@ -66,7 +66,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_created'.tr,
-        leading: const Icon(Iconsax.calendar_tick),
+        leading: Icon(Iconsax.calendar_tick, size: popupIconSize),
         trailing: sortName.contains('dateCreated') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('dateCreated') || ascending
@@ -76,7 +76,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'favorite'.tr,
-        leading: const Icon(Iconsax.heart),
+        leading: Icon(Iconsax.heart, size: popupIconSize),
         trailing: sortName.contains('favorite') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('favorite') || ascending
@@ -86,7 +86,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'protected'.tr,
-        leading: const Icon(Iconsax.lock),
+        leading: Icon(Iconsax.lock, size: popupIconSize),
         trailing: sortName.contains('protected') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('protected') || ascending

@@ -29,13 +29,13 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
         if (device.id != Globals.metadata!.device.id) ...[
           ContextMenuItem(
             title: 'unsync'.tr,
-            leading: const Icon(Iconsax.slash),
+            leading: Icon(Iconsax.slash, size: popupIconSize),
             onSelected: () => controller.unsync(device),
           ),
         ],
         ContextMenuItem(
           title: 'details'.tr,
-          leading: const Icon(Iconsax.code),
+          leading: Icon(Iconsax.code, size: popupIconSize),
           onSelected: () => Get.to(
             () => JSONViewerScreen(data: device.toJson()),
           ),

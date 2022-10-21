@@ -23,32 +23,32 @@ class AboutScreenController extends GetxController with ConsoleMixin {
     return [
       ContextMenuItem(
         title: 'Discord',
-        leading: const Icon(LineIcons.discord),
+        leading: Icon(LineIcons.discord, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.discord),
       ),
       // ContextMenuItem(
       //   title: 'Telegram',
-      //   leading: const Icon(LineIcons.telegram),
+      //   leading: const Icon(LineIcons.telegram, size: popupIconSize),
       //   onSelected: () => Utils.openUrl(links.telegram),
       // ),
       ContextMenuItem(
         title: 'Twitter',
-        leading: const Icon(LineIcons.twitter),
+        leading: Icon(LineIcons.twitter, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.twitter),
       ),
       // ContextMenuItem(
       //   title: 'Facebook',
-      //   leading: const Icon(LineIcons.facebook),
+      //   leading: const Icon(LineIcons.facebook, size: popupIconSize),
       //   onSelected: () => Utils.openUrl(links.facebook),
       // ),
       // ContextMenuItem(
       //   title: 'Instagram',
-      //   leading: const Icon(LineIcons.instagram),
+      //   leading: const Icon(LineIcons.instagram, size: popupIconSize),
       //   onSelected: () => Utils.openUrl(links.instagram),
       // ),
-      const ContextMenuItem(
+      ContextMenuItem(
         title: 'Email',
-        leading: Icon(LineIcons.envelope),
+        leading: Icon(LineIcons.envelope, size: popupIconSize),
         onSelected: Utils.contactEmail,
       ),
     ];
@@ -60,48 +60,48 @@ class AboutScreenController extends GetxController with ConsoleMixin {
     return [
       ContextMenuItem(
         title: 'Website',
-        leading: const Icon(LineIcons.link),
+        leading: Icon(LineIcons.link, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.website),
       ),
       ContextMenuItem(
         title: 'Twitter',
-        leading: const Icon(LineIcons.twitter),
+        leading: Icon(LineIcons.twitter, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.twitter),
       ),
       // ContextMenuItem(
       //   title: 'LinkedIn',
-      //   leading: const Icon(LineIcons.linkedin),
+      //   leading: const Icon(LineIcons.linkedin, size: popupIconSize),
       //   onSelected: () => Utils.openUrl(links.linkedin),
       // ),
       // ContextMenuItem(
       //   title: 'Facebook',
-      //   leading: const Icon(LineIcons.facebook),
+      //   leading: const Icon(LineIcons.facebook, size: popupIconSize),
       //   onSelected: () => Utils.openUrl(links.facebook),
       // ),
       // ContextMenuItem(
       //   title: 'Instagram',
-      //   leading: const Icon(LineIcons.instagram),
+      //   leading: const Icon(LineIcons.instagram, size: popupIconSize),
       //   onSelected: () => Utils.openUrl(links.instagram),
       // ),
       ContextMenuItem(
         title: 'GitHub',
-        leading: const Icon(LineIcons.github),
+        leading: Icon(LineIcons.github, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.github),
       ),
       ContextMenuItem(
         title: 'Privacy',
-        leading: const Icon(LineIcons.userShield),
+        leading: Icon(LineIcons.userShield, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.privacy),
       ),
       ContextMenuItem(
         title: 'App Store Page',
-        leading: const Icon(LineIcons.appStore),
+        leading: Icon(LineIcons.appStore, size: popupIconSize),
         onSelected: () => Utils.openUrl(links.store.apple),
       ),
       if (!GetPlatform.isIOS && !GetPlatform.isMacOS) ...[
         ContextMenuItem(
           title: 'Google Play Page',
-          leading: const Icon(LineIcons.googlePlay),
+          leading: Icon(LineIcons.googlePlay, size: popupIconSize),
           onSelected: () => Utils.openUrl(links.store.google),
         ),
       ],

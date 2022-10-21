@@ -6,6 +6,7 @@ import 'package:liso/features/items/item_screen.controller.dart';
 
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
+import '../utils/globals.dart';
 
 class ToggleFieldForm extends StatefulWidget {
   final HiveLisoField field;
@@ -33,7 +34,7 @@ class _ToggleFieldFormState extends State<ToggleFieldForm> {
     return [
       ContextMenuItem(
         title: 'Properties',
-        leading: const Icon(Iconsax.setting),
+        leading: Icon(Iconsax.setting, size: popupIconSize),
         onSelected: () async {
           await ItemScreenController.to.showFieldProperties(formWidget);
           setState(() {});
@@ -41,7 +42,7 @@ class _ToggleFieldFormState extends State<ToggleFieldForm> {
       ),
       ContextMenuItem(
         title: 'Remove',
-        leading: const Icon(Iconsax.trash),
+        leading: Icon(Iconsax.trash, size: popupIconSize),
         onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
       ),
     ];

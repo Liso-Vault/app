@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -119,7 +120,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
       final menuItems = [
         ContextMenuItem(
           title: 'leave'.tr,
-          leading: const Icon(Iconsax.logout),
+          leading: Icon(Iconsax.logout, size: popupIconSize),
           onSelected: confirmLeave,
         ),
       ];

@@ -11,6 +11,7 @@ import 'package:liso/features/main/main_screen.controller.dart';
 
 import '../../core/hive/models/item.hive.dart';
 import '../../core/persistence/persistence.dart';
+import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -82,7 +83,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
       final menuItems = [
         ContextMenuItem(
           title: 'delete'.tr,
-          leading: const Icon(Iconsax.trash),
+          leading: Icon(Iconsax.trash, size: popupIconSize),
           onSelected: confirmDelete,
         ),
       ];
