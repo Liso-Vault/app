@@ -1,11 +1,8 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 
-import '../../core/firebase/firestore.service.dart';
 import 'model/shared_vault.model.dart';
 
 class SharedVaultsController extends GetxController
@@ -44,40 +41,41 @@ class SharedVaultsController extends GetxController
   }
 
   void start() {
-    if (GetPlatform.isWindows) return console.warning('Not Supported');
+    // TODO: temporary
+    // if (GetPlatform.isWindows) return console.warning('Not Supported');
 
-    _stream = FirestoreService.to.sharedVaults
-        .where('userId', isEqualTo: AuthService.to.userId)
-        .orderBy('createdTime', descending: true)
-        // .limit(_limit)
-        .snapshots()
-        .listen(_onData, onError: _onError);
+    // _stream = FirestoreService.to.sharedVaults
+    //     .where('userId', isEqualTo: AuthService.to.userId)
+    //     .orderBy('createdTime', descending: true)
+    //     // .limit(_limit)
+    //     .snapshots()
+    //     .listen(_onData, onError: _onError);
 
-    console.info('started');
+    // console.info('started');
   }
 
-  void _onData(QuerySnapshot<SharedVault>? snapshot) {
-    if (snapshot == null || snapshot.docs.isEmpty) {
-      change(null, status: RxStatus.empty());
-      return data.clear();
-    }
+  // void _onData(QuerySnapshot<SharedVault>? snapshot) {
+  //   if (snapshot == null || snapshot.docs.isEmpty) {
+  //     change(null, status: RxStatus.empty());
+  //     return data.clear();
+  //   }
 
-    data.value = snapshot.docs.map((e) => e.data()).toList();
-    change(null, status: RxStatus.success());
-    console.wtf('shared vaults: ${data.length}');
-  }
+  //   data.value = snapshot.docs.map((e) => e.data()).toList();
+  //   change(null, status: RxStatus.success());
+  //   console.wtf('shared vaults: ${data.length}');
+  // }
 
-  void _onError(error) {
-    console.error('stream error: $error');
-    change(null, status: RxStatus.error('Failed to load: $error'));
-  }
+  // void _onError(error) {
+  //   console.error('stream error: $error');
+  //   change(null, status: RxStatus.error('Failed to load: $error'));
+  // }
 
-  Future<bool> exists(String name) async {
-    final doc = await FirestoreService.to.sharedVaults
-        .where('name', isEqualTo: name)
-        .where('userId', isEqualTo: AuthService.to.userId)
-        .get();
+  // Future<bool> exists(String name) async {
+  //   final doc = await FirestoreService.to.sharedVaults
+  //       .where('name', isEqualTo: name)
+  //       .where('userId', isEqualTo: AuthService.to.userId)
+  //       .get();
 
-    return doc.docs.isNotEmpty;
-  }
+  //   return doc.docs.isNotEmpty;
+  // }
 }

@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:console_mixin/console_mixin.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:hive/hive.dart';
@@ -39,14 +37,6 @@ class HiveMetadataDevice extends HiveObject {
     this.info,
   });
 
-  factory HiveMetadataDevice.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> doc_) {
-    final json = doc_.data()!;
-    final device = HiveMetadataDevice.fromJson(json);
-    device.docId = doc_.id;
-    return device;
-  }
-
   factory HiveMetadataDevice.fromJson(Map<String, dynamic> json) =>
       HiveMetadataDevice(
         id: json["id"],
@@ -69,46 +59,74 @@ class HiveMetadataDevice extends HiveObject {
   static Future<HiveMetadataDevice> get() async {
     final device = HiveMetadataDevice(platform: Utils.platformName());
     final deviceInfo = DeviceInfoPlugin();
+    device.id = (await PlatformDeviceId.getDeviceId)!;
 
-    if (!GetPlatform.isWindows) {
-      device.id = (await PlatformDeviceId.getDeviceId)!;
-    } else {
-      device.id = await getWindowsDeviceID();
-      Console(name: 'Windows Device ID').wtf(device.id);
-    }
-
-    if (GetPlatform.isIOS) {
+    if (GetPlatform.isWeb) {
+      // TODO: obtain userAgent
+      device.info = {'userAgent': ''};
+    } else if (GetPlatform.isIOS) {
       final info = await deviceInfo.iosInfo;
       device.osVersion = info.systemVersion ?? '';
       device.name = info.name ?? '';
       device.model = info.utsname.machine ?? '';
-      device.info = info.toMap();
+      device.info = {
+        'identifierForVendor': info.identifierForVendor,
+        'isPhysicalDevice': info.isPhysicalDevice,
+        'systemName': info.systemName,
+      };
     } else if (GetPlatform.isAndroid) {
       final info = await deviceInfo.androidInfo;
-      device.osVersion = info.version.release ?? '';
-      device.name = info.device ?? '';
-      device.model = info.model ?? '';
-      // strip unecessary info
-      final infoMap = info.toMap();
-      infoMap.remove('supportedAbis');
-      infoMap.remove('systemFeatures');
-      infoMap.remove('supported32BitAbis');
-      infoMap.remove('supported64BitAbis');
-      device.info = infoMap;
+      device.osVersion = info.version.release;
+      device.name = info.device;
+      device.model = info.model;
+      device.info = {
+        'id': info.id,
+        'brand': info.brand,
+        'display': info.display,
+        'manufacturer': info.manufacturer,
+        'product': info.product,
+        'host': info.host,
+      };
     } else if (GetPlatform.isMacOS) {
       final info = await deviceInfo.macOsInfo;
       device.osVersion = info.osRelease;
       device.name = info.computerName;
       device.model = info.model;
-      device.info = info.toMap();
+      device.info = {
+        'activeCPUs': info.activeCPUs,
+        'arch': info.arch,
+        'cpuFrequency': info.cpuFrequency,
+        'hostName': info.hostName,
+        'kernelVersion': info.kernelVersion,
+        'memorySize': info.memorySize,
+        'systemGUID': info.systemGUID,
+      };
     } else if (GetPlatform.isWindows) {
       final info = await deviceInfo.windowsInfo;
+      device.id = info.deviceId.replaceAll('{', '').replaceAll('}', '');
       device.name = info.computerName;
-      device.info = info.toMap();
+      device.osVersion = '${info.productName} ${info.displayVersion}';
+      device.info = {
+        'majorVersion': info.majorVersion,
+        'minorVersion': info.minorVersion,
+        'platformId': info.platformId,
+        'editionId': info.editionId,
+        'releaseId': info.releaseId,
+        'systemMemoryInMegabytes': info.systemMemoryInMegabytes,
+      };
     } else if (GetPlatform.isLinux) {
       final info = await deviceInfo.linuxInfo;
       device.osVersion = info.version ?? '';
-      device.info = info.toMap();
+      device.name = info.prettyName;
+      device.model = info.variant ?? '';
+      device.info = {
+        'buildId': info.buildId,
+        'variantId': info.variantId,
+        'machineId': info.machineId,
+        'name': info.name,
+        'versionCodename': info.versionCodename,
+        'versionId': info.versionId,
+      };
     }
 
     return device;

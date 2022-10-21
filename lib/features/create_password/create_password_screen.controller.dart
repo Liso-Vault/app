@@ -8,11 +8,11 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../core/firebase/auth.service.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.dart';
 import '../main/main_screen.controller.dart';
+import '../supabase/supabase_auth.service.dart';
 
 class CreatePasswordScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -56,7 +56,7 @@ class CreatePasswordScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
-    await AuthService.to.signOut(); // just to make sure
+    await SupabaseAuthService.to.signOut(); // just to make sure
 
     // TODO: improve password validation
     if (passwordController.text != passwordConfirmController.text) {

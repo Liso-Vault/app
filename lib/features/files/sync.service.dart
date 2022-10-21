@@ -9,7 +9,7 @@ import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/core/supabase/supabase.service.dart';
+import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/pro/pro.controller.dart';
@@ -23,6 +23,7 @@ import '../categories/categories.service.dart';
 import '../groups/groups.service.dart';
 import '../items/items.service.dart';
 import '../shared_vaults/shared_vault.controller.dart';
+import '../supabase/supabase_functions.service.dart';
 
 const kDirBackups = 'Backups';
 const kDirShared = 'Shared';
@@ -47,19 +48,22 @@ class SyncService extends GetxService with ConsoleMixin {
 
   // GETTERS
 
+  bool get isReady =>
+      ConnectivityService.to.connected.value && persistence.sync.val;
+
   // INIT
 
   // FUNCTIONS
 
   Future<Either<dynamic, bool>> purge() async {
-    if (!persistence.sync.val) return const Left('offline');
-    final result = await SupabaseService.to.deleteDirectory('');
+    if (!isReady) return const Left('offline');
+    final result = await SupabaseFunctionsService.to.deleteDirectory('');
     if (result.isLeft) return Left(result.left);
     return const Right(true);
   }
 
   Future<Either<dynamic, bool>> sync() async {
-    if (!persistence.sync.val) return const Right(false);
+    if (!isReady) return const Right(false);
 
     if (syncing.value) {
       console.warning('already down syncing');
@@ -69,7 +73,9 @@ class SyncService extends GetxService with ConsoleMixin {
     console.info('syncing...');
     syncing.value = true;
 
-    final statResult = await SupabaseService.to.statObject(kVaultFileName);
+    final statResult = await SupabaseFunctionsService.to.statObject(
+      kVaultFileName,
+    );
 
     if (statResult.isLeft) {
       syncing.value = false;
@@ -118,7 +124,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
   // DOWN SYNC
   Future<Either<dynamic, bool>> _downSync() async {
-    if (!persistence.sync.val) return const Right(false);
+    if (!isReady) return const Right(false);
     console.info('down syncing...');
 
     final result = await StorageService.to.download(
@@ -234,7 +240,7 @@ class SyncService extends GetxService with ConsoleMixin {
   }
 
   Future<void> backup(String object, Uint8List encryptedBytes) async {
-    if (!persistence.sync.val) return console.warning('offline');
+    if (!isReady) return console.warning('offline');
     if (backedUp) {
       return console.warning('already backed up for todays session');
     }
@@ -258,7 +264,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
     // DO THE ACTUAL BACKUP
 
-    final presignResult = await SupabaseService.to.presignUrl(
+    final presignResult = await SupabaseFunctionsService.to.presignUrl(
       object:
           '$kDirBackups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
       method: 'PUT',
@@ -280,7 +286,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
   // UP SYNC
   Future<Either<dynamic, bool>> upSync() async {
-    if (!persistence.sync.val) return const Left('offline');
+    if (!isReady) return const Left('offline');
     if (!inSync.value) {
       return const Left('not in sync with server');
     }
@@ -297,7 +303,7 @@ class SyncService extends GetxService with ConsoleMixin {
     // BACKUP
     backup(kVaultFileName, encryptedBytes);
 
-    final presignResult = await SupabaseService.to.presignUrl(
+    final presignResult = await SupabaseFunctionsService.to.presignUrl(
       object: kVaultFileName,
       method: 'PUT',
     );
@@ -317,7 +323,7 @@ class SyncService extends GetxService with ConsoleMixin {
   }
 
   Future<Either<dynamic, bool>> syncSharedVaults() async {
-    if (!persistence.sync.val) return const Left('offline');
+    if (!isReady) return const Left('offline');
 
     if (SharedVaultsController.to.data.isEmpty) {
       return const Left('nothing to sync');
@@ -358,7 +364,7 @@ class SyncService extends GetxService with ConsoleMixin {
         cipherKey: base64Decode(cipherKeyResult.right),
       );
 
-      final presignResult = await SupabaseService.to.presignUrl(
+      final presignResult = await SupabaseFunctionsService.to.presignUrl(
         object: '$kDirShared/${sharedVault.docId}.$kVaultExtension',
         method: 'PUT',
       );
@@ -379,47 +385,4 @@ class SyncService extends GetxService with ConsoleMixin {
     console.wtf('done');
     return const Right(true);
   }
-
-  // UTILS
-
-  // List<S3Content> _objectsToContents(List<minio.Object> objects) {
-  //   return objects
-  //       .map(
-  //         (e) => S3Content(
-  //           name: basename(e.key!),
-  //           path: e.key!,
-  //           size: e.size!,
-  //           object: e,
-  //           type: extension(e.key!).isNotEmpty || e.size! > 0
-  //               ? S3ContentType.file
-  //               : S3ContentType.directory,
-  //         ),
-  //       )
-  //       .toList();
-  // }
-
-  // List<S3Content> _prefixesToContents(List<String> prefixes) {
-  //   return prefixes
-  //       .map(
-  //         (e) => S3Content(
-  //           name: basename(e),
-  //           path: e,
-  //           type: S3ContentType.directory,
-  //         ),
-  //       )
-  //       .toList();
-  // }
-
-  // Map<String, String> _objectMetadata() {
-  //   final app = Globals.metadata!.app;
-
-  //   return {
-  //     'userId': AuthService.to.userId,
-  //     'address': SecretPersistence.to.longAddress,
-  //     'appName': app.appName,
-  //     'appPackageName': app.packageName,
-  //     'appVersion': app.version,
-  //     'appBuildNumber': app.buildNumber,
-  //   };
-  // }
 }

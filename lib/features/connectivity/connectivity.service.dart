@@ -4,6 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:get/get.dart';
 
 import 'package:console_mixin/console_mixin.dart';
+import 'package:liso/core/firebase/config/config.service.dart';
 
 class ConnectivityService extends GetxService with ConsoleMixin {
   static ConnectivityService get to => Get.find();
@@ -31,6 +32,10 @@ class ConnectivityService extends GetxService with ConsoleMixin {
         connectivity.onConnectivityChanged.listen((result) {
       connected.value = result != ConnectivityResult.none;
       console.info('connected: ${connected()}');
+
+      if (connected.value && !ConfigService.to.remoteFetched) {
+        ConfigService.to.fetchFromFunctions();
+      }
     });
 
     super.onInit();

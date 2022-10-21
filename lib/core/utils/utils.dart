@@ -14,14 +14,15 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:window_manager/window_manager.dart';
 
+import '../../features/feedback/feedback_screen.controller.dart';
 import '../../features/general/remote_image.widget.dart';
 import '../../features/pro/pro.controller.dart';
+import '../../features/supabase/model/object.model.dart';
+import '../../features/supabase/supabase_auth.service.dart';
 import '../../resources/resources.dart';
-import '../firebase/auth.service.dart';
 import '../firebase/config/config.service.dart';
 import '../persistence/persistence.dart';
 import '../persistence/persistence.secret.dart';
-import '../supabase/model/object.model.dart';
 import 'globals.dart';
 
 class Utils {
@@ -80,12 +81,11 @@ class Utils {
 
   static Future<void> setWindowSize() async {
     await windowManager.setMinimumSize(kMinWindowSize);
-    final persistence = Persistence.to;
 
     // set preferred size
     windowManager.setSize(Size(
-      persistence.windowWidth.val,
-      persistence.windowHeight.val,
+      Persistence.to.windowWidth.val,
+      Persistence.to.windowHeight.val,
     ));
   }
 
@@ -213,7 +213,10 @@ class Utils {
       child: SizedBox(
         width: isNote ? 800 : 600,
         height: isNote ? 1100 : 900,
-        child: page,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(10),
+          child: page,
+        ),
       ),
     );
 
@@ -344,18 +347,20 @@ class Utils {
   }
 
   static String platformName() {
-    if (GetPlatform.isAndroid) {
-      return "android";
+    if (GetPlatform.isWeb) {
+      return "Web";
+    } else if (GetPlatform.isAndroid) {
+      return "Android";
     } else if (GetPlatform.isIOS) {
-      return "ios";
+      return "iOS";
     } else if (GetPlatform.isWindows) {
-      return "windows";
+      return "Windows";
     } else if (GetPlatform.isMacOS) {
-      return "macos";
+      return "macOS";
     } else if (GetPlatform.isLinux) {
-      return "linux";
+      return "Linux";
     } else if (GetPlatform.isFuchsia) {
-      return "fuchsia";
+      return "Fuchsia";
     } else {
       return "unknown";
     }
@@ -366,6 +371,7 @@ class Utils {
     required String preBody,
     required double rating,
     required String previousRoute,
+    required FeedbackType feedbackType,
   }) async {
     String ratingEmojis = '';
 
@@ -377,10 +383,10 @@ class Utils {
 
     String body = '$preBody$ln$ln';
 
-    if (AuthService.to.isSignedIn) {
+    if (SupabaseAuthService.to.authenticated) {
       body += 'Rating: $ratingEmojis$ln';
       body +=
-          'User ID: ${AuthService.to.userId}\nAddress: ${SecretPersistence.to.longAddress}$ln';
+          'User ID: ${SupabaseAuthService.to.user!.id}\nAddress: ${SecretPersistence.to.longAddress}$ln';
       body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
       body += 'Entitlement: ${ProController.to.limits.id}$ln';
       body += 'Pro: ${ProController.to.isPro}$ln';
@@ -390,8 +396,14 @@ class Utils {
     body += 'Platform: ${Utils.platformName()}$ln';
     body += 'Route: $previousRoute$ln';
 
-    final url =
-        'mailto:${ConfigService.to.general.app.emails.support}?subject=$subject&body=$body';
+    final emails = ConfigService.to.general.app.emails;
+    String email = emails.support;
+
+    if (feedbackType == FeedbackType.issue) {
+      email = emails.issues;
+    }
+
+    final url = 'mailto:$email?subject=$subject&body=$body';
     openUrl(Uri.encodeFull(url));
   }
 

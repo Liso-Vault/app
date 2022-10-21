@@ -53,6 +53,26 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
                 style: TextStyle(color: Colors.grey),
               ),
             ),
+            if (isIAPSupported) ...[
+              Obx(
+                () => FeatureTile(
+                  iconData: Iconsax.calendar,
+                  title: controller.promoText,
+                  trailing: Icon(Icons.check, color: proColor),
+                ),
+              )
+            ] else ...[
+              FeatureTile(
+                iconData: Iconsax.calendar,
+                title: '1 ${'week'.tr} ${'free_trial'.tr}',
+                trailing: Icon(Icons.check, color: proColor),
+              ),
+            ],
+            FeatureTile(
+              iconData: Iconsax.close_circle,
+              title: 'cancel_anytime'.tr,
+              trailing: Icon(Icons.check, color: proColor),
+            ),
             if (limit.id != 'pro' && limit.id != 'free') ...[
               ListTile(
                 leading: Icon(Iconsax.coin, color: proColor),

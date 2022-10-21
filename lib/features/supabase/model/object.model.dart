@@ -1,8 +1,8 @@
 import 'package:path/path.dart';
 
+import '../../../core/utils/globals.dart';
+import '../../../core/utils/utils.dart';
 import '../../../features/files/explorer/file_extensions.dart';
-import '../../utils/globals.dart';
-import '../../utils/utils.dart';
 
 class S3Object {
   const S3Object({

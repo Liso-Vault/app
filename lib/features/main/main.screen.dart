@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
 import 'package:liso/features/items/items.controller.dart';
@@ -366,9 +367,22 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               showBadge: p.sync.val && p.changes.val > 0,
               badgeContent: Text(p.changes.val.toString()),
               position: BadgePosition.topEnd(top: -1, end: -5),
-              child: IconButton(
-                onPressed: SyncService.to.sync,
-                icon: const Icon(Iconsax.cloud_change),
+              child: Obx(
+                () => IconButton(
+                  icon: const Icon(Iconsax.cloud_change),
+                  onPressed: SyncService.to.syncing.value
+                      ? null
+                      : () {
+                          if (!ConnectivityService.to.connected.value) {
+                            UIUtils.showSimpleDialog(
+                              'No Internet Connection',
+                              'Please check your internet connection and try again',
+                            );
+                          }
+
+                          SyncService.to.sync();
+                        },
+                ),
               ),
             ),
           ),

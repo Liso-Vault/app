@@ -1,30 +1,13 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/auth.service.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/categories/categories.controller.dart';
-import 'package:liso/features/items/items.controller.dart';
-import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
-import 'package:liso/features/joined_vaults/model/member.model.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/firebase/crashlytics.service.dart';
-import '../../core/notifications/notifications.manager.dart';
-import '../../core/persistence/persistence.secret.dart';
-import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
-import '../files/storage.service.dart';
-import '../files/sync.service.dart';
 
 class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   static JoinedVaultsScreenController get to => Get.find();
@@ -56,197 +39,198 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   }
 
   void _join() async {
-    if (!formKey.currentState!.validate()) return;
-    Get.back(); // close dialog
+    // TODO: temporary
+    // if (!formKey.currentState!.validate()) return;
+    // Get.back(); // close dialog
 
-    // check if already a member of the vault
-    final alreadyJoined = JoinedVaultsController.to.data
-        .where((e) => e.docId == vaultIdController.text);
+    // // check if already a member of the vault
+    // final alreadyJoined = JoinedVaultsController.to.data
+    //     .where((e) => e.docId == vaultIdController.text);
 
-    if (alreadyJoined.isNotEmpty) {
-      return UIUtils.showSimpleDialog(
-        'Already Joined This Vault',
-        'You are already a member of this vault',
-      );
-    }
+    // if (alreadyJoined.isNotEmpty) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Already Joined This Vault',
+    //     'You are already a member of this vault',
+    //   );
+    // }
 
-    final sharedVaultDoc = FirestoreService.to.sharedVaults.doc(
-      vaultIdController.text,
-    );
+    // final sharedVaultDoc = FirestoreService.to.sharedVaults.doc(
+    //   vaultIdController.text,
+    // );
 
-    final membersCol = sharedVaultDoc.collection(kVaultMembersCollection);
+    // final membersCol = sharedVaultDoc.collection(kVaultMembersCollection);
 
-    final statsSnapshot = await membersCol.doc(kStatsDoc).get();
-    final existingMembers = statsSnapshot.data()?['count'] ?? 0;
-    console.info('existingMembers: $existingMembers');
+    // final statsSnapshot = await membersCol.doc(kStatsDoc).get();
+    // final existingMembers = statsSnapshot.data()?['count'] ?? 0;
+    // console.info('existingMembers: $existingMembers');
 
-    final sharedVaultSnapshot = await sharedVaultDoc.get();
-    final sharedVault = sharedVaultSnapshot.data();
+    // final sharedVaultSnapshot = await sharedVaultDoc.get();
+    // final sharedVault = sharedVaultSnapshot.data();
 
-    if (sharedVault == null) {
-      return UIUtils.showSimpleDialog(
-        'Shared Vault Not Found',
-        'The shared vault with ID: ${vaultIdController.text} does not exist.',
-      );
-    }
+    // if (sharedVault == null) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Shared Vault Not Found',
+    //     'The shared vault with ID: ${vaultIdController.text} does not exist.',
+    //   );
+    // }
 
-    final ownerDoc = FirestoreService.to.users.doc(sharedVault.userId);
-    final ownerSnapshot = await ownerDoc.get();
-    final owner = ownerSnapshot.data()!;
+    // final ownerDoc = FirestoreService.to.users.doc(sharedVault.userId);
+    // final ownerSnapshot = await ownerDoc.get();
+    // final owner = ownerSnapshot.data()!;
 
-    // obtain owner limits
-    var ownerLimits = ConfigService.to.limits.free;
+    // // obtain owner limits
+    // var ownerLimits = ConfigService.to.limits.free;
 
-    if (owner.limits == 'holder') {
-      ownerLimits = ConfigService.to.limits.holder;
-    } else if (owner.limits == 'staker') {
-      ownerLimits = ConfigService.to.limits.staker;
-    } else if (owner.limits == 'pro') {
-      ownerLimits = ConfigService.to.limits.pro;
-    }
+    // if (owner.limits == 'holder') {
+    //   ownerLimits = ConfigService.to.limits.holder;
+    // } else if (owner.limits == 'staker') {
+    //   ownerLimits = ConfigService.to.limits.staker;
+    // } else if (owner.limits == 'pro') {
+    //   ownerLimits = ConfigService.to.limits.pro;
+    // }
 
-    if (existingMembers >= ownerLimits.sharedMembers) {
-      return UIUtils.showSimpleDialog(
-        'Unable To Join',
-        'The owner of the shared vault reached the max members limit',
-      );
-    }
+    // if (existingMembers >= ownerLimits.sharedMembers) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Unable To Join',
+    //     'The owner of the shared vault reached the max members limit',
+    //   );
+    // }
 
-    // obtain vault object
-    final snapshot = await FirestoreService.to.sharedVaults
-        .where(FieldPath.documentId, isEqualTo: vaultIdController.text)
-        .get();
+    // // obtain vault object
+    // final snapshot = await FirestoreService.to.sharedVaults
+    //     .where(FieldPath.documentId, isEqualTo: vaultIdController.text)
+    //     .get();
 
-    if (snapshot.docs.isEmpty) {
-      return UIUtils.showSimpleDialog(
-        'Shared Vault Not Found',
-        'The shared vault with ID: ${vaultIdController.text} cannot be found',
-      );
-    }
+    // if (snapshot.docs.isEmpty) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Shared Vault Not Found',
+    //     'The shared vault with ID: ${vaultIdController.text} cannot be found',
+    //   );
+    // }
 
-    final vault = snapshot.docs.first.data();
-    console.info('${vault.name} -> ${vault.description}');
+    // final vault = snapshot.docs.first.data();
+    // console.info('${vault.name} -> ${vault.description}');
 
-    // check if we're joining our own vault
-    if (vault.userId == AuthService.to.userId) {
-      return UIUtils.showSimpleDialog(
-        'Cannot Join Own Vault',
-        "It's not allowed to join your own vault",
-      );
-    }
+    // // check if we're joining our own vault
+    // if (vault.userId == AuthService.to.userId) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Cannot Join Own Vault',
+    //     "It's not allowed to join your own vault",
+    //   );
+    // }
 
-    // download vault file
-    final result = await StorageService.to.download(
-      object: '$kDirShared/${vault.docId}.$kVaultExtension',
-    );
+    // // download vault file
+    // final result = await StorageService.to.download(
+    //   object: '$kDirShared/${vault.docId}.$kVaultExtension',
+    // );
 
-    if (result.isLeft) {
-      return UIUtils.showSimpleDialog(
-        'Shared Vault File Not Found',
-        'The shared vault file with ID: ${vaultIdController.text} cannot be found',
-      );
-    }
+    // if (result.isLeft) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Shared Vault File Not Found',
+    //     'The shared vault file with ID: ${vaultIdController.text} cannot be found',
+    //   );
+    // }
 
-    // decrypt vault
-    final cipherKey = base64Decode(cipherKeyController.text);
+    // // decrypt vault
+    // final cipherKey = base64Decode(cipherKeyController.text);
 
-    final correctCipherKey = await CipherService.to.canDecrypt(
-      result.right,
-      cipherKey,
-    );
+    // final correctCipherKey = await CipherService.to.canDecrypt(
+    //   result.right,
+    //   cipherKey,
+    // );
 
-    if (!correctCipherKey) {
-      return UIUtils.showSimpleDialog(
-        'Failed To Decrypt',
-        'The cipher key you entered failed to decrypt the shared vault.',
-      );
-    }
+    // if (!correctCipherKey) {
+    //   return UIUtils.showSimpleDialog(
+    //     'Failed To Decrypt',
+    //     'The cipher key you entered failed to decrypt the shared vault.',
+    //   );
+    // }
 
-    // add self as a member of the shared vault
-    // TODO: allow user to set permissions using Choice Chips UI
-    final member = VaultMember(
-      address: SecretPersistence.to.longAddress,
-      userId: AuthService.to.userId,
-      permissions: ['update', 'delete'].join(','),
-    );
+    // // add self as a member of the shared vault
+    // // TODO: allow user to set permissions using Choice Chips UI
+    // final member = VaultMember(
+    //   address: SecretPersistence.to.walletAddress.val,
+    //   userId: AuthService.to.userId,
+    //   permissions: ['update', 'delete'].join(','),
+    // );
 
-    final memberDoc = membersCol
-        .withConverter<VaultMember>(
-          fromFirestore: (snapshot, _) => VaultMember.fromSnapshot(snapshot),
-          toFirestore: (object, _) => object.toFirestoreJson(),
-        )
-        .doc();
+    // final memberDoc = membersCol
+    //     .withConverter<VaultMember>(
+    //       fromFirestore: (snapshot, _) => VaultMember.fromSnapshot(snapshot),
+    //       toFirestore: (object, _) => object.toFirestoreJson(),
+    //     )
+    //     .doc();
 
-    final batch = FirestoreService.to.instance.batch();
-    // remove from firestore
-    batch.set(memberDoc, member);
+    // final batch = FirestoreService.to.instance.batch();
+    // // remove from firestore
+    // batch.set(memberDoc, member);
 
-    batch.set(
-      membersCol.doc(kStatsDoc),
-      {
-        'count': FieldValue.increment(1),
-        'updatedTime': FieldValue.serverTimestamp(),
-        'userId': AuthService.to.userId,
-      },
-      SetOptions(merge: true),
-    );
+    // batch.set(
+    //   membersCol.doc(kStatsDoc),
+    //   {
+    //     'count': FieldValue.increment(1),
+    //     'updatedTime': FieldValue.serverTimestamp(),
+    //     'userId': AuthService.to.userId,
+    //   },
+    //   SetOptions(merge: true),
+    // );
 
-    try {
-      await batch.commit();
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
+    // try {
+    //   await batch.commit();
+    // } catch (e, s) {
+    //   CrashlyticsService.to.record(e, s);
 
-      return UIUtils.showSimpleDialog(
-        'Failed To Join',
-        'Error joining in server',
-      );
-    }
+    //   return UIUtils.showSimpleDialog(
+    //     'Failed To Join',
+    //     'Error joining in server',
+    //   );
+    // }
 
-    console.wtf('member added: ${memberDoc.id}');
+    // console.wtf('member added: ${memberDoc.id}');
 
-    // inject cipher key to fields
-    final category = CategoriesController.to.combined
-        .firstWhere((e) => e.id == LisoItemCategory.encryption.name);
-    var fields = category.fields;
+    // // inject cipher key to fields
+    // final category = CategoriesController.to.combined
+    //     .firstWhere((e) => e.id == LisoItemCategory.encryption.name);
+    // var fields = category.fields;
 
-    fields = fields.map((e) {
-      if (e.identifier == 'key') {
-        e.data.value = cipherKeyController.text;
-        e.readOnly = true;
-        return e;
-      } else if (e.identifier == 'note') {
-        e.data.value =
-            'This is the key to decrypt the shared vault. Please keep it as it is.';
-        return e;
-      } else {
-        return e;
-      }
-    }).toList();
+    // fields = fields.map((e) {
+    //   if (e.identifier == 'key') {
+    //     e.data.value = cipherKeyController.text;
+    //     e.readOnly = true;
+    //     return e;
+    //   } else if (e.identifier == 'note') {
+    //     e.data.value =
+    //         'This is the key to decrypt the shared vault. Please keep it as it is.';
+    //     return e;
+    //   } else {
+    //     return e;
+    //   }
+    // }).toList();
 
-    // save cipher key as a liso item
-    await ItemsService.to.box!.add(HiveLisoItem(
-      identifier: vault.docId,
-      groupId: 'secrets', // TODO: use enums for reserved groups
-      category: category.id,
-      title: '${vault.name} Shared Vault Cipher Key',
-      fields: fields,
-      metadata: await HiveMetadata.get(),
-      protected: true,
-      reserved: true,
-      tags: ['secret'],
-    ));
+    // // save cipher key as a liso item
+    // await ItemsService.to.box!.add(HiveLisoItem(
+    //   identifier: vault.docId,
+    //   groupId: 'secrets', // TODO: use enums for reserved groups
+    //   category: category.id,
+    //   title: '${vault.name} Shared Vault Cipher Key',
+    //   fields: fields,
+    //   metadata: await HiveMetadata.get(),
+    //   protected: true,
+    //   reserved: true,
+    //   tags: ['secret'],
+    // ));
 
-    // reload main screen
-    ItemsController.to.load();
-    console.wtf('created liso item');
-    vaultIdController.clear();
-    cipherKeyController.clear();
+    // // reload main screen
+    // ItemsController.to.load();
+    // console.wtf('created liso item');
+    // vaultIdController.clear();
+    // cipherKeyController.clear();
 
-    // send notification
-    NotificationsManager.notify(
-      title: 'Shared Vault Joined',
-      body: vault.name,
-    );
+    // // send notification
+    // NotificationsManager.notify(
+    //   title: 'Shared Vault Joined',
+    //   body: vault.name,
+    // );
   }
 
   void joinDialog() async {

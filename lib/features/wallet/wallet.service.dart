@@ -24,6 +24,7 @@ import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.controller.dart';
 import '../items/items.service.dart';
+import '../supabase/supabase_auth.service.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
@@ -187,11 +188,12 @@ class WalletService extends GetxService with ConsoleMixin {
     SecretPersistence.to.walletSignature.val = signature;
     // // from the first 32 bits of the signature
     // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
+    SupabaseAuthService.to.authenticate();
 
     if (!GetPlatform.isWindows) {
       AnalyticsService.to.instance.setUserProperty(
         name: 'wallet_address',
-        value: SecretPersistence.to.longAddress,
+        value: SecretPersistence.to.walletAddress.val,
       );
     }
   }
@@ -230,7 +232,7 @@ class WalletService extends GetxService with ConsoleMixin {
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'address') {
-        e.data.value = SecretPersistence.to.longAddress;
+        e.data.value = SecretPersistence.to.walletAddress.val;
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'note') {

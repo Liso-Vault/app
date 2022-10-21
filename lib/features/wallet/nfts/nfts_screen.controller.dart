@@ -31,7 +31,7 @@ class NFTsScreenController extends GetxController
 
   Future<void> loadNFTs() async {
     final result = await alchemy.enhanced.nft.getNFTs(
-      owner: SecretPersistence.to.longAddress,
+      owner: SecretPersistence.to.walletAddress.val,
     );
 
     result.fold(

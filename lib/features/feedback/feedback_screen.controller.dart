@@ -7,24 +7,26 @@ import '../../core/utils/globals.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 
+enum FeedbackType {
+  feedback,
+  suggestion,
+  issue,
+}
+
 class FeedbackScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final formKey = GlobalKey<FormState>();
   final textController = TextEditingController();
 
-  String feedbackType = 'Feedback';
+  var feedbackType = FeedbackType.feedback;
   final rating = 0.0.obs;
 
   // PROPERTIES
 
   // GETTERS
 
-  bool get showRateButton =>
-      rating.value >= 4.0 &&
-      (GetPlatform.isAndroid ||
-          GetPlatform.isIOS ||
-          (GetPlatform.isMacOS && isMacAppStore));
+  bool get showRateButton => rating.value >= 4.0 && isRateReviewSupported;
 
   // INIT
 
@@ -45,6 +47,7 @@ class FeedbackScreenController extends GetxController
       preBody: textController.text,
       rating: rating.value,
       previousRoute: Get.previousRoute,
+      feedbackType: feedbackType,
     );
   }
 

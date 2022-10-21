@@ -4,10 +4,10 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/persistence/mutable_value.dart';
 import 'package:secrets/secrets.dart';
 
+import '../../features/supabase/supabase_auth.service.dart';
 import '../liso/liso_paths.dart';
 import '../translations/data.dart';
 import '../utils/globals.dart';
@@ -36,7 +36,9 @@ class Persistence extends GetxController with ConsoleMixin {
   final notificationId = 0.val('notification-id');
   final upgradeScreenShown = false.val('upgrade-screen-shown');
   final sessionCount = 1.val('session-count');
+  final rateDialogShown = false.val('rate-dialog-shown');
   final rateCardVisibility = true.val('rate-card-visibility');
+  final verifiedProCache = false.val('verified-pro-cache');
   // WINDOW SIZE
   final windowWidth = 1200.0.val('window-width');
   final windowHeight = 850.0.val('window-height');
@@ -70,6 +72,8 @@ class Persistence extends GetxController with ConsoleMixin {
   final lastLisoBalance = 0.0.val('last-liso-balance');
   final lastMaticUsdPrice = 0.0.val('last-matic-usd-price');
   final lastLisoUsdPrice = 0.0.val('last-liso-usd-price');
+  // SUPABASE
+  final supabaseSession = ''.val('supabase-session');
   // DELETED IDS
 
   // GETTERS
@@ -79,7 +83,9 @@ class Persistence extends GetxController with ConsoleMixin {
       : LisoSyncProvider.sia.name;
 
   bool get canShare =>
-      sync.val && AuthService.to.isSignedIn && !GetPlatform.isWindows;
+      sync.val &&
+      SupabaseAuthService.to.authenticated &&
+      !GetPlatform.isWindows;
 
   // INIT
 

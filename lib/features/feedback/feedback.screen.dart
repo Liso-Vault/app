@@ -24,21 +24,21 @@ class FeedbackScreen extends StatelessWidget with ConsoleMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 20),
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<FeedbackType>(
                 value: controller.feedbackType,
                 onChanged: (value) => controller.feedbackType = value!,
                 decoration: const InputDecoration(labelText: 'Type'),
                 items: const [
                   DropdownMenuItem(
-                    value: 'Feedback',
+                    value: FeedbackType.feedback,
                     child: Text('Feedback'),
                   ),
                   DropdownMenuItem(
-                    value: 'Suggestion',
+                    value: FeedbackType.suggestion,
                     child: Text('Suggestion'),
                   ),
                   DropdownMenuItem(
-                    value: 'Issue',
+                    value: FeedbackType.issue,
                     child: Text('Issue'),
                   ),
                 ],

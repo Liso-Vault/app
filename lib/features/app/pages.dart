@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:liso/features/about/about.screen.dart';
-import 'package:liso/features/update/update.screen.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/debug/debug.screen.dart';
 import 'package:liso/features/import/import.screen.dart';
@@ -10,6 +9,7 @@ import 'package:liso/features/seed/seed.screen.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
+import 'package:liso/features/update/update.screen.dart';
 import 'package:liso/features/welcome/welcome.screen.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
@@ -19,17 +19,15 @@ import '../categories/picker/category_picker.screen.dart';
 import '../cipher/cipher.screen.dart';
 import '../devices/devices.screen.dart';
 import '../feedback/feedback.screen.dart';
+import '../files/explorer/s3_explorer.screen.dart';
 import '../groups/groups.screen.dart';
 import '../items/item.screen.dart';
 import '../joined_vaults/explorer/vault_explorer.screen.dart';
 import '../joined_vaults/joined_vaults.screen.dart';
 import '../otp/otp.screen.dart';
 import '../password_generator/password_generator.screen.dart';
-import '../files/explorer/s3_explorer.screen.dart';
-import '../files/provider/custom_provider_screen.dart';
-import '../files/provider/sync_provider.screen.dart';
-import '../seed/generator/seed_generator.screen.dart';
 import '../pro/upgrade/upgrade.screen.dart';
+import '../seed/generator/seed_generator.screen.dart';
 import '../wallet/wallet.screen.dart';
 import 'routes.dart';
 

@@ -1,7 +1,7 @@
 import 'package:app_settings/app_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/persistence/persistence_builder.widget.dart';
 import 'package:liso/features/connectivity/connectivity.service.dart';
 
 class ConnectivityBar extends StatelessWidget {
@@ -23,10 +23,14 @@ class ConnectivityBar extends StatelessWidget {
       ),
     );
 
-    return Obx(
-      () => !ConnectivityService.to.connected() && Persistence.to.sync.val
-          ? content
-          : const SizedBox.shrink(),
+    return PersistenceBuilder(
+      builder: (p, _) {
+        return Obx(
+          () => !ConnectivityService.to.connected() && p.sync.val
+              ? content
+              : const SizedBox.shrink(),
+        );
+      },
     );
   }
 }

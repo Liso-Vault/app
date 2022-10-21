@@ -44,6 +44,17 @@ class UpgradeScreenController extends GetxController
 
   bool get isFreeTrial => product.introductoryPrice?.price == 0;
 
+  String get promoText {
+    final intro = product.introductoryPrice!;
+
+    final percentageDifference_ =
+        ((product.price - intro.price) / product.price) * 100;
+
+    return isFreeTrial
+        ? '${intro.periodNumberOfUnits} ${GetUtils.capitalizeFirst(intro.periodUnit.name.tr)} ${'free_trial'.tr}'
+        : '${percentageDifference_.round()}%\nOFF';
+  }
+
   int get limitIndex {
     int index = 3;
 

@@ -1,33 +1,17 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/firebase/auth.service.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/core/hive/models/item.hive.dart';
-import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
-import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/files/storage.service.dart';
-import 'package:liso/features/items/items.controller.dart';
-import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 
 import '../../core/firebase/config/config.service.dart';
-import '../../core/firebase/crashlytics.service.dart';
 import '../../core/notifications/notifications.manager.dart';
-import '../../core/persistence/persistence.secret.dart';
-import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../categories/categories.controller.dart';
-import '../files/sync.service.dart';
-import '../pro/pro.controller.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   static SharedVaultsScreenController get to => Get.find();
@@ -94,124 +78,126 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
     }
 
     void edit() async {
-      if (!formKey.currentState!.validate()) return;
-      final doc = FirestoreService.to.vaultsCol.doc(object?.docId);
+      // TODO: temporary
+      // if (!formKey.currentState!.validate()) return;
+      // final doc = FirestoreService.to.vaultsCol.doc(object?.docId);
 
-      await doc.set(
-        {
-          'name': nameController.text,
-          'description': descriptionController.text,
-          'updatedTime': FieldValue.serverTimestamp(),
-        },
-        SetOptions(merge: true),
-      );
+      // await doc.set(
+      //   {
+      //     'name': nameController.text,
+      //     'description': descriptionController.text,
+      //     'updatedTime': FieldValue.serverTimestamp(),
+      //   },
+      //   SetOptions(merge: true),
+      // );
 
-      done();
+      // done();
     }
 
     void create() async {
-      if (!formKey.currentState!.validate()) return;
+      // TODO: temporary
+      // if (!formKey.currentState!.validate()) return;
 
-      // check if name already exists
-      final exists = await SharedVaultsController.to.exists(
-        nameController.text,
-      );
+      // // check if name already exists
+      // final exists = await SharedVaultsController.to.exists(
+      //   nameController.text,
+      // );
 
-      if (exists) {
-        return UIUtils.showSimpleDialog(
-          'Already Exists',
-          '"${nameController.text}" already exists.',
-        );
-      }
+      // if (exists) {
+      //   return UIUtils.showSimpleDialog(
+      //     'Already Exists',
+      //     '"${nameController.text}" already exists.',
+      //   );
+      // }
 
-      if (SharedVaultsController.to.data.length >=
-          ProController.to.limits.sharedVaults) {
-        return Utils.adaptiveRouteOpen(
-          name: Routes.upgrade,
-          parameters: {
-            'title': 'Shared Vaults',
-            'body':
-                'Maximum members: ${ProController.to.limits.sharedMembers} in shared vault reached. Upgrade to Pro to unlock unlimited shared vault members feature.',
-          },
-        );
-      }
+      // if (SharedVaultsController.to.data.length >=
+      //     ProController.to.limits.sharedVaults) {
+      //   return Utils.adaptiveRouteOpen(
+      //     name: Routes.upgrade,
+      //     parameters: {
+      //       'title': 'Shared Vaults',
+      //       'body':
+      //           'Maximum members: ${ProController.to.limits.sharedMembers} in shared vault reached. Upgrade to Pro to unlock unlimited shared vault members feature.',
+      //     },
+      //   );
+      // }
 
-      // add to firestore
-      final vault = SharedVault(
-        userId: AuthService.to.userId,
-        address: SecretPersistence.to.longAddress,
-        name: nameController.text,
-        description: descriptionController.text,
-      );
+      // // add to firestore
+      // final vault = SharedVault(
+      //   userId: AuthService.to.userId,
+      //   address: SecretPersistence.to.longAddress,
+      //   name: nameController.text,
+      //   description: descriptionController.text,
+      // );
 
-      final batch = FirestoreService.to.instance.batch();
-      final doc = FirestoreService.to.sharedVaults.doc();
+      // final batch = FirestoreService.to.instance.batch();
+      // final doc = FirestoreService.to.sharedVaults.doc();
 
-      // update user doc
-      batch.set(
-        doc,
-        vault,
-        SetOptions(merge: true),
-      );
+      // // update user doc
+      // batch.set(
+      //   doc,
+      //   vault,
+      //   SetOptions(merge: true),
+      // );
 
-      // update users collection stats counter
-      batch.set(
-        FirestoreService.to.vaultsStatsDoc,
-        {
-          'count': FieldValue.increment(1),
-          'updatedTime': FieldValue.serverTimestamp(),
-          'userId': AuthService.to.userId,
-        },
-        SetOptions(merge: true),
-      );
+      // // update users collection stats counter
+      // batch.set(
+      //   FirestoreService.to.vaultsStatsDoc,
+      //   {
+      //     'count': FieldValue.increment(1),
+      //     'updatedTime': FieldValue.serverTimestamp(),
+      //     'userId': AuthService.to.userId,
+      //   },
+      //   SetOptions(merge: true),
+      // );
 
-      // commit batch
-      try {
-        await batch.commit();
-      } catch (e, s) {
-        CrashlyticsService.to.record(e, s);
-        return console.error("error batch commit: $e");
-      }
+      // // commit batch
+      // try {
+      //   await batch.commit();
+      // } catch (e, s) {
+      //   CrashlyticsService.to.record(e, s);
+      //   return console.error("error batch commit: $e");
+      // }
 
-      console.wtf('created shared vault: ${doc.id}');
+      // console.wtf('created shared vault: ${doc.id}');
 
-      // inject cipher key to fields
-      final category = CategoriesController.to.combined
-          .firstWhere((e) => e.id == LisoItemCategory.encryption.name);
-      var fields = category.fields;
+      // // inject cipher key to fields
+      // final category = CategoriesController.to.combined
+      //     .firstWhere((e) => e.id == LisoItemCategory.encryption.name);
+      // var fields = category.fields;
 
-      fields = fields.map((e) {
-        if (e.identifier == 'key') {
-          e.data.value = cipherKeyController.text;
-          e.readOnly = true;
-          return e;
-        } else if (e.identifier == 'note') {
-          e.data.value =
-              'Please share this safely to those you want to access the shared vault. It is recommended you keep this item.';
-          return e;
-        } else {
-          return e;
-        }
-      }).toList();
+      // fields = fields.map((e) {
+      //   if (e.identifier == 'key') {
+      //     e.data.value = cipherKeyController.text;
+      //     e.readOnly = true;
+      //     return e;
+      //   } else if (e.identifier == 'note') {
+      //     e.data.value =
+      //         'Please share this safely to those you want to access the shared vault. It is recommended you keep this item.';
+      //     return e;
+      //   } else {
+      //     return e;
+      //   }
+      // }).toList();
 
-      // save cipher key as a liso item
-      await ItemsService.to.box!.add(HiveLisoItem(
-        identifier: doc.id,
-        groupId: 'secrets', // TODO: use enums for reserved groups
-        category: category.id,
-        title: '${nameController.text} Shared Vault Cipher Key',
-        fields: fields,
-        metadata: await HiveMetadata.get(),
-        protected: true,
-        reserved: true,
-        tags: ['secret'],
-      ));
+      // // save cipher key as a liso item
+      // await ItemsService.to.box!.add(HiveLisoItem(
+      //   identifier: doc.id,
+      //   groupId: 'secrets', // TODO: use enums for reserved groups
+      //   category: category.id,
+      //   title: '${nameController.text} Shared Vault Cipher Key',
+      //   fields: fields,
+      //   metadata: await HiveMetadata.get(),
+      //   protected: true,
+      //   reserved: true,
+      //   tags: ['secret'],
+      // ));
 
-      // reload items
-      ItemsController.to.load();
-      console.wtf('created liso item');
+      // // reload items
+      // ItemsController.to.load();
+      // console.wtf('created liso item');
 
-      done();
+      // done();
     }
 
     final content = Column(
@@ -305,36 +291,37 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
   void delete(SharedVault object_) {
     void confirm() async {
-      Get.back();
+      // TODO: temporary
+      // Get.back();
 
-      final batch = FirestoreService.to.instance.batch();
-      final doc = FirestoreService.to.sharedVaults.doc(object_.docId);
-      // update user doc
-      batch.delete(doc);
-      // update users collection stats counter
-      batch.set(
-        FirestoreService.to.vaultsStatsDoc,
-        {
-          'count': FieldValue.increment(-1),
-          'updatedTime': FieldValue.serverTimestamp(),
-          'userId': AuthService.to.userId
-        },
-        SetOptions(merge: true),
-      );
+      // final batch = FirestoreService.to.instance.batch();
+      // final doc = FirestoreService.to.sharedVaults.doc(object_.docId);
+      // // update user doc
+      // batch.delete(doc);
+      // // update users collection stats counter
+      // batch.set(
+      //   FirestoreService.to.vaultsStatsDoc,
+      //   {
+      //     'count': FieldValue.increment(-1),
+      //     'updatedTime': FieldValue.serverTimestamp(),
+      //     'userId': AuthService.to.userId
+      //   },
+      //   SetOptions(merge: true),
+      // );
 
-      // commit batch
-      try {
-        await batch.commit();
-      } catch (e, s) {
-        CrashlyticsService.to.record(e, s);
-        return console.error("error batch commit: $e");
-      }
+      // // commit batch
+      // try {
+      //   await batch.commit();
+      // } catch (e, s) {
+      //   CrashlyticsService.to.record(e, s);
+      //   return console.error("error batch commit: $e");
+      // }
 
-      await StorageService.to.remove(
-        '$kDirShared/${object_.docId}.$kVaultExtension',
-      );
+      // await StorageService.to.remove(
+      //   '$kDirShared/${object_.docId}.$kVaultExtension',
+      // );
 
-      console.info('deleted: ${doc.id}');
+      // console.info('deleted: ${doc.id}');
     }
 
     final dialogContent = Text(

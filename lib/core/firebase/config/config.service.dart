@@ -1,22 +1,23 @@
 import 'dart:convert';
 
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
-import 'package:flutter/foundation.dart';
+import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/config/models/config_web3.model.dart';
-import 'package:liso/core/firebase/functions.service.dart';
-import 'package:liso/core/persistence/persistence.secret.dart';
+import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:secrets/secrets.dart';
 
 import '../../../features/app/routes.dart';
 import '../../../features/pro/pro.controller.dart';
-import '../../supabase/supabase.service.dart';
+import '../../../features/supabase/supabase_auth.service.dart';
+import '../../persistence/persistence.secret.dart';
 import '../../utils/globals.dart';
 import 'models/config_app.model.dart';
 import 'models/config_app_domains.model.dart';
 import 'models/config_general.model.dart';
 import 'models/config_limits.model.dart';
+import 'models/config_root.model.dart';
 import 'models/config_secrets.model.dart';
 import 'models/config_users.model.dart';
 
@@ -32,8 +33,9 @@ class ConfigService extends GetxService with ConsoleMixin {
   var users = const ConfigUsers();
   var appDomains = const ConfigAppDomains();
 
+  bool remoteFetched = false;
+
   // GETTERS
-  FirebaseRemoteConfig get instance => FirebaseRemoteConfig.instance;
   String get appName => general.app.name;
   String get devName => general.developer.name;
   bool get isReady => secrets.supabase.url.isNotEmpty;
@@ -43,101 +45,118 @@ class ConfigService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   Future<void> init() async {
     // pre-populate with local as defaults
-    await _populate(local: true);
-    if (GetPlatform.isWindows) return fetchFromFunctions();
-
-    // SETTINGS
-    await instance.setConfigSettings(RemoteConfigSettings(
-      fetchTimeout: 10.seconds,
-      minimumFetchInterval: kDebugMode ? 0.seconds : 5.minutes,
-    ));
-
-    // workaround for https://github.com/firebase/flutterfire/issues/6196
-    // Future.delayed(1.seconds).then((_) => fetch());
-    fetch();
+    _prePopulate();
+    fetchFromFunctions();
   }
 
   Future<void> fetchFromFunctions() async {
-    console.info('fetching...');
-    final result = await FunctionsService.to.getRemoteConfig();
+    final result = await getRemoteConfig();
 
     result.fold(
-      (error) => console.info('failed to fetch from functions: $error'),
+      (error) => console.info('remote config! functions: error: $error'),
       (root) {
         app = root.parameters.appConfig;
-        secrets = root.parameters.secretsConfig;
-        web3 = root.parameters.web3Config;
-        limits = root.parameters.limitsConfig;
-        users = root.parameters.usersConfig;
-        general = root.parameters.generalConfig;
-        appDomains = root.parameters.appDomainsConfig;
+        SecretPersistence.to.configApp.val = jsonEncode(app.toJson());
 
-        // cache
+        secrets = root.parameters.secretsConfig;
         SecretPersistence.to.configSecrets.val = jsonEncode(secrets.toJson());
-        console.wtf('remote config from functions synced');
-        postInit();
+
+        web3 = root.parameters.web3Config;
+        SecretPersistence.to.configWeb3.val = jsonEncode(web3.toJson());
+
+        limits = root.parameters.limitsConfig;
+        SecretPersistence.to.configLimits.val = jsonEncode(limits.toJson());
+
+        users = root.parameters.usersConfig;
+        SecretPersistence.to.configUsers.val = jsonEncode(users.toJson());
+
+        general = root.parameters.generalConfig;
+        SecretPersistence.to.configGeneral.val = jsonEncode(general.toJson());
+
+        appDomains = root.parameters.appDomainsConfig;
+        SecretPersistence.to.configAppDomains.val =
+            jsonEncode(appDomains.toJson());
+
+        remoteFetched = true;
+        console.wtf('remote config! functions: success');
       },
+    );
+
+    postFetch();
+  }
+
+  Future<Either<String, ConfigRoot>> getRemoteConfig() async {
+    if (!ConnectivityService.to.connected.value) {
+      return const Left('no internet connection');
+    }
+
+    console.info('remote config! fetching...');
+    HttpsCallableResult? result;
+
+    try {
+      result = await FirebaseFunctions.instance
+          .httpsCallable('getRemoteConfig')
+          .call();
+    } on FirebaseFunctionsException catch (e) {
+      return Left('error fetching remote config: $e');
+    }
+
+    // console.wtf('remote config! response: ${result.data}');
+
+    if (result.data == false) {
+      return const Left('failed to fetch remote config');
+    }
+
+    return Right(ConfigRoot.fromJson(jsonDecode(result.data)));
+  }
+
+  Future<void> _prePopulate() async {
+    app = ConfigApp.fromJson(
+      SecretPersistence.to.configApp.val.isEmpty
+          ? Secrets.configs.app
+          : jsonDecode(SecretPersistence.to.configApp.val),
+    );
+
+    secrets = ConfigSecrets.fromJson(
+      SecretPersistence.to.configSecrets.val.isEmpty
+          ? Secrets.configs.secrets
+          : jsonDecode(SecretPersistence.to.configSecrets.val),
+    );
+
+    web3 = ConfigWeb3.fromJson(
+      SecretPersistence.to.configWeb3.val.isEmpty
+          ? Secrets.configs.web3
+          : jsonDecode(SecretPersistence.to.configWeb3.val),
+    );
+
+    limits = ConfigLimits.fromJson(
+      SecretPersistence.to.configLimits.val.isEmpty
+          ? Secrets.configs.limits
+          : jsonDecode(SecretPersistence.to.configLimits.val),
+    );
+
+    users = ConfigUsers.fromJson(
+      SecretPersistence.to.configUsers.val.isEmpty
+          ? Secrets.configs.users
+          : jsonDecode(SecretPersistence.to.configUsers.val),
+    );
+
+    general = ConfigGeneral.fromJson(
+      SecretPersistence.to.configGeneral.val.isEmpty
+          ? Secrets.configs.general
+          : jsonDecode(SecretPersistence.to.configGeneral.val),
+    );
+
+    appDomains = ConfigAppDomains.fromJson(
+      SecretPersistence.to.configAppDomains.val.isEmpty
+          ? Secrets.configs.appDomains
+          : jsonDecode(SecretPersistence.to.configAppDomains.val),
     );
   }
 
-  Future<void> fetch() async {
-    if (GetPlatform.isWindows) return console.warning('Not Supported');
-    console.info('fetching...');
-
-    try {
-      final updated = await instance.fetchAndActivate();
-      console.info('fetch updated: $updated');
-      await _populate();
-    } catch (e) {
-      console.error('fetch error: $e');
-    }
-  }
-
-  Future<void> _populate({bool local = false}) async {
-    app = ConfigApp.fromJson(local
-        ? Secrets.configs.app
-        : jsonDecode(instance.getString('app_config')));
-
-    // cache
-    secrets = ConfigSecrets.fromJson(local
-        ? SecretPersistence.to.configSecrets.val.isEmpty
-            ? Secrets.configs.secrets
-            : jsonDecode(SecretPersistence.to.configSecrets.val)
-        : jsonDecode(instance.getString('secrets_config')));
-
-    web3 = ConfigWeb3.fromJson(local
-        ? Secrets.configs.web3
-        : jsonDecode(instance.getString('web3_config')));
-
-    limits = ConfigLimits.fromJson(local
-        ? Secrets.configs.limits
-        : jsonDecode(instance.getString('limits_config')));
-
-    users = ConfigUsers.fromJson(local
-        ? Secrets.configs.users
-        : jsonDecode(instance.getString('users_config')));
-
-    general = ConfigGeneral.fromJson(local
-        ? Secrets.configs.general
-        : jsonDecode(instance.getString('general_config')));
-
-    appDomains = ConfigAppDomains.fromJson(local
-        ? Secrets.configs.appDomains
-        : jsonDecode(instance.getString('app_domains_config')));
-
-    // cache secrets config
-    if (!local) {
-      SecretPersistence.to.configSecrets.val =
-          instance.getString('secrets_config');
-    }
-
-    console.info('populated! local: $local');
-    postInit();
-  }
-
-  void postInit() {
+  void postFetch() {
     // initialize supabase
-    SupabaseService.to.init();
+    SupabaseAuthService.to.init();
     ProController.to.init();
 
     // check if update is required

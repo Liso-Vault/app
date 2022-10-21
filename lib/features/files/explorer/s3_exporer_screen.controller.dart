@@ -14,12 +14,12 @@ import 'package:liso/features/files/sync.service.dart';
 import 'package:path/path.dart';
 
 import '../../../core/services/cipher.service.dart';
-import '../../../core/supabase/model/object.model.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
 import '../../pro/pro.controller.dart';
+import '../../supabase/model/object.model.dart';
 
 class S3ExplorerScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -45,8 +45,9 @@ class S3ExplorerScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    rootPrefix = '${SecretPersistence.to.longAddress}/$rootFolderName/';
-    navigate(prefix: rootPrefix);
+    rootPrefix = '${SecretPersistence.to.walletAddress.val}/$rootFolderName/';
+    currentPrefix.value = rootPrefix;
+    navigate(prefix: currentPrefix.value);
     super.onInit();
   }
 
@@ -68,9 +69,10 @@ class S3ExplorerScreenController extends GetxController
     List<S3Object> objects = List.from(storage.rootInfo.value.data.objects);
 
     objects = objects.where((e) {
-      final path = e.key.replaceAll(prefix, '');
-      final isFolder = '/'.allMatches(path).length == 1 && !e.isFile;
-      final isFile = '/'.allMatches(path).isEmpty && e.isFile;
+      console.warning(e.key);
+      final currentPath = e.key.replaceAll(prefix, '');
+      final isFolder = '/'.allMatches(currentPath).length == 1 && !e.isFile;
+      final isFile = '/'.allMatches(currentPath).isEmpty && e.isFile;
 
       return e.key != prefix &&
           e.key.startsWith(prefix) &&
@@ -92,7 +94,6 @@ class S3ExplorerScreenController extends GetxController
     final prefix = currentPrefix.value.split('/');
     prefix.removeLast();
     prefix.removeLast();
-
     navigate(prefix: '${prefix.join('/')}/');
   }
 

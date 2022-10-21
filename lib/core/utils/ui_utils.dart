@@ -5,7 +5,11 @@ import 'package:get/get.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import '../../features/pro/pro.controller.dart';
+import '../../features/supabase/supabase_database.service.dart';
+import '../../features/supabase/supabase_functions.service.dart';
 import '../firebase/config/config.service.dart';
+import '../notifications/notifications.manager.dart';
 
 class UIUtils {
   static final console = Console(name: 'UIUtils');
@@ -208,5 +212,108 @@ class UIUtils {
     } else if (GetPlatform.isMacOS) {
       Utils.openUrl(store.apple);
     }
+  }
+
+  static Future<void> setLicenseKey() async {
+    final formKey = GlobalKey<FormState>();
+    final keyController = TextEditingController();
+    final busy = false.obs;
+
+    void submit() async {
+      if (!formKey.currentState!.validate()) return;
+      busy.value = true;
+      final key = keyController.text.trim();
+      final verifyResult = await SupabaseFunctionsService.to.verifyGumroad(
+        key,
+        updateEntitlement: false,
+      );
+
+      verifyResult.fold(
+        (left) {
+          return UIUtils.showSimpleDialog(
+            'Failed Verifying',
+            left,
+          );
+        },
+        (right) async {
+          if (!right.entitled) {
+            return UIUtils.showSimpleDialog(
+              'Deactivated License',
+              'We are sorry to inform you that your license key is not active anymore.',
+            );
+          }
+
+          final updateResult = await SupabaseDBService.to.updateLicenseKey(key);
+
+          updateResult.fold(
+            (left) => UIUtils.showSimpleDialog(
+              'Failed Updating',
+              left,
+            ),
+            (right) {
+              Get.back();
+
+              ProController.to.licenseKey.value = right.gumroadLicenseKey;
+              ProController.to.verifiedPro.value = true;
+
+              NotificationsManager.notify(
+                title: 'License Key Updated',
+                body:
+                    'Thanks for subscribing to ${ConfigService.to.appName} Pro 🎉',
+              );
+            },
+          );
+        },
+      );
+
+      busy.value = false;
+    }
+
+    final content = Obx(
+      () => TextFormField(
+        enabled: !busy.value,
+        controller: keyController,
+        autofocus: true,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (data) =>
+            data!.length != 35 ? 'Please a valid license key' : null,
+        decoration: const InputDecoration(
+          labelText: 'License Key',
+          hintText: 'Gumroad License Key',
+        ),
+      ),
+    );
+
+    Get.dialog(
+      AlertDialog(
+        title: const Text('Update License Key'), // TODO: localize
+        content: Form(
+          key: formKey,
+          child: Utils.isSmallScreen
+              ? content
+              : SizedBox(width: 450, child: content),
+        ),
+        actions: [
+          TextButton(
+            onPressed: Get.back,
+            child: Text('cancel'.tr),
+          ),
+          Obx(
+            () => Visibility(
+              visible: !busy.value,
+              replacement: const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(),
+              ),
+              child: TextButton(
+                onPressed: submit,
+                child: const Text('Update'), // TODO: localize
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

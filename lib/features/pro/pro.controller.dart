@@ -2,21 +2,24 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:console_mixin/console_mixin.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:supabase/supabase.dart';
 
 import '../../core/firebase/config/config.service.dart';
 import '../../core/firebase/config/models/config_limits.model.dart';
-import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
-import '../connectivity/connectivity.service.dart';
+import '../../core/utils/utils.dart';
+import '../app/routes.dart';
+import '../rate/rate.widget.dart';
+import '../supabase/supabase_auth.service.dart';
 
 class ProController extends GetxController with ConsoleMixin {
   static ProController get to => Get.find();
@@ -26,11 +29,12 @@ class ProController extends GetxController with ConsoleMixin {
   // PROPERTIES
   final info = Rx<CustomerInfo>(CustomerInfo.fromJson(kPurchaserInfoInitial));
   final offerings = Rx<Offerings>(Offerings.fromJson(kOfferingsInitial));
+  final verifiedPro = Persistence.to.verifiedProCache.val.obs;
+  final licenseKey = ''.obs;
 
   // GETTERS
 
-  bool get isPro =>
-      proEntitlement?.isActive ?? AuthService.to.claims['limits'] == 'pro';
+  bool get isPro => proEntitlement?.isActive == true || verifiedPro.value;
 
   EntitlementInfo? get proEntitlement => info.value.entitlements.all['pro'];
 
@@ -38,11 +42,16 @@ class ProController extends GetxController with ConsoleMixin {
       offerings.value.current?.availablePackages ?? [];
 
   String get proPrefixString =>
-      proEntitlement!.willRenew ? 'renews'.tr : 'expires'.tr;
+      proEntitlement?.willRenew == true ? 'renews'.tr : 'expires'.tr;
 
   String get proDateString => DateFormat.yMMMMd()
       .add_jm()
       .format(DateTime.parse(proEntitlement!.expirationDate!).toLocal());
+
+  String get shortLicenseKey => licenseKey.isEmpty ||
+          licenseKey.value.length < 35
+      ? 'none'.tr
+      : '${licenseKey.substring(0, 7)}...${licenseKey.substring(licenseKey.value.length - 7)} ${verifiedPro.value ? '' : '- Inactive'}';
 
   ConfigLimitsTier get limits {
     final limits_ = ConfigService.to.limits;
@@ -51,7 +60,7 @@ class ProController extends GetxController with ConsoleMixin {
     if (isPro) return limits_.pro;
     // check if user is whitelisted by developer
     final users = ConfigService.to.users.users.where(
-      (e) => e.address == SecretPersistence.to.longAddress,
+      (e) => e.address == SecretPersistence.to.walletAddress.val,
     );
 
     if (users.isNotEmpty) {
@@ -79,10 +88,10 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   // INIT
-
   @override
   void onClose() {
-    if (!ready) return;
+    if (!isIAPSupported) return;
+
     Purchases.removeCustomerInfoUpdateListener((info_) {
       info.value = info_;
     });
@@ -90,24 +99,24 @@ class ProController extends GetxController with ConsoleMixin {
     super.onClose();
   }
 
-  // FUNCTIONS
-  bool get ready {
-    if (!ConnectivityService.to.connected.value) {
-      if (AuthenticationMiddleware.initialized) {
-        UIUtils.showSimpleDialog(
-          'Network Error',
-          'No internet connection',
-        );
-      }
+  @override
+  void onInit() {
+    verifiedPro.listen((value) {
+      Persistence.to.verifiedProCache.val = value;
+    });
 
-      return false;
-    }
-
-    return GetPlatform.isWindows != true;
+    super.onInit();
   }
 
+  @override
+  void onReady() {
+    verifiedPro.value = Persistence.to.verifiedProCache.val;
+    super.onReady();
+  }
+
+  // FUNCTIONS
   Future<void> init() async {
-    if (!ready) return;
+    if (!isIAPSupported) return;
     await Purchases.setDebugLogsEnabled(true);
 
     await Purchases.configure(
@@ -118,20 +127,26 @@ class ProController extends GetxController with ConsoleMixin {
       info.value = info_;
     });
 
-    _sync();
+    sync();
   }
 
-  Future<void> login() async {
-    if (!ready) return;
-    await Purchases.logIn(AuthService.to.userId);
+  Future<void> invalidate() async {
+    if (!isIAPSupported) return;
 
-    await Purchases.setAttributes({
-      'wallet-address': SecretPersistence.to.longAddress,
-    });
+    await Purchases.invalidateCustomerInfoCache();
+  }
+
+  Future<void> login(User user) async {
+    if (!isIAPSupported) return;
+    await Purchases.logIn(user.id);
+    await Purchases.setEmail(user.email!);
   }
 
   Future<void> logout() async {
-    if (!ready) return;
+    verifiedPro.value = false;
+    licenseKey.value = '';
+    if (!isIAPSupported) return;
+
     // prevent exception if logging out with an anonymous user
     if (await Purchases.isAnonymous) {
       return console.error('anonymous user');
@@ -147,7 +162,7 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> load() async {
-    if (!ready) return;
+    if (!isIAPSupported) return;
 
     try {
       offerings.value = await Purchases.getOfferings();
@@ -157,8 +172,8 @@ class ProController extends GetxController with ConsoleMixin {
     }
   }
 
-  Future<void> _sync() async {
-    if (!ready) return;
+  Future<void> sync() async {
+    if (!isIAPSupported) return;
 
     try {
       info.value = await Purchases.getCustomerInfo();
@@ -166,10 +181,37 @@ class ProController extends GetxController with ConsoleMixin {
     } on PlatformException catch (e) {
       return console.error('sync error: $e');
     }
+
+    console.wtf('IS PRO USER: ${ProController.to.isPro}');
+
+    // show upgrade screen every after 5th times opened
+    if (!ProController.to.isPro && (Persistence.to.sessionCount.val % 5) == 0) {
+      await Future.delayed(1.seconds);
+
+      if (isIAPSupported) {
+        await Utils.adaptiveRouteOpen(name: Routes.upgrade);
+      }
+    } else {
+      if (!Persistence.to.rateDialogShown.val &&
+          Persistence.to.sessionCount.val > 16 &&
+          isRateReviewSupported) {
+        Persistence.to.rateDialogShown.val = true;
+
+        const dialog = AlertDialog(
+          content: SizedBox(
+            width: 400,
+            child: RateWidget(),
+          ),
+        );
+
+        Get.dialog(dialog);
+      }
+    }
   }
 
   Future<void> purchase(Package package) async {
-    if (!ready) return;
+    if (!isIAPSupported) return;
+
     Globals.timeLockEnabled = false; // temporarily disable
     CustomerInfo? info_;
 
@@ -188,7 +230,8 @@ class ProController extends GetxController with ConsoleMixin {
   }
 
   Future<void> restore() async {
-    if (!ready) return;
+    if (!isIAPSupported) return;
+
     CustomerInfo? info_;
 
     try {
@@ -269,10 +312,12 @@ class ProController extends GetxController with ConsoleMixin {
       case PurchasesErrorCode.unsupportedError:
         break;
       case PurchasesErrorCode.unknownError:
-        errorMessage = 'Unknown error. Please report to the developer.';
+        errorMessage = '';
+        // errorMessage = 'Unknown error. Please report to the developer.';
         break;
       default:
-        errorMessage = 'Weird error. Please report to the developer.';
+        errorMessage = '';
+        // errorMessage = 'Weird error. Please report to the developer.';
         break;
     }
 

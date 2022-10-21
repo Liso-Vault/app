@@ -2,10 +2,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/files/sync.service.dart';
 
-import '../../core/firebase/auth_desktop.service.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/globals.dart';
 import '../general/appbar_leading.widget.dart';
@@ -61,22 +58,6 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           onTap: controller.save,
         ),
         const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Auth Sign Out'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            AuthDesktopService.to.signOut();
-          },
-        ),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Auth Sign In'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            AuthDesktopService.to.signIn();
-          },
-        ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Sign Out'),

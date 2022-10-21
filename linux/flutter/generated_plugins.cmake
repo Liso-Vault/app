@@ -3,7 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  desktop_webview_auth
+  pasteboard
   platform_device_id_linux
   screen_retriever
   sentry_flutter

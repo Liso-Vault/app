@@ -7,12 +7,12 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 
-import '../../core/firebase/auth.service.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
+import '../supabase/supabase_auth.service.dart';
 import '../wallet/wallet.service.dart';
 
 class WelcomeScreenController extends GetxController
@@ -39,7 +39,7 @@ class WelcomeScreenController extends GetxController
     }
 
     change(null, status: RxStatus.loading());
-    await AuthService.to.signOut(); // just to make sure
+    await SupabaseAuthService.to.signOut(); // just to make sure
 
     if (!isLocalAuthSupported) {
       change(null, status: RxStatus.success());
@@ -68,7 +68,7 @@ class WelcomeScreenController extends GetxController
   }
 
   void restore() async {
-    await AuthService.to.signOut(); // just to make sure
+    await SupabaseAuthService.to.signOut(); // just to make sure
     Utils.adaptiveRouteOpen(name: Routes.restore);
   }
 }

@@ -5,10 +5,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../../../core/utils/globals.dart';
-import '../../core/supabase/model/object.model.dart';
 import '../../core/utils/utils.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
+import '../supabase/model/object.model.dart';
 
 class AttachmentTile extends StatelessWidget with ConsoleMixin {
   final S3Object object;

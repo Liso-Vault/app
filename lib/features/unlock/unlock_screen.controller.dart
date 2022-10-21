@@ -8,15 +8,12 @@ import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/utils/utils.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/persistence/persistence.secret.dart';
 import '../../core/services/local_auth.service.dart';
 import '../../core/utils/globals.dart';
-import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
-import '../pro/pro.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class UnlockScreenController extends GetxController

@@ -5,6 +5,7 @@ import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../contracts/liso.dart';
+import '../../features/connectivity/connectivity.service.dart';
 import '../../features/wallet/wallet.service.dart';
 import '../firebase/config/config.service.dart';
 import '../firebase/config/models/config_web3.model.dart';
@@ -48,16 +49,23 @@ class AlchemyService extends GetxService with ConsoleMixin {
   }
 
   Future<void> load() async {
+    if (!ConnectivityService.to.connected.value) {
+      return console.warning('offline');
+    }
+
     await loadLisoBalance();
     await loadMaticBalance();
   }
 
   Future<void> loadLisoBalance() async {
-    final alchemy = Alchemy();
+    if (!ConnectivityService.to.connected.value) {
+      return console.warning('offline');
+    }
+
     final lisoToken = LisoToken();
 
     final result = await alchemy.erc20.balanceOf(
-      address: EthereumAddress.fromHex(SecretPersistence.to.longAddress),
+      address: EthereumAddress.fromHex(SecretPersistence.to.walletAddress.val),
       contract: lisoToken.polygonMumbaiContract,
     );
 
@@ -74,8 +82,12 @@ class AlchemyService extends GetxService with ConsoleMixin {
   }
 
   Future<void> loadMaticBalance() async {
+    if (!ConnectivityService.to.connected.value) {
+      return console.warning('offline');
+    }
+
     final result = await alchemy.polygon.getBalance(
-      address: SecretPersistence.to.longAddress,
+      address: SecretPersistence.to.walletAddress.val,
     );
 
     result.fold(

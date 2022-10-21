@@ -1,15 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/auth.service.dart';
-import 'package:liso/core/firebase/firestore.service.dart';
-import 'package:liso/features/items/items.service.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 
-import '../../core/firebase/crashlytics.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/appbar_leading.widget.dart';
@@ -40,60 +34,61 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
       void confirmLeave() {
         void leave() async {
-          // TODO: delete self as member
+          // TODO: temporary
+          // // TODO: delete self as member
 
-          final membersCol = FirestoreService.to.sharedVaults
-              .doc(vault.docId)
-              .collection(kVaultMembersCollection);
+          // final membersCol = FirestoreService.to.sharedVaults
+          //     .doc(vault.docId)
+          //     .collection(kVaultMembersCollection);
 
-          final snapshot = await membersCol
-              .where('userId', isEqualTo: AuthService.to.userId)
-              .get();
+          // final snapshot = await membersCol
+          //     .where('userId', isEqualTo: AuthService.to.userId)
+          //     .get();
 
-          if (snapshot.docs.isEmpty) {
-            return UIUtils.showSimpleDialog(
-              'Failed To Leave',
-              'Did not find yourself as a member in this vault',
-            );
-          }
+          // if (snapshot.docs.isEmpty) {
+          //   return UIUtils.showSimpleDialog(
+          //     'Failed To Leave',
+          //     'Did not find yourself as a member in this vault',
+          //   );
+          // }
 
-          final batch = FirestoreService.to.instance.batch();
-          // remove from firestore
-          batch.delete(snapshot.docs.first.reference);
+          // final batch = FirestoreService.to.instance.batch();
+          // // remove from firestore
+          // batch.delete(snapshot.docs.first.reference);
 
-          batch.set(
-            membersCol.doc(kStatsDoc),
-            {
-              'count': FieldValue.increment(-1),
-              'updatedTime': FieldValue.serverTimestamp(),
-              'userId': AuthService.to.userId,
-            },
-            SetOptions(merge: true),
-          );
+          // batch.set(
+          //   membersCol.doc(kStatsDoc),
+          //   {
+          //     'count': FieldValue.increment(-1),
+          //     'updatedTime': FieldValue.serverTimestamp(),
+          //     'userId': AuthService.to.userId,
+          //   },
+          //   SetOptions(merge: true),
+          // );
 
-          try {
-            await batch.commit();
-          } catch (e, s) {
-            CrashlyticsService.to.record(e, s);
+          // try {
+          //   await batch.commit();
+          // } catch (e, s) {
+          //   CrashlyticsService.to.record(e, s);
 
-            return UIUtils.showSimpleDialog(
-              'Failed To Leave',
-              'Error leaving in server',
-            );
-          }
+          //   return UIUtils.showSimpleDialog(
+          //     'Failed To Leave',
+          //     'Error leaving in server',
+          //   );
+          // }
 
-          // remove from items
-          final items = ItemsService.to.data.where(
-            (e) => e.identifier == vault.docId,
-          );
+          // // remove from items
+          // final items = ItemsService.to.data.where(
+          //   (e) => e.identifier == vault.docId,
+          // );
 
-          if (items.isNotEmpty) {
-            await ItemsService.to.box!.deleteAll(items.map((e) => e.key));
-            console.wtf('permanently deleted');
-          }
+          // if (items.isNotEmpty) {
+          //   await ItemsService.to.box!.deleteAll(items.map((e) => e.key));
+          //   console.wtf('permanently deleted');
+          // }
 
-          // close dialog
-          Get.back();
+          // // close dialog
+          // Get.back();
         }
 
         final dialogContent = Text(

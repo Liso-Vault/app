@@ -20,61 +20,63 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
     final controller = Get.put(WelcomeScreenController());
 
     final content = Center(
-      child: Container(
-        constraints: Styles.containerConstraints,
-        padding: const EdgeInsets.all(30),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (Utils.isSmallScreen) ...[
-              const SizedBox(height: 100),
-            ],
-            RemoteImage(
-              url: ConfigService.to.general.app.image,
-              height: 150,
-              placeholder: Image.asset(Images.logo, height: 200),
-            ),
-            const SizedBox(height: 40),
-            const Text(
-              'Start securing your data & files now',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 30,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              ConfigService.to.general.app.longDescription,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 15),
-            ),
-            const SizedBox(height: 20),
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              alignment: WrapAlignment.center,
-              children: [
-                SizedBox(
-                  width: 200,
-                  child: ElevatedButton.icon(
-                    label: Text('create_vault'.tr),
-                    icon: const Icon(Iconsax.box_add),
-                    onPressed: controller.create,
-                  ),
-                ),
-                SizedBox(
-                  width: 200,
-                  child: OutlinedButton.icon(
-                    label: Text('restore_vault'.tr),
-                    icon: const Icon(Iconsax.import_1),
-                    onPressed: controller.restore,
-                  ),
-                ),
+      child: SingleChildScrollView(
+        child: Container(
+          constraints: Styles.containerConstraints,
+          padding: const EdgeInsets.all(30),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (Utils.isSmallScreen) ...[
+                const SizedBox(height: 100),
               ],
-            )
-          ],
+              RemoteImage(
+                url: ConfigService.to.general.app.image,
+                height: 150,
+                placeholder: Image.asset(Images.logo, height: 200),
+              ),
+              const SizedBox(height: 40),
+              const Text(
+                'Get Secured Now',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                ConfigService.to.general.app.longDescription,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 15),
+              ),
+              const SizedBox(height: 20),
+              Wrap(
+                spacing: 10,
+                runSpacing: 10,
+                alignment: WrapAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 200,
+                    child: ElevatedButton.icon(
+                      label: Text('create_vault'.tr),
+                      icon: const Icon(Iconsax.box_add),
+                      onPressed: controller.create,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: OutlinedButton.icon(
+                      label: Text('restore_vault'.tr),
+                      icon: const Icon(Iconsax.import_1),
+                      onPressed: controller.restore,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simple_animations/simple_animations.dart';
+import 'package:sa4_migration_kit/sa4_migration_kit.dart';
 import 'package:supercharged/supercharged.dart';
 
 enum AnimationProps { opacity, translationX, translationY, scale }
@@ -44,6 +44,7 @@ class ListItemAnimation extends StatelessWidget {
   final Axis axis;
   final Offset offset;
   final Duration delay, duration;
+  final bool enabled;
 
   const ListItemAnimation({
     Key? key,
@@ -52,10 +53,13 @@ class ListItemAnimation extends StatelessWidget {
     this.offset = const Offset(0.0, 50.0),
     this.delay = const Duration(milliseconds: 300),
     this.duration = const Duration(milliseconds: 300),
+    this.enabled = true,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (!enabled) return child;
+
     final tween = MultiTween<AnimationProps>()
       ..add(AnimationProps.opacity, 0.0.tweenTo(1.0))
       ..add(AnimationProps.translationX, offset.dx.tweenTo(0.0))

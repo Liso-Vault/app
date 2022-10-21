@@ -13,20 +13,19 @@ class NotificationsManager {
   static void init() async {
     if (GetPlatform.isWindows) return console.warning('not supported');
 
-    const iosSettings = IOSInitializationSettings(
+    const darwinSettings = DarwinInitializationSettings(
       onDidReceiveLocalNotification: onForegroundPayload,
     );
 
-    const macosSettings = MacOSInitializationSettings();
     const androidSettings = AndroidInitializationSettings('ic_notification');
 
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     await plugin.initialize(
-      onSelectNotification: onBackgroundPayload,
+      onDidReceiveNotificationResponse: onBackgroundPayload,
       const InitializationSettings(
         android: androidSettings,
-        iOS: iosSettings,
-        macOS: macosSettings,
+        iOS: darwinSettings,
+        macOS: darwinSettings,
       ),
     );
 
@@ -40,8 +39,7 @@ class NotificationsManager {
   }) async {
     if (GetPlatform.isWindows) return console.warning('not supported');
 
-    const iosDetails = IOSNotificationDetails();
-    const macosDetails = MacOSNotificationDetails();
+    const darwinDetails = DarwinNotificationDetails();
     const linuxDetails = LinuxNotificationDetails();
 
     const androidDetails = AndroidNotificationDetails(
@@ -52,8 +50,8 @@ class NotificationsManager {
 
     const details = NotificationDetails(
       android: androidDetails,
-      iOS: iosDetails,
-      macOS: macosDetails,
+      iOS: darwinDetails,
+      macOS: darwinDetails,
       linux: linuxDetails,
     );
 
@@ -68,8 +66,8 @@ class NotificationsManager {
     console.info('notified');
   }
 
-  static void onBackgroundPayload(String? payload) async {
-    console.info('onBackgroundPayload payload: ${payload!}');
+  static void onBackgroundPayload(NotificationResponse? response) async {
+    console.info('onBackgroundPayload payload: ${response?.payload}');
   }
 
   static void onForegroundPayload(

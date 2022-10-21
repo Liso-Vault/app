@@ -85,20 +85,20 @@ class WalletScreenController extends GetxController with ConsoleMixin {
           width: 200,
           child: Center(
             child: QrImage(
-              data: SecretPersistence.to.longAddress,
+              data: SecretPersistence.to.walletAddress.val,
               backgroundColor: Colors.white,
             ),
           ),
         ),
         const SizedBox(height: 20),
         Text(
-          SecretPersistence.to.longAddress,
+          SecretPersistence.to.walletAddress.val,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 10),
         TextButton.icon(
           onPressed: () =>
-              Utils.copyToClipboard(SecretPersistence.to.longAddress),
+              Utils.copyToClipboard(SecretPersistence.to.walletAddress.val),
           icon: const Icon(Iconsax.copy),
           label: const Text('Copy Address'),
         ),

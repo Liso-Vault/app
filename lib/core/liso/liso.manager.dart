@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
@@ -20,6 +19,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../features/groups/groups.service.dart';
 import '../../features/items/items.service.dart';
+import '../../features/supabase/supabase_auth.service.dart';
 import '../hive/models/metadata/metadata.hive.dart';
 import '../services/cipher.service.dart';
 import '../utils/globals.dart';
@@ -51,7 +51,7 @@ class LisoManager {
       await FilePicker.platform.clearTemporaryFiles();
     }
     // reset firebase
-    await AuthService.to.signOut();
+    await SupabaseAuthService.to.signOut();
     // clear hives
     await HiveService.to.clear();
     // clean temp folder

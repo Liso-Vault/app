@@ -24,7 +24,7 @@ const kEncryptedExtensionExtra = '.$kVaultExtension.enc';
 const kMetadataFileName = 'metadata.json';
 const kVaultFileName = 'vault.$kVaultExtension';
 // DESKTOP
-const kMinWindowSize = Size(400, 850);
+const kMinWindowSize = Size(400, 400);
 const kDesktopChangePoint = 800.0; // responsive setting
 // COLORS
 // INPUT FORMATTERS
@@ -70,6 +70,16 @@ bool get isPurchasesSupported => GetPlatform.isMacOS || GetPlatform.isMobile;
 bool get isLocalAuthSupported =>
     GetPlatform.isMobile && Persistence.to.biometrics.val;
 
+bool get isRateReviewSupported =>
+    !GetPlatform.isWeb && GetPlatform.isAndroid ||
+    GetPlatform.isIOS ||
+    (GetPlatform.isMacOS && isMacAppStore);
+
+bool get isIAPSupported =>
+    !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isMobile);
+
+bool get isGumroadSupported => !isIAPSupported;
+
 const kAppColor = Color(0xff02f297);
 const kAppColorDarker = Color(0xFF00A465);
 
@@ -78,8 +88,8 @@ Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 Color get proColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 // TODO: set before releasing a new version
-const kReleaseMode = ReleaseMode.production;
-bool get isBeta => kReleaseMode == ReleaseMode.beta;
+const releaseMode = ReleaseMode.production;
+bool get isBeta => releaseMode == ReleaseMode.beta;
 // firebase emulator settings
 const kUseFirebaseEmulator = false;
 const kFirebaseHost = 'localhost';

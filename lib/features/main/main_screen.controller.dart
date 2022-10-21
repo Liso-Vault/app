@@ -23,7 +23,6 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:window_manager/window_manager.dart';
 
-import '../../core/firebase/auth.service.dart';
 import '../../core/liso/liso_paths.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.secret.dart';
@@ -31,10 +30,12 @@ import '../../core/services/alchemy.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
+import '../files/storage.service.dart';
+import '../files/sync.service.dart';
 import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
-import '../files/sync.service.dart';
 import '../search/search.delegate.dart';
+import '../supabase/supabase_functions.service.dart';
 
 class MainScreenController extends GetxController
     with ConsoleMixin, WindowListener {
@@ -257,10 +258,10 @@ class MainScreenController extends GetxController
   }
 
   void postInit() async {
-    // firebase auth
-    AuthService.to.signIn();
     // load listview
     load();
+
+    StorageService.to.load().then((_) => SupabaseFunctionsService.to.sync());
 
     if (Globals.isAutofill) {
       // show all items from all vaults

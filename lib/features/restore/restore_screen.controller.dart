@@ -19,11 +19,11 @@ import '../../core/liso/liso.manager.dart';
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/local_auth.service.dart';
-import '../../core/supabase/supabase.service.dart';
 import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
+import '../supabase/supabase_functions.service.dart';
 
 class RestoreScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -57,7 +57,7 @@ class RestoreScreenController extends GetxController
   // FUNCTIONS
 
   Future<Either<String, Uint8List>> _downloadVault(String address) async {
-    final statResult = await SupabaseService.to.statObject(
+    final statResult = await SupabaseFunctionsService.to.statObject(
       kVaultFileName,
       address: address,
     );
@@ -68,7 +68,7 @@ class RestoreScreenController extends GetxController
       );
     }
 
-    final presignResult = await SupabaseService.to.presignUrl(
+    final presignResult = await SupabaseFunctionsService.to.presignUrl(
       object: kVaultFileName,
       address: address,
       method: 'GET',

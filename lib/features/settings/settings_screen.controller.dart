@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:liso/core/firebase/auth.service.dart';
 import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/persistence/persistence.dart';
@@ -32,6 +31,7 @@ import '../app/routes.dart';
 import '../groups/groups.service.dart';
 import '../menu/menu.item.dart';
 import '../pro/pro.controller.dart';
+import '../supabase/supabase_auth.service.dart';
 
 class SettingsScreenController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -114,7 +114,7 @@ class SettingsScreenController extends GetxController
     change('Exporting...', status: RxStatus.loading());
 
     final exportFileName =
-        '${SecretPersistence.to.longAddress}.wallet.$kWalletExtension';
+        '${SecretPersistence.to.walletAddress.val}.wallet.$kWalletExtension';
 
     final tempFile = File(join(
       LisoPaths.temp!.path,
@@ -420,28 +420,30 @@ class SettingsScreenController extends GetxController
       children: [
         ListTile(
           title: const Text('Wallet Address'),
-          subtitle: Text(SecretPersistence.to.longAddress),
+          subtitle: Text(SecretPersistence.to.walletAddress.val),
           dense: true,
           onTap: () => Utils.copyToClipboard(
-            SecretPersistence.to.longAddress,
+            SecretPersistence.to.walletAddress.val,
           ),
         ),
         ListTile(
           title: const Text('User ID'),
-          subtitle: Text(AuthService.to.userId),
+          subtitle: Text(SupabaseAuthService.to.user?.id ?? ''),
           dense: true,
           onTap: () => Utils.copyToClipboard(
-            AuthService.to.userId,
+            SupabaseAuthService.to.user!.id,
           ),
         ),
-        ListTile(
-          title: const Text('RC User ID'),
-          subtitle: Text(ProController.to.info.value.originalAppUserId),
-          dense: true,
-          onTap: () => Utils.copyToClipboard(
-            ProController.to.info.value.originalAppUserId,
+        if (isIAPSupported) ...[
+          ListTile(
+            title: const Text('RC User ID'),
+            subtitle: Text(ProController.to.info.value.originalAppUserId),
+            dense: true,
+            onTap: () => Utils.copyToClipboard(
+              ProController.to.info.value.originalAppUserId,
+            ),
           ),
-        ),
+        ],
         ListTile(
           title: Text('${ConfigService.to.appName} Pro'),
           subtitle: Text(ProController.to.isPro.toString()),
@@ -501,6 +503,17 @@ class SettingsScreenController extends GetxController
       Get.dialog(dialog);
     } catch (e) {
       console.error(e.toString());
+    }
+  }
+
+  void updateLicenseKey() {
+    if (SupabaseAuthService.to.authenticated) {
+      UIUtils.setLicenseKey();
+    } else {
+      UIUtils.showSimpleDialog(
+        'Sign In Required',
+        'Please sign up or sign in to update your license key',
+      );
     }
   }
 }

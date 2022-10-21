@@ -86,15 +86,15 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 onChanged: (value) => p.sync.val = value,
               ),
               if (p.sync.val) ...[
-                if (!GetPlatform.isWindows) ...[
-                  ListTile(
-                    leading: Icon(Iconsax.cpu, color: themeColor),
-                    trailing: const Icon(Iconsax.arrow_right_3),
-                    title: const Text('Devices'),
-                    subtitle: const Text('Manage your synced devices'),
-                    onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
-                  ),
-                ],
+                // if (!GetPlatform.isWindows) ...[
+                //   ListTile(
+                //     leading: Icon(Iconsax.cpu, color: themeColor),
+                //     trailing: const Icon(Iconsax.arrow_right_3),
+                //     title: const Text('Devices'),
+                //     subtitle: const Text('Manage your synced devices'),
+                //     onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
+                //   ),
+                // ],
                 // ListTile(
                 //   leading: Icon(Iconsax.setting, color: themeColor),
                 //   trailing: const Icon(Iconsax.arrow_right_3),
@@ -130,24 +130,25 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
               ),
               if (Persistence.to.canShare) ...[
-                ListTile(
-                  leading: Icon(Iconsax.share, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                  title: const Text('Shared Vaults'),
-                  subtitle: const Text('Manage your shared vaults'),
-                  onTap: () => Utils.adaptiveRouteOpen(
-                    name: Routes.sharedVaults,
-                  ),
-                ),
-                ListTile(
-                  leading: Icon(LineIcons.plus, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                  title: const Text('Joined Vaults'),
-                  subtitle: const Text('Manage your joined vaults'),
-                  onTap: () => Utils.adaptiveRouteOpen(
-                    name: Routes.joinedVaults,
-                  ),
-                ),
+                // TODO: temporary
+                // ListTile(
+                //   leading: Icon(Iconsax.share, color: themeColor),
+                //   trailing: const Icon(Iconsax.arrow_right_3),
+                //   title: const Text('Shared Vaults'),
+                //   subtitle: const Text('Manage your shared vaults'),
+                //   onTap: () => Utils.adaptiveRouteOpen(
+                //     name: Routes.sharedVaults,
+                //   ),
+                // ),
+                // ListTile(
+                //   leading: Icon(LineIcons.plus, color: themeColor),
+                //   trailing: const Icon(Iconsax.arrow_right_3),
+                //   title: const Text('Joined Vaults'),
+                //   subtitle: const Text('Manage your joined vaults'),
+                //   onTap: () => Utils.adaptiveRouteOpen(
+                //     name: Routes.joinedVaults,
+                //   ),
+                // ),
                 ListTile(
                   title: const Text('Backed Up Vaults'),
                   subtitle: const Text('Go back in time to undo your changes'),
@@ -291,12 +292,21 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   leading: Icon(LineIcons.rocket, color: proColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
                   title: const ProText(size: 16),
-                  subtitle: Text(
-                    '${ProController.to.proPrefixString} ${ProController.to.proDateString}',
-                  ),
+                  subtitle: ProController.to.proEntitlement == null
+                      ? null
+                      : Text(
+                          '${ProController.to.proPrefixString} ${ProController.to.proDateString}',
+                        ),
                   onTap: () => Utils.openUrl(
                     ProController.to.info.value.managementURL!,
                   ),
+                ),
+              ] else if (!isApple || kDebugMode) ...[
+                ListTile(
+                  leading: Icon(Icons.key, color: themeColor),
+                  title: const Text('Update License Key'), // TODO: localize
+                  subtitle: Obx(() => Text(ProController.to.shortLicenseKey)),
+                  onTap: controller.updateLicenseKey,
                 ),
               ],
               SwitchListTile(

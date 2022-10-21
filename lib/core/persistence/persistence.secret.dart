@@ -35,6 +35,12 @@ class SecretPersistence extends GetxController with ConsoleMixin {
   final s3EnableTrace = false.val('s3-enable-trace');
   // CONFIG
   final configSecrets = ''.val('secrets_config');
+  final configApp = ''.val('app_config');
+  final configWeb3 = ''.val('web3_config');
+  final configLimits = ''.val('limits_config');
+  final configUsers = ''.val('users_config');
+  final configGeneral = ''.val('general_config');
+  final configAppDomains = ''.val('app_domains_config');
 
   // GETTERS
 

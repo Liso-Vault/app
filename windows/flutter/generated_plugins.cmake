@@ -3,12 +3,13 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  connectivity_plus_windows
-  desktop_webview_auth
+  connectivity_plus
   local_auth_windows
+  pasteboard
   platform_device_id_windows
   screen_retriever
   sentry_flutter
+  share_plus
   url_launcher_windows
   window_manager
 )
