@@ -92,6 +92,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                 );
               },
             ),
+            const SizedBox(height: 10),
             Obx(
               () => DropdownButtonFormField<ExportedSourceFormat>(
                 value: controller.sourceFormat.value,
@@ -107,6 +108,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                     .toList(),
               ),
             ),
+            const SizedBox(height: 10),
             Row(
               children: [
                 Expanded(

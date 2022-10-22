@@ -50,7 +50,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
   String? _validateSeed(String seed) {
     if (required && seed.isEmpty) {
       return 'Required';
-    } else if (seed.isNotEmpty && !bip39.validateMnemonic(seed)) {
+    } else if (seed.isNotEmpty && !bip39.validateMnemonic(seed.trim())) {
       return 'Invalid seed phrase';
     } else {
       return null;

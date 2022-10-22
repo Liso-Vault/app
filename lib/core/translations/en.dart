@@ -220,6 +220,7 @@ final en = {
   "not_subscribed": "You are not subscribed to @w1 Pro",
   "month_billed_annually": "month billed annually",
   "try_free": "Try Free",
+  "try": "Try",
   "subscribe": "Subscribe",
   "trial_remind": "We'll remind you before your trial ends",
   "easy_cancel": "2 taps to start, super easy to cancel",

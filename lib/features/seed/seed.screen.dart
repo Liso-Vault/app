@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -74,7 +75,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
         const SizedBox(height: 20),
         seedPhrase,
         const SizedBox(height: 20),
-        if (!Persistence.to.backedUpSeed.val) ...[
+        if (!Persistence.to.backedUpSeed.val || !WalletService.to.isSaved) ...[
           ObxValue(
             (RxBool data) => CheckboxListTile(
               checkboxShape: const CircleBorder(),

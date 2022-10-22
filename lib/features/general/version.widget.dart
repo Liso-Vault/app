@@ -8,13 +8,13 @@ class VersionText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 20,
+      height: 30,
       child: Align(
         alignment: Alignment.bottomRight,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 25, right: 15),
+          padding: const EdgeInsets.only(bottom: 15, right: 15),
           child: Text(
-            Globals.metadata?.app.formattedVersion ?? '',
+            Globals.metadata?.app.formattedVersion ?? 'Unknown Version',
             style: const TextStyle(color: Colors.grey, fontSize: 10),
           ),
         ),

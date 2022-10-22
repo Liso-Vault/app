@@ -72,17 +72,15 @@ class UnlockScreenController extends GetxController
     if (status == RxStatus.loading()) return console.error('still busy');
     await Get.closeCurrentSnackbar();
     change(null, status: RxStatus.loading());
+    final password = passwordController.text.trim();
 
-    if (passwordController.text != SecretPersistence.to.walletPassword.val) {
+    if (password != SecretPersistence.to.walletPassword.val) {
       return _wrongPassword();
     }
 
     if (!WalletService.to.isReady) {
       WalletService.to
-          .initJson(
-        SecretPersistence.to.wallet.val,
-        password: passwordController.text,
-      )
+          .initJson(SecretPersistence.to.wallet.val, password: password)
           .then((wallet) {
         if (wallet == null) {
           return UIUtils.showSimpleDialog(

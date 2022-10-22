@@ -11,6 +11,7 @@ import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/general/pro.widget.dart';
 
 import '../../../core/utils/utils.dart';
+import '../../resources/resources.dart';
 import '../../core/persistence/persistence_builder.widget.dart';
 import '../pro/pro.controller.dart';
 import 'drawer_widget.controller.dart';
@@ -251,49 +252,88 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 ),
               ),
               const Divider(),
-              PersistenceBuilder(
-                builder: (p, context) => Obx(
-                  () => Column(
-                    children: [
-                      ListTile(
-                        title: Row(
-                          children: [
-                            if (!ProController.to.isPro) ...[
-                              const Text(
-                                'Try ',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                            const ProText(size: 16)
-                          ],
-                        ),
-                        subtitle: Text(
-                          ProController.to.isPro
-                              ? 'Active'
-                              : 'Unlock All Access',
-                          style: const TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w500,
+              Obx(
+                () => Visibility(
+                  visible: ProController.to.isPro,
+                  replacement: ListTile(
+                    // onTap: controller.showContestDialog,
+                    onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
+                    title: Row(
+                      children: [
+                        if (!ProController.to.isPro) ...[
+                          Text(
+                            '${'try'.tr} ',
+                            style: TextStyle(color: Get.theme.primaryColor),
                           ),
-                        ),
-                        leading: Icon(LineIcons.rocket, color: proColor),
-                        onTap: () => ProController.to.isPro
-                            ? Utils.openUrl(
-                                ProController.to.info.value.managementURL!,
-                              )
-                            : Utils.adaptiveRouteOpen(
-                                name: Routes.upgrade,
-                                method: 'offAndToNamed',
-                              ),
-                      )
-                          .animate(onPlay: (c) => c.repeat())
-                          .shimmer(duration: 2000.ms)
-                          .shakeX(duration: 1000.ms, hz: 2, amount: 1)
-                          .then(delay: 3000.ms),
-                    ],
+                        ],
+                        const ProText(size: 16),
+                      ],
+                    ),
+                    leading: Image.asset(Images.logo, height: 20),
+                  )
+                      .animate(onPlay: (c) => c.repeat())
+                      .shimmer(duration: 2000.ms)
+                      .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+                      .then(delay: 3000.ms),
+                  child: ListTile(
+                    title: const ProText(size: 16),
+                    leading: Icon(
+                      LineIcons.rocket,
+                      color: Get.theme.primaryColor,
+                    ),
+                    onTap: () {
+                      if (ProController.to.info.value.managementURL != null) {
+                        Utils.openUrl(
+                          ProController.to.info.value.managementURL!,
+                        );
+                      }
+                    },
                   ),
                 ),
               ),
+              // PersistenceBuilder(
+              //   builder: (p, context) => Obx(
+              //     () => Column(
+              //       children: [
+              //         ListTile(
+              //           title: Row(
+              //             children: [
+              //               if (!ProController.to.isPro) ...[
+              //                 const Text(
+              //                   'Try ',
+              //                   style: TextStyle(fontWeight: FontWeight.normal),
+              //                 ),
+              //               ],
+              //               const ProText(size: 16)
+              //             ],
+              //           ),
+              //           subtitle: Text(
+              //             ProController.to.isPro
+              //                 ? 'Active'
+              //                 : 'Unlock All Access',
+              //             style: const TextStyle(
+              //               color: Colors.grey,
+              //               fontWeight: FontWeight.w500,
+              //             ),
+              //           ),
+              //           leading: Icon(LineIcons.rocket, color: proColor),
+              //           onTap: () {
+              //             if (ProController.to.info.value.managementURL !=
+              //                 null) {
+              //               Utils.openUrl(
+              //                 ProController.to.info.value.managementURL!,
+              //               );
+              //             }
+              //           },
+              //         )
+              //             .animate(onPlay: (c) => c.repeat())
+              //             .shimmer(duration: 2000.ms)
+              //             .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+              //             .then(delay: 3000.ms),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               ListTile(
                 title: const Text('Need Help?'),
                 subtitle: const Text("Don't hesitate to contact us"),

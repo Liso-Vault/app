@@ -59,7 +59,8 @@ class CreatePasswordScreenController extends GetxController
     await SupabaseAuthService.to.signOut(); // just to make sure
 
     // TODO: improve password validation
-    if (passwordController.text != passwordConfirmController.text) {
+    if (passwordController.text.trim() !=
+        passwordConfirmController.text.trim()) {
       change(null, status: RxStatus.success());
 
       // TODO: localize
@@ -80,7 +81,7 @@ class CreatePasswordScreenController extends GetxController
 
     await WalletService.to.create(
       Get.parameters['seed']!,
-      passwordController.text,
+      passwordController.text.trim(),
       isNewVault,
     );
 

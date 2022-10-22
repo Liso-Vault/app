@@ -92,7 +92,7 @@ class RestoreScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     change(null, status: RxStatus.loading());
 
-    final seed = seedController.text;
+    final seed = seedController.text.trim();
     final credentials = WalletService.to.mnemonicToPrivateKey(seed);
     final address = credentials.address.hexEip55;
 

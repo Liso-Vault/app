@@ -40,7 +40,7 @@ dependencies:
   cloud_functions: 4.0.2
   # FIREBASE DESKTOP
   firebase_core_desktop: 1.0.2
-  # firebase_functions_desktop: 0.2.0+3
+  firebase_functions_desktop: 0.2.0+3
   firebase_core_platform_interface: 4.5.1
   # FIREBASE DESKTOP WORKAROUND
   firebase_dart: ^1.0.11
@@ -113,6 +113,9 @@ dependencies:
 
 dependency_overrides: 
   package_info_plus: ^3.0.1
+  # for firebase_functions_desktop on windows
+  firebase_core: ^2.1.0
+  cloud_functions: ^4.0.2
 
 dev_dependencies:
   # flutter_test:

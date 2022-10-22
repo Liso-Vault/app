@@ -85,26 +85,27 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 subtitle: const Text("Keep multiple devices in sync"),
                 onChanged: (value) => p.sync.val = value,
               ),
-              if (p.sync.val) ...[
-                // if (!GetPlatform.isWindows) ...[
-                //   ListTile(
-                //     leading: Icon(Iconsax.cpu, color: themeColor),
-                //     trailing: const Icon(Iconsax.arrow_right_3),
-                //     title: const Text('Devices'),
-                //     subtitle: const Text('Manage your synced devices'),
-                //     onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
-                //   ),
-                // ],
-                // ListTile(
-                //   leading: Icon(Iconsax.setting, color: themeColor),
-                //   trailing: const Icon(Iconsax.arrow_right_3),
-                //   title: const Text('Configuration'),
-                //   subtitle: const Text('Change your sync configuration'),
-                //   onTap: () => Utils.adaptiveRouteOpen(
-                //     name: Routes.syncProvider,
-                //   ),
-                // ),
-              ],
+              // TODO: temporary
+              // if (p.sync.val) ...[
+              // if (!GetPlatform.isWindows) ...[
+              //   ListTile(
+              //     leading: Icon(Iconsax.cpu, color: themeColor),
+              //     trailing: const Icon(Iconsax.arrow_right_3),
+              //     title: const Text('Devices'),
+              //     subtitle: const Text('Manage your synced devices'),
+              //     onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
+              //   ),
+              // ],
+              // ListTile(
+              //   leading: Icon(Iconsax.setting, color: themeColor),
+              //   trailing: const Icon(Iconsax.arrow_right_3),
+              //   title: const Text('Configuration'),
+              //   subtitle: const Text('Change your sync configuration'),
+              //   onTap: () => Utils.adaptiveRouteOpen(
+              //     name: Routes.syncProvider,
+              //   ),
+              // ),
+              // ],
             ],
           );
         }),
@@ -298,9 +299,13 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                       : Text(
                           '${ProController.to.proPrefixString} ${ProController.to.proDateString}',
                         ),
-                  onTap: () => Utils.openUrl(
-                    ProController.to.info.value.managementURL!,
-                  ),
+                  onTap: () {
+                    if (ProController.to.info.value.managementURL != null) {
+                      Utils.openUrl(
+                        ProController.to.info.value.managementURL!,
+                      );
+                    }
+                  },
                 ),
               ] else if (!isApple || kDebugMode) ...[
                 ListTile(
