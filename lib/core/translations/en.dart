@@ -218,4 +218,12 @@ final en = {
   "pro_restored": "Pro Restored",
   "no_purchases": "No Purchases",
   "not_subscribed": "You are not subscribed to @w1 Pro",
+  "month_billed_annually": "month billed annually",
+  "try_free": "Try Free",
+  "subscribe": "Subscribe",
+  "trial_remind": "We'll remind you before your trial ends",
+  "easy_cancel": "2 taps to start, super easy to cancel",
+  "purchases_supported_on": "Purchases unsupported on",
+  "purchase_detect":
+      "However, you can upgrade to Pro via an Android, iOS or MacOS device then the app will automatically detect it",
 };

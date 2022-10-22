@@ -1,5 +1,6 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
@@ -8,6 +9,7 @@ import 'package:liso/resources/resources.dart';
 import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/utils.dart';
 import '../general/busy_indicator.widget.dart';
+import '../general/gradient.widget.dart';
 import '../general/remote_image.widget.dart';
 import '../general/version.widget.dart';
 import 'welcome_screen.controller.dart';
@@ -37,14 +39,27 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                 placeholder: Image.asset(Images.logo, height: 200),
               ),
               const SizedBox(height: 40),
-              const Text(
-                'Get Secured Now',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
+              Animate(
+                child: const GradientWidget(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 0, 171, 105),
+                      Color.fromARGB(255, 0, 255, 213),
+                    ],
+                  ),
+                  child: Text(
+                    'Get Secured Now',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
-              ),
+              )
+                  .animate(onPlay: (c) => c.repeat())
+                  .shimmer(duration: 2000.ms)
+                  .then(delay: 3000.ms),
               const SizedBox(height: 10),
               Text(
                 ConfigService.to.general.app.longDescription,
@@ -63,7 +78,9 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                       label: Text('create_vault'.tr),
                       icon: const Icon(Iconsax.box_add),
                       onPressed: controller.create,
-                    ),
+                    )
+                        .animate(onPlay: (c) => c.repeat())
+                        .shimmer(duration: 2000.ms),
                   ),
                   SizedBox(
                     width: 200,

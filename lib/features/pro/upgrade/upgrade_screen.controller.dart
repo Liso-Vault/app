@@ -10,6 +10,10 @@ import 'package:liso/features/pro/pro.controller.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/firebase/config/models/config_limits.model.dart';
+import '../../../core/utils/utils.dart';
+import '../../app/routes.dart';
+import '../../supabase/model/gumroad_product.model.dart';
+import '../../supabase/supabase_functions.service.dart';
 
 class UpgradeScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -21,6 +25,7 @@ class UpgradeScreenController extends GetxController
   final busy = false.obs;
   final tabIndex = 0.obs;
   final package = Rx<Package>(Package.fromJson(kPackageInitial));
+  final gumroadProduct = const Product().obs;
 
   // GETTERS
   String get identifier => package.value.identifier;
@@ -141,6 +146,7 @@ class UpgradeScreenController extends GetxController
 
   // FUNCTIONS
   Future<void> _load() async {
+    if (!isIAPSupported) return _loadGumroad();
     await ProController.to.load();
 
     if (ProController.to.packages.isNotEmpty) {
@@ -148,8 +154,39 @@ class UpgradeScreenController extends GetxController
     }
   }
 
+  Future<void> _loadGumroad() async {
+    change(null, status: RxStatus.loading());
+    final result = await SupabaseFunctionsService.to.gumroadProductDetail();
+    change(null, status: RxStatus.success());
+
+    result.fold(
+      (left) => UIUtils.showSimpleDialog(
+        'Gumroad Product Error',
+        left,
+      ),
+      (right) {
+        gumroadProduct.value = right.product;
+        console.wtf('gumroad product: ${gumroadProduct.value.formattedPrice}');
+      },
+    );
+  }
+
   void purchase() async {
     if (busy.value) return console.error('still busy');
+
+    if (!isIAPSupported) {
+      Utils.openUrl(
+        ConfigService.to.general.app.links.store.gumroad,
+      );
+
+      Get.back();
+
+      return Utils.adaptiveRouteOpen(
+        name: Routes.settings,
+        parameters: {'expand': 'other_settings'},
+      );
+    }
+
     if (ProController.to.packages.isEmpty) {
       return console.error('empty packages');
     }

@@ -168,14 +168,14 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: RemoteImage(
-              url: 'https://i.imgur.com/4vTQ7Fg.png',
+              url: 'https://i.imgur.com/a25B2yQ.png',
               width: 20,
-              placeholder: Image.asset(Images.logo, height: 20),
+              placeholder: Image.asset(Images.placeholder, height: 20),
             ),
           ),
           trailing: const Icon(Iconsax.arrow_right_3),
-          title: const Text('NexSnap - Screenshot Designer'),
-          subtitle: const Text('Another app from us'),
+          title: const Text('NexSnap: Make beautiful screenshots'),
+          subtitle: const Text('Another app from us you need to try'),
           onTap: () => Utils.openUrl('https://nexsnap.app'),
         ),
         const SizedBox(height: 50),

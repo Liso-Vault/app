@@ -5,6 +5,8 @@ class SupabaseProfile {
     this.updatedAt,
     this.gumroadLicenseKey = '',
     this.revenuecatUserId = '',
+    this.address = '',
+    this.email = '',
   });
 
   final String id;
@@ -12,6 +14,8 @@ class SupabaseProfile {
   final DateTime? updatedAt;
   final String gumroadLicenseKey;
   final String revenuecatUserId;
+  final String address;
+  final String email;
 
   factory SupabaseProfile.fromJson(Map<String, dynamic> json) =>
       SupabaseProfile(
@@ -24,6 +28,8 @@ class SupabaseProfile {
             : DateTime.parse(json["updated_at"]),
         gumroadLicenseKey: json["gumroad_license_key"] ?? '',
         revenuecatUserId: json["revenuecat_user_id"] ?? '',
+        address: json["address"] ?? '',
+        email: json["email"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,5 +38,7 @@ class SupabaseProfile {
         "updated_at": updatedAt?.toIso8601String(),
         "gumroad_license_key": gumroadLicenseKey,
         "revenuecat_user_id": revenuecatUserId,
+        "address": address,
+        "email": email,
       };
 }

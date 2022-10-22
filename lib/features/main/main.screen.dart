@@ -421,7 +421,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                       style: TextStyle(color: isSelected ? themeColor : null),
                     ),
                   ),
-                  Chip(label: Text(count.toString())),
+                  Text(
+                    count.toString(),
+                    style: TextStyle(
+                      color: Get.theme.primaryColor,
+                      fontSize: 12,
+                    ),
+                  ),
                 ],
               ),
             );
@@ -461,7 +467,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                         style: TextStyle(color: isSelected ? themeColor : null),
                       ),
                     ),
-                    Chip(label: Text(count.toString())),
+                    Text(
+                      count.toString(),
+                      style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        fontSize: 12,
+                      ),
+                    ),
                   ],
                 ),
               );
@@ -526,7 +538,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                             TextStyle(color: isAllSelected ? themeColor : null),
                       ),
                     ),
-                    Chip(label: Text(allCount.toString())),
+                    Text(
+                      allCount.toString(),
+                      style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        fontSize: 12,
+                      ),
+                    ),
                   ],
                 ),
               ),

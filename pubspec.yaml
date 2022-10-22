@@ -80,6 +80,7 @@ dependencies:
   qr_flutter: ^4.0.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects
   flutter_rating_bar: ^4.0.1
+  flutter_animate: ^1.0.0
 
   # TOOLS
   url_launcher: ^6.1.6

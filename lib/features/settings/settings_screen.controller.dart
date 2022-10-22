@@ -73,6 +73,15 @@ class SettingsScreenController extends GetxController
   }
 
   @override
+  void onReady() {
+    if (Get.parameters['expand'] == 'other_settings') {
+      updateLicenseKey();
+    }
+
+    super.onReady();
+  }
+
+  @override
   void change(newState, {RxStatus? status}) {
     if (newState != null) busyMessage.value = newState;
     super.change(newState, status: status);

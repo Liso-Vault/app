@@ -1,6 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
@@ -284,7 +285,11 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                                 name: Routes.upgrade,
                                 method: 'offAndToNamed',
                               ),
-                      ),
+                      )
+                          .animate(onPlay: (c) => c.repeat())
+                          .shimmer(duration: 2000.ms)
+                          .shakeX(duration: 1000.ms, hz: 2, amount: 1)
+                          .then(delay: 3000.ms),
                     ],
                   ),
                 ),

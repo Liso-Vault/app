@@ -286,6 +286,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             subtitle: const Text('A few other settings'),
             leading: Icon(Iconsax.chart_2, color: themeColor),
             childrenPadding: const EdgeInsets.only(left: 20),
+            initiallyExpanded: Get.parameters['expand'] == 'other_settings',
             children: [
               if (ProController.to.isPro) ...[
                 ListTile(

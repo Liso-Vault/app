@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
@@ -24,27 +22,25 @@ class SupabaseDBService extends GetxService with ConsoleMixin {
     }
 
     // UPDATE PROFILE
-    final upsertProfileRes = await auth.client!.from('profiles').upsert(
-      {
-        'id': auth.user!.id,
-        'gumroad_license_key': key,
-        'updated_at': 'now()',
-      },
-    );
+    try {
+      final response = await auth.client!.from('profiles').upsert(
+        {
+          'id': auth.user!.id,
+          'gumroad_license_key': key,
+          'updated_at': 'now()',
+        },
+      ).select();
 
-    if (upsertProfileRes.hasError) {
-      return Left(
-        'Error: ${upsertProfileRes.error?.code} : ${upsertProfileRes.error?.message}',
-      );
+      // console.info('Upsert success! $response');
+
+      if (response.isEmpty) {
+        return const Left('Upsert Profile Error: empty data response');
+      }
+
+      final profile = SupabaseProfile.fromJson(response.first);
+      return Right(profile);
+    } catch (e) {
+      return Left('Upsert Profile Error: $e');
     }
-
-    console.wtf('upsert profiles! ${jsonEncode(upsertProfileRes.toJson())}');
-
-    if (upsertProfileRes.data.isEmpty) {
-      return const Left('Upsert Profile Error: empty data response');
-    }
-
-    final profile = SupabaseProfile.fromJson(upsertProfileRes.data.first);
-    return Right(profile);
   }
 }

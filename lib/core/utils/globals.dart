@@ -67,8 +67,6 @@ bool get isDesktop =>
     !GetPlatform.isWeb &&
     (GetPlatform.isMacOS || GetPlatform.isWindows || GetPlatform.isLinux);
 
-bool get isPurchasesSupported => GetPlatform.isMacOS || GetPlatform.isMobile;
-
 bool get isLocalAuthSupported =>
     GetPlatform.isMobile && Persistence.to.biometrics.val;
 
@@ -77,8 +75,10 @@ bool get isRateReviewSupported =>
     GetPlatform.isIOS ||
     (GetPlatform.isMacOS && isMacAppStore);
 
-bool get isIAPSupported =>
-    !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isMobile);
+// bool get isIAPSupported =>
+//     !GetPlatform.isWeb && (GetPlatform.isMacOS || GetPlatform.isMobile);
+
+bool get isIAPSupported => false;
 
 bool get isGumroadSupported => !isIAPSupported;
 

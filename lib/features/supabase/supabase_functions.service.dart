@@ -269,7 +269,7 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
     }
 
     final product = GumroadProduct.fromJson(serverResponse.data);
-    console.info('product: ${jsonEncode(product.toJson())}');
+    // console.info('product: ${jsonEncode(product.toJson())}');
     return Right(product);
   }
 

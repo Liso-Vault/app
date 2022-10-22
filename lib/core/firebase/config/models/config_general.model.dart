@@ -176,6 +176,7 @@ class ConfigGeneralStore {
     this.amazon = '',
     this.samsung = '',
     this.huawei = '',
+    this.gumroad = '',
   });
 
   final String google;
@@ -183,6 +184,7 @@ class ConfigGeneralStore {
   final String amazon;
   final String samsung;
   final String huawei;
+  final String gumroad;
 
   factory ConfigGeneralStore.fromJson(Map<String, dynamic> json) =>
       ConfigGeneralStore(
@@ -191,6 +193,7 @@ class ConfigGeneralStore {
         amazon: json["amazon"] ?? '',
         samsung: json["samsung"] ?? '',
         huawei: json["huawei"] ?? '',
+        gumroad: json["gumroad"] ?? '',
       );
 
   Map<String, dynamic> toJson() => {
@@ -199,6 +202,7 @@ class ConfigGeneralStore {
         "amazon": amazon,
         "samsung": samsung,
         "huawei": huawei,
+        "gumroad": gumroad,
       };
 }
 

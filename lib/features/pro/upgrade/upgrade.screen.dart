@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
@@ -5,10 +6,10 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/general/pro.widget.dart';
 import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/pro/upgrade/feature.tile.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 import '../../../core/firebase/config/config.service.dart';
 import '../../../core/persistence/persistence.dart';
@@ -110,7 +111,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
             ),
             FeatureTile(
               iconData: Iconsax.document_cloud,
-              title: 'Cloud Storage',
+              title: 'Encrypted Cloud Storage',
               trailing: Text(
                 filesize(1073741824),
                 style: kTrailingStyle,
@@ -290,24 +291,30 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               ),
             );
 
-            final percentageDifference_ =
-                ((product.price - intro.price) / product.price) * 100;
-
             secondary = Card(
               elevation: 1.0,
               margin: EdgeInsets.zero,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(10, 2, 10, 5),
-                child: Text(
-                  controller.isFreeTrial
-                      ? '${intro.periodNumberOfUnits} ${GetUtils.capitalizeFirst(intro.periodUnit.name)}\nFree Trial'
-                      : '${percentageDifference_.round()}%\nOFF',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: themeColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 12,
-                  ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CachedNetworkImage(
+                      imageUrl: 'https://i.imgur.com/zUCN6gk.png',
+                      height: 20,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      'Gumroad',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             );
@@ -362,7 +369,7 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
               title: title,
               subtitle: subTitle,
               value: package.identifier,
-              secondary: secondary,
+              secondary: !isIAPSupported ? secondary : null,
               groupValue: controller.identifier,
               activeColor: proColor,
               contentPadding: EdgeInsets.zero,
@@ -393,180 +400,214 @@ class UpgradeScreen extends StatelessWidget with ConsoleMixin {
 
     final actionCardContent = Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // temporarily remove until crypto features are matured
-        // if (isCryptoSupported) ...[
-        //   TabBar(
-        //     tabs: controller.tabBarItems,
-        //     onTap: (index) => controller.tabIndex.value = index,
-        //     indicator: UnderlineTabIndicator(
-        //       borderSide: BorderSide(color: proColor),
-        //     ),
-        //   ),
-        //   const SizedBox(height: 10),
-        // ],
-        if (isPurchasesSupported) ...[
-          Obx(
-            () {
-              final limit = controller.selectedLimit;
-              final isCurrent =
-                  controller.limitIndex == controller.tabIndex.value;
-              final tokenThreshold = currencyFormatter.format(
-                limit.tokenThreshold,
-              );
-
-              return IndexedStack(
-                index: controller.tabIndex.value,
-                alignment: Alignment.center,
-                children: [
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // Text(
-                      //   'Cancel anytime',
-                      //   textAlign: TextAlign.center,
-                      //   style: TextStyle(
-                      //     color: proColor,
-                      //     fontSize: 15,
-                      //   ),
-                      // ),
-                      productsListView,
-                      const SizedBox(height: 5),
-                      ElevatedButton(
-                        onPressed: controller.purchase,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: proColor,
-                          visualDensity: VisualDensity.standard,
-                          padding: const EdgeInsets.symmetric(vertical: 10),
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              '${controller.isFreeTrial ? 'Try Free' : 'Subscribe'} & Cancel Anytime',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
-                            ),
-                            if (controller.isFreeTrial) ...[
-                              const Text(
-                                "We'll remind you before your trial ends",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.normal,
-                                  fontSize: 13,
-                                ),
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      const Text(
-                        "2 taps to start, super easy to cancel",
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
+        isIAPSupported
+            ? productsListView
+            : RadioListTile<int>(
+                title: Obx(
+                  () => Text(
+                    controller.gumroadProduct.value.formattedPrice,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Get.theme.textTheme.titleLarge?.color,
+                    ),
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (isCurrent) ...[
-                        current,
-                      ] else ...[
-                        Text(
-                          'Stake a minimum of $tokenThreshold \$LISO and enjoy the above Pro features',
-                          textAlign: TextAlign.center,
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 15),
-                        ),
-                        const Divider(height: 10),
-                        ElevatedButton.icon(
-                          label: const Text('Stake \$LISO'),
-                          icon: const Icon(Iconsax.lock),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: proColor),
-                          onPressed: () {
-                            UIUtils.showSimpleDialog(
-                              'Stake \$LISO Tokens',
-                              'Coming soon...',
-                            );
-                          },
-                        ),
-                      ]
-                    ],
+                ),
+                contentPadding: EdgeInsets.zero,
+                groupValue: null,
+                onChanged: (_) {},
+                value: 0,
+              ),
+        const SizedBox(height: 5),
+        ElevatedButton(
+          onPressed: controller.purchase,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Get.theme.primaryColor,
+            visualDensity: VisualDensity.standard,
+            padding: const EdgeInsets.symmetric(
+              vertical: 10,
+              horizontal: 15,
+            ),
+          ),
+          child: Obx(
+            () => Column(
+              children: [
+                Text(
+                  '${controller.isFreeTrial ? 'try_free'.tr : 'subscribe'.tr} & ${'cancel_anytime'.tr}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      if (isCurrent) ...[
-                        current,
-                      ] else ...[
-                        Text(
-                          'Hold at least $tokenThreshold \$LISO and enjoy the above Pro features',
-                          textAlign: TextAlign.center,
-                          style:
-                              const TextStyle(color: Colors.grey, fontSize: 15),
-                        ),
-                        const Divider(height: 10),
-                        ElevatedButton.icon(
-                          label: const Text('Buy \$LISO'),
-                          icon: const Icon(Iconsax.bitcoin_card),
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: proColor),
-                          onPressed: () {
-                            UIUtils.showSimpleDialog(
-                              'Buy \$LISO Tokens',
-                              'Coming soon...',
-                            );
-                          },
-                        ),
-                      ]
-                    ],
-                  ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const Text(
-                        'Keep the free version because it is awesome anyway',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.grey, fontSize: 15),
-                      ),
-                      const Divider(height: 10),
-                      ElevatedButton.icon(
-                        label: Text('Keep ${ConfigService.to.appName} Free'),
-                        icon: const Icon(LineIcons.heart),
-                        style:
-                            ElevatedButton.styleFrom(backgroundColor: proColor),
-                        onPressed: Get.back,
-                      ),
-                    ],
+                ),
+                if (controller.isFreeTrial) ...[
+                  Text(
+                    "trial_remind".tr,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
-              );
-            },
-          ),
-        ] else ...[
-          Card(
-            child: ListTile(
-              leading: const Icon(LineIcons.infoCircle, color: Colors.orange),
-              title: const Text(
-                'Purchases unsupported on Windows',
-                style: TextStyle(color: Colors.orange),
-              ),
-              subtitle: Text(
-                'However, you can purchase on an Android, iOS or MacOS device and ${ConfigService.to.appName} will automatically detect it on Windows',
-              ),
-              onTap: () {
-                // TODO: show some message
-              },
+              ],
             ),
-          )
-        ],
+          ),
+        )
+            .animate(onPlay: (c) => c.repeat())
+            .shimmer(duration: 2000.ms)
+            .then(delay: 2000.ms),
+        const SizedBox(height: 5),
+        Text(
+          "easy_cancel".tr,
+          textAlign: TextAlign.center,
+        ),
+        // Obx(
+        //   () {
+        //     final limit = controller.selectedLimit;
+        //     final isCurrent =
+        //         controller.limitIndex == controller.tabIndex.value;
+        //     final tokenThreshold = currencyFormatter.format(
+        //       limit.tokenThreshold,
+        //     );
+
+        //     return IndexedStack(
+        //       index: controller.tabIndex.value,
+        //       alignment: Alignment.center,
+        //       children: [
+        //         Column(
+        //           mainAxisSize: MainAxisSize.min,
+        //           crossAxisAlignment: CrossAxisAlignment.stretch,
+        //           children: [
+        //             // Text(
+        //             //   'Cancel anytime',
+        //             //   textAlign: TextAlign.center,
+        //             //   style: TextStyle(
+        //             //     color: proColor,
+        //             //     fontSize: 15,
+        //             //   ),
+        //             // ),
+        //             productsListView,
+        //             const SizedBox(height: 5),
+        //             ElevatedButton(
+        //               onPressed: controller.purchase,
+        //               style: ElevatedButton.styleFrom(
+        //                 backgroundColor: proColor,
+        //                 visualDensity: VisualDensity.standard,
+        //                 padding: const EdgeInsets.symmetric(vertical: 10),
+        //               ),
+        //               child: Column(
+        //                 children: [
+        //                   Text(
+        //                     '${controller.isFreeTrial ? 'Try Free' : 'Subscribe'} & Cancel Anytime',
+        //                     style: const TextStyle(
+        //                       fontWeight: FontWeight.bold,
+        //                       fontSize: 16,
+        //                     ),
+        //                   ),
+        //                   if (controller.isFreeTrial) ...[
+        //                     const Text(
+        //                       "We'll remind you before your trial ends",
+        //                       textAlign: TextAlign.center,
+        //                       style: TextStyle(
+        //                         fontWeight: FontWeight.normal,
+        //                         fontSize: 13,
+        //                       ),
+        //                     ),
+        //                   ],
+        //                 ],
+        //               ),
+        //             ),
+        //             const SizedBox(height: 5),
+        //             const Text(
+        //               "2 taps to start, super easy to cancel",
+        //               textAlign: TextAlign.center,
+        //             ),
+        //           ],
+        //         ),
+        //         Column(
+        //           mainAxisSize: MainAxisSize.min,
+        //           crossAxisAlignment: CrossAxisAlignment.stretch,
+        //           children: [
+        //             if (isCurrent) ...[
+        //               current,
+        //             ] else ...[
+        //               Text(
+        //                 'Stake a minimum of $tokenThreshold \$LISO and enjoy the above Pro features',
+        //                 textAlign: TextAlign.center,
+        //                 style:
+        //                     const TextStyle(color: Colors.grey, fontSize: 15),
+        //               ),
+        //               const Divider(height: 10),
+        //               ElevatedButton.icon(
+        //                 label: const Text('Stake \$LISO'),
+        //                 icon: const Icon(Iconsax.lock),
+        //                 style:
+        //                     ElevatedButton.styleFrom(backgroundColor: proColor),
+        //                 onPressed: () {
+        //                   UIUtils.showSimpleDialog(
+        //                     'Stake \$LISO Tokens',
+        //                     'Coming soon...',
+        //                   );
+        //                 },
+        //               ),
+        //             ]
+        //           ],
+        //         ),
+        //         Column(
+        //           mainAxisSize: MainAxisSize.min,
+        //           crossAxisAlignment: CrossAxisAlignment.stretch,
+        //           children: [
+        //             if (isCurrent) ...[
+        //               current,
+        //             ] else ...[
+        //               Text(
+        //                 'Hold at least $tokenThreshold \$LISO and enjoy the above Pro features',
+        //                 textAlign: TextAlign.center,
+        //                 style:
+        //                     const TextStyle(color: Colors.grey, fontSize: 15),
+        //               ),
+        //               const Divider(height: 10),
+        //               ElevatedButton.icon(
+        //                 label: const Text('Buy \$LISO'),
+        //                 icon: const Icon(Iconsax.bitcoin_card),
+        //                 style:
+        //                     ElevatedButton.styleFrom(backgroundColor: proColor),
+        //                 onPressed: () {
+        //                   UIUtils.showSimpleDialog(
+        //                     'Buy \$LISO Tokens',
+        //                     'Coming soon...',
+        //                   );
+        //                 },
+        //               ),
+        //             ]
+        //           ],
+        //         ),
+        //         Column(
+        //           mainAxisSize: MainAxisSize.min,
+        //           crossAxisAlignment: CrossAxisAlignment.stretch,
+        //           children: [
+        //             const Text(
+        //               'Keep the free version because it is awesome anyway',
+        //               textAlign: TextAlign.center,
+        //               style: TextStyle(color: Colors.grey, fontSize: 15),
+        //             ),
+        //             const Divider(height: 10),
+        //             ElevatedButton.icon(
+        //               label: Text('Keep ${ConfigService.to.appName} Free'),
+        //               icon: const Icon(LineIcons.heart),
+        //               style:
+        //                   ElevatedButton.styleFrom(backgroundColor: proColor),
+        //               onPressed: Get.back,
+        //             ),
+        //           ],
+        //         ),
+        //       ],
+        //     );
+        //   },
+        // ),
         const SizedBox(height: 10),
       ],
     );
