@@ -1213,7 +1213,7 @@ class ItemScreenController extends GetxController
   }
 
   Future<void> showFieldProperties(dynamic formWidget) async {
-    final field = formWidget.children.first.child.field;
+    final field = formWidget.children.first.child.child.field;
     final formKey = GlobalKey<FormState>();
     final labelController = TextEditingController(text: field.data.label);
     final hintController = TextEditingController(text: field.data.hint);

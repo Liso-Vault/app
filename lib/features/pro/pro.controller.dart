@@ -19,7 +19,6 @@ import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../rate/rate.widget.dart';
-import '../supabase/supabase_auth.service.dart';
 
 class ProController extends GetxController with ConsoleMixin {
   static ProController get to => Get.find();

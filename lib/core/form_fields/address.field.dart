@@ -54,7 +54,7 @@ class AddressFormField extends StatefulWidget with ConsoleMixin {
 class _AddressFormFieldState extends State<AddressFormField> {
   // GETTERS
   dynamic get formWidget => ItemScreenController.to.widgets.firstWhere((e) =>
-      (e as dynamic).children.first.child.field.identifier ==
+      (e as dynamic).children.first.child.child.field.identifier ==
       widget.field.identifier);
 
   HiveLisoField get formField => formWidget.children.first.child.field;

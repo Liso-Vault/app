@@ -43,7 +43,8 @@ class FeedbackScreenController extends GetxController
     }
 
     Utils.contactEmail(
-      subject: '${ConfigService.to.appName} $feedbackType',
+      subject:
+          '${ConfigService.to.appName} ${feedbackType.toString().replaceAll('FeedbackType.', '').capitalizeFirst}',
       preBody: textController.text,
       rating: rating.value,
       previousRoute: Get.previousRoute,

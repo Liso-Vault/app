@@ -30,10 +30,10 @@ class TextFieldForm extends StatefulWidget {
 class _TextFieldFormState extends State<TextFieldForm> {
   // GETTERS
   dynamic get formWidget => ItemScreenController.to.widgets.firstWhere((e) =>
-      (e as dynamic).children.first.child.field.identifier ==
+      (e as dynamic).children.first.child.child.field.identifier ==
       widget.field.identifier);
 
-  HiveLisoField get formField => formWidget.children.first.child.field;
+  HiveLisoField get formField => formWidget.children.first.child.child.field;
 
   List<ContextMenuItem> get menuItems {
     return [
