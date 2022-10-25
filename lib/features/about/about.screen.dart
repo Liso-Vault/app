@@ -1,18 +1,17 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/general/appbar_leading.widget.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
-import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import 'about_screen.controller.dart';
 
@@ -24,32 +23,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
     final controller = Get.put(AboutScreenController());
 
     final config = Get.find<ConfigService>();
-    final persistence = Get.find<Persistence>();
 
     final content = ListView(
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
-        const SizedBox(height: 20),
-        ListTile(
-          leading: Image.asset(
-            Images.logo,
-            height: 20,
-            color: themeColor,
-          ),
-          title: Text(
-            '${config.appName} ${Globals.metadata?.app.formattedVersion}',
-          ),
-          onLongPress: () {
-            persistence.proTester.val = !persistence.proTester.val;
-
-            UIUtils.showSnackBar(
-              title: 'PRO Tester',
-              message: "PRO Tester mode has been enabled",
-            );
-          },
-        ),
-        if (isReviewable) ...[
+        if (isRateReviewSupported) ...[
           ListTile(
             leading: Icon(
               GetPlatform.isAndroid ? LineIcons.googlePlay : LineIcons.appStore,

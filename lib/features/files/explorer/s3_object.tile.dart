@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +106,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         //   object.key.replaceAll('${SecretPersistence.to.walletAddress.val}/', ''),
         // ),
         iconColor: themeColor,
-        leading: Utils.s3ContentIcon(object),
+        leading: AppUtils.s3ContentIcon(object),
         enabled: !controller.busy.value,
         onTap: open,
         trailing: ContextMenuButton(

@@ -1,3 +1,8 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,12 +10,8 @@ import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.dart';
-import '../../core/utils/ui_utils.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../pro/pro.controller.dart';
+import '../../core/utils/globals.dart';
 import 'categories.controller.dart';
 import 'categories.service.dart';
 
@@ -52,7 +53,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
 
   void _showForm() async {
     void done() {
-      Persistence.to.changes.val++;
+      AppPersistence.to.changes.val++;
       CategoriesController.to.load();
       // clear fields
       nameController.clear();
@@ -82,14 +83,13 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      if (CategoriesController.to.data.length >=
-          ProController.to.limits.customCategories) {
+      if (CategoriesController.to.data.length >= limits.customCategories) {
         return Utils.adaptiveRouteOpen(
           name: Routes.upgrade,
           parameters: {
             'title': 'Custom Categories',
             'body':
-                'Maximum custom categories of ${ProController.to.limits.customCategories} limit reached. Upgrade to Pro to unlock unlimited custom categories feature.',
+                'Maximum custom categories of ${limits.customCategories} limit reached. Upgrade to Pro to unlock unlimited custom categories feature.',
           },
         );
       }
@@ -169,8 +169,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: Text('${createMode ? 'new' : 'update'}_category'.tr),
-      content:
-          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
+      content: isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,

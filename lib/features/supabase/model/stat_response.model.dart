@@ -1,4 +1,5 @@
-import 'error.model.dart';
+import 'package:app_core/supabase/model/error.model.dart';
+
 import 'object.model.dart';
 
 class StatObjectResponse {

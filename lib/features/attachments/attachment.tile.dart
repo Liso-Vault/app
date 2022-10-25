@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +53,7 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
       title: Text(object.maskedName),
       subtitle: subTitle,
       iconColor: themeColor,
-      leading: Utils.s3ContentIcon(object),
+      leading: AppUtils.s3ContentIcon(object),
       // onTap: () => Get.back(result: content.object!.eTag),
       trailing: ContextMenuButton(
         menuItems,

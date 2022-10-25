@@ -1,3 +1,6 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,12 +8,7 @@ import 'package:liso/core/hive/models/metadata/metadata.hive.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/group.hive.dart';
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.dart';
-import '../../core/utils/ui_utils.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../pro/pro.controller.dart';
 import 'groups.controller.dart';
 import 'groups.service.dart';
 
@@ -51,7 +49,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
 
   void showForm() async {
     void done() {
-      Persistence.to.changes.val++;
+      AppPersistence.to.changes.val++;
       GroupsController.to.load();
       // clear fields
       nameController.clear();
@@ -81,17 +79,18 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      if (GroupsController.to.data.length >=
-          ProController.to.limits.customVaults) {
-        return Utils.adaptiveRouteOpen(
-          name: Routes.upgrade,
-          parameters: {
-            'title': 'Custom Vaults',
-            'body':
-                'Maximum custom vaults of ${ProController.to.limits.customVaults} limit reached. Upgrade to Pro to unlock unlimited custom vaults feature.',
-          },
-        );
-      }
+      // TODO: temporary
+      // if (GroupsController.to.data.length >=
+      //     limits.customVaults) {
+      //   return Utils.adaptiveRouteOpen(
+      //     name: Routes.upgrade,
+      //     parameters: {
+      //       'title': 'Custom Vaults',
+      //       'body':
+      //           'Maximum custom vaults of ${limits.customVaults} limit reached. Upgrade to Pro to unlock unlimited custom vaults feature.',
+      //     },
+      //   );
+      // }
 
       await GroupsService.to.box!.add(HiveLisoGroup(
         id: const Uuid().v4(),
@@ -148,8 +147,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: Text('${createMode ? 'new' : 'update'}_custom_vault'.tr),
-      content:
-          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
+      content: isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,

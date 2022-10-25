@@ -1,16 +1,16 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/general/remote_image.widget.dart';
 
-import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../general/appbar_leading.widget.dart';
-import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
@@ -32,7 +32,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
         category.metadata = await category.metadata!.getUpdated();
         category.deleted = true;
         await category.save();
-        Persistence.to.changes.val++;
+        AppPersistence.to.changes.val++;
         categoriesController.load();
       }
 
@@ -43,7 +43,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
 
         Get.dialog(AlertDialog(
           title: const Text('Delete Category'),
-          content: Utils.isSmallScreen
+          content: isSmallScreen
               ? dialogContent
               : SizedBox(width: 450, child: dialogContent),
           actions: [

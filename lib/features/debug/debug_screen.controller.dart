@@ -1,14 +1,6 @@
-import 'dart:convert';
-
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/globals.dart';
-
-import '../../core/firebase/config/config.service.dart';
-import '../../core/hive/models/app_domain.hive.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
 
 class DebugScreenController extends GetxController with ConsoleMixin {
   static DebugScreenController get to => Get.find();
@@ -119,86 +111,86 @@ status: ${status.toString()}'
   }
 
   void saveInfo() async {
-    metadata = AutofillMetadata(
-      packageNames: {'com.instagram.android'},
-      webDomains: {AutofillWebDomain(domain: 'instagram.com')},
-      saveInfo: SaveInfoMetadata(username: 'theuser', password: 'thepass'),
-    );
+    // metadata = AutofillMetadata(
+    //   packageNames: {'com.instagram.android'},
+    //   webDomains: {AutofillWebDomain(domain: 'instagram.com')},
+    //   saveInfo: SaveInfoMetadata(username: 'theuser', password: 'thepass'),
+    // );
 
-    if (metadata!.webDomains.isEmpty && metadata!.packageNames.isEmpty) {
-      return console.error('invalid autofill metadata');
-    }
+    // if (metadata!.webDomains.isEmpty && metadata!.packageNames.isEmpty) {
+    //   return console.error('invalid autofill metadata');
+    // }
 
-    final appDomains = ConfigService.to.appDomains.data.where((e) {
-      // DOMAINS
-      if (metadata?.webDomains != null &&
-          e.uris.where((e) {
-            final uri = Uri.tryParse(e);
-            if (uri == null) false;
-            final domain = AutofillWebDomain(
-              scheme: uri!.scheme,
-              domain: uri.host,
-            );
+    // final appDomains = ConfigService.to.appDomains.data.where((e) {
+    //   // DOMAINS
+    //   if (metadata?.webDomains != null &&
+    //       e.uris.where((e) {
+    //         final uri = Uri.tryParse(e);
+    //         if (uri == null) false;
+    //         final domain = AutofillWebDomain(
+    //           scheme: uri!.scheme,
+    //           domain: uri.host,
+    //         );
 
-            return metadata!.webDomains.contains(domain);
-          }).isNotEmpty) {
-        return true;
-      }
+    //         return metadata!.webDomains.contains(domain);
+    //       }).isNotEmpty) {
+    //     return true;
+    //   }
 
-      // PACKAGE NAMES
-      if (metadata?.packageNames != null &&
-          e.appIds
-              .where((a) => metadata!.packageNames.contains(a))
-              .isNotEmpty) {
-        return true;
-      }
+    //   // PACKAGE NAMES
+    //   if (metadata?.packageNames != null &&
+    //       e.appIds
+    //           .where((a) => metadata!.packageNames.contains(a))
+    //           .isNotEmpty) {
+    //     return true;
+    //   }
 
-      return false;
-    }).toList();
+    //   return false;
+    // }).toList();
 
-    final appIds = metadata?.packageNames != null
-        ? metadata!.packageNames.toList()
-        : <String>[];
+    // final appIds = metadata?.packageNames != null
+    //     ? metadata!.packageNames.toList()
+    //     : <String>[];
 
-    final uris = metadata?.webDomains != null
-        ? metadata!.webDomains
-            .toList()
-            .map((e) => '${e.scheme}://${e.domain}')
-            .toList()
-        : <String>[];
+    // final uris = metadata?.webDomains != null
+    //     ? metadata!.webDomains
+    //         .toList()
+    //         .map((e) => '${e.scheme}://${e.domain}')
+    //         .toList()
+    //     : <String>[];
 
-    String service = '';
+    // String service = '';
 
-    if (metadata!.packageNames.isNotEmpty) {
-      service = metadata!.packageNames.first;
-    } else if (metadata!.webDomains.isNotEmpty) {
-      service = metadata!.webDomains.first.domain;
-    }
+    // if (metadata!.packageNames.isNotEmpty) {
+    //   service = metadata!.packageNames.first;
+    // } else if (metadata!.webDomains.isNotEmpty) {
+    //   service = metadata!.webDomains.first.domain;
+    // }
 
-    final appDomain = appDomains.isNotEmpty
-        ? appDomains.first
-        : HiveAppDomain(
-            title: service,
-            appIds: appIds,
-            uris: uris,
-            iconUrl: '',
-          );
+    // final appDomain = appDomains.isNotEmpty
+    //     ? appDomains.first
+    //     : HiveAppDomain(
+    //         title: service,
+    //         appIds: appIds,
+    //         uris: uris,
+    //         iconUrl: '',
+    //       );
 
-    console.info('app domain: ${appDomain.toJson()}');
+    // console.info('app domain: ${appDomain.toJson()}');
 
-    final username = metadata?.saveInfo?.username ?? '';
-    final password = metadata?.saveInfo?.password ?? '';
+    // final username = metadata?.saveInfo?.username ?? '';
+    // final password = metadata?.saveInfo?.password ?? '';
 
-    Utils.adaptiveRouteOpen(
-      name: Routes.item,
-      parameters: {
-        'mode': 'saved_autofill',
-        'category': LisoItemCategory.login.name,
-        'title': '$username ${appDomain.title}',
-        'username': username,
-        'password': password,
-        'app_domain': jsonEncode(appDomain.toJson()),
-      },
-    );
+    // Utils.adaptiveRouteOpen(
+    //   name: Routes.item,
+    //   parameters: {
+    //     'mode': 'saved_autofill',
+    //     'category': LisoItemCategory.login.name,
+    //     'title': '$username ${appDomain.title}',
+    //     'username': username,
+    //     'password': password,
+    //     'app_domain': jsonEncode(appDomain.toJson()),
+    //   },
+    // );
   }
 }

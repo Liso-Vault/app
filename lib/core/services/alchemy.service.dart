@@ -1,27 +1,27 @@
 import 'package:alchemy_web3/alchemy_web3.dart';
+import 'package:app_core/connectivity/connectivity.service.dart';
+import 'package:app_core/firebase/config/config.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../contracts/liso.dart';
-import '../../features/connectivity/connectivity.service.dart';
 import '../../features/wallet/wallet.service.dart';
-import '../firebase/config/config.service.dart';
-import '../firebase/config/models/config_web3.model.dart';
+import '../firebase/model/config_web3.model.dart';
+import '../persistence/persistence.dart';
 import '../persistence/persistence.secret.dart';
+import '../utils/globals.dart';
 
 class AlchemyService extends GetxService with ConsoleMixin {
   static AlchemyService get to => Get.find();
 
   // VARIABLES
   final alchemy = Alchemy();
-  final persistence = Get.find<Persistence>();
   final config = Get.find<ConfigService>();
   final wallet = Get.find<WalletService>();
 
   // GETTERS
-  Chain get polygonChain => config.web3.chains.first;
+  Chain get polygonChain => configWeb3.chains.first;
 
   // INIT
 
@@ -74,9 +74,9 @@ class AlchemyService extends GetxService with ConsoleMixin {
         'Error: ${error.code} : ${error.message}',
       ),
       (response) {
-        persistence.lastLisoBalance.val =
+        AppPersistence.to.lastLisoBalance.val =
             response.getValueInUnit(EtherUnit.ether);
-        console.info('liso balance: ${persistence.lastLisoBalance.val}');
+        console.info('liso balance: ${AppPersistence.to.lastLisoBalance.val}');
       },
     );
   }
@@ -95,9 +95,10 @@ class AlchemyService extends GetxService with ConsoleMixin {
         'Error: ${error.code} : ${error.message}',
       ),
       (response) {
-        persistence.lastMaticBalance.val =
+        AppPersistence.to.lastMaticBalance.val =
             response.getValueInUnit(EtherUnit.ether);
-        console.info('matic balance: ${persistence.lastMaticBalance.val}');
+        console
+            .info('matic balance: ${AppPersistence.to.lastMaticBalance.val}');
       },
     );
   }

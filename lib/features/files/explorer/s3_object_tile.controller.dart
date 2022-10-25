@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -13,13 +17,10 @@ import 'package:share_plus/share_plus.dart';
 
 import '../../../core/liso/liso.manager.dart';
 import '../../../core/liso/liso_paths.dart';
-import '../../../core/notifications/notifications.manager.dart';
 import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/file.util.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/ui_utils.dart';
-import '../../../core/utils/utils.dart';
 import '../../attachments/attachments_screen.controller.dart';
 import '../../supabase/model/object.model.dart';
 import '../../supabase/supabase_functions.service.dart';
@@ -43,7 +44,7 @@ class S3ObjectTileController extends GetxController
   void share(S3Object object) async {
     change('Sharing...', status: RxStatus.loading());
 
-    final result = await SupabaseFunctionsService.to.presignUrl(
+    final result = await AppSupabaseFunctionsService.to.presignUrl(
       object: object.key,
       expirySeconds: 1.hours.inSeconds,
     );
@@ -63,7 +64,7 @@ class S3ObjectTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Share Securely'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -154,7 +155,7 @@ class S3ObjectTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Switch Vault'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -209,7 +210,7 @@ class S3ObjectTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: Text('delete'.tr),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,
@@ -252,7 +253,7 @@ class S3ObjectTileController extends GetxController
 
       final fileName = basename(file.path);
 
-      Globals.timeLockEnabled = false; // temporarily disable
+      timeLockEnabled = false; // temporarily disable
 
       if (GetPlatform.isMobile) {
         await Share.shareFiles(
@@ -261,7 +262,7 @@ class S3ObjectTileController extends GetxController
           text: GetPlatform.isIOS ? null : fileName,
         );
 
-        Globals.timeLockEnabled = true; // re-enable
+        timeLockEnabled = true; // re-enable
         return change('', status: RxStatus.success());
       }
 
@@ -270,7 +271,7 @@ class S3ObjectTileController extends GetxController
         dialogTitle: 'Choose Export Path',
       );
 
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       // user cancelled picker
       if (exportPath == null) {
         return change(null, status: RxStatus.success());
@@ -292,7 +293,7 @@ class S3ObjectTileController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Download'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
       actions: [

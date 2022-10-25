@@ -1,8 +1,7 @@
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_json_viewer/flutter_json_viewer.dart';
-
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
 
 class JSONViewerScreen extends StatelessWidget {
   final Map<String, dynamic> data;

@@ -1,22 +1,21 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/services/cipher.service.dart';
 import '../../core/utils/file.util.dart';
 import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../pro/pro.controller.dart';
 
 class CipherScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -49,7 +48,7 @@ class CipherScreenController extends GetxController
   // FUNCTIONS
 
   void encrypt() async {
-    Globals.timeLockEnabled = false; // temporarily disable
+    timeLockEnabled = false; // temporarily disable
     FilePickerResult? result;
 
     try {
@@ -58,27 +57,28 @@ class CipherScreenController extends GetxController
         type: FileType.any,
       );
     } catch (e) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       return;
     }
 
     if (result == null || result.files.isEmpty) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
     }
 
-    if (!ProController.to.limits.cipherTool) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Encryption Tool',
-          'body':
-              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${ConfigService.to.appName} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
-        },
-      );
-    }
+    // TODO: temporary
+    // if (!limits.cipherTool) {
+    //   return Utils.adaptiveRouteOpen(
+    //     name: Routes.upgrade,
+    //     parameters: {
+    //       'title': 'Encryption Tool',
+    //       'body':
+    //           'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${ConfigService.to.appName} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
+    //     },
+    //   );
+    // }
 
     change(false, status: RxStatus.loading());
     final stopwatch = Stopwatch()..start();
@@ -88,7 +88,7 @@ class CipherScreenController extends GetxController
     console.info('path: $path');
 
     if (name.contains(kEncryptedExtensionExtra)) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       change(null, status: RxStatus.success());
       return UIUtils.showSimpleDialog(
         'Already Encrypted',
@@ -112,7 +112,7 @@ class CipherScreenController extends GetxController
         text: GetPlatform.isIOS ? null : name,
       );
 
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       return change(false, status: RxStatus.success());
     }
 
@@ -121,7 +121,7 @@ class CipherScreenController extends GetxController
       dialogTitle: 'Choose Export Path',
     );
 
-    Globals.timeLockEnabled = true; // re-enable
+    timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
       return change(null, status: RxStatus.success());
@@ -144,7 +144,7 @@ class CipherScreenController extends GetxController
   }
 
   void decrypt() async {
-    Globals.timeLockEnabled = false; // temporarily disable
+    timeLockEnabled = false; // temporarily disable
     FilePickerResult? result;
 
     try {
@@ -154,13 +154,13 @@ class CipherScreenController extends GetxController
         type: FileType.any,
       );
     } catch (e) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       return;
     }
 
     if (result == null || result.files.isEmpty) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
     }
@@ -174,7 +174,7 @@ class CipherScreenController extends GetxController
 
     if (!name.contains('.$kVaultExtension') &&
         !name.contains(kEncryptedExtensionExtra)) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       change(null, status: RxStatus.success());
       return UIUtils.showSimpleDialog(
         'Invalid ${ConfigService.to.appName} Encrypted File',
@@ -198,7 +198,7 @@ class CipherScreenController extends GetxController
         text: GetPlatform.isIOS ? null : name,
       );
 
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       return change(false, status: RxStatus.success());
     }
 
@@ -207,7 +207,7 @@ class CipherScreenController extends GetxController
       dialogTitle: 'Choose Export Path',
     );
 
-    Globals.timeLockEnabled = true; // re-enable
+    timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
       return change(null, status: RxStatus.success());
@@ -265,9 +265,7 @@ class CipherScreenController extends GetxController
       title: Text('encrypt_text'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(
@@ -318,9 +316,7 @@ class CipherScreenController extends GetxController
       title: Text('decrypt_text'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app_core/persistence/mutable_value.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/core/persistence/mutable_value.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:secrets/secrets.dart';
 
@@ -82,7 +82,8 @@ class SecretPersistence extends GetxController with ConsoleMixin {
   }
 
   static Future<void> migrate() async {
-    final p = Get.find<Persistence>();
+    final p = Get.find<AppPersistence>();
+    // if already migrated
     if (p.migratedSecrets.val) return;
 
     final s = Get.find<SecretPersistence>();

@@ -1,3 +1,5 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
@@ -6,8 +8,6 @@ import 'package:liso/core/hive/models/field.hive.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
-import '../utils/globals.dart';
-import '../utils/utils.dart';
 
 class TOTPFormField extends StatefulWidget {
   final HiveLisoField field;
@@ -45,8 +45,10 @@ class _TOTPFormFieldState extends State<TOTPFormField> {
         onSelected: () => setState(() {
           obscureText = !obscureText;
         }),
-        leading: Icon(obscureText ? Iconsax.eye : Iconsax.eye_slash,
-            size: popupIconSize),
+        leading: Icon(
+          obscureText ? Iconsax.eye : Iconsax.eye_slash,
+          size: popupIconSize,
+        ),
       ),
       ContextMenuItem(
         title: 'Copy',

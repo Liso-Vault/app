@@ -1,20 +1,15 @@
-import 'dart:convert';
-
+import 'package:app_core/persistence/mutable_value.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:liso/core/persistence/mutable_value.dart';
-import 'package:secrets/secrets.dart';
 
-import '../../features/supabase/supabase_auth.service.dart';
-import '../liso/liso_paths.dart';
-import '../translations/data.dart';
 import '../utils/globals.dart';
 
-class Persistence extends GetxController with ConsoleMixin {
+class AppPersistence extends Persistence with ConsoleMixin {
   // STATIC
-  static Persistence get to => Get.find();
+  static AppPersistence get to => Get.find();
   static Box? box;
 
   // WALLET JSON
@@ -25,32 +20,15 @@ class Persistence extends GetxController with ConsoleMixin {
   final walletPrivateKeyHex = ''.val('wallet-private-key-hex');
   final walletAddress = ''.val('wallet-address');
   // GENERAL
-  final localeCode = 'en'.val('locale-code');
-  final crashReporting = true.val('crash-reporting');
-  final analytics = true.val('analytics');
-  final proTester = false.val('pro-tester');
-  final lastBuildNumber = 0.val('last-build-number');
-  final lastServerDateTime = ''.val('last-server-datetime');
   final backedUpSeed = false.val('backed-up-seed-phrase');
   final backedUpPassword = false.val('backed-up-password');
-  final notificationId = 0.val('notification-id');
   final upgradeScreenShown = false.val('upgrade-screen-shown');
   final sessionCount = 1.val('session-count');
   final rateDialogShown = false.val('rate-dialog-shown');
   final rateCardVisibility = true.val('rate-card-visibility');
-  final verifiedProCache = false.val('verified-pro-cache');
-  // WINDOW SIZE
-  final windowWidth = 1200.0.val('window-width');
-  final windowHeight = 850.0.val('window-height');
-  // THEME
-  final theme = ThemeMode.system.name.val('theme');
-  // SECURITY
-  final maxUnlockAttempts = 10.val('max-unlock-attempts');
-  final timeLockDuration = 120.val('time-lock-duration'); // in seconds
   // SYNC
   final sync = true.val('sync');
   final syncProvider = LisoSyncProvider.sia.name.val('sync-provider');
-  final biometrics = true.val('biometrics');
   final s3ObjectsCache = ''.val('s3-objects-cache');
   // // CUSTOM SYNC PROVIDER
   final s3Endpoint = ''.val('s3-endpoint');
@@ -72,8 +50,6 @@ class Persistence extends GetxController with ConsoleMixin {
   final lastLisoBalance = 0.0.val('last-liso-balance');
   final lastMaticUsdPrice = 0.0.val('last-matic-usd-price');
   final lastLisoUsdPrice = 0.0.val('last-liso-usd-price');
-  // SUPABASE
-  final supabaseSession = ''.val('supabase-session');
   // DELETED IDS
 
   // GETTERS
@@ -112,32 +88,5 @@ class Persistence extends GetxController with ConsoleMixin {
   }
 
   // STATIC
-  static Future<void> open() async {
-    box = await Hive.openBox(
-      kHiveBoxPersistence,
-      encryptionCipher: HiveAesCipher(base64Decode(Secrets.persistenceKey)),
-      path: LisoPaths.hivePath,
-    );
 
-    _initLocale();
-  }
-
-  static Future<void> reset() async {
-    await box?.clear();
-    await box?.deleteFromDisk();
-    await open();
-  }
-
-  static void _initLocale() {
-    final deviceLanguage = Get.deviceLocale?.languageCode;
-
-    final isSystemLocaleSupported =
-        translationKeys[deviceLanguage ?? 'en'] != null;
-    final defaultLocaleCode = isSystemLocaleSupported ? deviceLanguage : 'en';
-    final localeCode = box?.get('locale code');
-
-    if (defaultLocaleCode != null && localeCode == null) {
-      box?.put('locale code', defaultLocaleCode);
-    }
-  }
 }

@@ -1,3 +1,5 @@
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
@@ -7,9 +9,7 @@ import 'package:uuid/uuid.dart';
 import '../../../core/hive/models/group.hive.dart';
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
-import '../../../core/notifications/notifications.manager.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/ui_utils.dart';
 import '../../categories/categories.controller.dart';
 import '../../groups/groups.controller.dart';
 import '../../groups/groups.service.dart';
@@ -33,6 +33,7 @@ class LastPassImporter {
 
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
+    final autoTag = ImportScreenController.to.autoTag.value;
     const csvConverter = CsvToListConverter();
     var values = csvConverter.convert(csv, eol: '\n');
     final columns = values.first.map((e) => e.trim()).toList();
@@ -57,14 +58,14 @@ class LastPassImporter {
 
     final items = values.map(
       (row) async {
-        var url = row[0];
-        final username = row[1];
-        final password = row[2];
-        final totp = row[3];
-        final extra = row[4]; // TODO: work on custom fields
-        final name = row[5];
-        var grouping = row[6];
-        final favorite = row[7];
+        var url = row[0].toString();
+        final username = row[1].toString();
+        final password = row[2].toString();
+        final totp = row[3].toString();
+        final extra = row[4].toString(); // TODO: work on custom fields
+        final name = row[5].toString();
+        var grouping = row[6].toString();
+        final favorite = row[7] == 1;
         final hasCustomFields = extra.contains('NoteType:');
         final isLastPassUri =
             url.contains('http://sn') || url.contains('http://xn');
@@ -190,7 +191,7 @@ class LastPassImporter {
           // protected: reprompt == 1,
           favorite: favorite == 1,
           metadata: metadata,
-          tags: [sourceFormat.id.toLowerCase()],
+          tags: autoTag ? [sourceFormat.id.toLowerCase()] : [],
         );
       },
     );

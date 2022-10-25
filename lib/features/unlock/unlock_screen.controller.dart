@@ -1,18 +1,19 @@
 import 'dart:async';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/services/local_auth.service.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
-import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/services/local_auth.service.dart';
-import '../../core/utils/globals.dart';
+import '../../core/utils/utils.dart';
 import '../main/main_screen.controller.dart';
 import '../wallet/wallet.service.dart';
 
@@ -70,6 +71,7 @@ class UnlockScreenController extends GetxController
 
   void unlock() async {
     if (status == RxStatus.loading()) return console.error('still busy');
+    await UIUtils.showConsent();
     await Get.closeCurrentSnackbar();
     change(null, status: RxStatus.loading());
     final password = passwordController.text.trim();

@@ -1,3 +1,6 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
@@ -8,7 +11,6 @@ import '../../features/app/routes.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
-import '../../features/pro/pro.controller.dart';
 import '../utils/globals.dart';
 import '../utils/utils.dart';
 
@@ -56,8 +58,10 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         onSelected: () => setState(() {
           obscureText = !obscureText;
         }),
-        leading: Icon(obscureText ? Iconsax.eye : Iconsax.eye_slash,
-            size: popupIconSize),
+        leading: Icon(
+          obscureText ? Iconsax.eye : Iconsax.eye_slash,
+          size: popupIconSize,
+        ),
       ),
       if (widget.isPasswordField && !widget.field.readOnly) ...[
         ContextMenuItem(
@@ -71,7 +75,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         leading: Icon(Iconsax.copy, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
       ),
-      if (!ProController.to.limits.passwordHealth) ...[
+      if (!limits.passwordHealth) ...[
         ContextMenuItem(
           title: 'Password Health',
           leading: Icon(Iconsax.health, size: popupIconSize),
@@ -113,7 +117,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   // FUNCTIONS
   void _generate() async {
     final password_ = await Utils.adaptiveRouteOpen(
-      name: Routes.passwordGenerator,
+      name: AppRoutes.passwordGenerator,
       parameters: {'return': 'true'},
     );
 
@@ -138,13 +142,13 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,
-        helperText: ProController.to.limits.passwordHealth &&
+        helperText: limits.passwordHealth &&
                 widget.isPasswordField &&
                 widget.fieldController.text.isNotEmpty
-            ? Utils.strengthName(strength).toUpperCase()
+            ? AppUtils.strengthName(strength).toUpperCase()
             : null,
         helperStyle: TextStyle(
-          color: Utils.strengthColor(strength),
+          color: AppUtils.strengthColor(strength),
           fontWeight: FontWeight.bold,
         ),
         suffixIcon: ContextMenuButton(

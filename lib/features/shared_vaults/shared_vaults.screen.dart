@@ -1,23 +1,23 @@
 import 'dart:convert';
 
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.dart';
-import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../general/appbar_leading.widget.dart';
-import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
-import '../general/remote_image.widget.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
 import 'shared_vault.controller.dart';
@@ -122,9 +122,8 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
         Get.dialog(AlertDialog(
           title: Text(vault.name),
-          content: Utils.isSmallScreen
-              ? content
-              : SizedBox(width: 450, child: content),
+          content:
+              isSmallScreen ? content : SizedBox(width: 450, child: content),
           actions: [
             TextButton(
               onPressed: Get.back,
@@ -139,7 +138,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
       }
 
       final menuItems = [
-        if (Persistence.to.canShare) ...[
+        if (AppPersistence.to.canShare) ...[
           ContextMenuItem(
             title: 'share'.tr,
             leading: Icon(Iconsax.share, size: popupIconSize),

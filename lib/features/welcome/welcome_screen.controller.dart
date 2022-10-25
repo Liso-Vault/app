@@ -1,18 +1,19 @@
+import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/services/local_auth.service.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/pro/pro.controller.dart';
 
-import '../../core/notifications/notifications.manager.dart';
-import '../../core/services/local_auth.service.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
-import '../supabase/supabase_auth.service.dart';
 import '../wallet/wallet.service.dart';
 
 class WelcomeScreenController extends GetxController
@@ -34,16 +35,15 @@ class WelcomeScreenController extends GetxController
 
   void create() async {
     // show upgrade screen
-    if (!Persistence.to.upgradeScreenShown.val && !ProController.to.isPro) {
+    if (!AppPersistence.to.upgradeScreenShown.val && !ProController.to.isPro) {
       await Utils.adaptiveRouteOpen(name: Routes.upgrade);
     }
 
     change(null, status: RxStatus.loading());
-    await SupabaseAuthService.to.signOut(); // just to make sure
 
     if (!isLocalAuthSupported) {
       change(null, status: RxStatus.success());
-      return Utils.adaptiveRouteOpen(name: Routes.seed);
+      return Utils.adaptiveRouteOpen(name: AppRoutes.seed);
     }
 
     // TODO: custom localized reason
@@ -54,7 +54,7 @@ class WelcomeScreenController extends GetxController
 
     if (!authenticated) return change(null, status: RxStatus.success());
     final seed = bip39.generateMnemonic(strength: 256);
-    final password = Utils.generatePassword();
+    final password = AppUtils.generatePassword();
     await WalletService.to.create(seed, password, true);
     change(null, status: RxStatus.success());
 
@@ -68,7 +68,6 @@ class WelcomeScreenController extends GetxController
   }
 
   void restore() async {
-    await SupabaseAuthService.to.signOut(); // just to make sure
-    Utils.adaptiveRouteOpen(name: Routes.restore);
+    Utils.adaptiveRouteOpen(name: AppRoutes.restore);
   }
 }

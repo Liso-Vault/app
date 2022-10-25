@@ -1,11 +1,5 @@
-abstract class Routes {
-  static const main = '/';
-
+class AppRoutes {
   // SCREENS
-  static const unknown = '/unknown';
-  static const welcome = '/welcome';
-  static const settings = '/settings';
-  static const about = '/about';
   static const createPassword = '/create_password';
   static const passwordGenerator = '/password_generator';
   static const seed = '/seed';
@@ -15,8 +9,6 @@ abstract class Routes {
   static const export = '/export';
   static const item = '/item';
   static const reset = '/reset';
-  static const unlock = '/unlock';
-  static const upgrade = '/upgrade';
   static const otp = '/otp';
   static const categories = '/categories';
   static const categoryPicker = '/category_picker';
@@ -25,9 +17,6 @@ abstract class Routes {
   static const joinedVaults = '/joined_vaults';
   static const vaultExplorer = '/vault_explorer';
   static const devices = '/devices';
-  static const feedback = '/feedback';
-  static const update = '/update';
-  static const debug = '/debug';
 
   // SYNC
   // static const syncProvider = '/sync_provider';

@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +15,6 @@ import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:path/path.dart';
 
 import '../../core/utils/globals.dart';
-import '../../core/utils/ui_utils.dart';
 import '../groups/groups.controller.dart';
 import 'importers/apple.importer.dart';
 import 'importers/firefox.importer.dart';
@@ -58,6 +59,7 @@ class ImportScreenController extends GetxController
 
   // PROPERTIES
   final busy = false.obs;
+  final autoTag = true.obs;
 
   // GETTERS
 
@@ -215,7 +217,7 @@ class ImportScreenController extends GetxController
     if (GetPlatform.isAndroid) FilePicker.platform.clearTemporaryFiles();
     change(null, status: RxStatus.loading());
 
-    Globals.timeLockEnabled = false; // disable
+    timeLockEnabled = false; // disable
     FilePickerResult? result;
 
     try {
@@ -224,7 +226,7 @@ class ImportScreenController extends GetxController
         allowedExtensions: kAllowedExtensions,
       );
     } catch (e) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       return;
     }
@@ -232,7 +234,7 @@ class ImportScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (result == null || result.files.isEmpty) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
     }

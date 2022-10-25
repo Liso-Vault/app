@@ -1,10 +1,10 @@
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:skeletons/skeletons.dart';
 
-import '../../general/appbar_leading.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
 import '../../items/item.tile.dart';
 import '../../menu/menu.button.dart';

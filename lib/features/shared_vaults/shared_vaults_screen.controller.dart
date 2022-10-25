@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,10 +10,6 @@ import 'package:hive/hive.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
-
-import '../../core/firebase/config/config.service.dart';
-import '../../core/notifications/notifications.manager.dart';
-import '../../core/utils/utils.dart';
 
 class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   static SharedVaultsScreenController get to => Get.find();
@@ -63,19 +61,20 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   }
 
   void _showForm() async {
-    void done() {
-      // clear fields
-      nameController.clear();
-      descriptionController.clear();
-      cipherKeyController.clear();
+    // TODO: temporary
+    // void done() {
+    //   // clear fields
+    //   nameController.clear();
+    //   descriptionController.clear();
+    //   cipherKeyController.clear();
 
-      NotificationsManager.notify(
-        title: 'Shared Vault ${createMode ? 'Created' : 'Updated'}',
-        body: nameController.text,
-      );
+    //   NotificationsManager.notify(
+    //     title: 'Shared Vault ${createMode ? 'Created' : 'Updated'}',
+    //     body: nameController.text,
+    //   );
 
-      Get.back();
-    }
+    //   Get.back();
+    // }
 
     void edit() async {
       // TODO: temporary
@@ -111,13 +110,13 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       // }
 
       // if (SharedVaultsController.to.data.length >=
-      //     ProController.to.limits.sharedVaults) {
+      //     limits.sharedVaults) {
       //   return Utils.adaptiveRouteOpen(
       //     name: Routes.upgrade,
       //     parameters: {
       //       'title': 'Shared Vaults',
       //       'body':
-      //           'Maximum members: ${ProController.to.limits.sharedMembers} in shared vault reached. Upgrade to Pro to unlock unlimited shared vault members feature.',
+      //           'Maximum members: ${limits.sharedMembers} in shared vault reached. Upgrade to Pro to unlock unlimited shared vault members feature.',
       //     },
       //   );
       // }
@@ -272,9 +271,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
       title: Text('${createMode ? 'New' : 'Update'} Shared Vault'),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(
@@ -330,7 +327,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: Text('Delete ${object_.name}'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,

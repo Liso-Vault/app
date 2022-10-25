@@ -1,5 +1,11 @@
 import 'dart:io';
 
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/local_auth.service.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:file_picker/file_picker.dart';
@@ -8,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -17,9 +22,6 @@ import 'package:path/path.dart';
 
 import '../../core/liso/liso.manager.dart';
 import '../../core/middlewares/authentication.middleware.dart';
-import '../../core/notifications/notifications.manager.dart';
-import '../../core/services/local_auth.service.dart';
-import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
@@ -57,7 +59,7 @@ class RestoreScreenController extends GetxController
   // FUNCTIONS
 
   Future<Either<String, Uint8List>> _downloadVault(String address) async {
-    final statResult = await SupabaseFunctionsService.to.statObject(
+    final statResult = await AppSupabaseFunctionsService.to.statObject(
       kVaultFileName,
       address: address,
     );
@@ -68,7 +70,7 @@ class RestoreScreenController extends GetxController
       );
     }
 
-    final presignResult = await SupabaseFunctionsService.to.presignUrl(
+    final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
       object: kVaultFileName,
       address: address,
       method: 'GET',
@@ -146,7 +148,7 @@ class RestoreScreenController extends GetxController
         cipherKey: cipherKey,
       );
       // turn on sync setting if successfully imported via cloud
-      Persistence.to.sync.val =
+      AppPersistence.to.sync.val =
           restoreMode.value == RestoreMode.cloud ? true : false;
 
       if (isLocalAuthSupported) {
@@ -158,10 +160,10 @@ class RestoreScreenController extends GetxController
         if (!authenticated) return change(null, status: RxStatus.success());
         Get.back(); // close dialog
         AuthenticationMiddleware.signedIn = true;
-        final password = Utils.generatePassword();
+        final password = AppUtils.generatePassword();
         await WalletService.to.create(seed, password, false);
         change(null, status: RxStatus.success());
-        Persistence.to.backedUpSeed.val = true;
+        AppPersistence.to.backedUpSeed.val = true;
 
         NotificationsManager.notify(
           title: 'Welcome back to ${ConfigService.to.appName}',
@@ -173,7 +175,7 @@ class RestoreScreenController extends GetxController
         change(null, status: RxStatus.success());
 
         Utils.adaptiveRouteOpen(
-          name: Routes.createPassword,
+          name: AppRoutes.createPassword,
           parameters: {'seed': seed, 'from': 'restore_screen'},
         );
       }
@@ -188,11 +190,10 @@ class RestoreScreenController extends GetxController
       action: proceed,
       actionText: 'Restore',
       closeText: 'Cancel',
-      onClose: () {
-        change(null, status: RxStatus.success());
-        Get.back();
-      },
+      onClose: Get.back,
     );
+
+    change(null, status: RxStatus.success());
   }
 
   void importFile() async {
@@ -200,7 +201,7 @@ class RestoreScreenController extends GetxController
     if (GetPlatform.isAndroid) FilePicker.platform.clearTemporaryFiles();
     change(null, status: RxStatus.loading());
 
-    Globals.timeLockEnabled = false; // disable
+    timeLockEnabled = false; // disable
     FilePickerResult? result;
 
     try {
@@ -208,7 +209,7 @@ class RestoreScreenController extends GetxController
         type: FileType.any,
       );
     } catch (e) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       return;
     }
@@ -216,7 +217,7 @@ class RestoreScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     if (result == null || result.files.isEmpty) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       return;
     }

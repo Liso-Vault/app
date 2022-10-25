@@ -1,9 +1,9 @@
-import 'package:console_mixin/console_mixin.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
+import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
 
 class SeedGeneratorScreenController extends GetxController with ConsoleMixin {
@@ -34,7 +34,7 @@ class SeedGeneratorScreenController extends GetxController with ConsoleMixin {
 
   void save() {
     Utils.adaptiveRouteOpen(
-      name: Routes.item,
+      name: AppRoutes.item,
       parameters: {
         'mode': 'generated',
         'category': LisoItemCategory.cryptoWallet.name,

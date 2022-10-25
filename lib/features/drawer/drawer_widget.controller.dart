@@ -1,3 +1,5 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,7 +8,6 @@ import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 
 import '../../core/hive/models/item.hive.dart';
-import '../../core/persistence/persistence.dart';
 import '../../core/utils/utils.dart';
 import '../categories/categories.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
@@ -119,7 +120,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
         return Obx(
           () => ListTile(
             title: Text(category.reservedName, overflow: TextOverflow.ellipsis),
-            leading: Utils.categoryIcon(category.id),
+            leading: AppUtils.categoryIcon(category.id),
             selected: category.id == filterCategory.value,
             onTap: () => filterByCategory(category.id),
           ),
@@ -263,6 +264,6 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
 
   void done() async {
     await ItemsController.to.load();
-    if (Utils.isSmallScreen) Get.back();
+    if (isSmallScreen) Get.back();
   }
 }

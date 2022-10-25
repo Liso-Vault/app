@@ -1,3 +1,5 @@
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,6 @@ import 'package:get/get.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
 import '../../app/routes.dart';
-import '../../general/appbar_leading.widget.dart';
 import 'category_picker_screen.controller.dart';
 
 class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
@@ -22,12 +23,12 @@ class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
         Get.back();
 
         Utils.adaptiveRouteOpen(
-          name: Routes.item,
+          name: AppRoutes.item,
           parameters: {'mode': 'add', 'category': category.id},
         );
       }
 
-      final icon = Utils.categoryIcon(
+      final icon = AppUtils.categoryIcon(
         category.id,
         color: themeColor,
         size: 40,

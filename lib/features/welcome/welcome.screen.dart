@@ -1,17 +1,18 @@
+import 'package:app_core/config.dart';
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/widgets/gradient.widget.dart';
+import 'package:app_core/widgets/logo.widget.dart';
+import 'package:app_core/widgets/version.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/utils/styles.dart';
-import 'package:liso/resources/resources.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/utils/utils.dart';
-import '../general/busy_indicator.widget.dart';
-import '../general/gradient.widget.dart';
-import '../general/remote_image.widget.dart';
-import '../general/version.widget.dart';
 import 'welcome_screen.controller.dart';
 
 class WelcomeScreen extends StatelessWidget with ConsoleMixin {
@@ -30,27 +31,18 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              if (Utils.isSmallScreen) ...[
+              if (isSmallScreen) ...[
                 const SizedBox(height: 100),
               ],
-              RemoteImage(
-                url: ConfigService.to.general.app.image,
-                height: 150,
-                placeholder: Image.asset(Images.logo, height: 200),
-              ),
+              const LogoWidget(size: 200),
               const SizedBox(height: 40),
               Animate(
-                child: const GradientWidget(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 0, 171, 105),
-                      Color.fromARGB(255, 0, 255, 213),
-                    ],
-                  ),
+                child: GradientWidget(
+                  gradient: LinearGradient(colors: CoreConfig().gradientColors),
                   child: Text(
-                    'Get Secured Now',
+                    'slogan'.tr,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                     ),
@@ -62,7 +54,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                   .then(delay: 3000.ms),
               const SizedBox(height: 10),
               Text(
-                ConfigService.to.general.app.longDescription,
+                'slogan_sub'.tr,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 15),
               ),
@@ -136,19 +128,19 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    const darkDecoration = BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        colors: [
-          Colors.black,
-          Color(0xFF173030),
-        ],
-      ),
-    );
-
     return Container(
-      decoration: Get.isDarkMode ? darkDecoration : null,
+      decoration: Get.isDarkMode
+          ? const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Colors.black,
+                  Color(0xFF173030),
+                ],
+              ),
+            )
+          : null,
       child: Scaffold(
         backgroundColor: Get.isDarkMode ? Colors.transparent : null,
         bottomNavigationBar: bottomBar,

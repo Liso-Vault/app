@@ -1,3 +1,5 @@
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
@@ -7,9 +9,7 @@ import '../../../core/hive/models/field.hive.dart';
 import '../../../core/hive/models/group.hive.dart';
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
-import '../../../core/notifications/notifications.manager.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/ui_utils.dart';
 import '../../categories/categories.controller.dart';
 import '../../groups/groups.controller.dart';
 import '../../groups/groups.service.dart';
@@ -36,6 +36,7 @@ class BitwardenImporter {
 
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
+    final autoTag = ImportScreenController.to.autoTag.value;
     const csvConverter = CsvToListConverter();
     var values = csvConverter.convert(csv, eol: '\n');
     final columns = values.first.map((e) => e.trim()).toList();
@@ -60,17 +61,17 @@ class BitwardenImporter {
 
     final items = values.map(
       (row) async {
-        final folder = row[0];
-        final favorite = row[1];
-        final type = row[2];
-        final name = row[3];
-        final notes = row[4];
-        final String bitwardenFields = row[5];
-        final reprompt = row[6];
-        final url = row[7];
-        final username = row[8];
-        final password = row[9];
-        final totp = row[10];
+        final folder = row[0].toString();
+        final favorite = row[1] == 1;
+        final type = row[2].toString();
+        final name = row[3].toString();
+        final notes = row[4].toString();
+        final bitwardenFields = row[5].toString();
+        final reprompt = row[6] == 1;
+        final url = row[7].toString();
+        final username = row[8].toString();
+        final password = row[9].toString();
+        final totp = row[10].toString();
 
         // generate group if doesn't exist
         if (destinationGroupId == kSmartGroupId) {
@@ -102,11 +103,7 @@ class BitwardenImporter {
 
         // category
         var itemCategory = LisoItemCategory.login;
-
-        if (type == 'note') {
-          itemCategory = LisoItemCategory.note;
-        }
-
+        if (type == 'note') itemCategory = LisoItemCategory.note;
         // holder for custom field rows Key:Value
         var customFieldRows = bitwardenFields.split('\n');
 
@@ -166,10 +163,10 @@ class BitwardenImporter {
           // iconUrl: iconUrl.value,
           uris: url.isNotEmpty ? [url] : [],
           // appIds: appIds, // TODO: obtain app id from app uri
-          protected: reprompt == 1,
-          favorite: favorite == 1,
+          protected: reprompt,
+          favorite: favorite,
           metadata: metadata,
-          tags: [sourceFormat.id.toLowerCase()],
+          tags: autoTag ? [sourceFormat.id.toLowerCase()] : [],
         );
       },
     );

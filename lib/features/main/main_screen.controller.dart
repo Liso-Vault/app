@@ -1,6 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,16 +26,12 @@ import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
-import 'package:liso/features/pro/pro.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 import 'package:window_manager/window_manager.dart';
 
 import '../../core/liso/liso_paths.dart';
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/services/alchemy.service.dart';
-import '../../core/utils/ui_utils.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../files/storage.service.dart';
@@ -55,13 +59,13 @@ class MainScreenController extends GetxController
         .map(
           (e) => ContextMenuItem(
             title: e.reservedName,
-            leading: Utils.categoryIcon(
+            leading: AppUtils.categoryIcon(
               e.id,
               color: themeColor,
               size: popupIconSize,
             ),
             onSelected: () => Utils.adaptiveRouteOpen(
-              name: Routes.item,
+              name: AppRoutes.item,
               parameters: {'mode': 'add', 'category': e.id},
             ),
           ),
@@ -77,7 +81,7 @@ class MainScreenController extends GetxController
 
   List<ContextMenuItem> get menuItems {
     return [
-      if (persistence.sync.val) ...[
+      if (AppPersistence.to.sync.val) ...[
         ContextMenuItem(
           title: 'sync'.tr,
           leading: const Icon(Iconsax.cloud_change),
@@ -178,10 +182,16 @@ class MainScreenController extends GetxController
   // INIT
   @override
   void onInit() async {
-    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+    if (isDesktop) {
       window.addListener(this);
       window.setPreventClose(true);
     }
+
+    SupabaseAuthService.to.signedIn = () {
+      StorageService.to
+          .load()
+          .then((_) => AppSupabaseFunctionsService.to.syncUser());
+    };
 
     console.info('onInit');
     super.onInit();
@@ -189,7 +199,7 @@ class MainScreenController extends GetxController
 
   @override
   void onReady() {
-    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+    if (isDesktop) {
       window.setBrightness(
         Get.isDarkMode ? Brightness.dark : Brightness.light,
       );
@@ -202,7 +212,7 @@ class MainScreenController extends GetxController
 
   @override
   void onClose() {
-    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+    if (isDesktop) {
       window.removeListener(this);
     }
 
@@ -214,19 +224,18 @@ class MainScreenController extends GetxController
     bool preventClosing = await window.isPreventClose();
     final confirmClose = Get.isDialogOpen == false &&
         preventClosing &&
-        persistence.changes.val > 0 &&
-        persistence.sync.val;
+        AppPersistence.to.changes.val > 0 &&
+        AppPersistence.to.sync.val;
 
     if (!confirmClose) return window.destroy();
 
     final content = Text(
-      'There are ${persistence.changes.val} unsynced changes you may want to sync first before exiting.',
+      'There are ${AppPersistence.to.changes.val} unsynced changes you may want to sync first before exiting.',
     );
 
     Get.dialog(AlertDialog(
       title: const Text('Unsynced Changes'),
-      content:
-          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
+      content: isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -265,9 +274,7 @@ class MainScreenController extends GetxController
     // load listview
     load();
 
-    StorageService.to.load().then((_) => SupabaseFunctionsService.to.sync());
-
-    if (Globals.isAutofill) {
+    if (isAutofill) {
       // show all items from all vaults
       drawerController.filterGroupId.value = '';
       LisoAutofillService.to.request();
@@ -276,10 +283,6 @@ class MainScreenController extends GetxController
         // TODO: show some message a vault is required
       }
     } else {
-      // load balances
-      AlchemyService.to.init();
-      AlchemyService.to.load();
-
       // incase cipher key is still empty for some reason
       // retry again after a few seconds
       if (SecretPersistence.to.cipherKey.isEmpty) {
@@ -339,7 +342,7 @@ class MainScreenController extends GetxController
         return Future.value(msg);
       }
 
-      if (!Globals.timeLockEnabled) {
+      if (!timeLockEnabled) {
         console.warning('lifecycle: timeLock is disabled');
         return Future.value(msg);
       }
@@ -376,7 +379,7 @@ class MainScreenController extends GetxController
 
   void _updateBuildNumber() async {
     persistence.lastBuildNumber.val = int.parse(
-      Globals.metadata!.app.buildNumber,
+      metadataApp.buildNumber,
     );
   }
 
@@ -399,7 +402,7 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Empty Trash'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -434,7 +437,7 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Empty Deleted'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -468,7 +471,7 @@ class MainScreenController extends GetxController
 
       // delete imported items permanently
       for (var e in importedItemIds) {
-        Persistence.to.addToDeletedItems(e);
+        AppPersistence.to.addToDeletedItems(e);
       }
 
       final vault = await LisoManager.parseVaultBytes(
@@ -491,7 +494,7 @@ class MainScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: const Text('Imported Items'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -521,7 +524,7 @@ class MainScreenController extends GetxController
     if (!unlocked) return;
 
     Utils.adaptiveRouteOpen(
-      name: Routes.seed,
+      name: AppRoutes.seed,
       parameters: {'mode': 'display'},
     );
   }

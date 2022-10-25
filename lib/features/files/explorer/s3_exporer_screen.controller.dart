@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/files/sync.service.dart';
@@ -15,10 +18,7 @@ import 'package:path/path.dart';
 
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/ui_utils.dart';
 import '../../../core/utils/utils.dart';
-import '../../app/routes.dart';
-import '../../pro/pro.controller.dart';
 import '../../supabase/model/object.model.dart';
 
 class S3ExplorerScreenController extends GetxController
@@ -98,7 +98,7 @@ class S3ExplorerScreenController extends GetxController
 
   void pickFile() async {
     change(true, status: RxStatus.loading());
-    Globals.timeLockEnabled = false; // disable
+    timeLockEnabled = false; // disable
     FilePickerResult? result;
 
     try {
@@ -106,20 +106,20 @@ class S3ExplorerScreenController extends GetxController
         type: FileType.any,
       );
     } catch (e) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
       change(false, status: RxStatus.success());
       return;
     }
 
     if (result == null || result.files.isEmpty) {
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
       change(false, status: RxStatus.success());
       return;
     }
 
-    Globals.timeLockEnabled = true; // re-enable
+    timeLockEnabled = true; // re-enable
     final file = File(result.files.single.path!);
     console.info('picked: ${file.path}');
 
@@ -136,7 +136,7 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    if (fileSize > ProController.to.limits.uploadSize) {
+    if (fileSize > limits.uploadSize) {
       change(false, status: RxStatus.success());
 
       return Utils.adaptiveRouteOpen(
@@ -144,7 +144,7 @@ class S3ExplorerScreenController extends GetxController
         parameters: {
           'title': 'Upload Large Files',
           'body':
-              'Upload size limit: ${filesize(ProController.to.limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(ConfigService.to.limits.pro.uploadSize)} per file.',
+              'Upload size limit: ${filesize(limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(configLimits.pro.uploadSize)} per file.',
         },
       );
     }
@@ -154,18 +154,19 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void _upload(File file) async {
-    final assumedTotal = storage.rootInfo.value.data.size + await file.length();
+    // TODO: temporary
+    // final assumedTotal = storage.rootInfo.value.data.size + await file.length();
 
-    if (assumedTotal >= ProController.to.limits.uploadSize) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Add More Storage',
-          'body':
-              'Upgrade to Pro to store up to ${filesize(ConfigService.to.limits.pro.storageSize)} of files.',
-        },
-      );
-    }
+    // if (assumedTotal >= limits.uploadSize) {
+    //   return Utils.adaptiveRouteOpen(
+    //     name: Routes.upgrade,
+    //     parameters: {
+    //       'title': 'Add More Storage',
+    //       'body':
+    //           'Upgrade to Pro to store up to ${filesize(configLimits.pro.storageSize)} of files.',
+    //     },
+    //   );
+    // }
 
     change(true, status: RxStatus.loading());
     final encryptedBytes = CipherService.to.encrypt(await file.readAsBytes());
@@ -232,7 +233,7 @@ class S3ExplorerScreenController extends GetxController
       textCapitalization: TextCapitalization.sentences,
       maxLength: 100,
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      validator: (data) => Utils.validateFolderName(data!),
+      validator: (data) => AppUtils.validateFolderName(data!),
       decoration: const InputDecoration(
         labelText: 'Name',
         hintText: 'Folder Name',
@@ -243,9 +244,7 @@ class S3ExplorerScreenController extends GetxController
       title: Text('new_folder'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(

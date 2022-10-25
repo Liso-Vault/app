@@ -3,10 +3,12 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  hotkey_manager
   pasteboard
   platform_device_id_linux
   screen_retriever
   sentry_flutter
+  system_tray
   url_launcher_linux
   window_manager
 )

@@ -3,13 +3,17 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  app_links_windows
   connectivity_plus
+  hotkey_manager
   local_auth_windows
   pasteboard
+  permission_handler_windows
   platform_device_id_windows
   screen_retriever
   sentry_flutter
   share_plus
+  system_tray
   url_launcher_windows
   window_manager
 )

@@ -1,17 +1,17 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/seed/seed_field.widget.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/styles.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../general/appbar_leading.widget.dart';
 import '../general/segmented_item.widget.dart';
 import 'restore_screen.controller.dart';
 

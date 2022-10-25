@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/hive/models/device.hive.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/hive/models/metadata/device.hive.dart';
-
-import '../../core/utils/utils.dart';
 
 class DevicesScreenController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -92,7 +91,7 @@ class DevicesScreenController extends GetxController
       // data.remove(device);
       // Get.back(); // close dialog
 
-      // if (enforce && data.length <= ProController.to.limits.devices) {
+      // if (enforce && data.length <= limits.devices) {
       //   Get.back(); // close screen
       // }
     }
@@ -103,7 +102,7 @@ class DevicesScreenController extends GetxController
 
     Get.dialog(AlertDialog(
       title: Text('unsync_device'.tr),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,

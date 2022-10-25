@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
-
-import '../../core/firebase/config/config.service.dart';
-import '../../core/utils/utils.dart';
 
 class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   static JoinedVaultsScreenController get to => Get.find();
@@ -79,14 +78,14 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     // final owner = ownerSnapshot.data()!;
 
     // // obtain owner limits
-    // var ownerLimits = ConfigService.to.limits.free;
+    // var ownerLimits = configLimits.free;
 
     // if (owner.limits == 'holder') {
-    //   ownerLimits = ConfigService.to.limits.holder;
+    //   ownerLimits = configLimits.holder;
     // } else if (owner.limits == 'staker') {
-    //   ownerLimits = ConfigService.to.limits.staker;
+    //   ownerLimits = configLimits.staker;
     // } else if (owner.limits == 'pro') {
-    //   ownerLimits = ConfigService.to.limits.pro;
+    //   ownerLimits = configLimits.pro;
     // }
 
     // if (existingMembers >= ownerLimits.sharedMembers) {
@@ -284,9 +283,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
       title: Text('join_shared_vault'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(

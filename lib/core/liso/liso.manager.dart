@@ -2,15 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
+import 'package:liso/core/liso/vault.model.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/categories/categories.service.dart';
-import 'package:liso/core/liso/vault.model.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -19,7 +19,6 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../features/groups/groups.service.dart';
 import '../../features/items/items.service.dart';
-import '../../features/supabase/supabase_auth.service.dart';
 import '../hive/models/metadata/metadata.hive.dart';
 import '../services/cipher.service.dart';
 import '../utils/globals.dart';
@@ -50,8 +49,6 @@ class LisoManager {
     if (GetPlatform.isMobile) {
       await FilePicker.platform.clearTemporaryFiles();
     }
-    // reset firebase
-    await SupabaseAuthService.to.signOut();
     // clear hives
     await HiveService.to.clear();
     // clean temp folder

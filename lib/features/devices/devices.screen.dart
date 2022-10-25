@@ -1,14 +1,14 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/utils/globals.dart';
 
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../general/appbar_leading.widget.dart';
-import '../general/busy_indicator.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
 import '../menu/menu.button.dart';
@@ -26,7 +26,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       final device = controller.data[index];
 
       final menuItems = [
-        if (device.id != Globals.metadata!.device.id) ...[
+        if (device.id != metadataDevice.id) ...[
           ContextMenuItem(
             title: 'unsync'.tr,
             leading: Icon(Iconsax.slash, size: popupIconSize),
@@ -42,7 +42,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
         ),
       ];
 
-      final isThisDevice = device.id == Globals.metadata?.device.id;
+      final isThisDevice = device.id == metadataDevice.id;
 
       return ListTile(
         title: Text(device.model, maxLines: 1),

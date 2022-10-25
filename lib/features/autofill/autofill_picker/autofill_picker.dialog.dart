@@ -1,9 +1,9 @@
+import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 
 import '../../../core/hive/models/item.hive.dart';
-import '../../../core/utils/utils.dart';
 import 'autofill_picker_dialog.controller.dart';
 
 class AutofillPickerDialog extends StatelessWidget {
@@ -74,7 +74,7 @@ class AutofillPickerDialog extends StatelessWidget {
               : 'Select Password',
         ),
       ),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? content
           : Container(
               constraints: const BoxConstraints(maxHeight: 600),

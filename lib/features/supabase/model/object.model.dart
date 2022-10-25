@@ -1,7 +1,7 @@
+import 'package:app_core/utils/utils.dart';
 import 'package:path/path.dart';
 
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/utils.dart';
 import '../../../features/files/explorer/file_extensions.dart';
 
 class S3Object {

@@ -1,15 +1,15 @@
 import 'dart:convert';
 
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
+import 'package:liso/core/utils/globals.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/app_domain.hive.dart';
 import '../../core/hive/models/item.hive.dart';
-import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../main/main_screen.controller.dart';
 import 'autofill_picker/autofill_picker.dialog.dart';
@@ -80,7 +80,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
       query = metadata!.packageNames.first;
     }
 
-    final appDomains = ConfigService.to.appDomains.data.where((e) {
+    final appDomains = configAppDomains.data.where((e) {
       // DOMAINS
       if (metadata?.webDomains != null &&
           e.uris.where((e) {
@@ -120,7 +120,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
       return console.error('invalid autofill metadata');
     }
 
-    final appDomains = ConfigService.to.appDomains.data.where((e) {
+    final appDomains = configAppDomains.data.where((e) {
       // DOMAINS
       if (e.uris.where((e) {
         final uri = Uri.tryParse(e);
@@ -178,7 +178,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
     final password = metadata?.saveInfo?.password ?? '';
 
     Utils.adaptiveRouteOpen(
-      name: Routes.item,
+      name: AppRoutes.item,
       parameters: {
         'mode': 'saved_autofill',
         'category': LisoItemCategory.login.name,

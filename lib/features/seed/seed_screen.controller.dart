@@ -1,3 +1,7 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,12 +9,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:bip39/bip39.dart' as bip39;
 import 'package:liso/features/seed/seed_field.widget.dart';
 
-import '../../core/utils/globals.dart';
 import '../items/items.service.dart';
-import '../../core/utils/ui_utils.dart';
 import '../menu/menu.item.dart';
 
 class SeedScreenController extends GetxController with ConsoleMixin {
@@ -82,11 +83,11 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void continuePressed() async {
-    Persistence.to.backedUpSeed.val = true;
+    AppPersistence.to.backedUpSeed.val = true;
     if (isDisplayMode) return Get.back();
 
     Utils.adaptiveRouteOpen(
-      name: Routes.createPassword,
+      name: AppRoutes.createPassword,
       parameters: {
         'seed': seed.value,
         'from': 'seed_screen',
@@ -95,7 +96,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   }
 
   void _showQR() {
-    UIUtils.showQR(
+    AppUtils.showQR(
       seed.value,
       title: 'Seed QR Code',
       subTitle: "Make sure you're in a safe location and free from prying eyes",
@@ -104,7 +105,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
 
   void _generate() async {
     final seed_ = await Utils.adaptiveRouteOpen(
-      name: Routes.seedGenerator,
+      name: AppRoutes.seedGenerator,
       parameters: {'return': 'true'},
     );
 
@@ -133,7 +134,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: const Text('Enter Your Seed'),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : SizedBox(
               width: 450,

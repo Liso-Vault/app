@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
@@ -7,7 +8,6 @@ import 'package:liso/features/general/section.widget.dart';
 import '../../features/items/item_screen.controller.dart';
 import '../../features/menu/menu.button.dart';
 import '../../features/menu/menu.item.dart';
-import '../utils/globals.dart';
 
 class SectionFormField extends StatefulWidget {
   final HiveLisoField field;

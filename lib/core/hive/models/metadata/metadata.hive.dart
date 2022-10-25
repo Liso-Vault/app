@@ -1,9 +1,8 @@
 import 'dart:convert';
 
+import 'package:app_core/hive/models/app.hive.dart';
+import 'package:app_core/hive/models/device.hive.dart';
 import 'package:hive/hive.dart';
-
-import 'app.hive.dart';
-import 'device.hive.dart';
 
 part 'metadata.hive.g.dart';
 

@@ -1,19 +1,20 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/hive/models/group.hive.dart';
-import 'package:liso/features/general/busy_indicator.widget.dart';
 import 'package:liso/features/general/widget_refresher.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/styles.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../general/appbar_leading.widget.dart';
 import 'import_screen.controller.dart';
 
 class ImportScreen extends StatelessWidget with ConsoleMixin {
@@ -62,7 +63,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                         dropdownRefresher.reload();
 
                         return await Utils.adaptiveRouteOpen(
-                          name: Routes.vaults,
+                          name: AppRoutes.vaults,
                         );
                       }
 
@@ -129,6 +130,16 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                   onPressed: controller.importFile,
                 ),
               ],
+            ),
+            const SizedBox(height: 10),
+            Obx(
+              () => CheckboxListTile(
+                title: Text(
+                  'Automatically tag items with (${controller.sourceFormat.value.id})',
+                ),
+                value: controller.autoTag.value,
+                onChanged: (value) => controller.autoTag.value = value!,
+              ),
             ),
             const SizedBox(height: 20),
             SizedBox(

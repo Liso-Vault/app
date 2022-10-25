@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:app_core/firebase/analytics.service.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:coingecko_api/coingecko_api.dart';
@@ -12,8 +15,8 @@ import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
-import 'package:liso/core/firebase/analytics.service.dart';
 import 'package:liso/core/persistence/persistence.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:worker_manager/worker_manager.dart';
 
@@ -24,7 +27,6 @@ import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/globals.dart';
 import '../categories/categories.controller.dart';
 import '../items/items.service.dart';
-import '../supabase/supabase_auth.service.dart';
 
 class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
@@ -56,11 +58,12 @@ class WalletService extends GetxService with ConsoleMixin {
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
   double get maticUsdBalance =>
-      Persistence.to.lastMaticBalance.val *
-      Persistence.to.lastMaticUsdPrice.val;
+      AppPersistence.to.lastMaticBalance.val *
+      AppPersistence.to.lastMaticUsdPrice.val;
 
   double get lisoUsdBalance =>
-      Persistence.to.lastLisoBalance.val * Persistence.to.lastLisoUsdPrice.val;
+      AppPersistence.to.lastLisoBalance.val *
+      AppPersistence.to.lastLisoUsdPrice.val;
 
   @override
   void onInit() {
@@ -88,7 +91,8 @@ class WalletService extends GetxService with ConsoleMixin {
       );
     }
 
-    Persistence.to.lastMaticUsdPrice.val = result.data.first.getPriceIn('usd')!;
+    AppPersistence.to.lastMaticUsdPrice.val =
+        result.data.first.getPriceIn('usd')!;
   }
 
   Wallet mnemonicToWallet(
@@ -188,7 +192,10 @@ class WalletService extends GetxService with ConsoleMixin {
     SecretPersistence.to.walletSignature.val = signature;
     // // from the first 32 bits of the signature
     // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
-    SupabaseAuthService.to.authenticate();
+
+    final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
+    final password = await WalletService.to.sign(kAuthSignatureMessage);
+    SupabaseAuthService.to.authenticate(email: email, password: password);
 
     if (!GetPlatform.isWindows) {
       AnalyticsService.to.instance.setUserProperty(

@@ -4,7 +4,6 @@ import 'package:liso/core/hive/models/item.hive.dart';
 
 import '../../core/utils/globals.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../pro/pro.controller.dart';
 import 'items.service.dart';
 
 class ItemsController extends GetxController with ConsoleMixin, StateMixin {
@@ -18,11 +17,16 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
   final sortOrder = LisoItemSortOrder.dateModifiedDescending.obs;
 
   // GETTERS
-  bool get itemLimitReached => data.length >= ProController.to.limits.items;
 
-  bool get protectedItemLimitReached =>
-      data.where((e) => e.protected).length >=
-      ProController.to.limits.protectedItems;
+  // TODO: temporary
+  // bool get itemLimitReached => data.length >= limits.items;
+  bool get itemLimitReached => false;
+
+  // TODO: temporary
+  // bool get protectedItemLimitReached =>
+  //     data.where((e) => e.protected).length >=
+  //     limits.protectedItems;
+  bool get protectedItemLimitReached => false;
 
   // INIT
   @override
@@ -41,7 +45,7 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
     Iterable<HiveLisoItem> filteredItems = List.from(raw);
 
     // FILTER ITEMS WITH USERNAME / PASSWORDS ONLY
-    if (Globals.isAutofill) {
+    if (isAutofill) {
       filteredItems = filteredItems.where(
           (e) => e.usernameFields.isNotEmpty || e.passwordFields.isNotEmpty);
     }

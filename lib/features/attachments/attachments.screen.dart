@@ -1,13 +1,13 @@
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/features/attachments/attachment.tile.dart';
 
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
 import '../files/storage.service.dart';
-import '../general/appbar_leading.widget.dart';
 import '../general/centered_placeholder.widget.dart';
 import 'attachments_screen.controller.dart';
 

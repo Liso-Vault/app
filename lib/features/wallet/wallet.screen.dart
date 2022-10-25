@@ -1,22 +1,21 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/general/appbar_leading.widget.dart';
-import 'package:liso/features/general/remote_image.widget.dart';
 import 'package:liso/features/wallet/assets/assets.screen.dart';
 import 'package:liso/features/wallet/transactions/transactions.screen.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/persistence/persistence_builder.widget.dart';
-import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
-import '../app/routes.dart';
 import '../general/card_button.widget.dart';
 import '../menu/menu.button.dart';
 import 'nfts/nfts.screen.dart';
@@ -145,15 +144,6 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
               ],
             ),
           ),
-          if (isBeta) ...[
-            TextButton.icon(
-              icon: const Icon(LineIcons.discord),
-              label: const Text('Need Testnet \$LISO?'),
-              onPressed: () => Utils.openUrl(
-                ConfigService.to.general.app.links.discord,
-              ),
-            ),
-          ]
         ],
       ),
     );
@@ -181,10 +171,11 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
       children: [
         Row(
           children: [
-            DiceBearAvatar(
-              seed: SecretPersistence.to.longAddress,
-              size: 30,
-            ),
+            // TODO: temporary
+            // DiceBearAvatar(
+            //   seed: SecretPersistence.to.longAddress,
+            //   size: 30,
+            // ),
             const SizedBox(width: 10),
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -198,7 +189,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
                 Text(
-                  Utils.isSmallScreen
+                  isSmallScreen
                       ? SecretPersistence.to.shortAddress
                       : SecretPersistence.to.longAddress,
                   overflow: TextOverflow.ellipsis,

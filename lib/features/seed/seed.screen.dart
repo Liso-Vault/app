@@ -1,17 +1,17 @@
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:blur/blur.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
+import '../../core/persistence/persistence.dart';
 import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../general/appbar_leading.widget.dart';
 import '../menu/menu.button.dart';
 import 'seed_screen.controller.dart';
 
@@ -75,7 +75,8 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
         const SizedBox(height: 20),
         seedPhrase,
         const SizedBox(height: 20),
-        if (!Persistence.to.backedUpSeed.val || !WalletService.to.isSaved) ...[
+        if (!AppPersistence.to.backedUpSeed.val ||
+            !WalletService.to.isSaved) ...[
           ObxValue(
             (RxBool data) => CheckboxListTile(
               checkboxShape: const CircleBorder(),

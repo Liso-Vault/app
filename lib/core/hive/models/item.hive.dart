@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,7 @@ import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:random_string_generator/random_string_generator.dart';
-import 'package:supercharged/supercharged.dart';
 
-import '../../../features/pro/pro.controller.dart';
-import '../../utils/utils.dart';
 import 'field.hive.dart';
 import 'metadata/metadata.hive.dart';
 
@@ -207,10 +205,12 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
   String get updatedTimeAgo =>
       Utils.timeAgo(metadata.updatedTime, short: false);
 
-  int get daysLeftToDelete =>
-      metadata.updatedTime.duration().inDays -
-      DateTime.now().duration().inDays +
-      ProController.to.limits.trashDays;
+  // int get daysLeftToDelete =>
+  //     metadata.updatedTime.duration().inDays -
+  //     DateTime.now().duration().inDays +
+  //     limits.trashDays;
+  // TODO: temporary
+  int get daysLeftToDelete => 30;
 
   String get subTitle {
     String identifier = significant.keys.first;

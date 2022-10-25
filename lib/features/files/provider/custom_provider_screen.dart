@@ -1,13 +1,13 @@
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/features/files/provider/custom_provider_screen.controller.dart';
-import 'package:liso/features/general/appbar_leading.widget.dart';
 
-import '../../../core/persistence/persistence_builder.widget.dart';
+import '../../../core/persistence/secret_persistence.builder.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/utils.dart';
-import '../../app/routes.dart';
 
 class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
   const CustomSyncProviderScreen({Key? key}) : super(key: key);
@@ -89,6 +89,7 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Session Token',
               ),
             ),
+            // TODO: temporary
             const Divider(),
             SecretPersistenceBuilder(
               builder: (p, context) => SwitchListTile(

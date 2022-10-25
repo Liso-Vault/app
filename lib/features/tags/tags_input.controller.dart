@@ -1,8 +1,8 @@
+import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
 
-import '../../core/utils/utils.dart';
 import '../items/items.service.dart';
 
 class TagsInputController extends GetxController {
@@ -133,7 +133,7 @@ class TagsInputController extends GetxController {
     // pre-load suggestions
     suggestions.value = query('');
 
-    if (Utils.isSmallScreen) {
+    if (isSmallScreen) {
       await Get.bottomSheet(content);
     } else {
       Get.dialog(Dialog(

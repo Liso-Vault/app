@@ -1,6 +1,5 @@
 class ConfigLimits {
   const ConfigLimits({
-    this.settings = const ConfigLimitsSettings(),
     this.free = const ConfigLimitsTier(),
     this.holder = const ConfigLimitsTier(),
     this.staker = const ConfigLimitsTier(),
@@ -8,7 +7,6 @@ class ConfigLimits {
     this.pro = const ConfigLimitsTier(),
   });
 
-  final ConfigLimitsSettings settings;
   final ConfigLimitsTier free;
   final ConfigLimitsTier holder;
   final ConfigLimitsTier staker;
@@ -16,7 +14,6 @@ class ConfigLimits {
   final ConfigLimitsTier pro;
 
   factory ConfigLimits.fromJson(Map<String, dynamic> json) => ConfigLimits(
-        settings: ConfigLimitsSettings.fromJson(json["settings"]),
         free: ConfigLimitsTier.fromJson(json["free"]),
         holder: ConfigLimitsTier.fromJson(json["holder"]),
         staker: ConfigLimitsTier.fromJson(json["staker"]),
@@ -25,7 +22,6 @@ class ConfigLimits {
       );
 
   Map<String, dynamic> toJson() => {
-        "settings": settings.toJson(),
         "free": free.toJson(),
         "holder": holder.toJson(),
         "staker": staker.toJson(),

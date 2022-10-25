@@ -1,18 +1,24 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/liso/liso_paths.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/features/files/sync.service.dart';
@@ -23,15 +29,11 @@ import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/liso/liso.manager.dart';
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.secret.dart';
 import '../../core/services/cipher.service.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../groups/groups.service.dart';
 import '../menu/menu.item.dart';
-import '../pro/pro.controller.dart';
-import '../supabase/supabase_auth.service.dart';
 
 class SettingsScreenController extends GetxController
     with ConsoleMixin, StateMixin {
@@ -98,13 +100,13 @@ class SettingsScreenController extends GetxController
     await Future.delayed(200.milliseconds);
     ItemsController.to.load();
 
-    if (GetPlatform.isDesktop && !GetPlatform.isWeb) {
+    if (isDesktop) {
       MainScreenController.to.window.setBrightness(
         mode == ThemeMode.dark ? Brightness.dark : Brightness.light,
       );
     }
 
-    if (!Utils.isSmallScreen) Get.back();
+    if (!isSmallScreen) Get.back();
   }
 
   void exportWallet() async {
@@ -148,13 +150,13 @@ class SettingsScreenController extends GetxController
     }
 
     change('Choose export path...', status: RxStatus.loading());
-    Globals.timeLockEnabled = false; // temporarily disable
+    timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform.getDirectoryPath(
       dialogTitle: 'Choose Export Path',
     );
 
-    Globals.timeLockEnabled = true; // re-enable
+    timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
       return change(null, status: RxStatus.success());
@@ -230,13 +232,13 @@ class SettingsScreenController extends GetxController
       }
 
       change('Choose export path...', status: RxStatus.loading());
-      Globals.timeLockEnabled = false; // temporarily disable
+      timeLockEnabled = false; // temporarily disable
       // choose directory and export file
       final exportPath = await FilePicker.platform.getDirectoryPath(
         dialogTitle: 'Choose Export Path',
       );
 
-      Globals.timeLockEnabled = true; // re-enable
+      timeLockEnabled = true; // re-enable
       // user cancelled picker
       if (exportPath == null) {
         return change(null, status: RxStatus.success());
@@ -285,7 +287,7 @@ class SettingsScreenController extends GetxController
     if (!unlocked) return;
 
     Utils.adaptiveRouteOpen(
-      name: Routes.seed,
+      name: AppRoutes.seed,
       parameters: {'mode': 'display'},
     );
   }
@@ -458,18 +460,15 @@ class SettingsScreenController extends GetxController
           subtitle: Text(ProController.to.isPro.toString()),
           dense: true,
         ),
+        // TODO: temporary
         // ListTile(
-        //   title: const Text('Free Trial'),
-        //   subtitle: Text(ProController.to.isFreeTrial.toString()),
+        //   title: const Text('Limits'),
+        //   subtitle: Text(limits.id),
+        //   dense: true,
         // ),
         ListTile(
-          title: const Text('Limits'),
-          subtitle: Text(ProController.to.limits.id),
-          dense: true,
-        ),
-        ListTile(
           title: const Text('App Version'),
-          subtitle: Text(Globals.metadata?.app.formattedVersion ?? ''),
+          subtitle: Text(metadataApp.formattedVersion),
           dense: true,
         ),
         ListTile(

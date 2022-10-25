@@ -1,18 +1,18 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app_core/connectivity/connectivity.service.dart';
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:liso/core/firebase/config/config.service.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
-import 'package:liso/features/connectivity/connectivity.service.dart';
 import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
-import 'package:liso/features/pro/pro.controller.dart';
 
 import '../../core/hive/models/group.hive.dart';
 import '../../core/hive/models/item.hive.dart';
@@ -49,7 +49,7 @@ class SyncService extends GetxService with ConsoleMixin {
   // GETTERS
 
   bool get isReady =>
-      ConnectivityService.to.connected.value && persistence.sync.val;
+      ConnectivityService.to.connected.value && AppPersistence.to.sync.val;
 
   // INIT
 
@@ -66,7 +66,7 @@ class SyncService extends GetxService with ConsoleMixin {
     console.info('syncing...');
     syncing.value = true;
 
-    final statResult = await SupabaseFunctionsService.to.statObject(
+    final statResult = await AppSupabaseFunctionsService.to.statObject(
       kVaultFileName,
     );
 
@@ -98,7 +98,7 @@ class SyncService extends GetxService with ConsoleMixin {
     if (downResult.isLeft) return Left(downResult.left);
     // we are now ready to upSync because we are not in sync with server
     inSync.value = true;
-    Persistence.to.changes.val = 0;
+    AppPersistence.to.changes.val = 0;
     // up sync local changes with server
     await upSync().timeout(
       syncTimeoutDuration,
@@ -143,23 +143,24 @@ class SyncService extends GetxService with ConsoleMixin {
 
     console.info('backup: $object...');
 
-    // REMOVE OLDEST BACKUP IF NECESSARY
-    if (StorageService.to.backups.length >= ProController.to.limits.backups) {
-      final result = await StorageService.to.remove(
-        StorageService.to.backups.first.key,
-      );
-      // abort backup if error in removing oldest backup
-      if (result.isLeft) {
-        return console.error('error removing last backup: ${result.left}');
-      } else {
-        console.wtf(
-          'removed backup: ${result.right.data} - ${StorageService.to.backups.first.name}',
-        );
-      }
-    }
+    // TODO: temporary
+    // // REMOVE OLDEST BACKUP IF NECESSARY
+    // if (StorageService.to.backups.length >= limits.backups) {
+    //   final result = await StorageService.to.remove(
+    //     StorageService.to.backups.first.key,
+    //   );
+    //   // abort backup if error in removing oldest backup
+    //   if (result.isLeft) {
+    //     return console.error('error removing last backup: ${result.left}');
+    //   } else {
+    //     console.wtf(
+    //       'removed backup: ${result.right.data} - ${StorageService.to.backups.first.name}',
+    //     );
+    //   }
+    // }
 
     // DO THE ACTUAL BACKUP
-    final presignResult = await SupabaseFunctionsService.to.presignUrl(
+    final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
       object:
           '$kDirBackups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
       method: 'PUT',
@@ -198,7 +199,7 @@ class SyncService extends GetxService with ConsoleMixin {
     // BACKUP
     backup(kVaultFileName, encryptedBytes);
 
-    final presignResult = await SupabaseFunctionsService.to.presignUrl(
+    final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
       object: kVaultFileName,
       method: 'PUT',
     );
@@ -259,7 +260,7 @@ class SyncService extends GetxService with ConsoleMixin {
         cipherKey: base64Decode(cipherKeyResult.right),
       );
 
-      final presignResult = await SupabaseFunctionsService.to.presignUrl(
+      final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
         object: '$kDirShared/${sharedVault.docId}.$kVaultExtension',
         method: 'PUT',
       );
@@ -283,7 +284,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, bool>> purge() async {
     if (!isReady) return const Left('offline');
-    final result = await SupabaseFunctionsService.to.deleteDirectory('');
+    final result = await AppSupabaseFunctionsService.to.deleteDirectory('');
     if (result.isLeft) return Left(result.left);
     return const Right(true);
   }
@@ -307,7 +308,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
     // exclude permanently flagged deleted items
     final deletedIds =
-        "${Persistence.to.deletedGroupIds},${vault.persistence['deleted-group-ids']}";
+        "${AppPersistence.to.deletedGroupIds},${vault.persistence['deleted-group-ids']}";
     merged.removeWhere((e) => deletedIds.contains(e.id));
 
     // leave only the most updated items
@@ -338,7 +339,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
     // exclude permanently flagged deleted items
     final deletedIds =
-        "${Persistence.to.deletedCategoryIds},${vault.persistence['deleted-category-ids']}";
+        "${AppPersistence.to.deletedCategoryIds},${vault.persistence['deleted-category-ids']}";
     merged.removeWhere((e) => deletedIds.contains(e.id));
 
     // leave only the most updated items
@@ -371,7 +372,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
     // exclude permanently flagged deleted items
     final deletedIds =
-        "${Persistence.to.deletedItemIds},${vault.persistence['deleted-item-ids']}";
+        "${AppPersistence.to.deletedItemIds},${vault.persistence['deleted-item-ids']}";
     merged.removeWhere((e) => deletedIds.contains(e.identifier));
     // leave only the most updated items
     final newList = <HiveLisoItem>[];

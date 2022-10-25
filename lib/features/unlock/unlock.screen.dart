@@ -1,18 +1,19 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/widgets/logo.widget.dart';
+import 'package:app_core/widgets/version.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/general/busy_indicator.widget.dart';
-import 'package:liso/features/general/version.widget.dart';
-import 'package:liso/resources/resources.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/utils.dart';
-import '../app/routes.dart';
-import '../general/remote_image.widget.dart';
 import 'unlock_screen.controller.dart';
 
 class UnlockScreen extends StatelessWidget with ConsoleMixin {
@@ -25,14 +26,10 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        RemoteImage(
-          url: ConfigService.to.general.app.image,
-          height: 100,
-          placeholder: Image.asset(Images.logo, height: 100),
-        ),
+        LogoWidget(size: 100),
         const SizedBox(height: 20),
         Text(
-          ConfigService.to.appName,
+          metadataApp.appName,
           style: const TextStyle(
             fontSize: 30,
             fontWeight: FontWeight.bold,
@@ -72,7 +69,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
               textInputAction: TextInputAction.go,
               onChanged: controller.onChanged,
               onFieldSubmitted: (text) => controller.unlock(),
-              validator: Utils.validatePassword,
+              validator: AppUtils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autofillHints: const [AutofillHints.password],
               decoration: InputDecoration(
@@ -110,7 +107,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
 
     return WillPopScope(
       onWillPop: () => Future.value(
-        controller.promptMode || Globals.isAutofill,
+        controller.promptMode || isAutofill,
       ),
       child: Scaffold(
         appBar: AppBar(

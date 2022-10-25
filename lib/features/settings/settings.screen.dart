@@ -1,3 +1,13 @@
+import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/widgets/pro.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -5,19 +15,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
+import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/menu/menu.button.dart';
-import 'package:liso/features/pro/pro.controller.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/persistence/persistence_builder.widget.dart';
-import '../../core/utils/ui_utils.dart';
-import '../general/appbar_leading.widget.dart';
-import '../general/busy_indicator.widget.dart';
-import '../general/pro.widget.dart';
 import '../menu/menu.item.dart';
 import 'settings_screen.controller.dart';
 
@@ -81,9 +83,9 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               SwitchListTile(
                 title: const Text('Enabled'),
                 secondary: Icon(Iconsax.cloud, color: themeColor),
-                value: p.sync.val,
+                value: AppPersistence.to.sync.val,
                 subtitle: const Text("Keep multiple devices in sync"),
-                onChanged: (value) => p.sync.val = value,
+                onChanged: (value) => AppPersistence.to.sync.val = value,
               ),
               // TODO: temporary
               // if (p.sync.val) ...[
@@ -121,16 +123,17 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Custom Categories'),
                 subtitle: const Text('Manage your custom categories'),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.categories),
+                onTap: () =>
+                    Utils.adaptiveRouteOpen(name: AppRoutes.categories),
               ),
               ListTile(
                 leading: Icon(Iconsax.briefcase, color: themeColor),
                 trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Custom Vaults'),
                 subtitle: const Text('Manage your custom vaults'),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.vaults),
+                onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.vaults),
               ),
-              if (Persistence.to.canShare) ...[
+              if (AppPersistence.to.canShare) ...[
                 // TODO: temporary
                 // ListTile(
                 //   leading: Icon(Iconsax.share, color: themeColor),
@@ -156,7 +159,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   leading: Icon(Iconsax.box, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
                   onTap: () async {
-                    if (!p.sync.val) {
+                    if (!AppPersistence.to.sync.val) {
                       return UIUtils.showSimpleDialog(
                         'Sync Required',
                         'Please turn on ${config.appName} Cloud Sync to use this feature',
@@ -164,7 +167,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     }
 
                     Utils.adaptiveRouteOpen(
-                      name: Routes.s3Explorer,
+                      name: AppRoutes.s3Explorer,
                       parameters: {'type': 'time_machine'},
                     );
                   },
@@ -175,7 +178,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Import Items'),
                 subtitle: const Text('Import items from external sources'),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.import),
+                onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.import),
               ),
               ContextMenuButton(
                 padding: EdgeInsets.zero,
@@ -368,7 +371,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               onTap: controller.reset,
               onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),
             ),
-            if (Persistence.to.canShare) ...[
+            if (AppPersistence.to.canShare) ...[
               ListTile(
                 iconColor: Colors.red,
                 leading: const Icon(Iconsax.warning_2),

@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 1.0.0+42
+version: 1.0.1+43
 
 environment:
   sdk: ">=2.17.3 <3.0.0"
@@ -10,8 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # STATE MANAGEMENT
-  get: ^4.6.5
+    # CORE FRAMEWORK
+  app_core:
+    path: ../../Stackwares/app-core
 
   # CRYTPOGRAPHY + SECURITY
   secrets:
@@ -28,104 +29,48 @@ dependencies:
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
   encrypt: ^5.0.1 # File Encryption
-  local_auth: ^2.1.2 # check biometric availability
-  # walletconnect_dart: ^0.0.11
   otp: ^3.1.1
 
-  # FIREBASE
-  firebase_core: 2.1.0
-  firebase_analytics: 10.0.2
-  firebase_crashlytics: 3.0.2
-  firebase_performance: 0.9.0+2
-  cloud_functions: 4.0.2
-  # FIREBASE DESKTOP
-  firebase_core_desktop: 1.0.2
-  firebase_functions_desktop: 0.2.0+3
-  firebase_core_platform_interface: 4.5.1
-  # FIREBASE DESKTOP WORKAROUND
-  firebase_dart: ^1.0.11
-  # SUPABASE
-  supabase: ^1.0.1
-
   # IO
-  hive: ^2.2.3 # database
-  path_provider: ^2.0.11
-  path: ^1.8.1
   filesize: ^2.0.1 # file size calculator
   file_picker: ^5.2.2 # exporting + importing vault file
-  http: ^0.13.5 # web3dart client
 
   # API
   # minio: ^3.5.0 # S3 API
   minio:
     git: https://github.com/oliverbytes/minio-dart.git
   coingecko_api: ^1.1.0+2 # Coingecko API
-  purchases_flutter: ^4.3.0
 
   # UI
-  line_icons: ^2.0.1 # icons
   font_awesome_flutter: ^10.2.1 # icons
-  iconsax: ^0.0.8
-  flex_color_scheme: 6.0.1 # themes
-  simple_animations: 5.0.0+2
-  sa4_migration_kit: ^1.0.0
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.0.4
   flutter_quill: ^6.0.10
   badges: ^2.0.3 # pending changes indicator
-  cached_network_image: ^3.2.2 # load remote images
   percent_indicator: ^4.2.2 # circular progress indicator
   flutter_svg: ^1.1.5 # dice bear avatars
   qr_flutter: ^4.0.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects
-  flutter_rating_bar: ^4.0.1
-  flutter_animate: ^1.0.0
 
   # TOOLS
-  url_launcher: ^6.1.6
-  supercharged: ^2.1.1 # useful utils
-  timeago: ^3.3.0
-  flutter_local_notifications: ^12.0.2
-  either_dart: ^0.2.0 # functional programming + error handling
-  intl: ^0.17.0 # date formatting
-  share_plus: ^6.0.1 # exporting files and sharing texts
   equatable: ^2.0.5
-  app_settings: ^4.1.8
-  uuid: ^3.0.6 # unique identifiers for items
-  window_manager: ^0.2.7 # set desktop window size
-  flutter_displaymode: ^0.4.0 # allow higher refresh rates
-  console_mixin: ^0.0.1 # logger
   random_string_generator: ^2.0.0
   humanizer: ^2.0.0
   worker_manager: ^4.4.6 # multi threading
   flutter_autofill_service: ^0.14.0 # android autofill plugun
-  app_review: ^2.1.2+1 # request for review on the app store
   csv: ^5.0.1 # csv parsing tool
-  sentry_flutter: ^6.13.1 # crash reporting tool for windows
-  easy_debounce: ^2.0.2+1
 
-  # INFO
-  device_info_plus: ^7.0.1
-  platform_device_id: ^1.0.1
+dependency_overrides:
   package_info_plus: ^3.0.1
-  connectivity_plus: ^3.0.2 # internet connectivity checking
-
-dependency_overrides: 
-  package_info_plus: ^3.0.1
-  # for firebase_functions_desktop on windows
   firebase_core: ^2.1.0
   cloud_functions: ^4.0.2
 
 dev_dependencies:
-  # flutter_test:
-  #   sdk: flutter
+  flutter_test:
+    sdk: flutter
 
   flutter_lints: ^2.0.1
-  hive_generator: ^1.1.3 # hive database
-  build_runner: ^2.3.2
-  flutter_native_splash: ^2.2.11
-  dart_code_metrics: ^4.16.0 # checking unused stuffs
 
 flutter:
   uses-material-design: true

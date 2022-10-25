@@ -1,12 +1,12 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/features/general/remote_image.widget.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.item.dart';
 
@@ -113,8 +113,6 @@ class AboutScreenController extends GetxController with ConsoleMixin {
   // FUNCTIONS
 
   void showLicenses(BuildContext context) async {
-    final app = Globals.metadata!.app;
-
     final icon = Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: RemoteImage(
@@ -127,8 +125,8 @@ class AboutScreenController extends GetxController with ConsoleMixin {
     showLicensePage(
       context: context,
       applicationIcon: icon,
-      applicationName: app.appName,
-      applicationVersion: app.formattedVersion,
+      applicationName: metadataApp.appName,
+      applicationVersion: metadataApp.formattedVersion,
       applicationLegalese:
           'Copyright © ${DateTime.now().year} ${ConfigService.to.general.developer.name}\nAll rights reserved.',
     );

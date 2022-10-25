@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +34,6 @@ import '../drawer/drawer_widget.controller.dart';
 import '../json_viewer/json_viewer.screen.dart';
 import '../menu/menu.button.dart';
 import '../menu/menu.item.dart';
-import '../pro/pro.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'items.controller.dart';
 import 'items.service.dart';
@@ -945,14 +947,14 @@ class ItemScreenController extends GetxController
                     decoration: InputDecoration(
                       labelText: field.data.label,
                       hintText: field.data.hint,
-                      helperText: ProController.to.limits.passwordHealth &&
+                      helperText: limits.passwordHealth &&
                               isPasswordField &&
                               obscured &&
                               field.data.value!.isNotEmpty
-                          ? Utils.strengthName(strength).toUpperCase()
+                          ? AppUtils.strengthName(strength).toUpperCase()
                           : null,
                       helperStyle: TextStyle(
-                        color: Utils.strengthColor(strength),
+                        color: AppUtils.strengthColor(strength),
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -993,29 +995,31 @@ class ItemScreenController extends GetxController
   void add() async {
     if (!formKey.currentState!.validate()) return;
     if (!editMode.value) return console.error('not in edit mode');
-    // items limit
-    if (ItemsController.to.itemLimitReached) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Items Limit Reached',
-          'body':
-              'Maximum items of ${ProController.to.limits.items} limit reached. Upgrade to Pro to unlock unlimited items features',
-        },
-      );
-    }
+    // TODO: temporary
+    // // items limit
+    // if (ItemsController.to.itemLimitReached) {
+    //   return Utils.adaptiveRouteOpen(
+    //     name: Routes.upgrade,
+    //     parameters: {
+    //       'title': 'Items Limit Reached',
+    //       'body':
+    //           'Maximum items of ${limits.items} limit reached. Upgrade to Pro to unlock unlimited items features',
+    //     },
+    //   );
+    // }
 
-    // protected items limit
-    if (protected.value && ItemsController.to.protectedItemLimitReached) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Protected Items',
-          'body':
-              'Maximum protected items of ${ProController.to.limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-        },
-      );
-    }
+    // TODO: temporary
+    // // protected items limit
+    // if (protected.value && ItemsController.to.protectedItemLimitReached) {
+    //   return Utils.adaptiveRouteOpen(
+    //     name: Routes.upgrade,
+    //     parameters: {
+    //       'title': 'Protected Items',
+    //       'body':
+    //           'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+    //     },
+    //   );
+    // }
 
     final newItem = HiveLisoItem(
       identifier: const Uuid().v4(),
@@ -1035,12 +1039,12 @@ class ItemScreenController extends GetxController
     );
 
     await ItemsService.to.box!.add(newItem);
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
     DrawerMenuController.to.update();
     Get.back();
 
-    if (Globals.isAutofill) {
+    if (isAutofill) {
       AutofillService().onSaveComplete();
     }
   }
@@ -1066,28 +1070,29 @@ class ItemScreenController extends GetxController
 
     console.wtf('appIds: $appIds');
 
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
     DrawerMenuController.to.update();
     Get.back();
   }
 
   void onProtectedChanged(bool? value) {
-    // protected items limit
-    if (value! && ItemsController.to.protectedItemLimitReached) {
-      Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Protected Items',
-          'body':
-              'Maximum protected items of ${ProController.to.limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-        },
-      );
+    // TODO: temporary
+    // // protected items limit
+    // if (value! && ItemsController.to.protectedItemLimitReached) {
+    //   Utils.adaptiveRouteOpen(
+    //     name: Routes.upgrade,
+    //     parameters: {
+    //       'title': 'Protected Items',
+    //       'body':
+    //           'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+    //     },
+    //   );
 
-      return;
-    }
+    //   return;
+    // }
 
-    protected.value = value;
+    protected.value = value!;
   }
 
   List<String> querySuggestions(String query) {
@@ -1139,9 +1144,7 @@ class ItemScreenController extends GetxController
       title: const Text('Custom Icon'),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(onPressed: Get.back, child: Text('cancel'.tr)),
@@ -1183,7 +1186,7 @@ class ItemScreenController extends GetxController
 
       await Get.dialog(AlertDialog(
         title: const Text('Unsaved Changes'),
-        content: Utils.isSmallScreen
+        content: isSmallScreen
             ? dialogContent
             : const SizedBox(width: 450, child: dialogContent),
         actions: [
@@ -1204,7 +1207,7 @@ class ItemScreenController extends GetxController
 
   void attach() async {
     final attachments_ = await Utils.adaptiveRouteOpen(
-      name: Routes.attachments,
+      name: AppRoutes.attachments,
       parameters: {'attachments': attachments.join(',')},
     );
 
@@ -1250,9 +1253,7 @@ class ItemScreenController extends GetxController
       title: const Text('Field Properties'),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(

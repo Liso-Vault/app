@@ -1,3 +1,9 @@
+## 1.0.1
+- fixed importing from bitwarden and lastpass
+- fixed editing properties of a custom field
+- under the hood improvements
+- lots of bug fixes and improvements
+
 ## 1.0.0
 - ditched firebase db and auth for supabase
 - updated packages

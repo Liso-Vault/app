@@ -1,3 +1,7 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
@@ -18,10 +22,9 @@ import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../general/custom_chip.widget.dart';
-import '../general/remote_image.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
-import '../menu/menu.sheet.dart';
 import '../menu/menu.item.dart';
+import '../menu/menu.sheet.dart';
 import '../shared_vaults/model/shared_vault.model.dart';
 
 class ItemTile extends StatelessWidget with ConsoleMixin {
@@ -37,7 +40,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }) : super(key: key);
 
   void _open() async {
-    if (Globals.isAutofill) {
+    if (isAutofill) {
       return LisoAutofillService.to.fill(item);
     }
 
@@ -54,14 +57,14 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       'joinedVaultItem': joinedVaultItem.toString(),
     };
 
-    Utils.adaptiveRouteOpen(name: Routes.item, parameters: parameters);
+    Utils.adaptiveRouteOpen(name: AppRoutes.item, parameters: parameters);
   }
 
   void _favorite() async {
     item.favorite = !item.favorite;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
   }
 
@@ -71,7 +74,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     copy.title = '${copy.title} Copy';
     copy.metadata = await copy.metadata.getUpdated();
     await ItemsService.to.box!.add(copy);
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
   }
 
@@ -80,7 +83,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.deleted = false;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
   }
 
@@ -88,7 +91,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.trashed = true;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
   }
 
@@ -96,13 +99,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     item.deleted = true;
     item.metadata = await item.metadata.getUpdated();
     await item.save();
-    Persistence.to.changes.val++;
+    AppPersistence.to.changes.val++;
     ItemsController.to.load();
   }
 
   void _permaDelete() async {
-    Persistence.to.addToDeletedItems(item.identifier);
-    Persistence.to.changes.val++;
+    AppPersistence.to.addToDeletedItems(item.identifier);
+    AppPersistence.to.changes.val++;
     await item.delete();
     ItemsController.to.load();
   }
@@ -114,7 +117,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
     return Get.dialog(AlertDialog(
       title: Text('delete'.tr),
-      content: Utils.isSmallScreen
+      content: isSmallScreen
           ? dialogContent
           : const SizedBox(width: 450, child: dialogContent),
       actions: [
@@ -154,7 +157,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final isLargeScreen = !Utils.isSmallScreen;
+    final isLargeScreen = !isSmallScreen;
 
     final menuItems = [
       if (!joinedVaultItem) ...[
@@ -290,7 +293,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             width: 35,
             alignment: Alignment.centerLeft,
           )
-        : Utils.categoryIcon(item.category, color: themeColor);
+        : AppUtils.categoryIcon(item.category, color: themeColor);
 
     var tile = ListTile(
       selected: item.deleted,
@@ -320,19 +323,19 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           bottomSubTitle,
         ],
       ),
-      trailing: Globals.isAutofill
+      trailing: isAutofill
           ? null
           : ContextMenuButton(
               menuItems,
               child: const Icon(LineIcons.verticalEllipsis),
             ),
-      onLongPress: isLargeScreen || Globals.isAutofill
+      onLongPress: isLargeScreen || isAutofill
           ? null
           : () => ContextMenuSheet(menuItems).show(),
       onTap: _open,
     );
 
-    if (isLargeScreen || Globals.isAutofill) return tile;
+    if (isLargeScreen || isAutofill) return tile;
 
     // if small screen, add swipe actions
     final leadingActions = <SwipeAction>[

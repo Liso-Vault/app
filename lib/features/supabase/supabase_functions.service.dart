@@ -1,39 +1,28 @@
-import 'dart:convert';
-
-import 'package:console_mixin/console_mixin.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/supabase/model/server_response.model.dart';
+import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:secrets/secrets.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/liso/liso.manager.dart';
 import '../../core/persistence/persistence.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/services/cipher.service.dart';
-import '../../core/utils/globals.dart';
 import '../categories/categories.service.dart';
 import '../files/storage.service.dart';
 import '../groups/groups.service.dart';
 import '../items/items.service.dart';
 import '../joined_vaults/joined_vault.controller.dart';
-import '../pro/pro.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
-import 'model/entitlement_response.model.dart';
-import 'model/gumroad_product.model.dart';
 import 'model/list_objects_response.model.dart';
 import 'model/presign_response.model.dart';
-import 'model/server_response.model.dart';
 import 'model/stat_response.model.dart';
-import 'model/sync_user_response.model.dart';
-import 'supabase_auth.service.dart';
 
-class SupabaseFunctionsService extends GetxService with ConsoleMixin {
-  static SupabaseFunctionsService get to => Get.find();
+class AppSupabaseFunctionsService extends SupabaseFunctionsService {
+  static AppSupabaseFunctionsService get to => Get.find();
 
   // VARIABLES
-  final auth = Get.find<SupabaseAuthService>();
-  final config = Get.find<ConfigService>();
   final persistence = Get.find<Persistence>();
   final spersistence = Get.find<SecretPersistence>();
 
@@ -164,198 +153,42 @@ class SupabaseFunctionsService extends GetxService with ConsoleMixin {
     return Right(PresignUrlResponse.fromJson(response.data));
   }
 
-  Future<void> sync() async {
-    if (!auth.authenticated) return console.warning('not authenticated');
-    console.info('sync...');
+  Future<void> syncUser() async {
+    if (await Purchases.isAnonymous) {
+      return console.error('cannot sync anonymous user');
+    }
 
-    // calculate vault byte size
-    final encryptedVaultBytes = CipherService.to.encrypt(
-      utf8.encode(await LisoManager.compactJson()),
-    );
+    final objects = StorageService.to.rootInfo.value.data;
 
-    final storage = Get.find<StorageService>();
-    final data = storage.rootInfo.value.data;
-
-    final response = await auth.client!.functions.invoke(
-      'sync-user',
-      body: {
-        if (isIAPSupported) ...{
-          "rcUserId": await Purchases.appUserID,
+    final data = {
+      "address": spersistence.walletAddress.val,
+      "metadata": {
+        'size': {
+          'storage': objects.size,
+          'vault': (await LisoManager.compactJson()).length,
         },
-        "email": auth.user?.email,
-        "phone": auth.user?.phone,
-        "address": spersistence.walletAddress.val,
-        "userMetadata": auth.user?.userMetadata,
-        "metadata": {
-          'size': {
-            'storage': data.size,
-            'vault': encryptedVaultBytes.length,
-          },
-          'count': {
-            'items': ItemsService.to.data.length,
-            'groups': GroupsService.to.data.length,
-            'categories': CategoriesService.to.data.length,
-            'files': data.count,
-            'sharedVaults': SharedVaultsController.to.data.length,
-            'joinedVaults': JoinedVaultsController.to.data.length,
-          },
-          'settings': {
-            'sync': persistence.sync.val,
-            'theme': persistence.theme.val,
-            'syncProvider': persistence.newSyncProvider,
-            'biometrics': persistence.biometrics.val,
-            'analytics': persistence.analytics.val,
-            'crashReporting': persistence.crashReporting.val,
-            'backedUpSeed': persistence.backedUpSeed.val,
-            'backedUpPassword': persistence.backedUpPassword.val,
-            'localeCode': persistence.localeCode.val,
-          }
+        'count': {
+          'items': ItemsService.to.data.length,
+          'groups': GroupsService.to.data.length,
+          'categories': CategoriesService.to.data.length,
+          'files': objects.count,
+          'sharedVaults': SharedVaultsController.to.data.length,
+          'joinedVaults': JoinedVaultsController.to.data.length,
         },
-        "device": Globals.metadata!.device.toJson()
-      },
-    );
-
-    if (response.status != 200) {
-      return console.error(
-        'supabase error: ${response.status}: ${response.data}',
-      );
-    }
-
-    final serverResponse = ServerResponse.fromJson(response.data);
-
-    if (serverResponse.errors.isNotEmpty) {
-      return console.error('server error: ${serverResponse.errors}');
-    }
-
-    // console.wtf('synced: ${jsonEncode(serverResponse.toJson())}');
-    final syncUserResponse = SyncUserResponse.fromJson(serverResponse.data);
-    ProController.to.licenseKey.value = syncUserResponse.licenseKey;
-
-    // VERIFY PRO
-    if (ProController.to.proEntitlement?.isActive != true) {
-      if (syncUserResponse.licenseKey.length >= 35) {
-        verifyGumroad(syncUserResponse.licenseKey);
-      } else if (syncUserResponse.rcUserId.isNotEmpty && !isIAPSupported) {
-        verifyRevenueCat(syncUserResponse.rcUserId);
-      } else {
-        ProController.to.verifiedPro.value = false;
+        'settings': {
+          'sync': AppPersistence.to.sync.val,
+          'theme': persistence.theme.val,
+          'syncProvider': AppPersistence.to.newSyncProvider,
+          'biometrics': persistence.biometrics.val,
+          'analytics': persistence.analytics.val,
+          'crashReporting': persistence.crashReporting.val,
+          'backedUpSeed': AppPersistence.to.backedUpSeed.val,
+          'backedUpPassword': AppPersistence.to.backedUpPassword.val,
+          'localeCode': persistence.localeCode.val,
+        }
       }
-    }
-  }
+    };
 
-  Future<Either<String, GumroadProduct>> gumroadProductDetail() async {
-    console.info('gumroadProductDetail...');
-
-    final response = await auth.client!.functions.invoke(
-      'gumroad-product-detail',
-      body: {"localeCode": Get.locale?.languageCode},
-    );
-
-    if (response.status != 200) {
-      return Left('supabase error: ${response.status}: ${response.data}');
-    }
-
-    final serverResponse = ServerResponse.fromJson(response.data);
-
-    if (serverResponse.errors.isNotEmpty) {
-      String errors = '';
-
-      for (var e in serverResponse.errors) {
-        errors += '${e.code}: ${e.message}';
-      }
-
-      console.error('server error: $errors');
-      return Left(errors);
-    }
-
-    final product = GumroadProduct.fromJson(serverResponse.data);
-    // console.info('product: ${jsonEncode(product.toJson())}');
-    return Right(product);
-  }
-
-  Future<Either<String, EntitlementResponse>> verifyGumroad(String licenseKey,
-      {bool updateEntitlement = true}) async {
-    if (!auth.authenticated) {
-      console.warning('not authenticated');
-      return const Left('Please sign in to continue');
-    }
-
-    console.info('verifyGumroad...');
-
-    final response = await auth.client!.functions.invoke(
-      'verify-gumroad',
-      body: {"licenseKey": licenseKey},
-    );
-
-    if (response.status != 200) {
-      return Left('supabase error: ${response.status}: ${response.data}');
-    }
-
-    final serverResponse = ServerResponse.fromJson(response.data);
-
-    if (serverResponse.errors.isNotEmpty) {
-      String errors = '';
-
-      for (var e in serverResponse.errors) {
-        errors += '${e.code}: ${e.message}';
-      }
-
-      console.error('server error: $errors');
-      ProController.to.verifiedPro.value = false;
-      return Left(errors);
-    }
-
-    final entitlement = EntitlementResponse.fromJson(serverResponse.data);
-    console.info('entitlement: ${jsonEncode(entitlement.toJson())}');
-
-    if (updateEntitlement) {
-      ProController.to.verifiedPro.value = entitlement.entitled;
-      if (entitlement.entitled) console.wtf('PRO ENTITLED');
-    }
-
-    return Right(entitlement);
-  }
-
-  Future<Either<String, EntitlementResponse>> verifyRevenueCat(String rcUserId,
-      {bool updateEntitlement = true}) async {
-    if (!auth.authenticated) {
-      console.warning('not authenticated');
-      return const Left('Please sign in to continue');
-    }
-
-    console.info('verifyRevenueCat...');
-
-    final response = await auth.client!.functions.invoke(
-      'verify-revenuecat',
-      body: {"userId": rcUserId},
-    );
-
-    if (response.status != 200) {
-      return Left('supabase error: ${response.status}: ${response.data}');
-    }
-
-    final serverResponse = ServerResponse.fromJson(response.data);
-
-    if (serverResponse.errors.isNotEmpty) {
-      String errors = '';
-
-      for (var e in serverResponse.errors) {
-        errors += '${e.code}: ${e.message}';
-      }
-
-      console.error('server error: $errors');
-      ProController.to.verifiedPro.value = false;
-      return Left(errors);
-    }
-
-    final entitlement = EntitlementResponse.fromJson(serverResponse.data);
-    console.wtf('entitlement: ${jsonEncode(entitlement.toJson())}');
-
-    if (updateEntitlement) {
-      ProController.to.verifiedPro.value = entitlement.entitled;
-      if (entitlement.entitled) console.wtf('PRO ENTITLED');
-    }
-
-    return Right(entitlement);
+    SupabaseFunctionsService.to.sync(data: data);
   }
 }

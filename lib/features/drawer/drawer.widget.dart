@@ -1,3 +1,8 @@
+import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/pro.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
@@ -7,13 +12,10 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/files/storage.service.dart';
-import 'package:liso/features/general/pro.widget.dart';
 
-import '../../../core/utils/utils.dart';
+import '../../core/persistence/persistence.dart';
 import '../../resources/resources.dart';
-import '../../core/persistence/persistence_builder.widget.dart';
-import '../pro/pro.controller.dart';
+import '../files/storage.service.dart';
 import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends StatelessWidget with ConsoleMixin {
@@ -125,29 +127,29 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   selected: controller.filterTrashed(),
                 ),
               ),
-              PersistenceBuilder(builder: (p, context) {
-                if (!p.proTester.val) {
-                  return const SizedBox.shrink();
-                }
+              // PersistenceBuilder(builder: (p, context) {
+              //   if (!.proTester.val) {
+              //     return const SizedBox.shrink();
+              //   }
 
-                return Obx(
-                  () => ListTile(
-                    selected: controller.filterDeleted(),
-                    selectedColor: Colors.red,
-                    leading: const Icon(Iconsax.slash),
-                    onTap: controller.filterDeletedItems,
-                    title: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const Text('Deleted'),
-                        if (controller.deletedCount > 0) ...[
-                          Chip(label: Text(controller.deletedCount.toString())),
-                        ],
-                      ],
-                    ),
-                  ),
-                );
-              }),
+              //   return Obx(
+              //     () => ListTile(
+              //       selected: controller.filterDeleted(),
+              //       selectedColor: Colors.red,
+              //       leading: const Icon(Iconsax.slash),
+              //       onTap: controller.filterDeletedItems,
+              //       title: Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           const Text('Deleted'),
+              //           if (controller.deletedCount > 0) ...[
+              //             Chip(label: Text(controller.deletedCount.toString())),
+              //           ],
+              //         ],
+              //       ),
+              //     ),
+              //   );
+              // }),
             ],
           ),
           ExpansionTile(
@@ -180,11 +182,11 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             ),
             children: [
               PersistenceBuilder(
-                builder: (p, context) => p.sync.val
+                builder: (p, context) => AppPersistence.to.sync.val
                     ? ListTile(
                         leading: const Icon(Iconsax.document_cloud),
                         onTap: () => Utils.adaptiveRouteOpen(
-                          name: Routes.s3Explorer,
+                          name: AppRoutes.s3Explorer,
                           parameters: {'type': 'explorer'},
                         ),
                         title: Row(
@@ -194,7 +196,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                             Chip(
                               label: Obx(
                                 () => Text(
-                                  '${filesize(StorageService.to.rootInfo.value.data.size, 0)}/${filesize(ProController.to.limits.storageSize, 0)}',
+                                  '${filesize(StorageService.to.rootInfo.value.data.size, 0)}/${filesize(limits.storageSize, 0)}',
                                   style: const TextStyle(fontSize: 10),
                                 ),
                               ),
@@ -207,7 +209,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                             () => LinearProgressIndicator(
                               value: StorageService.to.rootInfo.value.data.size
                                       .toDouble() /
-                                  ProController.to.limits.storageSize,
+                                  limits.storageSize,
                               backgroundColor: Colors.grey.withOpacity(0.1),
                             ),
                           ),
@@ -224,17 +226,11 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   title: Text('wallet'.tr),
                   leading: const Icon(Iconsax.wallet_1),
                   onTap: () => Utils.adaptiveRouteOpen(
-                    name: Routes.wallet,
+                    name: AppRoutes.wallet,
                     method: 'offAndToNamed',
                   ),
                 );
               }),
-              // ListTile(
-              //   title: Text('browser'.tr),
-              //   leading: const Icon(Iconsax.chrome),
-              //   enabled: false,
-              //   // onTap: controller.browser,
-              // ),
               ListTile(
                 title: Text('settings'.tr),
                 leading: const Icon(Iconsax.setting_2),
@@ -291,49 +287,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
               ),
-              // PersistenceBuilder(
-              //   builder: (p, context) => Obx(
-              //     () => Column(
-              //       children: [
-              //         ListTile(
-              //           title: Row(
-              //             children: [
-              //               if (!ProController.to.isPro) ...[
-              //                 const Text(
-              //                   'Try ',
-              //                   style: TextStyle(fontWeight: FontWeight.normal),
-              //                 ),
-              //               ],
-              //               const ProText(size: 16)
-              //             ],
-              //           ),
-              //           subtitle: Text(
-              //             ProController.to.isPro
-              //                 ? 'Active'
-              //                 : 'Unlock All Access',
-              //             style: const TextStyle(
-              //               color: Colors.grey,
-              //               fontWeight: FontWeight.w500,
-              //             ),
-              //           ),
-              //           leading: Icon(LineIcons.rocket, color: proColor),
-              //           onTap: () {
-              //             if (ProController.to.info.value.managementURL !=
-              //                 null) {
-              //               Utils.openUrl(
-              //                 ProController.to.info.value.managementURL!,
-              //               );
-              //             }
-              //           },
-              //         )
-              //             .animate(onPlay: (c) => c.repeat())
-              //             .shimmer(duration: 2000.ms)
-              //             .shakeX(duration: 1000.ms, hz: 2, amount: 1)
-              //             .then(delay: 3000.ms),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               ListTile(
                 title: const Text('Need Help?'),
                 subtitle: const Text("Don't hesitate to contact us"),
@@ -356,7 +309,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: const Text('Encryption Tool'),
                 leading: const Icon(Iconsax.convert_3d_cube),
                 onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.cipher,
+                  name: AppRoutes.cipher,
                   method: 'offAndToNamed',
                 ),
               ),
@@ -364,7 +317,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('password_generator'.tr),
                 leading: const Icon(Iconsax.password_check),
                 onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.passwordGenerator,
+                  name: AppRoutes.passwordGenerator,
                   method: 'offAndToNamed',
                   parameters: {'from': 'drawer'},
                 ),
@@ -373,7 +326,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('seed_generator'.tr),
                 leading: const Icon(Iconsax.key),
                 onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.seedGenerator,
+                  name: AppRoutes.seedGenerator,
                   method: 'offAndToNamed',
                   parameters: {'from': 'drawer'},
                 ),

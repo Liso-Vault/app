@@ -1,18 +1,17 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/middlewares/authentication.middleware.dart';
-import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
-import '../../core/firebase/config/config.service.dart';
-import '../../core/notifications/notifications.manager.dart';
 import '../../core/persistence/persistence.dart';
 import '../main/main_screen.controller.dart';
-import '../supabase/supabase_auth.service.dart';
 
 class CreatePasswordScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -38,7 +37,7 @@ class CreatePasswordScreenController extends GetxController
 
   void generate() async {
     final password_ = await Utils.adaptiveRouteOpen(
-      name: Routes.passwordGenerator,
+      name: AppRoutes.passwordGenerator,
       parameters: {'return': 'true'},
     );
 
@@ -56,7 +55,6 @@ class CreatePasswordScreenController extends GetxController
     if (!formKey.currentState!.validate()) return;
     if (status == RxStatus.loading()) return console.error('still busy');
     change(null, status: RxStatus.loading());
-    await SupabaseAuthService.to.signOut(); // just to make sure
 
     // TODO: improve password validation
     if (passwordController.text.trim() !=
@@ -74,9 +72,9 @@ class CreatePasswordScreenController extends GetxController
       return console.error('Passwords do not match');
     }
 
-    Persistence.to.backedUpSeed.val =
+    AppPersistence.to.backedUpSeed.val =
         Get.parameters['from'] == 'restore_screen';
-    Persistence.to.backedUpPassword.val = true;
+    AppPersistence.to.backedUpPassword.val = true;
     final isNewVault = Get.parameters['from'] == 'seed_screen';
 
     await WalletService.to.create(

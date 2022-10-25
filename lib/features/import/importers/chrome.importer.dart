@@ -1,7 +1,8 @@
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
-import 'package:liso/core/notifications/notifications.manager.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -9,7 +10,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
-import '../../../core/utils/ui_utils.dart';
 import '../../categories/categories.controller.dart';
 import '../../groups/groups.controller.dart';
 import '../import_screen.controller.dart';
@@ -26,6 +26,7 @@ class ChromeImporter {
 
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
+    final autoTag = ImportScreenController.to.autoTag.value;
     const csvConverter = CsvToListConverter();
     var values = csvConverter.convert(csv, eol: '\n');
     final columns = values.first.map((e) => e.trim()).toList();
@@ -50,10 +51,10 @@ class ChromeImporter {
 
     final items = values.map(
       (row) async {
-        final name = row[0];
-        final url = row[1];
-        final username = row[2];
-        final password = row[3];
+        final name = row[0].toString();
+        final url = row[1].toString();
+        final username = row[2].toString();
+        final password = row[3].toString();
 
         // group
         if (destinationGroupId == kSmartGroupId) {
@@ -93,7 +94,7 @@ class ChromeImporter {
           // protected: reprompt == '1',
           // favorite: favorite == '1',
           metadata: metadata,
-          tags: [sourceFormat.id.toLowerCase()],
+          tags: autoTag ? [sourceFormat.id.toLowerCase()] : [],
         );
       },
     );

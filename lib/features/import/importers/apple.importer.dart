@@ -1,3 +1,5 @@
+import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
@@ -5,9 +7,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
-import '../../../core/notifications/notifications.manager.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/ui_utils.dart';
 import '../../categories/categories.controller.dart';
 import '../../groups/groups.controller.dart';
 import '../../items/items.service.dart';
@@ -28,6 +28,7 @@ class AppleImporter {
 
   static Future<bool> importCSV(String csv) async {
     final sourceFormat = ImportScreenController.to.sourceFormat.value;
+    final autoTag = ImportScreenController.to.autoTag.value;
     const csvConverter = CsvToListConverter();
     final values = csvConverter.convert(csv, eol: '\n');
     final columns = values.first.sublist(0, validColumns.length);
@@ -50,12 +51,12 @@ class AppleImporter {
 
     final items = values.map(
       (row) async {
-        final name = row[0];
-        final url = row[1];
-        final username = row[2];
-        final password = row[3];
-        final notes = row[4];
-        final otpAuth = row[5];
+        final name = row[0].toString();
+        final url = row[1].toString();
+        final username = row[2].toString();
+        final password = row[3].toString();
+        final notes = row[4].toString();
+        final otpAuth = row[5].toString();
 
         // group
         if (groupId == kSmartGroupId) {
@@ -101,7 +102,7 @@ class AppleImporter {
           // protected: reprompt == '1',
           // favorite: favorite == '1',
           metadata: metadata,
-          tags: [sourceFormat.id.toLowerCase()],
+          tags: autoTag ? [sourceFormat.id.toLowerCase()] : [],
         );
       },
     );

@@ -1,3 +1,7 @@
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,11 +9,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icon.dart';
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
-import 'package:liso/features/general/appbar_leading.widget.dart';
-import 'package:liso/features/general/busy_indicator.widget.dart';
 
 import '../../core/utils/globals.dart';
-import '../app/routes.dart';
 import 'create_password_screen.controller.dart';
 
 class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
@@ -48,7 +49,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               keyboardType: TextInputType.visiblePassword,
               obscureText: controller.obscurePassword(),
               textInputAction: TextInputAction.next,
-              validator: Utils.validatePassword,
+              validator: AppUtils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autofillHints: const [AutofillHints.newPassword],
               decoration: InputDecoration(
@@ -74,7 +75,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               obscureText: controller.obscureConfirmPassword(),
               textInputAction: TextInputAction.done,
               onFieldSubmitted: (text) => controller.confirm(),
-              validator: Utils.validatePassword,
+              validator: AppUtils.validatePassword,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               autofillHints: const [AutofillHints.password],
               decoration: InputDecoration(

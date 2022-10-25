@@ -1,11 +1,10 @@
+import 'package:app_core/firebase/crashlytics.service.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/crashlytics.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
-
-import '../../features/app/routes.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
   static bool initialized = false;

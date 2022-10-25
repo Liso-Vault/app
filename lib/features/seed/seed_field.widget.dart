@@ -1,3 +1,5 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:blur/blur.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -6,11 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
-import '../../core/utils/globals.dart';
-import '../../core/utils/ui_utils.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import '../menu/menu.item.dart';
 
@@ -38,7 +38,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
 
   void _generate() async {
     final seed = await Utils.adaptiveRouteOpen(
-      name: Routes.seedGenerator,
+      name: AppRoutes.seedGenerator,
       parameters: {'return': 'true'},
     );
 
@@ -77,7 +77,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
         onSelected: () {
           if (fieldController!.text.isEmpty) return;
 
-          UIUtils.showQR(
+          AppUtils.showQR(
             fieldController!.text,
             title: 'Your Seed QR Code',
             subTitle:

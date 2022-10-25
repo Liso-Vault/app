@@ -1,3 +1,7 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -16,8 +20,6 @@ import '../../core/hive/models/group.hive.dart';
 import '../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../general/busy_indicator.widget.dart';
-import '../general/remote_image.widget.dart';
 import 'item_screen.controller.dart';
 
 class ItemScreen extends StatelessWidget with ConsoleMixin {
@@ -38,7 +40,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
               controller.menuItemsChangeIcon,
               enabled: controller.editMode.value,
               child: controller.iconUrl().isEmpty
-                  ? Utils.categoryIcon(controller.category.value)
+                  ? AppUtils.categoryIcon(controller.category.value)
                   : RemoteImage(
                       url: controller.iconUrl(),
                       width: 30,
@@ -218,7 +220,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       ),
       Obx(
         () => Visibility(
-          visible: Persistence.to.canShare &&
+          visible: AppPersistence.to.canShare &&
               ((!controller.editMode.value &&
                       controller.sharedVaultChips.isNotEmpty) ||
                   (controller.editMode.value &&
@@ -268,7 +270,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                         // hack to refresh dropdown text
                         dropdownRefresher.reload();
                         return await Utils.adaptiveRouteOpen(
-                          name: Routes.vaults,
+                          name: AppRoutes.vaults,
                         );
                       }
 
@@ -368,11 +370,11 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           if (await controller.canPop()) Get.back();
         },
         icon: Icon(
-          Utils.isSmallScreen ? Iconsax.arrow_left_2 : LineIcons.times,
+          isSmallScreen ? Iconsax.arrow_left_2 : LineIcons.times,
         ),
       ),
       actions: [
-        if (!Utils.isSmallScreen) ...[
+        if (!isSmallScreen) ...[
           Obx(
             () => Visibility(
               visible: controller.editMode.value,
@@ -433,7 +435,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
 
     final scaffold = Scaffold(
       appBar: appBar,
-      floatingActionButton: Utils.isSmallScreen ? fab : null,
+      floatingActionButton: isSmallScreen ? fab : null,
       // grey disabled fields
       body: Theme(
         data: Get.theme.copyWith(disabledColor: Colors.grey),

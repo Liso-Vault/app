@@ -1,13 +1,14 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/features/general/keep_alive.widget.dart';
 
-import '../../../core/persistence/persistence_builder.widget.dart';
-import '../../../core/utils/globals.dart';
+import '../../../core/persistence/persistence.dart';
 import '../../../resources/resources.dart';
-import '../../general/busy_indicator.widget.dart';
 import '../../general/centered_placeholder.widget.dart';
 import '../wallet.service.dart';
 import 'assets_screen.controller.dart';
@@ -22,10 +23,12 @@ class AssetsScreen extends StatelessWidget with ConsoleMixin {
 
     final listView = PersistenceBuilder(
       builder: (p, context) {
-        final liso = currencyFormatter.format(p.lastLisoBalance.val);
+        final liso =
+            currencyFormatter.format(AppPersistence.to.lastLisoBalance.val);
         final lisoUsd = currencyFormatter.format(wallet.lisoUsdBalance);
 
-        final matic = currencyFormatter.format(p.lastMaticBalance.val);
+        final matic =
+            currencyFormatter.format(AppPersistence.to.lastMaticBalance.val);
         final maticUsd = currencyFormatter.format(wallet.maticUsdBalance);
 
         return ListView(

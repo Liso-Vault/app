@@ -1,33 +1,35 @@
+import 'package:app_core/config.dart';
+import 'package:app_core/connectivity/connectivity.service.dart';
+import 'package:app_core/connectivity/connectivity_bar.widget.dart';
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:badges/badges.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/connectivity/connectivity.service.dart';
-import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/joined_vaults/joined_vault.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
-import '../../core/firebase/config/config.service.dart';
 import '../../core/hive/models/group.hive.dart';
-import '../../core/persistence/persistence.dart';
-import '../../core/persistence/persistence_builder.widget.dart';
-import '../../core/utils/ui_utils.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../connectivity/connectivity_bar.widget.dart';
 import '../drawer/drawer.widget.dart';
 import '../drawer/drawer_widget.controller.dart';
 import '../files/sync.service.dart';
+import '../general/centered_placeholder.widget.dart';
 import '../general/custom_chip.widget.dart';
-import '../general/remote_image.widget.dart';
 import '../groups/groups.controller.dart';
 import '../joined_vaults/explorer/vault_explorer_screen.controller.dart';
-import '../pro/pro.controller.dart';
 import '../shared_vaults/model/shared_vault.model.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'main_screen.controller.dart';
@@ -38,8 +40,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
   MainScreen({Key? key})
       : super(
           key: key,
-          settings: const ResponsiveScreenSettings(
-            desktopChangePoint: kDesktopChangePoint,
+          settings: ResponsiveScreenSettings(
+            desktopChangePoint: CoreConfig().desktopChangePoint,
           ),
         );
 
@@ -111,11 +113,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     );
 
     var childContent = itemsController.obx(
-      (_) => !ProController.to.limits.passwordHealth &&
-              drawerController.filterPasswordHealth.value
-          ? weakPasswords
-          : listView,
-      // onLoading: const BusyIndicator(),
+      (_) =>
+          !limits.passwordHealth && drawerController.filterPasswordHealth.value
+              ? weakPasswords
+              : listView,
       onEmpty: drawerController.filterPasswordHealth.value
           ? const CenteredPlaceholder(
               iconData: Icons.check,
@@ -209,7 +210,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           builder: (p, context) => Column(
             children: [
               Visibility(
-                visible: !p.backedUpSeed.val,
+                visible: !AppPersistence.to.backedUpSeed.val,
                 child: Card(
                   elevation: 2.0,
                   margin: const EdgeInsets.only(
@@ -266,9 +267,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 ),
               ),
               Visibility(
-                visible: p.rateCardVisibility.val &&
+                visible: AppPersistence.to.rateCardVisibility.val &&
                     p.sessionCount.val > 15 &&
-                    isReviewable,
+                    isRateReviewSupported,
                 child: Card(
                   elevation: 2.0,
                   margin: const EdgeInsets.only(
@@ -290,7 +291,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     trailing: OutlinedButton(
                       onPressed: () {
                         UIUtils.rateAndReview();
-                        p.rateCardVisibility.val = false;
+                        AppPersistence.to.rateCardVisibility.val = false;
                       },
                       child: const Text('Rate'),
                     ),
@@ -359,13 +360,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           child: const Icon(Iconsax.sort),
         ),
       ),
-      if (!Globals.isAutofill) ...[
+      if (!isAutofill) ...[
         PersistenceBuilder(
           builder: (p, context) => Visibility(
-            visible: Persistence.to.sync.val,
+            visible: AppPersistence.to.sync.val,
             child: Badge(
-              showBadge: p.sync.val && p.changes.val > 0,
-              badgeContent: Text(p.changes.val.toString()),
+              showBadge: AppPersistence.to.sync.val &&
+                  AppPersistence.to.changes.val > 0,
+              badgeContent: Text(AppPersistence.to.changes.val.toString()),
               position: BadgePosition.topEnd(top: -1, end: -5),
               child: Obx(
                 () => IconButton(
@@ -487,7 +489,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 onTap: () async {
                   await Future.delayed(const Duration(milliseconds: 10));
                   VaultExplorerScreenController.vault = vault;
-                  Utils.adaptiveRouteOpen(name: Routes.vaultExplorer);
+                  Utils.adaptiveRouteOpen(name: AppRoutes.vaultExplorer);
                 },
                 child: Row(
                   children: [
@@ -564,7 +566,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Expanded(
-                    flex: Utils.isSmallScreen ? 1 : 0,
+                    flex: isSmallScreen ? 1 : 0,
                     child: Text(
                       drawerController.filterGroupLabel,
                       overflow: TextOverflow.fade,
@@ -587,9 +589,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final appBar = AppBar(
       centerTitle: false,
       title: appBarTitle,
-      automaticallyImplyLeading: !Globals.isAutofill,
+      automaticallyImplyLeading: !isAutofill,
       actions: appBarActions,
-      leading: Globals.isAutofill || !Utils.isSmallScreen
+      leading: isAutofill || !isSmallScreen
           ? null
           : IconButton(
               onPressed: () => scaffoldKey.currentState?.openDrawer(),
@@ -599,7 +601,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     // TODO: show only if there are trash items
 
-    final fab = Globals.isAutofill
+    final fab = isAutofill
         ? null
         : Obx(
             () {

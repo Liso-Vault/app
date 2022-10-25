@@ -1,7 +1,7 @@
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/core/utils/utils.dart';
 
 import '../app/routes.dart';
 import '../files/storage.service.dart';
@@ -33,7 +33,7 @@ class AttachmentsScreenController extends GetxController
 
   void pick() async {
     final eTag = await Utils.adaptiveRouteOpen(
-      name: Routes.s3Explorer,
+      name: AppRoutes.s3Explorer,
       parameters: {'type': 'picker'},
     );
 

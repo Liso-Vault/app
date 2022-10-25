@@ -1,14 +1,14 @@
+import 'package:app_core/firebase/analytics.service.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/widgets/unknown.screen.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/features/app/pages.dart';
-import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/general/unknown.screen.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
-import '../../core/firebase/analytics.service.dart';
 import '../../core/utils/globals.dart';
 
 class App extends StatelessWidget {
@@ -47,7 +47,7 @@ class App extends StatelessWidget {
       fallbackLocale: const Locale('en', 'US'),
       // NAVIGATION
       initialRoute: Routes.main,
-      getPages: AppPages.routes,
+      getPages: Pages.data,
       defaultTransition: Transition.native,
       themeMode: ThemeMode.values.byName(persistence.theme.val),
       // DARK THEME

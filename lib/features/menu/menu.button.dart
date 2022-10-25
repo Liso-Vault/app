@@ -1,10 +1,11 @@
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/menu/menu.sheet.dart';
 
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 import 'menu.item.dart';
 
@@ -38,7 +39,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     );
 
     // if mobile / small screen
-    if (Utils.isSmallScreen && sheetForSmallScreen) {
+    if (isSmallScreen && sheetForSmallScreen) {
       return InkWell(
         onTap: enabled
             ? () => ContextMenuSheet(
@@ -50,10 +51,10 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       );
     }
     // if large screen
-    else if (!Utils.isSmallScreen && gridForLargeScreen) {
+    else if (!isSmallScreen && gridForLargeScreen) {
       return InkWell(
         onTap: enabled
-            ? () => Utils.adaptiveRouteOpen(name: Routes.categoryPicker)
+            ? () => Utils.adaptiveRouteOpen(name: AppRoutes.categoryPicker)
             : null,
         child: AbsorbPointer(child: wrappedChild),
       );
@@ -92,7 +93,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
       },
     ).toList();
 
-    if (!useMouseRegion || Utils.isSmallScreen) {
+    if (!useMouseRegion || isSmallScreen) {
       return PopupMenuButton(
         onSelected: (ContextMenuItem menu) => menu.onSelected?.call(),
         itemBuilder: (context) => popupItems,

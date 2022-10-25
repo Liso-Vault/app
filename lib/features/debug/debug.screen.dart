@@ -1,3 +1,4 @@
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,7 +6,7 @@ import 'package:iconsax/iconsax.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/globals.dart';
-import '../general/appbar_leading.widget.dart';
+
 import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'debug_screen.controller.dart';
@@ -153,7 +154,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         //   onTap: () async {
         //     UIUtils.showSimpleDialog(
         //       'Limits',
-        //       jsonEncode(ProController.to.limits.toJson()),
+        //       jsonEncode(limits.toJson()),
         //     );
         //   },
         // ),

@@ -1,15 +1,15 @@
 import 'dart:async';
 
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:minio/minio.dart';
 
 import '../../../core/persistence/persistence.secret.dart';
 import '../../../core/utils/globals.dart';
-import '../../../core/utils/utils.dart';
 
 class CustomSyncProviderScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -57,7 +57,7 @@ class CustomSyncProviderScreenController extends GetxController
 
   // FUNCTIONS
   void save() {
-    Persistence.to.syncProvider.val = LisoSyncProvider.custom.name;
+    AppPersistence.to.syncProvider.val = LisoSyncProvider.custom.name;
     persistence.s3Endpoint.val = endpointController.text;
     persistence.s3AccessKey.val = accessKeyController.text;
     persistence.s3SecretKey.val = secretKeyController.text;
@@ -119,7 +119,7 @@ class CustomSyncProviderScreenController extends GetxController
 
       Get.dialog(AlertDialog(
         title: const Text('Connection Success'),
-        content: Utils.isSmallScreen
+        content: isSmallScreen
             ? dialogContent
             : const SizedBox(width: 450, child: dialogContent),
         actions: [

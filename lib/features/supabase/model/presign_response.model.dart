@@ -1,4 +1,4 @@
-import 'error.model.dart';
+import 'package:app_core/supabase/model/error.model.dart';
 
 class PresignUrlResponse {
   PresignUrlResponse({

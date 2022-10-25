@@ -1,91 +1,73 @@
+import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/widgets/consent.widget.dart';
+import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/firebase/crashlytics.service.dart';
-import 'package:liso/core/utils/ui_utils.dart';
-import 'package:liso/features/app/pages.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
-import 'package:timeago/timeago.dart' as timeago;
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'package:window_manager/window_manager.dart';
 
-import '../../features/feedback/feedback_screen.controller.dart';
-import '../../features/general/remote_image.widget.dart';
-import '../../features/pro/pro.controller.dart';
 import '../../features/supabase/model/object.model.dart';
-import '../../features/supabase/supabase_auth.service.dart';
 import '../../resources/resources.dart';
-import '../firebase/config/config.service.dart';
-import '../persistence/persistence.dart';
-import '../persistence/persistence.secret.dart';
 import 'globals.dart';
 
-class Utils {
+class AppUtils {
   // VARIABLES
   static final console = Console(name: 'Utils');
 
   // GETTERS
-  static bool get isSmallScreen =>
-      Get.mediaQuery.size.width < kDesktopChangePoint;
 
   // FUNCTIONS
 
-  static void copyToClipboard(String text) async {
-    if (text.isEmpty) return;
+  static Future<void> showQR(
+    String data, {
+    required String title,
+    required String subTitle,
+  }) async {
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        SizedBox(
+          height: 200,
+          width: 200,
+          child: Center(
+            child: QrImage(
+              data: data,
+              backgroundColor: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          subTitle,
+          style: const TextStyle(color: Colors.grey),
+          textAlign: TextAlign.center,
+        ),
+      ],
+    );
 
-    try {
-      await Clipboard.setData(ClipboardData(text: text));
-
-      // TODO: localize
-      UIUtils.showSnackBar(
-        title: 'Copied',
-        message: 'Successfully copied to clipboard',
-        icon: const Icon(LineIcons.copy),
-        seconds: 4,
-      );
-    } catch (e, s) {
-      CrashlyticsService.to.record(e, s);
-    }
-  }
-
-  static String timeAgo(DateTime dateTime, {bool short = true}) {
-    final locale =
-        (Get.locale?.languageCode ?? 'en_US') + (short ? "_short" : "");
-    return timeago.format(dateTime, locale: locale).replaceFirst("~", "");
-  }
-
-  // support higher refresh rate
-  static void setDisplayMode() async {
-    if (!GetPlatform.isAndroid) return;
-
-    try {
-      final mode = await FlutterDisplayMode.active;
-      console.warning('active mode: $mode');
-      final modes = await FlutterDisplayMode.supported;
-
-      for (DisplayMode e in modes) {
-        console.info('display modes: $e');
-      }
-
-      await FlutterDisplayMode.setPreferredMode(modes.last);
-      console.info('set mode: ${modes.last}');
-    } on PlatformException catch (e) {
-      console.error('display mode error: $e');
-    }
-  }
-
-  static Future<void> setWindowSize() async {
-    await windowManager.setMinimumSize(kMinWindowSize);
-
-    // set preferred size
-    windowManager.setSize(Size(
-      Persistence.to.windowWidth.val,
-      Persistence.to.windowHeight.val,
+    await Get.dialog(AlertDialog(
+      title: Text(
+        title,
+        textAlign: TextAlign.center,
+      ),
+      content: isSmallScreen
+          ? content
+          : Container(
+              constraints: const BoxConstraints(maxHeight: 600),
+              width: 450,
+              child: content,
+            ),
+      actions: [
+        TextButton(
+          onPressed: Get.back,
+          child: Text('okay'.tr),
+        ),
+      ],
     ));
   }
 
@@ -170,60 +152,6 @@ class Utils {
     }
 
     return Icon(iconData, color: color, size: size);
-  }
-
-  static Future<dynamic>? adaptiveRouteOpen({
-    required String name,
-    String method = 'toNamed',
-    Map<String, String> parameters = const {},
-    dynamic arguments,
-  }) {
-    // Regular navigation for mobile
-    if (isSmallScreen) {
-      switch (method) {
-        case 'toNamed':
-          return Get.toNamed(
-            name,
-            parameters: parameters,
-            arguments: arguments,
-          );
-        case 'offAndToNamed':
-          return Get.offAndToNamed(
-            name,
-            parameters: parameters,
-            arguments: arguments,
-          );
-        case 'offAllNamed':
-          return Get.offAllNamed(
-            name,
-            parameters: parameters,
-            arguments: arguments,
-          );
-        default:
-      }
-    }
-
-    // Open page as dialog for desktop
-    Get.parameters = parameters; // manually pass parameters
-    final page = AppPages.routes.firstWhere((e) => e.name == name).page();
-    // larger real estate for secure notes
-    final isNote = parameters['category'] == LisoItemCategory.note.name;
-
-    final dialog = Dialog(
-      child: SizedBox(
-        width: isNote ? 800 : 600,
-        height: isNote ? 1100 : 900,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          child: page,
-        ),
-      ),
-    );
-
-    return Get.dialog(
-      dialog,
-      routeSettings: RouteSettings(name: name, arguments: arguments),
-    );
   }
 
   static String? validateUri(String data) {
@@ -344,86 +272,5 @@ class Utils {
     }
 
     return color;
-  }
-
-  static String platformName() {
-    if (GetPlatform.isWeb) {
-      return "Web";
-    } else if (GetPlatform.isAndroid) {
-      return "Android";
-    } else if (GetPlatform.isIOS) {
-      return "iOS";
-    } else if (GetPlatform.isWindows) {
-      return "Windows";
-    } else if (GetPlatform.isMacOS) {
-      return "macOS";
-    } else if (GetPlatform.isLinux) {
-      return "Linux";
-    } else if (GetPlatform.isFuchsia) {
-      return "Fuchsia";
-    } else {
-      return "unknown";
-    }
-  }
-
-  static void contactEmail({
-    required String subject,
-    required String preBody,
-    required double rating,
-    required String previousRoute,
-    required FeedbackType feedbackType,
-  }) async {
-    String ratingEmojis = '';
-
-    for (var i = 0; i < rating.toInt(); i++) {
-      ratingEmojis += '✩';
-    }
-
-    final ln = GetPlatform.isIOS ? '\r\n' : '\n';
-
-    String body = '$preBody$ln$ln';
-
-    if (SupabaseAuthService.to.authenticated) {
-      body += 'Rating: $ratingEmojis$ln';
-      body +=
-          'User ID: ${SupabaseAuthService.to.user!.id}\nAddress: ${SecretPersistence.to.longAddress}$ln';
-      body += 'RC User ID: ${ProController.to.info.value.originalAppUserId}$ln';
-      body += 'Entitlement: ${ProController.to.limits.id}$ln';
-      body += 'Pro: ${ProController.to.isPro}$ln';
-    }
-
-    body += 'App Version: ${Globals.metadata?.app.formattedVersion}$ln';
-    body += 'Platform: ${Utils.platformName()}$ln';
-    body += 'Route: $previousRoute$ln';
-
-    final emails = ConfigService.to.general.app.emails;
-    String email = emails.support;
-
-    if (feedbackType == FeedbackType.issue) {
-      email = emails.issues;
-    }
-
-    final url = 'mailto:$email?subject=$subject&body=$body';
-    openUrl(Uri.encodeFull(url));
-  }
-
-  static Future<void> openUrl(
-    String url, {
-    LaunchMode mode = LaunchMode.platformDefault,
-  }) async {
-    console.info('launching: $url');
-    final canLaunch = await canLaunchUrlString(url);
-    if (!canLaunch) console.error('cannot launch');
-    launchUrlString(url, mode: mode);
-  }
-
-  static Future<void> openUri(
-    Uri uri, {
-    LaunchMode mode = LaunchMode.platformDefault,
-  }) async {
-    console.info('launching: $uri');
-    final canLaunch = await canLaunchUrl(uri);
-    if (!canLaunch) console.error('cannot launch');
-    launchUrl(uri, mode: mode);
   }
 }

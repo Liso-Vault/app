@@ -1,12 +1,12 @@
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/utils/ui_utils.dart';
+import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 
-import '../../../core/utils/utils.dart';
-import '../../general/appbar_leading.widget.dart';
 import '../../general/card_button.widget.dart';
 import 'seed_generator_screen.controller.dart';
 
@@ -53,7 +53,7 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
                       CardButton(
                         text: 'QR Code',
                         iconData: Iconsax.barcode,
-                        onPressed: () => UIUtils.showQR(
+                        onPressed: () => AppUtils.showQR(
                           controller.seed.value,
                           title: 'Your Seed QR Code',
                           subTitle:

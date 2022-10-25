@@ -1,18 +1,19 @@
 import 'package:alchemy_web3/alchemy_web3.dart';
+import 'package:app_core/globals.dart';
+import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/contracts/liso.dart';
 import 'package:liso/core/services/alchemy.service.dart';
-import 'package:liso/core/utils/ui_utils.dart';
 import 'package:liso/features/wallet/nfts/nfts_screen.controller.dart';
 import 'package:liso/features/wallet/transactions/transactions_screen.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/utils/utils.dart';
 import '../../resources/resources.dart';
 import '../menu/menu.item.dart';
 import 'assets/assets_screen.controller.dart';
@@ -97,8 +98,9 @@ class WalletScreenController extends GetxController with ConsoleMixin {
         ),
         const SizedBox(height: 10),
         TextButton.icon(
-          onPressed: () =>
-              Utils.copyToClipboard(SecretPersistence.to.walletAddress.val),
+          onPressed: () => Utils.copyToClipboard(
+            SecretPersistence.to.walletAddress.val,
+          ),
           icon: const Icon(Iconsax.copy),
           label: const Text('Copy Address'),
         ),
@@ -107,8 +109,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
 
     Get.dialog(AlertDialog(
       title: const Text('Receive'),
-      content:
-          Utils.isSmallScreen ? content : SizedBox(width: 450, child: content),
+      content: isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -259,9 +260,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
       title: Text('sign_text'.tr),
       content: Form(
         key: formKey,
-        child: Utils.isSmallScreen
-            ? content
-            : SizedBox(width: 450, child: content),
+        child: isSmallScreen ? content : SizedBox(width: 450, child: content),
       ),
       actions: [
         TextButton(

@@ -1,5 +1,10 @@
+import 'package:app_core/pages/feedback/feedback.screen.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/pages/update/update.screen.dart';
+import 'package:app_core/pages/upgrade/upgrade.screen.dart';
 import 'package:get/get.dart';
 import 'package:liso/features/about/about.screen.dart';
+import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/create_password/create_password.screen.dart';
 import 'package:liso/features/debug/debug.screen.dart';
 import 'package:liso/features/import/import.screen.dart';
@@ -9,7 +14,6 @@ import 'package:liso/features/seed/seed.screen.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
-import 'package:liso/features/update/update.screen.dart';
 import 'package:liso/features/welcome/welcome.screen.dart';
 
 import '../../core/middlewares/authentication.middleware.dart';
@@ -18,7 +22,6 @@ import '../categories/categories.screen.dart';
 import '../categories/picker/category_picker.screen.dart';
 import '../cipher/cipher.screen.dart';
 import '../devices/devices.screen.dart';
-import '../feedback/feedback.screen.dart';
 import '../files/explorer/s3_explorer.screen.dart';
 import '../groups/groups.screen.dart';
 import '../items/item.screen.dart';
@@ -26,15 +29,13 @@ import '../joined_vaults/explorer/vault_explorer.screen.dart';
 import '../joined_vaults/joined_vaults.screen.dart';
 import '../otp/otp.screen.dart';
 import '../password_generator/password_generator.screen.dart';
-import '../pro/upgrade/upgrade.screen.dart';
 import '../seed/generator/seed_generator.screen.dart';
 import '../wallet/wallet.screen.dart';
-import 'routes.dart';
 
-class AppPages {
+class Pages {
   static const initial = Routes.main;
 
-  static final routes = [
+  static final data = [
     GetPage(
       name: Routes.main,
       page: () => MainScreen(),
@@ -51,31 +52,31 @@ class AppPages {
       page: () => const UnlockScreen(),
     ),
     GetPage(
-      name: Routes.createPassword,
+      name: AppRoutes.createPassword,
       page: () => const CreatePasswordScreen(),
     ),
     GetPage(
-      name: Routes.passwordGenerator,
+      name: AppRoutes.passwordGenerator,
       page: () => const PasswordGeneratorScreen(),
     ),
     GetPage(
-      name: Routes.item,
+      name: AppRoutes.item,
       page: () => const ItemScreen(),
     ),
     GetPage(
-      name: Routes.restore,
+      name: AppRoutes.restore,
       page: () => const RestoreScreen(),
     ),
     GetPage(
-      name: Routes.import,
+      name: AppRoutes.import,
       page: () => const ImportScreen(),
     ),
     GetPage(
-      name: Routes.seed,
+      name: AppRoutes.seed,
       page: () => const SeedScreen(),
     ),
     GetPage(
-      name: Routes.seedGenerator,
+      name: AppRoutes.seedGenerator,
       page: () => const SeedGeneratorScreen(),
     ),
     GetPage(
@@ -95,19 +96,19 @@ class AppPages {
     //   page: () => const CustomSyncProviderScreen(),
     // ),
     GetPage(
-      name: Routes.s3Explorer,
+      name: AppRoutes.s3Explorer,
       page: () => const S3ExplorerScreen(),
     ),
     GetPage(
-      name: Routes.attachments,
+      name: AppRoutes.attachments,
       page: () => const AttachmentsScreen(),
     ),
     GetPage(
-      name: Routes.wallet,
+      name: AppRoutes.wallet,
       page: () => const WalletScreen(),
     ),
     GetPage(
-      name: Routes.cipher,
+      name: AppRoutes.cipher,
       page: () => const CipherScreen(),
     ),
     GetPage(
@@ -115,35 +116,35 @@ class AppPages {
       page: () => const UpgradeScreen(),
     ),
     GetPage(
-      name: Routes.otp,
+      name: AppRoutes.otp,
       page: () => const OTPScreen(),
     ),
     GetPage(
-      name: Routes.categories,
+      name: AppRoutes.categories,
       page: () => const CategoriesScreen(),
     ),
     GetPage(
-      name: Routes.categoryPicker,
+      name: AppRoutes.categoryPicker,
       page: () => const CategoryPickerScreen(),
     ),
     GetPage(
-      name: Routes.vaults,
+      name: AppRoutes.vaults,
       page: () => const GroupsScreen(),
     ),
     GetPage(
-      name: Routes.sharedVaults,
+      name: AppRoutes.sharedVaults,
       page: () => const SharedVaultsScreen(),
     ),
     GetPage(
-      name: Routes.joinedVaults,
+      name: AppRoutes.joinedVaults,
       page: () => const JoinedVaultsScreen(),
     ),
     GetPage(
-      name: Routes.vaultExplorer,
+      name: AppRoutes.vaultExplorer,
       page: () => const VaultExplorerScreen(),
     ),
     GetPage(
-      name: Routes.devices,
+      name: AppRoutes.devices,
       page: () => const DevicesScreen(),
     ),
     GetPage(

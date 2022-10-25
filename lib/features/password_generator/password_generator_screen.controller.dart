@@ -1,10 +1,10 @@
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
 import '../../core/utils/globals.dart';
-import '../../core/utils/utils.dart';
 import '../app/routes.dart';
 
 class PasswordGeneratorScreenController extends GetxController
@@ -82,7 +82,7 @@ class PasswordGeneratorScreenController extends GetxController
 
   void save() {
     Utils.adaptiveRouteOpen(
-      name: Routes.item,
+      name: AppRoutes.item,
       parameters: {
         'mode': 'generated',
         'category': LisoItemCategory.password.name,
