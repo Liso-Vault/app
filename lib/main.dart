@@ -7,7 +7,6 @@ import 'package:app_core/firebase/config/models/config_root.model.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
-import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -221,8 +220,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
         );
 
         initUpgradeConfig();
-
-        // load balances
+        // extra init
         AlchemyService.to.init();
         AlchemyService.to.load();
       },

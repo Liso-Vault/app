@@ -13,7 +13,6 @@ import 'package:liso/core/middlewares/authentication.middleware.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../../core/utils/utils.dart';
 import '../main/main_screen.controller.dart';
 import '../wallet/wallet.service.dart';
 

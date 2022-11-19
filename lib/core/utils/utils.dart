@@ -1,7 +1,5 @@
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/persistence/persistence.dart';
-import 'package:app_core/widgets/consent.widget.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';

@@ -46,7 +46,8 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
       },
     );
 
-    // console.debug('raw: ${response.data}, errors: ${response.error}');
+    // console.debug('raw: ${response.data}, errors: ${response.status}');
+
     if (response.status != 200) {
       return Left('supabase error: ${response.status}: ${response.data}');
     }

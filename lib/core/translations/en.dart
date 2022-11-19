@@ -149,6 +149,9 @@ final en = {
   "update": "Update",
   "login": "Login",
   "password": "Password",
+  "giveaway_message":
+      "Be one of the lucky winners of Free 6 Months Pro! Just share your snap on Twitter 🎉",
+  "giveaway_highlight": "Must tag @Liso_Vault and include #LisoVault",
   // ---
   "cryptoWallet": "Crypto Wallet",
   "master_password": "Master Password",

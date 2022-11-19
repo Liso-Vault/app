@@ -4,7 +4,6 @@ import 'dart:math';
 
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:coingecko_api/coingecko_api.dart';
@@ -16,7 +15,6 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:hex/hex.dart';
 import 'package:liso/core/persistence/persistence.dart';
-import 'package:liso/core/utils/utils.dart';
 import 'package:web3dart/web3dart.dart';
 import 'package:worker_manager/worker_manager.dart';
 
