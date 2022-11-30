@@ -150,8 +150,8 @@ final en = {
   "login": "Login",
   "password": "Password",
   "giveaway_message":
-      "Be one of the lucky winners of Free 6 Months Pro! Just share your snap on Twitter 🎉",
-  "giveaway_highlight": "Must tag @Liso_Vault and include #LisoVault",
+      "Do you Blog, TikTok, YouTube, Facebook, Instagram, or Twitter? Claim your FREE Liso PRO just by following our simple and quick instructions.",
+  "giveaway_highlight": "Please don't miss this opportunity",
   // ---
   "cryptoWallet": "Crypto Wallet",
   "master_password": "Master Password",
@@ -300,4 +300,15 @@ final en = {
   "generated_password": "Generated Password",
   "generated_seed_phrase": "Generated Seed Phrase",
   "scan": "Scan",
+  // new
+  "free": "Free",
+  "redeem_trial": "Redeem Your Free Trial",
+  "now_only": "Now only",
+  "buy_for_only": "Buy for only",
+  "from": "From",
+  "to_only": "to only",
+  "best_deal": "Best Deal",
+  "please_wait": "Please wait",
+  "money_back_guarantee": "100% Money-Back Guarantee",
+  "upgrade_to_pro": "Upgrade To Pro",
 };

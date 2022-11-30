@@ -187,12 +187,6 @@ class MainScreenController extends GetxController
       window.setPreventClose(true);
     }
 
-    SupabaseAuthService.to.signedIn = () {
-      StorageService.to
-          .load()
-          .then((_) => AppSupabaseFunctionsService.to.syncUser());
-    };
-
     console.info('onInit');
     super.onInit();
   }

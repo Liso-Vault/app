@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   app_links_windows
   connectivity_plus
+  flutter_secure_storage_windows
   hotkey_manager
   local_auth_windows
   pasteboard

@@ -37,21 +37,12 @@ class WalletService extends GetxService with ConsoleMixin {
 
   // GETTERS
   Wallet? wallet;
-  // Uint8List? cipherKey;
 
   bool get isReady => wallet != null;
 
   bool get isSaved => SecretPersistence.to.wallet.val.isNotEmpty;
 
-  // Uint8List get privateKey => wallet!.privateKey.privateKey;
-  // String get privateKeyHex => HEX.encode(privateKey);
-
   EthereumAddress get address => wallet!.privateKey.address;
-
-  // String get longAddress => address.hexEip55;
-
-  // String get shortAddress =>
-  //     '${longAddress.substring(0, 11)}...${longAddress.substring(longAddress.length - 11)}';
 
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
@@ -188,8 +179,6 @@ class WalletService extends GetxService with ConsoleMixin {
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     SecretPersistence.to.walletSignature.val = signature;
-    // // from the first 32 bits of the signature
-    // cipherKey = Uint8List.fromList(utf8.encode(signature).sublist(0, 32));
 
     final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);
@@ -205,7 +194,6 @@ class WalletService extends GetxService with ConsoleMixin {
 
   void reset() {
     wallet = null;
-    // cipherKey = null;
   }
 
   Future<void> create(String seed, String password, bool isNew) async {

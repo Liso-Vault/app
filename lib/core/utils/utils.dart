@@ -1,15 +1,24 @@
+import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/gradient.widget.dart';
+import 'package:app_core/widgets/pro.widget.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:liso/core/liso/liso.manager.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
+import 'package:extended_image/extended_image.dart';
 
+import '../../features/files/storage.service.dart';
 import '../../features/supabase/model/object.model.dart';
+import '../../features/supabase/supabase_functions.service.dart';
 import '../../resources/resources.dart';
 import 'globals.dart';
 
@@ -270,5 +279,111 @@ class AppUtils {
     }
 
     return color;
+  }
+
+  static void onSignedIn() {
+    if (Get.currentRoute.isNotEmpty && Get.currentRoute != Routes.main) {
+      Get.offNamedUntil(Routes.main, (route) => false);
+    }
+
+    StorageService.to
+        .load()
+        .then((_) => AppSupabaseFunctionsService.to.syncUser());
+    console.wtf('onSignedIn');
+  }
+
+  static void onSignedOut() {
+    // AppService.to.reset();
+    // LisoManager.reset();
+    // Get.offNamedUntil(Routes.main, (route) => false);
+    console.wtf('onSignedOut');
+  }
+
+  static void fallbackUpgrade() {
+    final bodyContent = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: ExtendedImage.network(
+            kGiveawayImageUrl,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 30),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '${'free'.tr.toUpperCase()} ',
+              style: TextStyle(
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+                color: Get.theme.primaryColor,
+              ),
+            ),
+            const ProText(size: 25)
+          ],
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'giveaway_message'.tr,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 10),
+        GradientWidget(
+          gradient: const LinearGradient(
+            colors: [
+              Color.fromARGB(255, 255, 247, 0),
+              Color.fromARGB(255, 255, 0, 225),
+            ],
+          ),
+          child: Text(
+            'giveaway_highlight'.tr,
+            style: const TextStyle(fontSize: 15, color: Colors.green),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 10),
+        // TextButton.icon(
+        //   onPressed: () => Utils.openUrl(giveaway.detailsUrl),
+        //   label: const Text('Learn more'),
+        //   icon: const Icon(Iconsax.book_1),
+        // ),
+        // const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: Get.back,
+                child: Text('close'.tr),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => Utils.openUrl(
+                  ConfigService.to.general.app.links.giveaway,
+                ),
+                child: Text('learn_more'.tr),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+
+    Get.dialog(
+      AlertDialog(
+        title: null,
+        actionsAlignment: MainAxisAlignment.center,
+        content: isSmallScreen
+            ? bodyContent
+            : SizedBox(width: 400, child: bodyContent),
+      ),
+    );
+
+    AnalyticsService.to.logEvent('fallback-dialog');
   }
 }

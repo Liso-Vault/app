@@ -5,15 +5,16 @@ import 'package:get/get.dart';
 import 'package:liso/core/firebase/model/config_app_domains.model.dart';
 import 'package:liso/core/firebase/model/config_limits.model.dart';
 import 'package:liso/core/firebase/model/config_web3.model.dart';
+import 'package:secrets/secrets.dart';
 
 import '../../features/wallet/wallet.service.dart';
 import '../persistence/persistence.dart';
 
 bool isAutofill = false;
 
-late ConfigLimits configLimits;
-late ConfigAppDomains configAppDomains;
-late ConfigWeb3 configWeb3;
+var configLimits = ConfigLimits.fromJson(Secrets.limits);
+var configAppDomains = ConfigAppDomains.fromJson(Secrets.appDomains);
+var configWeb3 = ConfigWeb3.fromJson(Secrets.web3);
 
 // HIVE DATABASE
 const kHiveBoxGroups = 'groups';
@@ -49,6 +50,9 @@ const kNonPasswordFieldIds = [
   'verification_number',
   'seed',
 ];
+
+const kGiveawayImageUrl =
+    'https://media2.giphy.com/media/QlvPwCTw59B2E/giphy.gif?cid=ecf05e47twvo15bd95yww38qnr0b24bxvs83rqtss333b90s&rid=giphy.gif&ct=g';
 
 // GETTERS
 

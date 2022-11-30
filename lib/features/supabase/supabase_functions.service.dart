@@ -1,5 +1,6 @@
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/model/server_response.model.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
@@ -24,7 +25,6 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
 
   // VARIABLES
   final persistence = Get.find<Persistence>();
-  final spersistence = Get.find<SecretPersistence>();
 
   // GETTERS
 
@@ -35,13 +35,14 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
   Future<Either<Object?, StatObjectResponse>> statObject(String object,
       {String? address}) async {
     // strip root address
-    object = object.replaceAll('${spersistence.walletAddress.val}/', '');
+    object =
+        object.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
     console.info('stat: $object....');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await SupabaseFunctionsService.to.functions.invoke(
       kFunctionStatObject,
       body: {
-        "address": address ?? spersistence.walletAddress.val,
+        "address": address ?? SecretPersistence.to.walletAddress.val,
         "object": object,
       },
     );
@@ -58,13 +59,13 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
   Future<Either<Object?, ListObjectsResponse>> listObjects(
       {String path = ''}) async {
     // strip root address
-    path = path.replaceAll('${spersistence.walletAddress.val}/', '');
+    path = path.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
     console.info('list objects: $path....');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await SupabaseFunctionsService.to.functions.invoke(
       kFunctionListObjects,
       body: {
-        "address": spersistence.walletAddress.val,
+        "address": SecretPersistence.to.walletAddress.val,
         "path": path,
       },
     );
@@ -82,16 +83,16 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
     // strip root address
     objects = objects
         .map(
-          (e) => e.replaceAll('${spersistence.walletAddress.val}/', ''),
+          (e) => e.replaceAll('${SecretPersistence.to.walletAddress.val}/', ''),
         )
         .toList();
 
     console.info('delete objects: $objects....');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await SupabaseFunctionsService.to.functions.invoke(
       kFunctionDeleteObjects,
       body: {
-        "address": spersistence.walletAddress.val,
+        "address": SecretPersistence.to.walletAddress.val,
         "objects": objects,
       },
     );
@@ -107,13 +108,13 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
   Future<Either<Object?, ListObjectsResponse>> deleteDirectory(
       String path) async {
     // strip root address
-    path = path.replaceAll('${spersistence.walletAddress.val}/', '');
+    path = path.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
     console.info('delete directory: $path....');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await SupabaseFunctionsService.to.functions.invoke(
       kFunctionDeleteDirectory,
       body: {
-        "address": spersistence.walletAddress.val,
+        "address": SecretPersistence.to.walletAddress.val,
         "path": path,
       },
     );
@@ -133,13 +134,14 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
     int expirySeconds = 1000,
   }) async {
     // strip root address
-    object = object.replaceAll('${spersistence.walletAddress.val}/', '');
+    object =
+        object.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
     console.info('presigning: $object....');
 
-    final response = await auth.client!.functions.invoke(
+    final response = await SupabaseFunctionsService.to.functions.invoke(
       kFunctionPresignUrl,
       body: {
-        "address": address ?? spersistence.walletAddress.val,
+        "address": address ?? SecretPersistence.to.walletAddress.val,
         "object": object,
         "method": method,
         "expirySeconds": expirySeconds,
@@ -162,7 +164,7 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
     final objects = StorageService.to.rootInfo.value.data;
 
     final data = {
-      "address": spersistence.walletAddress.val,
+      "address": SecretPersistence.to.walletAddress.val,
       "metadata": {
         'size': {
           'storage': objects.size,

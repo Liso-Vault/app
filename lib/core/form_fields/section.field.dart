@@ -25,7 +25,7 @@ class _SectionFormFieldState extends State<SectionFormField> {
       (e as dynamic).children.first.child.child.field.identifier ==
       widget.field.identifier);
 
-  HiveLisoField get formField => formWidget.children.first.child.field;
+  // HiveLisoField get formField => formWidget.children.first.child.field;
 
   List<ContextMenuItem> get menuItems {
     return [

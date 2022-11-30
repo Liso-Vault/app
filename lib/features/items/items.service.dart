@@ -46,6 +46,8 @@ class ItemsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    if (box?.isOpen == false) return;
+
     if (!boxInitialized) {
       await File(join(LisoPaths.hivePath, '$kHiveBoxItems.hive')).delete();
       return;

@@ -44,6 +44,8 @@ class CategoriesService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    if (box?.isOpen == false) return;
+
     if (!boxInitialized) {
       await File(join(LisoPaths.hivePath, '$kHiveBoxCategories.hive')).delete();
       return;

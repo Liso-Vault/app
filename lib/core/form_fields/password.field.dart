@@ -43,7 +43,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
       (e as dynamic).children.first.child.child.field.identifier ==
       widget.field.identifier);
 
-  HiveLisoField get formField => formWidget.children.first.child.field;
+  // HiveLisoField get formField => formWidget.children.first.child.field;
 
   double get strengthValue =>
       (strength.index.toDouble() + 0.5) / PasswordStrength.STRONG.index;

@@ -39,6 +39,7 @@ import 'core/liso/liso_paths.dart';
 import 'core/persistence/persistence.dart';
 import 'core/translations/data.dart';
 import 'core/utils/globals.dart';
+import 'core/utils/utils.dart';
 import 'features/app/app.dart';
 import 'features/app/pages.dart';
 import 'features/categories/categories.controller.dart';
@@ -65,13 +66,6 @@ void initUpgradeConfig() {
 
   final upgradeConfig = UpgradeConfig(
     features: [
-      if (isIAPSupported) ...[
-        // TODO: temporary
-        // controller.promoText
-      ] else ...[
-        '1 ${'week'.tr} ${'free_trial'.tr}',
-      ],
-      'cancel_anytime'.tr,
       '${formatKNumber(configLimits.pro.items)} Items',
       '${formatKNumber(configLimits.pro.devices)} Devices',
       '2FA Authenticator',
@@ -98,15 +92,8 @@ void initUpgradeConfig() {
       'NFC Keycard Support',
       'YubiKey Support',
     ],
-    darkDecoration: const BoxDecoration(
-      gradient: LinearGradient(
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        colors: [
-          Colors.black,
-          Color(0xFF173030),
-        ],
-      ),
+    darkDecoration: BoxDecoration(
+      color: Get.theme.drawerTheme.backgroundColor,
     ),
   );
 
@@ -128,7 +115,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
     if (isWindowsLinux) {
       await SentryFlutter.init(
         (options) {
-          options.dsn = Secrets.configs.secrets['sentry']?['dsn'] as String;
+          options.dsn = Secrets.secrets['sentry']!['dsn'] as String;
         },
       );
     }
@@ -153,14 +140,22 @@ void init(Flavor flavor, {bool autofill = false}) async {
     );
 
     // init core config
-    final core = CoreConfig().init(
+    final core = await CoreConfig().init(
+      buildMode: BuildMode.production,
       persistenceCipherKey: Secrets.persistenceKey,
       translationKeys: translationKeys,
       pages: Pages.data,
-      // onCloseUpgradeScreen: AppUtils.showContestDialog, // TODO: temporary
+      initialWindowSize: const Size(1800, 1215),
+      onCancelledUpgradeScreen: AppUtils.fallbackUpgrade,
+      onSignedOut: AppUtils.onSignedOut,
+      onSignedIn: AppUtils.onSignedIn,
       logoDarkPath: Images.logo,
       logoLightPath: Images.logo, // TODO: light logo
+      appConfig: Secrets.app,
+      generalConfig: Secrets.general,
+      secretsConfig: Secrets.secrets,
       allowAnonymousRcUserSync: false,
+      offeringId: 'annual_monthly',
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
         Color.fromARGB(255, 0, 255, 213),
@@ -168,9 +163,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
     );
 
     // services
-    Get.lazyPut(() => AppSupabaseFunctionsService());
-    Get.lazyPut(() => AppPersistence());
-    Get.lazyPut(() => SecretPersistence());
     Get.lazyPut(() => WalletService());
     Get.lazyPut(() => CipherService());
     Get.lazyPut(() => LisoAutofillService());
@@ -181,6 +173,10 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.lazyPut(() => ItemsService());
     Get.lazyPut(() => GroupsService());
     Get.lazyPut(() => CategoriesService());
+
+    Get.put(AppSupabaseFunctionsService());
+    Get.put(AppPersistence());
+    Get.put(SecretPersistence());
 
     // controllers
     Get.put(ItemsController());
@@ -219,7 +215,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
           ),
         );
 
-        initUpgradeConfig();
         // extra init
         AlchemyService.to.init();
         AlchemyService.to.load();
@@ -227,6 +222,8 @@ void init(Flavor flavor, {bool autofill = false}) async {
     );
 
     await core.postInit();
+    initUpgradeConfig();
+
     await LisoPaths.init();
     await SecretPersistence.open();
     await SecretPersistence.migrate();

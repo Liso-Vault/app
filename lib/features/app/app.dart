@@ -1,4 +1,5 @@
-import 'package:app_core/firebase/analytics.service.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/widgets/unknown.screen.dart';
@@ -33,8 +34,10 @@ class App extends StatelessWidget {
     // MATERIAL APP
     return GetMaterialApp(
       navigatorObservers: [
-        if (!GetPlatform.isWindows) ...[
-          AnalyticsService.to.observer,
+        if (!isWindowsLinux) ...[
+          FirebaseAnalyticsObserver(
+            analytics: FirebaseAnalytics.instance,
+          ),
         ] else ...[
           SentryNavigatorObserver(),
         ]

@@ -57,14 +57,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             config.general.app.links.website,
           ),
         ),
-        ListTile(
-          leading: Icon(LineIcons.rocket, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('${config.appName} Roadmap'),
-          onTap: () => Utils.openUrl(
-            config.general.app.links.roadmap,
-          ),
-        ),
         ContextMenuButton(
           controller.communityMenuItems,
           useMouseRegion: true,
@@ -75,19 +67,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             trailing: const Icon(Iconsax.arrow_right_3),
             onTap: () {},
           ),
-        ),
-        ListTile(
-          leading: Icon(LineIcons.productHunt, color: themeColor),
-          title: Text('${config.appName} Product Hunt'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.openUrl(config.general.app.links.productHunt),
-        ),
-        ListTile(
-          leading: Icon(LineIcons.git, color: themeColor),
-          title: Text('${config.appName} GitCoin Grants'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.openUrl(
-              'https://gitcoin.co/grants/5819/liso-decentralized-password-manager'),
         ),
         ListTile(
           leading: Icon(LineIcons.github, color: themeColor),
@@ -106,6 +85,16 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           title: Text('${config.appName} Terms'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(config.general.app.links.terms),
+        ),
+        ListTile(
+          leading: const Icon(Iconsax.dollar_circle),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          // TODO: localize
+          title: const Text('Earn 30% Commision'),
+          subtitle: const Text('Join the Affiliates Program'),
+          onTap: () => Utils.openUrl(
+            'https://oliverbytes.gumroad.com/affiliates',
+          ),
         ),
         if (!GetPlatform.isMobile) ...[
           ListTile(
@@ -144,6 +133,17 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ),
         const Divider(),
         ListTile(
+          leading: RemoteImage(
+            url: 'https://i.imgur.com/0H0sWlN.png',
+            width: 20,
+            placeholder: Image.asset(Images.placeholder, height: 20),
+          ),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          title: const Text('NexBot AI Writing Assistant'),
+          subtitle: const Text('Create amazing content 10X faster with AI'),
+          onTap: () => Utils.openUrl('https://nexbot.ai'),
+        ),
+        ListTile(
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(20),
             child: RemoteImage(
@@ -153,8 +153,8 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             ),
           ),
           trailing: const Icon(Iconsax.arrow_right_3),
-          title: const Text('NexSnap: Make beautiful screenshots'),
-          subtitle: const Text('Another app from us you need to try'),
+          title: const Text('NexSnap Screenshot Editor'),
+          subtitle: const Text('Make beautiful screenshots in seconds'),
           onTap: () => Utils.openUrl('https://nexsnap.app'),
         ),
         const SizedBox(height: 50),

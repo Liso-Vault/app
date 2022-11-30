@@ -49,6 +49,8 @@ class AlchemyService extends GetxService with ConsoleMixin {
   }
 
   Future<void> load() async {
+    if (!WalletService.to.isSaved) return;
+
     if (!ConnectivityService.to.connected.value) {
       return console.warning('offline');
     }

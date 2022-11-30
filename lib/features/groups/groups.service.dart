@@ -52,6 +52,8 @@ class GroupsService extends GetxService with ConsoleMixin {
   }
 
   Future<void> clear() async {
+    if (box?.isOpen == false) return;
+
     if (!boxInitialized) {
       await File(join(LisoPaths.hivePath, '$kHiveBoxGroups.hive')).delete();
       return;
