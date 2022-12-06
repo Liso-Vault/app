@@ -311,4 +311,5 @@ final en = {
   "please_wait": "Please wait",
   "money_back_guarantee": "100% Money-Back Guarantee",
   "upgrade_to_pro": "Upgrade To Pro",
+  "faqs": "Frequently Asked Questions",
 };

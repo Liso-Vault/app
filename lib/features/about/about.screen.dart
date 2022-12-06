@@ -21,8 +21,8 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AboutScreenController());
-
     final config = Get.find<ConfigService>();
+    final links = ConfigService.to.general.app.links;
 
     final content = ListView(
       shrinkWrap: true,
@@ -36,14 +36,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             ),
             trailing: const Icon(Iconsax.arrow_right_3),
             title: Text(
-                '${ConfigService.to.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
+                '${config.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
             onTap: () {
-              final store = ConfigService.to.general.app.links.store;
-
               if (GetPlatform.isAndroid) {
-                Utils.openUrl(store.google);
+                Utils.openUrl(links.store.google);
               } else if (GetPlatform.isIOS || GetPlatform.isMacOS) {
-                Utils.openUrl(store.apple);
+                Utils.openUrl(links.store.apple);
               }
             },
           ),
@@ -52,9 +50,9 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           leading: Icon(Iconsax.chrome, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${config.appName} Website'),
-          subtitle: Text(config.general.app.links.website),
+          subtitle: Text(links.website),
           onTap: () => Utils.openUrl(
-            config.general.app.links.website,
+            links.website,
           ),
         ),
         ContextMenuButton(
@@ -72,19 +70,25 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           leading: Icon(LineIcons.github, color: themeColor),
           title: Text('${config.appName} GitHub'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.openUrl(config.general.app.links.github),
+          onTap: () => Utils.openUrl(links.github),
         ),
         ListTile(
           leading: Icon(Iconsax.security_user, color: themeColor),
           title: Text('${config.appName} Privacy'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.openUrl(config.general.app.links.privacy),
+          onTap: () => Utils.openUrl(links.privacy),
         ),
         ListTile(
           leading: Icon(Iconsax.book_1, color: themeColor),
           title: Text('${config.appName} Terms'),
           trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.openUrl(config.general.app.links.terms),
+          onTap: () => Utils.openUrl(links.terms),
+        ),
+        ListTile(
+          leading: const Icon(Icons.help_outline),
+          title: Text('faqs'.tr),
+          trailing: const Icon(Iconsax.arrow_right_3),
+          onTap: () => Utils.openUrl(links.faqs),
         ),
         ListTile(
           leading: const Icon(Iconsax.dollar_circle),
