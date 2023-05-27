@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:app_core/connectivity/connectivity.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
@@ -35,7 +35,7 @@ class SyncService extends GetxService with ConsoleMixin {
   // VARIABLES
   // Minio? client;
   bool backedUp = false;
-  final config = Get.find<ConfigService>();
+
   final persistence = Get.find<Persistence>();
   final syncTimeoutDuration = 20.seconds;
 
@@ -66,7 +66,7 @@ class SyncService extends GetxService with ConsoleMixin {
     console.info('syncing...');
     syncing.value = true;
 
-    final statResult = await AppSupabaseFunctionsService.to.statObject(
+    final statResult = await AppFunctionsService.to.statObject(
       kVaultFileName,
     );
 
@@ -160,7 +160,7 @@ class SyncService extends GetxService with ConsoleMixin {
     // }
 
     // DO THE ACTUAL BACKUP
-    final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
+    final presignResult = await AppFunctionsService.to.presignUrl(
       object:
           '$kDirBackups/${DateTime.now().millisecondsSinceEpoch}-$kVaultFileName',
       method: 'PUT',
@@ -176,7 +176,10 @@ class SyncService extends GetxService with ConsoleMixin {
       body: encryptedBytes,
     );
 
-    console.info('put response: ${response.statusCode}');
+    console.info(
+      'backup put response: ${response.statusCode} : ${response.body}',
+    );
+
     backedUp = true;
   }
 
@@ -199,7 +202,7 @@ class SyncService extends GetxService with ConsoleMixin {
     // BACKUP
     backup(kVaultFileName, encryptedBytes);
 
-    final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
+    final presignResult = await AppFunctionsService.to.presignUrl(
       object: kVaultFileName,
       method: 'PUT',
     );
@@ -208,13 +211,16 @@ class SyncService extends GetxService with ConsoleMixin {
       return const Left('failed to presign');
     }
 
-    // TODO: pass object metadata
-    final response = await http.put(
-      Uri.parse(presignResult.right.data.url),
-      body: encryptedBytes,
-    );
+    console.info(
+        'up sync data: ${encryptedBytes.length} -> ${presignResult.right.data.url}');
 
-    console.info('put response: ${response.statusCode}');
+    // // TODO: pass object metadata
+    // final response = await http.put(
+    //   Uri.parse(presignResult.right.data.url),
+    //   body: encryptedBytes,
+    // );
+
+    // console.info('up sync put response: ${response.statusCode}, ${response.body}');
     return const Right(true);
   }
 
@@ -260,7 +266,7 @@ class SyncService extends GetxService with ConsoleMixin {
         cipherKey: base64Decode(cipherKeyResult.right),
       );
 
-      final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
+      final presignResult = await AppFunctionsService.to.presignUrl(
         object: '$kDirShared/${sharedVault.docId}.$kVaultExtension',
         method: 'PUT',
       );
@@ -284,7 +290,7 @@ class SyncService extends GetxService with ConsoleMixin {
 
   Future<Either<dynamic, bool>> purge() async {
     if (!isReady) return const Left('offline');
-    final result = await AppSupabaseFunctionsService.to.deleteDirectory('');
+    final result = await AppFunctionsService.to.deleteDirectory('');
     if (result.isLeft) return Left(result.left);
     return const Right(true);
   }

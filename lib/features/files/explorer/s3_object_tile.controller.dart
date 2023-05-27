@@ -44,7 +44,7 @@ class S3ObjectTileController extends GetxController
   void share(S3Object object) async {
     change('Sharing...', status: RxStatus.loading());
 
-    final result = await AppSupabaseFunctionsService.to.presignUrl(
+    final result = await AppFunctionsService.to.presignUrl(
       object: object.key,
       expirySeconds: 1.hours.inSeconds,
     );

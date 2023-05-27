@@ -85,7 +85,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
           height: 200,
           width: 200,
           child: Center(
-            child: QrImage(
+            child: QrImageView(
               data: SecretPersistence.to.walletAddress.val,
               backgroundColor: Colors.white,
             ),

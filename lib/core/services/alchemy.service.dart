@@ -1,27 +1,24 @@
 import 'package:alchemy_web3/alchemy_web3.dart';
 import 'package:app_core/connectivity/connectivity.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
+import 'package:liso/features/config/extra.model.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../contracts/liso.dart';
 import '../../features/wallet/wallet.service.dart';
-import '../firebase/model/config_web3.model.dart';
 import '../persistence/persistence.dart';
 import '../persistence/persistence.secret.dart';
-import '../utils/globals.dart';
 
 class AlchemyService extends GetxService with ConsoleMixin {
   static AlchemyService get to => Get.find();
 
   // VARIABLES
   final alchemy = Alchemy();
-  final config = Get.find<ConfigService>();
   final wallet = Get.find<WalletService>();
 
   // GETTERS
-  Chain get polygonChain => configWeb3.chains.first;
+  ExtraConfigChain get polygonChain => extraConfig.web3.chains.first;
 
   // INIT
 

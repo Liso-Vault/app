@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app_core/controllers/pro.controller.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
+import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -19,7 +21,6 @@ import 'package:intl/intl.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
-import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/items/items.controller.dart';
@@ -219,7 +220,7 @@ class SettingsScreenController extends GetxController
         await Share.shareFiles(
           [vaultFile.path],
           subject: exportFileName,
-          text: GetPlatform.isIOS ? null : '${ConfigService.to.appName} Vault',
+          text: GetPlatform.isIOS ? null : '${appConfig.name} Vault',
         );
 
         NotificationsManager.notify(
@@ -326,7 +327,7 @@ class SettingsScreenController extends GetxController
       subTitle:
           'All items, custom vaults, and custom categories will be deleted',
       body:
-          'Please proceed with caution.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
+          'Please proceed with caution.${LicenseService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: reset,
       actionText: 'Purge',
@@ -373,7 +374,7 @@ class SettingsScreenController extends GetxController
       subTitle:
           'By proceeding you will only delete your remote <vault>.$kVaultExtension, backups, files, and shared vaults.',
       body:
-          'This cannot be undone. Your local and offline vault will still remain.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
+          'This cannot be undone. Your local and offline vault will still remain.${LicenseService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: confirm,
       actionText: 'Proceed',
@@ -409,11 +410,11 @@ class SettingsScreenController extends GetxController
 
     UIUtils.showImageDialog(
       const Icon(Iconsax.warning_2, size: 100, color: Colors.red),
-      title: 'Reset ${ConfigService.to.appName}?',
+      title: 'Reset ${appConfig.name}?',
       subTitle:
           'Your local <vault>.$kVaultExtension will be deleted and you will be logged out.',
       body:
-          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed.${ProController.to.isPro ? '\n\nYour purchases will not be removed' : ''}',
+          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed.${LicenseService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: confirm,
       actionText: 'Reset',
@@ -430,41 +431,29 @@ class SettingsScreenController extends GetxController
       padding: EdgeInsets.zero,
       children: [
         ListTile(
-          title: const Text('Wallet Address'),
-          subtitle: Text(SecretPersistence.to.walletAddress.val),
-          dense: true,
-          onTap: () => Utils.copyToClipboard(
-            SecretPersistence.to.walletAddress.val,
-          ),
-        ),
-        ListTile(
           title: const Text('User ID'),
-          subtitle: Text(SupabaseAuthService.to.user?.id ?? ''),
+          subtitle: Text(AuthService.to.user?.id ?? ''),
           dense: true,
           onTap: () => Utils.copyToClipboard(
-            SupabaseAuthService.to.user!.id,
+            AuthService.to.user!.id,
           ),
         ),
-        if (isIAPSupported) ...[
-          ListTile(
-            title: const Text('RC User ID'),
-            subtitle: Text(ProController.to.info.value.originalAppUserId),
-            dense: true,
-            onTap: () => Utils.copyToClipboard(
-              ProController.to.info.value.originalAppUserId,
-            ),
-          ),
-        ],
         ListTile(
-          title: Text('${ConfigService.to.appName} Pro'),
-          subtitle: Text(ProController.to.isPro.toString()),
+          title: const Text('RC User ID'),
+          subtitle: Text(PurchasesService.to.info.value.originalAppUserId),
           dense: true,
+          onTap: () => Utils.copyToClipboard(
+            PurchasesService.to.info.value.originalAppUserId,
+          ),
         ),
-        // TODO: temporary
         // ListTile(
-        //   title: const Text('Limits'),
-        //   subtitle: Text(limits.id),
+        //   title: Text('${appConfig.name} Pro'),
+        //   subtitle: Text(LicenseService.to.isPremium.toString()),
         //   dense: true,
+        // ),
+        // ListTile(
+        //   title: const Text('Free Trial'),
+        //   subtitle: Text(PurchasesService.to.isFreeTrial.toString()),
         // ),
         ListTile(
           title: const Text('App Version'),
@@ -473,18 +462,9 @@ class SettingsScreenController extends GetxController
         ),
         ListTile(
           title: const Text('Platform'),
-          subtitle: Text(Utils.platformName()),
+          subtitle: Text(Utils.platform),
           dense: true,
         ),
-        if (GetPlatform.isAndroid) ...[
-          ListTile(
-            title: const Text('Autofill Services'),
-            subtitle: Text(
-              'Supported: ${LisoAutofillService.to.supported.value}, Enabled: ${LisoAutofillService.to.enabled.value}',
-            ),
-            dense: true,
-          ),
-        ]
       ],
     );
 
@@ -512,10 +492,12 @@ class SettingsScreenController extends GetxController
     } catch (e) {
       console.error(e.toString());
     }
+
+    AnalyticsService.to.logEvent('show-diagnostics');
   }
 
   void updateLicenseKey() {
-    if (SupabaseAuthService.to.authenticated) {
+    if (AuthService.to.authenticated) {
       UIUtils.setLicenseKey();
     } else {
       UIUtils.showSimpleDialog(

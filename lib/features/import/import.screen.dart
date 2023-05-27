@@ -1,4 +1,4 @@
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -39,7 +39,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             ),
             const SizedBox(height: 5),
             Text(
-              "Import items from external sources to ${ConfigService.to.appName}",
+              "Import items from external sources to ${appConfig.name}",
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),

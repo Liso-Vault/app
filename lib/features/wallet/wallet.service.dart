@@ -174,6 +174,7 @@ class WalletService extends GetxService with ConsoleMixin {
         HEX.encode(wallet!.privateKey.privateKey);
     // save to persistence
     SecretPersistence.to.walletAddress.val = address.hexEip55;
+    console.info('init! address: ${address.hexEip55}');
     SecretPersistence.to.wallet.val =
         await compute(walletToJsonString, wallet!);
     // generate cipher key
@@ -182,7 +183,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
     final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
     final password = await WalletService.to.sign(kAuthSignatureMessage);
-    SupabaseAuthService.to.authenticate(email: email, password: password);
+    AuthService.to.authenticate(email: email, password: password);
 
     if (!GetPlatform.isWindows) {
       AnalyticsService.to.instance.setUserProperty(

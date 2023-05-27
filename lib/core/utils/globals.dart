@@ -1,12 +1,14 @@
-import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
+import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/firebase/model/config_app_domains.model.dart';
 import 'package:liso/core/firebase/model/config_limits.model.dart';
-import 'package:liso/core/firebase/model/config_web3.model.dart';
 import 'package:secrets/secrets.dart';
 
+import '../../features/config/pricing.dart';
 import '../../features/wallet/wallet.service.dart';
 import '../persistence/persistence.dart';
 
@@ -14,7 +16,6 @@ bool isAutofill = false;
 
 var configLimits = ConfigLimits.fromJson(Secrets.limits);
 var configAppDomains = ConfigAppDomains.fromJson(Secrets.appDomains);
-var configWeb3 = ConfigWeb3.fromJson(Secrets.web3);
 
 // HIVE DATABASE
 const kHiveBoxGroups = 'groups';
@@ -68,7 +69,7 @@ bool get isCryptoSupported => !isApple;
 ConfigLimitsTier get limits {
   if (!WalletService.to.isReady) return configLimits.free;
   // check if user is a pro subscriber
-  if (ProController.to.isPro) return configLimits.pro;
+  if (LicenseService.to.isPremium) return configLimits.pro;
 
   // TODO: check if user is a staker
 
@@ -80,6 +81,16 @@ ConfigLimitsTier get limits {
 
   // free user
   return configLimits.free;
+}
+
+// FUNCTIONS
+
+void initUpgradeConfig() {
+  final upgradeConfig = UpgradeConfig(
+    pricing: AppPricing.data,
+  );
+
+  CoreConfig().upgradeConfig = upgradeConfig;
 }
 
 // ENUMS

@@ -114,6 +114,9 @@ class Pages {
     GetPage(
       name: Routes.upgrade,
       page: () => const UpgradeScreen(),
+      middlewares: [
+        AuthenticationMiddleware(),
+      ],
     ),
     GetPage(
       name: AppRoutes.otp,

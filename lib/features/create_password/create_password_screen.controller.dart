@@ -1,4 +1,4 @@
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -86,8 +86,7 @@ class CreatePasswordScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(
-      title:
-          'Welcome ${isNewVault ? ' ' : 'back '}to ${ConfigService.to.appName}',
+      title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${appConfig.name}',
       body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
     );
 

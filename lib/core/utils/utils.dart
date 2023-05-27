@@ -1,6 +1,8 @@
+import 'package:app_core/config.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/firebase/analytics.service.dart';
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
@@ -11,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:liso/core/liso/liso.manager.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 import 'package:extended_image/extended_image.dart';
@@ -20,11 +21,13 @@ import '../../features/files/storage.service.dart';
 import '../../features/supabase/model/object.model.dart';
 import '../../features/supabase/supabase_functions.service.dart';
 import '../../resources/resources.dart';
+import '../services/app.service.dart';
 import 'globals.dart';
 
 class AppUtils {
   // VARIABLES
   static final console = Console(name: 'Utils');
+  static final authenticated = false.obs;
 
   // GETTERS
 
@@ -42,7 +45,7 @@ class AppUtils {
           height: 200,
           width: 200,
           child: Center(
-            child: QrImage(
+            child: QrImageView(
               data: data,
               backgroundColor: Colors.white,
             ),
@@ -189,7 +192,7 @@ class AppUtils {
     switch (object.fileType!) {
       case 'liso':
         return RemoteImage(
-          url: ConfigService.to.general.app.image,
+          url: 'https://i.imgur.com/GW4HQ1r.png',
           height: 25,
           placeholder: Image.asset(Images.logo, height: 25),
         );
@@ -282,21 +285,98 @@ class AppUtils {
   }
 
   static void onSignedIn() {
-    if (Get.currentRoute.isNotEmpty && Get.currentRoute != Routes.main) {
+    console.wtf('onSignedIn');
+    authenticated.value = true;
+
+    AppFunctionsService.to.status(force: true).then((value) {
+      // manually prevent duplicates becaused onSignedIn is fired twice
+      if (!LicenseService.to.isPremium && !isBeta) {
+        Utils.adaptiveRouteOpen(name: Routes.upgrade);
+        // AppodealService.to.init();
+      }
+    });
+
+    if (Get.currentRoute != Routes.main) {
+      console.wtf('Routes.main onSignedIn()');
       Get.offNamedUntil(Routes.main, (route) => false);
     }
 
-    StorageService.to
-        .load()
-        .then((_) => AppSupabaseFunctionsService.to.syncUser());
-    console.wtf('onSignedIn');
+    StorageService.to.load().then((_) => AppFunctionsService.to.syncUser());
   }
 
   static void onSignedOut() {
-    // AppService.to.reset();
-    // LisoManager.reset();
-    // Get.offNamedUntil(Routes.main, (route) => false);
     console.wtf('onSignedOut');
+    authenticated.value = false;
+    Get.offNamedUntil(Routes.main, (route) => false);
+    AppService.to.reset();
+  }
+
+  static void onSuccessfulUpgrade() async {
+    console.wtf('onSuccessfulUpgrade');
+    AppFunctionsService.to.status(force: true);
+    AnalyticsService.to.logEvent('success-upgrade-dialog');
+  }
+
+  static void onCancelledUpgradeScreen() {
+    console.wtf('onCancelledUpgradeScreen');
+    // if (kDebugMode) return;
+
+    final bodyContent = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const SizedBox(height: 10),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: ExtendedImage.network(
+            kGiveawayImageUrl,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(height: 30),
+        const PremiumCard(size: 25, text: 'FREE PREMIUM'),
+        const SizedBox(height: 10),
+        Text('giveaway_message'.tr, textAlign: TextAlign.center),
+        const SizedBox(height: 10),
+        GradientWidget(
+          gradient: LinearGradient(colors: CoreConfig().gradientColors),
+          child: Text(
+            'giveaway_highlight'.tr,
+            style: const TextStyle(fontSize: 15, color: Colors.green),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            Expanded(
+              child: OutlinedButton(
+                onPressed: Get.back,
+                child: Text('close'.tr),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () => Utils.openUrl(appConfig.links.giveaway),
+                child: Text('learn_more'.tr),
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+
+    Get.dialog(
+      AlertDialog(
+        title: null,
+        actionsAlignment: MainAxisAlignment.center,
+        content: isSmallScreen
+            ? bodyContent
+            : SizedBox(width: 400, child: bodyContent),
+      ),
+    );
+
+    AnalyticsService.to.logEvent('cancelled-upgrade-dialog');
   }
 
   static void fallbackUpgrade() {
@@ -323,7 +403,10 @@ class AppUtils {
                 color: Get.theme.primaryColor,
               ),
             ),
-            const ProText(size: 25)
+            ProText(
+              size: 25,
+              text: 'premium'.tr.toUpperCase(),
+            )
           ],
         ),
         const SizedBox(height: 10),
@@ -364,7 +447,7 @@ class AppUtils {
             Expanded(
               child: ElevatedButton(
                 onPressed: () => Utils.openUrl(
-                  ConfigService.to.general.app.links.giveaway,
+                  appConfig.links.giveaway,
                 ),
                 child: Text('learn_more'.tr),
               ),

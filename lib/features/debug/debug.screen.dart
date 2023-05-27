@@ -135,7 +135,7 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         //     );
 
         //     console.info(
-        //         'isPro: ${ProController.to.isPro}, isFreeTrial: ${ProController.to.isFreeTrial}\npurchaser: ${ProController.to.info.value.toJson()}');
+        //         'isPro: ${LicenseService.to.isPremium}, isFreeTrial: ${ProController.to.isFreeTrial}\npurchaser: ${ProController.to.info.value.toJson()}');
         //   },
         // ),
         ListTile(

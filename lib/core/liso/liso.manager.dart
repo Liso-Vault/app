@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
@@ -56,12 +56,12 @@ class LisoManager {
     await LisoPaths.cleanTemp();
     // reset variables
     SyncService.to.backedUp = false;
-    // invalidate purchases
-    ProController.to.invalidate();
-    ProController.to.logout();
+    // // invalidate purchases
+    PurchasesService.to.invalidate();
+    PurchasesService.to.logout();
     // sign out
     AuthenticationMiddleware.signedIn = false;
-    SupabaseAuthService.to.auth.signOut();
+    AuthService.to.auth.signOut();
     console.info('reset!');
   }
 

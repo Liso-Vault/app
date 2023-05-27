@@ -1,13 +1,12 @@
-import 'package:app_core/controllers/pro.controller.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:app_core/widgets/busy_indicator.widget.dart';
-import 'package:app_core/widgets/pro.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +28,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(SettingsScreenController());
-    final config = Get.find<ConfigService>();
 
     final listView = ListView(
       shrinkWrap: true,
@@ -162,7 +160,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     if (!AppPersistence.to.sync.val) {
                       return UIUtils.showSimpleDialog(
                         'Sync Required',
-                        'Please turn on ${config.appName} Cloud Sync to use this feature',
+                        'Please turn on ${appConfig.name} Cloud Sync to use this feature',
                       );
                     }
 
@@ -245,7 +243,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             child: ExpansionTile(
               title: const Text('Autofill Settings'),
               subtitle: Text(
-                '${ConfigService.to.appName} autofill service settings',
+                '${appConfig.name} autofill service settings',
               ),
               leading: Icon(Iconsax.rulerpen, color: themeColor),
               childrenPadding: const EdgeInsets.only(left: 20),
@@ -253,13 +251,13 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 ListTile(
                   leading: Icon(Iconsax.setting_2, color: themeColor),
                   trailing: const Icon(Iconsax.arrow_right_3),
-                  title: Text('${ConfigService.to.appName} Autofill Service'),
+                  title: Text('${appConfig.name} Autofill Service'),
                   onTap: LisoAutofillService.to.set,
                   subtitle: Obx(
                     () => Text(
                       LisoAutofillService.to.enabled.value
                           ? 'Enabled'
-                          : 'Set ${ConfigService.to.appName} as your autofill service',
+                          : 'Set ${appConfig.name} as your autofill service',
                     ),
                   ),
                 ),
@@ -270,7 +268,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     child: SwitchListTile(
                       title: const Text('Auto Save'),
                       subtitle: Text(
-                        'Automatically save passwords to ${ConfigService.to.appName}',
+                        'Automatically save passwords to ${appConfig.name}',
                       ),
                       secondary: Icon(Iconsax.setting_2, color: themeColor),
                       value: LisoAutofillService.to.saving.value,
@@ -292,29 +290,13 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             childrenPadding: const EdgeInsets.only(left: 20),
             initiallyExpanded: Get.parameters['expand'] == 'other_settings',
             children: [
-              if (ProController.to.isPro) ...[
+              if (!isApple || kDebugMode) ...[
                 ListTile(
-                  leading: Icon(LineIcons.rocket, color: proColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
-                  title: const ProText(size: 16),
-                  subtitle: ProController.to.proEntitlement == null
-                      ? null
-                      : Text(
-                          '${ProController.to.proPrefixString} ${ProController.to.proDateString}',
-                        ),
-                  onTap: () {
-                    if (ProController.to.info.value.managementURL != null) {
-                      Utils.openUrl(
-                        ProController.to.info.value.managementURL!,
-                      );
-                    }
-                  },
-                ),
-              ] else if (!isApple || kDebugMode) ...[
-                ListTile(
-                  leading: Icon(Icons.key, color: themeColor),
-                  title: const Text('Update License Key'), // TODO: localize
-                  subtitle: Obx(() => Text(ProController.to.shortLicenseKey)),
+                  leading: const Icon(Icons.key),
+                  title: Text('license_key'.tr), // TODO: localize
+                  subtitle: Obx(
+                    () => Text(LicenseService.to.license.value.key),
+                  ),
                   onTap: controller.updateLicenseKey,
                 ),
               ],
@@ -344,7 +326,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
         ListTile(
           leading: Icon(Iconsax.lock, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('${'lock'.tr} ${config.appName}'),
+          title: Text('${'lock'.tr} ${appConfig.name}'),
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
@@ -366,7 +348,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               iconColor: const Color(0xFFFF7300),
               leading: const Icon(Iconsax.refresh5),
               trailing: const Icon(Iconsax.arrow_right_3),
-              title: Text('${'reset'.tr} ${config.appName}'),
+              title: Text('${'reset'.tr} ${appConfig.name}'),
               subtitle: const Text('Delete local vault and logout'),
               onTap: controller.reset,
               onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),

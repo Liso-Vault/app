@@ -57,9 +57,7 @@ class AppPersistence extends Persistence with ConsoleMixin {
       : LisoSyncProvider.sia.name;
 
   bool get canShare =>
-      sync.val &&
-      SupabaseAuthService.to.authenticated &&
-      !GetPlatform.isWindows;
+      sync.val && AuthService.to.authenticated && !GetPlatform.isWindows;
 
   // INIT
 
@@ -86,5 +84,4 @@ class AppPersistence extends Persistence with ConsoleMixin {
   }
 
   // STATIC
-
 }

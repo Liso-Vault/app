@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -53,7 +53,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
     NotificationsManager.notify(
       title: 'Autofill Service ${enabled.value ? 'Enabled' : 'Disabled'}',
       body: enabled.value
-          ? '${ConfigService.to.appName} will now automatically suggest to fill and save forms for you'
+          ? '${appConfig.name} will now automatically suggest to fill and save forms for you'
           : 'You can enable this setting again anytime',
     );
   }

@@ -1,4 +1,4 @@
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -9,7 +9,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../../core/utils/globals.dart';
 import '../menu/menu.button.dart';
@@ -21,8 +20,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AboutScreenController());
-    final config = Get.find<ConfigService>();
-    final links = ConfigService.to.general.app.links;
+    final links = appConfig.links;
 
     final content = ListView(
       shrinkWrap: true,
@@ -36,7 +34,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             ),
             trailing: const Icon(Iconsax.arrow_right_3),
             title: Text(
-                '${config.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
+                '${appConfig.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
             onTap: () {
               if (GetPlatform.isAndroid) {
                 Utils.openUrl(links.store.google);
@@ -49,7 +47,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ListTile(
           leading: Icon(Iconsax.chrome, color: themeColor),
           trailing: const Icon(Iconsax.arrow_right_3),
-          title: Text('${config.appName} Website'),
+          title: Text('${appConfig.name} Website'),
           subtitle: Text(links.website),
           onTap: () => Utils.openUrl(
             links.website,
@@ -66,21 +64,21 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             onTap: () {},
           ),
         ),
-        ListTile(
-          leading: Icon(LineIcons.github, color: themeColor),
-          title: Text('${config.appName} GitHub'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => Utils.openUrl(links.github),
-        ),
+        // ListTile(
+        //   leading: Icon(LineIcons.github, color: themeColor),
+        //   title: Text('${appConfig.name} GitHub'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () => Utils.openUrl(links.github),
+        // ),
         ListTile(
           leading: Icon(Iconsax.security_user, color: themeColor),
-          title: Text('${config.appName} Privacy'),
+          title: Text('${appConfig.name} Privacy'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(links.privacy),
         ),
         ListTile(
           leading: Icon(Iconsax.book_1, color: themeColor),
-          title: Text('${config.appName} Terms'),
+          title: Text('${appConfig.name} Terms'),
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(links.terms),
         ),
@@ -101,21 +99,14 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           ),
         ),
         if (!GetPlatform.isMobile) ...[
-          ListTile(
-            leading: Icon(Iconsax.forward_square, color: themeColor),
-            title: const Text('Invite a friend'),
-            trailing: const Icon(Iconsax.arrow_right_3),
-            onTap: () => Share.share(
-              config.general.app.shareText,
-              subject: config.appName,
-            ),
-          ),
           // ListTile(
-          //   leading: const Icon(LineIcons.download),
+          //   leading: Icon(Iconsax.forward_square, color: themeColor),
+          //   title: const Text('Invite a friend'),
           //   trailing: const Icon(Iconsax.arrow_right_3),
-          //   title: const Text('Check for updates'),
-          //   subtitle: Obx(() => Text(controller.appVersion)),
-          //   onTap: () => Utils.openUrl(kAppGithubReleasesUrl),
+          //   onTap: () => Share.share(
+          //     config.general.app.shareText,
+          //     subject: appConfig.name,
+          //   ),
           // ),
         ],
         ListTile(
@@ -124,17 +115,17 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => controller.showLicenses(context),
         ),
-        ContextMenuButton(
-          controller.developerMenuItems,
-          useMouseRegion: true,
-          padding: EdgeInsets.zero,
-          child: ListTile(
-            leading: Icon(Iconsax.code, color: themeColor),
-            title: Text('developer'.tr),
-            trailing: const Icon(Iconsax.arrow_right_3),
-            onTap: () {},
-          ),
-        ),
+        // ContextMenuButton(
+        //   controller.developerMenuItems,
+        //   useMouseRegion: true,
+        //   padding: EdgeInsets.zero,
+        //   child: ListTile(
+        //     leading: Icon(Iconsax.code, color: themeColor),
+        //     title: Text('developer'.tr),
+        //     trailing: const Icon(Iconsax.arrow_right_3),
+        //     onTap: () {},
+        //   ),
+        // ),
         const Divider(),
         ListTile(
           leading: RemoteImage(

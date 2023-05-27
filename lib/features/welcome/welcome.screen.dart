@@ -1,5 +1,6 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/busy_indicator.widget.dart';
@@ -102,7 +103,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
           children: [
             TextButton(
               onPressed: () => Utils.openUrl(
-                ConfigService.to.general.app.links.terms,
+                appConfig.links.terms,
               ),
               child: const Text(
                 'Terms of Use',
@@ -115,7 +116,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             ),
             TextButton(
               onPressed: () => Utils.openUrl(
-                ConfigService.to.general.app.links.privacy,
+                appConfig.links.privacy,
               ),
               child: const Text(
                 'Privacy Policy',

@@ -1,4 +1,4 @@
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
@@ -18,7 +18,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
   // GETTERS
 
   List<ContextMenuItem> get communityMenuItems {
-    final links = ConfigService.to.general.app.links;
+    final links = appConfig.links;
 
     return [
       ContextMenuItem(
@@ -54,69 +54,69 @@ class AboutScreenController extends GetxController with ConsoleMixin {
     ];
   }
 
-  List<ContextMenuItem> get developerMenuItems {
-    final links = ConfigService.to.general.developer.links;
+//   List<ContextMenuItem> get developerMenuItems {
+//     final links = ConfigService.to.general.developer.links;
 
-    return [
-      ContextMenuItem(
-        title: 'Website',
-        leading: Icon(LineIcons.link, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.website),
-      ),
-      ContextMenuItem(
-        title: 'Twitter',
-        leading: Icon(LineIcons.twitter, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.twitter),
-      ),
-      // ContextMenuItem(
-      //   title: 'LinkedIn',
-      //   leading: const Icon(LineIcons.linkedin, size: popupIconSize),
-      //   onSelected: () => Utils.openUrl(links.linkedin),
-      // ),
-      // ContextMenuItem(
-      //   title: 'Facebook',
-      //   leading: const Icon(LineIcons.facebook, size: popupIconSize),
-      //   onSelected: () => Utils.openUrl(links.facebook),
-      // ),
-      // ContextMenuItem(
-      //   title: 'Instagram',
-      //   leading: const Icon(LineIcons.instagram, size: popupIconSize),
-      //   onSelected: () => Utils.openUrl(links.instagram),
-      // ),
-      ContextMenuItem(
-        title: 'GitHub',
-        leading: Icon(LineIcons.github, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.github),
-      ),
-      ContextMenuItem(
-        title: 'Privacy',
-        leading: Icon(LineIcons.userShield, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.privacy),
-      ),
-      ContextMenuItem(
-        title: 'App Store Page',
-        leading: Icon(LineIcons.appStore, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.store.apple),
-      ),
-      if (!GetPlatform.isIOS && !GetPlatform.isMacOS) ...[
-        ContextMenuItem(
-          title: 'Google Play Page',
-          leading: Icon(LineIcons.googlePlay, size: popupIconSize),
-          onSelected: () => Utils.openUrl(links.store.google),
-        ),
-      ],
-    ];
-  }
+//     return [
+//       ContextMenuItem(
+//         title: 'Website',
+//         leading: Icon(LineIcons.link, size: popupIconSize),
+//         onSelected: () => Utils.openUrl(links.website),
+//       ),
+//       ContextMenuItem(
+//         title: 'Twitter',
+//         leading: Icon(LineIcons.twitter, size: popupIconSize),
+//         onSelected: () => Utils.openUrl(links.twitter),
+//       ),
+//       // ContextMenuItem(
+//       //   title: 'LinkedIn',
+//       //   leading: const Icon(LineIcons.linkedin, size: popupIconSize),
+//       //   onSelected: () => Utils.openUrl(links.linkedin),
+//       // ),
+//       // ContextMenuItem(
+//       //   title: 'Facebook',
+//       //   leading: const Icon(LineIcons.facebook, size: popupIconSize),
+//       //   onSelected: () => Utils.openUrl(links.facebook),
+//       // ),
+//       // ContextMenuItem(
+//       //   title: 'Instagram',
+//       //   leading: const Icon(LineIcons.instagram, size: popupIconSize),
+//       //   onSelected: () => Utils.openUrl(links.instagram),
+//       // ),
+//       ContextMenuItem(
+//         title: 'GitHub',
+//         leading: Icon(LineIcons.github, size: popupIconSize),
+//         onSelected: () => Utils.openUrl(links.github),
+//       ),
+//       ContextMenuItem(
+//         title: 'Privacy',
+//         leading: Icon(LineIcons.userShield, size: popupIconSize),
+//         onSelected: () => Utils.openUrl(links.privacy),
+//       ),
+//       ContextMenuItem(
+//         title: 'App Store Page',
+//         leading: Icon(LineIcons.appStore, size: popupIconSize),
+//         onSelected: () => Utils.openUrl(links.store.apple),
+//       ),
+//       if (!GetPlatform.isIOS && !GetPlatform.isMacOS) ...[
+//         ContextMenuItem(
+//           title: 'Google Play Page',
+//           leading: Icon(LineIcons.googlePlay, size: popupIconSize),
+//           onSelected: () => Utils.openUrl(links.store.google),
+//         ),
+//       ],
+//     ];
+// }
 
-  // INIT
+// INIT
 
-  // FUNCTIONS
+// FUNCTIONS
 
   void showLicenses(BuildContext context) async {
     final icon = Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: RemoteImage(
-        url: ConfigService.to.general.app.image,
+        url: 'https://i.imgur.com/GW4HQ1r.png',
         height: 50,
         placeholder: Image.asset(Images.logo, height: 50),
       ),
@@ -128,7 +128,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
       applicationName: metadataApp.appName,
       applicationVersion: metadataApp.formattedVersion,
       applicationLegalese:
-          'Copyright © ${DateTime.now().year} ${ConfigService.to.general.developer.name}\nAll rights reserved.',
+          'Copyright © 2022 ${appConfig.dev}\nAll rights reserved.',
     );
   }
 }

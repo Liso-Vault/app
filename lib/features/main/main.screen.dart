@@ -1,14 +1,15 @@
 import 'package:app_core/config.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/connectivity/connectivity.service.dart';
 import 'package:app_core/connectivity/connectivity_bar.widget.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,7 +69,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final listView = Obx(
       () => ListView.separated(
-        separatorBuilder: (context, index) => const Divider(height: 0),
+        separatorBuilder: (context, index) => Divider(
+          height: 0,
+          color: Colors.grey.withOpacity(0.1),
+        ),
         shrinkWrap: true,
         itemCount: itemsController.data.length,
         itemBuilder: (_, index) => ItemTile(itemsController.data[index]),
@@ -283,9 +287,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     selectedTileColor: themeColor.withOpacity(0.05),
                     // TODO: localize
                     title: Text(
-                        "Rate & review ${ConfigService.to.appName} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
+                        "Rate & review ${appConfig.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
                     subtitle: Text(
-                      "Help spread awareness on why people should consider using ${ConfigService.to.appName} as their secure vault.",
+                      "Help spread awareness on why people should consider using ${appConfig.name} as their secure vault.",
                     ),
                     // leading: const Icon(Iconsax.key),
                     trailing: OutlinedButton(
@@ -317,9 +321,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               //         selectedTileColor: themeColor.withOpacity(0.05),
               //         // TODO: localize
               //         title: Text(
-              //             "Enable ${ConfigService.to.appName} Autofill Service"),
+              //             "Enable ${appConfig.name} Autofill Service"),
               //         subtitle: Text(
-              //           "Automatically fill and save forms with ${ConfigService.to.appName} Autofill Service",
+              //           "Automatically fill and save forms with ${appConfig.name} Autofill Service",
               //         ),
               //         // leading: const Icon(Iconsax.key),
               //         trailing: OutlinedButton(
@@ -364,11 +368,11 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         PersistenceBuilder(
           builder: (p, context) => Visibility(
             visible: AppPersistence.to.sync.val,
-            child: Badge(
+            child: badges.Badge(
               showBadge: AppPersistence.to.sync.val &&
                   AppPersistence.to.changes.val > 0,
               badgeContent: Text(AppPersistence.to.changes.val.toString()),
-              position: BadgePosition.topEnd(top: -1, end: -5),
+              position: badges.BadgePosition.topEnd(top: -1, end: -5),
               child: Obx(
                 () => IconButton(
                   icon: const Icon(Iconsax.cloud_change),

@@ -309,14 +309,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             item.title.isNotEmpty ? item.title : '(Untitled)',
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
-            style: const TextStyle(fontWeight: FontWeight.w600),
           ),
           if (item.subTitle.trim().isNotEmpty) ...[
             Text(
               item.subTitle.isNotEmpty ? item.subTitle : '(Untitled)',
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
-              style: const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13, color: Colors.grey),
             ),
           ],
           const SizedBox(height: 3),

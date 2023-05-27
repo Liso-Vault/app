@@ -1,25 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:app_core/config.dart';
-import 'package:app_core/firebase/config/config.service.dart';
-import 'package:app_core/firebase/config/models/config_root.model.dart';
+import 'package:app_core/config/app.model.dart';
+import 'package:app_core/config/secrets.model.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:filesize/filesize.dart';
 import 'package:firebase_core/firebase_core.dart';
-// ignore: library_prefixes
-import 'package:firebase_dart/firebase_dart.dart' as firebaseDesktop;
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/model/config_app_domains.model.dart';
-import 'package:liso/core/firebase/model/config_limits.model.dart';
-import 'package:liso/core/firebase/model/config_web3.model.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/core/services/alchemy.service.dart';
@@ -30,13 +21,14 @@ import 'package:liso/features/supabase/supabase_functions.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:secrets/firebase_options.dart';
-import 'package:secrets/secrets.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 import 'core/flavors/flavors.dart';
 import 'core/liso/liso_paths.dart';
 import 'core/persistence/persistence.dart';
+import 'core/services/app.service.dart';
+import 'core/services/global.service.dart';
 import 'core/translations/data.dart';
 import 'core/utils/globals.dart';
 import 'core/utils/utils.dart';
@@ -44,6 +36,9 @@ import 'features/app/app.dart';
 import 'features/app/pages.dart';
 import 'features/categories/categories.controller.dart';
 import 'features/categories/categories.service.dart';
+import 'features/config/extra.model.dart';
+import 'features/config/license.model.dart';
+import 'features/config/secrets.dart';
 import 'features/drawer/drawer_widget.controller.dart';
 import 'features/files/explorer/s3_object_tile.controller.dart';
 import 'features/files/storage.service.dart';
@@ -54,51 +49,7 @@ import 'features/items/items.service.dart';
 import 'features/joined_vaults/joined_vault.controller.dart';
 import 'features/main/main_screen.controller.dart';
 import 'features/shared_vaults/shared_vault.controller.dart';
-
-void initUpgradeConfig() {
-  String formatKNumber(int number) {
-    if (number == 1000000) {
-      return 'Unlimited';
-    } else {
-      return kFormatter.format(number);
-    }
-  }
-
-  final upgradeConfig = UpgradeConfig(
-    features: [
-      '${formatKNumber(configLimits.pro.items)} Items',
-      '${formatKNumber(configLimits.pro.devices)} Devices',
-      '2FA Authenticator',
-      '${filesize(1073741824)} Encrypted Cloud Storage',
-      '${formatKNumber(configLimits.pro.sharedMembers)} Shared Members',
-      '${formatKNumber(configLimits.pro.protectedItems)} Protected Items',
-      'Password Health',
-      'Priority Support',
-      'Encryption Tool',
-      '${formatKNumber(configLimits.pro.backups)} Vault Backups',
-      '${filesize(configLimits.pro.uploadSize)} Upload File Size',
-      '${formatKNumber(configLimits.pro.files)} Max Stored Files',
-      'Undo Trash up to ${formatKNumber(configLimits.pro.trashDays)} Days',
-      '${formatKNumber(configLimits.pro.customVaults)} Custom Vaults',
-      '${formatKNumber(configLimits.pro.customCategories)} Custom Categories',
-      'Autosave + Autofill',
-      'Generate Passwords',
-      'Biometric Auth',
-      'Offline Mode',
-    ],
-    upcomingFeatures: [
-      'Self-Hostable',
-      'Breach Scanner',
-      'NFC Keycard Support',
-      'YubiKey Support',
-    ],
-    darkDecoration: BoxDecoration(
-      color: Get.theme.drawerTheme.backgroundColor,
-    ),
-  );
-
-  CoreConfig().upgradeConfig = upgradeConfig;
-}
+import 'features/supabase/app_supabase_db.service.dart';
 
 void init(Flavor flavor, {bool autofill = false}) async {
   Flavors.flavor = flavor;
@@ -109,27 +60,26 @@ void init(Flavor flavor, {bool autofill = false}) async {
   // CAPTURE DART ERRORS
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    // improve performance
-    GestureBinding.instance.resamplingEnabled = true;
+    // // improve performance
+    // GestureBinding.instance.resamplingEnabled = true;
+    // init secrets config
+    secretConfig = SecretsConfig.fromJson(kSecretJson);
+    // init app config
+    appConfig = AppConfig.fromJson(kAppJson);
+    // init extra config
+    extraConfig = ExtraConfig.fromJson(kExtraJson);
+    // init license config
+    licenseConfig = LicenseConfig.fromJson(kLicenseJson);
+
     // init sentry
     if (isWindowsLinux) {
       await SentryFlutter.init(
-        (options) {
-          options.dsn = Secrets.secrets['sentry']!['dsn'] as String;
-        },
+        (options) => options.dsn = secretConfig.sentry.dsn,
       );
-    }
-
-    // init firebase
-    await Firebase.initializeApp(options: Secrets.firebaseOptions);
-
-    if (isWindowsLinux) {
-      firebaseDesktop.FirebaseDart.setup();
-
-      await firebaseDesktop.Firebase.initializeApp(
-        options: firebaseDesktop.FirebaseOptions.fromMap(
-          DefaultFirebaseOptions.currentPlatform.asMap,
-        ),
+    } else {
+      // init firebase
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
       );
     }
 
@@ -142,25 +92,25 @@ void init(Flavor flavor, {bool autofill = false}) async {
     // init core config
     final core = await CoreConfig().init(
       buildMode: BuildMode.production,
-      persistenceCipherKey: Secrets.persistenceKey,
+      isAppStore: true,
       translationKeys: translationKeys,
       pages: Pages.data,
       initialWindowSize: const Size(1800, 1215),
-      onCancelledUpgradeScreen: AppUtils.fallbackUpgrade,
+      onCancelledUpgradeScreen: AppUtils.onCancelledUpgradeScreen,
+      onSuccessfulUpgrade: AppUtils.onSuccessfulUpgrade,
       onSignedOut: AppUtils.onSignedOut,
       onSignedIn: AppUtils.onSignedIn,
       logoDarkPath: Images.logo,
-      logoLightPath: Images.logo, // TODO: light logo
-      appConfig: Secrets.app,
-      generalConfig: Secrets.general,
-      secretsConfig: Secrets.secrets,
-      allowAnonymousRcUserSync: false,
+      logoLightPath: Images.logoLight,
       offeringId: 'annual_monthly',
+      allowAnonymousRcUserSync: false,
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
         Color.fromARGB(255, 0, 255, 213),
       ],
     );
+
+    await core.postInit();
 
     // services
     Get.lazyPut(() => WalletService());
@@ -174,9 +124,12 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.lazyPut(() => GroupsService());
     Get.lazyPut(() => CategoriesService());
 
-    Get.put(AppSupabaseFunctionsService());
     Get.put(AppPersistence());
     Get.put(SecretPersistence());
+    Get.put(AppDatabaseService());
+    Get.put(AppFunctionsService());
+    Get.put(GlobalService());
+    Get.put(AppService());
 
     // controllers
     Get.put(ItemsController());
@@ -190,44 +143,45 @@ void init(Flavor flavor, {bool autofill = false}) async {
     // create controllers
     Get.create(() => S3ObjectTileController());
 
-    // initializations
-    await ConfigService.to.init(
-      postInit: (parameters) {
-        configLimits = ConfigLimits.fromJson(
-          jsonDecode(
-            ConfigValue.fromJson(parameters["limits_config"])
-                .defaultValue
-                .value,
-          ),
-        );
-
-        configAppDomains = ConfigAppDomains.fromJson(
-          jsonDecode(
-            ConfigValue.fromJson(parameters["app_domains_config"])
-                .defaultValue
-                .value,
-          ),
-        );
-
-        configWeb3 = ConfigWeb3.fromJson(
-          jsonDecode(
-            ConfigValue.fromJson(parameters["web3_config"]).defaultValue.value,
-          ),
-        );
-
-        // extra init
-        AlchemyService.to.init();
-        AlchemyService.to.load();
-      },
-    );
-
-    await core.postInit();
-    initUpgradeConfig();
-
     await LisoPaths.init();
     await SecretPersistence.open();
     await SecretPersistence.migrate();
     HiveService.init();
+
+    // // initializations
+    // await ConfigService.to.init(
+    //   postInit: (parameters) {
+    //     configLimits = ConfigLimits.fromJson(
+    //       jsonDecode(
+    //         ConfigValue.fromJson(parameters["limits_config"])
+    //             .defaultValue
+    //             .value,
+    //       ),
+    //     );
+
+    //     configAppDomains = ConfigAppDomains.fromJson(
+    //       jsonDecode(
+    //         ConfigValue.fromJson(parameters["app_domains_config"])
+    //             .defaultValue
+    //             .value,
+    //       ),
+    //     );
+
+    //     configWeb3 = ConfigWeb3.fromJson(
+    //       jsonDecode(
+    //         ConfigValue.fromJson(parameters["web3_config"]).defaultValue.value,
+    //       ),
+    //     );
+
+    //     // extra init
+    //     AlchemyService.to.init();
+    //     AlchemyService.to.load();
+    //   },
+    // );
+
+    // initializations
+    initUpgradeConfig();
+    Future.delayed(5.seconds).then((value) => initUpgradeConfig());
 
     LicenseRegistry.addLicense(() async* {
       final license = await rootBundle.loadString('google_fonts/OFL.txt');

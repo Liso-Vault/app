@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/services/local_auth.service.dart';
@@ -59,18 +59,18 @@ class RestoreScreenController extends GetxController
   // FUNCTIONS
 
   Future<Either<String, Uint8List>> _downloadVault(String address) async {
-    final statResult = await AppSupabaseFunctionsService.to.statObject(
+    final statResult = await AppFunctionsService.to.statObject(
       kVaultFileName,
       address: address,
     );
 
     if (statResult.isLeft || statResult.right.status != 200) {
       return Left(
-        "If you're new to ${ConfigService.to.appName}, consider creating a vault first.",
+        "If you're new to ${appConfig.name}, consider creating a vault first.",
       );
     }
 
-    final presignResult = await AppSupabaseFunctionsService.to.presignUrl(
+    final presignResult = await AppFunctionsService.to.presignUrl(
       object: kVaultFileName,
       address: address,
       method: 'GET',
@@ -166,7 +166,7 @@ class RestoreScreenController extends GetxController
         AppPersistence.to.backedUpSeed.val = true;
 
         NotificationsManager.notify(
-          title: 'Welcome back to ${ConfigService.to.appName}',
+          title: 'Welcome back to ${appConfig.name}',
           body: 'Your vault has been restored',
         );
 

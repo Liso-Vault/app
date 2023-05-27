@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -273,7 +273,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
             labelText: 'Cipher Key',
             hintText: 'Enter the provided 32 Bit Base64 Cipher Key',
             helperText:
-                'Cipher Key will be automatically be saved as a ${ConfigService.to.appName} Item',
+                'Cipher Key will be automatically be saved as a ${appConfig.name} Item',
           ),
         )
       ],

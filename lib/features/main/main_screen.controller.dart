@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:app_core/controllers/pro.controller.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
-import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -34,12 +33,10 @@ import '../../core/liso/liso_paths.dart';
 import '../../core/persistence/persistence.secret.dart';
 import '../../core/utils/utils.dart';
 import '../drawer/drawer_widget.controller.dart';
-import '../files/storage.service.dart';
 import '../files/sync.service.dart';
 import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
 import '../search/search.delegate.dart';
-import '../supabase/supabase_functions.service.dart';
 
 class MainScreenController extends GetxController
     with ConsoleMixin, WindowListener {
@@ -290,7 +287,7 @@ class MainScreenController extends GetxController
       }
 
       // show upgrade screen every after 5th times opened
-      if (!ProController.to.isPro &&
+      if (!LicenseService.to.isPremium &&
           (Persistence.to.sessionCount.val % 5) == 0) {
         await Future.delayed(1.seconds);
         Utils.adaptiveRouteOpen(name: Routes.upgrade);

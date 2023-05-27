@@ -1,4 +1,3 @@
-import 'package:app_core/firebase/config/config.service.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/model/server_response.model.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -18,9 +17,8 @@ class StorageService extends GetxService with ConsoleMixin {
   static StorageService get to => Get.find();
 
   // VARIABLES
-  final config = Get.find<ConfigService>();
   final persistence = Get.find<Persistence>();
-  final functions = Get.find<AppSupabaseFunctionsService>();
+  final functions = Get.find<AppFunctionsService>();
   final rootInfo = const ListObjectsResponse().obs;
 
   // PROPERTIES

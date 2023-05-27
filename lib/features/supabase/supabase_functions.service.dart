@@ -5,26 +5,34 @@ import 'package:app_core/supabase/supabase_functions.service.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:secrets/secrets.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:secrets/secrets.dart';
+import 'package:supabase_auth_ui/supabase_auth_ui.dart';
 
 import '../../core/persistence/persistence.dart';
 import '../../core/persistence/persistence.secret.dart';
+import '../../core/services/global.service.dart';
 import '../categories/categories.service.dart';
 import '../files/storage.service.dart';
 import '../groups/groups.service.dart';
 import '../items/items.service.dart';
 import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
+import 'model/error_response.model.dart';
 import 'model/list_objects_response.model.dart';
 import 'model/presign_response.model.dart';
 import 'model/stat_response.model.dart';
+import 'model/status.model.dart';
 
-class AppSupabaseFunctionsService extends SupabaseFunctionsService {
-  static AppSupabaseFunctionsService get to => Get.find();
+class AppFunctionsService extends FunctionsService {
+  static AppFunctionsService get to => Get.find();
 
   // VARIABLES
   final persistence = Get.find<Persistence>();
+
+  // PROPERTIES
+  final ready = false.obs;
+  final busy = false.obs;
 
   // GETTERS
 
@@ -32,14 +40,79 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
 
   // FUNCTIONS
 
-  Future<Either<Object?, StatObjectResponse>> statObject(String object,
-      {String? address}) async {
-    // strip root address
-    object =
-        object.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
-    console.info('stat: $object....');
+  Future<Either<ErrorResponse, Status>> status({bool force = false}) async {
+    if (!AuthService.to.authenticated) {
+      return const Left(
+        ErrorResponse(
+          error: ErrorData(message: 'unauthenticated'),
+        ),
+      );
+    }
 
-    final response = await SupabaseFunctionsService.to.functions.invoke(
+    console.info('status...');
+    FunctionResponse? response;
+
+    try {
+      response = await FunctionsService.to.functions.invoke(
+        'status',
+        body: {'force': force},
+      );
+    } catch (e) {
+      final message = 'status() invoke error: $e';
+      console.error(message);
+      return Left(ErrorResponse(error: ErrorData(message: message)));
+    }
+
+    // server error
+    if (response.status != 200) {
+      console.error(
+        'status() response error: ${response.status}: ${response.data}',
+      );
+
+      return Left(ErrorResponse.fromJson(response.data));
+    }
+
+    final serverResponse = ServerResponse.fromJson(response.data);
+
+    // openai error
+    if (serverResponse.errors.isNotEmpty) {
+      for (var e in serverResponse.errors) {
+        console.error('status() server error: ${e.toJson()}');
+      }
+
+      final error = serverResponse.errors.first;
+
+      return Left(
+        ErrorResponse(
+          error: ErrorData(
+            code: error.code.toString(),
+            message: error.message ?? 'Unknown Error',
+          ),
+        ),
+      );
+    }
+
+    final responseObject = Status.fromJson(serverResponse.data);
+    console.wtf('status: ${responseObject.toJson()}');
+    GlobalService.to.userStatus.value = responseObject;
+    ready.value = true;
+    return Right(responseObject);
+  }
+
+  Future<Either<Object?, StatObjectResponse>> statObject(
+    String object, {
+    String? address,
+  }) async {
+    // strip root address
+    object = object.replaceAll(
+      '${SecretPersistence.to.walletAddress.val}/',
+      '',
+    );
+
+    console.info(
+        'stat: $object.... $address | ${SecretPersistence.to.walletAddress.val}');
+
+    final response = await functions.invoke(
       kFunctionStatObject,
       body: {
         "address": address ?? SecretPersistence.to.walletAddress.val,
@@ -47,7 +120,7 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
       },
     );
 
-    // console.debug('raw: ${response.data}, errors: ${response.status}');
+    console.debug('raw: ${response.data}, errors: ${response.status}');
 
     if (response.status != 200) {
       return Left('supabase error: ${response.status}: ${response.data}');
@@ -56,13 +129,14 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
     return Right(StatObjectResponse.fromJson(response.data));
   }
 
-  Future<Either<Object?, ListObjectsResponse>> listObjects(
-      {String path = ''}) async {
+  Future<Either<Object?, ListObjectsResponse>> listObjects({
+    String path = '',
+  }) async {
     // strip root address
     path = path.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
     console.info('list objects: $path....');
 
-    final response = await SupabaseFunctionsService.to.functions.invoke(
+    final response = await functions.invoke(
       kFunctionListObjects,
       body: {
         "address": SecretPersistence.to.walletAddress.val,
@@ -89,7 +163,7 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
 
     console.info('delete objects: $objects....');
 
-    final response = await SupabaseFunctionsService.to.functions.invoke(
+    final response = await functions.invoke(
       kFunctionDeleteObjects,
       body: {
         "address": SecretPersistence.to.walletAddress.val,
@@ -111,7 +185,7 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
     path = path.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
     console.info('delete directory: $path....');
 
-    final response = await SupabaseFunctionsService.to.functions.invoke(
+    final response = await functions.invoke(
       kFunctionDeleteDirectory,
       body: {
         "address": SecretPersistence.to.walletAddress.val,
@@ -136,9 +210,9 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
     // strip root address
     object =
         object.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
-    console.info('presigning: $object....');
+    console.info('presigning: $object.... $address');
 
-    final response = await SupabaseFunctionsService.to.functions.invoke(
+    final response = await functions.invoke(
       kFunctionPresignUrl,
       body: {
         "address": address ?? SecretPersistence.to.walletAddress.val,
@@ -192,6 +266,6 @@ class AppSupabaseFunctionsService extends SupabaseFunctionsService {
       }
     };
 
-    SupabaseFunctionsService.to.sync(data: data);
+    FunctionsService.to.sync(AuthService.to.user!, data: data);
   }
 }

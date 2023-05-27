@@ -1,4 +1,4 @@
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -51,7 +51,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                 onValueChanged: (value) => controller.restoreMode.value = value,
                 children: {
                   RestoreMode.cloud: SegmentedControlItem(
-                    text: '${ConfigService.to.appName} Cloud',
+                    text: '${appConfig.name} Cloud',
                     iconData: Iconsax.cloud,
                   ),
                   RestoreMode.file: const SegmentedControlItem(

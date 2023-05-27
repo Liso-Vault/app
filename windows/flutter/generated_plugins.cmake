@@ -3,8 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  app_links_windows
+  app_links
   connectivity_plus
+  firebase_core
   flutter_secure_storage_windows
   hotkey_manager
   local_auth_windows

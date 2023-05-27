@@ -1,6 +1,6 @@
-import 'package:app_core/controllers/pro.controller.dart';
-import 'package:app_core/firebase/config/config.service.dart';
+import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
@@ -35,7 +35,8 @@ class WelcomeScreenController extends GetxController
 
   void create() async {
     // show upgrade screen
-    if (!AppPersistence.to.upgradeScreenShown.val && !ProController.to.isPro) {
+    if (!AppPersistence.to.upgradeScreenShown.val &&
+        !LicenseService.to.isPremium) {
       await Utils.adaptiveRouteOpen(name: Routes.upgrade);
     }
 
@@ -59,7 +60,7 @@ class WelcomeScreenController extends GetxController
     change(null, status: RxStatus.success());
 
     NotificationsManager.notify(
-      title: 'Welcome to ${ConfigService.to.appName}',
+      title: 'Welcome to ${appConfig.name}',
       body: 'Your vault has been created',
     );
 

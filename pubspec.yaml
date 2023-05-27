@@ -1,10 +1,10 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 1.0.2+46
+version: 1.1.0+47
 
 environment:
-  sdk: ">=2.17.3 <3.0.0"
+  sdk: ">=2.19.6 <3.0.0"
 
 dependencies:
   flutter:
@@ -22,7 +22,7 @@ dependencies:
   alchemy_web3:
     git:
       url: https://github.com/oliverbytes/alchemy_web3.git
-      ref: 78083c38fd5f130ea6b2c1b8127fde112de2176c
+      ref: 3adc07eba84dd1a4ab58dc09ea6baa803576dee7
   web3dart: ^2.3.5 # Ethereum
   eth_sig_util: ^0.0.9 # Ethereum signature
   bip39: ^1.0.6 # Mnemonic Seed Phrases
@@ -41,13 +41,15 @@ dependencies:
   minio:
     git: https://github.com/oliverbytes/minio-dart.git
   coingecko_api: ^1.1.0+2 # Coingecko API
+  supabase_auth_ui: ^0.1.0+2
 
   # UI
+  iconsax: ^0.0.8
   font_awesome_flutter: ^10.2.1 # icons
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.0.4
-  flutter_quill: ^6.1.6
+  flutter_quill: ^7.2.0
   badges: ^2.0.3 # pending changes indicator
   percent_indicator: ^4.2.2 # circular progress indicator
   flutter_svg: ^1.1.6 # dice bear avatars
@@ -60,13 +62,15 @@ dependencies:
   humanizer: ^2.0.0
   worker_manager: ^4.4.6 # multi threading
   flutter_autofill_service: ^0.14.0 # android autofill plugun
-  csv: ^5.0.1 # csv parsing tool
+  csv: ^5.0.2 # csv parsing tool
 
 dependency_overrides:
   package_info_plus: ^3.0.2
   firebase_core: ^2.3.0
   cloud_functions: ^4.0.4
   device_info_plus: ^8.0.0
+  intl: ^0.17.0
+  extended_image: ^8.0.1
 
 dev_dependencies:
   flutter_test:

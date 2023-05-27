@@ -1,6 +1,7 @@
-import 'package:app_core/controllers/pro.controller.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/pro.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -250,19 +251,22 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               const Divider(),
               Obx(
                 () => Visibility(
-                  visible: ProController.to.isPro,
+                  visible: LicenseService.to.isPremium,
                   replacement: ListTile(
                     // onTap: controller.showContestDialog,
                     onTap: () => Utils.adaptiveRouteOpen(name: Routes.upgrade),
                     title: Row(
                       children: [
-                        if (!ProController.to.isPro) ...[
+                        if (!LicenseService.to.isPremium) ...[
                           Text(
                             '${'try'.tr} ',
                             style: TextStyle(color: Get.theme.primaryColor),
                           ),
                         ],
-                        const ProText(size: 16),
+                        ProText(
+                          // size: 14,
+                          text: 'premium'.tr.toUpperCase(),
+                        ),
                       ],
                     ),
                     leading: Image.asset(Images.logo, height: 20),
@@ -272,15 +276,19 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       .shakeX(duration: 1000.ms, hz: 2, amount: 1)
                       .then(delay: 3000.ms),
                   child: ListTile(
-                    title: const ProText(size: 16),
+                    title: ProText(
+                      // size: 16,
+                      text: 'premium'.tr.toUpperCase(),
+                    ),
                     leading: Icon(
                       LineIcons.rocket,
                       color: Get.theme.primaryColor,
                     ),
                     onTap: () {
-                      if (ProController.to.info.value.managementURL != null) {
+                      if (PurchasesService.to.info.value.managementURL !=
+                          null) {
                         Utils.openUrl(
-                          ProController.to.info.value.managementURL!,
+                          PurchasesService.to.info.value.managementURL!,
                         );
                       }
                     },
@@ -352,6 +360,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
         ];
 
         return Drawer(
+          shape: const BeveledRectangleBorder(),
           child: ListView.builder(
             // workaround for https://github.com/flutter/flutter/issues/93862
             primary: false,
