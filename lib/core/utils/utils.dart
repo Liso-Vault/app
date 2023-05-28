@@ -296,10 +296,10 @@ class AppUtils {
       }
     });
 
-    if (Get.currentRoute != Routes.main) {
-      console.wtf('Routes.main onSignedIn()');
-      Get.offNamedUntil(Routes.main, (route) => false);
-    }
+    // if (Get.currentRoute != Routes.main) {
+    //   console.wtf('Routes.main onSignedIn()');
+    //   Get.offNamedUntil(Routes.main, (route) => false);
+    // }
 
     StorageService.to.load().then((_) => AppFunctionsService.to.syncUser());
   }

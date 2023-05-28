@@ -90,7 +90,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               // if (!GetPlatform.isWindows) ...[
               //   ListTile(
               //     leading: Icon(Iconsax.cpu, color: themeColor),
-              //     trailing: const Icon(Iconsax.arrow_right_3),
+              //
               //     title: const Text('Devices'),
               //     subtitle: const Text('Manage your synced devices'),
               //     onTap: () => Utils.adaptiveRouteOpen(name: Routes.devices),
@@ -98,7 +98,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               // ],
               // ListTile(
               //   leading: Icon(Iconsax.setting, color: themeColor),
-              //   trailing: const Icon(Iconsax.arrow_right_3),
+              //
               //   title: const Text('Configuration'),
               //   subtitle: const Text('Change your sync configuration'),
               //   onTap: () => Utils.adaptiveRouteOpen(
@@ -118,7 +118,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             children: [
               ListTile(
                 leading: Icon(Iconsax.category, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Custom Categories'),
                 subtitle: const Text('Manage your custom categories'),
                 onTap: () =>
@@ -126,7 +125,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 leading: Icon(Iconsax.briefcase, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Custom Vaults'),
                 subtitle: const Text('Manage your custom vaults'),
                 onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.vaults),
@@ -135,7 +133,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 // TODO: temporary
                 // ListTile(
                 //   leading: Icon(Iconsax.share, color: themeColor),
-                //   trailing: const Icon(Iconsax.arrow_right_3),
+                //
                 //   title: const Text('Shared Vaults'),
                 //   subtitle: const Text('Manage your shared vaults'),
                 //   onTap: () => Utils.adaptiveRouteOpen(
@@ -144,7 +142,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 // ),
                 // ListTile(
                 //   leading: Icon(LineIcons.plus, color: themeColor),
-                //   trailing: const Icon(Iconsax.arrow_right_3),
+                //
                 //   title: const Text('Joined Vaults'),
                 //   subtitle: const Text('Manage your joined vaults'),
                 //   onTap: () => Utils.adaptiveRouteOpen(
@@ -155,7 +153,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   title: const Text('Backed Up Vaults'),
                   subtitle: const Text('Go back in time to undo your changes'),
                   leading: Icon(Iconsax.box, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
                   onTap: () async {
                     if (!AppPersistence.to.sync.val) {
                       return UIUtils.showSimpleDialog(
@@ -173,7 +170,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               ],
               ListTile(
                 leading: Icon(Iconsax.import_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Import Items'),
                 subtitle: const Text('Import items from external sources'),
                 onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.import),
@@ -194,7 +190,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 ],
                 child: ListTile(
                   leading: Icon(Iconsax.box_1, color: themeColor),
-                  trailing: Icon(Iconsax.arrow_right_3, size: popupIconSize),
                   title: Text('export_vault'.tr),
                   subtitle:
                       const Text('Save <vault>.liso to an external source'),
@@ -213,21 +208,19 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             children: [
               ListTile(
                 leading: Icon(Iconsax.key, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Show Seed Phrase'),
                 subtitle: const Text('Make sure you are in a safe location'),
                 onTap: controller.showSeed,
               ),
               // ListTile(
               //   leading: Icon(Iconsax.password_check, color: themeColor),
-              //   trailing: const Icon(Iconsax.arrow_right_3),
+              //
               //   title: const Text('Change Password'),
               //   subtitle: const Text('Change your wallet password'),
               //   // onTap: controller.showSeed,
               // ),
               ListTile(
                 leading: Icon(Iconsax.wallet_1, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: Text('export_wallet'.tr),
                 subtitle: const Text(
                   'Save <wallet>.json to an external source',
@@ -250,7 +243,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               children: [
                 ListTile(
                   leading: Icon(Iconsax.setting_2, color: themeColor),
-                  trailing: const Icon(Iconsax.arrow_right_3),
                   title: Text('${appConfig.name} Autofill Service'),
                   onTap: LisoAutofillService.to.set,
                   subtitle: Obx(
@@ -292,7 +284,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             children: [
               if (!isApple || kDebugMode) ...[
                 ListTile(
-                  leading: const Icon(Icons.key),
+                  leading: Icon(Icons.key, color: themeColor),
                   title: Text('license_key'.tr), // TODO: localize
                   subtitle: Obx(
                     () => Text(LicenseService.to.license.value.key),
@@ -316,7 +308,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               ),
               ListTile(
                 leading: Icon(LineIcons.infoCircle, color: themeColor),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Show Diagnostics Info'),
                 onTap: controller.showDiagnosticInfo,
               ),
@@ -325,7 +316,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
         }),
         ListTile(
           leading: Icon(Iconsax.lock, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${'lock'.tr} ${appConfig.name}'),
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
@@ -339,7 +329,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ListTile(
               iconColor: Colors.amber,
               leading: const Icon(Iconsax.refresh),
-              trailing: const Icon(Iconsax.arrow_right_3),
               title: Text('${'purge'.tr} Items'),
               subtitle: const Text('Clear all items and start over'),
               onTap: controller.purge,
@@ -347,7 +336,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ListTile(
               iconColor: const Color(0xFFFF7300),
               leading: const Icon(Iconsax.refresh5),
-              trailing: const Icon(Iconsax.arrow_right_3),
               title: Text('${'reset'.tr} ${appConfig.name}'),
               subtitle: const Text('Delete local vault and logout'),
               onTap: controller.reset,
@@ -357,7 +345,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               ListTile(
                 iconColor: Colors.red,
                 leading: const Icon(Iconsax.warning_2),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Delete Remote Data'),
                 subtitle: const Text('Delete remote vault and files'),
                 onTap: controller.unsync,
@@ -366,7 +353,6 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             if (kDebugMode) ...[
               ListTile(
                 leading: const Icon(Iconsax.code),
-                trailing: const Icon(Iconsax.arrow_right_3),
                 title: const Text('Debugging'),
                 onTap: () => Utils.adaptiveRouteOpen(name: Routes.debug),
                 selected: true,

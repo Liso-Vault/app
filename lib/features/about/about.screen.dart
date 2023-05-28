@@ -9,9 +9,9 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/resources/resources.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../core/utils/globals.dart';
-import '../menu/menu.button.dart';
 import 'about_screen.controller.dart';
 
 class AboutScreen extends StatelessWidget with ConsoleMixin {
@@ -32,7 +32,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
               GetPlatform.isAndroid ? LineIcons.googlePlay : LineIcons.appStore,
               color: themeColor,
             ),
-            trailing: const Icon(Iconsax.arrow_right_3),
             title: Text(
                 '${appConfig.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
             onTap: () {
@@ -46,51 +45,44 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ],
         ListTile(
           leading: Icon(Iconsax.chrome, color: themeColor),
-          trailing: const Icon(Iconsax.arrow_right_3),
           title: Text('${appConfig.name} Website'),
           subtitle: Text(links.website),
           onTap: () => Utils.openUrl(
             links.website,
           ),
         ),
-        ContextMenuButton(
-          controller.communityMenuItems,
-          useMouseRegion: true,
-          padding: EdgeInsets.zero,
-          child: ListTile(
-            leading: Icon(Iconsax.profile_2user, color: themeColor),
-            title: Text('community_help'.tr),
-            trailing: const Icon(Iconsax.arrow_right_3),
-            onTap: () {},
-          ),
-        ),
-        // ListTile(
-        //   leading: Icon(LineIcons.github, color: themeColor),
-        //   title: Text('${appConfig.name} GitHub'),
-        //   trailing: const Icon(Iconsax.arrow_right_3),
-        //   onTap: () => Utils.openUrl(links.github),
+        // ContextMenuButton(
+        //   controller.communityMenuItems,
+        //   useMouseRegion: true,
+        //   padding: EdgeInsets.zero,
+        //   child: ListTile(
+        //     leading: Icon(Iconsax.profile_2user, color: themeColor),
+        //     title: Text('community_help'.tr),
+        //     onTap: () {},
+        //   ),
         // ),
+        ListTile(
+          leading: Icon(LineIcons.github, color: themeColor),
+          title: Text('${appConfig.name} GitHub'),
+          onTap: () => Utils.openUrl('https://github.com/Liso-Vault/app'),
+        ),
         ListTile(
           leading: Icon(Iconsax.security_user, color: themeColor),
           title: Text('${appConfig.name} Privacy'),
-          trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(links.privacy),
         ),
         ListTile(
           leading: Icon(Iconsax.book_1, color: themeColor),
           title: Text('${appConfig.name} Terms'),
-          trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(links.terms),
         ),
         ListTile(
-          leading: const Icon(Icons.help_outline),
+          leading: Icon(Icons.help_outline, color: themeColor),
           title: Text('faqs'.tr),
-          trailing: const Icon(Iconsax.arrow_right_3),
           onTap: () => Utils.openUrl(links.faqs),
         ),
         ListTile(
-          leading: const Icon(Iconsax.dollar_circle),
-          trailing: const Icon(Iconsax.arrow_right_3),
+          leading: Icon(Iconsax.dollar_circle, color: themeColor),
           // TODO: localize
           title: const Text('Earn 30% Commision'),
           subtitle: const Text('Join the Affiliates Program'),
@@ -99,21 +91,25 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           ),
         ),
         if (!GetPlatform.isMobile) ...[
-          // ListTile(
-          //   leading: Icon(Iconsax.forward_square, color: themeColor),
-          //   title: const Text('Invite a friend'),
-          //   trailing: const Icon(Iconsax.arrow_right_3),
-          //   onTap: () => Share.share(
-          //     config.general.app.shareText,
-          //     subject: appConfig.name,
-          //   ),
-          // ),
+          ListTile(
+            leading: Icon(Iconsax.forward_square, color: themeColor),
+            title: Text('Share ${appConfig.name} to a friend'),
+            onTap: () => Share.share(
+              '${appConfig.name} - ${'slogan'.tr}',
+              subject: appConfig.name,
+            ),
+          ),
         ],
         ListTile(
-          leading: Icon(Iconsax.code_1, color: themeColor),
-          title: Text('licenses'.tr),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () => controller.showLicenses(context),
+          leading: Icon(LineIcons.twitter, color: themeColor),
+          title: Text('${'follow'.tr} @Liso_Vault'),
+          onTap: () => Utils.openUrl(links.twitter),
+        ),
+        ListTile(
+          leading: Icon(LineIcons.twitter, color: themeColor),
+          title: Text('${'follow'.tr} @oliverbytes'),
+          subtitle: Text('Indie Developer of ${appConfig.name}'),
+          onTap: () => Utils.openUrl(kOliverTwitterUrl),
         ),
         // ContextMenuButton(
         //   controller.developerMenuItems,
@@ -122,7 +118,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         //   child: ListTile(
         //     leading: Icon(Iconsax.code, color: themeColor),
         //     title: Text('developer'.tr),
-        //     trailing: const Icon(Iconsax.arrow_right_3),
+        //
         //     onTap: () {},
         //   ),
         // ),
@@ -133,7 +129,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             width: 20,
             placeholder: Image.asset(Images.placeholder, height: 20),
           ),
-          trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('NexBot AI Writing Assistant'),
           subtitle: const Text('Create amazing content 10X faster with AI'),
           onTap: () => Utils.openUrl('https://nexbot.ai'),
@@ -147,10 +142,40 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
               placeholder: Image.asset(Images.placeholder, height: 20),
             ),
           ),
-          trailing: const Icon(Iconsax.arrow_right_3),
           title: const Text('NexSnap Screenshot Editor'),
           subtitle: const Text('Make beautiful screenshots in seconds'),
           onTap: () => Utils.openUrl('https://nexsnap.app'),
+        ),
+        ListTile(
+          leading: RemoteImage(
+            url:
+                'https://tools.applemediaservices.com/api/artwork/US/app/6448982120.png',
+            width: 20,
+            placeholder: Image.asset(Images.placeholder, height: 20),
+          ),
+          title: const Text('NexTran'),
+          subtitle: Text('nextran_desc'.tr),
+          onTap: () => Utils.openUrl(
+            isApple && isAppStore
+                ? 'https://apps.apple.com/us/app/nexbot-ai-writing-assistant/id6448982120'
+                : 'https://nextran.app',
+          ),
+        ),
+        ListTile(
+          leading: Icon(LineIcons.globe, color: themeColor),
+          title: Text('help_translate'.tr),
+          onTap: () => Utils.openUrl(links.translations),
+        ),
+        ListTile(
+          leading: Icon(Iconsax.people, color: themeColor),
+          title: const Text('Contributors'),
+          subtitle: const Text('Thanks to these people'),
+          onTap: () => Utils.openUrl(links.contributors),
+        ),
+        ListTile(
+          leading: Icon(Iconsax.code_1, color: themeColor),
+          title: Text('licenses'.tr),
+          onTap: () => controller.showLicenses(context),
         ),
         const SizedBox(height: 50),
       ],

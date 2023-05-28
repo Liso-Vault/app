@@ -1,22 +1,28 @@
+import 'package:liso/features/config/app_domains.model.dart';
+
 late ExtraConfig extraConfig;
 
 class ExtraConfig {
   final ExtraConfigSecrets secrets;
   final ExtraConfigWeb3 web3;
+  final ExtraAppDomainsConfig appDomains;
 
   ExtraConfig({
     required this.secrets,
     required this.web3,
+    required this.appDomains,
   });
 
   factory ExtraConfig.fromJson(Map<String, dynamic> json) => ExtraConfig(
         secrets: ExtraConfigSecrets.fromJson(json["secrets"]),
         web3: ExtraConfigWeb3.fromJson(json["web3"]),
+        appDomains: ExtraAppDomainsConfig.fromJson(json["appDomains"]),
       );
 
   Map<String, dynamic> toJson() => {
         "secrets": secrets.toJson(),
         "web3": web3.toJson(),
+        "appDomains": appDomains.toJson(),
       };
 }
 

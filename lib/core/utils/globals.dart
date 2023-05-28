@@ -2,20 +2,17 @@ import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/firebase/model/config_app_domains.model.dart';
-import 'package:liso/core/firebase/model/config_limits.model.dart';
-import 'package:secrets/secrets.dart';
+import 'package:liso/features/config/limits.model.dart';
 
+import '../../features/config/license.model.dart';
 import '../../features/config/pricing.dart';
 import '../../features/wallet/wallet.service.dart';
 import '../persistence/persistence.dart';
 
 bool isAutofill = false;
-
-var configLimits = ConfigLimits.fromJson(Secrets.limits);
-var configAppDomains = ConfigAppDomains.fromJson(Secrets.appDomains);
 
 // HIVE DATABASE
 const kHiveBoxGroups = 'groups';
@@ -52,8 +49,8 @@ const kNonPasswordFieldIds = [
   'seed',
 ];
 
-const kGiveawayImageUrl =
-    'https://media2.giphy.com/media/QlvPwCTw59B2E/giphy.gif?cid=ecf05e47twvo15bd95yww38qnr0b24bxvs83rqtss333b90s&rid=giphy.gif&ct=g';
+const kOliverTwitterUrl = 'https://twitter.com/oliverbytes';
+const kGiveawayImageUrl = 'https://i.imgur.com/P37ko6F.gif';
 
 // GETTERS
 
@@ -64,23 +61,23 @@ Color get themeColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
 Color get proColor => Get.isDarkMode ? kAppColor : kAppColorDarker;
 
-bool get isCryptoSupported => !isApple;
+bool get isCryptoSupported => !isApple || kDebugMode;
 
-ConfigLimitsTier get limits {
-  if (!WalletService.to.isReady) return configLimits.free;
+ExtraLimitsConfigTier get limits {
+  if (!WalletService.to.isReady) return licenseConfig.free;
   // check if user is a pro subscriber
-  if (LicenseService.to.isPremium) return configLimits.pro;
+  if (LicenseService.to.isPremium) return licenseConfig.pro;
 
   // TODO: check if user is a staker
 
   // check if user is a holder
   if (AppPersistence.to.lastLisoBalance.val >
-      configLimits.holder.tokenThreshold) {
-    return configLimits.holder;
+      licenseConfig.holder.tokenThreshold) {
+    return licenseConfig.holder;
   }
 
   // free user
-  return configLimits.free;
+  return licenseConfig.free;
 }
 
 // FUNCTIONS

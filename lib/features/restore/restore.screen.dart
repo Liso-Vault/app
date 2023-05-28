@@ -94,13 +94,10 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
               showGenerate: false,
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: 200,
-              child: ElevatedButton.icon(
-                onPressed: controller.continuePressed,
-                label: Text('continue'.tr),
-                icon: const Icon(Iconsax.arrow_circle_right),
-              ),
+            ElevatedButton.icon(
+              onPressed: controller.continuePressed,
+              label: Text('continue'.tr),
+              icon: const Icon(Iconsax.arrow_circle_right),
             ),
           ],
         ),

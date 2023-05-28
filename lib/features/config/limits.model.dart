@@ -1,24 +1,25 @@
-class ConfigLimits {
-  const ConfigLimits({
-    this.free = const ConfigLimitsTier(),
-    this.holder = const ConfigLimitsTier(),
-    this.staker = const ConfigLimitsTier(),
-    this.trial = const ConfigLimitsTier(),
-    this.pro = const ConfigLimitsTier(),
+class ExtraLimitsConfig {
+  const ExtraLimitsConfig({
+    this.free = const ExtraLimitsConfigTier(),
+    this.holder = const ExtraLimitsConfigTier(),
+    this.staker = const ExtraLimitsConfigTier(),
+    this.trial = const ExtraLimitsConfigTier(),
+    this.pro = const ExtraLimitsConfigTier(),
   });
 
-  final ConfigLimitsTier free;
-  final ConfigLimitsTier holder;
-  final ConfigLimitsTier staker;
-  final ConfigLimitsTier trial;
-  final ConfigLimitsTier pro;
+  final ExtraLimitsConfigTier free;
+  final ExtraLimitsConfigTier holder;
+  final ExtraLimitsConfigTier staker;
+  final ExtraLimitsConfigTier trial;
+  final ExtraLimitsConfigTier pro;
 
-  factory ConfigLimits.fromJson(Map<String, dynamic> json) => ConfigLimits(
-        free: ConfigLimitsTier.fromJson(json["free"]),
-        holder: ConfigLimitsTier.fromJson(json["holder"]),
-        staker: ConfigLimitsTier.fromJson(json["staker"]),
-        trial: ConfigLimitsTier.fromJson(json["trial"]),
-        pro: ConfigLimitsTier.fromJson(json["pro"]),
+  factory ExtraLimitsConfig.fromJson(Map<String, dynamic> json) =>
+      ExtraLimitsConfig(
+        free: ExtraLimitsConfigTier.fromJson(json["free"]),
+        holder: ExtraLimitsConfigTier.fromJson(json["holder"]),
+        staker: ExtraLimitsConfigTier.fromJson(json["staker"]),
+        trial: ExtraLimitsConfigTier.fromJson(json["trial"]),
+        pro: ExtraLimitsConfigTier.fromJson(json["pro"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -30,15 +31,15 @@ class ConfigLimits {
       };
 }
 
-class ConfigLimitsSettings {
-  const ConfigLimitsSettings({
+class ExtraLimitsConfigSettings {
+  const ExtraLimitsConfigSettings({
     this.trialDays = 30,
   });
 
   final int trialDays;
 
-  factory ConfigLimitsSettings.fromJson(Map<String, dynamic> json) =>
-      ConfigLimitsSettings(
+  factory ExtraLimitsConfigSettings.fromJson(Map<String, dynamic> json) =>
+      ExtraLimitsConfigSettings(
         trialDays: json["trial_days"],
       );
 
@@ -47,8 +48,8 @@ class ConfigLimitsSettings {
       };
 }
 
-class ConfigLimitsTier {
-  const ConfigLimitsTier({
+class ExtraLimitsConfigTier {
+  const ExtraLimitsConfigTier({
     this.id = '',
     this.tokenThreshold = 0,
     this.storageSize = 0,
@@ -94,8 +95,8 @@ class ConfigLimitsTier {
   final bool otpGenerator;
   final bool prioritySupport;
 
-  factory ConfigLimitsTier.fromJson(Map<String, dynamic> json) =>
-      ConfigLimitsTier(
+  factory ExtraLimitsConfigTier.fromJson(Map<String, dynamic> json) =>
+      ExtraLimitsConfigTier(
         id: json["id"],
         tokenThreshold: json["token_threshold"],
         storageSize: json["storage_size"],

@@ -19,6 +19,7 @@ import 'package:path/path.dart';
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
+import '../../config/license.model.dart';
 import '../../supabase/model/object.model.dart';
 
 class S3ExplorerScreenController extends GetxController
@@ -144,7 +145,7 @@ class S3ExplorerScreenController extends GetxController
         parameters: {
           'title': 'Upload Large Files',
           'body':
-              'Upload size limit: ${filesize(limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(configLimits.pro.uploadSize)} per file.',
+              'Upload size limit: ${filesize(limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(licenseConfig.pro.uploadSize)} per file.',
         },
       );
     }
@@ -163,7 +164,7 @@ class S3ExplorerScreenController extends GetxController
     //     parameters: {
     //       'title': 'Add More Storage',
     //       'body':
-    //           'Upgrade to Pro to store up to ${filesize(configLimits.pro.storageSize)} of files.',
+    //           'Upgrade to Pro to store up to ${filesize(ExtraLimitsConfig.pro.storageSize)} of files.',
     //     },
     //   );
     // }

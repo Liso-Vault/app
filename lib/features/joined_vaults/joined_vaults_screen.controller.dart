@@ -78,14 +78,14 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     // final owner = ownerSnapshot.data()!;
 
     // // obtain owner limits
-    // var ownerLimits = configLimits.free;
+    // var ownerLimits = ExtraLimitsConfig.free;
 
     // if (owner.limits == 'holder') {
-    //   ownerLimits = configLimits.holder;
+    //   ownerLimits = ExtraLimitsConfig.holder;
     // } else if (owner.limits == 'staker') {
-    //   ownerLimits = configLimits.staker;
+    //   ownerLimits = ExtraLimitsConfig.staker;
     // } else if (owner.limits == 'pro') {
-    //   ownerLimits = configLimits.pro;
+    //   ownerLimits = ExtraLimitsConfig.pro;
     // }
 
     // if (existingMembers >= ownerLimits.sharedMembers) {

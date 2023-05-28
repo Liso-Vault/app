@@ -214,13 +214,14 @@ class SyncService extends GetxService with ConsoleMixin {
     console.info(
         'up sync data: ${encryptedBytes.length} -> ${presignResult.right.data.url}');
 
-    // // TODO: pass object metadata
-    // final response = await http.put(
-    //   Uri.parse(presignResult.right.data.url),
-    //   body: encryptedBytes,
-    // );
+    // TODO: pass object metadata
+    final response = await http.put(
+      Uri.parse(presignResult.right.data.url),
+      body: encryptedBytes,
+    );
 
-    // console.info('up sync put response: ${response.statusCode}, ${response.body}');
+    console
+        .info('up sync put response: ${response.statusCode}, ${response.body}');
     return const Right(true);
   }
 

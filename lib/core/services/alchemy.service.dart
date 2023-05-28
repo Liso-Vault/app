@@ -43,6 +43,8 @@ class AlchemyService extends GetxService with ConsoleMixin {
       wsRpcUrl: ws,
       verbose: false,
     );
+
+    console.info('init');
   }
 
   Future<void> load() async {
@@ -54,6 +56,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
 
     await loadLisoBalance();
     await loadMaticBalance();
+    console.info('load');
   }
 
   Future<void> loadLisoBalance() async {

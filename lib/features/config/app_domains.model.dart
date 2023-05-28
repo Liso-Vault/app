@@ -1,7 +1,7 @@
 import 'package:liso/core/hive/models/app_domain.hive.dart';
 
-class ConfigAppDomains {
-  const ConfigAppDomains({
+class ExtraAppDomainsConfig {
+  const ExtraAppDomainsConfig({
     this.version = 0,
     this.data = const [],
   });
@@ -9,8 +9,8 @@ class ConfigAppDomains {
   final int version;
   final List<HiveAppDomain> data;
 
-  factory ConfigAppDomains.fromJson(Map<String, dynamic> json) =>
-      ConfigAppDomains(
+  factory ExtraAppDomainsConfig.fromJson(Map<String, dynamic> json) =>
+      ExtraAppDomainsConfig(
         version: json["version"],
         data: List<HiveAppDomain>.from(
             json["data"].map((x) => HiveAppDomain.fromJson(x))),

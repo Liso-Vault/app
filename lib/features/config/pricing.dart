@@ -10,6 +10,7 @@ class AppPricing {
     'premium_desc_4',
     'premium_desc_5',
     'premium_desc_6',
+    'premium_desc_7',
     // 'premium_no_ads',
     // 'premium_gpt',
     // 'premium_docs_editor',
@@ -18,7 +19,7 @@ class AppPricing {
     // 'premium_continue_writer',
     // 'premium_commands',
     // 'premium_tts',
-    'premium_support',
+    // 'premium_support',
     deviceAccess,
     'money_back_guarantee',
     if (!isApple && isAppStore) ...[
@@ -65,15 +66,15 @@ class AppPricing {
 
   static final data = {
     // MONTHLY
-    // 'nextran.starter.sub.monthly': Pricing.fromJson(starter),
-    // 'nextran.plus.sub.monthly': Pricing.fromJson(plus),
+    // 'starter.sub.monthly': Pricing.fromJson(starter),
+    // 'plus.sub.monthly': Pricing.fromJson(plus),
     'pro.sub.monthly': Pricing.fromJson(pro),
-    // 'liso.max.sub.monthly': Pricing.fromJson(max),
+    // 'max.sub.monthly': Pricing.fromJson(max),
     // ANNUAL
-    // 'nextran.starter.sub.annual': Pricing.fromJson(starter),
-    // 'nextran.plus.sub.annual': Pricing.fromJson(plus),
+    // 'starter.sub.annual': Pricing.fromJson(starter),
+    // 'plus.sub.annual': Pricing.fromJson(plus),
     'pro.sub.annual': Pricing.fromJson(pro),
-    // 'liso.max.sub.annual': Pricing.fromJson(max),
+    // 'max.sub.annual': Pricing.fromJson(max),
   };
 
   static String get deviceAccess {

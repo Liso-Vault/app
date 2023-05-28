@@ -28,16 +28,10 @@ class AppDatabaseService extends DatabaseService {
         licenseConfig = LicenseConfig.fromJson(response.license);
         extraConfig = ExtraConfig.fromJson(response.extra);
 
-        // configLimits = ConfigLimits.fromJson(
-        //   jsonDecode(response.extra['limits']),
-        // );
-
-        // configAppDomains = ConfigAppDomains.fromJson(
-        //   jsonDecode(response.extra['app_domains']),
-        // );
-
-        AlchemyService.to.init();
-        AlchemyService.to.load();
+        Future.delayed(2.seconds).then((value) {
+          AlchemyService.to.init();
+          AlchemyService.to.load();
+        });
 
         configSyncing.value = false;
         console.wtf('Remote Configuration Success');

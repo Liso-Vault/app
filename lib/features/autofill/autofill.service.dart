@@ -7,6 +7,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/utils/globals.dart';
+import 'package:liso/features/config/extra.model.dart';
 
 import '../../core/hive/models/app_domain.hive.dart';
 import '../../core/hive/models/item.hive.dart';
@@ -80,7 +81,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
       query = metadata!.packageNames.first;
     }
 
-    final appDomains = configAppDomains.data.where((e) {
+    final appDomains = extraConfig.appDomains.data.where((e) {
       // DOMAINS
       if (metadata?.webDomains != null &&
           e.uris.where((e) {
@@ -120,7 +121,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
       return console.error('invalid autofill metadata');
     }
 
-    final appDomains = configAppDomains.data.where((e) {
+    final appDomains = extraConfig.appDomains.data.where((e) {
       // DOMAINS
       if (e.uris.where((e) {
         final uri = Uri.tryParse(e);

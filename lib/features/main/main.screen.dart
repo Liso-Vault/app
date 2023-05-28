@@ -6,6 +6,7 @@ import 'package:app_core/connectivity/connectivity_bar.widget.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/services/main.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
@@ -294,7 +295,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     // leading: const Icon(Iconsax.key),
                     trailing: OutlinedButton(
                       onPressed: () {
-                        UIUtils.rateAndReview();
+                        MainService.to.requestReview();
                         AppPersistence.to.rateCardVisibility.val = false;
                       },
                       child: const Text('Rate'),

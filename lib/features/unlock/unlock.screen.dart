@@ -86,18 +86,15 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
             ),
           ),
           const SizedBox(height: 20),
-          SizedBox(
-            width: 200,
-            child: Obx(
-              () => ElevatedButton.icon(
-                label: Text(controller.promptMode ? 'proceed'.tr : 'unlock'.tr),
-                icon: Icon(
-                  controller.promptMode
-                      ? Iconsax.arrow_circle_right
-                      : LineIcons.lockOpen,
-                ),
-                onPressed: controller.canProceed() ? controller.unlock : null,
+          Obx(
+            () => ElevatedButton.icon(
+              label: Text(controller.promptMode ? 'proceed'.tr : 'unlock'.tr),
+              icon: Icon(
+                controller.promptMode
+                    ? Iconsax.arrow_circle_right
+                    : LineIcons.lockOpen,
               ),
+              onPressed: controller.canProceed() ? controller.unlock : null,
             ),
           ),
         ]

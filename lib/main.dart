@@ -148,37 +148,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
     await SecretPersistence.migrate();
     HiveService.init();
 
-    // // initializations
-    // await ConfigService.to.init(
-    //   postInit: (parameters) {
-    //     configLimits = ConfigLimits.fromJson(
-    //       jsonDecode(
-    //         ConfigValue.fromJson(parameters["limits_config"])
-    //             .defaultValue
-    //             .value,
-    //       ),
-    //     );
-
-    //     configAppDomains = ConfigAppDomains.fromJson(
-    //       jsonDecode(
-    //         ConfigValue.fromJson(parameters["app_domains_config"])
-    //             .defaultValue
-    //             .value,
-    //       ),
-    //     );
-
-    //     configWeb3 = ConfigWeb3.fromJson(
-    //       jsonDecode(
-    //         ConfigValue.fromJson(parameters["web3_config"]).defaultValue.value,
-    //       ),
-    //     );
-
-    //     // extra init
-    //     AlchemyService.to.init();
-    //     AlchemyService.to.load();
-    //   },
-    // );
-
     // initializations
     initUpgradeConfig();
     Future.delayed(5.seconds).then((value) => initUpgradeConfig());

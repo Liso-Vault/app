@@ -2,26 +2,11 @@ import 'package:secrets/secrets.dart';
 
 const kExtraJson = {
   "secrets": {
-    "s3": {
-      "key": "",
-      "secret": "",
-      "bucket": "liso-sia",
-      "endpoint": "s3.filebase.com"
-    },
+    "s3": {"key": "", "secret": "", "bucket": "", "endpoint": ""},
     "alchemy": {"apiKey": ""}
   },
-  "web3": {
-    "chains": [
-      {
-        "name": "Polygon",
-        "symbol": "MATIC",
-        "decimals": 18,
-        "logo": "",
-        "main": {"http": "", "ws": ""},
-        "test": {"http": "", "ws": ""}
-      }
-    ]
-  }
+  "web3": Secrets.web3,
+  "appDomains": Secrets.appDomains
 };
 
 const kAppJson = {
@@ -68,53 +53,76 @@ const kAppJson = {
   }
 };
 
-final kSecretJson = {
-  "persistence": {
-    "box": "persistence",
-    "key": Secrets.persistenceKey,
-  },
-  "revenuecat": Secrets.secrets['revenuecat'],
-  "sentry": {
-    "dsn": Secrets.secrets['sentry']!['dsn'] as String,
-  },
-  "supabase": Secrets.secrets['supabase'],
-};
+const kSecretJson = Secrets.secrets;
 
 const kLicenseJson = {
-  "business": {
-    "id": "business",
-    "users": 1,
-    "edits": 10000,
-    "devices": 1,
-  },
-  "max": {
-    "id": "max",
-    "users": 1,
-    "edits": 5000,
-    "devices": 1,
-  },
   "pro": {
     "id": "pro",
-    "users": 1,
-    "edits": 1000,
-    "devices": 1,
+    "files": 1000000,
+    "items": 1000000,
+    "backups": 200,
+    "devices": 1000000,
+    "trash_days": 365,
+    "cipher_tool": true,
+    "nfc_keycard": true,
+    "upload_size": 838860800,
+    "storage_size": 1073741824,
+    "custom_vaults": 1000000,
+    "otp_generator": true,
+    "shared_vaults": 1000000,
+    "breach_scanner": true,
+    "shared_members": 1000000,
+    "encrypted_files": 1000000,
+    "password_health": true,
+    "protected_items": 1000000,
+    "token_threshold": 0,
+    "priority_support": true,
+    "custom_categories": 1000000
   },
-  "plus": {
-    "id": "plus",
-    "users": 1,
-    "edits": 500,
-    "devices": 1,
-  },
-  "starter": {
-    "id": "starter",
-    "users": 1,
-    "edits": 250,
-    "devices": 1,
+  "holder": {
+    "id": "holder",
+    "token_threshold": 1000,
+    "storage_size": 209715200,
+    "upload_size": 167772160,
+    "items": 200,
+    "files": 20,
+    "backups": 10,
+    "devices": 10,
+    "trash_days": 30,
+    "protected_items": 20,
+    "shared_members": 10,
+    "shared_vaults": 10,
+    "custom_vaults": 10,
+    "custom_categories": 10,
+    "encrypted_files": 1000000,
+    "breach_scanner": false,
+    "password_health": false,
+    "nfc_keycard": false,
+    "cipher_tool": false,
+    "otp_generator": false,
+    "priority_support": false
   },
   "free": {
     "id": "free",
-    "users": 1,
-    "edits": 20,
-    "devices": 1,
-  },
+    "files": 10,
+    "items": 100,
+    "backups": 2,
+    "devices": 5,
+    "trash_days": 5,
+    "cipher_tool": false,
+    "nfc_keycard": false,
+    "upload_size": 83886080,
+    "storage_size": 104857600,
+    "custom_vaults": 5,
+    "otp_generator": false,
+    "shared_vaults": 5,
+    "breach_scanner": false,
+    "shared_members": 5,
+    "encrypted_files": 1000000,
+    "password_health": false,
+    "protected_items": 5,
+    "token_threshold": 0,
+    "priority_support": false,
+    "custom_categories": 5
+  }
 };

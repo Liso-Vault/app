@@ -96,13 +96,10 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
           Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              SizedBox(
-                width: 200,
-                child: ElevatedButton.icon(
-                  onPressed: controller.confirm,
-                  label: Text('confirm'.tr),
-                  icon: const Icon(Iconsax.arrow_circle_right),
-                ),
+              ElevatedButton.icon(
+                onPressed: controller.confirm,
+                label: Text('confirm'.tr),
+                icon: const Icon(Iconsax.arrow_circle_right),
               ),
               const SizedBox(height: 15),
               TextButton.icon(

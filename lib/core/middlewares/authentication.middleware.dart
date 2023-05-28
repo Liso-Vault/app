@@ -19,9 +19,15 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
       return const RouteSettings(name: Routes.welcome);
     }
 
-    if (!signedIn) {
+    if (!signedIn && Get.currentRoute != Routes.unlock) {
+      console.wtf('redirect to unlock screen');
       return const RouteSettings(name: Routes.unlock);
     }
+
+    // if (Get.currentRoute != Routes.unlock && WalletService.to.isReady) {
+    //   console.wtf('redirect to unlock screen');
+    //   return const RouteSettings(name: Routes.unlock);
+    // }
 
     // first time initialization
     if (!initialized) CrashlyticsService.to.configure();

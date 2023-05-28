@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class CustomChip extends StatelessWidget {
   final Text label;
@@ -24,7 +25,7 @@ class CustomChip extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: Container(
-        color: color ?? Theme.of(context).chipTheme.backgroundColor,
+        color: color ?? Get.theme.secondaryHeaderColor,
         padding: padding,
         child: Row(
           mainAxisSize: MainAxisSize.min,
