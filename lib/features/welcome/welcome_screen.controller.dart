@@ -8,12 +8,10 @@ import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../main/main_screen.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class WelcomeScreenController extends GetxController
@@ -64,8 +62,7 @@ class WelcomeScreenController extends GetxController
       body: 'Your vault has been created',
     );
 
-    AuthenticationMiddleware.signedIn = true;
-    MainScreenController.to.navigate();
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 
   void restore() async {

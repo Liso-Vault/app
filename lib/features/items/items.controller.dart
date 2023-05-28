@@ -18,15 +18,10 @@ class ItemsController extends GetxController with ConsoleMixin, StateMixin {
 
   // GETTERS
 
-  // TODO: temporary
-  // bool get itemLimitReached => data.length >= limits.items;
-  bool get itemLimitReached => false;
+  bool get itemLimitReached => data.length >= limits.items;
 
-  // TODO: temporary
-  // bool get protectedItemLimitReached =>
-  //     data.where((e) => e.protected).length >=
-  //     limits.protectedItems;
-  bool get protectedItemLimitReached => false;
+  bool get protectedItemLimitReached =>
+      data.where((e) => e.protected).length >= limits.protectedItems;
 
   // INIT
   @override

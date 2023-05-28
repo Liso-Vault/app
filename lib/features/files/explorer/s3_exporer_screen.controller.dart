@@ -155,19 +155,18 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void _upload(File file) async {
-    // TODO: temporary
-    // final assumedTotal = storage.rootInfo.value.data.size + await file.length();
+    final assumedTotal = storage.rootInfo.value.data.size + await file.length();
 
-    // if (assumedTotal >= limits.uploadSize) {
-    //   return Utils.adaptiveRouteOpen(
-    //     name: Routes.upgrade,
-    //     parameters: {
-    //       'title': 'Add More Storage',
-    //       'body':
-    //           'Upgrade to Pro to store up to ${filesize(ExtraLimitsConfig.pro.storageSize)} of files.',
-    //     },
-    //   );
-    // }
+    if (assumedTotal >= limits.uploadSize) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Add More Storage',
+          'body':
+              'Upgrade to Pro to store up to ${filesize(licenseConfig.pro.storageSize)} of files.',
+        },
+      );
+    }
 
     change(true, status: RxStatus.loading());
     final encryptedBytes = CipherService.to.encrypt(await file.readAsBytes());

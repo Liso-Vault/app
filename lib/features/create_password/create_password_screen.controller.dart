@@ -1,17 +1,16 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../core/persistence/persistence.dart';
-import '../main/main_screen.controller.dart';
 
 class CreatePasswordScreenController extends GetxController
     with StateMixin, ConsoleMixin {
@@ -90,7 +89,6 @@ class CreatePasswordScreenController extends GetxController
       body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
     );
 
-    AuthenticationMiddleware.signedIn = true;
-    MainScreenController.to.navigate();
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

@@ -89,7 +89,6 @@ class CustomSyncProviderScreen extends StatelessWidget with ConsoleMixin {
                 labelText: 'Session Token',
               ),
             ),
-            // TODO: temporary
             const Divider(),
             SecretPersistenceBuilder(
               builder: (p, context) => SwitchListTile(

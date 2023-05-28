@@ -26,6 +26,7 @@ final en = {
   "premium_support": "Premium Support",
   "trial_3_days": "3-Day Free Trial",
   "trial_7_days": "7-Day Free Trial",
+  "license_key": "License Key",
   "day": "Day",
   "help_translate": "Help Translate",
   "join_affiliates": "Join the Affiliates Program",

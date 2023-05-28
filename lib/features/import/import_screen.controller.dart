@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
@@ -112,7 +113,7 @@ class ImportScreenController extends GetxController
       DrawerMenuController.to.clearFilters();
       DrawerMenuController.to.filterGroupId.value = ''; // all
       MainScreenController.to.load();
-      MainScreenController.to.navigate(skipRedirect: true);
+      Get.offNamedUntil(Routes.main, (route) => false);
     }
   }
 

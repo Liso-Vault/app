@@ -1,6 +1,8 @@
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +11,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/group.hive.dart';
 import '../../core/persistence/persistence.dart';
+import '../../core/utils/globals.dart';
 import 'groups.controller.dart';
 import 'groups.service.dart';
 
@@ -79,18 +82,16 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         );
       }
 
-      // TODO: temporary
-      // if (GroupsController.to.data.length >=
-      //     limits.customVaults) {
-      //   return Utils.adaptiveRouteOpen(
-      //     name: Routes.upgrade,
-      //     parameters: {
-      //       'title': 'Custom Vaults',
-      //       'body':
-      //           'Maximum custom vaults of ${limits.customVaults} limit reached. Upgrade to Pro to unlock unlimited custom vaults feature.',
-      //     },
-      //   );
-      // }
+      if (GroupsController.to.data.length >= limits.customVaults) {
+        return Utils.adaptiveRouteOpen(
+          name: Routes.upgrade,
+          parameters: {
+            'title': 'Custom Vaults',
+            'body':
+                'Maximum custom vaults of ${limits.customVaults} limit reached. Upgrade to Pro to unlock unlimited custom vaults feature.',
+          },
+        );
+      }
 
       await GroupsService.to.box!.add(HiveLisoGroup(
         id: const Uuid().v4(),

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -21,10 +22,8 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
 import '../../core/liso/liso.manager.dart';
-import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
-import '../main/main_screen.controller.dart';
 import '../supabase/supabase_functions.service.dart';
 
 class RestoreScreenController extends GetxController
@@ -159,7 +158,7 @@ class RestoreScreenController extends GetxController
 
         if (!authenticated) return change(null, status: RxStatus.success());
         Get.back(); // close dialog
-        AuthenticationMiddleware.signedIn = true;
+        // AuthenticationMiddleware.signedIn = true;
         final password = AppUtils.generatePassword();
         await WalletService.to.create(seed, password, false);
         change(null, status: RxStatus.success());
@@ -170,7 +169,7 @@ class RestoreScreenController extends GetxController
           body: 'Your vault has been restored',
         );
 
-        MainScreenController.to.navigate();
+        Get.offNamedUntil(Routes.main, (route) => false);
       } else {
         change(null, status: RxStatus.success());
 

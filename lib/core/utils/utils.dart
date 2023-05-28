@@ -2,20 +2,19 @@ import 'package:app_core/config.dart';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:app_core/widgets/pro.widget.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
-import 'package:extended_image/extended_image.dart';
 
 import '../../features/files/storage.service.dart';
 import '../../features/supabase/model/object.model.dart';
@@ -290,10 +289,10 @@ class AppUtils {
 
     AppFunctionsService.to.status(force: true).then((value) {
       // manually prevent duplicates becaused onSignedIn is fired twice
-      if (!LicenseService.to.isPremium && !isBeta) {
-        Utils.adaptiveRouteOpen(name: Routes.upgrade);
-        // AppodealService.to.init();
-      }
+      // if (!LicenseService.to.isPremium && !isBeta) {
+      //   Utils.adaptiveRouteOpen(name: Routes.upgrade);
+      //   // AppodealService.to.init();
+      // }
     });
 
     // if (Get.currentRoute != Routes.main) {

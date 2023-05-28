@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../../core/middlewares/authentication.middleware.dart';
 import '../../core/utils/globals.dart';
-
 import '../joined_vaults/joined_vault.controller.dart';
 import '../shared_vaults/shared_vault.controller.dart';
 import 'debug_screen.controller.dart';
@@ -59,14 +57,14 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           onTap: controller.save,
         ),
         const Divider(),
-        ListTile(
-          leading: Icon(Iconsax.code, color: themeColor),
-          title: const Text('Sign Out'),
-          trailing: const Icon(Iconsax.arrow_right_3),
-          onTap: () async {
-            AuthenticationMiddleware.signedIn = false;
-          },
-        ),
+        // ListTile(
+        //   leading: Icon(Iconsax.code, color: themeColor),
+        //   title: const Text('Sign Out'),
+        //   trailing: const Icon(Iconsax.arrow_right_3),
+        //   onTap: () async {
+        //     AuthenticationMiddleware.signedIn = false;
+        //   },
+        // ),
         // ListTile(
         //   leading: Icon(Iconsax.code, color: themeColor),
         //   title: const Text('Get Remote Config'),

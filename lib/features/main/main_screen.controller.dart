@@ -17,7 +17,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
@@ -190,23 +189,14 @@ class MainScreenController extends GetxController
 
   @override
   void onReady() {
-    if (isDesktop) {
-      window.setBrightness(
-        Get.isDarkMode ? Brightness.dark : Brightness.light,
-      );
-    }
-
     _initAppLifeCycleEvents();
-    console.info('onReady');
+    // init();
     super.onReady();
   }
 
   @override
   void onClose() {
-    if (isDesktop) {
-      window.removeListener(this);
-    }
-
+    if (isDesktop) window.removeListener(this);
     super.onClose();
   }
 
@@ -255,13 +245,7 @@ class MainScreenController extends GetxController
 
   // FUNCTIONS
 
-  void navigate({bool skipRedirect = false}) {
-    console.info('navigate! skipRedirect: $skipRedirect');
-    AuthenticationMiddleware.skipRedirect = skipRedirect;
-    Get.offNamedUntil(Routes.main, (route) => false);
-  }
-
-  void postInit() async {
+  void init() async {
     // load listview
     load();
 
@@ -287,8 +271,7 @@ class MainScreenController extends GetxController
       }
 
       // show upgrade screen every after 5th times opened
-      if (!LicenseService.to.isPremium &&
-          (Persistence.to.sessionCount.val % 5) == 0) {
+      if (!LicenseService.to.isPremium) {
         await Future.delayed(1.seconds);
         Utils.adaptiveRouteOpen(name: Routes.upgrade);
       }

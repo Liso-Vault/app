@@ -405,7 +405,7 @@ class SettingsScreenController extends GetxController
         body: 'Your local vault has been successfully reset',
       );
 
-      MainScreenController.to.navigate();
+      Get.offNamedUntil(Routes.main, (route) => false);
     }
 
     UIUtils.showImageDialog(

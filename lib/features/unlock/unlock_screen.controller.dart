@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -9,11 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:liso/core/liso/liso.manager.dart';
-import 'package:liso/core/middlewares/authentication.middleware.dart';
 
 import '../../core/hive/hive.service.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../main/main_screen.controller.dart';
 import '../wallet/wallet.service.dart';
 
 class UnlockScreenController extends GetxController
@@ -34,7 +33,7 @@ class UnlockScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    AuthenticationMiddleware.signedIn = false;
+    // AuthenticationMiddleware.signedIn = false;
     change(null, status: RxStatus.success());
     super.onInit();
   }
@@ -97,7 +96,7 @@ class UnlockScreenController extends GetxController
     void done() async {
       await HiveService.to.open();
       change(null, status: RxStatus.success());
-      AuthenticationMiddleware.signedIn = true;
+      // AuthenticationMiddleware.signedIn = true;
 
       if (!promptMode && !regularMode) {
         Persistence.to.sessionCount.val++;
@@ -105,7 +104,7 @@ class UnlockScreenController extends GetxController
       }
 
       if (promptMode || regularMode) return Get.back(result: true);
-      return MainScreenController.to.navigate();
+      return Get.offNamedUntil(Routes.main, (route) => false);
     }
 
     // temporary to migrate users prior v0.6.0
@@ -133,7 +132,7 @@ class UnlockScreenController extends GetxController
 
       if (attemptsLeft <= 0) {
         await LisoManager.reset();
-        return MainScreenController.to.navigate();
+        return Get.offNamedUntil(Routes.main, (route) => false);
       }
 
       if (attemptsLeft < 3) {

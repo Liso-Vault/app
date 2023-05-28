@@ -10,7 +10,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/liso/vault.model.dart';
-import 'package:liso/core/middlewares/authentication.middleware.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/categories/categories.service.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
@@ -60,7 +59,7 @@ class LisoManager {
     PurchasesService.to.invalidate();
     PurchasesService.to.logout();
     // sign out
-    AuthenticationMiddleware.signedIn = false;
+    // AuthenticationMiddleware.signedIn = false;
     AuthService.to.auth.signOut();
     console.info('reset!');
   }

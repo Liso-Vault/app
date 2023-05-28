@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -146,7 +147,7 @@ class S3ObjectTileController extends GetxController
         body: 'Successfully switched to vault: ${object.name}',
       );
 
-      MainScreenController.to.navigate();
+      Get.offNamedUntil(Routes.main, (route) => false);
     }
 
     final dialogContent = Text(

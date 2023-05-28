@@ -5,6 +5,7 @@ import 'package:app_core/config/app.model.dart';
 
 import 'package:app_core/globals.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -69,17 +70,16 @@ class CipherScreenController extends GetxController
       return;
     }
 
-    // TODO: temporary
-    // if (!limits.cipherTool) {
-    //   return Utils.adaptiveRouteOpen(
-    //     name: Routes.upgrade,
-    //     parameters: {
-    //       'title': 'Encryption Tool',
-    //       'body':
-    //           'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${appConfig.name} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
-    //     },
-    //   );
-    // }
+    if (!limits.cipherTool) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Encryption Tool',
+          'body':
+              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${appConfig.name} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
+        },
+      );
+    }
 
     change(false, status: RxStatus.loading());
     final stopwatch = Stopwatch()..start();
