@@ -173,10 +173,8 @@ class RestoreScreenController extends GetxController
       } else {
         change(null, status: RxStatus.success());
 
-        Utils.adaptiveRouteOpen(
-          name: AppRoutes.createPassword,
-          parameters: {'seed': seed, 'from': 'restore_screen'},
-        );
+        generatedSeed = seed;
+        Utils.adaptiveRouteOpen(name: AppRoutes.createPassword);
       }
     }
 

@@ -1,6 +1,5 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
@@ -8,7 +7,6 @@ import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
 
 import '../../core/utils/utils.dart';
 import '../app/routes.dart';
@@ -32,12 +30,6 @@ class WelcomeScreenController extends GetxController
   // FUNCTIONS
 
   void create() async {
-    // show upgrade screen
-    if (!AppPersistence.to.upgradeScreenShown.val &&
-        !LicenseService.to.isPremium) {
-      await Utils.adaptiveRouteOpen(name: Routes.upgrade);
-    }
-
     change(null, status: RxStatus.loading());
 
     if (!isLocalAuthSupported) {

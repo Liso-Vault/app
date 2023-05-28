@@ -29,4 +29,7 @@ class AppRoutes {
   // CRYPTO
   static const wallet = '/wallet';
   static const cipher = '/cipher';
+
+  // OTHERS
+  static const statistics = '/statistics';
 }

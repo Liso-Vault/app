@@ -11,6 +11,11 @@ class AppPricing {
     'premium_desc_5',
     'premium_desc_6',
     'premium_desc_7',
+    'premium_desc_8',
+    'premium_desc_9',
+    'premium_desc_10',
+    'premium_desc_11',
+    'premium_desc_12',
     // 'premium_no_ads',
     // 'premium_gpt',
     // 'premium_docs_editor',
@@ -22,7 +27,7 @@ class AppPricing {
     // 'premium_support',
     deviceAccess,
     'money_back_guarantee',
-    if (!isApple && isAppStore) ...[
+    if (!isApple || !isAppStore) ...[
       'cancel_anytime',
     ],
     'join_over_users',

@@ -69,7 +69,7 @@ class UnlockScreenController extends GetxController
 
   void unlock() async {
     if (status == RxStatus.loading()) return console.error('still busy');
-    await UIUtils.showConsent();
+    // await UIUtils.showConsent();
     await Get.closeCurrentSnackbar();
     change(null, status: RxStatus.loading());
     final password = passwordController.text.trim();

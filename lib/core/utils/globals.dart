@@ -52,6 +52,8 @@ const kNonPasswordFieldIds = [
 const kOliverTwitterUrl = 'https://twitter.com/oliverbytes';
 const kGiveawayImageUrl = 'https://i.imgur.com/P37ko6F.gif';
 
+String generatedSeed = '';
+
 // GETTERS
 
 const kAppColor = Color(0xff02f297);

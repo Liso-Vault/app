@@ -11,6 +11,7 @@ import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/seed/seed_field.widget.dart';
 
+import '../../core/utils/globals.dart';
 import '../items/items.service.dart';
 import '../menu/menu.item.dart';
 
@@ -85,14 +86,9 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   void continuePressed() async {
     AppPersistence.to.backedUpSeed.val = true;
     if (isDisplayMode) return Get.back();
+    generatedSeed = seed.value;
 
-    Utils.adaptiveRouteOpen(
-      name: AppRoutes.createPassword,
-      parameters: {
-        'seed': seed.value,
-        'from': 'seed_screen',
-      },
-    );
+    Utils.adaptiveRouteOpen(name: AppRoutes.createPassword);
   }
 
   void _showQR() {

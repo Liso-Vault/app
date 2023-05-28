@@ -86,6 +86,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
             ),
             controller.chkBackedUpSeed,
           ),
+          const Divider(height: 0, color: Colors.grey, thickness: 0.1),
           ObxValue(
             (RxBool data) => CheckboxListTile(
               checkboxShape: const CircleBorder(),

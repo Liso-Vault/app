@@ -30,6 +30,7 @@ import '../joined_vaults/joined_vaults.screen.dart';
 import '../otp/otp.screen.dart';
 import '../password_generator/password_generator.screen.dart';
 import '../seed/generator/seed_generator.screen.dart';
+import '../statistics/statistics.screen.dart';
 import '../wallet/wallet.screen.dart';
 
 class Pages {
@@ -114,9 +115,6 @@ class Pages {
     GetPage(
       name: Routes.upgrade,
       page: () => const UpgradeScreen(),
-      middlewares: [
-        AuthenticationMiddleware(),
-      ],
     ),
     GetPage(
       name: AppRoutes.otp,
@@ -158,9 +156,14 @@ class Pages {
       name: Routes.update,
       page: () => const UpdateScreen(),
     ),
+    //
     GetPage(
       name: Routes.debug,
       page: () => const DebugScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.statistics,
+      page: () => const StatisticsScreen(),
     ),
   ];
 }

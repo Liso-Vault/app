@@ -37,8 +37,7 @@ import '../groups/groups.controller.dart';
 import '../menu/menu.item.dart';
 import '../search/search.delegate.dart';
 
-class MainScreenController extends GetxController
-    with ConsoleMixin, WindowListener {
+class MainScreenController extends GetxController with ConsoleMixin {
   static MainScreenController get to => Get.find();
 
   // VARIABLES
@@ -177,70 +176,10 @@ class MainScreenController extends GetxController
 
   // INIT
   @override
-  void onInit() async {
-    if (isDesktop) {
-      window.addListener(this);
-      window.setPreventClose(true);
-    }
-
-    console.info('onInit');
-    super.onInit();
-  }
-
-  @override
   void onReady() {
     _initAppLifeCycleEvents();
     // init();
     super.onReady();
-  }
-
-  @override
-  void onClose() {
-    if (isDesktop) window.removeListener(this);
-    super.onClose();
-  }
-
-  @override
-  void onWindowClose() async {
-    bool preventClosing = await window.isPreventClose();
-    final confirmClose = Get.isDialogOpen == false &&
-        preventClosing &&
-        AppPersistence.to.changes.val > 0 &&
-        AppPersistence.to.sync.val;
-
-    if (!confirmClose) return window.destroy();
-
-    final content = Text(
-      'There are ${AppPersistence.to.changes.val} unsynced changes you may want to sync first before exiting.',
-    );
-
-    Get.dialog(AlertDialog(
-      title: const Text('Unsynced Changes'),
-      content: isSmallScreen ? content : SizedBox(width: 450, child: content),
-      actions: [
-        TextButton(
-          onPressed: Get.back,
-          child: Text('cancel'.tr),
-        ),
-        TextButton(
-          child: const Text('Force Close'),
-          onPressed: () {
-            if (GetPlatform.isDesktop) window.destroy();
-          },
-        ),
-      ],
-    ));
-
-    super.onWindowClose();
-  }
-
-  @override
-  void onWindowResized() async {
-    final size = await window.getSize();
-    persistence.windowWidth.val = size.width;
-    persistence.windowHeight.val = size.height;
-    console.warning('window resized: $size');
-    super.onWindowResized();
   }
 
   // FUNCTIONS

@@ -7,6 +7,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -71,13 +72,12 @@ class CreatePasswordScreenController extends GetxController
       return console.error('Passwords do not match');
     }
 
-    AppPersistence.to.backedUpSeed.val =
-        Get.parameters['from'] == 'restore_screen';
     AppPersistence.to.backedUpPassword.val = true;
-    final isNewVault = Get.parameters['from'] == 'seed_screen';
+    AppPersistence.to.backedUpSeed.val = Get.previousRoute == AppRoutes.restore;
+    final isNewVault = Get.previousRoute == AppRoutes.seed;
 
     await WalletService.to.create(
-      Get.parameters['seed']!,
+      generatedSeed,
       passwordController.text.trim(),
       isNewVault,
     );

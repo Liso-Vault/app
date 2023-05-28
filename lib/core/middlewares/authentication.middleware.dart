@@ -12,6 +12,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     if (!WalletService.to.isSaved) {
       return const RouteSettings(name: Routes.welcome);
     }
+
     // if the user hasn't unlocked
     if (Get.currentRoute != Routes.unlock && !WalletService.to.isReady) {
       console.wtf('redirect to unlock screen');
