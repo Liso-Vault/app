@@ -1,3 +1,4 @@
+import 'package:app_core/config.dart';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
@@ -156,7 +157,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('NexTran'),
           subtitle: Text('nextran_desc'.tr),
           onTap: () => Utils.openUrl(
-            isApple && isAppStore
+            isApple && CoreConfig().isAppStore
                 ? 'https://apps.apple.com/us/app/nexbot-ai-writing-assistant/id6448982120'
                 : 'https://nextran.app',
           ),

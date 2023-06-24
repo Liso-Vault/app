@@ -2,6 +2,7 @@ import 'package:app_core/config.dart';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
@@ -289,10 +290,10 @@ class AppUtils {
 
     AppFunctionsService.to.status(force: true).then((value) {
       // manually prevent duplicates becaused onSignedIn is fired twice
-      // if (!LicenseService.to.isPremium && !isBeta) {
-      //   Utils.adaptiveRouteOpen(name: Routes.upgrade);
-      //   // AppodealService.to.init();
-      // }
+      if (!LicenseService.to.isPremium && !isBeta) {
+        Utils.adaptiveRouteOpen(name: Routes.upgrade);
+        // AppodealService.to.init();
+      }
     });
 
     // if (Get.currentRoute != Routes.main) {
@@ -376,96 +377,5 @@ class AppUtils {
     );
 
     AnalyticsService.to.logEvent('cancelled-upgrade-dialog');
-  }
-
-  static void fallbackUpgrade() {
-    final bodyContent = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 10),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: ExtendedImage.network(
-            kGiveawayImageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(height: 30),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              '${'free'.tr.toUpperCase()} ',
-              style: TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                color: Get.theme.primaryColor,
-              ),
-            ),
-            ProText(
-              size: 25,
-              text: 'premium'.tr.toUpperCase(),
-            )
-          ],
-        ),
-        const SizedBox(height: 10),
-        Text(
-          'giveaway_message'.tr,
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 10),
-        GradientWidget(
-          gradient: const LinearGradient(
-            colors: [
-              Color.fromARGB(255, 255, 247, 0),
-              Color.fromARGB(255, 255, 0, 225),
-            ],
-          ),
-          child: Text(
-            'giveaway_highlight'.tr,
-            style: const TextStyle(fontSize: 15, color: Colors.green),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 10),
-        // TextButton.icon(
-        //   onPressed: () => Utils.openUrl(giveaway.detailsUrl),
-        //   label: const Text('Learn more'),
-        //   icon: const Icon(Iconsax.book_1),
-        // ),
-        // const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: Get.back,
-                child: Text('close'.tr),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () => Utils.openUrl(
-                  appConfig.links.giveaway,
-                ),
-                child: Text('learn_more'.tr),
-              ),
-            ),
-          ],
-        )
-      ],
-    );
-
-    Get.dialog(
-      AlertDialog(
-        title: null,
-        actionsAlignment: MainAxisAlignment.center,
-        content: isSmallScreen
-            ? bodyContent
-            : SizedBox(width: 400, child: bodyContent),
-      ),
-    );
-
-    AnalyticsService.to.logEvent('fallback-dialog');
   }
 }

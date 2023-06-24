@@ -17,28 +17,17 @@ class AppPricing {
     'premium_desc_11',
     'premium_desc_12',
     // 'premium_no_ads',
-    // 'premium_gpt',
-    // 'premium_docs_editor',
-    // 'premium_languages',
-    // 'premium_templates',
-    // 'premium_continue_writer',
-    // 'premium_commands',
-    // 'premium_tts',
     // 'premium_support',
     deviceAccess,
     'money_back_guarantee',
-    if (!isApple || !isAppStore) ...[
-      'cancel_anytime',
-    ],
+    // if (!isApple || !isAppStore) ...[
+    //   'cancel_anytime',
+    // ],
     'join_over_users',
   ];
 
   static final upcomingFeatures = [
     // 'premium_seo',
-    // 'premium_plagiarism',
-    // 'premium_art',
-    // 'premium_stt',
-    // 'premium_teams',
   ];
 
   // static final starter = {
@@ -62,12 +51,12 @@ class AppPricing {
     'upcoming_features': upcomingFeatures,
   };
 
-  static final max = {
-    'id': 'max',
-    'primary_feature': 'premium_max_limit',
-    'features': features,
-    'upcoming_features': upcomingFeatures,
-  };
+  // static final max = {
+  //   'id': 'max',
+  //   'primary_feature': 'premium_max_limit',
+  //   'features': features,
+  //   'upcoming_features': upcomingFeatures,
+  // };
 
   static final data = {
     // MONTHLY

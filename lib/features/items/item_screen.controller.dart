@@ -995,31 +995,30 @@ class ItemScreenController extends GetxController
   void add() async {
     if (!formKey.currentState!.validate()) return;
     if (!editMode.value) return console.error('not in edit mode');
-    // TODO: temporary
-    // // items limit
-    // if (ItemsController.to.itemLimitReached) {
-    //   return Utils.adaptiveRouteOpen(
-    //     name: Routes.upgrade,
-    //     parameters: {
-    //       'title': 'Items Limit Reached',
-    //       'body':
-    //           'Maximum items of ${limits.items} limit reached. Upgrade to Pro to unlock unlimited items features',
-    //     },
-    //   );
-    // }
 
-    // TODO: temporary
-    // // protected items limit
-    // if (protected.value && ItemsController.to.protectedItemLimitReached) {
-    //   return Utils.adaptiveRouteOpen(
-    //     name: Routes.upgrade,
-    //     parameters: {
-    //       'title': 'Protected Items',
-    //       'body':
-    //           'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-    //     },
-    //   );
-    // }
+    // items limit
+    if (ItemsController.to.itemLimitReached) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Items Limit Reached',
+          'body':
+              'Maximum items of ${limits.items} limit reached. Upgrade to Pro to unlock unlimited items features',
+        },
+      );
+    }
+
+    // protected items limit
+    if (protected.value && ItemsController.to.protectedItemLimitReached) {
+      return Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Protected Items',
+          'body':
+              'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+        },
+      );
+    }
 
     final newItem = HiveLisoItem(
       identifier: const Uuid().v4(),
@@ -1077,22 +1076,21 @@ class ItemScreenController extends GetxController
   }
 
   void onProtectedChanged(bool? value) {
-    // TODO: temporary
-    // // protected items limit
-    // if (value! && ItemsController.to.protectedItemLimitReached) {
-    //   Utils.adaptiveRouteOpen(
-    //     name: Routes.upgrade,
-    //     parameters: {
-    //       'title': 'Protected Items',
-    //       'body':
-    //           'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-    //     },
-    //   );
+    // protected items limit
+    if (value! && ItemsController.to.protectedItemLimitReached) {
+      Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {
+          'title': 'Protected Items',
+          'body':
+              'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
+        },
+      );
 
-    //   return;
-    // }
+      return;
+    }
 
-    protected.value = value!;
+    protected.value = value;
   }
 
   List<String> querySuggestions(String query) {

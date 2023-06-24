@@ -79,13 +79,18 @@ class RestoreScreenController extends GetxController
       return const Left("Failed to presign 1");
     }
 
-    final response = await http.get(Uri.parse(presignResult.right.data.url));
+    try {
+      // TODO: For Web: download via server to prevent CORS XMLHttpRequestError
+      final response = await http.get(Uri.parse(presignResult.right.data.url));
 
-    if (response.statusCode != 200) {
-      return Left("Failed to presign: ${response.statusCode}");
+      if (response.statusCode != 200) {
+        return Left("Failed to download: ${response.statusCode}");
+      }
+
+      return Right(response.bodyBytes);
+    } catch (e) {
+      return Left("Download error: $e");
     }
-
-    return Right(response.bodyBytes);
   }
 
   Future<void> continuePressed() async {

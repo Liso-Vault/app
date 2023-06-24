@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
@@ -192,10 +191,6 @@ class MainScreenController extends GetxController with ConsoleMixin {
       // show all items from all vaults
       drawerController.filterGroupId.value = '';
       LisoAutofillService.to.request();
-
-      if (!WalletService.to.isReady) {
-        // TODO: show some message a vault is required
-      }
     } else {
       // incase cipher key is still empty for some reason
       // retry again after a few seconds
@@ -207,12 +202,12 @@ class MainScreenController extends GetxController with ConsoleMixin {
       } else {
         // sync vault
         SyncService.to.sync();
-      }
 
-      // show upgrade screen every after 5th times opened
-      if (!LicenseService.to.isPremium) {
-        await Future.delayed(1.seconds);
-        Utils.adaptiveRouteOpen(name: Routes.upgrade);
+        // // show upgrade screen every app open
+        // if (!LicenseService.to.isPremium) {
+        //   await Future.delayed(5.seconds);
+        //   Utils.adaptiveRouteOpen(name: Routes.upgrade);
+        // }
       }
     }
 

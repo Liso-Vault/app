@@ -5,6 +5,7 @@ import 'package:app_core/config/app.model.dart';
 import 'package:app_core/config/secrets.model.dart';
 import 'package:app_core/firebase/crashlytics.service.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/upgrade/upgrade_config.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -38,6 +39,7 @@ import 'features/categories/categories.controller.dart';
 import 'features/categories/categories.service.dart';
 import 'features/config/extra.model.dart';
 import 'features/config/license.model.dart';
+import 'features/config/pricing.dart';
 import 'features/config/secrets.dart';
 import 'features/drawer/drawer_widget.controller.dart';
 import 'features/files/explorer/s3_object_tile.controller.dart';
@@ -104,6 +106,11 @@ void init(Flavor flavor, {bool autofill = false}) async {
       logoLightPath: Images.logoLight,
       offeringId: 'annual_monthly',
       allowAnonymousRcUserSync: false,
+      upgradeConfig: UpgradeConfig(
+        pricing: AppPricing.data,
+        // listViewHeight: 180,
+        // grouped: false,
+      ),
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
         Color.fromARGB(255, 0, 255, 213),

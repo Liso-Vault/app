@@ -143,21 +143,21 @@ class SyncService extends GetxService with ConsoleMixin {
 
     console.info('backup: $object...');
 
-    // TODO: temporary
-    // // REMOVE OLDEST BACKUP IF NECESSARY
-    // if (StorageService.to.backups.length >= limits.backups) {
-    //   final result = await StorageService.to.remove(
-    //     StorageService.to.backups.first.key,
-    //   );
-    //   // abort backup if error in removing oldest backup
-    //   if (result.isLeft) {
-    //     return console.error('error removing last backup: ${result.left}');
-    //   } else {
-    //     console.wtf(
-    //       'removed backup: ${result.right.data} - ${StorageService.to.backups.first.name}',
-    //     );
-    //   }
-    // }
+    // REMOVE OLDEST BACKUP IF NECESSARY
+    if (StorageService.to.backups.length >= limits.backups) {
+      final result = await StorageService.to.remove(
+        StorageService.to.backups.first.key,
+      );
+
+      // abort backup if error in removing oldest backup
+      if (result.isLeft) {
+        return console.error('error removing last backup: ${result.left}');
+      } else {
+        console.wtf(
+          'removed backup: ${result.right.data} - ${StorageService.to.backups.first.name}',
+        );
+      }
+    }
 
     // DO THE ACTUAL BACKUP
     final presignResult = await AppFunctionsService.to.presignUrl(

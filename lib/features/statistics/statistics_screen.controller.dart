@@ -102,11 +102,14 @@ class StatisticsScreenController extends GetxController
           .gte('created_at', dateRange.value.start.toUtc());
 
       final response = await query;
-      final responseFreeCount =
-          await query.contains('license_cache', {'entitlementId': 'free'});
+
+      final responsePremium =
+          await query.or('license_cache->>entitlementId.neq.free');
+
+      console.wtf('responsePremium: ${responsePremium.count}');
 
       profilesTitle.value =
-          '${response.count} | ${response.count - responseFreeCount.count} (Premium)';
+          '${response.count} | ${responsePremium.count} (Premium)';
     } catch (e) {
       profilesTitle.value = e.toString();
       console.error('response error: $e');

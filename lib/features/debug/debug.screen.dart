@@ -1,3 +1,5 @@
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,15 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
+      ListTile(
+          title: const Text('Upgrade Screen'),
+          onTap: () async {
+            Utils.adaptiveRouteOpen(
+              name: Routes.upgrade,
+              ignoreUpgradeGuard: false,
+            );
+          },
+        ),
         ListTile(
           leading: Icon(Iconsax.code, color: themeColor),
           title: const Text('Save Info'),
