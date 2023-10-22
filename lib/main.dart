@@ -108,7 +108,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
       allowAnonymousRcUserSync: false,
       upgradeConfig: UpgradeConfig(
         pricing: AppPricing.data,
-        // listViewHeight: 180,
+        listViewHeight: 150,
         // grouped: false,
       ),
       gradientColors: const [

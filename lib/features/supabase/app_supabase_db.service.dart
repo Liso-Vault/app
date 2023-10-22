@@ -24,23 +24,26 @@ class AppDatabaseService extends DatabaseService {
         console.wtf('Remote Configuration Failed: $error');
       },
       (response) async {
+        console.wtf('Remote Config Success!');
+
         appConfig = response.app;
-        licenseConfig = LicenseConfig.fromJson(response.license);
         extraConfig = ExtraConfig.fromJson(response.extra);
+        licenseConfig = LicenseConfig.fromJson(response.license);
+        configSyncing.value = false;
 
         Future.delayed(2.seconds).then((value) {
           AlchemyService.to.init();
           AlchemyService.to.load();
         });
 
-        configSyncing.value = false;
-        console.wtf('Remote Configuration Success');
+        final disabled = appConfig.build.disabled.contains(
+          metadataApp.buildNumberInt,
+        );
 
-        if (isBeta &&
-            !appConfig.build.beta.contains(metadataApp.buildNumberInt)) {
-          await Future.delayed(1.seconds).then(
-            (value) => Get.toNamed(Routes.disabledBeta),
-          );
+        final updateRequired = appConfig.build.min > metadataApp.buildNumberInt;
+
+        if (disabled || updateRequired) {
+          Get.toNamed(Routes.update);
         }
       },
     );
