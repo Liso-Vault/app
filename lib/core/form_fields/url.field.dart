@@ -75,13 +75,13 @@ class _URLFormFieldState extends State<URLFormField> {
       readOnly: widget.field.readOnly,
       keyboardType: TextInputType.url,
       autovalidateMode: AutovalidateMode.onUserInteraction,
+      autofillHints: const [AutofillHints.url],
       validator: (data) {
         if (data!.isEmpty) return null;
         final uri = Uri.tryParse(data);
         if (uri != null && uri.isAbsolute) return null;
         return 'Invalid URI';
       },
-      autofillHints: const [AutofillHints.url],
       decoration: InputDecoration(
         labelText: widget.field.data.label,
         hintText: widget.field.data.hint,
