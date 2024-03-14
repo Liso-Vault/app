@@ -126,6 +126,7 @@ class SyncService extends GetxService with ConsoleMixin {
     );
 
     if (result.isLeft) return Left(result.left);
+    console.wtf('decrypt sync(): ${result.right.lengthInBytes}');
     final decryptedBytes = CipherService.to.decrypt(result.right);
     final jsonMap = jsonDecode(utf8.decode(decryptedBytes)); // TODO: isolate
     final vault = LisoVault.fromJson(jsonMap);

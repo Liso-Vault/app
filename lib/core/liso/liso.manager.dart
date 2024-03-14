@@ -95,6 +95,7 @@ class LisoManager {
     Uint8List bytes, {
     Uint8List? cipherKey,
   }) async {
+    console.wtf('decrypt parseVaultBytes()');
     final decryptedBytes = CipherService.to.decrypt(
       bytes,
       cipherKey: cipherKey,

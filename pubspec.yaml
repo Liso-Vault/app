@@ -28,7 +28,7 @@ dependencies:
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
-  encrypt: ^5.0.1 # File Encryption
+  encrypt: ^5.0.1
   otp: ^3.1.4
 
   # IO
@@ -38,10 +38,10 @@ dependencies:
 
   # API
   # minio: ^3.5.0 # S3 API
-  minio:
-    git:
-      url: https://github.com/oliverbytes/minio-dart.git
-      ref: 076c9f33729713c06f885448d86e79092c09d11c
+  # minio:
+  #   git:
+  #     url: https://github.com/oliverbytes/minio-dart.git
+  #     ref: 076c9f33729713c06f885448d86e79092c09d11c
     # git: https://github.com/oliverbytes/minio-dart.git
   # coingecko_api: ^1.1.1+1 # Coingecko API
   coingecko_api:
@@ -57,7 +57,7 @@ dependencies:
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.1.0
-  flutter_quill: ^7.2.1
+  flutter_quill: ^8.1.10
   badges: ^3.1.1 # pending changes indicator
   qr_flutter: ^4.1.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects

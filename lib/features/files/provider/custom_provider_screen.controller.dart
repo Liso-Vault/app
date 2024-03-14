@@ -1,143 +1,143 @@
-import 'dart:async';
+// import 'dart:async';
 
-import 'package:app_core/globals.dart';
-import 'package:app_core/utils/ui_utils.dart';
-import 'package:console_mixin/console_mixin.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:liso/core/persistence/persistence.dart';
-import 'package:minio/minio.dart';
+// import 'package:app_core/globals.dart';
+// import 'package:app_core/utils/ui_utils.dart';
+// import 'package:console_mixin/console_mixin.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:liso/core/persistence/persistence.dart';
+// import 'package:minio/minio.dart';
 
-import '../../../core/persistence/persistence.secret.dart';
-import '../../../core/utils/globals.dart';
+// import '../../../core/persistence/persistence.secret.dart';
+// import '../../../core/utils/globals.dart';
 
-class CustomSyncProviderScreenController extends GetxController
-    with StateMixin, ConsoleMixin {
-  // VARIABLES
-  final formKey = GlobalKey<FormState>();
-  final persistence = Get.find<SecretPersistence>();
+// class CustomSyncProviderScreenController extends GetxController
+//     with StateMixin, ConsoleMixin {
+//   // VARIABLES
+//   final formKey = GlobalKey<FormState>();
+//   final persistence = Get.find<SecretPersistence>();
 
-  final endpointController = TextEditingController();
-  final accessKeyController = TextEditingController();
-  final secretKeyController = TextEditingController();
-  final bucketController = TextEditingController();
-  final portController = TextEditingController();
-  final regionController = TextEditingController();
-  final sessionTokenController = TextEditingController();
+//   final endpointController = TextEditingController();
+//   final accessKeyController = TextEditingController();
+//   final secretKeyController = TextEditingController();
+//   final bucketController = TextEditingController();
+//   final portController = TextEditingController();
+//   final regionController = TextEditingController();
+//   final sessionTokenController = TextEditingController();
 
-  // PROPERTIES
-  final busy = false.obs;
+//   // PROPERTIES
+//   final busy = false.obs;
 
-  // PROPERTIES
+//   // PROPERTIES
 
-  // GETTERS
+//   // GETTERS
 
-  // INIT
-  @override
-  void onInit() {
-    change(null, status: RxStatus.success());
+//   // INIT
+//   @override
+//   void onInit() {
+//     change(null, status: RxStatus.success());
 
-    // Populate from persistence
-    endpointController.text = persistence.s3Endpoint.val;
-    accessKeyController.text = persistence.s3AccessKey.val;
-    secretKeyController.text = persistence.s3SecretKey.val;
-    bucketController.text = persistence.s3Bucket.val;
-    portController.text = persistence.s3Port.val;
-    regionController.text = persistence.s3Region.val;
-    sessionTokenController.text = persistence.s3SessionToken.val;
+//     // Populate from persistence
+//     endpointController.text = persistence.s3Endpoint.val;
+//     accessKeyController.text = persistence.s3AccessKey.val;
+//     secretKeyController.text = persistence.s3SecretKey.val;
+//     bucketController.text = persistence.s3Bucket.val;
+//     portController.text = persistence.s3Port.val;
+//     regionController.text = persistence.s3Region.val;
+//     sessionTokenController.text = persistence.s3SessionToken.val;
 
-    super.onInit();
-  }
+//     super.onInit();
+//   }
 
-  @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
-  }
+//   @override
+//   void change(newState, {RxStatus? status}) {
+//     busy.value = status?.isLoading ?? false;
+//     super.change(newState, status: status);
+//   }
 
-  // FUNCTIONS
-  void save() {
-    AppPersistence.to.syncProvider.val = LisoSyncProvider.custom.name;
-    persistence.s3Endpoint.val = endpointController.text;
-    persistence.s3AccessKey.val = accessKeyController.text;
-    persistence.s3SecretKey.val = secretKeyController.text;
-    persistence.s3Bucket.val = bucketController.text;
-    persistence.s3Port.val = portController.text;
-    persistence.s3Region.val = regionController.text;
-    persistence.s3SessionToken.val = sessionTokenController.text;
+//   // FUNCTIONS
+//   void save() {
+//     AppPersistence.to.syncProvider.val = LisoSyncProvider.custom.name;
+//     persistence.s3Endpoint.val = endpointController.text;
+//     persistence.s3AccessKey.val = accessKeyController.text;
+//     persistence.s3SecretKey.val = secretKeyController.text;
+//     persistence.s3Bucket.val = bucketController.text;
+//     persistence.s3Port.val = portController.text;
+//     persistence.s3Region.val = regionController.text;
+//     persistence.s3SessionToken.val = sessionTokenController.text;
 
-    // TODO: self-hosting
-    // SyncService.to.init();
-    Get.close(2);
-  }
+//     // TODO: self-hosting
+//     // SyncService.to.init();
+//     Get.close(2);
+//   }
 
-  void testConnection() async {
-    if (!formKey.currentState!.validate()) return;
-    if (busy.value) return console.error('still busy');
-    change(null, status: RxStatus.loading());
+//   void testConnection() async {
+//     if (!formKey.currentState!.validate()) return;
+//     if (busy.value) return console.error('still busy');
+//     change(null, status: RxStatus.loading());
 
-    final client = Minio(
-      endPoint: endpointController.text,
-      accessKey: accessKeyController.text,
-      secretKey: secretKeyController.text,
-      port: int.tryParse(portController.text),
-      region: regionController.text.isEmpty ? null : regionController.text,
-      sessionToken: sessionTokenController.text.isEmpty
-          ? null
-          : sessionTokenController.text,
-      enableTrace: persistence.s3EnableTrace.val,
-      useSSL: persistence.s3UseSsl.val,
-    );
+//     final client = Minio(
+//       endPoint: endpointController.text,
+//       accessKey: accessKeyController.text,
+//       secretKey: secretKeyController.text,
+//       port: int.tryParse(portController.text),
+//       region: regionController.text.isEmpty ? null : regionController.text,
+//       sessionToken: sessionTokenController.text.isEmpty
+//           ? null
+//           : sessionTokenController.text,
+//       enableTrace: persistence.s3EnableTrace.val,
+//       useSSL: persistence.s3UseSsl.val,
+//     );
 
-    bool bucketExists = false;
+//     bool bucketExists = false;
 
-    try {
-      bucketExists = await client
-          .bucketExists(
-            bucketController.text,
-          )
-          .timeout(10.seconds);
-      change(null, status: RxStatus.success());
-    } on TimeoutException {
-      change(null, status: RxStatus.success());
-      return UIUtils.showSimpleDialog(
-        'Connection Timed Out',
-        'Please check your configuration and your network',
-      );
-    } catch (e) {
-      change(null, status: RxStatus.success());
-      console.error(e.toString());
+//     try {
+//       bucketExists = await client
+//           .bucketExists(
+//             bucketController.text,
+//           )
+//           .timeout(10.seconds);
+//       change(null, status: RxStatus.success());
+//     } on TimeoutException {
+//       change(null, status: RxStatus.success());
+//       return UIUtils.showSimpleDialog(
+//         'Connection Timed Out',
+//         'Please check your configuration and your network',
+//       );
+//     } catch (e) {
+//       change(null, status: RxStatus.success());
+//       console.error(e.toString());
 
-      return UIUtils.showSimpleDialog(
-        'Connection Error',
-        e.toString(),
-      );
-    }
+//       return UIUtils.showSimpleDialog(
+//         'Connection Error',
+//         e.toString(),
+//       );
+//     }
 
-    if (bucketExists) {
-      const dialogContent = Text('Configuration is ready to be used');
+//     if (bucketExists) {
+//       const dialogContent = Text('Configuration is ready to be used');
 
-      Get.dialog(AlertDialog(
-        title: const Text('Connection Success'),
-        content: isSmallScreen
-            ? dialogContent
-            : const SizedBox(width: 450, child: dialogContent),
-        actions: [
-          TextButton(
-            onPressed: Get.back,
-            child: Text('cancel'.tr),
-          ),
-          TextButton(
-            onPressed: save,
-            child: const Text('Use Configuration'),
-          ),
-        ],
-      ));
-    } else {
-      UIUtils.showSimpleDialog(
-        'Connection Failed',
-        'Bucket: ${bucketController.text} is not found',
-      );
-    }
-  }
-}
+//       Get.dialog(AlertDialog(
+//         title: const Text('Connection Success'),
+//         content: isSmallScreen
+//             ? dialogContent
+//             : const SizedBox(width: 450, child: dialogContent),
+//         actions: [
+//           TextButton(
+//             onPressed: Get.back,
+//             child: Text('cancel'.tr),
+//           ),
+//           TextButton(
+//             onPressed: save,
+//             child: const Text('Use Configuration'),
+//           ),
+//         ],
+//       ));
+//     } else {
+//       UIUtils.showSimpleDialog(
+//         'Connection Failed',
+//         'Bucket: ${bucketController.text} is not found',
+//       );
+//     }
+//   }
+// }

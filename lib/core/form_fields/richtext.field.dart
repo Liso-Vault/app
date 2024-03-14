@@ -47,25 +47,32 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
       }
     }
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        if (!readOnly) ...[
-          QuillToolbar.basic(
-            controller: _fieldController!,
-            multiRowsDisplay: false,
+    return QuillProvider(
+      configurations: QuillConfigurations(controller: _fieldController!),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (!readOnly) ...[
+            // QuillToolbar.basic(
+            //   controller: _fieldController!,
+            //   multiRowsDisplay: false,
+            // ),
+            const QuillToolbar(
+              configurations: QuillToolbarConfigurations(
+                multiRowsDisplay: false,
+              ),
+            ),
+            const Divider(),
+          ],
+          SizedBox(
+            height: 300,
+            child: QuillEditor.basic(
+              configurations: QuillEditorConfigurations(readOnly: readOnly),
+            ),
           ),
           const Divider(),
         ],
-        SizedBox(
-          height: 300,
-          child: QuillEditor.basic(
-            controller: _fieldController!,
-            readOnly: readOnly, // true for view only mode
-          ),
-        ),
-        const Divider(),
-      ],
+      ),
     );
   }
 }
