@@ -4,11 +4,10 @@ import 'dart:io';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/purchases/purchases.services.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -16,7 +15,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:liso/core/liso/liso_paths.dart';
 import 'package:liso/core/utils/file.util.dart';
@@ -46,17 +45,17 @@ class SettingsScreenController extends GetxController
     return [
       ContextMenuItem(
         title: ThemeMode.system.name.tr,
-        leading: const Icon(Iconsax.cpu),
+        leading: const Icon(Iconsax.cpu_outline),
         onSelected: () => changeTheme(ThemeMode.system),
       ),
       ContextMenuItem(
         title: ThemeMode.dark.name.tr,
-        leading: const Icon(Iconsax.moon),
+        leading: const Icon(Iconsax.moon_outline),
         onSelected: () => changeTheme(ThemeMode.dark),
       ),
       ContextMenuItem(
         title: ThemeMode.light.name.tr,
-        leading: const Icon(Iconsax.sun_1),
+        leading: const Icon(Iconsax.sun_1_outline),
         onSelected: () => changeTheme(ThemeMode.light),
       ),
     ];
@@ -77,7 +76,7 @@ class SettingsScreenController extends GetxController
 
   @override
   void onReady() {
-    if (Get.parameters['expand'] == 'other_settings') {
+    if (Get.parameters['expand'] == 'account') {
       updateLicenseKey();
     }
 
@@ -142,7 +141,7 @@ class SettingsScreenController extends GetxController
         text: GetPlatform.isIOS ? null : 'Liso Wallet',
       );
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Exported Wallet File',
         body: exportFileName,
       );
@@ -169,7 +168,7 @@ class SettingsScreenController extends GetxController
     FileUtils.move(tempFile, join(exportPath, exportFileName));
     change('Exporting to: $exportPath', status: RxStatus.success());
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Exported Wallet File',
       body: exportFileName,
     );
@@ -223,7 +222,7 @@ class SettingsScreenController extends GetxController
           text: GetPlatform.isIOS ? null : '${appConfig.name} Vault',
         );
 
-        NotificationsManager.notify(
+        NotificationsService.to.notify(
           title: 'Exported Vault',
           body: exportFileName,
         );
@@ -251,7 +250,7 @@ class SettingsScreenController extends GetxController
       await FileUtils.move(vaultFile, join(exportPath, exportFileName));
       change(null, status: RxStatus.success());
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Exported Vault',
         body: exportFileName,
       );
@@ -260,7 +259,7 @@ class SettingsScreenController extends GetxController
     }
 
     UIUtils.showImageDialog(
-      Icon(Iconsax.box_1, size: 100, color: themeColor),
+      Icon(Iconsax.box_1_outline, size: 100, color: themeColor),
       title: 'Export Vault',
       subTitle: encrypt
           ? "You'll be prompted to save an encrypted <vault>.$kVaultExtension file. Please store it offline or in a secure digital cloud storage"
@@ -313,7 +312,7 @@ class SettingsScreenController extends GetxController
       // reload lists
       MainScreenController.to.load();
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Vault Purged',
         body: 'Your vault has been purged',
       );
@@ -322,12 +321,12 @@ class SettingsScreenController extends GetxController
     }
 
     UIUtils.showImageDialog(
-      const Icon(Iconsax.warning_2, size: 100, color: Colors.orange),
+      const Icon(Iconsax.warning_2_outline, size: 100, color: Colors.orange),
       title: 'Purge Vault?',
       subTitle:
           'All items, custom vaults, and custom categories will be deleted',
       body:
-          'Please proceed with caution.${LicenseService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
+          'Please proceed with caution.${PurchasesService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: reset,
       actionText: 'Purge',
@@ -360,7 +359,7 @@ class SettingsScreenController extends GetxController
         );
       }
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Remote Vault Deleted',
         body: 'Your remote vault has been deleted',
       );
@@ -369,12 +368,12 @@ class SettingsScreenController extends GetxController
     }
 
     UIUtils.showImageDialog(
-      const Icon(Iconsax.warning_2, size: 100, color: Colors.red),
+      const Icon(Iconsax.warning_2_outline, size: 100, color: Colors.red),
       title: 'Warning',
       subTitle:
           'By proceeding you will only delete your remote <vault>.$kVaultExtension, backups, files, and shared vaults.',
       body:
-          'This cannot be undone. Your local and offline vault will still remain.${LicenseService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
+          'This cannot be undone. Your local and offline vault will still remain.${PurchasesService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: confirm,
       actionText: 'Proceed',
@@ -400,7 +399,7 @@ class SettingsScreenController extends GetxController
 
       await LisoManager.reset();
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Vault Reset',
         body: 'Your local vault has been successfully reset',
       );
@@ -409,12 +408,12 @@ class SettingsScreenController extends GetxController
     }
 
     UIUtils.showImageDialog(
-      const Icon(Iconsax.warning_2, size: 100, color: Colors.red),
+      const Icon(Iconsax.warning_2_outline, size: 100, color: Colors.red),
       title: 'Reset ${appConfig.name}?',
       subTitle:
           'Your local <vault>.$kVaultExtension will be deleted and you will be logged out.',
       body:
-          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed.${LicenseService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
+          'Make sure you have a backup of your vault file and master mnemonic seed phrase before you proceed.${PurchasesService.to.isPremium ? '\n\nYour purchases will not be removed' : ''}',
       closeText: 'Cancel',
       action: confirm,
       actionText: 'Reset',
@@ -448,7 +447,7 @@ class SettingsScreenController extends GetxController
         ),
         // ListTile(
         //   title: Text('${appConfig.name} Pro'),
-        //   subtitle: Text(LicenseService.to.isPremium.toString()),
+        //   subtitle: Text(PurchasesService.to.isPremium.toString()),
         //   dense: true,
         // ),
         // ListTile(

@@ -5,7 +5,8 @@ import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/app/routes.dart';
@@ -22,23 +23,23 @@ class SeedScreenController extends GetxController with ConsoleMixin {
         if (!isDisplayMode) ...[
           ContextMenuItem(
             title: 'Generate',
-            leading: Icon(Iconsax.chart, size: popupIconSize),
+            leading: Icon(Iconsax.chart_outline, size: popupIconSize),
             onSelected: _generate,
           ),
           ContextMenuItem(
             title: 'Custom',
-            leading: Icon(Iconsax.key, size: popupIconSize),
+            leading: Icon(Iconsax.key_outline, size: popupIconSize),
             onSelected: custom,
           ),
         ],
         ContextMenuItem(
           title: 'QR Code',
-          leading: Icon(Iconsax.barcode, size: popupIconSize),
+          leading: Icon(Iconsax.barcode_outline, size: popupIconSize),
           onSelected: _showQR,
         ),
         ContextMenuItem(
           title: 'Copy',
-          leading: Icon(Iconsax.copy, size: popupIconSize),
+          leading: Icon(Iconsax.copy_outline, size: popupIconSize),
           onSelected: () => Utils.copyToClipboard(seed.value),
         ),
       ];

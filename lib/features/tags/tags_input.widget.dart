@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/tags/tags_input.controller.dart';
 
@@ -37,7 +38,7 @@ class TagsInput extends StatelessWidget {
                 .toList(),
             if (enabled) ...[
               ActionChip(
-                label: const Icon(Iconsax.add_circle5, size: 20),
+                label: const Icon(Iconsax.add_circle_outline, size: 20),
                 onPressed: controller.add,
               ),
             ],

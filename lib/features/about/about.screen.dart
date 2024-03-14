@@ -7,8 +7,8 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -30,7 +30,9 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         if (isRateReviewSupported) ...[
           ListTile(
             leading: Icon(
-              GetPlatform.isAndroid ? LineIcons.googlePlay : LineIcons.appStore,
+              GetPlatform.isAndroid
+                  ? LineAwesome.google_play
+                  : LineAwesome.app_store,
               color: themeColor,
             ),
             title: Text(
@@ -45,7 +47,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           ),
         ],
         ListTile(
-          leading: Icon(Iconsax.chrome, color: themeColor),
+          leading: Icon(Iconsax.chrome_outline, color: themeColor),
           title: Text('${appConfig.name} Website'),
           subtitle: Text(links.website),
           onTap: () => Utils.openUrl(
@@ -63,17 +65,17 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         //   ),
         // ),
         ListTile(
-          leading: Icon(LineIcons.github, color: themeColor),
+          leading: Icon(LineAwesome.github, color: themeColor),
           title: Text('${appConfig.name} GitHub'),
           onTap: () => Utils.openUrl('https://github.com/Liso-Vault/app'),
         ),
         ListTile(
-          leading: Icon(Iconsax.security_user, color: themeColor),
+          leading: Icon(Iconsax.security_user_outline, color: themeColor),
           title: Text('${appConfig.name} Privacy'),
           onTap: () => Utils.openUrl(links.privacy),
         ),
         ListTile(
-          leading: Icon(Iconsax.book_1, color: themeColor),
+          leading: Icon(Iconsax.book_1_outline, color: themeColor),
           title: Text('${appConfig.name} Terms'),
           onTap: () => Utils.openUrl(links.terms),
         ),
@@ -83,7 +85,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           onTap: () => Utils.openUrl(links.faqs),
         ),
         ListTile(
-          leading: Icon(Iconsax.dollar_circle, color: themeColor),
+          leading: Icon(Iconsax.dollar_circle_outline, color: themeColor),
           // TODO: localize
           title: const Text('Earn 30% Commision'),
           subtitle: const Text('Join the Affiliates Program'),
@@ -93,7 +95,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ),
         if (!GetPlatform.isMobile) ...[
           ListTile(
-            leading: Icon(Iconsax.forward_square, color: themeColor),
+            leading: Icon(Iconsax.forward_square_outline, color: themeColor),
             title: Text('Share ${appConfig.name} to a friend'),
             onTap: () => Share.share(
               '${appConfig.name} - ${'slogan'.tr}',
@@ -102,12 +104,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           ),
         ],
         ListTile(
-          leading: Icon(LineIcons.twitter, color: themeColor),
+          leading: Icon(LineAwesome.twitter, color: themeColor),
           title: Text('${'follow'.tr} @Liso_Vault'),
           onTap: () => Utils.openUrl(links.twitter),
         ),
         ListTile(
-          leading: Icon(LineIcons.twitter, color: themeColor),
+          leading: Icon(LineAwesome.twitter, color: themeColor),
           title: Text('${'follow'.tr} @oliverbytes'),
           subtitle: Text('Indie Developer of ${appConfig.name}'),
           onTap: () => Utils.openUrl(kOliverTwitterUrl),
@@ -128,7 +130,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           leading: RemoteImage(
             url: 'https://i.imgur.com/0H0sWlN.png',
             width: 20,
-            placeholder: Image.asset(Images.placeholder, height: 20),
+            failWidget: Image.asset(Images.placeholder, height: 20),
           ),
           title: const Text('NexBot AI Writing Assistant'),
           subtitle: const Text('Create amazing content 10X faster with AI'),
@@ -140,7 +142,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             child: RemoteImage(
               url: 'https://i.imgur.com/a25B2yQ.png',
               width: 20,
-              placeholder: Image.asset(Images.placeholder, height: 20),
+              failWidget: Image.asset(Images.placeholder, height: 20),
             ),
           ),
           title: const Text('NexSnap Screenshot Editor'),
@@ -152,7 +154,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
             url:
                 'https://tools.applemediaservices.com/api/artwork/US/app/6448982120.png',
             width: 20,
-            placeholder: Image.asset(Images.placeholder, height: 20),
+            failWidget: Image.asset(Images.placeholder, height: 20),
           ),
           title: const Text('NexTran'),
           subtitle: Text('nextran_desc'.tr),
@@ -163,18 +165,18 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           ),
         ),
         ListTile(
-          leading: Icon(LineIcons.globe, color: themeColor),
+          leading: Icon(LineAwesome.globe_solid, color: themeColor),
           title: Text('help_translate'.tr),
           onTap: () => Utils.openUrl(links.translations),
         ),
         ListTile(
-          leading: Icon(Iconsax.people, color: themeColor),
+          leading: Icon(Iconsax.people_outline, color: themeColor),
           title: const Text('Contributors'),
           subtitle: const Text('Thanks to these people'),
           onTap: () => Utils.openUrl(links.contributors),
         ),
         ListTile(
-          leading: Icon(Iconsax.code_1, color: themeColor),
+          leading: Icon(Iconsax.code_1_outline, color: themeColor),
           title: Text('licenses'.tr),
           onTap: () => controller.showLicenses(context),
         ),

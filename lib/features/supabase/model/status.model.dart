@@ -1,4 +1,4 @@
-import 'package:app_core/license/model/license.model.dart';
+import 'package:app_core/purchases/license.model.dart';
 
 class Status {
   const Status({

@@ -1,12 +1,13 @@
 import 'package:app_core/config/app.model.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -65,7 +66,7 @@ class CreatePasswordScreenController extends GetxController
       UIUtils.showSnackBar(
         title: 'Passwords do not match',
         message: 'Re-enter your passwords',
-        icon: const Icon(Iconsax.warning_2, color: Colors.red),
+        icon: const Icon(Iconsax.warning_2_outline, color: Colors.red),
         seconds: 4,
       );
 
@@ -84,7 +85,7 @@ class CreatePasswordScreenController extends GetxController
 
     change(null, status: RxStatus.success());
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${appConfig.name}',
       body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
     );

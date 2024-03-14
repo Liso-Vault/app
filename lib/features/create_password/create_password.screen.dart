@@ -5,8 +5,8 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icon.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/utils/styles.dart';
 import 'package:liso/core/utils/utils.dart';
 
@@ -25,7 +25,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          LineIcon(Iconsax.password_check, size: 150, color: themeColor),
+          Icon(Iconsax.password_check_outline, size: 150, color: themeColor),
           const SizedBox(height: 20),
           Text(
             'master_password'.tr,
@@ -59,8 +59,8 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
                   onPressed: controller.obscurePassword.toggle,
                   icon: Icon(
                     controller.obscurePassword()
-                        ? Iconsax.eye
-                        : Iconsax.eye_slash,
+                        ? Iconsax.eye_outline
+                        : Iconsax.eye_slash_outline,
                   ),
                 ),
               ),
@@ -85,8 +85,8 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
                   onPressed: controller.obscureConfirmPassword.toggle,
                   icon: Icon(
                     controller.obscureConfirmPassword()
-                        ? Iconsax.eye
-                        : Iconsax.eye_slash,
+                        ? Iconsax.eye_outline
+                        : Iconsax.eye_slash_outline,
                   ),
                 ),
               ),
@@ -99,13 +99,13 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
               ElevatedButton.icon(
                 onPressed: controller.confirm,
                 label: Text('confirm'.tr),
-                icon: const Icon(Iconsax.arrow_circle_right),
+                icon: const Icon(Iconsax.arrow_circle_right_outline),
               ),
               const SizedBox(height: 15),
               TextButton.icon(
                 onPressed: controller.generate,
                 label: Text('generate'.tr),
-                icon: const Icon(Iconsax.chart_3),
+                icon: const Icon(Iconsax.chart_3_outline),
               ),
             ],
           )

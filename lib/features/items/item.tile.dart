@@ -5,10 +5,10 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/hive/models/item.hive.dart';
 import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/items/items.controller.dart';
@@ -164,27 +164,29 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         if (item.trashed) ...[
           ContextMenuItem(
             title: 'restore'.tr,
-            leading: Icon(Iconsax.refresh, size: popupIconSize),
+            leading: Icon(Iconsax.refresh_outline, size: popupIconSize),
             onSelected: _restore,
           ),
           if (!item.deleted) ...[
             ContextMenuItem(
               title: 'delete'.tr,
-              leading: Icon(Iconsax.trash, size: popupIconSize),
+              leading: Icon(Iconsax.trash_outline, size: popupIconSize),
               onSelected: _confirmDelete,
             ),
           ] else ...[
             ContextMenuItem(
               title: 'Permanent Delete',
-              leading: Icon(Iconsax.trash, size: popupIconSize),
+              leading: Icon(Iconsax.trash_outline, size: popupIconSize),
               onSelected: _confirmDelete,
             ),
           ]
         ] else ...[
           ContextMenuItem(
             title: item.favorite ? 'unfavorite'.tr : 'favorite'.tr,
-            leading: FaIcon(
-              item.favorite ? Iconsax.heart_remove : Iconsax.heart_add,
+            leading: Icon(
+              item.favorite
+                  ? Iconsax.heart_remove_outline
+                  : Iconsax.heart_add_outline,
               color: item.favorite ? Colors.pink : themeColor,
               size: popupIconSize,
             ),
@@ -193,12 +195,12 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           if (!item.reserved) ...[
             ContextMenuItem(
               title: 'duplicate'.tr,
-              leading: Icon(Iconsax.copy, size: popupIconSize),
+              leading: Icon(Iconsax.copy_outline, size: popupIconSize),
               onSelected: _duplicate,
             ),
             ContextMenuItem(
               title: 'move_to_trash'.tr,
-              leading: Icon(Iconsax.trash, size: popupIconSize),
+              leading: Icon(Iconsax.trash_outline, size: popupIconSize),
               onSelected: _trash,
             ),
           ],
@@ -206,7 +208,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       ],
       ContextMenuItem(
         title: 'details'.tr,
-        leading: const Icon(Iconsax.code),
+        leading: const Icon(Iconsax.code_outline),
         // TODO: adaptive route for json viewer screen
         onSelected: () => Get.to(() => JSONViewerScreen(data: item.toJson())),
       ),
@@ -215,7 +217,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
     const kIconSize = 10.0;
     final tags = item.tags.map(
       (e) => CustomChip(
-        icon: const Icon(Iconsax.tag, size: kIconSize),
+        icon: const Icon(Iconsax.tag_outline, size: kIconSize),
         label: Text(
           e,
           overflow: TextOverflow.ellipsis,
@@ -232,7 +234,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
         SharedVault? vault;
         if (results.isNotEmpty) vault = results.first;
-        Widget icon = const Icon(Iconsax.share, size: kIconSize);
+        Widget icon = const Icon(Iconsax.share_outline, size: kIconSize);
 
         if (vault?.iconUrl != null && vault!.iconUrl.isNotEmpty) {
           icon = RemoteImage(
@@ -260,16 +262,18 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
         if (item.favorite) ...[
-          const Icon(Iconsax.heart, color: Colors.pink, size: kIconSize),
+          const Icon(Iconsax.heart_outline,
+              color: Colors.pink, size: kIconSize),
         ],
         if (item.protected) ...[
-          Icon(Iconsax.shield_tick, color: themeColor, size: kIconSize),
+          Icon(Iconsax.shield_tick_outline, color: themeColor, size: kIconSize),
         ],
         if (item.attachments.isNotEmpty) ...[
-          const Icon(Iconsax.attach_circle, size: kIconSize),
+          const Icon(Iconsax.attach_circle_outline, size: kIconSize),
         ],
         if (item.reserved) ...[
-          const Icon(Iconsax.key, color: Colors.lightBlue, size: kIconSize),
+          const Icon(Iconsax.key_outline,
+              color: Colors.lightBlue, size: kIconSize),
         ],
         ...tags,
         ...sharedVaults,
@@ -282,7 +286,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             '${item.daysLeftToDelete} days left till ',
             style: const TextStyle(fontSize: kIconSize, color: Colors.red),
           ),
-          const Icon(Iconsax.trash, color: Colors.red, size: kIconSize),
+          const Icon(Iconsax.trash_outline, color: Colors.red, size: kIconSize),
         ],
       ],
     );
@@ -326,7 +330,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
           ? null
           : ContextMenuButton(
               menuItems,
-              child: const Icon(LineIcons.verticalEllipsis),
+              child: const Icon(LineAwesome.ellipsis_v_solid),
             ),
       onLongPress: isLargeScreen || isAutofill
           ? null
@@ -344,7 +348,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         widthSpace: 100,
         performsFirstActionWithFullSwipe: true,
         icon: Icon(
-          item.favorite ? Iconsax.heart5 : Iconsax.heart,
+          item.favorite ? Iconsax.heart_outline : Iconsax.heart_outline,
           color: Colors.white,
         ),
         style: const TextStyle(fontSize: 15, color: Colors.white),
@@ -357,7 +361,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         SwipeAction(
           title: 'restore'.tr,
           color: themeColor,
-          icon: const Icon(Iconsax.refresh, color: Colors.white),
+          icon: const Icon(Iconsax.refresh_outline, color: Colors.white),
           style: const TextStyle(fontSize: 15, color: Colors.white),
           onTap: (CompletionHandler handler) async {
             await handler(true);
@@ -371,7 +375,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
       SwipeAction(
         title: item.trashed ? 'delete_permanently'.tr : 'trash'.tr,
         color: Colors.red,
-        icon: const Icon(Iconsax.trash, color: Colors.white),
+        icon: const Icon(Iconsax.trash_outline, color: Colors.white),
         style: const TextStyle(fontSize: 15, color: Colors.white),
         performsFirstActionWithFullSwipe: true,
         onTap: (CompletionHandler handler) async {

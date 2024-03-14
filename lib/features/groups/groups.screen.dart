@@ -7,8 +7,8 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
@@ -83,7 +83,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
       final menuItems = [
         ContextMenuItem(
           title: 'delete'.tr,
-          leading: Icon(Iconsax.trash, size: popupIconSize),
+          leading: Icon(Iconsax.trash_outline, size: popupIconSize),
           onSelected: confirmDelete,
         ),
       ];
@@ -96,7 +96,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
             ? Text(group.reservedDescription)
             : null,
         leading: group.iconUrl.isEmpty
-            ? const Icon(Iconsax.briefcase)
+            ? const Icon(Iconsax.briefcase_outline)
             : RemoteImage(
                 url: group.iconUrl,
                 width: 35,
@@ -104,7 +104,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
               ),
         trailing: ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
       );
     }
@@ -122,7 +122,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.briefcase,
+        iconData: Iconsax.briefcase_outline,
         message: 'no_custom_vaults'.tr,
       ),
     );
@@ -141,7 +141,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
 
     final floatingActionButton = FloatingActionButton(
       onPressed: controller.create,
-      child: const Icon(LineIcons.plus),
+      child: const Icon(LineAwesome.plus_solid),
     );
 
     return Scaffold(

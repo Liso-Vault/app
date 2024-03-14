@@ -5,8 +5,8 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/general/widget_refresher.widget.dart';
@@ -64,7 +64,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                       labelText: '${'title'.tr} *',
                       suffixIcon: ContextMenuButton(
                         controller.titleMenuItems,
-                        child: const Icon(LineIcons.verticalEllipsis),
+                        child: const Icon(LineAwesome.ellipsis_v_solid),
                       ),
                     ),
                   );
@@ -106,7 +106,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
               Row(
                 children: [
                   OutlinedButton.icon(
-                    icon: const Icon(Iconsax.copy),
+                    icon: const Icon(Iconsax.copy_outline),
                     label: Text(controller.otpCode.value),
                     onPressed: () => Utils.copyToClipboard(
                       controller.otpCode.value,
@@ -165,7 +165,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 padding: EdgeInsets.zero,
                 child: OutlinedButton.icon(
                   onPressed: () {},
-                  icon: const Icon(Iconsax.add_circle),
+                  icon: const Icon(Iconsax.add_circle_outline),
                   label: const Text('Custom Field'),
                 ),
               ),
@@ -370,7 +370,9 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           if (await controller.canPop()) Get.back();
         },
         icon: Icon(
-          isSmallScreen ? Iconsax.arrow_left_2 : LineIcons.times,
+          isSmallScreen
+              ? Iconsax.arrow_left_2_outline
+              : LineAwesome.times_solid,
         ),
       ),
       actions: [
@@ -380,7 +382,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
               visible: controller.editMode.value,
               replacement: IconButton(
                 onPressed: controller.editMode.toggle,
-                icon: const Icon(LineIcons.pen),
+                icon: const Icon(LineAwesome.pen_solid),
               ),
               child: IconButton(
                 onPressed: controller.joinedVaultItem
@@ -397,7 +399,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           Obx(
             () => ContextMenuButton(
               controller.menuItems,
-              child: const Icon(LineIcons.verticalEllipsis),
+              child: const Icon(LineAwesome.ellipsis_v_solid),
             ),
           ),
         ],
@@ -418,7 +420,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
             }
           }
         },
-        icon: Icon(controller.editMode() ? Icons.check : LineIcons.pen),
+        icon: Icon(controller.editMode() ? Icons.check : LineAwesome.pen_solid),
         label: Text(controller.editMode() ? 'save'.tr : 'edit'.tr),
       ),
     );

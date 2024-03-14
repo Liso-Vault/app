@@ -2,7 +2,7 @@ import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
@@ -111,7 +111,7 @@ class FirefoxImporter {
     final itemIds = items_.map((e) => e.identifier);
     MainScreenController.to.importedItemIds.addAll(itemIds);
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Import Successful',
       body: 'Imported ${items.length} items via ${sourceFormat.title}',
     );

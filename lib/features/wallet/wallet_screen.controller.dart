@@ -5,7 +5,8 @@ import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/contracts/liso.dart';
 import 'package:liso/core/services/alchemy.service.dart';
 import 'package:liso/features/wallet/nfts/nfts_screen.controller.dart';
@@ -101,7 +102,7 @@ class WalletScreenController extends GetxController with ConsoleMixin {
           onPressed: () => Utils.copyToClipboard(
             SecretPersistence.to.walletAddress.val,
           ),
-          icon: const Icon(Iconsax.copy),
+          icon: const Icon(Iconsax.copy_outline),
           label: const Text('Copy Address'),
         ),
       ],

@@ -3,7 +3,8 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 
@@ -47,12 +48,12 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
                     children: [
                       CardButton(
                         text: 'Generate',
-                        iconData: Iconsax.chart,
+                        iconData: Iconsax.chart_outline,
                         onPressed: controller.generate,
                       ),
                       CardButton(
                         text: 'QR Code',
-                        iconData: Iconsax.barcode,
+                        iconData: Iconsax.barcode_outline,
                         onPressed: () => AppUtils.showQR(
                           controller.seed.value,
                           title: 'Your Seed QR Code',
@@ -62,7 +63,7 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
                       ),
                       CardButton(
                         text: 'Copy',
-                        iconData: Iconsax.copy,
+                        iconData: Iconsax.copy_outline,
                         onPressed: () => Utils.copyToClipboard(
                           controller.seed.value,
                         ),
@@ -70,7 +71,7 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
                       if (controller.isFromDrawer) ...[
                         CardButton(
                           text: 'save'.tr,
-                          iconData: Iconsax.add_circle,
+                          iconData: Iconsax.add_circle_outline,
                           onPressed: controller.save,
                         ),
                       ]

@@ -7,7 +7,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/features/drawer/drawer_widget.controller.dart';
 import 'package:liso/features/import/importers/bitwarden.importer.dart';
@@ -199,7 +200,7 @@ class ImportScreenController extends GetxController
         "Are you sure you want to import the items from this exported ${sourceFormat.value.title} file to your vault?";
 
     await UIUtils.showImageDialog(
-      Icon(Iconsax.import, size: 100, color: themeColor),
+      Icon(Iconsax.import_outline, size: 100, color: themeColor),
       title: 'Import Items',
       subTitle: basename(filePathController.text),
       body: body,

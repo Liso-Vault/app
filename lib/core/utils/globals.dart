@@ -1,7 +1,7 @@
 import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/upgrade/upgrade_config.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -68,7 +68,7 @@ bool get isCryptoSupported => !isApple || kDebugMode;
 ExtraLimitsConfigTier get limits {
   if (!WalletService.to.isReady) return licenseConfig.free;
   // check if user is a pro subscriber
-  if (LicenseService.to.isPremium) return licenseConfig.pro;
+  if (PurchasesService.to.isPremium) return licenseConfig.pro;
 
   // TODO: check if user is a staker
 

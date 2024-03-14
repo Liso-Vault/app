@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -27,7 +27,7 @@ class S3ExplorerScreenController extends GetxController
   static S3ExplorerScreenController get to => Get.find();
 
   // VARIABLES
-  final storage = Get.find<StorageService>();
+  final storage = Get.find<FileService>();
   String rootPrefix = '';
 
   // PROPERTIES
@@ -186,7 +186,7 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Successfully Uploaded',
       body: fileName,
     );
@@ -218,7 +218,7 @@ class S3ExplorerScreenController extends GetxController
         );
       }
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Folder Created',
         body: folderController.text,
       );

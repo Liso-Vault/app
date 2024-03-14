@@ -4,9 +4,9 @@
 
 list(APPEND FLUTTER_PLUGIN_LIST
   flutter_secure_storage_linux
-  hotkey_manager
+  gtk
+  hotkey_manager_linux
   pasteboard
-  platform_device_id_linux
   screen_retriever
   sentry_flutter
   system_tray

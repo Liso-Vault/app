@@ -3,8 +3,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/features/files/explorer/s3_exporer_screen.controller.dart';
 import 'package:liso/features/files/explorer/s3_object_tile.controller.dart';
 
@@ -31,7 +31,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
       if (object.isVaultFile && !isPicker) ...[
         ContextMenuItem(
           title: 'Switch',
-          leading: Icon(Iconsax.import_1, size: popupIconSize),
+          leading: Icon(Iconsax.import_1_outline, size: popupIconSize),
           onSelected: () => controller.confirmSwitch(object),
         ),
         // if (!explorerController.currentPath.value.contains('$kDirBackups/')) ...[
@@ -45,18 +45,18 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         if (object.isFile && !isPicker) ...[
           ContextMenuItem(
             title: 'Download',
-            leading: Icon(Iconsax.import_1, size: popupIconSize),
+            leading: Icon(Iconsax.import_1_outline, size: popupIconSize),
             onSelected: () => controller.confirmDownload(object),
           ),
           ContextMenuItem(
             title: 'Share',
-            leading: Icon(Iconsax.share, size: popupIconSize),
+            leading: Icon(Iconsax.share_outline, size: popupIconSize),
             onSelected: () => controller.share(object),
           ),
         ],
         ContextMenuItem(
           title: 'Delete',
-          leading: Icon(Iconsax.trash, size: popupIconSize),
+          leading: Icon(Iconsax.trash_outline, size: popupIconSize),
           onSelected: () => controller.confirmDelete(object),
         ),
       ],
@@ -71,7 +71,8 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
                   Text(filesize(object.size)),
                   if (object.isEncrypted) ...[
                     const SizedBox(width: 10),
-                    Icon(Iconsax.shield_tick, color: themeColor, size: 10)
+                    Icon(Iconsax.shield_tick_outline,
+                        color: themeColor, size: 10)
                   ],
                 ],
               ),
@@ -111,7 +112,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         onTap: open,
         trailing: ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
       ),
     );

@@ -121,7 +121,7 @@ class SyncService extends GetxService with ConsoleMixin {
     if (!isReady) return const Right(false);
     console.info('down syncing...');
 
-    final result = await StorageService.to.download(
+    final result = await FileService.to.download(
       object: kVaultFileName,
     );
 
@@ -145,9 +145,9 @@ class SyncService extends GetxService with ConsoleMixin {
     console.info('backup: $object...');
 
     // REMOVE OLDEST BACKUP IF NECESSARY
-    if (StorageService.to.backups.length >= limits.backups) {
-      final result = await StorageService.to.remove(
-        StorageService.to.backups.first.key,
+    if (FileService.to.backups.length >= limits.backups) {
+      final result = await FileService.to.remove(
+        FileService.to.backups.first.key,
       );
 
       // abort backup if error in removing oldest backup
@@ -155,7 +155,7 @@ class SyncService extends GetxService with ConsoleMixin {
         return console.error('error removing last backup: ${result.left}');
       } else {
         console.wtf(
-          'removed backup: ${result.right.data} - ${StorageService.to.backups.first.name}',
+          'removed backup: ${result.right.data} - ${FileService.to.backups.first.name}',
         );
       }
     }

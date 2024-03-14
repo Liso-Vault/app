@@ -6,8 +6,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/utils/utils.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
@@ -62,18 +62,18 @@ class SeedField extends StatelessWidget with ConsoleMixin {
       ContextMenuItem(
         title: 'Hide',
         onSelected: () => blur.value = true,
-        leading: Icon(Iconsax.eye_slash, size: popupIconSize),
+        leading: Icon(Iconsax.eye_slash_outline, size: popupIconSize),
       ),
       if (showGenerate && !readOnly) ...[
         ContextMenuItem(
           title: 'Generate',
-          leading: Icon(Iconsax.password_check, size: popupIconSize),
+          leading: Icon(Iconsax.password_check_outline, size: popupIconSize),
           onSelected: _generate,
         ),
       ],
       ContextMenuItem(
         title: 'QR Code',
-        leading: Icon(Iconsax.barcode, size: popupIconSize),
+        leading: Icon(Iconsax.barcode_outline, size: popupIconSize),
         onSelected: () {
           if (fieldController!.text.isEmpty) return;
 
@@ -87,13 +87,13 @@ class SeedField extends StatelessWidget with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'Copy',
-        leading: Icon(Iconsax.copy, size: popupIconSize),
+        leading: Icon(Iconsax.copy_outline, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(fieldController!.text),
       ),
       if (!readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: Icon(LineIcons.times, size: popupIconSize),
+          leading: Icon(LineAwesome.times_solid, size: popupIconSize),
           onSelected: fieldController!.clear,
         ),
       ],
@@ -121,7 +121,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
         labelText: 'Mnemonic Seed Phrase',
         suffixIcon: ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
       ),
     );
@@ -140,7 +140,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
           ),
         ),
         IconButton(
-          icon: const Icon(Iconsax.eye),
+          icon: const Icon(Iconsax.eye_outline),
           onPressed: () => blur.value = false,
         ),
       ],

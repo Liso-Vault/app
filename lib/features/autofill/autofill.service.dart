@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:app_core/config/app.model.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
@@ -51,7 +51,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
     await autofill.requestSetAutofillService();
     enabled.value = await autofill.hasEnabledAutofillServices;
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Autofill Service ${enabled.value ? 'Enabled' : 'Disabled'}',
       body: enabled.value
           ? '${appConfig.name} will now automatically suggest to fill and save forms for you'

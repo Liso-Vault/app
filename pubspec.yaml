@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 1.1.2+49
+version: 1.2.0+50
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-    # CORE FRAMEWORK
+  # CORE FRAMEWORK
   app_core:
     path: ../../Stackwares/app-core
 
@@ -28,7 +28,7 @@ dependencies:
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
-  encrypt: ^5.0.1
+  encrypt: 5.0.1
   otp: ^3.1.4
 
   # IO
@@ -49,11 +49,7 @@ dependencies:
       url: https://github.com/oliverbytes/coingecko_api.git
       ref: 6f3b63c2a89d2160c60a4b84bd348f69e719b3ff
 
-  supabase_auth_ui: ^0.2.0
-
   # UI
-  iconsax: ^0.0.8
-  font_awesome_flutter: ^10.4.0 # icons
   blur: ^3.1.0 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
   flutter_swipe_action_cell: ^3.1.0
@@ -61,6 +57,7 @@ dependencies:
   badges: ^3.1.1 # pending changes indicator
   qr_flutter: ^4.1.0 # generate QR Codes
   skeletons: ^0.0.3 # shimmer loading effects
+  icons_plus: ^5.0.0
 
   # TOOLS
   equatable: ^2.0.5

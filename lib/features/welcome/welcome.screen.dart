@@ -11,7 +11,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/utils/styles.dart';
 
 import 'welcome_screen.controller.dart';
@@ -69,7 +70,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                     width: 200,
                     child: ElevatedButton.icon(
                       label: Text('create_vault'.tr),
-                      icon: const Icon(Iconsax.box_add),
+                      icon: const Icon(Iconsax.box_add_outline),
                       onPressed: controller.create,
                     )
                         .animate(onPlay: (c) => c.repeat())
@@ -79,7 +80,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                     width: 200,
                     child: OutlinedButton.icon(
                       label: Text('restore_vault'.tr),
-                      icon: const Icon(Iconsax.import_1),
+                      icon: const Icon(Iconsax.import_1_outline),
                       onPressed: controller.restore,
                     ),
                   ),

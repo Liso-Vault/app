@@ -2,9 +2,9 @@ import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iconsax/iconsax.dart';
+
 import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
 import '../../features/items/item_screen.controller.dart';
@@ -44,20 +44,20 @@ class _DateFormFieldState extends State<DateFormField> {
     return [
       ContextMenuItem(
         title: 'Copy',
-        leading: Icon(Iconsax.copy, size: popupIconSize),
+        leading: Icon(Iconsax.copy_outline, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(widget.fieldController.text),
       ),
       if (!widget.field.readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: Icon(LineIcons.times, size: popupIconSize),
+          leading: Icon(LineAwesome.times_solid, size: popupIconSize),
           onSelected: widget.fieldController.clear,
         ),
       ],
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
-          leading: Icon(Iconsax.setting, size: popupIconSize),
+          leading: Icon(Iconsax.setting_outline, size: popupIconSize),
           onSelected: () async {
             await ItemScreenController.to.showFieldProperties(formWidget);
             setState(() {});
@@ -65,7 +65,7 @@ class _DateFormFieldState extends State<DateFormField> {
         ),
         ContextMenuItem(
           title: 'Remove',
-          leading: Icon(Iconsax.trash, size: popupIconSize),
+          leading: Icon(Iconsax.trash_outline, size: popupIconSize),
           onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
         ),
       ]
@@ -103,7 +103,7 @@ class _DateFormFieldState extends State<DateFormField> {
           children: [
             IconButton(
               padding: const EdgeInsets.only(right: 10),
-              icon: const Icon(Iconsax.calendar),
+              icon: const Icon(Iconsax.calendar_outline),
               onPressed: () async {
                 final newInitialDate =
                     DateTime.tryParse(widget.fieldController.text) ??
@@ -125,7 +125,7 @@ class _DateFormFieldState extends State<DateFormField> {
             ),
             ContextMenuButton(
               menuItems,
-              child: const Icon(LineIcons.verticalEllipsis),
+              child: const Icon(LineAwesome.ellipsis_v_solid),
             )
           ],
         ),

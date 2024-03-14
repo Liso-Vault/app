@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -14,7 +14,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -169,7 +170,7 @@ class RestoreScreenController extends GetxController
         change(null, status: RxStatus.success());
         AppPersistence.to.backedUpSeed.val = true;
 
-        NotificationsManager.notify(
+        NotificationsService.to.notify(
           title: 'Welcome back to ${appConfig.name}',
           body: 'Your vault has been restored',
         );
@@ -184,7 +185,7 @@ class RestoreScreenController extends GetxController
     }
 
     await UIUtils.showImageDialog(
-      Icon(Iconsax.import, size: 100, color: themeColor),
+      Icon(Iconsax.import_outline, size: 100, color: themeColor),
       title: 'restore_vault'.tr,
       subTitle: address,
       body:

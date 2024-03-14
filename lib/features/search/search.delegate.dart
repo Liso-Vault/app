@@ -1,7 +1,8 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/general/centered_placeholder.widget.dart';
 import 'package:liso/features/items/item.tile.dart';
 
@@ -85,7 +86,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
 
     if (filteredItems.isEmpty) {
       return CenteredPlaceholder(
-        iconData: Iconsax.search_normal,
+        iconData: Iconsax.search_normal_outline,
         message: 'no_results'.tr,
       );
     }

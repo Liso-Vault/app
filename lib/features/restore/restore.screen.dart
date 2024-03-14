@@ -7,7 +7,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/seed/seed_field.widget.dart';
 
 import '../../core/utils/globals.dart';
@@ -29,7 +30,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Iconsax.import_1, size: 150, color: themeColor),
+            Icon(Iconsax.import_1_outline, size: 150, color: themeColor),
             const SizedBox(height: 20),
             Text(
               'restore_vault'.tr,
@@ -52,11 +53,11 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                 children: {
                   RestoreMode.cloud: SegmentedControlItem(
                     text: '${appConfig.name} Cloud',
-                    iconData: Iconsax.cloud,
+                    iconData: Iconsax.cloud_outline,
                   ),
                   RestoreMode.file: const SegmentedControlItem(
                     text: 'Vault File',
-                    iconData: Iconsax.document_code,
+                    iconData: Iconsax.document_code_outline,
                   ),
                 },
               ),
@@ -77,7 +78,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                       suffixIcon: Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: IconButton(
-                          icon: const Icon(Iconsax.import_1),
+                          icon: const Icon(Iconsax.import_1_outline),
                           onPressed: controller.importFile,
                         ),
                       ),
@@ -97,7 +98,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
             ElevatedButton.icon(
               onPressed: controller.continuePressed,
               label: Text('continue'.tr),
-              icon: const Icon(Iconsax.arrow_circle_right),
+              icon: const Icon(Iconsax.arrow_circle_right_outline),
             ),
           ],
         ),

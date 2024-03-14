@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:secrets/secrets.dart';
-import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/persistence/persistence.dart';
 import '../../core/persistence/persistence.secret.dart';
@@ -235,7 +235,7 @@ class AppFunctionsService extends FunctionsService {
       return console.error('cannot sync anonymous user');
     }
 
-    final objects = StorageService.to.rootInfo.value.data;
+    final objects = FileService.to.rootInfo.value.data;
 
     final data = {
       "address": SecretPersistence.to.walletAddress.val,

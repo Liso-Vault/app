@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -12,9 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+
 import 'package:intl/intl.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -78,7 +78,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       if (AppPersistence.to.sync.val) ...[
         ContextMenuItem(
           title: 'sync'.tr,
-          leading: const Icon(Iconsax.cloud_change),
+          leading: const Icon(Iconsax.cloud_change_outline),
           onSelected: SyncService.to.sync,
         ),
       ],
@@ -100,13 +100,13 @@ class MainScreenController extends GetxController with ConsoleMixin {
     final ascending = sortName.contains('Ascending');
 
     final icon = Icon(
-      ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
+      ascending ? LineAwesome.sort_up_solid : LineAwesome.sort_down_solid,
     );
 
     return [
       ContextMenuItem(
         title: 'title'.tr,
-        leading: Icon(Iconsax.text, size: popupIconSize),
+        leading: Icon(Iconsax.text_outline, size: popupIconSize),
         trailing: sortName.contains('title') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -117,7 +117,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'category'.tr,
-        leading: Icon(Iconsax.category, size: popupIconSize),
+        leading: Icon(Iconsax.category_outline, size: popupIconSize),
         trailing: sortName.contains('category') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -128,7 +128,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'date_modified'.tr,
-        leading: Icon(Iconsax.calendar, size: popupIconSize),
+        leading: Icon(Iconsax.calendar_outline, size: popupIconSize),
         trailing: sortName.contains('dateModified') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -139,7 +139,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'date_created'.tr,
-        leading: Icon(Iconsax.calendar_tick, size: popupIconSize),
+        leading: Icon(Iconsax.calendar_tick_outline, size: popupIconSize),
         trailing: sortName.contains('dateCreated') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -150,7 +150,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'favorite'.tr,
-        leading: Icon(Iconsax.heart, size: popupIconSize),
+        leading: Icon(Iconsax.heart_outline, size: popupIconSize),
         trailing: sortName.contains('favorite') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -161,7 +161,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       ),
       ContextMenuItem(
         title: 'protected'.tr,
-        leading: Icon(Iconsax.lock, size: popupIconSize),
+        leading: Icon(Iconsax.lock_outline, size: popupIconSize),
         trailing: sortName.contains('protected') ? icon : null,
         onSelected: () {
           itemsController.sortOrder.value =
@@ -204,7 +204,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
         SyncService.to.sync();
 
         // // show upgrade screen every app open
-        // if (!LicenseService.to.isPremium) {
+        // if (!PurchasesService.to.isPremium) {
         //   await Future.delayed(5.seconds);
         //   Utils.adaptiveRouteOpen(name: Routes.upgrade);
         // }
@@ -298,7 +298,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       await ItemsService.to.hideleteItems(items);
       load();
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Trash Emptied',
         body: 'Your trash is now empty',
       );
@@ -333,7 +333,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
       await ItemsService.to.deleteItems(items);
       load();
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Deleted Items Emptied',
         body: 'Your deleted items is now empty',
       );

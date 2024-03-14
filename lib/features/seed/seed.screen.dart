@@ -5,8 +5,8 @@ import 'package:blur/blur.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/features/seed/seed_chips.widget.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
@@ -44,7 +44,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
                 ),
               ),
               IconButton(
-                icon: const Icon(Iconsax.eye),
+                icon: const Icon(Iconsax.eye_outline),
                 onPressed: () => controller.passphraseIndexedStack.value = 1,
               ),
             ],
@@ -57,7 +57,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(Iconsax.key_square, size: 150, color: themeColor),
+        Icon(Iconsax.key_square_outline, size: 150, color: themeColor),
         const SizedBox(height: 20),
         const Text(
           'Master Seed Phrase',
@@ -104,7 +104,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
                 onPressed:
                     controller.canProceed ? controller.continuePressed : null,
                 label: Text('continue'.tr),
-                icon: const Icon(Iconsax.arrow_circle_right),
+                icon: const Icon(Iconsax.arrow_circle_right_outline),
               ),
             ),
           ),
@@ -118,7 +118,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
         actions: [
           ContextMenuButton(
             controller.menuItems,
-            child: const Icon(LineIcons.verticalEllipsis),
+            child: const Icon(LineAwesome.ellipsis_v_solid),
           ),
           TextButton(
             onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),

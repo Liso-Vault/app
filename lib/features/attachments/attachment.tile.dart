@@ -2,8 +2,8 @@ import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../../core/utils/globals.dart';
 import '../../core/utils/utils.dart';
@@ -26,7 +26,7 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
     final menuItems = [
       ContextMenuItem(
         title: 'Remove',
-        leading: Icon(Iconsax.trash, size: popupIconSize),
+        leading: Icon(Iconsax.trash_outline, size: popupIconSize),
         onSelected: onDelete,
       ),
     ];
@@ -40,7 +40,8 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
                   Text(filesize(object.size)),
                   if (object.isEncrypted) ...[
                     const SizedBox(width: 10),
-                    Icon(Iconsax.shield_tick, color: themeColor, size: 10)
+                    Icon(Iconsax.shield_tick_outline,
+                        color: themeColor, size: 10)
                   ],
                 ],
               ),
@@ -57,7 +58,7 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
       // onTap: () => Get.back(result: content.object!.eTag),
       trailing: ContextMenuButton(
         menuItems,
-        child: const Icon(LineIcons.verticalEllipsis),
+        child: const Icon(LineAwesome.ellipsis_v_solid),
       ),
     );
   }

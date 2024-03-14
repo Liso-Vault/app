@@ -6,8 +6,8 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 
 import '../general/centered_placeholder.widget.dart';
 import '../json_viewer/json_viewer.screen.dart';
@@ -29,13 +29,13 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
         if (device.id != metadataDevice.id) ...[
           ContextMenuItem(
             title: 'unsync'.tr,
-            leading: Icon(Iconsax.slash, size: popupIconSize),
+            leading: Icon(Iconsax.slash_outline, size: popupIconSize),
             onSelected: () => controller.unsync(device),
           ),
         ],
         ContextMenuItem(
           title: 'details'.tr,
-          leading: Icon(Iconsax.code, size: popupIconSize),
+          leading: Icon(Iconsax.code_outline, size: popupIconSize),
           onSelected: () => Get.to(
             () => JSONViewerScreen(data: device.toJson()),
           ),
@@ -47,10 +47,10 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       return ListTile(
         title: Text(device.model, maxLines: 1),
         selected: isThisDevice,
-        leading: Icon(isThisDevice ? Icons.check : LineIcons.laptop),
+        leading: Icon(isThisDevice ? Icons.check : LineAwesome.laptop_solid),
         trailing: ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
         subtitle: Text(
           device.id,
@@ -77,7 +77,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onError: (message) => CenteredPlaceholder(
-        iconData: Iconsax.warning_2,
+        iconData: Iconsax.warning_2_outline,
         message: message!,
         child: TextButton(
           onPressed: controller.restart,
@@ -119,7 +119,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
                     name: Routes.upgrade,
                   ),
                   label: const Text('Upgrade to Pro'),
-                  icon: const Icon(LineIcons.rocket),
+                  icon: const Icon(LineAwesome.rocket_solid),
                 ),
                 const Divider(),
                 const Text(

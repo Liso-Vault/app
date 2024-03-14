@@ -7,7 +7,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 
@@ -68,7 +69,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
     //   descriptionController.clear();
     //   cipherKeyController.clear();
 
-    //   NotificationsManager.notify(
+    //   NotificationsService.to.notify(
     //     title: 'Shared Vault ${createMode ? 'Created' : 'Updated'}',
     //     body: nameController.text,
     //   );
@@ -254,7 +255,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
               helperText:
                   'The Cipher Key will be automatically be saved as a ${appConfig.name} Item',
               suffixIcon: IconButton(
-                icon: const Icon(Iconsax.key),
+                icon: const Icon(Iconsax.key_outline),
                 onPressed: () {
                   cipherKeyController.text = base64Encode(
                     Hive.generateSecureKey(),

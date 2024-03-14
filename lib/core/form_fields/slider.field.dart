@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/item_screen.controller.dart';
@@ -33,7 +34,7 @@ class _SliderFieldFormState extends State<SliderFieldForm> {
     return [
       ContextMenuItem(
         title: 'Properties',
-        leading: const Icon(Iconsax.setting),
+        leading: const Icon(Iconsax.setting_outline),
         onSelected: () async {
           await ItemScreenController.to.showFieldProperties(formWidget);
           setState(() {});
@@ -41,7 +42,7 @@ class _SliderFieldFormState extends State<SliderFieldForm> {
       ),
       ContextMenuItem(
         title: 'Remove',
-        leading: const Icon(Iconsax.trash),
+        leading: const Icon(Iconsax.trash_outline),
         onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
       ),
     ];

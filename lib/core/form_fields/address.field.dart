@@ -2,8 +2,8 @@ import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/form_fields/choices.field.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 
@@ -63,7 +63,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
     return [
       ContextMenuItem(
         title: 'Copy',
-        leading: Icon(Iconsax.copy, size: popupIconSize),
+        leading: Icon(Iconsax.copy_outline, size: popupIconSize),
         onSelected: () {
           final address = widget.value;
           final addressString =
@@ -74,7 +74,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
       if (!widget.field.readOnly) ...[
         ContextMenuItem(
           title: 'Clear',
-          leading: Icon(LineIcons.times, size: popupIconSize),
+          leading: Icon(LineAwesome.times_solid, size: popupIconSize),
           onSelected: () {
             widget.street1Controller.clear();
             widget.street2Controller.clear();
@@ -88,7 +88,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
       if (!widget.field.reserved) ...[
         ContextMenuItem(
           title: 'Properties',
-          leading: Icon(Iconsax.setting, size: popupIconSize),
+          leading: Icon(Iconsax.setting_outline, size: popupIconSize),
           onSelected: () async {
             await ItemScreenController.to.showFieldProperties(formWidget);
             setState(() {});
@@ -96,7 +96,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
         ),
         ContextMenuItem(
           title: 'Remove',
-          leading: Icon(Iconsax.trash, size: popupIconSize),
+          leading: Icon(Iconsax.trash_outline, size: popupIconSize),
           onSelected: () => ItemScreenController.to.widgets.remove(
             formWidget,
           ),
@@ -116,7 +116,7 @@ class _AddressFormFieldState extends State<AddressFormField> {
               Expanded(child: Section(text: widget.field.data.label!)),
               ContextMenuButton(
                 menuItems,
-                child: const Icon(LineIcons.verticalEllipsis),
+                child: const Icon(LineAwesome.ellipsis_v_solid),
               )
             ],
           ),

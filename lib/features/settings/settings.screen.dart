@@ -1,8 +1,8 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -11,7 +11,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:launch_at_startup/src/launch_at_startup.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
@@ -38,11 +38,11 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           return ExpansionTile(
             title: const Text('App Theme'),
             subtitle: Text(controller.theme().tr),
-            leading: const Icon(Iconsax.color_swatch),
+            leading: const Icon(Iconsax.color_swatch_outline),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               ListTile(
-                leading: const Icon(Iconsax.cpu),
+                leading: const Icon(Iconsax.cpu_outline),
                 selected: p.theme.val == ThemeMode.system.name,
                 title: Text(ThemeMode.system.name.tr),
                 trailing: p.theme.val == ThemeMode.system.name
@@ -51,7 +51,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 onTap: () => controller.changeTheme(ThemeMode.system),
               ),
               ListTile(
-                leading: const Icon(Iconsax.moon),
+                leading: const Icon(Iconsax.moon_outline),
                 selected: p.theme.val == ThemeMode.dark.name,
                 title: Text(ThemeMode.dark.name.tr),
                 trailing: p.theme.val == ThemeMode.dark.name
@@ -60,7 +60,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 onTap: () => controller.changeTheme(ThemeMode.dark),
               ),
               ListTile(
-                leading: const Icon(Iconsax.sun_1),
+                leading: const Icon(Iconsax.sun_1_outline),
                 selected: p.theme.val == ThemeMode.light.name,
                 title: Text(ThemeMode.light.name.tr),
                 trailing: p.theme.val == ThemeMode.light.name
@@ -75,12 +75,12 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           return ExpansionTile(
             title: const Text('Sync Settings'),
             subtitle: const Text('Vault synchronization settings'),
-            leading: const Icon(Iconsax.cloud_change),
+            leading: const Icon(Iconsax.cloud_change_outline),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               SwitchListTile(
                 title: const Text('Enabled'),
-                secondary: const Icon(Iconsax.cloud),
+                secondary: const Icon(Iconsax.cloud_outline),
                 value: AppPersistence.to.sync.val,
                 subtitle: const Text("Keep multiple devices in sync"),
                 onChanged: (value) => AppPersistence.to.sync.val = value,
@@ -113,18 +113,18 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           return ExpansionTile(
             title: const Text('Vault Settings'),
             subtitle: const Text('Manage your vaults'),
-            leading: const Icon(Iconsax.briefcase),
+            leading: const Icon(Iconsax.briefcase_outline),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               ListTile(
-                leading: const Icon(Iconsax.category),
+                leading: const Icon(Iconsax.category_outline),
                 title: const Text('Custom Categories'),
                 subtitle: const Text('Manage your custom categories'),
                 onTap: () =>
                     Utils.adaptiveRouteOpen(name: AppRoutes.categories),
               ),
               ListTile(
-                leading: const Icon(Iconsax.briefcase),
+                leading: const Icon(Iconsax.briefcase_outline),
                 title: const Text('Custom Vaults'),
                 subtitle: const Text('Manage your custom vaults'),
                 onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.vaults),
@@ -141,7 +141,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 //   ),
                 // ),
                 // ListTile(
-                //   leading: Icon(LineIcons.plus),
+                //   leading: Icon(LineAwesome.plus),
                 //
                 //   title: const Text('Joined Vaults'),
                 //   subtitle: const Text('Manage your joined vaults'),
@@ -152,7 +152,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 ListTile(
                   title: const Text('Backed Up Vaults'),
                   subtitle: const Text('Go back in time to undo your changes'),
-                  leading: const Icon(Iconsax.box),
+                  leading: const Icon(Iconsax.box_outline),
                   onTap: () async {
                     if (!AppPersistence.to.sync.val) {
                       return UIUtils.showSimpleDialog(
@@ -169,7 +169,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 ),
               ],
               ListTile(
-                leading: const Icon(Iconsax.import_1),
+                leading: const Icon(Iconsax.import_1_outline),
                 title: const Text('Import Items'),
                 subtitle: const Text('Import items from external sources'),
                 onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.import),
@@ -180,16 +180,18 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   ContextMenuItem(
                     title: 'Encrypted',
                     onSelected: () => controller.exportVault(),
-                    leading: Icon(Iconsax.shield_tick, size: popupIconSize),
+                    leading:
+                        Icon(Iconsax.shield_tick_outline, size: popupIconSize),
                   ),
                   ContextMenuItem(
                     title: 'Unencrypted',
                     onSelected: () => controller.exportVault(encrypt: false),
-                    leading: Icon(Iconsax.document, size: popupIconSize),
+                    leading:
+                        Icon(Iconsax.document_outline, size: popupIconSize),
                   )
                 ],
                 child: ListTile(
-                  leading: Icon(Iconsax.box_1),
+                  leading: Icon(Iconsax.box_1_outline),
                   title: Text('export_vault'.tr),
                   subtitle:
                       const Text('Save <vault>.liso to an external source'),
@@ -203,11 +205,11 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           return ExpansionTile(
             title: const Text('Wallet Settings'),
             subtitle: const Text('Manage your wallet'),
-            leading: const Icon(Iconsax.wallet),
+            leading: const Icon(Iconsax.wallet_outline),
             childrenPadding: const EdgeInsets.only(left: 20),
             children: [
               ListTile(
-                leading: const Icon(Iconsax.key),
+                leading: const Icon(Iconsax.key_outline),
                 title: const Text('Show Seed Phrase'),
                 subtitle: const Text('Make sure you are in a safe location'),
                 onTap: controller.showSeed,
@@ -220,7 +222,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               //   // onTap: controller.showSeed,
               // ),
               ListTile(
-                leading: const Icon(Iconsax.wallet_1),
+                leading: const Icon(Iconsax.wallet_1_outline),
                 title: Text('export_wallet'.tr),
                 subtitle: const Text(
                   'Save <wallet>.json to an external source',
@@ -238,11 +240,11 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               subtitle: Text(
                 '${appConfig.name} autofill service settings',
               ),
-              leading: Icon(Iconsax.rulerpen),
+              leading: const Icon(Iconsax.rulerpen_outline),
               childrenPadding: const EdgeInsets.only(left: 20),
               children: [
                 ListTile(
-                  leading: Icon(Iconsax.setting_2),
+                  leading: const Icon(Iconsax.setting_2_outline),
                   title: Text('${appConfig.name} Autofill Service'),
                   onTap: LisoAutofillService.to.set,
                   subtitle: Obx(
@@ -262,7 +264,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                       subtitle: Text(
                         'Automatically save passwords to ${appConfig.name}',
                       ),
-                      secondary: const Icon(Iconsax.setting_2),
+                      secondary: const Icon(Iconsax.setting_2_outline),
                       value: LisoAutofillService.to.saving.value,
                       onChanged: (value) =>
                           LisoAutofillService.to.toggleSaving(value),
@@ -278,16 +280,16 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           return ExpansionTile(
             title: const Text('Other Settings'),
             subtitle: const Text('A few other settings'),
-            leading: const Icon(Iconsax.chart_2),
+            leading: const Icon(Iconsax.chart_2_outline),
             childrenPadding: const EdgeInsets.only(left: 20),
-            initiallyExpanded: Get.parameters['expand'] == 'other_settings',
+            initiallyExpanded: Get.parameters['expand'] == 'account',
             children: [
               if (!isApple || kDebugMode) ...[
                 ListTile(
                   leading: const Icon(Icons.key),
                   title: Text('license_key'.tr), // TODO: localize
                   subtitle: Obx(
-                    () => Text(LicenseService.to.license.value.key),
+                    () => Text(PurchasesService.to.license.value.key),
                   ),
                   onTap: controller.updateLicenseKey,
                 ),
@@ -295,7 +297,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               if (isDesktop) ...[
                 SwitchListTile(
                   title: Text('launch_startup'.tr),
-                  secondary: const Icon(Iconsax.keyboard_open),
+                  secondary: const Icon(Iconsax.keyboard_open_outline),
                   value: p.launchAtStartup.val,
                   subtitle: const Text("Automatically launch on startup"),
                   onChanged: (value) {
@@ -310,7 +312,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 SwitchListTile(
                   title: Text('Minimize to ${isMac ? 'dock' : 'tray'}'),
-                  secondary: const Icon(Iconsax.align_bottom),
+                  secondary: const Icon(Iconsax.align_bottom_outline),
                   value: p.minimizeToTray.val,
                   subtitle: const Text("Minimize instead of terminating app"),
                   onChanged: (value) => p.minimizeToTray.val = value,
@@ -318,21 +320,21 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
               ],
               SwitchListTile(
                 title: Text('errors_crashes'.tr),
-                secondary: const Icon(Iconsax.warning_2),
+                secondary: const Icon(Iconsax.warning_2_outline),
                 value: p.crashReporting.val,
                 subtitle: Text('send_reports'.tr),
                 onChanged: (value) => p.crashReporting.val = value,
               ),
               SwitchListTile(
                 title: Text('usage_stats'.tr),
-                secondary: const Icon(Iconsax.chart_square),
+                secondary: const Icon(Iconsax.chart_square_outline),
                 value: p.analytics.val,
                 subtitle: Text('send_stats'.tr),
                 onChanged: (value) => p.analytics.val = value,
               ),
               ListTile(
-                leading: const Icon(Iconsax.info_circle),
-                trailing: const Icon(Iconsax.arrow_right_3),
+                leading: const Icon(Iconsax.info_circle_outline),
+                trailing: const Icon(Iconsax.arrow_right_3_outline),
                 title: const Text('Show Diagnostics Info'),
                 onTap: controller.showDiagnosticInfo,
               ),
@@ -340,7 +342,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
           );
         }),
         ListTile(
-          leading: const Icon(Iconsax.lock),
+          leading: const Icon(Iconsax.lock_outline),
           title: Text('${'lock'.tr} ${appConfig.name}'),
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
@@ -348,19 +350,19 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
         ExpansionTile(
           title: const Text('Danger Zone'),
           subtitle: const Text('Delete, purge, or reset your data'),
-          leading: const Icon(Iconsax.warning_2),
+          leading: const Icon(Iconsax.warning_2_outline),
           childrenPadding: const EdgeInsets.only(left: 20),
           children: [
             ListTile(
               iconColor: Colors.amber,
-              leading: const Icon(Iconsax.refresh),
+              leading: const Icon(Iconsax.refresh_outline),
               title: Text('${'purge'.tr} Items'),
               subtitle: const Text('Clear all items and start over'),
               onTap: controller.purge,
             ),
             ListTile(
               iconColor: const Color(0xFFFF7300),
-              leading: const Icon(Iconsax.refresh5),
+              leading: const Icon(Iconsax.refresh_outline),
               title: Text('${'reset'.tr} ${appConfig.name}'),
               subtitle: const Text('Delete local vault and logout'),
               onTap: controller.reset,
@@ -369,7 +371,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             if (AppPersistence.to.canShare) ...[
               ListTile(
                 iconColor: Colors.red,
-                leading: const Icon(Iconsax.warning_2),
+                leading: const Icon(Iconsax.warning_2_outline),
                 title: const Text('Delete Remote Data'),
                 subtitle: const Text('Delete remote vault and files'),
                 onTap: controller.unsync,
@@ -382,14 +384,14 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 '0x5b858485d6d086ce3c97408ebc423a36b9a6f81c') ...[
           const Divider(),
           ListTile(
-            leading: const Icon(Iconsax.graph),
-            trailing: const Icon(Iconsax.arrow_right_3),
+            leading: const Icon(Iconsax.graph_outline),
+            trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: const Text('Statistics'),
             onTap: () => Utils.adaptiveRouteOpen(name: AppRoutes.statistics),
           ),
           ListTile(
-            leading: const Icon(Iconsax.code),
-            trailing: const Icon(Iconsax.arrow_right_3),
+            leading: const Icon(Iconsax.code_outline),
+            trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: const Text('Debugging'),
             onTap: () => Utils.adaptiveRouteOpen(name: Routes.debug),
           ),

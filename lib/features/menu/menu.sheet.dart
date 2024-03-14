@@ -1,4 +1,3 @@
-import 'package:app_core/animations/animations.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -28,7 +27,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final item = contextItems[index];
 
-      final tile = ListTile(
+      return ListTile(
         // iconColor: themeColor,
         title: Text(item.title),
         leading: item.leading,
@@ -38,12 +37,6 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
           Get.back();
           item.onSelected?.call();
         },
-      );
-
-      return ListItemAnimation(
-        delay: 100.milliseconds,
-        duration: 300.milliseconds,
-        child: tile,
       );
     }
 

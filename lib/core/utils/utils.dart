@@ -1,19 +1,13 @@
-import 'package:app_core/config.dart';
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/license/license.service.dart';
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/utils.dart';
-import 'package:app_core/widgets/gradient.widget.dart';
-import 'package:app_core/widgets/pro.widget.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
@@ -85,80 +79,80 @@ class AppUtils {
     IconData? iconData;
 
     if (category == LisoItemCategory.cryptoWallet.name) {
-      iconData = Iconsax.wallet;
+      iconData = Iconsax.wallet_outline;
       color = Colors.redAccent;
     } else if (category == LisoItemCategory.login.name) {
-      iconData = Iconsax.login;
+      iconData = Iconsax.login_outline;
       color = Colors.blueAccent;
     } else if (category == LisoItemCategory.password.name) {
-      iconData = Iconsax.password_check;
+      iconData = Iconsax.password_check_outline;
       color = Colors.teal;
     } else if (category == LisoItemCategory.identity.name) {
-      iconData = Iconsax.user;
+      iconData = Iconsax.user_outline;
       color = Colors.purpleAccent;
     } else if (category == LisoItemCategory.note.name) {
-      iconData = Iconsax.note_text;
+      iconData = Iconsax.note_text_outline;
       color = Colors.pinkAccent;
     } else if (category == LisoItemCategory.insurance.name) {
-      iconData = Iconsax.shield_tick;
+      iconData = Iconsax.shield_tick_outline;
       color = Colors.pinkAccent;
     } else if (category == LisoItemCategory.healthInsurance.name) {
-      iconData = Iconsax.health;
+      iconData = Iconsax.health_outline;
       color = Colors.pink;
     } else if (category == LisoItemCategory.cashCard.name) {
-      iconData = Iconsax.card;
+      iconData = Iconsax.card_outline;
       color = Colors.deepOrange;
     } else if (category == LisoItemCategory.bankAccount.name) {
-      iconData = Iconsax.bank;
+      iconData = Iconsax.bank_outline;
       color = Colors.amberAccent;
     } else if (category == LisoItemCategory.medicalRecord.name) {
-      iconData = Iconsax.health;
+      iconData = Iconsax.health_outline;
       color = Colors.red;
     } else if (category == LisoItemCategory.passport.name) {
-      iconData = Iconsax.airplane_square;
+      iconData = Iconsax.airplane_square_outline;
       color = Colors.purple;
     } else if (category == LisoItemCategory.server.name) {
-      iconData = Iconsax.cloud;
+      iconData = Iconsax.cloud_outline;
       color = Colors.blueAccent;
     } else if (category == LisoItemCategory.softwareLicense.name) {
-      iconData = Iconsax.code_1;
+      iconData = Iconsax.code_1_outline;
       color = Colors.indigoAccent;
     } else if (category == LisoItemCategory.apiCredential.name) {
-      iconData = Iconsax.code;
+      iconData = Iconsax.code_outline;
       color = Colors.lime;
     } else if (category == LisoItemCategory.database.name) {
-      iconData = Iconsax.document;
+      iconData = Iconsax.document_outline;
       color = Colors.orangeAccent;
     } else if (category == LisoItemCategory.driversLicense.name) {
-      iconData = Iconsax.car;
+      iconData = Iconsax.car_outline;
       color = Colors.teal;
     } else if (category == LisoItemCategory.email.name) {
-      iconData = Iconsax.message;
+      iconData = Iconsax.message_outline;
       color = Colors.green;
     } else if (category == LisoItemCategory.membership.name) {
-      iconData = Iconsax.personalcard;
+      iconData = Iconsax.personalcard_outline;
       color = Colors.red;
     } else if (category == LisoItemCategory.outdoorLicense.name) {
-      iconData = Iconsax.activity;
+      iconData = Iconsax.activity_outline;
       color = Colors.pink;
     } else if (category == LisoItemCategory.rewardsProgram.name) {
-      iconData = Iconsax.award;
+      iconData = Iconsax.award_outline;
       color = Colors.amber;
     } else if (category == LisoItemCategory.socialSecurity.name) {
-      iconData = Iconsax.security_card;
+      iconData = Iconsax.security_card_outline;
       color = Colors.blue;
     } else if (category == LisoItemCategory.wirelessRouter.name) {
-      iconData = Iconsax.home_wifi;
+      iconData = Iconsax.home_wifi_outline;
       color = Colors.green;
     } else if (category == LisoItemCategory.encryption.name) {
-      iconData = Iconsax.key;
+      iconData = Iconsax.key_outline;
     } else if (category == LisoItemCategory.otp.name) {
-      iconData = LineIcons.mobilePhone;
+      iconData = LineAwesome.mobile_alt_solid;
       color = Colors.deepPurple;
     } else if (category == LisoItemCategory.custom.name) {
-      iconData = Iconsax.category;
+      iconData = Iconsax.category_outline;
     } else {
-      iconData = Iconsax.category;
+      iconData = Iconsax.category_outline;
     }
 
     return Icon(iconData, color: color, size: size);
@@ -185,8 +179,8 @@ class AppUtils {
   }
 
   static Widget s3ContentIcon(S3Object object) {
-    if (!object.isFile) return const Icon(Iconsax.folder_open5);
-    var iconData = Iconsax.document_1;
+    if (!object.isFile) return const Icon(Iconsax.folder_open_outline);
+    IconData iconData = Iconsax.document_1_outline;
     if (object.fileType == null) return Icon(iconData);
 
     switch (object.fileType!) {
@@ -194,40 +188,40 @@ class AppUtils {
         return RemoteImage(
           url: 'https://i.imgur.com/GW4HQ1r.png',
           height: 25,
-          placeholder: Image.asset(Images.logo, height: 25),
+          failWidget: Image.asset(Images.logo, height: 25),
         );
       case 'image':
-        iconData = Iconsax.gallery;
+        iconData = Iconsax.gallery_outline;
         break;
       case 'video':
-        iconData = Iconsax.play;
+        iconData = Iconsax.play_outline;
         break;
       case 'archive':
-        iconData = Iconsax.archive;
+        iconData = Iconsax.archive_outline;
         break;
       case 'audio':
-        iconData = Iconsax.music;
+        iconData = Iconsax.music_outline;
         break;
       case 'code':
         iconData = Icons.code;
         break;
       case 'book':
-        iconData = Iconsax.book_1;
+        iconData = Iconsax.book_1_outline;
         break;
       case 'exec':
-        iconData = Iconsax.code;
+        iconData = Iconsax.code_outline;
         break;
       case 'web':
-        iconData = Iconsax.chrome;
+        iconData = Iconsax.chrome_outline;
         break;
       case 'sheet':
-        iconData = Iconsax.document_text;
+        iconData = Iconsax.document_text_outline;
         break;
       case 'text':
-        iconData = Iconsax.document;
+        iconData = Iconsax.document_outline;
         break;
       case 'font':
-        iconData = Iconsax.text_block;
+        iconData = Iconsax.text_block_outline;
         break;
     }
 
@@ -290,7 +284,7 @@ class AppUtils {
 
     AppFunctionsService.to.status(force: true).then((value) {
       // manually prevent duplicates becaused onSignedIn is fired twice
-      if (!LicenseService.to.isPremium && !isBeta) {
+      if (!PurchasesService.to.isPremium && !isBeta) {
         Utils.adaptiveRouteOpen(name: Routes.upgrade);
         // AppodealService.to.init();
       }
@@ -301,7 +295,7 @@ class AppUtils {
     //   Get.offNamedUntil(Routes.main, (route) => false);
     // }
 
-    StorageService.to.load().then((_) => AppFunctionsService.to.syncUser());
+    FileService.to.load().then((_) => AppFunctionsService.to.syncUser());
   }
 
   static void onSignedOut() {
@@ -319,63 +313,5 @@ class AppUtils {
 
   static void onCancelledUpgradeScreen() {
     console.wtf('onCancelledUpgradeScreen');
-    // if (kDebugMode) return;
-
-    final bodyContent = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: 10),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: ExtendedImage.network(
-            kGiveawayImageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
-        const SizedBox(height: 30),
-        const PremiumCard(size: 25, text: 'FREE PREMIUM'),
-        const SizedBox(height: 10),
-        Text('giveaway_message'.tr, textAlign: TextAlign.center),
-        const SizedBox(height: 10),
-        GradientWidget(
-          gradient: LinearGradient(colors: CoreConfig().gradientColors),
-          child: Text(
-            'giveaway_highlight'.tr,
-            style: const TextStyle(fontSize: 15, color: Colors.green),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            Expanded(
-              child: OutlinedButton(
-                onPressed: Get.back,
-                child: Text('close'.tr),
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () => Utils.openUrl(appConfig.links.giveaway),
-                child: Text('learn_more'.tr),
-              ),
-            ),
-          ],
-        )
-      ],
-    );
-
-    Get.dialog(
-      AlertDialog(
-        title: null,
-        actionsAlignment: MainAxisAlignment.center,
-        content: isSmallScreen
-            ? bodyContent
-            : SizedBox(width: 400, child: bodyContent),
-      ),
-    );
-
-    AnalyticsService.to.logEvent('cancelled-upgrade-dialog');
   }
 }

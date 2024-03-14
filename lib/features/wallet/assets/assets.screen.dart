@@ -4,7 +4,8 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/general/keep_alive.widget.dart';
 
 import '../../../core/persistence/persistence.dart';
@@ -37,14 +38,14 @@ class AssetsScreen extends StatelessWidget with ConsoleMixin {
           children: [
             ListTile(
               leading: Image.asset(Images.logo, height: 18),
-              trailing: const Icon(Iconsax.arrow_right_3),
+              trailing: const Icon(Iconsax.arrow_right_3_outline),
               title: Text('$liso LISO'),
               subtitle: Text('\$$lisoUsd'),
               onTap: () {},
             ),
             ListTile(
               leading: Image.asset(Images.polygon, height: 18),
-              trailing: const Icon(Iconsax.arrow_right_3),
+              trailing: const Icon(Iconsax.arrow_right_3_outline),
               title: Text('$matic MATIC'),
               subtitle: Text('\$$maticUsd'),
               onTap: () {},
@@ -58,10 +59,10 @@ class AssetsScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.image,
+        iconData: Iconsax.image_outline,
         message: 'No NFTs',
         child: TextButton.icon(
-          icon: const Icon(Iconsax.refresh),
+          icon: const Icon(Iconsax.refresh_outline),
           onPressed: controller.load,
           label: Text(
             'refresh'.tr,

@@ -3,8 +3,8 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../general/centered_placeholder.widget.dart';
@@ -40,7 +40,7 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.document_cloud,
+        iconData: Iconsax.document_cloud_outline,
         message: 'empty'.tr,
       ),
     );
@@ -66,21 +66,21 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
           () => IconButton(
             onPressed:
                 !controller.isRoot && !controller.busy() ? controller.up : null,
-            icon: const Icon(LineIcons.alternateLevelUp),
+            icon: const Icon(LineAwesome.level_up_alt_solid),
           ),
         ),
         if (!controller.isTimeMachine) ...[
           Obx(
             () => IconButton(
               onPressed: !controller.busy() ? controller.newFolder : null,
-              icon: const Icon(Iconsax.folder_add),
+              icon: const Icon(Iconsax.folder_add_outline),
             ),
           ),
         ],
         Obx(
           () => IconButton(
             onPressed: !controller.busy() ? controller.load : null,
-            icon: const Icon(Iconsax.refresh),
+            icon: const Icon(Iconsax.refresh_outline),
           ),
         ),
         const SizedBox(width: 10),
@@ -93,7 +93,7 @@ class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
         replacement: const SizedBox.shrink(),
         child: FloatingActionButton(
           onPressed: controller.busy() ? null : controller.pickFile,
-          child: const Icon(Iconsax.export_1),
+          child: const Icon(Iconsax.export_1_outline),
         ),
       ),
     );

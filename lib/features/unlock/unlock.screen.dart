@@ -7,8 +7,8 @@ import 'package:app_core/widgets/version.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import '../../core/persistence/persistence.secret.dart';
@@ -25,7 +25,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
     final content = Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        LogoWidget(size: 100),
+        const LogoWidget(size: 100),
         const SizedBox(height: 20),
         Text(
           metadataApp.appName,
@@ -51,8 +51,8 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
               label: Text('authenticate'.tr),
               icon: Icon(
                 controller.promptMode
-                    ? Iconsax.arrow_circle_right
-                    : LineIcons.lockOpen,
+                    ? Iconsax.arrow_circle_right_outline
+                    : LineAwesome.lock_open_solid,
               ),
             ),
           ),
@@ -78,8 +78,8 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
                   onPressed: controller.obscurePassword.toggle,
                   icon: Icon(
                     controller.obscurePassword()
-                        ? Iconsax.eye
-                        : Iconsax.eye_slash,
+                        ? Iconsax.eye_outline
+                        : Iconsax.eye_slash_outline,
                   ),
                 ),
               ),
@@ -91,8 +91,8 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
               label: Text(controller.promptMode ? 'proceed'.tr : 'unlock'.tr),
               icon: Icon(
                 controller.promptMode
-                    ? Iconsax.arrow_circle_right
-                    : LineIcons.lockOpen,
+                    ? Iconsax.arrow_circle_right_outline
+                    : LineAwesome.lock_open_solid,
               ),
               onPressed: controller.canProceed() ? controller.unlock : null,
             ),

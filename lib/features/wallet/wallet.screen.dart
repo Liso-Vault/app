@@ -7,8 +7,8 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/wallet/assets/assets.screen.dart';
 import 'package:liso/features/wallet/transactions/transactions.screen.dart';
@@ -46,7 +46,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                 children: [
                   Obx(() => Text(WalletService.to.network.value)),
                   const SizedBox(width: 5),
-                  const Icon(LineIcons.caretDown, size: 15),
+                  const Icon(LineAwesome.caret_down_solid, size: 15),
                 ],
               ),
             ),
@@ -89,32 +89,32 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
                 children: [
                   CardButton(
                     text: 'Send',
-                    iconData: Iconsax.send_sqaure_2,
+                    iconData: Iconsax.send_sqaure_2_outline,
                     onPressed: () {
                       UIUtils.showSimpleDialog('Send', 'Coming soon...');
                     },
                   ),
                   CardButton(
                     text: 'Receive',
-                    iconData: Iconsax.receive_square_2,
+                    iconData: Iconsax.receive_square_2_outline,
                     onPressed: controller.showQRCode,
                   ),
                   CardButton(
                     text: 'Swap',
-                    iconData: Iconsax.arrow_swap_horizontal,
+                    iconData: Iconsax.arrow_swap_horizontal_outline,
                     onPressed: () =>
                         UIUtils.showSimpleDialog('Swap', 'Coming soon...'),
                   ),
                   CardButton(
                     text: 'Buy',
-                    iconData: Iconsax.shopping_cart,
+                    iconData: Iconsax.shopping_cart_outline,
                     onPressed: () async {
                       UIUtils.showSimpleDialog('Buy Crypto', 'Coming soon...');
                     },
                   ),
                   CardButton(
                     text: 'Signer',
-                    iconData: Iconsax.pen_add,
+                    iconData: Iconsax.pen_add_outline,
                     onPressed: controller.signText,
                   ),
                 ],
@@ -154,7 +154,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
       leading: const AppBarLeadingButton(),
       actions: [
         IconButton(
-          icon: const Icon(Iconsax.scan_barcode),
+          icon: const Icon(Iconsax.scan_barcode_outline),
           onPressed: () {
             UIUtils.showSimpleDialog('Scan QR', 'Coming soon...');
           },
@@ -198,7 +198,7 @@ class WalletScreen extends StatelessWidget with ConsoleMixin {
             )
           ],
         ),
-        const Icon(LineIcons.caretDown, size: 15),
+        const Icon(LineAwesome.caret_down_solid, size: 15),
       ],
     );
 

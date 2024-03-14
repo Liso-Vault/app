@@ -5,7 +5,7 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../core/utils/globals.dart';
 import 'cipher_screen.controller.dart';
@@ -35,7 +35,7 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
                   ),
                   const SizedBox(width: 20),
                   Icon(
-                    Iconsax.shield_tick,
+                    Iconsax.shield_tick_outline,
                     color: themeColor,
                   ),
                 ],
@@ -43,16 +43,16 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
             ),
           ),
           ListTile(
-            leading: Icon(Iconsax.shield_tick, color: themeColor),
-            trailing: const Icon(Iconsax.arrow_right_3),
+            leading: Icon(Iconsax.shield_tick_outline, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('encrypt_file'.tr),
             subtitle: const Text('Encrypt a file'),
             onTap: controller.encrypt,
           ),
           ListTile(
             onTap: controller.decrypt,
-            leading: Icon(Iconsax.shield_cross, color: themeColor),
-            trailing: const Icon(Iconsax.arrow_right_3),
+            leading: Icon(Iconsax.shield_cross_outline, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('decrypt_file'.tr),
             subtitle: const Text(
               'Decrypt a <file>$kEncryptedExtensionExtra file',
@@ -60,16 +60,16 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
           ),
           const Divider(),
           ListTile(
-            leading: Icon(Iconsax.shield_tick, color: themeColor),
-            trailing: const Icon(Iconsax.arrow_right_3),
+            leading: Icon(Iconsax.shield_tick_outline, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('encrypt_text'.tr),
             subtitle: const Text('Encrypt texts'),
             onTap: controller.encryptText,
           ),
           ListTile(
             onTap: controller.decryptText,
-            leading: Icon(Iconsax.shield_cross, color: themeColor),
-            trailing: const Icon(Iconsax.arrow_right_3),
+            leading: Icon(Iconsax.shield_cross_outline, color: themeColor),
+            trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('decrypt_text'.tr),
             subtitle: const Text('Decrypt texts'),
           ),

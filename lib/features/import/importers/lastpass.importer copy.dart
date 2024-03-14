@@ -351,7 +351,7 @@
 //     // final itemIds = items_.map((e) => e.identifier);
 //     // MainScreenController.to.importedItemIds.addAll(itemIds);
 
-//     // NotificationsManager.notify(
+//     // NotificationsService.to.notify(
 //     //   title: 'Import Successful',
 //     //   body: 'Imported ${items.length} items via ${sourceFormat.title}',
 //     // );

@@ -6,8 +6,8 @@ import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/features/items/items.service.dart';
 
 import '../../../core/hive/models/item.hive.dart';
@@ -41,13 +41,13 @@ class VaultExplorerScreenController extends GetxController
     final ascending = sortName.contains('Ascending');
 
     final icon = Icon(
-      ascending ? LineIcons.sortUpAscending : LineIcons.sortDownDescending,
+      ascending ? LineAwesome.sort_solid : LineAwesome.sort_down_solid,
     );
 
     return [
       ContextMenuItem(
         title: 'title'.tr,
-        leading: Icon(Iconsax.text, size: popupIconSize),
+        leading: Icon(Iconsax.text_outline, size: popupIconSize),
         trailing: sortName.contains('title') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('title') || ascending
@@ -57,7 +57,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_modified'.tr,
-        leading: Icon(Iconsax.calendar, size: popupIconSize),
+        leading: Icon(Iconsax.calendar_outline, size: popupIconSize),
         trailing: sortName.contains('dateModified') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('dateModified') || ascending
@@ -67,7 +67,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'date_created'.tr,
-        leading: Icon(Iconsax.calendar_tick, size: popupIconSize),
+        leading: Icon(Iconsax.calendar_tick_outline, size: popupIconSize),
         trailing: sortName.contains('dateCreated') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('dateCreated') || ascending
@@ -77,7 +77,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'favorite'.tr,
-        leading: Icon(Iconsax.heart, size: popupIconSize),
+        leading: Icon(Iconsax.heart_outline, size: popupIconSize),
         trailing: sortName.contains('favorite') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('favorite') || ascending
@@ -87,7 +87,7 @@ class VaultExplorerScreenController extends GetxController
       ),
       ContextMenuItem(
         title: 'protected'.tr,
-        leading: Icon(Iconsax.lock, size: popupIconSize),
+        leading: Icon(Iconsax.lock_outline, size: popupIconSize),
         trailing: sortName.contains('protected') ? icon : null,
         onSelected: () {
           sortOrder.value = !sortName.contains('protected') || ascending
@@ -122,7 +122,7 @@ class VaultExplorerScreenController extends GetxController
     change(null, status: RxStatus.loading());
     // download vault file
 
-    final result = await StorageService.to.download(
+    final result = await FileService.to.download(
       object: '$kDirShared/${vault.docId}.$kVaultExtension',
     );
 

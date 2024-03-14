@@ -8,7 +8,8 @@ import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/liso/liso.manager.dart';
 
 import '../../core/hive/hive.service.dart';
@@ -143,7 +144,7 @@ class UnlockScreenController extends GetxController
     UIUtils.showSnackBar(
       title: 'Incorrect Master Password',
       message: message,
-      icon: const Icon(Iconsax.warning_2, color: Colors.red),
+      icon: const Icon(Iconsax.warning_2_outline, color: Colors.red),
       seconds: 4,
     );
   }

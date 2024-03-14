@@ -3,7 +3,8 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/general/keep_alive.widget.dart';
 
 import '../../general/centered_placeholder.widget.dart';
@@ -40,10 +41,10 @@ class NFTsScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.image,
+        iconData: Iconsax.image_outline,
         message: 'No NFTs',
         child: TextButton.icon(
-          icon: const Icon(Iconsax.refresh),
+          icon: const Icon(Iconsax.refresh_outline),
           onPressed: controller.load,
           label: Text(
             'refresh'.tr,

@@ -13,8 +13,8 @@ import '../supabase/model/list_objects_response.model.dart';
 import '../supabase/model/object.model.dart';
 import '../supabase/supabase_functions.service.dart';
 
-class StorageService extends GetxService with ConsoleMixin {
-  static StorageService get to => Get.find();
+class FileService extends GetxService with ConsoleMixin {
+  static FileService get to => Get.find();
 
   // VARIABLES
   final persistence = Get.find<Persistence>();
@@ -27,7 +27,7 @@ class StorageService extends GetxService with ConsoleMixin {
   List<S3Object> get backups {
     final path = '${SecretPersistence.to.walletAddress.val}/Backups/';
 
-    return StorageService.to.rootInfo.value.data.objects
+    return FileService.to.rootInfo.value.data.objects
         .where((e) => e.key.startsWith(path))
         .toList();
   }

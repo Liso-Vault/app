@@ -226,7 +226,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
     // cipherKeyController.clear();
 
     // // send notification
-    // NotificationsManager.notify(
+    // NotificationsService.to.notify(
     //   title: 'Shared Vault Joined',
     //   body: vault.name,
     // );

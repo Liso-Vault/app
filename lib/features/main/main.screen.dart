@@ -2,11 +2,9 @@ import 'package:app_core/config.dart';
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/connectivity/connectivity.service.dart';
 import 'package:app_core/connectivity/connectivity_bar.widget.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
-import 'package:app_core/services/main.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
@@ -14,8 +12,7 @@ import 'package:badges/badges.dart' as badges;
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/item.tile.dart';
@@ -59,7 +56,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       gridForLargeScreen: true,
       padding: EdgeInsets.zero,
       child: OutlinedButton.icon(
-        icon: const Icon(Iconsax.add_circle),
+        icon: const Icon(Iconsax.add_circle_outline),
         onPressed: () {},
         label: Text(
           'add_item'.tr,
@@ -102,7 +99,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
           const SizedBox(height: 10),
           OutlinedButton.icon(
-            icon: const Icon(Iconsax.search_status),
+            icon: const Icon(Iconsax.search_status_outline),
             label: const Text('Identify'),
             onPressed: () => Utils.adaptiveRouteOpen(
               name: Routes.upgrade,
@@ -129,7 +126,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             )
           : Obx(
               () => CenteredPlaceholder(
-                iconData: Iconsax.document,
+                iconData: Iconsax.document_outline,
                 message: 'no_items'.tr,
                 child:
                     drawerController.filterTrashed.value ? null : addItemButton,
@@ -156,7 +153,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
-            icon: const Icon(Iconsax.briefcase, size: 10),
+            icon: const Icon(Iconsax.briefcase_outline, size: 10),
             label: Text(
               drawerController.filterGroupLabel,
               style: const TextStyle(fontSize: 9),
@@ -165,7 +162,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
-            icon: const Icon(Iconsax.share, size: 10),
+            icon: const Icon(Iconsax.share_outline, size: 10),
             label: Text(
               drawerController.filterSharedVaultLabel,
               style: const TextStyle(fontSize: 9),
@@ -174,7 +171,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
-            icon: const Icon(Iconsax.filter, size: 10),
+            icon: const Icon(Iconsax.filter_outline, size: 10),
             label: Text(
               drawerController.filterToggleLabel,
               style: const TextStyle(fontSize: 9),
@@ -183,7 +180,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
-            icon: const Icon(Iconsax.category, size: 10),
+            icon: const Icon(Iconsax.category_outline, size: 10),
             label: Text(
               drawerController.filterCategoryLabel,
               style: const TextStyle(fontSize: 9),
@@ -192,7 +189,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
         ),
         Obx(
           () => CustomChip(
-            icon: const Icon(Iconsax.tag, size: 10),
+            icon: const Icon(Iconsax.tag_outline, size: 10),
             label: Text(
               drawerController.filterTagLabel,
               style: const TextStyle(fontSize: 9),
@@ -295,7 +292,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     // leading: const Icon(Iconsax.key),
                     trailing: OutlinedButton(
                       onPressed: () {
-                        MainService.to.requestReview();
+                        UIUtils.requestReview();
                         AppPersistence.to.rateCardVisibility.val = false;
                       },
                       child: const Text('Rate'),
@@ -351,7 +348,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final appBarActions = [
       IconButton(
-        icon: const Icon(Iconsax.search_normal),
+        icon: const Icon(Iconsax.search_normal_outline),
         onPressed: controller.search,
       ),
       Obx(
@@ -362,7 +359,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 .toLowerCase()
                 .contains(e.title.toLowerCase().replaceAll(' ', '')),
           ),
-          child: const Icon(Iconsax.sort),
+          child: const Icon(Iconsax.sort_outline),
         ),
       ),
       if (!isAutofill) ...[
@@ -376,7 +373,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               position: badges.BadgePosition.topEnd(top: -1, end: -5),
               child: Obx(
                 () => IconButton(
-                  icon: const Icon(Iconsax.cloud_change),
+                  icon: const Icon(Iconsax.cloud_change_outline),
                   onPressed: SyncService.to.syncing.value
                       ? null
                       : () {
@@ -416,7 +413,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               child: Row(
                 children: [
                   Icon(
-                    Iconsax.briefcase,
+                    Iconsax.briefcase_outline,
                     color: isSelected ? themeColor : null,
                     size: popupIconSize,
                   ),
@@ -457,7 +454,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                   children: [
                     vault.iconUrl.isEmpty
                         ? Icon(
-                            Iconsax.share,
+                            Iconsax.share_outline,
                             color: isSelected ? themeColor : null,
                             size: popupIconSize,
                           )
@@ -499,7 +496,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 child: Row(
                   children: [
                     vault.iconUrl.isEmpty
-                        ? Icon(LineIcons.briefcase, size: popupIconSize)
+                        ? Icon(LineAwesome.briefcase_solid, size: popupIconSize)
                         : RemoteImage(
                             url: vault.iconUrl,
                             width: 35,
@@ -532,7 +529,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 child: Row(
                   children: [
                     Icon(
-                      Iconsax.briefcase,
+                      Iconsax.briefcase_outline,
                       color: isAllSelected ? themeColor : null,
                       size: popupIconSize,
                     ),
@@ -582,7 +579,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     ),
                   ),
                   const SizedBox(width: 5),
-                  const Icon(LineIcons.caretDown, size: 15),
+                  const Icon(LineAwesome.caret_down_solid, size: 15),
                 ],
               ),
             ),
@@ -615,12 +612,12 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 if (drawerController.trashedCount > 0) {
                   return FloatingActionButton(
                     onPressed: controller.emptyTrash,
-                    child: const Icon(Iconsax.trash),
+                    child: const Icon(Iconsax.trash_outline),
                   );
                 } else if (drawerController.deletedCount > 0) {
                   return FloatingActionButton(
                     onPressed: controller.emptyDeleted,
-                    child: const Icon(Iconsax.trash),
+                    child: const Icon(Iconsax.trash_outline),
                   );
                 } else {
                   return const SizedBox.shrink();
@@ -632,7 +629,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 sheetForSmallScreen: true,
                 gridForLargeScreen: true,
                 child: FloatingActionButton(
-                  child: const Icon(LineIcons.plus),
+                  child: const Icon(LineAwesome.plus_solid),
                   onPressed: () {},
                 ),
               );

@@ -4,7 +4,8 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/attachments/attachment.tile.dart';
 
 import '../files/storage.service.dart';
@@ -21,7 +22,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
     Widget itemBuilder(context, index) {
       final eTag = controller.data[index];
 
-      final contents = StorageService.to.rootInfo.value.data.objects.where(
+      final contents = FileService.to.rootInfo.value.data.objects.where(
         (e) => e.etag == eTag,
       );
 
@@ -33,9 +34,9 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
             'The file might have been deleted already',
             style: TextStyle(color: Colors.orange),
           ),
-          leading: const Icon(Iconsax.slash, color: Colors.orange),
+          leading: const Icon(Iconsax.slash_outline, color: Colors.orange),
           trailing: IconButton(
-            icon: const Icon(Iconsax.trash, color: Colors.red),
+            icon: const Icon(Iconsax.trash_outline, color: Colors.red),
             onPressed: () => controller.data.remove(eTag),
           ),
         );
@@ -51,7 +52,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
       () {
         if (controller.data.isEmpty) {
           return CenteredPlaceholder(
-            iconData: Iconsax.attach_square,
+            iconData: Iconsax.attach_square_outline,
             message: 'No Attachments',
             child: TextButton(
               onPressed: controller.pick,
@@ -90,7 +91,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
     final floatingActionButton = Obx(
       () => FloatingActionButton(
         onPressed: controller.busy() ? null : controller.pick,
-        child: const Icon(Iconsax.add),
+        child: const Icon(Iconsax.add_outline),
       ),
     );
 

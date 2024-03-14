@@ -41,7 +41,7 @@ class AttachmentsScreenController extends GetxController
     final exists = data.contains(eTag);
 
     if (exists) {
-      final content = StorageService.to.rootInfo.value.data.objects.firstWhere(
+      final content = FileService.to.rootInfo.value.data.objects.firstWhere(
         (e) => e.etag == eTag,
       );
 

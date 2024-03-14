@@ -3,7 +3,7 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/utils/globals.dart';
 
 import 'password_generator_screen.controller.dart';
@@ -71,11 +71,11 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
                       TextButton.icon(
                         onPressed: controller.generate,
                         label: Text('generate'.tr),
-                        icon: const Icon(Iconsax.chart),
+                        icon: const Icon(Iconsax.chart_outline),
                       ),
                       TextButton.icon(
                         label: Text('copy'.tr),
-                        icon: const Icon(Iconsax.copy),
+                        icon: const Icon(Iconsax.copy_outline),
                         onPressed: () => Utils.copyToClipboard(
                           controller.password.value,
                         ),
@@ -84,7 +84,7 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
                         TextButton.icon(
                           onPressed: controller.save,
                           label: Text('save'.tr),
-                          icon: const Icon(Iconsax.add_circle),
+                          icon: const Icon(Iconsax.add_circle_outline),
                         ),
                       ]
                     ],

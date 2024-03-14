@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:app_core/config/app.model.dart';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -136,7 +136,7 @@ class CipherScreenController extends GetxController
       join(exportPath, basename(outputFile.path)),
     );
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Encrypted',
       body: name,
     );
@@ -222,7 +222,7 @@ class CipherScreenController extends GetxController
       join(exportPath, basename(outputFile.path)),
     );
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Decrypted',
       body: name,
     );

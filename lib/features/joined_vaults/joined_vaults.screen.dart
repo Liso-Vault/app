@@ -7,8 +7,7 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../app/routes.dart';
 import '../general/centered_placeholder.widget.dart';
@@ -121,7 +120,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
       final menuItems = [
         ContextMenuItem(
           title: 'leave'.tr,
-          leading: Icon(Iconsax.logout, size: popupIconSize),
+          leading: Icon(Iconsax.logout_outline, size: popupIconSize),
           onSelected: confirmLeave,
         ),
       ];
@@ -131,7 +130,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
         title: Text(vault.name),
         subtitle: vault.description.isNotEmpty ? Text(vault.description) : null,
         leading: vault.iconUrl.isEmpty
-            ? const Icon(Iconsax.briefcase)
+            ? const Icon(Iconsax.briefcase_outline)
             : RemoteImage(
                 url: vault.iconUrl,
                 width: 35,
@@ -139,7 +138,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
               ),
         trailing: ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
       );
     }
@@ -157,11 +156,11 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.briefcase,
+        iconData: Iconsax.briefcase_outline,
         message: 'no_joined_vaults'.tr,
       ),
       onError: (message) => CenteredPlaceholder(
-        iconData: Iconsax.warning_2,
+        iconData: Iconsax.warning_2_outline,
         message: message!,
         child: TextButton(
           onPressed: joinedController.restart,
@@ -186,7 +185,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
     final floatingActionButton = FloatingActionButton(
       onPressed: controller.joinDialog,
-      child: const Icon(LineIcons.plus),
+      child: const Icon(LineAwesome.plus_solid),
     );
 
     return Scaffold(

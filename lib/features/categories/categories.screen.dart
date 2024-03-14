@@ -7,8 +7,8 @@ import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/persistence/persistence.dart';
 
 import '../general/centered_placeholder.widget.dart';
@@ -62,7 +62,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
       final menuItems = [
         ContextMenuItem(
           title: 'delete'.tr,
-          leading: Icon(Iconsax.trash, size: popupIconSize),
+          leading: Icon(Iconsax.trash_outline, size: popupIconSize),
           onSelected: confirmDelete,
         ),
       ];
@@ -75,7 +75,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
             ? Text(category.reservedDescription)
             : null,
         leading: category.iconUrl.isEmpty
-            ? const Icon(Iconsax.category)
+            ? const Icon(Iconsax.category_outline)
             : RemoteImage(
                 url: category.iconUrl,
                 width: 35,
@@ -83,7 +83,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
               ),
         trailing: ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
       );
     }
@@ -101,7 +101,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.category,
+        iconData: Iconsax.category_outline,
         message: 'no_custom_categories'.tr,
       ),
     );
@@ -120,7 +120,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
 
     final floatingActionButton = FloatingActionButton(
       onPressed: controller.create,
-      child: const Icon(LineIcons.plus),
+      child: const Icon(LineAwesome.plus_solid),
     );
 
     return Scaffold(

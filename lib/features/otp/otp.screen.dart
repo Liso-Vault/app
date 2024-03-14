@@ -4,7 +4,7 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../../core/utils/globals.dart';
 import 'otp_screen.controller.dart';
@@ -21,7 +21,7 @@ class OTPScreen extends StatelessWidget with ConsoleMixin {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            Icon(Iconsax.convert_3d_cube, size: 150, color: themeColor),
+            Icon(Iconsax.convert_3d_cube_outline, size: 150, color: themeColor),
             const SizedBox(height: 20),
             const Text(
               'OTP Generator',

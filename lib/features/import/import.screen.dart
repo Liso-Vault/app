@@ -7,7 +7,8 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/features/general/widget_refresher.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
@@ -31,7 +32,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Iconsax.import_1, size: 100, color: themeColor),
+            Icon(Iconsax.import_1_outline, size: 100, color: themeColor),
             const SizedBox(height: 20),
             const Text(
               'Import Items',
@@ -126,7 +127,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Iconsax.import_1),
+                  icon: const Icon(Iconsax.import_1_outline),
                   onPressed: controller.importFile,
                 ),
               ],
@@ -145,7 +146,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             ElevatedButton.icon(
               onPressed: controller.continuePressed,
               label: Text('continue'.tr),
-              icon: const Icon(Iconsax.arrow_circle_right),
+              icon: const Icon(Iconsax.arrow_circle_right_outline),
             ),
           ],
         ),

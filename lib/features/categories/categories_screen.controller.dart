@@ -1,5 +1,5 @@
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -59,7 +59,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
       nameController.clear();
       descriptionController.clear();
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Category ${createMode ? 'Created' : 'Updated'}',
         body: nameController.text,
       );

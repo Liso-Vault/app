@@ -1,7 +1,7 @@
 import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:line_icons/line_icons.dart';
+
+import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:liso/features/general/section.widget.dart';
 
@@ -31,7 +31,7 @@ class _SectionFormFieldState extends State<SectionFormField> {
     return [
       ContextMenuItem(
         title: 'Properties',
-        leading: Icon(Iconsax.setting, size: popupIconSize),
+        leading: Icon(Iconsax.setting_outline, size: popupIconSize),
         onSelected: () async {
           await ItemScreenController.to.showFieldProperties(formWidget);
           setState(() {});
@@ -39,7 +39,7 @@ class _SectionFormFieldState extends State<SectionFormField> {
       ),
       ContextMenuItem(
         title: 'Remove',
-        leading: Icon(Iconsax.trash, size: popupIconSize),
+        leading: Icon(Iconsax.trash_outline, size: popupIconSize),
         onSelected: () => ItemScreenController.to.widgets.remove(formWidget),
       ),
     ];
@@ -55,7 +55,7 @@ class _SectionFormFieldState extends State<SectionFormField> {
         Expanded(child: section),
         ContextMenuButton(
           menuItems,
-          child: const Icon(LineIcons.verticalEllipsis),
+          child: const Icon(LineAwesome.ellipsis_v_solid),
         ),
       ],
     );

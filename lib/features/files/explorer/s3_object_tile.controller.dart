@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -100,7 +100,7 @@ class S3ObjectTileController extends GetxController
       // purge all items
       await HiveService.to.purge();
       // download chosen vault file
-      final downloadResult = await StorageService.to.download(
+      final downloadResult = await FileService.to.download(
         object: object.key,
       );
 
@@ -114,7 +114,7 @@ class S3ObjectTileController extends GetxController
       }
 
       // re-upload to overwrite current vault file
-      final uploadResult = await StorageService.to.upload(
+      final uploadResult = await FileService.to.upload(
         downloadResult.right,
         object: kVaultFileName,
       );
@@ -142,7 +142,7 @@ class S3ObjectTileController extends GetxController
 
       MainScreenController.to.load();
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Successfully Switched',
         body: 'Successfully switched to vault: ${object.name}',
       );
@@ -185,7 +185,7 @@ class S3ObjectTileController extends GetxController
     void delete() async {
       Get.back();
       change('Deleting...', status: RxStatus.loading());
-      final result = await StorageService.to.remove(object.key);
+      final result = await FileService.to.remove(object.key);
 
       if (result.isLeft) {
         change(false, status: RxStatus.success());
@@ -196,7 +196,7 @@ class S3ObjectTileController extends GetxController
         );
       }
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Deleted',
         body: object.name,
       );
@@ -234,7 +234,7 @@ class S3ObjectTileController extends GetxController
     void proceed() async {
       change('Downloading...', status: RxStatus.loading());
       final downloadPath = join(LisoPaths.temp!.path, object.maskedName);
-      final result = await StorageService.to.download(object: object.key);
+      final result = await FileService.to.download(object: object.key);
 
       if (result.isLeft) {
         change('', status: RxStatus.success());
@@ -282,7 +282,7 @@ class S3ObjectTileController extends GetxController
       await Future.delayed(1.seconds); // just for style
       await FileUtils.move(file, join(exportPath, fileName));
 
-      NotificationsManager.notify(
+      NotificationsService.to.notify(
         title: 'Downloaded',
         body: fileName,
       );

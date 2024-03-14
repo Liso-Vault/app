@@ -1,6 +1,6 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/notifications/notifications.manager.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/utils/utils.dart';
@@ -49,7 +49,7 @@ class WelcomeScreenController extends GetxController
     await WalletService.to.create(seed, password, true);
     change(null, status: RxStatus.success());
 
-    NotificationsManager.notify(
+    NotificationsService.to.notify(
       title: 'Welcome to ${appConfig.name}',
       body: 'Your vault has been created',
     );

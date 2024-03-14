@@ -7,11 +7,10 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   firebase_core
   flutter_secure_storage_windows
-  hotkey_manager
+  hotkey_manager_windows
   local_auth_windows
   pasteboard
   permission_handler_windows
-  platform_device_id_windows
   screen_retriever
   sentry_flutter
   share_plus

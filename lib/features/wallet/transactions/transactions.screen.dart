@@ -2,7 +2,8 @@ import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/general/keep_alive.widget.dart';
 
 import '../../general/centered_placeholder.widget.dart';
@@ -34,10 +35,10 @@ class TransactionsScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: const BusyIndicator(),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.activity,
+        iconData: Iconsax.activity_outline,
         message: 'No Activity',
         child: TextButton.icon(
-          icon: const Icon(Iconsax.refresh),
+          icon: const Icon(Iconsax.refresh_outline),
           onPressed: controller.load,
           label: Text(
             'refresh'.tr,

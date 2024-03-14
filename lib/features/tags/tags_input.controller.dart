@@ -1,7 +1,7 @@
 import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_icons/line_icons.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../items/items.service.dart';
 
@@ -112,7 +112,7 @@ class TagsInputController extends GetxController {
               ),
               IconButton(
                 onPressed: Get.back,
-                icon: const Icon(LineIcons.times),
+                icon: const Icon(LineAwesome.times_solid),
               ),
             ],
           ),

@@ -2,7 +2,8 @@ import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:skeletons/skeletons.dart';
 
 import '../../general/centered_placeholder.widget.dart';
@@ -63,17 +64,17 @@ class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
       (_) => listView,
       onLoading: skeleton,
       onError: (message) => CenteredPlaceholder(
-        iconData: Iconsax.warning_2,
+        iconData: Iconsax.warning_2_outline,
         message: message!,
       ),
       onEmpty: CenteredPlaceholder(
-        iconData: Iconsax.document,
+        iconData: Iconsax.document_outline,
         message: 'no_items'.tr,
       ),
     );
 
     final button = IconButton(
-      icon: const Icon(Iconsax.refresh),
+      icon: const Icon(Iconsax.refresh_outline),
       onPressed: controller.init,
     );
 
@@ -95,7 +96,7 @@ class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
       actions: [
         Obx(
           () => IconButton(
-            icon: const Icon(Iconsax.search_normal),
+            icon: const Icon(Iconsax.search_normal_outline),
             onPressed: !controller.busy.value ? controller.search : null,
           ),
         ),
@@ -109,7 +110,7 @@ class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
                   .contains(e.title.toLowerCase().replaceAll(' ', '')),
             ),
             child: IconButton(
-              icon: const Icon(Iconsax.sort),
+              icon: const Icon(Iconsax.sort_outline),
               onPressed: !controller.busy.value ? () {} : null,
             ),
           ),

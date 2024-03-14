@@ -3,7 +3,8 @@ import 'package:app_core/persistence/persistence.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:icons_plus/icons_plus.dart';
+
 import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 
@@ -132,7 +133,7 @@ class DrawerMenuController extends GetxController with ConsoleMixin {
         (e) => Obx(
           () => ListTile(
             title: Text(e, overflow: TextOverflow.ellipsis),
-            leading: const Icon(Iconsax.tag),
+            leading: const Icon(Iconsax.tag_outline),
             onTap: () => filterByTag(e),
             selected: e == filterTag.value,
           ),
