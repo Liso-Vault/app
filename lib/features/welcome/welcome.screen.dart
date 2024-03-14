@@ -38,16 +38,14 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
               ],
               const LogoWidget(size: 200),
               const SizedBox(height: 40),
-              Animate(
-                child: GradientWidget(
-                  gradient: LinearGradient(colors: CoreConfig().gradientColors),
-                  child: Text(
-                    'slogan'.tr,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+              GradientWidget(
+                gradient: LinearGradient(colors: CoreConfig().gradientColors),
+                child: Text(
+                  'slogan'.tr,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               )
@@ -67,15 +65,12 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                 alignment: WrapAlignment.center,
                 children: [
                   SizedBox(
-                    width: 200,
-                    child: ElevatedButton.icon(
-                      label: Text('create_vault'.tr),
-                      icon: const Icon(Iconsax.box_add_outline),
-                      onPressed: controller.create,
-                    )
-                        .animate(onPlay: (c) => c.repeat())
-                        .shimmer(duration: 2000.ms),
-                  ),
+                      width: 200,
+                      child: ElevatedButton.icon(
+                        label: Text('create_vault'.tr),
+                        icon: const Icon(Iconsax.box_add_outline),
+                        onPressed: controller.create,
+                      )),
                   SizedBox(
                     width: 200,
                     child: OutlinedButton.icon(

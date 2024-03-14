@@ -104,7 +104,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
       onSignedIn: AppUtils.onSignedIn,
       logoDarkPath: Images.logo,
       logoLightPath: Images.logoLight,
-      offeringId: 'annual_monthly',
       allowAnonymousRcUserSync: false,
       upgradeConfig: UpgradeConfig(
         pricing: AppPricing.data,

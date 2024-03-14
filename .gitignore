@@ -900,7 +900,6 @@ DerivedData/
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
 lib/core/utils/secrets.dart
-lib/generated_plugin_registrant.dart
 assets/json/config/web3_config.json
 assets/json/config/limits_config.json
 assets/json/config/users_config.json
