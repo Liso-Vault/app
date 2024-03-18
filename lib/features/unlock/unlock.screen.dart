@@ -7,7 +7,6 @@ import 'package:app_core/widgets/version.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/utils/globals.dart';
 
@@ -34,7 +33,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
             fontWeight: FontWeight.bold,
           ),
         ),
-        if (!controller.promptMode) ...[
+        if (!controller.canPop) ...[
           const SizedBox(height: 20),
           Text(
             SecretPersistence.to.shortAddress,
@@ -50,7 +49,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
               onPressed: controller.authenticate,
               label: Text('authenticate'.tr),
               icon: Icon(
-                controller.promptMode
+                controller.canPop
                     ? Iconsax.arrow_circle_right_outline
                     : LineAwesome.lock_open_solid,
               ),
@@ -88,9 +87,9 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
           const SizedBox(height: 20),
           Obx(
             () => ElevatedButton.icon(
-              label: Text(controller.promptMode ? 'proceed'.tr : 'unlock'.tr),
+              label: Text(controller.canPop ? 'proceed'.tr : 'unlock'.tr),
               icon: Icon(
-                controller.promptMode
+                controller.canPop
                     ? Iconsax.arrow_circle_right_outline
                     : LineAwesome.lock_open_solid,
               ),
@@ -101,13 +100,11 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    return WillPopScope(
-      onWillPop: () => Future.value(
-        controller.promptMode || isAutofill,
-      ),
+    return PopScope(
+      canPop: controller.canPop || isAutofill,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: controller.promptMode,
+          automaticallyImplyLeading: controller.canPop,
           actions: [
             TextButton(
               onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),

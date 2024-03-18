@@ -196,13 +196,8 @@ class MainScreenController extends GetxController with ConsoleMixin {
     );
 
     await WalletService.to.init(wallet!);
-    // HiveService.to.open();
     SyncService.to.sync();
-
-    Get.toNamed(
-      Routes.unlock,
-      parameters: {'mode': 'password_prompt'},
-    );
+    Get.toNamed(Routes.unlock);
   }
 
   // void init() async {
@@ -284,7 +279,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
         // expired
         if (expirationTime.isBefore(DateTime.now())) {
           console.wtf('lifecycle: expired time lock');
-          Get.toNamed(Routes.unlock, parameters: {'mode': 'password_prompt'});
+          Get.toNamed(Routes.unlock);
         }
       }
       // INACTIVE
@@ -432,7 +427,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
     final unlocked = await Get.toNamed(
           Routes.unlock,
           parameters: {
-            'mode': 'password_prompt',
+            'mode': 'poppable',
             'reason': 'Show Master Seed Phrase',
           },
         ) ??

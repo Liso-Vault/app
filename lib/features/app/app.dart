@@ -18,6 +18,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     final persistence = Get.find<Persistence>();
     const scheme = FlexScheme.jungle;
+    const buttonStyle = ButtonStyle(visualDensity: VisualDensity.standard);
 
     const subThemes = FlexSubThemesData(
       fabUseShape: false,
@@ -28,8 +29,40 @@ class App extends StatelessWidget {
       popupMenuRadius: 10,
     );
 
+    final darkThemeBase = FlexColorScheme.dark(
+      // darkIsTrueBlack: true,
+      useMaterial3: true,
+      scheme: scheme,
+      subThemesData: subThemes,
+    ).toTheme;
+
+    final darkTheme = darkThemeBase.copyWith(
+      // textTheme: GoogleFonts.interTextTheme(darkThemeBase.textTheme),
+      elevatedButtonTheme: const ElevatedButtonThemeData(style: buttonStyle),
+      outlinedButtonTheme: const OutlinedButtonThemeData(style: buttonStyle),
+    );
+
+    final lightThemeBase = FlexColorScheme.light(
+      // lightIsWhite: false,
+      useMaterial3: true,
+      scheme: scheme,
+      subThemesData: subThemes,
+      appBarStyle: FlexAppBarStyle.background,
+    ).toTheme;
+
+    final lightTheme = lightThemeBase.copyWith(
+      // textTheme: GoogleFonts.interTextTheme(lightThemeBase.textTheme),
+      elevatedButtonTheme: const ElevatedButtonThemeData(style: buttonStyle),
+      outlinedButtonTheme: const OutlinedButtonThemeData(style: buttonStyle),
+    );
+
     // MATERIAL APP
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      // THEME MODE
+      themeMode: ThemeMode.values.byName(persistence.theme.val),
+      darkTheme: darkTheme, // dark theme
+      theme: lightTheme, // light theme
       onReady: () {
         // initialize initial theme value
         MainService.to.dark.value = Get.theme.brightness == Brightness.dark;
@@ -41,35 +74,27 @@ class App extends StatelessWidget {
           SentryNavigatorObserver(),
         ]
       ],
-      debugShowCheckedModeBanner: false,
-      // showPerformanceOverlay: true,
-      // LOCALE
-      translationsKeys: translationKeys,
-      locale: Locale(persistence.localeCode.val),
-      fallbackLocale: const Locale('en', 'US'),
       // NAVIGATION
       initialRoute: Routes.main,
       getPages: Pages.data,
       defaultTransition: Transition.native,
-      themeMode: ThemeMode.values.byName(persistence.theme.val),
-      // DARK THEME
-      darkTheme: FlexColorScheme.dark(
-        useMaterial3: true,
-        scheme: scheme,
-        subThemesData: subThemes,
-      ).toTheme,
-      // LIGHT THEME
-      theme: FlexColorScheme.light(
-        useMaterial3: true,
-        scheme: scheme,
-        appBarStyle: FlexAppBarStyle.background,
-        subThemesData: subThemes,
-      ).toTheme,
       // UNKNOWN ROUTE FALLBACK SCREEN
       unknownRoute: GetPage(
         name: Routes.unknown,
         page: () => const UnknownScreen(),
       ),
+      // LOCALE
+      translationsKeys: translationKeys,
+      locale: Locale(persistence.localeCode.val),
+      fallbackLocale: const Locale('en'),
+      supportedLocales: translationKeys.entries.map((e) {
+        if (e.key.contains('_')) {
+          final splitted = e.key.split('_');
+          return Locale(splitted[0], splitted[1]);
+        }
+
+        return Locale(e.key);
+      }),
     );
   }
 }

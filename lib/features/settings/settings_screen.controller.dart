@@ -114,7 +114,7 @@ class SettingsScreenController extends GetxController
     final unlocked = await Get.toNamed(
           Routes.unlock,
           parameters: {
-            'mode': 'password_prompt',
+            'mode': 'poppable',
             'reason': 'Export Wallet File',
           },
         ) ??
@@ -180,7 +180,7 @@ class SettingsScreenController extends GetxController
       final unlocked = await Get.toNamed(
             Routes.unlock,
             parameters: {
-              'mode': 'password_prompt',
+              'mode': 'poppable',
               'reason': 'Export Vault File',
             },
           ) ??
@@ -278,7 +278,7 @@ class SettingsScreenController extends GetxController
     final unlocked = await Get.toNamed(
           Routes.unlock,
           parameters: {
-            'mode': 'password_prompt',
+            'mode': 'poppable',
             'reason': 'Show Master Seed Phrase',
           },
         ) ??
@@ -298,7 +298,7 @@ class SettingsScreenController extends GetxController
       final unlocked = await Get.toNamed(
             Routes.unlock,
             parameters: {
-              'mode': 'password_prompt',
+              'mode': 'poppable',
               'reason': 'Purge Items',
             },
           ) ??
@@ -342,7 +342,7 @@ class SettingsScreenController extends GetxController
       final unlocked = await Get.toNamed(
             Routes.unlock,
             parameters: {
-              'mode': 'password_prompt',
+              'mode': 'poppable',
               'reason': 'Delete Remote Data',
             },
           ) ??
@@ -389,7 +389,7 @@ class SettingsScreenController extends GetxController
       final unlocked = await Get.toNamed(
             Routes.unlock,
             parameters: {
-              'mode': 'password_prompt',
+              'mode': 'poppable',
               'reason': 'Reset your vault',
             },
           ) ??

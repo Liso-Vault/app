@@ -17,7 +17,7 @@ class UnlockScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
-  final promptMode = Get.parameters['mode'] == 'password_prompt';
+  final canPop = Get.parameters['mode'] == 'poppable';
   final reason = Get.parameters['reason'];
 
   // PROPERTIES
@@ -85,7 +85,7 @@ class UnlockScreenController extends GetxController
     canProceed.value = false;
     String message = 'Please enter your master password';
 
-    if (!promptMode) {
+    if (!canPop) {
       attemptsLeft--;
 
       if (attemptsLeft <= 0) {
