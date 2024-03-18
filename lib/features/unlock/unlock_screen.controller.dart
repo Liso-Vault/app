@@ -9,19 +9,15 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-
 import 'package:liso/core/liso/liso.manager.dart';
 
-import '../../core/hive/hive.service.dart';
 import '../../core/persistence/persistence.secret.dart';
-import '../wallet/wallet.service.dart';
 
 class UnlockScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
   final promptMode = Get.parameters['mode'] == 'password_prompt';
-  final regularMode = Get.parameters['mode'] == 'regular';
   final reason = Get.parameters['reason'];
 
   // PROPERTIES
@@ -79,47 +75,8 @@ class UnlockScreenController extends GetxController
       return _wrongPassword();
     }
 
-    if (!WalletService.to.isReady) {
-      WalletService.to
-          .initJson(SecretPersistence.to.wallet.val, password: password)
-          .then((wallet) {
-        if (wallet == null) {
-          return UIUtils.showSimpleDialog(
-            'Wrong Password',
-            'Please report to the developer',
-          );
-        }
-
-        WalletService.to.init(wallet);
-      });
-    }
-
-    void done() async {
-      await HiveService.to.open();
-      change(null, status: RxStatus.success());
-      // AuthenticationMiddleware.signedIn = true;
-
-      if (!promptMode && !regularMode) {
-        Persistence.to.sessionCount.val++;
-        console.wtf('session count: ${Persistence.to.sessionCount.val}');
-      }
-
-      if (promptMode || regularMode) return Get.back(result: true);
-      return Get.offNamedUntil(Routes.main, (route) => false);
-    }
-
-    // temporary to migrate users prior v0.6.0
-    Timer.periodic(1.seconds, (timer) async {
-      final ready = SecretPersistence.to.walletSignature.val.isNotEmpty &&
-          SecretPersistence.to.walletPrivateKeyHex.val.isNotEmpty;
-
-      if (ready) {
-        timer.cancel();
-        return done();
-      } else {
-        console.info('wallet still not saved to persistence');
-      }
-    });
+    change(null, status: RxStatus.success());
+    return Get.back(result: true);
   }
 
   void _wrongPassword() async {

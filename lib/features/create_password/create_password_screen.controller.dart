@@ -1,13 +1,11 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/services/notifications.service.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
@@ -89,7 +87,5 @@ class CreatePasswordScreenController extends GetxController
       title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${appConfig.name}',
       body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
     );
-
-    Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

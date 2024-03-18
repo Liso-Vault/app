@@ -23,7 +23,7 @@ class AppPersistence extends Persistence with ConsoleMixin {
   final backedUpSeed = false.val('backed-up-seed-phrase');
   final backedUpPassword = false.val('backed-up-password');
   final upgradeScreenShown = false.val('upgrade-screen-shown');
-  final rateCardVisibility = true.val('rate-card-visibility');
+  // final rateCardVisibility = true.val('rate-card-visibility');
   // SYNC
   final sync = true.val('sync');
   final syncProvider = LisoSyncProvider.sia.name.val('sync-provider');

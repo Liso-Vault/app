@@ -1,5 +1,4 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/connectivity/connectivity.service.dart';
 import 'package:app_core/connectivity/connectivity_bar.widget.dart';
 import 'package:app_core/globals.dart';
@@ -268,38 +267,38 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                   ),
                 ),
               ),
-              Visibility(
-                visible: AppPersistence.to.rateCardVisibility.val &&
-                    p.sessionCount.val > 15 &&
-                    isRateReviewSupported,
-                child: Card(
-                  elevation: 2.0,
-                  margin: const EdgeInsets.only(
-                    top: 5,
-                    bottom: 5,
-                    left: 15,
-                    right: 15,
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    selectedTileColor: themeColor.withOpacity(0.05),
-                    // TODO: localize
-                    title: Text(
-                        "Rate & review ${appConfig.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
-                    subtitle: Text(
-                      "Help spread awareness on why people should consider using ${appConfig.name} as their secure vault.",
-                    ),
-                    // leading: const Icon(Iconsax.key),
-                    trailing: OutlinedButton(
-                      onPressed: () {
-                        UIUtils.requestReview();
-                        AppPersistence.to.rateCardVisibility.val = false;
-                      },
-                      child: const Text('Rate'),
-                    ),
-                  ),
-                ),
-              ),
+              // Visibility(
+              //   visible: AppPersistence.to.rateCardVisibility.val &&
+              //       p.sessionCount.val > 15 &&
+              //       isRateReviewSupported,
+              //   child: Card(
+              //     elevation: 2.0,
+              //     margin: const EdgeInsets.only(
+              //       top: 5,
+              //       bottom: 5,
+              //       left: 15,
+              //       right: 15,
+              //     ),
+              //     child: ListTile(
+              //       contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+              //       selectedTileColor: themeColor.withOpacity(0.05),
+              //       // TODO: localize
+              //       title: Text(
+              //           "Rate & review ${appConfig.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
+              //       subtitle: Text(
+              //         "Help spread awareness on why people should consider using ${appConfig.name} as their secure vault.",
+              //       ),
+              //       // leading: const Icon(Iconsax.key),
+              //       trailing: OutlinedButton(
+              //         onPressed: () {
+              //           UIUtils.requestReview();
+              //           AppPersistence.to.rateCardVisibility.val = false;
+              //         },
+              //         child: const Text('Rate'),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               // show only when seed is already backed up to not overcrowd
               // Obx(
               //   () => Visibility(

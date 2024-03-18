@@ -1,8 +1,7 @@
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/services/notifications.service.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
@@ -53,11 +52,9 @@ class WelcomeScreenController extends GetxController
       title: 'Welcome to ${appConfig.name}',
       body: 'Your vault has been created',
     );
-
-    Get.offNamedUntil(Routes.main, (route) => false);
   }
 
-  void restore() async {
+  void restore() {
     Utils.adaptiveRouteOpen(name: AppRoutes.restore);
   }
 }

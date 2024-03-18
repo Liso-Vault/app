@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/services/notifications.service.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -15,7 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:icons_plus/icons_plus.dart';
-
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/core/utils/globals.dart';
@@ -174,11 +172,8 @@ class RestoreScreenController extends GetxController
           title: 'Welcome back to ${appConfig.name}',
           body: 'Your vault has been restored',
         );
-
-        Get.offNamedUntil(Routes.main, (route) => false);
       } else {
         change(null, status: RxStatus.success());
-
         generatedSeed = seed;
         Utils.adaptiveRouteOpen(name: AppRoutes.createPassword);
       }

@@ -396,15 +396,12 @@ class SettingsScreenController extends GetxController
           false;
 
       if (!unlocked) return;
-
       await LisoManager.reset();
 
       NotificationsService.to.notify(
         title: 'Vault Reset',
         body: 'Your local vault has been successfully reset',
       );
-
-      Get.offNamedUntil(Routes.main, (route) => false);
     }
 
     UIUtils.showImageDialog(

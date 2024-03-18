@@ -33,6 +33,8 @@ class LisoManager {
   // FUNCTIONS
 
   static Future<void> reset() async {
+    // sign out
+    AuthService.to.auth.signOut();
     console.info('resetting...');
     // clear filters
     DrawerMenuController.to.filterGroupId.value = 'personal';
@@ -58,9 +60,6 @@ class LisoManager {
     // // invalidate purchases
     PurchasesService.to.invalidate();
     PurchasesService.to.logout();
-    // sign out
-    // AuthenticationMiddleware.signedIn = false;
-    AuthService.to.auth.signOut();
     console.info('reset!');
   }
 

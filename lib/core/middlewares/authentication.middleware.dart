@@ -1,8 +1,8 @@
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/services/main.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
 
 class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
@@ -20,7 +20,7 @@ class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
     }
 
     // post init
-    MainScreenController.to.init();
+    MainService.to.onboarded();
     return super.redirect(route);
   }
 }

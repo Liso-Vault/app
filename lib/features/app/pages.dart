@@ -1,3 +1,4 @@
+import 'package:app_core/middlewares/onboarding.middleware.dart';
 import 'package:app_core/pages/feedback/feedback.screen.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/pages/update/update.screen.dart';
@@ -16,7 +17,6 @@ import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
 import 'package:liso/features/welcome/welcome.screen.dart';
 
-import '../../core/middlewares/authentication.middleware.dart';
 import '../attachments/attachments.screen.dart';
 import '../categories/categories.screen.dart';
 import '../categories/picker/category_picker.screen.dart';
@@ -41,7 +41,8 @@ class Pages {
       name: Routes.main,
       page: () => MainScreen(),
       middlewares: [
-        AuthenticationMiddleware(),
+        // AuthenticationMiddleware(),
+        OnboardingMiddleware(),
       ],
     ),
     GetPage(

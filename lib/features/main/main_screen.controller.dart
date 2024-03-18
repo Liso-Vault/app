@@ -2,9 +2,9 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -12,14 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
-
-import 'package:intl/intl.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:intl/intl.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/categories/categories.controller.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
@@ -175,45 +173,62 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
   // INIT
   @override
+  void onInit() {
+    initWallet();
+    super.onInit();
+  }
+
+  @override
   void onReady() {
     _initAppLifeCycleEvents();
-    // init();
     super.onReady();
   }
 
   // FUNCTIONS
+  void initWallet() async {
+    final walletJsonString = SecretPersistence.to.wallet.val;
+    final walletPassword = SecretPersistence.to.walletPassword.val;
+    if (walletJsonString.isEmpty || walletPassword.isEmpty) return;
 
-  void init() async {
-    // load listview
-    load();
+    final wallet = await WalletService.to.initJson(
+      walletJsonString,
+      password: walletPassword,
+    );
 
-    if (isAutofill) {
-      // show all items from all vaults
-      drawerController.filterGroupId.value = '';
-      LisoAutofillService.to.request();
-    } else {
-      // incase cipher key is still empty for some reason
-      // retry again after a few seconds
-      if (SecretPersistence.to.cipherKey.isEmpty) {
-        Future.delayed(3.seconds).then((x) {
-          // sync vault
-          SyncService.to.sync();
-        });
-      } else {
-        // sync vault
-        SyncService.to.sync();
+    await WalletService.to.init(wallet!);
+    // HiveService.to.open();
+    SyncService.to.sync();
 
-        // // show upgrade screen every app open
-        // if (!PurchasesService.to.isPremium) {
-        //   await Future.delayed(5.seconds);
-        //   Utils.adaptiveRouteOpen(name: Routes.upgrade);
-        // }
-      }
-    }
-
-    _updateBuildNumber();
-    console.info('postInit');
+    Get.toNamed(
+      Routes.unlock,
+      parameters: {'mode': 'password_prompt'},
+    );
   }
+
+  // void init() async {
+  //   // load listview
+  //   load();
+
+  //   if (isAutofill) {
+  //     // show all items from all vaults
+  //     drawerController.filterGroupId.value = '';
+  //     LisoAutofillService.to.request();
+  //   } else {
+  //     // incase cipher key is still empty for some reason
+  //     // retry again after a few seconds
+  //     if (SecretPersistence.to.cipherKey.isEmpty) {
+  //       Future.delayed(3.seconds).then((x) {
+  //         // sync vault
+  //         SyncService.to.sync();
+  //       });
+  //     } else {
+  //       // sync vault
+  //       SyncService.to.sync();
+  //     }
+  //   }
+
+  //   console.info('postInit');
+  // }
 
   void search({String query = ''}) async {
     if (Get.context == null) {
@@ -269,7 +284,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
         // expired
         if (expirationTime.isBefore(DateTime.now())) {
           console.wtf('lifecycle: expired time lock');
-          Get.toNamed(Routes.unlock, parameters: {'mode': 'regular'});
+          Get.toNamed(Routes.unlock, parameters: {'mode': 'password_prompt'});
         }
       }
       // INACTIVE
@@ -283,12 +298,6 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
       return Future.value(msg);
     });
-  }
-
-  void _updateBuildNumber() async {
-    persistence.lastBuildNumber.val = int.parse(
-      metadataApp.buildNumber,
-    );
   }
 
   void emptyTrash() {

@@ -105,11 +105,8 @@ void init(Flavor flavor, {bool autofill = false}) async {
       logoDarkPath: Images.logo,
       logoLightPath: Images.logoLight,
       allowAnonymousRcUserSync: false,
-      upgradeConfig: UpgradeConfig(
-        pricing: AppPricing.data,
-        listViewHeight: 150,
-        // grouped: false,
-      ),
+      adsEnabled: false,
+      upgradeConfig: UpgradeConfig(pricing: AppPricing.data),
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
         Color.fromARGB(255, 0, 255, 213),

@@ -59,6 +59,10 @@ class AppPricing {
   // };
 
   static final data = {
+    // LIFETIME
+    'liso.pro.iap.lifetime': Pricing.fromJson(pro),
+    // WEEKLY
+    'liso.pro.sub.weekly': Pricing.fromJson(pro),
     // MONTHLY
     // 'starter.sub.monthly': Pricing.fromJson(starter),
     // 'plus.sub.monthly': Pricing.fromJson(plus),

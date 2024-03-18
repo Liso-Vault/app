@@ -1,13 +1,13 @@
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
-import 'package:app_core/purchases/purchases.services.dart';
-import 'package:app_core/utils/utils.dart';
+import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:liso/features/main/main_screen.controller.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
@@ -280,27 +280,19 @@ class AppUtils {
 
   static void onSignedIn() {
     console.wtf('onSignedIn');
+    if (authenticated.value) return console.info('cancelled onSignedIn');
     authenticated.value = true;
-
-    AppFunctionsService.to.status(force: true).then((value) {
-      // manually prevent duplicates becaused onSignedIn is fired twice
-      if (!PurchasesService.to.isPremium && !isBeta) {
-        Utils.adaptiveRouteOpen(name: Routes.upgrade);
-        // AppodealService.to.init();
-      }
-    });
-
-    // if (Get.currentRoute != Routes.main) {
-    //   console.wtf('Routes.main onSignedIn()');
-    //   Get.offNamedUntil(Routes.main, (route) => false);
-    // }
-
+    Persistence.to.onboarded.val = true;
+    AppFunctionsService.to.status(force: true);
     FileService.to.load().then((_) => AppFunctionsService.to.syncUser());
+    MainScreenController.to.load();
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 
-  static void onSignedOut() {
+  static void onSignedOut() async {
     console.wtf('onSignedOut');
     authenticated.value = false;
+    Persistence.to.onboarded.val = false;
     Get.offNamedUntil(Routes.main, (route) => false);
     AppService.to.reset();
   }

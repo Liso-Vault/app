@@ -170,19 +170,29 @@ class WalletService extends GetxService with ConsoleMixin {
 
   Future<void> init(Wallet wallet_) async {
     wallet = wallet_;
-    SecretPersistence.to.walletPrivateKeyHex.val =
-        HEX.encode(wallet!.privateKey.privateKey);
+
+    SecretPersistence.to.walletPrivateKeyHex.val = HEX.encode(
+      wallet!.privateKey.privateKey,
+    );
+
     // save to persistence
     SecretPersistence.to.walletAddress.val = address.hexEip55;
     console.info('init! address: ${address.hexEip55}');
-    SecretPersistence.to.wallet.val =
-        await compute(walletToJsonString, wallet!);
+
+    SecretPersistence.to.wallet.val = await compute(
+      walletToJsonString,
+      wallet!,
+    );
+
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
     SecretPersistence.to.walletSignature.val = signature;
+    HiveService.to.open();
 
-    final email = '${SecretPersistence.to.walletAddress.val}@liso.dev';
-    final password = await WalletService.to.sign(kAuthSignatureMessage);
+    final email = '${SecretPersistence.to.walletAddress.val}-0@liso.dev';
+    String password = await WalletService.to.sign(kAuthSignatureMessage);
+    password = password.substring(0, 20);
+    console.info('authenticating: $email -> $password');
     AuthService.to.authenticate(email: email, password: password);
 
     if (!GetPlatform.isWindows) {
@@ -204,8 +214,8 @@ class WalletService extends GetxService with ConsoleMixin {
     await Future.delayed(200.milliseconds);
     // save password
     SecretPersistence.to.walletPassword.val = password;
-    // open Hive Boxes
-    await HiveService.to.open();
+    // // open Hive Boxes
+    // await HiveService.to.open();
     if (!isNew) return;
     // inject values to fields
     final category = CategoriesController.to.combined
