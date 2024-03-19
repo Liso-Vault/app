@@ -6,6 +6,7 @@ import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
+import 'package:app_core/widgets/premium_card.widget.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:console_mixin/console_mixin.dart';
@@ -335,6 +336,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           ),
         ),
         Expanded(child: childContent),
+        if (DrawerMenuController.to.) ... [
+          const PremiumCard(),
+        ],
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(

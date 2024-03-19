@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
@@ -197,7 +198,12 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
     await WalletService.to.init(wallet!);
     SyncService.to.sync();
-    Get.toNamed(Routes.unlock);
+    await Get.toNamed(Routes.unlock);
+
+    Utils.adaptiveRouteOpen(
+      name: Routes.upgrade,
+      parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
+    );
   }
 
   // void init() async {

@@ -17,8 +17,6 @@ dependencies:
   # CRYTPOGRAPHY + SECURITY
   secrets:
     path: ../secrets
-  # alchemy_web3:
-  # git: https://github.com/oliverbytes/alchemy_web3.git
   alchemy_web3:
     git:
       url: https://github.com/oliverbytes/alchemy_web3.git
@@ -37,13 +35,6 @@ dependencies:
   share_plus: ^7.0.1
 
   # API
-  # minio: ^3.5.0 # S3 API
-  # minio:
-  #   git:
-  #     url: https://github.com/oliverbytes/minio-dart.git
-  #     ref: 076c9f33729713c06f885448d86e79092c09d11c
-    # git: https://github.com/oliverbytes/minio-dart.git
-  # coingecko_api: ^1.1.1+1 # Coingecko API
   coingecko_api:
     git:
       url: https://github.com/oliverbytes/coingecko_api.git
@@ -67,8 +58,6 @@ dependencies:
   csv: ^5.0.2 # csv parsing tool
 
 dependency_overrides:
-  # intl: ^0.17.0
-  # extended_image: ^8.0.1
   win32: 5.0.2
   either_dart: ^1.0.0
 
@@ -82,4 +71,3 @@ flutter:
   assets:
     - assets/
     - assets/images/
-    - google_fonts/

@@ -106,6 +106,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
       logoLightPath: Images.logoLight,
       allowAnonymousRcUserSync: false,
       adsEnabled: false,
+      showUpgradeAppOpen: false,
       upgradeConfig: UpgradeConfig(pricing: AppPricing.data),
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
@@ -154,11 +155,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
     // initializations
     initUpgradeConfig();
     Future.delayed(5.seconds).then((value) => initUpgradeConfig());
-
-    LicenseRegistry.addLicense(() async* {
-      final license = await rootBundle.loadString('google_fonts/OFL.txt');
-      yield LicenseEntryWithLineBreaks(['google_fonts'], license);
-    });
 
     runApp(const App()); // run
   }, (Object exception, StackTrace stackTrace) {
