@@ -201,6 +201,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
+              const PremiumCard(),
               PersistenceBuilder(
                 builder: (p, context) => AppPersistence.to.sync.val
                     ? ListTile(
@@ -280,7 +281,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 ),
               ),
               const Divider(),
-              const PremiumCard(),
               ListTile(
                 dense: isSmallScreen,
                 title: Text('need_help'.tr),

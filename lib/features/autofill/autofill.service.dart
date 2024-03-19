@@ -35,9 +35,9 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
     supported.value = await autofill.hasAutofillServicesSupport;
     if (!supported.value) return;
 
-    enabled.value = await autofill.hasEnabledAutofillServices;
+    enabled.value = await autofill.hasAutofillServicesSupport;
 
-    final pref = await autofill.getPreferences();
+    final pref = await autofill.preferences;
     saving.value = pref.enableSaving;
 
     console.info(
@@ -49,7 +49,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
 
   void set() async {
     await autofill.requestSetAutofillService();
-    enabled.value = await autofill.hasEnabledAutofillServices;
+    enabled.value = await autofill.hasAutofillServicesSupport;
 
     NotificationsService.to.notify(
       title: 'Autofill Service ${enabled.value ? 'Enabled' : 'Disabled'}',
@@ -226,8 +226,8 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
   }
 
   Future<void> _refresh() async {
-    pref = await autofill.getPreferences();
-    metadata = await autofill.getAutofillMetadata();
-    status = await autofill.status();
+    pref = await autofill.preferences;
+    metadata = await autofill.autofillMetadata;
+    status = await autofill.status;
   }
 }

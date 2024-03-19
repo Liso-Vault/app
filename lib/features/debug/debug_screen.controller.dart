@@ -19,25 +19,25 @@ class DebugScreenController extends GetxController with ConsoleMixin {
   }
 
   Future<void> updateStats() async {
-    pref = await autofill.getPreferences();
-    metadata = await autofill.getAutofillMetadata();
-    status = await autofill.status();
+//     pref = await autofill.getPreferences();
+//     metadata = await autofill.getAutofillMetadata();
+//     status = await autofill.status();
 
-    console.info(''''
-fillRequestedAutomatic: ${await autofill.fillRequestedAutomatic}'
-fillRequestedInteractive: ${await autofill.fillRequestedInteractive}'
-hasAutofillServicesSupport: ${await autofill.hasAutofillServicesSupport}'
-hasEnabledAutofillServices: ${await autofill.hasEnabledAutofillServices}'
+//     console.info(''''
+// fillRequestedAutomatic: ${await autofill.fillRequestedAutomatic}'
+// fillRequestedInteractive: ${await autofill.fillRequestedInteractive}'
+// hasAutofillServicesSupport: ${await autofill.hasAutofillServicesSupport}'
+// hasEnabledAutofillServices: ${await autofill.hasEnabledAutofillServices}'
 
-saveInfo: ${metadata?.saveInfo?.toJson()}'
-packageNames: ${metadata?.packageNames}'
-webDomains: ${metadata?.webDomains}'
+// saveInfo: ${metadata?.saveInfo?.toJson()}'
+// packageNames: ${metadata?.packageNames}'
+// webDomains: ${metadata?.webDomains}'
 
-enableDebug: ${pref?.enableDebug}'
-enableSaving: ${pref?.enableSaving}'
+// enableDebug: ${pref?.enableDebug}'
+// enableSaving: ${pref?.enableSaving}'
 
-status: ${status.toString()}'
-    ''');
+// status: ${status.toString()}'
+//     ''');
   }
 
   void save() async {

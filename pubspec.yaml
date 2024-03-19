@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 1.2.0+51
+version: 1.2.1+52
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -54,8 +54,11 @@ dependencies:
   equatable: ^2.0.5
   random_string_generator: ^2.0.0
   worker_manager: ^4.4.6 # multi threading
-  flutter_autofill_service: ^0.14.0 # android autofill plugun
   csv: ^5.0.2 # csv parsing tool
+  # flutter_autofill_service: ^0.14.0 # android autofill plugun
+  flutter_autofill_service: 
+    git:
+      url: https://github.com/kee-org/flutter_autofill_service.git
 
 dependency_overrides:
   win32: 5.0.2
