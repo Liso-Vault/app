@@ -35,12 +35,12 @@ class CategoriesService extends GetxService with ConsoleMixin {
     );
 
     boxInitialized = true;
-    console.info('length: ${data.length}');
+    // console.info('length: ${data.length}');
   }
 
   Future<void> close() async {
     await box?.close();
-    console.info('close');
+    // console.info('close');
   }
 
   Future<void> clear() async {
@@ -55,7 +55,7 @@ class CategoriesService extends GetxService with ConsoleMixin {
     // refresh custom categories
     CategoriesController.to.load();
     await box?.deleteFromDisk();
-    console.info('clear');
+    // console.info('clear');
   }
 
   Future<void> import(List<HiveLisoCategory> data,

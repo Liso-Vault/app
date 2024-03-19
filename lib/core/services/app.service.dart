@@ -17,9 +17,9 @@ class AppService extends GetxService with ConsoleMixin {
   // INIT
 
   Future<void> reset() async {
-    console.info('resetting...');
+    // console.info('resetting...');
     GlobalService.to.userStatus.value = const Status();
     await MainService.to.reset();
-    console.info('reset!');
+    // console.info('reset!');
   }
 }

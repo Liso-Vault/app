@@ -335,10 +335,10 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             ],
           ),
         ),
-        Expanded(child: childContent),
-        if (DrawerMenuController.to.) ... [
+        if (isSmallScreen) ...[
           const PremiumCard(),
         ],
+        Expanded(child: childContent),
         Align(
           alignment: Alignment.centerLeft,
           child: Padding(

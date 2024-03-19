@@ -44,19 +44,19 @@ class AlchemyService extends GetxService with ConsoleMixin {
       verbose: false,
     );
 
-    console.info('init');
+    // console.info('init');
   }
 
   Future<void> load() async {
     if (!WalletService.to.isSaved) return;
 
     if (!ConnectivityService.to.connected.value) {
-      return console.warning('offline');
+      // return console.warning('offline');
     }
 
     await loadLisoBalance();
     await loadMaticBalance();
-    console.info('load');
+    // console.info('load');
   }
 
   Future<void> loadLisoBalance() async {
@@ -85,7 +85,7 @@ class AlchemyService extends GetxService with ConsoleMixin {
 
   Future<void> loadMaticBalance() async {
     if (!ConnectivityService.to.connected.value) {
-      return console.warning('offline');
+      // return console.warning('offline');
     }
 
     final result = await alchemy.polygon.getBalance(

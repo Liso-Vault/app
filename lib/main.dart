@@ -10,7 +10,6 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
@@ -20,8 +19,9 @@ import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/groups/groups.service.dart';
 import 'package:liso/features/supabase/supabase_functions.service.dart';
 import 'package:liso/features/wallet/wallet.service.dart';
+import 'package:liso/firebase_options.dart';
 import 'package:liso/resources/resources.dart';
-import 'package:secrets/firebase_options.dart';
+import 'package:secrets/secrets.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:worker_manager/worker_manager.dart';
 
@@ -108,6 +108,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
       adsEnabled: false,
       showUpgradeAppOpen: false,
       upgradeConfig: UpgradeConfig(pricing: AppPricing.data),
+      fcmVapidKey: Secrets.fcmVapidKey,
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
         Color.fromARGB(255, 0, 255, 213),

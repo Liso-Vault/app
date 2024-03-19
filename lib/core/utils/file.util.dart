@@ -13,7 +13,7 @@ class FileUtils {
     try {
       await file.delete();
     } catch (e) {
-      console.error('error deleting');
+      console.error('error deleting: $e');
     }
   }
 

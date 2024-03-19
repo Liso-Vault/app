@@ -21,14 +21,14 @@ class CipherService extends GetxService with ConsoleMixin {
   // FUNCTIONS
   Uint8List encrypt(List<int> bytes, {Uint8List? cipherKey}) {
     final key = Key(cipherKey ?? SecretPersistence.to.cipherKey);
-    console.wtf('encrypt key: ${key.length}');
+    // console.wtf('encrypt key: ${key.length}');
     final encrypter = Encrypter(AES(key));
     return encrypter.encryptBytes(bytes, iv: iv).bytes;
   }
 
   List<int> decrypt(Uint8List bytes, {Uint8List? cipherKey}) {
     final key = Key(cipherKey ?? SecretPersistence.to.cipherKey);
-    console.wtf('decrypt key: ${key.length}');
+    // console.wtf('decrypt key: ${key.length}');
     final encrypter = Encrypter(AES(key));
     return encrypter.decryptBytes(Encrypted(bytes), iv: iv);
   }

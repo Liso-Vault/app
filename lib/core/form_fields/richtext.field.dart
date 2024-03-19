@@ -22,7 +22,7 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
     try {
       return jsonEncode(_fieldController!.document.toDelta().toJson());
     } catch (e) {
-      console.error('value error: $e');
+      // console.error('value error: $e');
       return '';
     }
   }
@@ -42,7 +42,7 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
           selection: const TextSelection.collapsed(offset: 0),
         );
       } catch (e) {
-        console.error('json error: $e');
+        // console.error('json error: $e');
         _fieldController = QuillController.basic();
       }
     }

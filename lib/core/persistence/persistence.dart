@@ -66,21 +66,21 @@ class AppPersistence extends Persistence with ConsoleMixin {
     final ids = deletedGroupIds.val.split(',');
     ids.add(id);
     deletedGroupIds.val = ids.join(',');
-    console.wtf('deletedGroupIds: ${deletedGroupIds.val}');
+    // console.wtf('deletedGroupIds: ${deletedGroupIds.val}');
   }
 
   void addToDeletedCategories(String id) {
     final ids = deletedCategoryIds.val.split(',');
     ids.add(id);
     deletedCategoryIds.val = ids.join(',');
-    console.wtf('deletedCategoryIds: ${deletedCategoryIds.val}');
+    // console.wtf('deletedCategoryIds: ${deletedCategoryIds.val}');
   }
 
   void addToDeletedItems(String id) {
     final ids = deletedItemIds.val.split(',');
     ids.add(id);
     deletedItemIds.val = ids.join(',');
-    console.wtf('deletedItemIds');
+    // console.wtf('deletedItemIds');
   }
 
   // STATIC

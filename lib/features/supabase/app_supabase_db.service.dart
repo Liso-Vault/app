@@ -24,7 +24,7 @@ class AppDatabaseService extends DatabaseService {
         console.wtf('Remote Configuration Failed: $error');
       },
       (response) async {
-        console.wtf('Remote Config Success!');
+        // console.wtf('Remote Config Success!');
 
         appConfig = response.app;
         extraConfig = ExtraConfig.fromJson(response.extra);

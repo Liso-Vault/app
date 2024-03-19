@@ -49,7 +49,7 @@ class AppFunctionsService extends FunctionsService {
       );
     }
 
-    console.info('status...');
+    // console.info('status...');
     FunctionResponse? response;
 
     try {
@@ -93,7 +93,7 @@ class AppFunctionsService extends FunctionsService {
     }
 
     final responseObject = Status.fromJson(serverResponse.data);
-    console.wtf('status: ${responseObject.toJson()}');
+    // console.wtf('status: ${responseObject.toJson()}');
     GlobalService.to.userStatus.value = responseObject;
     ready.value = true;
     return Right(responseObject);
@@ -109,8 +109,8 @@ class AppFunctionsService extends FunctionsService {
       '',
     );
 
-    console.info(
-        'stat: $object.... $address | ${SecretPersistence.to.walletAddress.val}');
+    // console.info(
+    //     'stat: $object.... $address | ${SecretPersistence.to.walletAddress.val}');
 
     final response = await functions.invoke(
       kFunctionStatObject,
@@ -120,7 +120,7 @@ class AppFunctionsService extends FunctionsService {
       },
     );
 
-    console.debug('raw: ${response.data}, errors: ${response.status}');
+    // console.debug('raw: ${response.data}, errors: ${response.status}');
 
     if (response.status != 200) {
       return Left('supabase error: ${response.status}: ${response.data}');
@@ -134,7 +134,7 @@ class AppFunctionsService extends FunctionsService {
   }) async {
     // strip root address
     path = path.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
-    console.info('list objects: $path....');
+    // console.info('list objects: $path....');
 
     final response = await functions.invoke(
       kFunctionListObjects,
@@ -161,7 +161,7 @@ class AppFunctionsService extends FunctionsService {
         )
         .toList();
 
-    console.info('delete objects: $objects....');
+    // console.info('delete objects: $objects....');
 
     final response = await functions.invoke(
       kFunctionDeleteObjects,
@@ -183,7 +183,7 @@ class AppFunctionsService extends FunctionsService {
       String path) async {
     // strip root address
     path = path.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
-    console.info('delete directory: $path....');
+    // console.info('delete directory: $path....');
 
     final response = await functions.invoke(
       kFunctionDeleteDirectory,
@@ -208,9 +208,11 @@ class AppFunctionsService extends FunctionsService {
     int expirySeconds = 1000,
   }) async {
     // strip root address
-    object =
-        object.replaceAll('${SecretPersistence.to.walletAddress.val}/', '');
-    console.info('presigning: $object.... $address');
+    object = object.replaceAll(
+      '${SecretPersistence.to.walletAddress.val}/',
+      '',
+    );
+    // console.info('presigning: $object.... $address');
 
     final response = await functions.invoke(
       kFunctionPresignUrl,

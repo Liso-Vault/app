@@ -59,11 +59,11 @@ class SyncService extends GetxService with ConsoleMixin {
     if (!isReady) return const Right(false);
 
     if (syncing.value) {
-      console.warning('already down syncing');
+      // console.warning('already down syncing');
       return const Right(false);
     }
 
-    console.info('syncing...');
+    // console.info('syncing...');
     syncing.value = true;
 
     final statResult = await AppFunctionsService.to.statObject(
@@ -119,14 +119,14 @@ class SyncService extends GetxService with ConsoleMixin {
   // DOWN SYNC
   Future<Either<dynamic, bool>> _downSync() async {
     if (!isReady) return const Right(false);
-    console.info('down syncing...');
+    // console.info('down syncing...');
 
     final result = await FileService.to.download(
       object: kVaultFileName,
     );
 
     if (result.isLeft) return Left(result.left);
-    console.wtf('decrypt sync(): ${result.right.lengthInBytes}');
+    // console.wtf('decrypt sync(): ${result.right.lengthInBytes}');
     final decryptedBytes = CipherService.to.decrypt(result.right);
     final jsonMap = jsonDecode(utf8.decode(decryptedBytes)); // TODO: isolate
     final vault = LisoVault.fromJson(jsonMap);
@@ -142,7 +142,7 @@ class SyncService extends GetxService with ConsoleMixin {
       return console.warning('already backed up for todays session');
     }
 
-    console.info('backup: $object...');
+    // console.info('backup: $object...');
 
     // REMOVE OLDEST BACKUP IF NECESSARY
     if (FileService.to.backups.length >= limits.backups) {
@@ -191,7 +191,7 @@ class SyncService extends GetxService with ConsoleMixin {
       return const Left('not in sync with server');
     }
 
-    console.info('up syncing...');
+    // console.info('up syncing...');
 
     // UPLOAD
     final vaultJsonString = await LisoManager.compactJson();
@@ -213,7 +213,8 @@ class SyncService extends GetxService with ConsoleMixin {
     }
 
     console.info(
-        'up sync data: ${encryptedBytes.length} -> ${presignResult.right.data.url}');
+      'up sync data: ${encryptedBytes.length} -> ${presignResult.right.data.url}',
+    );
 
     // TODO: pass object metadata
     final response = await http.put(
@@ -221,8 +222,9 @@ class SyncService extends GetxService with ConsoleMixin {
       body: encryptedBytes,
     );
 
-    console
-        .info('up sync put response: ${response.statusCode}, ${response.body}');
+    console.info(
+      'up sync put response: ${response.statusCode}, ${response.body}',
+    );
     return const Right(true);
   }
 
@@ -302,8 +304,9 @@ class SyncService extends GetxService with ConsoleMixin {
   Future<void> _mergeGroups(LisoVault vault) async {
     final server = vault.groups;
     final local = GroupsService.to.box!;
-    console
-        .wtf('merged groups local: ${local.length}, server: ${server.length}');
+    // console.wtf(
+    //   'merged groups local: ${local.length}, server: ${server.length}',
+    // );
 
     // merge server and local items
     final merged = [...server, ...local.values];
@@ -328,7 +331,7 @@ class SyncService extends GetxService with ConsoleMixin {
       newList.addIf(!newList.contains(item), item);
     }
 
-    console.wtf('merged groups: ${newList.length}');
+    // console.wtf('merged groups: ${newList.length}');
     await local.clear();
     await local.addAll(newList);
   }
@@ -336,8 +339,8 @@ class SyncService extends GetxService with ConsoleMixin {
   Future<void> _mergeCategories(LisoVault vault) async {
     final server = vault.categories ?? [];
     final local = CategoriesService.to.box!;
-    console.wtf(
-        'merged categories local: ${local.length}, server: ${server.length}');
+    // console.wtf(
+    //     'merged categories local: ${local.length}, server: ${server.length}');
     // merge server and local items
     final merged = [...server, ...local.values];
     // sort all from most to least updated time
@@ -359,7 +362,7 @@ class SyncService extends GetxService with ConsoleMixin {
       newList.addIf(!newList.contains(item), item);
     }
 
-    console.wtf('merged categories: ${newList.length}');
+    // console.wtf('merged categories: ${newList.length}');
     await local.clear();
     await local.addAll(newList);
   }
@@ -367,9 +370,9 @@ class SyncService extends GetxService with ConsoleMixin {
   Future<void> _mergeItems(LisoVault vault) async {
     final server = vault.items;
     final local = ItemsService.to.box!;
-    console.wtf(
-      'merged items local: ${local.length}, server: ${server.length}',
-    );
+    // console.wtf(
+    //   'merged items local: ${local.length}, server: ${server.length}',
+    // );
 
     // merge server and local items
     final merged = [...server, ...local.values];
@@ -392,7 +395,7 @@ class SyncService extends GetxService with ConsoleMixin {
       newList.addIf(!newList.contains(item), item);
     }
 
-    console.wtf('merged items: ${newList.length}');
+    // console.wtf('merged items: ${newList.length}');
     await local.clear();
     await local.addAll(newList);
   }

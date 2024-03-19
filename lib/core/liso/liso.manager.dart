@@ -35,7 +35,7 @@ class LisoManager {
   static Future<void> reset() async {
     // sign out
     AuthService.to.auth.signOut();
-    console.info('resetting...');
+    // console.info('resetting...');
     // clear filters
     DrawerMenuController.to.filterGroupId.value = 'personal';
     DrawerMenuController.to.clearFilters();
@@ -60,7 +60,7 @@ class LisoManager {
     // // invalidate purchases
     PurchasesService.to.invalidate();
     PurchasesService.to.logout();
-    console.info('reset!');
+    // console.info('reset!');
   }
 
   static Future<String> compactJson() async {
@@ -94,7 +94,7 @@ class LisoManager {
     Uint8List bytes, {
     Uint8List? cipherKey,
   }) async {
-    console.wtf('decrypt parseVaultBytes()');
+    // console.wtf('decrypt parseVaultBytes()');
     final decryptedBytes = CipherService.to.decrypt(
       bytes,
       cipherKey: cipherKey,
