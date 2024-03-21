@@ -40,10 +40,7 @@ class Pages {
     GetPage(
       name: Routes.main,
       page: () => MainScreen(),
-      middlewares: [
-        // AuthenticationMiddleware(),
-        OnboardingMiddleware(),
-      ],
+      middlewares: [OnboardingMiddleware()],
     ),
     GetPage(
       name: Routes.welcome,

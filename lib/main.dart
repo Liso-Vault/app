@@ -97,7 +97,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
       isAppStore: true,
       translationKeys: translationKeys,
       pages: Pages.data,
-      initialWindowSize: const Size(1800, 1215),
+      initialWindowSize: const Size(1215, 1215),
       onCancelledUpgradeScreen: AppUtils.onCancelledUpgradeScreen,
       onSuccessfulUpgrade: AppUtils.onSuccessfulUpgrade,
       onSignedOut: AppUtils.onSignedOut,
@@ -107,6 +107,7 @@ void init(Flavor flavor, {bool autofill = false}) async {
       allowAnonymousRcUserSync: false,
       adsEnabled: false,
       showUpgradeAppOpen: false,
+      // purchasesEnabled: false,
       upgradeConfig: UpgradeConfig(pricing: AppPricing.data),
       fcmVapidKey: Secrets.fcmVapidKey,
       gradientColors: const [

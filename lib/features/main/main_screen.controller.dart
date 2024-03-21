@@ -182,14 +182,29 @@ class MainScreenController extends GetxController with ConsoleMixin {
   @override
   void onReady() {
     _initAppLifeCycleEvents();
+    showFirstScreens();
     super.onReady();
   }
 
   // FUNCTIONS
+  void showFirstScreens() {
+    if (!WalletService.to.isSaved) return;
+
+    Get.toNamed(Routes.unlock)?.then((value) {
+      Utils.adaptiveRouteOpen(
+        name: Routes.upgrade,
+        parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
+      );
+    });
+  }
+
   void initWallet() async {
     final walletJsonString = SecretPersistence.to.wallet.val;
     final walletPassword = SecretPersistence.to.walletPassword.val;
     if (walletJsonString.isEmpty || walletPassword.isEmpty) return;
+    // HiveService.to.open().then((value) => load());
+    load();
+    SyncService.to.sync();
 
     final wallet = await WalletService.to.initJson(
       walletJsonString,
@@ -197,39 +212,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
     );
 
     await WalletService.to.init(wallet!);
-    SyncService.to.sync();
-    await Get.toNamed(Routes.unlock);
-
-    Utils.adaptiveRouteOpen(
-      name: Routes.upgrade,
-      parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
-    );
   }
-
-  // void init() async {
-  //   // load listview
-  //   load();
-
-  //   if (isAutofill) {
-  //     // show all items from all vaults
-  //     drawerController.filterGroupId.value = '';
-  //     LisoAutofillService.to.request();
-  //   } else {
-  //     // incase cipher key is still empty for some reason
-  //     // retry again after a few seconds
-  //     if (SecretPersistence.to.cipherKey.isEmpty) {
-  //       Future.delayed(3.seconds).then((x) {
-  //         // sync vault
-  //         SyncService.to.sync();
-  //       });
-  //     } else {
-  //       // sync vault
-  //       SyncService.to.sync();
-  //     }
-  //   }
-
-  //   console.info('postInit');
-  // }
 
   void search({String query = ''}) async {
     if (Get.context == null) {
@@ -262,12 +245,12 @@ class MainScreenController extends GetxController with ConsoleMixin {
       console.warning(msg!);
       // ignore if not logged in
       if (!WalletService.to.isReady) {
-        console.warning('lifecycle: wallet is not ready');
+        // console.warning('lifecycle: wallet is not ready');
         return Future.value(msg);
       }
 
       if (!timeLockEnabled) {
-        console.warning('lifecycle: timeLock is disabled');
+        // console.warning('lifecycle: timeLock is disabled');
         return Future.value(msg);
       }
 
@@ -284,7 +267,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
         // expired
         if (expirationTime.isBefore(DateTime.now())) {
-          console.wtf('lifecycle: expired time lock');
+          // console.wtf('lifecycle: expired time lock');
           Get.toNamed(Routes.unlock);
         }
       }

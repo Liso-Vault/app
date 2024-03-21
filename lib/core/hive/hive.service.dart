@@ -7,6 +7,7 @@ import 'package:liso/core/hive/models/app_domain.hive.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/features/groups/groups.service.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 
 import '../../features/categories/categories.service.dart';
 import '../../features/items/items.service.dart';
@@ -28,7 +29,6 @@ class HiveService extends GetxService with ConsoleMixin {
     Hive.registerAdapter(HiveLisoFieldChoicesAdapter());
     // APP DOMAIN
     Hive.registerAdapter(HiveAppDomainAdapter());
-    // Hive.registerAdapter(HiveDomainAdapter());
     // METADATA
     Hive.registerAdapter(HiveMetadataAdapter());
     Hive.registerAdapter(HiveMetadataAppAdapter());
@@ -37,15 +37,18 @@ class HiveService extends GetxService with ConsoleMixin {
     Hive.registerAdapter(HiveLisoGroupAdapter());
     // CATEGORIES
     Hive.registerAdapter(HiveLisoCategoryAdapter());
-
     Console(name: 'HiveService').info("init");
+
+    if (WalletService.to.isSaved) {
+      HiveService.to.open();
+    }
   }
 
   Future<void> open() async {
     await ItemsService.to.open();
     await GroupsService.to.open();
     await CategoriesService.to.open();
-    // console.info('open');
+    console.info('open');
   }
 
   Future<void> purge() async {

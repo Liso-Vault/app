@@ -286,7 +286,11 @@ class AppUtils {
     AppFunctionsService.to.status(force: true);
     FileService.to.load().then((_) => AppFunctionsService.to.syncUser());
     MainScreenController.to.load();
-    Get.offNamedUntil(Routes.main, (route) => false);
+
+    // workaround
+    if (Get.currentRoute == Routes.welcome) {
+      Get.offNamedUntil(Routes.main, (route) => false);
+    }
   }
 
   static void onSignedOut() async {

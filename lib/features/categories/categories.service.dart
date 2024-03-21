@@ -27,10 +27,12 @@ class CategoriesService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   Future<void> open({Uint8List? cipherKey, bool initialize = true}) async {
+    if (Hive.isBoxOpen(kHiveBoxCategories)) return;
+    final cipher = HiveAesCipher(cipherKey ?? SecretPersistence.to.cipherKey);
+
     box = await Hive.openBox(
       kHiveBoxCategories,
-      encryptionCipher:
-          HiveAesCipher(cipherKey ?? SecretPersistence.to.cipherKey),
+      encryptionCipher: cipher,
       path: LisoPaths.hivePath,
     );
 

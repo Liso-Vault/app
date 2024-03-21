@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:path/path.dart';
@@ -38,8 +37,8 @@ class LisoPaths {
     }
 
     // print paths
-    final console = Console(name: 'LisoPaths');
-    console.info('main: ${main!.path}');
+    // final console = Console(name: 'LisoPaths');
+    // console.info('main: ${main!.path}');
   }
 
   static Future<void> cleanTemp() async {

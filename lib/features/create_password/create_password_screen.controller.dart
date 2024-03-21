@@ -1,4 +1,6 @@
 import 'package:app_core/config/app.model.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -81,11 +83,13 @@ class CreatePasswordScreenController extends GetxController
       isNewVault,
     );
 
-    change(null, status: RxStatus.success());
-
     NotificationsService.to.notify(
       title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${appConfig.name}',
       body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
     );
+
+    change(null, status: RxStatus.success());
+    Persistence.to.onboarded.val = true;
+    Get.offNamedUntil(Routes.main, (route) => false);
   }
 }

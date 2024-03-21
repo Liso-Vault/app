@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/routes.dart';
+import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -165,18 +167,21 @@ class RestoreScreenController extends GetxController
         // AuthenticationMiddleware.signedIn = true;
         final password = AppUtils.generatePassword();
         await WalletService.to.create(seed, password, false);
-        change(null, status: RxStatus.success());
         AppPersistence.to.backedUpSeed.val = true;
 
         NotificationsService.to.notify(
           title: 'Welcome back to ${appConfig.name}',
           body: 'Your vault has been restored',
         );
+
+        Persistence.to.onboarded.val = true;
+        Get.offNamedUntil(Routes.main, (route) => false);
       } else {
-        change(null, status: RxStatus.success());
         generatedSeed = seed;
         Utils.adaptiveRouteOpen(name: AppRoutes.createPassword);
       }
+
+      change(null, status: RxStatus.success());
     }
 
     await UIUtils.showImageDialog(
