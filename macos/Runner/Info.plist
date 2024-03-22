@@ -34,5 +34,27 @@
 	<string>NSApplication</string>
 	<key>GOOGLE_ANALYTICS_REGISTRATION_WITH_AD_NETWORK_ENABLED</key>
 	<false/>
+	<!-- Privacy Accessed -->
+	<key>NSPrivacy</key>
+	<dict>
+		<key>NSPrivacyAccessedAPITypes</key>
+		<array>
+			<string>diskSpace</string>
+			<string>fileTimestamp</string>
+			<string>userDefaults</string>
+			<string>activeKeyboards</string>
+		</array>
+		<key>NSPrivacyAccessedReason</key>
+		<dict>
+			<key>diskSpace</key>
+			<string>Our app uses the disk space API to store user-generated content, such as images and videos, locally on the device. This allows users to access their content even when they're offline.</string>
+			<key>fileTimestamp</key>
+			<string>Our app uses the file timestamp API to track the last modified date of user-generated files. This information is used to display the most recent files to the user and to sync changes across multiple devices.</string>
+			<key>userDefaults</key>
+			<string>Our app uses the user defaults API to store user preferences and app settings. This allows users to customize their experience and helps the app remember user choices between sessions.</string>
+			<key>activeKeyboards</key>
+			<string>Our app uses the active keyboards API to detect when a user switches between different input methods. This information is used to provide a seamless user experience by adapting the app's interface to the currently active keyboard.</string>
+		</dict>
+	</dict>
 </dict>
 </plist>
