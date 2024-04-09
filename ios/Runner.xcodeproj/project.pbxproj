@@ -148,8 +148,8 @@
 				9705A1C41CF9048500538489 /* Embed Frameworks */,
 				3B06AD1E1E4923F5004D2608 /* Thin Binary */,
 				E9C5F0114982A80114127729 /* [CP] Embed Pods Frameworks */,
-				CD861A6F6179EC65044C6883 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 				2BC70DDC939C7D9F43A9EBCE /* [CP] Copy Pods Resources */,
+				CD861A6F6179EC65044C6883 /* [firebase_crashlytics] Crashlytics Upload Symbols */,
 			);
 			buildRules = (
 			);
@@ -297,7 +297,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# \"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n";
+			shellScript = "\"$PODS_ROOT/FirebaseCrashlytics/upload-symbols\" --flutter-project \"$PROJECT_DIR/firebase_app_id_file.json\" \n";
 		};
 		E9C5F0114982A80114127729 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;

@@ -65,12 +65,13 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
                 alignment: WrapAlignment.center,
                 children: [
                   SizedBox(
-                      width: 200,
-                      child: ElevatedButton.icon(
-                        label: Text('create_vault'.tr),
-                        icon: const Icon(Iconsax.box_add_outline),
-                        onPressed: controller.create,
-                      )),
+                    width: 200,
+                    child: ElevatedButton.icon(
+                      label: Text('create_vault'.tr),
+                      icon: const Icon(Iconsax.box_add_outline),
+                      onPressed: controller.create,
+                    ),
+                  ),
                   SizedBox(
                     width: 200,
                     child: OutlinedButton.icon(
