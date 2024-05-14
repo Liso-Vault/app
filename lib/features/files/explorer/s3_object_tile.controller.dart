@@ -257,8 +257,8 @@ class S3ObjectTileController extends GetxController
       timeLockEnabled = false; // temporarily disable
 
       if (GetPlatform.isMobile) {
-        await Share.shareFiles(
-          [file.path],
+        await Share.shareXFiles(
+          [XFile(file.path)],
           subject: fileName,
           text: GetPlatform.isIOS ? null : fileName,
         );

@@ -135,8 +135,8 @@ class SettingsScreenController extends GetxController
     await tempFile.writeAsString(SecretPersistence.to.wallet.val);
 
     if (GetPlatform.isMobile) {
-      await Share.shareFiles(
-        [tempFile.path],
+      await Share.shareXFiles(
+        [XFile(tempFile.path)],
         subject: exportFileName,
         text: GetPlatform.isIOS ? null : 'Liso Wallet',
       );
@@ -216,8 +216,8 @@ class SettingsScreenController extends GetxController
 
       // Share for Mobile
       if (GetPlatform.isMobile) {
-        await Share.shareFiles(
-          [vaultFile.path],
+        await Share.shareXFiles(
+          [XFile(vaultFile.path)],
           subject: exportFileName,
           text: GetPlatform.isIOS ? null : '${appConfig.name} Vault',
         );

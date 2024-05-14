@@ -107,8 +107,8 @@ class CipherScreenController extends GetxController
     console.debug('executed in ${stopwatch.elapsed.inSeconds} seconds');
 
     if (GetPlatform.isMobile) {
-      await Share.shareFiles(
-        [outputFile.path],
+      await Share.shareXFiles(
+        [XFile(outputFile.path)],
         subject: name,
         text: GetPlatform.isIOS ? null : name,
       );
@@ -193,8 +193,8 @@ class CipherScreenController extends GetxController
     console.debug('executed in ${stopwatch.elapsed.inSeconds} seconds');
 
     if (GetPlatform.isMobile) {
-      await Share.shareFiles(
-        [outputFile.path],
+      await Share.shareXFiles(
+        [XFile(outputFile.path)],
         subject: name,
         text: GetPlatform.isIOS ? null : name,
       );

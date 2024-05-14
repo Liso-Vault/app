@@ -22,7 +22,7 @@ import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:liso/firebase_options.dart';
 import 'package:liso/resources/resources.dart';
 import 'package:secrets/secrets.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:worker_manager/worker_manager.dart';
 
 import 'core/flavors/flavors.dart';
@@ -75,9 +75,9 @@ void init(Flavor flavor, {bool autofill = false}) async {
 
     // init sentry
     if (isWindowsLinux) {
-      await SentryFlutter.init(
-        (options) => options.dsn = secretConfig.sentry.dsn,
-      );
+      // await SentryFlutter.init(
+      //   (options) => options.dsn = secretConfig.sentry.dsn,
+      // );
     } else {
       // init firebase
       await Firebase.initializeApp(

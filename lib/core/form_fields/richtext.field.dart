@@ -12,9 +12,9 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
 
   RichTextFormField(
     this.field, {
-    Key? key,
+    super.key,
     this.readOnly = false,
-  }) : super(key: key);
+  });
 
   QuillController? _fieldController;
 
@@ -47,32 +47,58 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
       }
     }
 
-    return QuillProvider(
-      configurations: QuillConfigurations(controller: _fieldController!),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          if (!readOnly) ...[
-            // QuillToolbar.basic(
-            //   controller: _fieldController!,
-            //   multiRowsDisplay: false,
-            // ),
-            const QuillToolbar(
-              configurations: QuillToolbarConfigurations(
-                multiRowsDisplay: false,
-              ),
-            ),
-            const Divider(),
-          ],
-          SizedBox(
-            height: 300,
-            child: QuillEditor.basic(
-              configurations: QuillEditorConfigurations(readOnly: readOnly),
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (!readOnly) ...[
+          // QuillToolbar.basic(
+          //   controller: _fieldController!,
+          //   multiRowsDisplay: false,
+          // ),
+          // const QuillToolbar(
+          //   configurations: QuillToolbarConfigurations(
+          //     multiRowsDisplay: false,
+          //   ),
+          // ),
+          QuillToolbar.simple(
+            configurations: QuillSimpleToolbarConfigurations(
+              controller: _fieldController!,
+              // multiRowsDisplay: false,
+              // showFontFamily: false,
+              // showFontSize: false,
+              // showSearchButton: false,
+              // showUnderLineButton: false,
+              // showColorButton: false,
+              // showBackgroundColorButton: false,
+              // showStrikeThrough: false,
+              // showListCheck: false,
+              sharedConfigurations: const QuillSharedConfigurations(),
             ),
           ),
           const Divider(),
         ],
-      ),
+        SizedBox(
+          height: 300,
+          // child: QuillEditor.basic(
+          //   configurations: QuillEditorConfigurations(readOnly: readOnly),
+          // ),
+          child: QuillEditor(
+            scrollController: ScrollController(),
+            focusNode: FocusNode(),
+            configurations: QuillEditorConfigurations(
+              controller: _fieldController!,
+              // readOnly: false,
+              // scrollable: true,
+              // expands: false,
+              // autoFocus: false,
+              // placeholder: 'quill_placeholder'.tr,
+              // enableInteractiveSelection: true,
+              // padding: EdgeInsets.zero,
+            ),
+          ),
+        ),
+        const Divider(),
+      ],
     );
   }
 }

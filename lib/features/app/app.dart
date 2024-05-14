@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/translations/data.dart';
 import 'package:liso/features/app/pages.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
+// import 'package:sentry_flutter/sentry_flutter.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -71,7 +71,7 @@ class App extends StatelessWidget {
         if (!isWindowsLinux) ...[
           FirebaseAnalyticsObserver(analytics: FirebaseAnalytics.instance),
         ] else ...[
-          SentryNavigatorObserver(),
+          // SentryNavigatorObserver(),
         ]
       ],
       // NAVIGATION
