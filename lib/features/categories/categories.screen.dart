@@ -18,7 +18,7 @@ import 'categories.controller.dart';
 import 'categories_screen.controller.dart';
 
 class CategoriesScreen extends StatelessWidget with ConsoleMixin {
-  const CategoriesScreen({Key? key}) : super(key: key);
+  const CategoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -11,7 +11,7 @@ import '../../features/menu/menu.item.dart';
 
 class SectionFormField extends StatefulWidget {
   final HiveLisoField field;
-  const SectionFormField(this.field, {Key? key}) : super(key: key);
+  const SectionFormField(this.field, {super.key});
 
   String get value => field.data.value!.toUpperCase();
 

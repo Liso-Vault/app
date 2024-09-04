@@ -22,7 +22,7 @@ import 'nfts/nfts.screen.dart';
 import 'wallet_screen.controller.dart';
 
 class WalletScreen extends StatelessWidget with ConsoleMixin {
-  const WalletScreen({Key? key}) : super(key: key);
+  const WalletScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

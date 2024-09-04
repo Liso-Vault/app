@@ -6,7 +6,7 @@ import '../general/custom_chip.widget.dart';
 class SeedChips extends StatelessWidget {
   final List<String> seeds;
 
-  const SeedChips({Key? key, required this.seeds}) : super(key: key);
+  const SeedChips({super.key, required this.seeds});
 
   @override
   Widget build(BuildContext context) {

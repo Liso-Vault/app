@@ -23,7 +23,7 @@ import '../menu/menu.item.dart';
 import 'settings_screen.controller.dart';
 
 class SettingsScreen extends StatelessWidget with ConsoleMixin {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -191,7 +191,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                   )
                 ],
                 child: ListTile(
-                  leading: Icon(Iconsax.box_1_outline),
+                  leading: const Icon(Iconsax.box_1_outline),
                   title: Text('export_vault'.tr),
                   subtitle:
                       const Text('Save <vault>.liso to an external source'),

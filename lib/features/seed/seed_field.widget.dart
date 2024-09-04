@@ -22,13 +22,13 @@ class SeedField extends StatelessWidget with ConsoleMixin {
   final Function(String)? onFieldSubmitted;
 
   SeedField({
-    Key? key,
+    super.key,
     this.required = true,
     this.showGenerate = true,
     this.readOnly = false,
     required this.fieldController,
     this.onFieldSubmitted,
-  }) : super(key: key);
+  });
 
   String? get value => bip39.validateMnemonic(fieldController!.text)
       ? fieldController!.text

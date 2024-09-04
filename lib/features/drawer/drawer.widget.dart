@@ -17,7 +17,7 @@ import '../files/storage.service.dart';
 import 'drawer_widget.controller.dart';
 
 class DrawerMenu extends StatelessWidget with ConsoleMixin {
-  const DrawerMenu({Key? key}) : super(key: key);
+  const DrawerMenu({super.key});
 
   @override
   Widget build(BuildContext context) {

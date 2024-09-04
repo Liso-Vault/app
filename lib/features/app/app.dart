@@ -12,7 +12,7 @@ import 'package:liso/features/app/pages.dart';
 // import 'package:sentry_flutter/sentry_flutter.dart';
 
 class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {

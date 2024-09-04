@@ -19,7 +19,7 @@ import '../app/routes.dart';
 import 'import_screen.controller.dart';
 
 class ImportScreen extends StatelessWidget with ConsoleMixin {
-  const ImportScreen({Key? key}) : super(key: key);
+  const ImportScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

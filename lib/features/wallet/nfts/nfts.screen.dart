@@ -11,7 +11,7 @@ import '../../general/centered_placeholder.widget.dart';
 import 'nfts_screen.controller.dart';
 
 class NFTsScreen extends StatelessWidget with ConsoleMixin {
-  const NFTsScreen({Key? key}) : super(key: key);
+  const NFTsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -5,10 +5,10 @@ class SegmentedControlItem extends StatelessWidget {
   final IconData? iconData;
 
   const SegmentedControlItem({
-    Key? key,
+    super.key,
     required this.text,
     this.iconData,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

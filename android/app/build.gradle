@@ -14,7 +14,6 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -32,15 +31,16 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    compileSdkVersion 34
+    compileSdkVersion = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = JavaVersion.VERSION_1_8
     }
 
     sourceSets {
@@ -49,33 +49,32 @@ android {
 
 
     defaultConfig {
-        applicationId "com.liso.app"
+        applicationId = "com.liso.app"
         resValue "string", "app_name", "Liso"
-        minSdkVersion 29 // biometrics requirement
-        targetSdkVersion flutter.targetSdkVersion
-        multiDexEnabled true // Firebase
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+        minSdkVersion = 29 // biometrics requirement
+        targetSdkVersion = flutter.targetSdkVersion
+        versionCode = flutterVersionCode.toInteger()
+        versionName = flutterVersionName
     }
 
     signingConfigs {
         release {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
+            keyAlias = keystoreProperties['keyAlias']
+            keyPassword = keystoreProperties['keyPassword']
+            storeFile = file(keystoreProperties['storeFile'])
+            storePassword = keystoreProperties['storePassword']
         }
     }
 
     buildTypes {
         release {
-            signingConfig signingConfigs.release
-            minifyEnabled true
-            shrinkResources true
+            signingConfig = signingConfigs.release
+            minifyEnabled = true
+            shrinkResources = true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             ndk {
-                debugSymbolLevel 'FULL'
+                debugSymbolLevel = 'FULL'
             }
         }
     }
@@ -105,12 +104,5 @@ flutter {
 }
 
 dependencies {
-    implementation 'androidx.multidex:multidex:2.0.1'
-    // // appodeal
-    // implementation ('com.appodeal.ads:sdk:3.2.1.0') {
-    //     exclude group: 'com.appodeal.ads.sdk.services', module: 'adjust'
-    //     exclude group: 'com.appodeal.ads.sdk.services', module: 'appsflyer'
-    //     exclude group: 'com.appodeal.ads.sdk.services', module: 'firebase'
-    //     exclude group: 'com.appodeal.ads.sdk.services', module: 'facebook_analytics'
-    // }
+    //
 }

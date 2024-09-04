@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DividerFormField extends StatelessWidget {
-  const DividerFormField({Key? key}) : super(key: key);
+  const DividerFormField({super.key});
 
   // GETTERS
   String get value => '';

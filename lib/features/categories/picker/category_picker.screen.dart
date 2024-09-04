@@ -10,7 +10,7 @@ import '../../app/routes.dart';
 import 'category_picker_screen.controller.dart';
 
 class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
-  const CategoryPickerScreen({Key? key}) : super(key: key);
+  const CategoryPickerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

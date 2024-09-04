@@ -3,7 +3,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 
 class StatisticsScreen extends StatelessWidget with ConsoleMixin {
-  const StatisticsScreen({Key? key}) : super(key: key);
+  const StatisticsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

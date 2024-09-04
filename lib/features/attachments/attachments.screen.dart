@@ -13,7 +13,7 @@ import '../general/centered_placeholder.widget.dart';
 import 'attachments_screen.controller.dart';
 
 class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
-  const AttachmentsScreen({Key? key}) : super(key: key);
+  const AttachmentsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

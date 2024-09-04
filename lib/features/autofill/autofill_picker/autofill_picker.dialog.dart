@@ -8,7 +8,7 @@ import 'autofill_picker_dialog.controller.dart';
 
 class AutofillPickerDialog extends StatelessWidget {
   final HiveLisoItem item;
-  const AutofillPickerDialog({Key? key, required this.item}) : super(key: key);
+  const AutofillPickerDialog({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {

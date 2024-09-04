@@ -6,7 +6,7 @@ import '../../features/seed/seed_field.widget.dart';
 // ignore: must_be_immutable
 class SeedFormField extends StatelessWidget {
   final HiveLisoField field;
-  SeedFormField(this.field, {Key? key}) : super(key: key);
+  SeedFormField(this.field, {super.key});
 
   // VARIABLES
   TextEditingController? _fieldController;

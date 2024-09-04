@@ -10,7 +10,7 @@ import '../../general/centered_placeholder.widget.dart';
 import 'transactions_screen.controller.dart';
 
 class TransactionsScreen extends StatelessWidget with ConsoleMixin {
-  const TransactionsScreen({Key? key}) : super(key: key);
+  const TransactionsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

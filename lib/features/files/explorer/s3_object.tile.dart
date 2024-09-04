@@ -19,8 +19,8 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
 
   const S3ObjectTile(
     this.object, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

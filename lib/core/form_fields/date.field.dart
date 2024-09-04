@@ -20,11 +20,11 @@ class DateFormField extends StatefulWidget {
 
   const DateFormField(
     this.field, {
-    Key? key,
+    super.key,
     this.enabled = true,
     required this.fieldController,
     this.initialDate,
-  }) : super(key: key);
+  });
 
   String get value => fieldController.text;
 

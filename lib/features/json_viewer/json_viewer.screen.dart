@@ -6,7 +6,7 @@ import 'package:flutter_json_viewer/flutter_json_viewer.dart';
 class JSONViewerScreen extends StatelessWidget {
   final Map<String, dynamic> data;
 
-  const JSONViewerScreen({Key? key, required this.data}) : super(key: key);
+  const JSONViewerScreen({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {

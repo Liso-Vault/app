@@ -17,7 +17,7 @@ import '../general/segmented_item.widget.dart';
 import 'restore_screen.controller.dart';
 
 class RestoreScreen extends StatelessWidget with ConsoleMixin {
-  const RestoreScreen({Key? key}) : super(key: key);
+  const RestoreScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -16,10 +16,10 @@ class URLFormField extends StatefulWidget {
 
   const URLFormField(
     this.field, {
-    Key? key,
+    super.key,
     this.enabled = true,
     required this.fieldController,
-  }) : super(key: key);
+  });
 
   String get value => fieldController.text;
 

@@ -36,9 +36,8 @@ import 'main_screen.controller.dart';
 // ignore: use_key_in_widget_constructors
 class MainScreen extends GetResponsiveView<MainScreenController>
     with ConsoleMixin {
-  MainScreen({Key? key})
+  MainScreen({super.key})
       : super(
-          key: key,
           settings: ResponsiveScreenSettings(
             desktopChangePoint: CoreConfig().desktopChangePoint,
           ),

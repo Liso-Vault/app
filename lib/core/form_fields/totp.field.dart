@@ -16,10 +16,10 @@ class TOTPFormField extends StatefulWidget {
 
   const TOTPFormField(
     this.field, {
-    Key? key,
+    super.key,
     required this.fieldController,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   String get value => fieldController.text;
 

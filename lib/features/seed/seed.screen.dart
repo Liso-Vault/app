@@ -16,7 +16,7 @@ import '../menu/menu.button.dart';
 import 'seed_screen.controller.dart';
 
 class SeedScreen extends StatelessWidget with ConsoleMixin {
-  const SeedScreen({Key? key}) : super(key: key);
+  const SeedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +82,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
               checkboxShape: const CircleBorder(),
               title: const Text("I have backed up my seed in a safe location"),
               value: data(),
-              onChanged: data,
+              onChanged: data.call,
             ),
             controller.chkBackedUpSeed,
           ),
@@ -92,7 +92,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
               checkboxShape: const CircleBorder(),
               title: const Text("I have written down my seed"),
               value: data(),
-              onChanged: data,
+              onChanged: data.call,
             ),
             controller.chkWrittenSeed,
           ),

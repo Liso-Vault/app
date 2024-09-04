@@ -21,7 +21,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
 
   const ContextMenuButton(
     this.contextItems, {
-    Key? key,
+    super.key,
     required this.child,
     this.initialItem,
     this.useMouseRegion = false,
@@ -29,7 +29,7 @@ class ContextMenuButton extends StatelessWidget with ConsoleMixin {
     this.enabled = true,
     this.sheetForSmallScreen = false,
     this.gridForLargeScreen = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

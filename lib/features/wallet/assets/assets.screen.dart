@@ -15,7 +15,7 @@ import '../wallet.service.dart';
 import 'assets_screen.controller.dart';
 
 class AssetsScreen extends StatelessWidget with ConsoleMixin {
-  const AssetsScreen({Key? key}) : super(key: key);
+  const AssetsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

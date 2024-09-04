@@ -11,7 +11,7 @@ import '../../core/utils/globals.dart';
 import 'cipher_screen.controller.dart';
 
 class CipherScreen extends StatelessWidget with ConsoleMixin {
-  const CipherScreen({Key? key}) : super(key: key);
+  const CipherScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

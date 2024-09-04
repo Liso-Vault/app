@@ -21,10 +21,10 @@ class PasswordFormField extends StatefulWidget {
 
   const PasswordFormField(
     this.field, {
-    Key? key,
+    super.key,
     required this.fieldController,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   String get value => fieldController.text;
 

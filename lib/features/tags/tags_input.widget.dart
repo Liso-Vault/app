@@ -11,11 +11,11 @@ class TagsInput extends StatelessWidget {
   final TagsInputController controller;
 
   const TagsInput({
-    Key? key,
+    super.key,
     required this.label,
     required this.controller,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   List<String> get value => controller.data;
 
@@ -28,14 +28,12 @@ class TagsInput extends StatelessWidget {
           spacing: 5,
           runSpacing: 5,
           children: [
-            ...controller.data
-                .map(
-                  (e) => Chip(
-                    label: Text(e),
-                    onDeleted: enabled ? () => controller.data.remove(e) : null,
-                  ),
-                )
-                .toList(),
+            ...controller.data.map(
+              (e) => Chip(
+                label: Text(e),
+                onDeleted: enabled ? () => controller.data.remove(e) : null,
+              ),
+            ),
             if (enabled) ...[
               ActionChip(
                 label: const Icon(Iconsax.add_circle_outline, size: 20),

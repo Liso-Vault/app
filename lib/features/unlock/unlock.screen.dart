@@ -15,7 +15,7 @@ import '../../core/utils/utils.dart';
 import 'unlock_screen.controller.dart';
 
 class UnlockScreen extends StatelessWidget with ConsoleMixin {
-  const UnlockScreen({Key? key}) : super(key: key);
+  const UnlockScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,8 +4,7 @@ import 'persistence.secret.dart';
 
 class SecretPersistenceBuilder extends StatefulWidget {
   final Widget Function(SecretPersistence, BuildContext) builder;
-  const SecretPersistenceBuilder({Key? key, required this.builder})
-      : super(key: key);
+  const SecretPersistenceBuilder({super.key, required this.builder});
 
   @override
   State<SecretPersistenceBuilder> createState() =>

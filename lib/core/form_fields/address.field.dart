@@ -26,7 +26,7 @@ class AddressFormField extends StatefulWidget with ConsoleMixin {
 
   AddressFormField(
     this.field, {
-    Key? key,
+    super.key,
     this.readOnly = false,
     required this.street1Controller,
     required this.street2Controller,
@@ -34,7 +34,7 @@ class AddressFormField extends StatefulWidget with ConsoleMixin {
     required this.stateController,
     required this.zipController,
     required this.countryFormField,
-  }) : super(key: key);
+  });
 
   Map<String, dynamic> get value {
     return {

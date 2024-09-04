@@ -16,7 +16,7 @@ import '../../core/utils/globals.dart';
 import 'about_screen.controller.dart';
 
 class AboutScreen extends StatelessWidget with ConsoleMixin {
-  const AboutScreen({Key? key}) : super(key: key);
+  const AboutScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

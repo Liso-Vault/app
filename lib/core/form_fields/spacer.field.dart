@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SpacerFormField extends StatelessWidget {
-  const SpacerFormField({Key? key}) : super(key: key);
+  const SpacerFormField({super.key});
 
   // GETTERS
   String get value => '';

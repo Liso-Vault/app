@@ -18,10 +18,10 @@ class PINFormField extends StatefulWidget {
 
   const PINFormField(
     this.field, {
-    Key? key,
+    super.key,
     required this.fieldController,
     this.enabled = true,
-  }) : super(key: key);
+  });
 
   String get value => fieldController.text;
   bool get isPasswordField => field.identifier != 'private_key';

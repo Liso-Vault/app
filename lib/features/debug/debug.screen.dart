@@ -12,7 +12,7 @@ import '../shared_vaults/shared_vault.controller.dart';
 import 'debug_screen.controller.dart';
 
 class DebugScreen extends StatelessWidget with ConsoleMixin {
-  const DebugScreen({Key? key}) : super(key: key);
+  const DebugScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

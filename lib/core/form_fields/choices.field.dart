@@ -6,7 +6,7 @@ import '../../features/general/custom_dropdown.field.dart';
 // ignore: must_be_immutable
 class ChoicesFormField extends StatelessWidget {
   final HiveLisoField field;
-  ChoicesFormField(this.field, {Key? key}) : super(key: key);
+  ChoicesFormField(this.field, {super.key});
 
   CustomDropDownFormField? dropdown;
   String get value => dropdown!.value ?? '';

@@ -13,8 +13,8 @@ class SliderFieldForm extends StatefulWidget {
 
   const SliderFieldForm(
     this.field, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   String get value => field.data.value!;
 

@@ -7,11 +7,11 @@ class CenteredPlaceholder extends StatelessWidget {
   final Widget? child;
 
   const CenteredPlaceholder({
-    Key? key,
+    super.key,
     required this.iconData,
     required this.message,
     this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

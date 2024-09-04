@@ -23,7 +23,7 @@ import '../app/routes.dart';
 import 'item_screen.controller.dart';
 
 class ItemScreen extends StatelessWidget with ConsoleMixin {
-  const ItemScreen({Key? key}) : super(key: key);
+  const ItemScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +312,6 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                       value: e,
                       child: Text(e.reservedName),
                     ))
-                .toList()
           ],
         ),
       ),

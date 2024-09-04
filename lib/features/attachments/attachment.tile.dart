@@ -18,8 +18,8 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
   const AttachmentTile(
     this.object, {
     this.onDelete,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

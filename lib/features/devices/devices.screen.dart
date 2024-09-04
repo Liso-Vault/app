@@ -16,7 +16,7 @@ import '../menu/menu.item.dart';
 import 'devices_screen.controller.dart';
 
 class DevicesScreen extends StatelessWidget with ConsoleMixin {
-  const DevicesScreen({Key? key}) : super(key: key);
+  const DevicesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

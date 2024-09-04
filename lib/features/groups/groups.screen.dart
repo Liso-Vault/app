@@ -23,7 +23,7 @@ import 'groups.controller.dart';
 import 'groups_screen.controller.dart';
 
 class GroupsScreen extends StatelessWidget with ConsoleMixin {
-  const GroupsScreen({Key? key}) : super(key: key);
+  const GroupsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

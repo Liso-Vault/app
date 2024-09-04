@@ -12,7 +12,7 @@ import '../../menu/menu.button.dart';
 import 'vault_explorer_screen.controller.dart';
 
 class VaultExplorerScreen extends StatelessWidget with ConsoleMixin {
-  const VaultExplorerScreen({Key? key}) : super(key: key);
+  const VaultExplorerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

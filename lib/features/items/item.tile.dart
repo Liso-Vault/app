@@ -34,10 +34,10 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
 
   ItemTile(
     this.item, {
-    Key? key,
+    super.key,
     this.searchMode = false,
     this.joinedVaultItem = false,
-  }) : super(key: key);
+  });
 
   void _open() async {
     if (isAutofill) {

@@ -18,7 +18,7 @@ import 'package:liso/core/utils/styles.dart';
 import 'welcome_screen.controller.dart';
 
 class WelcomeScreen extends StatelessWidget with ConsoleMixin {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  const WelcomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

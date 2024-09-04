@@ -6,10 +6,10 @@ class WidgetRefresher extends StatelessWidget {
   final WidgetRefresherController controller;
 
   const WidgetRefresher({
-    Key? key,
+    super.key,
     required this.child,
     required this.controller,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,7 +12,7 @@ import 's3_exporer_screen.controller.dart';
 import 's3_object.tile.dart';
 
 class S3ExplorerScreen extends StatelessWidget with ConsoleMixin {
-  const S3ExplorerScreen({Key? key}) : super(key: key);
+  const S3ExplorerScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

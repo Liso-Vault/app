@@ -18,7 +18,7 @@ import 'joined_vault.controller.dart';
 import 'joined_vaults_screen.controller.dart';
 
 class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
-  const JoinedVaultsScreen({Key? key}) : super(key: key);
+  const JoinedVaultsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

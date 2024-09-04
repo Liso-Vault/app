@@ -10,7 +10,7 @@ import '../../core/utils/globals.dart';
 import 'otp_screen.controller.dart';
 
 class OTPScreen extends StatelessWidget with ConsoleMixin {
-  const OTPScreen({Key? key}) : super(key: key);
+  const OTPScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

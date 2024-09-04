@@ -14,7 +14,7 @@ import '../../core/utils/globals.dart';
 import 'create_password_screen.controller.dart';
 
 class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
-  const CreatePasswordScreen({Key? key}) : super(key: key);
+  const CreatePasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ import 'package:liso/core/utils/globals.dart';
 import 'password_generator_screen.controller.dart';
 
 class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
-  const PasswordGeneratorScreen({Key? key}) : super(key: key);
+  const PasswordGeneratorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

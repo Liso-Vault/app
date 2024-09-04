@@ -10,9 +10,9 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
 
   const ContextMenuSheet(
     this.contextItems, {
-    Key? key,
+    super.key,
     this.initialItem,
-  }) : super(key: key);
+  });
 
   Future<void> show() async {
     return await Get.bottomSheet(

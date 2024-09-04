@@ -24,7 +24,7 @@ import 'shared_vault.controller.dart';
 import 'shared_vaults_screen.controller.dart';
 
 class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
-  const SharedVaultsScreen({Key? key}) : super(key: key);
+  const SharedVaultsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

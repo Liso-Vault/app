@@ -3,7 +3,7 @@ import 'package:liso/core/hive/models/field.hive.dart';
 
 class TimeFormField extends StatelessWidget {
   final HiveLisoField field;
-  const TimeFormField(this.field, {Key? key}) : super(key: key);
+  const TimeFormField(this.field, {super.key});
 
   // GETTERS
   String get value => '';

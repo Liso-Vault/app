@@ -12,7 +12,7 @@ import '../../general/card_button.widget.dart';
 import 'seed_generator_screen.controller.dart';
 
 class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
-  const SeedGeneratorScreen({Key? key}) : super(key: key);
+  const SeedGeneratorScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

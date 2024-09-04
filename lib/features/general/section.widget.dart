@@ -9,13 +9,13 @@ class Section extends StatelessWidget {
   final EdgeInsets padding;
 
   const Section({
-    Key? key,
+    super.key,
     required this.text,
     this.fontSize = 10,
     this.color,
     this.alignment = CrossAxisAlignment.start,
     this.padding = const EdgeInsets.symmetric(vertical: 10),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

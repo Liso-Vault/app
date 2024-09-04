@@ -8,7 +8,7 @@ class CustomChip extends StatelessWidget {
   final EdgeInsets padding;
 
   const CustomChip({
-    Key? key,
+    super.key,
     required this.label,
     this.color,
     this.icon,
@@ -16,7 +16,7 @@ class CustomChip extends StatelessWidget {
       vertical: 1,
       horizontal: 6,
     ),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

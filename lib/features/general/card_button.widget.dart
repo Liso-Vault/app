@@ -6,11 +6,11 @@ class CardButton extends StatelessWidget {
   final Function()? onPressed;
 
   const CardButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.iconData,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

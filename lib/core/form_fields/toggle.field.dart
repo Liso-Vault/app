@@ -13,8 +13,8 @@ class ToggleFieldForm extends StatefulWidget {
 
   const ToggleFieldForm(
     this.field, {
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   String get value => field.data.value!;
 

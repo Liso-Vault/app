@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ChipsFormField extends StatelessWidget {
-  const ChipsFormField({Key? key}) : super(key: key);
+  const ChipsFormField({super.key});
 
   // GETTERS
   String get value => '';

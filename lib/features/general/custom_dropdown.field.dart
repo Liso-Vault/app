@@ -10,9 +10,9 @@ class CustomDropDownFormField extends StatelessWidget {
 
   CustomDropDownFormField(
     this.field, {
-    Key? key,
+    super.key,
     required this.items,
-  }) : super(key: key);
+  });
 
   String? value;
 
