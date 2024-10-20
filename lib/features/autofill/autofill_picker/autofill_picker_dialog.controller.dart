@@ -1,5 +1,5 @@
 import 'package:console_mixin/console_mixin.dart';
-import 'package:flutter_autofill_service/flutter_autofill_service.dart';
+// import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 
 import '../../../core/hive/models/field.hive.dart';
@@ -32,13 +32,13 @@ class AutofillPickerDialogController extends GetxController with ConsoleMixin {
       if (passwordFields.length == 1) {
         password = passwordFields.first.data.value!;
 
-        return Get.back(result: [
-          PwDataset(
-            label: item.title,
-            username: username,
-            password: password,
-          )
-        ]);
+        // return Get.back(result: [
+        //   PwDataset(
+        //     label: item.title,
+        //     username: username,
+        //     password: password,
+        //   )
+        // ]);
       }
 
       data.value = passwordFields.toList();

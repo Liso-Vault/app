@@ -1,6 +1,6 @@
 import 'package:app_core/globals.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_autofill_service/flutter_autofill_service.dart';
+// import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 
 import '../../../core/hive/models/item.hive.dart';
@@ -20,15 +20,15 @@ class AutofillPickerDialog extends StatelessWidget {
       final field = controller.data[index];
 
       void done() {
-        Get.back(
-          result: [
-            PwDataset(
-              label: item.title,
-              username: controller.username,
-              password: controller.password,
-            )
-          ],
-        );
+        // Get.back(
+        //   result: [
+        //     PwDataset(
+        //       label: item.title,
+        //       username: controller.username,
+        //       password: controller.password,
+        //     )
+        //   ],
+        // );
       }
 
       void select() {

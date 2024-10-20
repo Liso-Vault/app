@@ -42,6 +42,8 @@ class App extends StatelessWidget {
       outlinedButtonTheme: const OutlinedButtonThemeData(style: buttonStyle),
     );
 
+    darkThemeData = darkTheme;
+
     final lightThemeBase = FlexColorScheme.light(
       // lightIsWhite: false,
       useMaterial3: true,

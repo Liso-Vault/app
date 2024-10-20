@@ -1,16 +1,16 @@
 import 'package:console_mixin/console_mixin.dart';
-import 'package:flutter_autofill_service/flutter_autofill_service.dart';
+// import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 
 class DebugScreenController extends GetxController with ConsoleMixin {
   static DebugScreenController get to => Get.find();
 
   // VARIABLES
-  final autofill = AutofillService();
+  // final autofill = AutofillService();
 
-  AutofillPreferences? pref;
-  AutofillMetadata? metadata;
-  AutofillServiceStatus? status;
+  // AutofillPreferences? pref;
+  // AutofillMetadata? metadata;
+  // AutofillServiceStatus? status;
 
   @override
   void onInit() {
@@ -41,73 +41,73 @@ class DebugScreenController extends GetxController with ConsoleMixin {
   }
 
   void save() async {
-    console.info('onSaveComplete...');
-    await AutofillService().onSaveComplete();
-    console.warning('onSaveComplete!');
-    await updateStats();
+    // console.info('onSaveComplete...');
+    // await AutofillService().onSaveComplete();
+    // console.warning('onSaveComplete!');
+    // await updateStats();
   }
 
   void setPreferences() async {
-    console.info('setPreferences...');
+    // console.info('setPreferences...');
 
-    await AutofillService().setPreferences(AutofillPreferences(
-      enableDebug: pref!.enableDebug,
-      enableSaving: pref!.enableSaving,
-    ));
+    // await AutofillService().setPreferences(AutofillPreferences(
+    //   enableDebug: pref!.enableDebug,
+    //   enableSaving: pref!.enableSaving,
+    // ));
 
-    console.warning('setPreferences');
+    // console.warning('setPreferences');
 
-    await updateStats();
+    // await updateStats();
   }
 
   void setAutofillService() async {
-    console.info('setAutofillService...');
-    final response = await AutofillService().requestSetAutofillService();
-    console.warning('setAutofillService: $response');
-    await updateStats();
+    // console.info('setAutofillService...');
+    // final response = await AutofillService().requestSetAutofillService();
+    // console.warning('setAutofillService: $response');
+    // await updateStats();
   }
 
   void datasets() async {
-    console.info('resultWithDatasets...');
+    // console.info('resultWithDatasets...');
 
-    final response = await AutofillService().resultWithDatasets([
-      PwDataset(
-        label: 'dataset 1',
-        username: 'theusername1@gmail.com',
-        password: 'thepassword1',
-      ),
-      PwDataset(
-        label: 'dataset 2',
-        username: 'theusername2',
-        password: 'thepassword2',
-      ),
-      PwDataset(
-        label: 'user only',
-        username: 'theusername',
-        password: '',
-      ),
-      PwDataset(
-        label: 'password only',
-        username: '',
-        password: 'thepassword',
-      ),
-    ]);
+    // final response = await AutofillService().resultWithDatasets([
+    //   PwDataset(
+    //     label: 'dataset 1',
+    //     username: 'theusername1@gmail.com',
+    //     password: 'thepassword1',
+    //   ),
+    //   PwDataset(
+    //     label: 'dataset 2',
+    //     username: 'theusername2',
+    //     password: 'thepassword2',
+    //   ),
+    //   PwDataset(
+    //     label: 'user only',
+    //     username: 'theusername',
+    //     password: '',
+    //   ),
+    //   PwDataset(
+    //     label: 'password only',
+    //     username: '',
+    //     password: 'thepassword',
+    //   ),
+    // ]);
 
-    console.warning('resultWithDatasets: $response');
-    await updateStats();
+    // console.warning('resultWithDatasets: $response');
+    // await updateStats();
   }
 
   void dataset() async {
-    console.info('resultWithDataset...');
+    // console.info('resultWithDataset...');
 
-    final response = await AutofillService().resultWithDataset(
-      label: 'Label',
-      username: 'theusername',
-      password: 'thepassword',
-    );
+    // final response = await AutofillService().resultWithDataset(
+    //   label: 'Label',
+    //   username: 'theusername',
+    //   password: 'thepassword',
+    // );
 
-    console.warning('resultWithDataset: $response');
-    await updateStats();
+    // console.warning('resultWithDataset: $response');
+    // await updateStats();
   }
 
   void saveInfo() async {

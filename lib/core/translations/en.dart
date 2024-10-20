@@ -31,11 +31,13 @@ final en = {
   "day": "Day",
   "help_translate": "Help Translate",
   "join_affiliates": "Join the Affiliates Program",
-  "join_over_users": "Trusted by 1 million+ users",
+  "join_over_users": "Trusted by 10,000+ users",
   "nextran_desc": "App Store Listing Translator for Developers",
   "slogan": "Start Securing Your Data",
   "slogan_sub":
       "Liso: Your Unbreakable Fortress for Safeguarding Confidential Data, Passwords, and Files.",
+  "benefit_desc":
+      "Your hackproof vault for storing sensitive data, passwords, and files.",
   "settings": "Settings",
   "about": "About",
   "need_help": "Need help?",

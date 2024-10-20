@@ -10,7 +10,7 @@ class AppPricing {
     'premium_desc_4',
     'premium_desc_5',
     'premium_desc_6',
-    'premium_desc_7',
+    // 'premium_desc_7',
     // 'premium_desc_8',
     // 'premium_desc_9',
     // 'premium_desc_10',
@@ -19,11 +19,11 @@ class AppPricing {
     // 'premium_no_ads',
     // 'premium_support',
     // deviceAccess,
-    'money_back_guarantee',
+    // 'money_back_guarantee',
     // if (!isApple || !isAppStore) ...[
     //   'cancel_anytime',
     // ],
-    'join_over_users',
+    // 'join_over_users',
   ];
 
   static final upcomingFeatures = [

@@ -11,7 +11,7 @@ import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_autofill_service/flutter_autofill_service.dart';
+// import 'package:flutter_autofill_service/flutter_autofill_service.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:intl/intl.dart';
@@ -42,7 +42,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
   DateTime? lastInactiveTime;
   ItemsSearchDelegate? searchDelegate;
 
-  final autofill = AutofillService();
+  // final autofill = AutofillService();
   final persistence = Get.find<Persistence>();
   final itemsController = Get.find<ItemsController>();
   final drawerController = Get.find<DrawerMenuController>();
