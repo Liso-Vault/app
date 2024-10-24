@@ -1,19 +1,17 @@
 import 'package:app_core/config.dart';
 import 'package:app_core/config/app.model.dart';
-
 import 'package:app_core/globals.dart';
+import 'package:app_core/pages/onboarding/laurel.widget.dart';
+import 'package:app_core/pages/upgrade/review_card.dart';
 import 'package:app_core/utils/utils.dart';
-import 'package:app_core/widgets/busy_indicator.widget.dart';
 import 'package:app_core/widgets/gradient.widget.dart';
 import 'package:app_core/widgets/logo.widget.dart';
-import 'package:app_core/widgets/version.widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-
-import 'package:liso/core/utils/styles.dart';
 
 import 'welcome_screen.controller.dart';
 
@@ -24,128 +22,223 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
   Widget build(BuildContext context) {
     final controller = Get.put(WelcomeScreenController());
 
-    final content = Center(
-      child: SingleChildScrollView(
-        child: Container(
-          constraints: Styles.containerConstraints,
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (isSmallScreen) ...[
-                const SizedBox(height: 100),
-              ],
-              const LogoWidget(size: 200),
-              const SizedBox(height: 40),
-              GradientWidget(
-                gradient: LinearGradient(colors: CoreConfig().gradientColors),
-                child: Text(
-                  'slogan'.tr,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
-                  ),
+    final topContent = Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        if (isSmallScreen) ...[
+          const SizedBox(height: 100),
+        ],
+        const LogoWidget(size: 100),
+        const SizedBox(height: 20),
+        GradientWidget(
+          gradient: LinearGradient(colors: CoreConfig().gradientColors),
+          child: Text(
+            'slogan'.tr,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        )
+            .animate(onPlay: (c) => c.repeat())
+            .shimmer(duration: 2000.ms)
+            .then(delay: 3000.ms),
+        const SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Text(
+            'slogan_sub'.tr,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 15),
+          ),
+        ),
+        const SizedBox(height: 40),
+        const LaurelWidget(),
+        const SizedBox(height: 20),
+        // userReviews,
+        CarouselSlider(
+          items: stringReviews.map((e) => ReviewCard(review: e)).toList(),
+          options: CarouselOptions(
+            height: 120,
+            autoPlay: true,
+            enlargeCenterPage: true,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          alignment: WrapAlignment.center,
+          children: [
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                label: Text('create_vault'.tr),
+                icon: const Icon(Iconsax.box_add_outline),
+                onPressed: controller.create,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.greenAccent,
+                  foregroundColor: Colors.black,
                 ),
               )
                   .animate(onPlay: (c) => c.repeat())
                   .shimmer(duration: 2000.ms)
                   .then(delay: 3000.ms),
-              const SizedBox(height: 10),
-              Text(
-                'slogan_sub'.tr,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 15),
+            ),
+            SizedBox(
+              width: 200,
+              child: ElevatedButton.icon(
+                label: Text('restore_vault'.tr),
+                icon: const Icon(Iconsax.import_1_outline),
+                onPressed: controller.restore,
               ),
-              const SizedBox(height: 20),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                alignment: WrapAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 200,
-                    child: ElevatedButton.icon(
-                      label: Text('create_vault'.tr),
-                      icon: const Icon(Iconsax.box_add_outline),
-                      onPressed: controller.create,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: OutlinedButton.icon(
-                      label: Text('restore_vault'.tr),
-                      icon: const Icon(Iconsax.import_1_outline),
-                      onPressed: controller.restore,
-                    ),
-                  ),
-                ],
-              )
+            ),
+          ],
+        )
+      ],
+    );
+
+    // final bottomBar = Column(
+    //   mainAxisSize: MainAxisSize.min,
+    //   children: [
+    //     const Text(
+    //       'By proceeding, you agree to our',
+    //       style: TextStyle(fontSize: 11),
+    //     ),
+    //     Row(
+    //       mainAxisSize: MainAxisSize.min,
+    //       children: [
+    //         TextButton(
+    //           onPressed: () => Utils.openUrl(
+    //             appConfig.links.terms,
+    //           ),
+    //           child: const Text(
+    //             'Terms of Use',
+    //             style: TextStyle(fontSize: 11),
+    //           ),
+    //         ),
+    //         const Text(
+    //           'and',
+    //           style: TextStyle(fontSize: 11),
+    //         ),
+    //         TextButton(
+    //           onPressed: () => Utils.openUrl(
+    //             appConfig.links.privacy,
+    //           ),
+    //           child: const Text(
+    //             'Privacy Policy',
+    //             style: TextStyle(fontSize: 11),
+    //           ),
+    //         ),
+    //       ],
+    //     ),
+    //     const VersionText(),
+    //   ],
+    // );
+
+    // return Container(
+    //   decoration: Get.isDarkMode
+    //       ? const BoxDecoration(
+    //           gradient: LinearGradient(
+    //             begin: Alignment.bottomLeft,
+    //             end: Alignment.topRight,
+    //             colors: [
+    //               Colors.black,
+    //               Color(0xFF173030),
+    //             ],
+    //           ),
+    //         )
+    //       : null,
+    //   child: Scaffold(
+    //     backgroundColor: Get.isDarkMode ? Colors.transparent : null,
+    //     bottomNavigationBar: bottomBar,
+    //     body: controller.obx(
+    //       (_) => content,
+    //       onLoading: const BusyIndicator(),
+    //     ),
+    //   ),
+    // );
+
+    final versionText = Text(
+      metadataApp.formattedVersion,
+      style: const TextStyle(color: Colors.grey, fontSize: 10),
+    );
+
+    final footerLinks = Row(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: darkThemeData.primaryColor,
+            textStyle: const TextStyle(fontSize: 10),
+            minimumSize: Size.zero,
+          ),
+          onPressed: () => Utils.openUrl(appConfig.links.terms),
+          child: Text('terms_of_use'.tr),
+        ),
+        versionText,
+        TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: darkThemeData.primaryColor,
+            textStyle: const TextStyle(fontSize: 10),
+            minimumSize: Size.zero,
+          ),
+          onPressed: () => Utils.openUrl(appConfig.links.privacy),
+          child: Text('privacy_policy'.tr),
+        ),
+      ],
+    );
+
+    final bottomContent = Center(
+      heightFactor: 1,
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // ctaButton,
+              // const SizedBox(height: 10),
+              footerLinks,
+              const SizedBox(height: 10),
             ],
           ),
         ),
       ),
     );
 
-    final bottomBar = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const Text(
-          'By proceeding, you agree to our',
-          style: TextStyle(fontSize: 11),
+    final content = [
+      Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(onboardingBGUri),
+            fit: BoxFit.cover,
+            opacity: 0.2,
+          ),
         ),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(
-              onPressed: () => Utils.openUrl(
-                appConfig.links.terms,
-              ),
-              child: const Text(
-                'Terms of Use',
-                style: TextStyle(fontSize: 11),
-              ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: topContent,
             ),
-            const Text(
-              'and',
-              style: TextStyle(fontSize: 11),
-            ),
-            TextButton(
-              onPressed: () => Utils.openUrl(
-                appConfig.links.privacy,
-              ),
-              child: const Text(
-                'Privacy Policy',
-                style: TextStyle(fontSize: 11),
-              ),
-            ),
-          ],
+          ),
         ),
-        const VersionText(),
-      ],
-    );
+      ),
+      Align(
+        alignment: Alignment.bottomCenter,
+        child: bottomContent,
+      ),
+    ];
 
-    return Container(
-      decoration: Get.isDarkMode
-          ? const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.bottomLeft,
-                end: Alignment.topRight,
-                colors: [
-                  Colors.black,
-                  Color(0xFF173030),
-                ],
-              ),
-            )
-          : null,
+    return Theme(
+      data: darkThemeData,
       child: Scaffold(
-        backgroundColor: Get.isDarkMode ? Colors.transparent : null,
-        bottomNavigationBar: bottomBar,
-        body: controller.obx(
-          (_) => content,
-          onLoading: const BusyIndicator(),
-        ),
+        body: Stack(children: content),
       ),
     );
   }

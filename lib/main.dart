@@ -73,6 +73,9 @@ void init(Flavor flavor, {bool autofill = false}) async {
     // init license config
     licenseConfig = LicenseConfig.fromJson(kLicenseJson);
 
+    onboardingBGUri =
+        'https://images.unsplash.com/photo-1683849817745-46aa662aad13?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
+
     // init sentry
     if (isWindowsLinux) {
       // await SentryFlutter.init(

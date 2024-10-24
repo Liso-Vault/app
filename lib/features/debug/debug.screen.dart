@@ -23,6 +23,12 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
       padding: const EdgeInsets.symmetric(horizontal: 15),
       children: [
         ListTile(
+          title: const Text('Welcome Screen'),
+          onTap: () async {
+            Utils.adaptiveRouteOpen(name: Routes.welcome);
+          },
+        ),
+        ListTile(
           title: const Text('Upgrade Screen'),
           onTap: () async {
             Utils.adaptiveRouteOpen(

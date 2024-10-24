@@ -33,6 +33,7 @@ if (keystorePropertiesFile.exists()) {
 android {
     compileSdkVersion = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
+    namespace = "com.liso.app"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
