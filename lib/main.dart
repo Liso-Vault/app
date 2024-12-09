@@ -111,7 +111,10 @@ void init(Flavor flavor, {bool autofill = false}) async {
       adsEnabled: false,
       showUpgradeAppOpen: false,
       // purchasesEnabled: false,
-      upgradeConfig: UpgradeConfig(pricing: AppPricing.data),
+      upgradeConfig: UpgradeConfig(
+        pricing: AppPricing.data,
+        featureTileFontSize: 14,
+      ),
       fcmVapidKey: Secrets.fcmVapidKey,
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),

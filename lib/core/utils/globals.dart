@@ -87,6 +87,7 @@ ExtraLimitsConfigTier get limits {
 void initUpgradeConfig() {
   final upgradeConfig = UpgradeConfig(
     pricing: AppPricing.data,
+    featureTileFontSize: 14,
   );
 
   CoreConfig().upgradeConfig = upgradeConfig;
