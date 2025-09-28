@@ -292,20 +292,20 @@ class MainScreenController extends GetxController with ConsoleMixin {
       load();
 
       NotificationsService.to.notify(
-        title: 'Trash Emptied',
+        title: 'trash_emptied'.tr,
         body: 'Your trash is now empty',
       );
     }
 
-    const dialogContent = Text(
-      'Are you sure you want to empty the trash?',
+    final dialogContent = Text(
+      'are_you_sure_you_want_to_empty_the_trash'.tr,
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Empty Trash'),
+      title: Text('empty_trash'.tr),
       content: isSmallScreen
           ? dialogContent
-          : const SizedBox(width: 450, child: dialogContent),
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -313,7 +313,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
         ),
         TextButton(
           onPressed: empty,
-          child: const Text('Empty Trash'),
+          child: Text('empty_trash'.tr),
         ),
       ],
     ));
@@ -327,20 +327,20 @@ class MainScreenController extends GetxController with ConsoleMixin {
       load();
 
       NotificationsService.to.notify(
-        title: 'Deleted Items Emptied',
+        title: 'deleted_items_emptied'.tr,
         body: 'Your deleted items is now empty',
       );
     }
 
-    const dialogContent = Text(
-      'Are you sure you want to permanently empty the deleted items?',
+    final dialogContent = Text(
+      'are_you_sure_you_want_to_permanently_empty_the_deleted_items'.tr,
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Empty Deleted'),
+      title: Text('empty_deleted'.tr),
       content: isSmallScreen
           ? dialogContent
-          : const SizedBox(width: 450, child: dialogContent),
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -348,7 +348,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
         ),
         TextButton(
           onPressed: empty,
-          child: const Text('Empty Deleted'),
+          child: Text('empty_deleted'.tr),
         ),
       ],
     ));
@@ -384,28 +384,28 @@ class MainScreenController extends GetxController with ConsoleMixin {
       load();
 
       UIUtils.showSnackBar(
-        title: 'Reverted Items',
-        message: 'Recently imported items were reverted.',
+        title: 'reverted_items'.tr,
+        message: 'recently_imported_items_were_reverted'.tr,
       );
     }
 
-    const dialogContent = Text(
-      'Please decide to keep or undo your changes.',
+    final dialogContent = Text(
+      'please_decide_to_keep_or_undo_your_changes'.tr,
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Imported Items'),
+      title: Text('imported_items'.tr),
       content: isSmallScreen
           ? dialogContent
-          : const SizedBox(width: 450, child: dialogContent),
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: undo,
-          child: const Text('Undo'),
+          child: Text('undo'.tr),
         ),
         TextButton(
           onPressed: confirm,
-          child: const Text('Keep'),
+          child: Text('keep'.tr),
         ),
       ],
     ));

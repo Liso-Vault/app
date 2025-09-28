@@ -67,7 +67,7 @@ class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: const Text('Choose a template'),
+      title: Text('choose_a_template'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
     );

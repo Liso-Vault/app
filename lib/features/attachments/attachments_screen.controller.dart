@@ -47,7 +47,7 @@ class AttachmentsScreenController extends GetxController
       );
 
       return UIUtils.showSimpleDialog(
-        'Already Exists',
+        'already_exists'.tr,
         'Attachment: ${content.name} is already attached to this item',
       );
     }

@@ -45,7 +45,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('All Items'),
+                      Text('all_items'.tr),
                       if (controller.itemsCount > 0) ...[
                         CustomChip(
                           label: Text(
@@ -300,7 +300,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             children: [
               ListTile(
                 dense: isSmallScreen,
-                title: const Text('Encryption Tool'),
+                title: Text('encryption_tool'.tr),
                 leading: const Icon(Iconsax.convert_3d_cube_outline),
                 onTap: () => Utils.adaptiveRouteOpen(
                   name: AppRoutes.cipher,
@@ -340,7 +340,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               visible: !controller.filterAll,
               child: ListTile(
                 dense: isSmallScreen,
-                title: const Text('Clear Filters'),
+                title: Text('clear_filters'.tr),
                 leading: const Icon(Iconsax.slash_outline),
                 onTap: controller.clearFilters,
               ),

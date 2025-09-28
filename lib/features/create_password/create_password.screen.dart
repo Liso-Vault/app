@@ -35,8 +35,8 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
             ),
           ),
           const SizedBox(height: 15),
-          const Text(
-            "This will be the password to unlock the wallet which also secures the vault.$kVaultExtension with the private key",
+          Text(
+            "${'master_password_desc'.tr} (vault.$kVaultExtension)",
             style: TextStyle(color: Colors.grey),
             textAlign: TextAlign.center,
           ),
@@ -119,7 +119,7 @@ class CreatePasswordScreen extends StatelessWidget with ConsoleMixin {
         actions: [
           TextButton(
             onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-            child: const Text('Need Help ?'),
+            child: Text('need_help'.tr),
           ),
         ],
       ),

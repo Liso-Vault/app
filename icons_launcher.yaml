@@ -1,0 +1,17 @@
+icons_launcher:
+  image_path: "raw/1024-rounded.png"
+  platforms:
+    android:
+      enable: true
+      image_path: "raw/1024.png"
+    ios:
+      enable: true
+      image_path: "raw/1024.png"
+    macos:
+      enable: true
+    windows:
+      enable: true
+    # linux:
+    #   enable: true
+    web:
+      enable: true

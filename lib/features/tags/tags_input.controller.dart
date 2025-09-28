@@ -50,13 +50,13 @@ class TagsInputController extends GetxController {
     final textField = TextFormField(
       controller: queryController,
       autofocus: true,
-      decoration: const InputDecoration(
-        labelText: 'Add a tag',
-        hintText: 'Add or query some tags',
+      decoration: InputDecoration(
+        labelText: 'add_a_tag'.tr,
+        hintText: 'add_or_query_some_tags'.tr,
       ),
       onChanged: (value) => suggestions.value = query(value),
       validator: (value) =>
-          value!.length >= 3 ? null : 'Must be at least 3 letter word',
+          value!.length >= 3 ? null : 'must_be_at_least_3_letter_word'.tr,
       onFieldSubmitted: (tag) {
         if (!formKey.currentState!.validate()) return;
         add(tag);
@@ -103,8 +103,8 @@ class TagsInputController extends GetxController {
         children: [
           Row(
             children: [
-              const Expanded(
-                child: Text('Tags', style: TextStyle(color: Colors.grey)),
+              Expanded(
+                child: Text('tags'.tr, style: TextStyle(color: Colors.grey)),
               ),
               IconButton(
                 onPressed: Get.back,
@@ -124,7 +124,7 @@ class TagsInputController extends GetxController {
             child: textField,
           ),
           const SizedBox(height: 10),
-          const Text('Suggestions', style: TextStyle(color: Colors.grey)),
+          Text('suggestions'.tr, style: TextStyle(color: Colors.grey)),
           listView,
         ],
       ),

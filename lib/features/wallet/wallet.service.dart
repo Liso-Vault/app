@@ -137,15 +137,23 @@ class WalletService extends GetxService with ConsoleMixin {
     String signature_ = '';
 
     if (personal) {
-      signature_ = await compute(signPersonalMessage, {
-        'privateKey': privateKeyHex,
-        'message': messageBytes,
-      });
+      final cancelable = workerManager.execute(
+        () => signPersonalMessage({
+          'privateKey': privateKeyHex,
+          'message': messageBytes,
+        }),
+      );
+      signature_ = await cancelable.future;
+      cancelable.cancel();
     } else {
-      signature_ = await compute(signMessage, {
-        'privateKey': privateKeyHex,
-        'message': messageBytes,
-      });
+      final cancelable = workerManager.execute(
+        () => signMessage({
+          'privateKey': privateKeyHex,
+          'message': messageBytes,
+        }),
+      );
+      signature_ = await cancelable.future;
+      cancelable.cancel();
     }
 
     return signature_;
@@ -155,17 +163,14 @@ class WalletService extends GetxService with ConsoleMixin {
     Wallet? wallet_;
 
     try {
-      // await Executor().execute(
-      //   arg1: {'data': data, 'password': password},
-      //   fun1: walletFromJson,
-      // ).then((value) => wallet_ = value);
-
-      Cancelable<Wallet> cancelable = workerManager.execute<Wallet>(
+      final cancelable = workerManager.execute(
         () => Wallet.fromJson(data, password),
         priority: WorkPriority.immediately,
       );
 
       wallet_ = await cancelable.future;
+      cancelable.cancel();
+      workerManager.dispose();
     } catch (e) {
       console.error('error: $e');
       return null;
@@ -186,10 +191,9 @@ class WalletService extends GetxService with ConsoleMixin {
     SecretPersistence.to.walletAddress.val = address;
     console.info('init! address: $address');
 
-    SecretPersistence.to.wallet.val = await compute(
-      walletToJsonString,
-      wallet!,
-    );
+    final cancelable = workerManager.execute(() => walletToJsonString(wallet!));
+    SecretPersistence.to.wallet.val = await cancelable.future;
+    cancelable.cancel();
 
     // generate cipher key
     final signature = await sign(kCipherKeySignatureMessage);
@@ -247,8 +251,7 @@ class WalletService extends GetxService with ConsoleMixin {
         e.readOnly = true;
         return e;
       } else if (e.identifier == 'note') {
-        e.data.value =
-            'It is recommended you have a written copy of your master seed phrase on some physical object and store it safely. You are free to delete this item.';
+        e.data.value = 'liso_master_seed_phrase_desc'.tr;
         return e;
       } else {
         return e;
@@ -260,7 +263,7 @@ class WalletService extends GetxService with ConsoleMixin {
       identifier: 'seed',
       groupId: 'secrets', // TODO: use enums for reserved groups
       category: category.id,
-      title: 'Liso Master Seed Phrase',
+      title: 'master_seed_phrase'.tr,
       fields: fields,
       metadata: await HiveMetadata.get(),
       protected: true,

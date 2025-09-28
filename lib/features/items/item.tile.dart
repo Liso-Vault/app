@@ -71,7 +71,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   void _duplicate() async {
     final copy = HiveLisoItem.fromJson(item.toJson());
     copy.identifier = const Uuid().v4();
-    copy.title = '${copy.title} Copy';
+    copy.title = '${copy.title} ${'copy'.tr}';
     copy.metadata = await copy.metadata.getUpdated();
     await ItemsService.to.box!.add(copy);
     AppPersistence.to.changes.val++;
@@ -111,15 +111,15 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
   }
 
   void _confirmDelete() async {
-    const dialogContent = Text(
-      'Are you sure you want to permanently delete this item?',
+    final dialogContent = Text(
+      'are_you_sure_you_want_to_permanently_delete_this_item'.tr,
     );
 
     return Get.dialog(AlertDialog(
       title: Text('delete'.tr),
       content: isSmallScreen
           ? dialogContent
-          : const SizedBox(width: 450, child: dialogContent),
+          : SizedBox(width: 450, child: dialogContent),
       actions: [
         TextButton(
           onPressed: Get.back,
@@ -175,7 +175,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
             ),
           ] else ...[
             ContextMenuItem(
-              title: 'Permanent Delete',
+              title: 'permanent_delete'.tr,
               leading: Icon(Iconsax.trash_outline, size: popupIconSize),
               onSelected: _confirmDelete,
             ),
@@ -310,13 +310,13 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            item.title.isNotEmpty ? item.title : '(Untitled)',
+            item.title.isNotEmpty ? item.title : 'untitled'.tr,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           if (item.subTitle.trim().isNotEmpty) ...[
             Text(
-              item.subTitle.isNotEmpty ? item.subTitle : '(Untitled)',
+              item.subTitle.isNotEmpty ? item.subTitle : 'untitled'.tr,
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: const TextStyle(fontSize: 13, color: Colors.grey),

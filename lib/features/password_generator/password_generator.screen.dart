@@ -99,8 +99,8 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'STRENGTH: ',
+                Text(
+                  '${'strength'.tr.toUpperCase()}: ',
                   style: TextStyle(fontSize: 12, color: Colors.grey),
                 ),
                 Obx(
@@ -204,14 +204,14 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              'Some long text note to be added in this section. Maybe with some useful links to best practices and more...',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
+          // const Padding(
+          //   padding: EdgeInsets.all(20),
+          //   child: Text(
+          //     'Some long text note to be added in this section. Maybe with some useful links to best practices and more...',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(color: Colors.grey),
+          //   ),
+          // ),
         ],
       ),
     );

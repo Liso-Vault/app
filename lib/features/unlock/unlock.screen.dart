@@ -108,7 +108,7 @@ class UnlockScreen extends StatelessWidget with ConsoleMixin {
           actions: [
             TextButton(
               onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-              child: const Text('Need Help ?'),
+              child: Text('need_help'.tr),
             ),
           ],
         ),

@@ -2,7 +2,7 @@ import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../../../core/utils/globals.dart';
@@ -25,7 +25,7 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
   Widget build(BuildContext context) {
     final menuItems = [
       ContextMenuItem(
-        title: 'Remove',
+        title: 'remove'.tr,
         leading: Icon(Iconsax.trash_outline, size: popupIconSize),
         onSelected: onDelete,
       ),

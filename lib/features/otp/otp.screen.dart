@@ -23,8 +23,8 @@ class OTPScreen extends StatelessWidget with ConsoleMixin {
           children: [
             Icon(Iconsax.convert_3d_cube_outline, size: 150, color: themeColor),
             const SizedBox(height: 20),
-            const Text(
-              'OTP Generator',
+            Text(
+              'otp_generator'.tr,
               style: TextStyle(fontSize: 30),
             ),
             const SizedBox(height: 15),
@@ -33,8 +33,8 @@ class OTPScreen extends StatelessWidget with ConsoleMixin {
               child: TextField(
                 controller: controller.codeController,
                 textAlign: TextAlign.center,
-                decoration: const InputDecoration(
-                  label: Text('Key', textAlign: TextAlign.center),
+                decoration: InputDecoration(
+                  label: Text('key'.tr, textAlign: TextAlign.center),
                   hintText: 'JBSWY3DPEHPK3PXP',
                   alignLabelWithHint: true,
                 ),
@@ -43,14 +43,14 @@ class OTPScreen extends StatelessWidget with ConsoleMixin {
             const SizedBox(height: 20),
             Obx(
               () => Text(
-                "Code: ${controller.code.value}",
+                "${'code'.tr}: ${controller.code.value}",
                 style: const TextStyle(fontSize: 20),
               ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: controller.generate,
-              child: const Text('Generate'),
+              child: Text('generate'.tr),
             ),
           ],
         ),
@@ -58,13 +58,13 @@ class OTPScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: const Text('OTP Generator'),
+      title: Text('otp_generator'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: const Text('Need Help ?'),
+          child: Text('need_help'.tr),
         ),
       ],
     );

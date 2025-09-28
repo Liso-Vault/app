@@ -44,7 +44,7 @@ class ItemsSearchDelegate extends SearchDelegate with ConsoleMixin {
 
   Widget process() {
     if (query.isEmpty) {
-      return const Center(child: Text("Search items"));
+      return Center(child: Text("search_items".tr));
     }
 
     final filteredItems = items.where((e) {

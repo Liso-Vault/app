@@ -128,25 +128,25 @@ class ItemScreenController extends GetxController
       // ]
       if (editMode.value) ...[
         ContextMenuItem(
-          title: reorderMode.value ? 'Done Re-order' : 'Re-order Fields',
+          title: reorderMode.value ? 'done_re_order'.tr : 're_order_fields'.tr,
           leading: Icon(Icons.drag_indicator, size: popupIconSize),
           onSelected: reorderMode.toggle,
         ),
       ],
       ContextMenuItem(
-        title: 'Details',
+        title: 'details'.tr,
         leading: Icon(Iconsax.code_outline, size: popupIconSize),
         onSelected: () => Get.to(() => JSONViewerScreen(data: item!.toJson())),
       ),
       if (kDebugMode) ...[
         ContextMenuItem(
-          title: 'Force Close',
+          title: 'force_close'.tr,
           leading: Icon(Iconsax.slash_outline, size: popupIconSize),
           onSelected: Get.back,
         ),
       ],
       ContextMenuItem(
-        title: 'Need Help?',
+        title: 'need_help'.tr,
         leading: Icon(Iconsax.message_question_outline, size: popupIconSize),
         onSelected: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
       ),
@@ -156,12 +156,12 @@ class ItemScreenController extends GetxController
   List<ContextMenuItem> get titleMenuItems {
     return [
       ContextMenuItem(
-        title: 'Copy',
+        title: 'copy'.tr,
         leading: Icon(Iconsax.copy_outline, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(titleController.text),
       ),
       ContextMenuItem(
-        title: 'Clear',
+        title: 'clear'.tr,
         leading: Icon(LineAwesome.times_solid, size: popupIconSize),
         onSelected: titleController.clear,
       ),
@@ -170,7 +170,7 @@ class ItemScreenController extends GetxController
 
   List<ContextMenuItem> get menuFieldItems => [
         ContextMenuItem(
-          title: 'Text Field',
+          title: 'text_field'.tr,
           leading: Icon(Iconsax.text_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -192,7 +192,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'TextArea Field',
+          title: 'textarea_field'.tr,
           leading: Icon(Iconsax.note_text_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -214,7 +214,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Password Field',
+          title: 'password_field'.tr,
           leading: Icon(Iconsax.password_check_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -236,7 +236,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Phone Field',
+          title: 'phone_field'.tr,
           leading: Icon(LineAwesome.phone_solid, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -258,7 +258,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'PIN Field',
+          title: 'pin_field'.tr,
           leading: Icon(Iconsax.code_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -280,7 +280,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'TOTP Field',
+          title: 'totp_field'.tr,
           leading: Icon(Iconsax.shield_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -302,7 +302,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'URL Field',
+          title: 'url_field'.tr,
           leading: Icon(Iconsax.link_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -324,7 +324,7 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Date Field',
+          title: 'date_field'.tr,
           leading: Icon(Iconsax.calendar_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
@@ -346,14 +346,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Email Field',
+          title: 'email_field'.tr,
           leading: Icon(Iconsax.message_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.email.name,
-              data: HiveLisoFieldData(label: 'Email Field'),
+              data: HiveLisoFieldData(label: 'email_field'.tr),
             );
 
             widgets.add(
@@ -368,14 +368,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Number Field',
+          title: 'number_field'.tr,
           leading: Icon(Icons.numbers, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.number.name,
-              data: HiveLisoFieldData(label: 'Number Field'),
+              data: HiveLisoFieldData(label: 'number_field'.tr),
             );
 
             widgets.add(
@@ -390,14 +390,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Passport Field',
+          title: 'passport_field'.tr,
           leading: Icon(Iconsax.card_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.passport.name,
-              data: HiveLisoFieldData(label: 'Passport Field'),
+              data: HiveLisoFieldData(label: 'passport_field'.tr),
             );
 
             widgets.add(
@@ -412,16 +412,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Toggle Field',
+          title: 'toggle_field'.tr,
           leading: Icon(Icons.toggle_on, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.toggle.name,
-              data: HiveLisoFieldData(
-                label: 'Toggle',
-              ),
+              data: HiveLisoFieldData(label: 'toggle'.tr),
             );
 
             widgets.add(
@@ -436,14 +434,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Address Field',
+          title: 'address_field'.tr,
           leading: Icon(Iconsax.location_outline, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.address.name,
-              data: HiveLisoFieldData(label: 'Address Field'),
+              data: HiveLisoFieldData(label: 'address_field'.tr),
             );
 
             widgets.add(
@@ -458,16 +456,14 @@ class ItemScreenController extends GetxController
           },
         ),
         ContextMenuItem(
-          title: 'Section',
+          title: 'section'.tr,
           leading: Icon(Icons.text_fields, size: popupIconSize),
           onSelected: () {
             final field = HiveLisoField(
               identifier: const Uuid().v4(),
               reserved: false,
               type: LisoFieldType.section.name,
-              data: HiveLisoFieldData(
-                label: 'Section',
-              ),
+              data: HiveLisoFieldData(label: 'section'.tr),
             );
 
             widgets.add(
@@ -552,7 +548,7 @@ class ItemScreenController extends GetxController
 
       if (itemsFound.isEmpty) {
         return Chip(
-          label: const Text('file not found'),
+          label: Text('file_not_found'.tr),
           onDeleted:
               editMode.value ? () => attachments.remove(attachment) : null,
         );
@@ -827,9 +823,7 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: street1,
                         enabled: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Street 1',
-                        ),
+                        decoration: InputDecoration(labelText: 'street_1'.tr),
                       ),
                     ),
                   ),
@@ -843,9 +837,7 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: street2,
                         enabled: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Street 2',
-                        ),
+                        decoration: InputDecoration(labelText: 'street_2'.tr),
                       ),
                     ),
                   ),
@@ -859,9 +851,7 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: city,
                         enabled: false,
-                        decoration: const InputDecoration(
-                          labelText: 'City',
-                        ),
+                        decoration: InputDecoration(labelText: 'city'.tr),
                       ),
                     ),
                   ),
@@ -875,9 +865,8 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: state,
                         enabled: false,
-                        decoration: const InputDecoration(
-                          labelText: 'State / Province',
-                        ),
+                        decoration:
+                            InputDecoration(labelText: 'state_province'.tr),
                       ),
                     ),
                   ),
@@ -891,9 +880,7 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: zip,
                         enabled: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Zip Code',
-                        ),
+                        decoration: InputDecoration(labelText: 'zip_code'.tr),
                       ),
                     ),
                   ),
@@ -907,9 +894,7 @@ class ItemScreenController extends GetxController
                       child: TextFormField(
                         initialValue: country,
                         enabled: false,
-                        decoration: const InputDecoration(
-                          labelText: 'Country',
-                        ),
+                        decoration: InputDecoration(labelText: 'country'.tr),
                       ),
                     ),
                   ),

@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
+<!DOCTYPE html><html><head>
   <!--
     If you are serving your web app in a path other than the root, change the
     href value below to reflect the base path you are serving from.
@@ -19,8 +16,7 @@
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description"
-    content="An open-source data management application that focuses mainly on securely storing private information and files.">
+  <meta name="description" content="An open-source data management application that focuses mainly on securely storing private information and files.">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -32,8 +28,7 @@
   <meta property="og:url" content="https://liso.dev/">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Liso">
-  <meta property="og:description"
-    content="An open-source data management application that focuses mainly on securely storing private information and files.">
+  <meta property="og:description" content="An open-source data management application that focuses mainly on securely storing private information and files.">
   <meta property="og:image" content="https://liso.dev/icons/Icon-opengraph.jpg">
 
   <!-- Twitter Meta Tags -->
@@ -41,12 +36,11 @@
   <meta property="twitter:domain" content="liso.dev">
   <meta property="twitter:url" content="https://liso.dev/">
   <meta name="twitter:title" content="Liso">
-  <meta name="twitter:description"
-    content="An open-source data management application that focuses mainly on securely storing private information and files.">
+  <meta name="twitter:description" content="An open-source data management application that focuses mainly on securely storing private information and files.">
   <meta name="twitter:image" content="https://liso.dev/icons/Icon-opengraph.jpg">
 
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="icon" type="image/png" href="favicon.png">
 
   <title>Liso</title>
   <link rel="manifest" href="manifest.json">
@@ -56,7 +50,7 @@
     var serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
+  <script src="flutter.js" defer=""></script>
 
   <style>
     #loader {
@@ -82,9 +76,86 @@
       }
     }
   </style>
+  <style id="splash-screen-style">
+    html {
+      height: 100%
+    }
+
+    body {
+      margin: 0;
+      min-height: 100%;
+      background-color: #000000;
+          background-size: 100% 100%;
+    }
+
+    .center {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+
+    .contain {
+      display:block;
+      width:100%; height:100%;
+      object-fit: contain;
+    }
+
+    .stretch {
+      display:block;
+      width:100%; height:100%;
+    }
+
+    .cover {
+      display:block;
+      width:100%; height:100%;
+      object-fit: cover;
+    }
+
+    .bottom {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      -ms-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+    }
+
+    .bottomLeft {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+    }
+
+    .bottomRight {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #000000;
+          }
+    }
+  </style>
+  <script id="splash-screen-script">
+    function removeSplashFromWeb() {
+      document.getElementById("splash")?.remove();
+      document.getElementById("splash-branding")?.remove();
+      document.body.style.background = "transparent";
+    }
+  </script>
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 </head>
 
 <body style="background-color:black;">
+  <picture id="splash">
+      <source srcset="splash/img/light-1x.png 1x, splash/img/light-2x.png 2x, splash/img/light-3x.png 3x, splash/img/light-4x.png 4x" media="(prefers-color-scheme: light)">
+      <source srcset="splash/img/dark-1x.png 1x, splash/img/dark-2x.png 2x, splash/img/dark-3x.png 3x, splash/img/dark-4x.png 4x" media="(prefers-color-scheme: dark)">
+      <img class="center" aria-hidden="true" src="splash/img/light-1x.png" alt="">
+  </picture>
   <div id="loader"></div>
   <script>
     window.addEventListener('load', function (ev) {
@@ -99,6 +170,6 @@
       });
     });
   </script>
-</body>
 
-</html>
+
+</body></html>

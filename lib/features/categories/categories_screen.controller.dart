@@ -78,7 +78,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         Get.backLegacy();
 
         return UIUtils.showSimpleDialog(
-          'Category Already Exists',
+          'category_already_exists'.tr,
           '"${nameController.text}" already exists.',
         );
       }
@@ -87,7 +87,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         return Utils.adaptiveRouteOpen(
           name: Routes.upgrade,
           parameters: {
-            'title': 'Custom Categories',
+            'title': 'custom_categories'.tr,
             'body':
                 'Maximum custom categories of ${limits.customCategories} limit reached. Upgrade to Pro to unlock unlimited custom categories feature.',
           },
@@ -130,11 +130,11 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (data) {
               if (data!.isNotEmpty) return null;
-              return 'Invalid Name';
+              return 'invalid_name'.tr;
             },
-            decoration: const InputDecoration(
-              labelText: 'Name',
-              hintText: 'Category Name',
+            decoration: InputDecoration(
+              labelText: 'name'.tr,
+              hintText: 'category_name'.tr,
             ),
           ),
           TextFormField(
@@ -142,15 +142,15 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
             autofocus: true,
             textCapitalization: TextCapitalization.sentences,
             maxLength: 100,
-            decoration: const InputDecoration(
-              labelText: 'Description',
-              hintText: 'optional',
+            decoration: InputDecoration(
+              labelText: 'description'.tr,
+              hintText: 'optional'.tr,
             ),
           ),
           DropdownButtonFormField<HiveLisoCategory>(
             isExpanded: true,
             onChanged: (value) => template = value!,
-            decoration: const InputDecoration(labelText: 'Template'),
+            decoration: InputDecoration(labelText: 'template'.tr),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (data) {
               if (data != null) return null;

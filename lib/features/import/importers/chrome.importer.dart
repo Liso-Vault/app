@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/items/items.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:get/get.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../core/hive/models/item.hive.dart';
@@ -37,8 +38,8 @@ class ChromeImporter {
       console.error('$columns -> $validColumns');
 
       await UIUtils.showSimpleDialog(
-        'Invalid CSV Columns',
-        'Please import a valid ${sourceFormat.title} exported file',
+        'invalid_csv_columns'.tr,
+        '${'please_import_a_valid_exported_file'.tr} (${sourceFormat.title})',
       );
 
       return false;
@@ -110,7 +111,7 @@ class ChromeImporter {
     MainScreenController.to.importedItemIds.addAll(itemIds);
 
     NotificationsService.to.notify(
-      title: 'Import Successful',
+      title: 'import_successful'.tr,
       body: 'Imported ${items.length} items via ${sourceFormat.title}',
     );
 

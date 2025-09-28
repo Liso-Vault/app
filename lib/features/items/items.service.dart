@@ -98,7 +98,7 @@ class ItemsService extends GetxService with ConsoleMixin {
     final results = data.where((e) => e.identifier == itemId).toList();
 
     if (results.isEmpty) {
-      return const Left('Field not found');
+      return Left('field_not_found'.tr);
     }
 
     final field = results.first.fields.firstWhere(

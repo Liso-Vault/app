@@ -137,7 +137,7 @@ class ImportScreenController extends GetxController
       Get.backLegacy();
 
       return UIUtils.showSimpleDialog(
-        'File Not Found',
+        'file_not_found'.tr,
         'Please make sure the file: ${file.path} exists.',
       );
     }
@@ -148,7 +148,7 @@ class ImportScreenController extends GetxController
       Get.backLegacy();
 
       return UIUtils.showSimpleDialog(
-        'Incorrect File Format',
+        'incorrect_file_format'.tr,
         'Import the correct file with format: ${sourceFormat.value.title}',
       );
     }
@@ -165,7 +165,7 @@ class ImportScreenController extends GetxController
       Get.backLegacy();
 
       return UIUtils.showSimpleDialog(
-        'Empty File',
+        'empty_file'.tr,
         'Please import a valid exported file',
       );
     }
@@ -201,12 +201,12 @@ class ImportScreenController extends GetxController
 
     await UIUtils.showImageDialog(
       Icon(Iconsax.import_outline, size: 100, color: themeColor),
-      title: 'Import Items',
+      title: 'import_items'.tr,
       subTitle: basename(filePathController.text),
       body: body,
       action: _proceed,
-      actionText: 'Import',
-      closeText: 'Cancel',
+      actionText: 'import'.tr,
+      closeText: 'cancel'.tr,
       onClose: () {
         change(GetStatus.success(null));
         Get.backLegacy();
@@ -245,7 +245,7 @@ class ImportScreenController extends GetxController
 
     if (!kAllowedExtensions.contains(fileExtension.replaceAll('.', ''))) {
       return UIUtils.showSimpleDialog(
-        'Invalid File Extension',
+        'invalid_file_extension'.tr,
         'Allowed file extensions are ${kAllowedExtensions.join(',')}',
       );
     }

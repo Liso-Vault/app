@@ -1,15 +1,10 @@
-import 'package:app_core/config.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
-import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:icons_plus/icons_plus.dart';
-import 'package:liso/resources/resources.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../core/utils/globals.dart';
@@ -48,7 +43,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ],
         ListTile(
           leading: Icon(Iconsax.chrome_outline, color: themeColor),
-          title: Text('${config.name} Website'),
+          title: Text('${config.name} ${'website'.tr}'),
           subtitle: Text(links.website),
           onTap: () => Utils.openUrl(
             links.website,
@@ -71,12 +66,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ),
         ListTile(
           leading: Icon(Iconsax.security_user_outline, color: themeColor),
-          title: Text('${config.name} Privacy'),
+          title: Text('${config.name} ${'privacy'.tr}'),
           onTap: () => Utils.openUrl(links.privacy),
         ),
         ListTile(
           leading: Icon(Iconsax.book_1_outline, color: themeColor),
-          title: Text('${config.name} Terms'),
+          title: Text('${config.name} ${'terms'.tr}'),
           onTap: () => Utils.openUrl(links.terms),
         ),
         ListTile(
@@ -84,15 +79,15 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
           title: Text('faqs'.tr),
           onTap: () => Utils.openUrl(links.faqs),
         ),
-        ListTile(
-          leading: Icon(Iconsax.dollar_circle_outline, color: themeColor),
-          // TODO: localize
-          title: const Text('Earn 30% Commision'),
-          subtitle: const Text('Join the Affiliates Program'),
-          onTap: () => Utils.openUrl(
-            'https://oliverbytes.gumroad.com/affiliates',
-          ),
-        ),
+        // ListTile(
+        //   leading: Icon(Iconsax.dollar_circle_outline, color: themeColor),
+        //   // TODO: localize
+        //   title: const Text('Earn 30% Commision'),
+        //   subtitle: const Text('Join the Affiliates Program'),
+        //   onTap: () => Utils.openUrl(
+        //     'https://oliverbytes.gumroad.com/affiliates',
+        //   ),
+        // ),
         if (!GetPlatform.isMobile) ...[
           ListTile(
             leading: Icon(Iconsax.forward_square_outline, color: themeColor),
@@ -125,50 +120,50 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         //     onTap: () {},
         //   ),
         // ),
-        const Divider(),
-        ListTile(
-          leading: RemoteImage(
-            url: 'https://i.imgur.com/0H0sWlN.png',
-            width: 20,
-            failWidget: Image.asset(Images.placeholder, height: 20),
-          ),
-          title: const Text('NexBot AI Writing Assistant'),
-          subtitle: const Text('Create amazing content 10X faster with AI'),
-          onTap: () => Utils.openUrl('https://nexbot.ai'),
-        ),
-        ListTile(
-          leading: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: RemoteImage(
-              url: 'https://i.imgur.com/a25B2yQ.png',
-              width: 20,
-              failWidget: Image.asset(Images.placeholder, height: 20),
-            ),
-          ),
-          title: const Text('NexSnap Screenshot Editor'),
-          subtitle: const Text('Make beautiful screenshots in seconds'),
-          onTap: () => Utils.openUrl('https://nexsnap.app'),
-        ),
-        ListTile(
-          leading: RemoteImage(
-            url:
-                'https://tools.applemediaservices.com/api/artwork/US/app/6448982120.png',
-            width: 20,
-            failWidget: Image.asset(Images.placeholder, height: 20),
-          ),
-          title: const Text('NexTran'),
-          subtitle: Text('nextran_desc'.tr),
-          onTap: () => Utils.openUrl(
-            isApple && CoreConfig().isAppStore
-                ? 'https://apps.apple.com/us/app/nexbot-ai-writing-assistant/id6448982120'
-                : 'https://nextran.app',
-          ),
-        ),
-        ListTile(
-          leading: Icon(LineAwesome.globe_solid, color: themeColor),
-          title: Text('help_translate'.tr),
-          onTap: () => Utils.openUrl(links.translations),
-        ),
+        // const Divider(),
+        // ListTile(
+        //   leading: RemoteImage(
+        //     url: 'https://i.imgur.com/0H0sWlN.png',
+        //     width: 20,
+        //     failWidget: Image.asset(Images.placeholder, height: 20),
+        //   ),
+        //   title: const Text('NexBot AI Writing Assistant'),
+        //   subtitle: const Text('Create amazing content 10X faster with AI'),
+        //   onTap: () => Utils.openUrl('https://nexbot.ai'),
+        // ),
+        // ListTile(
+        //   leading: ClipRRect(
+        //     borderRadius: BorderRadius.circular(20),
+        //     child: RemoteImage(
+        //       url: 'https://i.imgur.com/a25B2yQ.png',
+        //       width: 20,
+        //       failWidget: Image.asset(Images.placeholder, height: 20),
+        //     ),
+        //   ),
+        //   title: const Text('NexSnap Screenshot Editor'),
+        //   subtitle: const Text('Make beautiful screenshots in seconds'),
+        //   onTap: () => Utils.openUrl('https://nexsnap.app'),
+        // ),
+        // ListTile(
+        //   leading: RemoteImage(
+        //     url:
+        //         'https://tools.applemediaservices.com/api/artwork/US/app/6448982120.png',
+        //     width: 20,
+        //     failWidget: Image.asset(Images.placeholder, height: 20),
+        //   ),
+        //   title: const Text('NexTran'),
+        //   subtitle: Text('nextran_desc'.tr),
+        //   onTap: () => Utils.openUrl(
+        //     isApple && CoreConfig().isAppStore
+        //         ? 'https://apps.apple.com/us/app/nexbot-ai-writing-assistant/id6448982120'
+        //         : 'https://nextran.app',
+        //   ),
+        // ),
+        // ListTile(
+        //   leading: Icon(LineAwesome.globe_solid, color: themeColor),
+        //   title: Text('help_translate'.tr),
+        //   onTap: () => Utils.openUrl(links.translations),
+        // ),
         ListTile(
           leading: Icon(Iconsax.people_outline, color: themeColor),
           title: const Text('Contributors'),

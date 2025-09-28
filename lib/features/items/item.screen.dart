@@ -99,7 +99,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Generated OTP Code',
+                'generated_otp_code'.tr,
                 style: TextStyle(color: themeColor, fontSize: 12),
               ),
               const SizedBox(height: 5),
@@ -166,7 +166,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                 child: OutlinedButton.icon(
                   onPressed: () {},
                   icon: const Icon(Iconsax.add_circle_outline),
-                  label: const Text('Custom Field'),
+                  label: Text('custom_field'.tr),
                 ),
               ),
               const Divider(),
@@ -209,7 +209,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TagsInput(
-                label: 'Tags',
+                label: 'tags'.tr,
                 enabled: controller.editMode.value,
                 controller: controller.tagsController,
               ),
@@ -277,12 +277,12 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                       controller.groupId.value = value!;
                       console.wtf('changed: $value');
                     },
-              decoration: const InputDecoration(labelText: 'Vault'),
+              decoration: InputDecoration(labelText: 'vault'.tr),
               items: {
                 ...GroupsController.to.combined,
                 HiveLisoGroup(
                   id: 'new-vault',
-                  name: 'New Vault',
+                  name: 'new_vault'.tr,
                   metadata: null,
                 ),
               }
@@ -305,7 +305,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
           onChanged: controller.reserved.value || !controller.editMode.value
               ? null
               : (value) => controller.category.value = value!.id,
-          decoration: const InputDecoration(labelText: 'Category'),
+          decoration: InputDecoration(labelText: 'category'.tr),
           items: [
             ...{...CategoriesController.to.combined, controller.categoryObject}
                 .map((e) => DropdownMenuItem<HiveLisoCategory>(
@@ -340,13 +340,13 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       if (mode == 'view') ...[
         const SizedBox(height: 20),
         Text(
-          'Modified ${controller.item?.updatedDateTimeFormatted}',
+          '${'modified'.tr} ${controller.item?.updatedDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 5),
         Text(
-          'Created ${controller.item?.createdDateTimeFormatted}',
+          '${'created'.tr} ${controller.item?.createdDateTimeFormatted}',
           style: const TextStyle(color: Colors.grey),
           textAlign: TextAlign.center,
         ),
@@ -408,6 +408,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
 
     final fab = Obx(
       () => FloatingActionButton.extended(
+        tooltip: mode == 'view' ? 'edit'.tr : 'save'.tr,
         onPressed: () {
           if (!controller.editMode.value) {
             controller.editMode.toggle();

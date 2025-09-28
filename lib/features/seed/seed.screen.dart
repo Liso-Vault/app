@@ -59,16 +59,16 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
       children: [
         Icon(Iconsax.key_square_outline, size: 150, color: themeColor),
         const SizedBox(height: 20),
-        const Text(
-          'Master Seed Phrase',
+        Text(
+          'master_seed_phrase'.tr,
           style: TextStyle(
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
         ),
         const SizedBox(height: 5),
-        const Text(
-          "This is the only key to access and decrypt your vault so please carefully write it down and store it in a safe location",
+        Text(
+          "master_seed_phrase_desc".tr,
           textAlign: TextAlign.center,
           style: TextStyle(color: Colors.grey),
         ),
@@ -80,7 +80,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
           ObxValue(
             (RxBool data) => CheckboxListTile(
               checkboxShape: const CircleBorder(),
-              title: const Text("I have backed up my seed in a safe location"),
+              title: Text("i_have_backed_up_my_seed_in_a_safe_location".tr),
               value: data(),
               onChanged: data.call,
             ),
@@ -90,7 +90,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
           ObxValue(
             (RxBool data) => CheckboxListTile(
               checkboxShape: const CircleBorder(),
-              title: const Text("I have written down my seed"),
+              title: Text("i_have_written_down_my_seed".tr),
               value: data(),
               onChanged: data.call,
             ),
@@ -122,7 +122,7 @@ class SeedScreen extends StatelessWidget with ConsoleMixin {
           ),
           TextButton(
             onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-            child: const Text('Need Help ?'),
+            child: Text('need_help'.tr),
           ),
         ],
       ),

@@ -97,7 +97,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
       actions: [
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: const Text('Need Help ?'),
+          child: Text('need_help'.tr),
         ),
       ],
     );
@@ -108,8 +108,8 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  'Unsync a previously synced device to allow this new device to sync. Or upgrade to Pro for more device sync limits.',
+                Text(
+                  'unsync_device_desc'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 17),
                 ),
@@ -118,12 +118,12 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
                   onPressed: () => Utils.adaptiveRouteOpen(
                     name: Routes.upgrade,
                   ),
-                  label: const Text('Upgrade to Pro'),
+                  label: Text('upgrade_to_pro'.tr),
                   icon: const Icon(LineAwesome.rocket_solid),
                 ),
                 const Divider(),
-                const Text(
-                  'Upgrade for a better overall experience and more security',
+                Text(
+                  'upgrade_for_better_experience'.tr,
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey),
                 )

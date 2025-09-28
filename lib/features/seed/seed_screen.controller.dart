@@ -22,23 +22,23 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   List<ContextMenuItem> get menuItems => [
         if (!isDisplayMode) ...[
           ContextMenuItem(
-            title: 'Generate',
+            title: 'generate'.tr,
             leading: Icon(Iconsax.chart_outline, size: popupIconSize),
             onSelected: _generate,
           ),
           ContextMenuItem(
-            title: 'Custom',
+            title: 'custom'.tr,
             leading: Icon(Iconsax.key_outline, size: popupIconSize),
             onSelected: custom,
           ),
         ],
         ContextMenuItem(
-          title: 'QR Code',
+          title: 'qr_code'.tr,
           leading: Icon(Iconsax.barcode_outline, size: popupIconSize),
           onSelected: _showQR,
         ),
         ContextMenuItem(
-          title: 'Copy',
+          title: 'copy'.tr,
           leading: Icon(Iconsax.copy_outline, size: popupIconSize),
           onSelected: () => Utils.copyToClipboard(seed.value),
         ),
@@ -71,8 +71,8 @@ class SeedScreenController extends GetxController with ConsoleMixin {
 
       if (result.isLeft) {
         return UIUtils.showSimpleDialog(
-          'Seed Not Found',
-          'Cannot find your saved seed',
+          'seed_not_found'.tr,
+          'cannot_find_your_saved_seed'.tr,
         );
       }
 
@@ -95,8 +95,9 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   void _showQR() {
     AppUtils.showQR(
       seed.value,
-      title: 'Seed QR Code',
-      subTitle: "Make sure you're in a safe location and free from prying eyes",
+      title: 'seed_qr_code'.tr,
+      subTitle:
+          "make_sure_youre_in_a_safe_location_and_free_from_prying_eyes".tr,
     );
   }
 
@@ -130,7 +131,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Enter Your Seed'),
+      title: Text('enter_your_seed'.tr),
       content: isSmallScreen
           ? dialogContent
           : SizedBox(

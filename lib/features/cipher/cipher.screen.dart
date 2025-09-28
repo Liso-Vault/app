@@ -46,7 +46,7 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
             leading: Icon(Iconsax.shield_tick_outline, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('encrypt_file'.tr),
-            subtitle: const Text('Encrypt a file'),
+            subtitle: Text('encrypt_a_file'.tr),
             onTap: controller.encrypt,
           ),
           ListTile(
@@ -54,8 +54,8 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
             leading: Icon(Iconsax.shield_cross_outline, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('decrypt_file'.tr),
-            subtitle: const Text(
-              'Decrypt a <file>$kEncryptedExtensionExtra file',
+            subtitle: Text(
+              '${'decrypt_a_file_file'.tr} (<file>$kEncryptedExtensionExtra)',
             ),
           ),
           const Divider(),
@@ -63,7 +63,7 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
             leading: Icon(Iconsax.shield_tick_outline, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('encrypt_text'.tr),
-            subtitle: const Text('Encrypt texts'),
+            subtitle: Text('encrypt_texts'.tr),
             onTap: controller.encryptText,
           ),
           ListTile(
@@ -71,20 +71,20 @@ class CipherScreen extends StatelessWidget with ConsoleMixin {
             leading: Icon(Iconsax.shield_cross_outline, color: themeColor),
             trailing: const Icon(Iconsax.arrow_right_3_outline),
             title: Text('decrypt_text'.tr),
-            subtitle: const Text('Decrypt texts'),
+            subtitle: Text('decrypt_texts'.tr),
           ),
         ],
       ),
     );
 
     final appBar = AppBar(
-      title: const Text('Encryption Tool'),
+      title: Text('encryption_tool'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: const Text('Need Help ?'),
+          child: Text('need_help'.tr),
         ),
       ],
     );

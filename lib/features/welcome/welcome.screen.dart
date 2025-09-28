@@ -99,67 +99,6 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
       ],
     );
 
-    // final bottomBar = Column(
-    //   mainAxisSize: MainAxisSize.min,
-    //   children: [
-    //     const Text(
-    //       'By proceeding, you agree to our',
-    //       style: TextStyle(fontSize: 11),
-    //     ),
-    //     Row(
-    //       mainAxisSize: MainAxisSize.min,
-    //       children: [
-    //         TextButton(
-    //           onPressed: () => Utils.openUrl(
-    //             config.links.terms,
-    //           ),
-    //           child: const Text(
-    //             'Terms of Use',
-    //             style: TextStyle(fontSize: 11),
-    //           ),
-    //         ),
-    //         const Text(
-    //           'and',
-    //           style: TextStyle(fontSize: 11),
-    //         ),
-    //         TextButton(
-    //           onPressed: () => Utils.openUrl(
-    //             config.links.privacy,
-    //           ),
-    //           child: const Text(
-    //             'Privacy Policy',
-    //             style: TextStyle(fontSize: 11),
-    //           ),
-    //         ),
-    //       ],
-    //     ),
-    //     const VersionText(),
-    //   ],
-    // );
-
-    // return Container(
-    //   decoration: Get.isDarkMode
-    //       ? const BoxDecoration(
-    //           gradient: LinearGradient(
-    //             begin: Alignment.bottomLeft,
-    //             end: Alignment.topRight,
-    //             colors: [
-    //               Colors.black,
-    //               Color(0xFF173030),
-    //             ],
-    //           ),
-    //         )
-    //       : null,
-    //   child: Scaffold(
-    //     backgroundColor: Get.isDarkMode ? Colors.transparent : null,
-    //     bottomNavigationBar: bottomBar,
-    //     body: controller.obx(
-    //       (_) => content,
-    //       onLoading: const BusyIndicator(),
-    //     ),
-    //   ),
-    // );
-
     final versionText = Text(
       metadataApp.formattedVersion,
       style: const TextStyle(color: Colors.grey, fontSize: 10),

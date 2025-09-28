@@ -40,8 +40,9 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
               ),
             ),
             const SizedBox(height: 5),
-            const Text(
-              "Restore your vault with your master seed phrase to decrypt it.",
+            Text(
+              "restore_your_vault_with_your_master_seed_phrase_to_decrypt_it"
+                  .tr,
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.grey),
             ),
@@ -55,8 +56,8 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                     text: '${config.name} Cloud',
                     iconData: Iconsax.cloud_outline,
                   ),
-                  RestoreMode.file: const SegmentedControlItem(
-                    text: 'Vault File',
+                  RestoreMode.file: SegmentedControlItem(
+                    text: 'vault_file'.tr,
                     iconData: Iconsax.document_code_outline,
                   ),
                 },
@@ -70,11 +71,12 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                   child: TextFormField(
                     controller: controller.filePathController,
                     validator: (text) =>
-                        text!.isEmpty ? 'Import your vault file' : null,
+                        text!.isEmpty ? 'import_your_vault_file'.tr : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
-                      hintText: 'Path to your <vault>.$kVaultExtension file',
-                      label: const Text('Vault File Path'),
+                      hintText:
+                          '${'path_to_your_file'.tr} (<vault>.$kVaultExtension)',
+                      label: Text('vault_file_path'.tr),
                       suffixIcon: Padding(
                         padding: const EdgeInsets.only(right: 5),
                         child: IconButton(
@@ -126,7 +128,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
           // ),
           TextButton(
             onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-            child: const Text('Need Help ?'),
+            child: Text('need_help'.tr),
           ),
         ],
       ),

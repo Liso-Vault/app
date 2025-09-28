@@ -49,8 +49,8 @@ class UnlockScreenController extends GetxController
     if (!isLocalAuthSupported) return console.warning('local auth unsupported');
 
     final authenticated = await LocalAuthService.to.authenticate(
-      subTitle: reason ?? 'Unlock your vault',
-      body: 'Authenticate to verify and approve this action',
+      subTitle: reason ?? 'unlock_your_vault'.tr,
+      body: 'authenticate_to_verify_and_approve_this_action'.tr,
     );
 
     if (!authenticated) {
@@ -83,7 +83,7 @@ class UnlockScreenController extends GetxController
     change(GetStatus.success(null));
     passwordController.clear();
     canProceed.value = false;
-    String message = 'Please enter your master password';
+    String message = 'please_enter_your_master_password'.tr;
 
     if (!canPop) {
       attemptsLeft--;
@@ -94,12 +94,13 @@ class UnlockScreenController extends GetxController
       }
 
       if (attemptsLeft < 3) {
-        message = '$attemptsLeft ${'attempts_left'.tr} until your vault resets';
+        message =
+            '$attemptsLeft ${'attempts_left'.tr} ${'until_your_vault_resets'.tr}';
       }
     }
 
     UIUtils.showSnackBar(
-      title: 'Incorrect Master Password',
+      title: 'incorrect_master_password'.tr,
       message: message,
       icon: const Icon(Iconsax.warning_2_outline, color: Colors.red),
       seconds: 4,

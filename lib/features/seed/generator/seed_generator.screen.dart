@@ -48,22 +48,23 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       CardButton(
-                        text: 'Generate',
+                        text: 'generate'.tr,
                         iconData: Iconsax.chart_outline,
                         onPressed: controller.generate,
                       ),
                       CardButton(
-                        text: 'QR Code',
+                        text: 'qr_code'.tr,
                         iconData: Iconsax.barcode_outline,
                         onPressed: () => AppUtils.showQR(
                           controller.seed.value,
-                          title: 'Your Seed QR Code',
+                          title: 'your_seed_qr_code'.tr,
                           subTitle:
-                              "Make sure you're in a safe location and free from prying eyes",
+                              "make_sure_youre_in_a_safe_location_and_free_from_prying_eyes"
+                                  .tr,
                         ),
                       ),
                       CardButton(
-                        text: 'Copy',
+                        text: 'copy'.tr,
                         iconData: Iconsax.copy_outline,
                         onPressed: () => Utils.copyToClipboard(
                           controller.seed.value,
@@ -104,7 +105,7 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
               children: [
                 ObxValue(
                   (RxInt data) => RadioListTile<int>(
-                    title: const Text('24 Words'),
+                    title: Text('24_words'.tr),
                     value: 256,
                     groupValue: controller.strength.value,
                     onChanged: (value) {
@@ -116,7 +117,7 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 ObxValue(
                   (RxInt data) => RadioListTile<int>(
-                    title: const Text('12 Words'),
+                    title: Text('12_words'.tr),
                     value: 128,
                     groupValue: controller.strength.value,
                     onChanged: (value) {
@@ -129,20 +130,20 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
               ],
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.all(20),
-            child: Text(
-              'Some long text note to be added in this section. Maybe with some useful links to best practices and more...',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-          ),
+          // const Padding(
+          //   padding: EdgeInsets.all(20),
+          //   child: Text(
+          //     'Some long text note to be added in this section. Maybe with some useful links to best practices and more...',
+          //     textAlign: TextAlign.center,
+          //     style: TextStyle(color: Colors.grey),
+          //   ),
+          // ),
         ],
       ),
     );
 
     final appBar = AppBar(
-      title: const Text('Seed Generator'),
+      title: Text('seed_generator'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [

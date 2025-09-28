@@ -92,20 +92,19 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               ),
             ),
           ),
-          const Text(
-            'Fragile Passwords Detected',
+          Text(
+            'fragile_passwords_detected'.tr,
             style: TextStyle(color: Colors.orange, fontSize: 16),
           ),
           const SizedBox(height: 10),
           OutlinedButton.icon(
             icon: const Icon(Iconsax.search_status_outline),
-            label: const Text('Identify'),
+            label: Text('identify'.tr),
             onPressed: () => Utils.adaptiveRouteOpen(
               name: Routes.upgrade,
               parameters: {
-                'title': 'Password Health',
-                'body':
-                    'Monitor the health of your passwords. Upgrade to Pro to take advantage of this powerful feature.',
+                'title': 'password_health'.tr,
+                'body': 'password_health_desc'.tr,
               },
             ),
           ),
@@ -119,9 +118,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               ? weakPasswords
               : listView,
       onEmpty: drawerController.filterPasswordHealth.value
-          ? const CenteredPlaceholder(
+          ? CenteredPlaceholder(
               iconData: Icons.check,
-              message: 'No Fragile Passwords Detected',
+              message: 'no_fragile_passwords_detected'.tr,
             )
           : Obx(
               () => CenteredPlaceholder(
@@ -146,8 +145,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
       runSpacing: 3,
       spacing: 3,
       children: [
-        const Text(
-          'Filters: ',
+        Text(
+          '${'filters'.tr}: ',
           style: TextStyle(fontSize: 9, color: Colors.grey),
         ),
         Obx(
@@ -224,17 +223,18 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                     contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                     selectedTileColor: themeColor.withOpacity(0.05),
                     // TODO: localize
-                    title: const Text(
-                      "Backup Your Seed Phrase",
+                    title: Text(
+                      "backup_your_seed_phrase".tr,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: const Text(
-                      "This is the only key to access and decrypt your vault",
+                    subtitle: Text(
+                      "this_is_the_only_key_to_access_and_decrypt_your_vault"
+                          .tr,
                     ),
                     // leading: const Icon(Iconsax.key),
                     trailing: OutlinedButton(
                       onPressed: controller.showSeed,
-                      child: const Text('Backup'),
+                      child: Text('backup'.tr),
                     ),
                   ),
                 ),
@@ -254,14 +254,14 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                       contentPadding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                       selectedTileColor: themeColor.withOpacity(0.05),
                       // TODO: localize
-                      title: const Text("Recently Imported Items"),
-                      subtitle: const Text(
-                        "Are you satisfied with the recent import? If not, you can undo your changes.",
+                      title: Text("recently_imported_items".tr),
+                      subtitle: Text(
+                        "recently_imported_items_desc".tr,
                       ),
                       // leading: const Icon(Iconsax.key),
                       trailing: OutlinedButton(
                         onPressed: controller.showConfirmImportDialog,
-                        child: const Text('Decide'),
+                        child: Text('decide'.tr),
                       ),
                     ),
                   ),
@@ -360,6 +360,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             (e) => ItemsController.to.sortOrder.value.name
                 .toLowerCase()
                 .contains(e.title.toLowerCase().replaceAll(' ', '')),
+            orElse: () => controller.menuItemsSort.first,
           ),
           child: const Icon(Iconsax.sort_outline),
         ),
@@ -381,8 +382,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                       : () {
                           if (!ConnectivityService.to.connected.value) {
                             UIUtils.showSimpleDialog(
-                              'No Internet Connection',
-                              'Please check your internet connection and try again',
+                              'no_internet_connection'.tr,
+                              'no_internet_connection_desc'.tr,
                             );
                           }
 
@@ -613,11 +614,13 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                   drawerController.filterDeleted.value) {
                 if (drawerController.trashedCount > 0) {
                   return FloatingActionButton(
+                    tooltip: 'empty_trash'.tr,
                     onPressed: controller.emptyTrash,
                     child: const Icon(Iconsax.trash_outline),
                   );
                 } else if (drawerController.deletedCount > 0) {
                   return FloatingActionButton(
+                    tooltip: 'empty_deleted'.tr,
                     onPressed: controller.emptyDeleted,
                     child: const Icon(Iconsax.trash_outline),
                   );
@@ -631,7 +634,8 @@ class MainScreen extends GetResponsiveView<MainScreenController>
                 sheetForSmallScreen: true,
                 gridForLargeScreen: true,
                 child: FloatingActionButton(
-                  child: const Icon(LineAwesome.plus_solid),
+                  tooltip: 'add_item'.tr,
+                  child: const Icon(Iconsax.add_outline),
                   onPressed: () {},
                 ),
               );

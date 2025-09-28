@@ -45,8 +45,8 @@ class WelcomeScreenController extends GetxController
 
     // TODO: custom localized reason
     final authenticated = await LocalAuthService.to.authenticate(
-      subTitle: 'Create your vault',
-      body: 'Authenticate to verify and approve this action',
+      subTitle: 'create_your_vault'.tr,
+      body: 'authenticate_to_verify_and_approve_this_action'.tr,
     );
 
     if (!authenticated) return change(GetStatus.success(null));
@@ -56,8 +56,8 @@ class WelcomeScreenController extends GetxController
     change(GetStatus.success(null));
 
     NotificationsService.to.notify(
-      title: 'Welcome to ${config.name}',
-      body: 'Your vault has been created',
+      title: 'welcome'.tr,
+      body: 'your_vault_has_been_created'.tr,
     );
   }
 

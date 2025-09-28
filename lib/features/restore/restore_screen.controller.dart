@@ -65,7 +65,7 @@ class RestoreScreenController extends GetxController
 
     if (statResult.isLeft || statResult.right.status != 200) {
       return Left(
-        "If you're new to ${config.name}, consider creating a vault first.",
+        "if_you_re_new_here_consider_creating_a_vault_first".tr,
       );
     }
 
@@ -114,7 +114,7 @@ class RestoreScreenController extends GetxController
         change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
-          'Failed Restoring Vault',
+          'failed_restoring_vault'.tr,
           result.left,
         );
       }
@@ -137,8 +137,8 @@ class RestoreScreenController extends GetxController
       change(GetStatus.success(null));
 
       return UIUtils.showSimpleDialog(
-        'Failed Decrypting Vault',
-        'Please check your seed phrase',
+        'failed_decrypting_vault'.tr,
+        'please_check_your_seed_phrase'.tr,
       );
     }
 
@@ -159,8 +159,8 @@ class RestoreScreenController extends GetxController
 
       if (isLocalAuthSupported) {
         final authenticated = await LocalAuthService.to.authenticate(
-          subTitle: 'Restore your vault',
-          body: 'Authenticate to verify and approve this action',
+          subTitle: 'restore_your_vault'.tr,
+          body: 'authenticate_to_verify_and_approve_this_action'.tr,
         );
 
         if (!authenticated) return change(GetStatus.success(null));
@@ -171,8 +171,8 @@ class RestoreScreenController extends GetxController
         AppPersistence.to.backedUpSeed.val = true;
 
         NotificationsService.to.notify(
-          title: 'Welcome back to ${config.name}',
-          body: 'Your vault has been restored',
+          title: 'welcome_back'.tr,
+          body: 'your_vault_has_been_restored'.tr,
         );
 
         Persistence.to.onboarded.val = true;
@@ -192,8 +192,8 @@ class RestoreScreenController extends GetxController
       body:
           "Device: ${vault.metadata!.device.name}\nApp Version: ${vault.metadata!.app.formattedVersion}\nLast Modified: ${vault.metadata!.updatedTime}\nVault Version: ${vault.version}",
       action: proceed,
-      actionText: 'Restore',
-      closeText: 'Cancel',
+      actionText: 'restore'.tr,
+      closeText: 'cancel'.tr,
       onClose: Get.back,
     );
 
@@ -231,7 +231,7 @@ class RestoreScreenController extends GetxController
 
     if (!valid) {
       return UIUtils.showSimpleDialog(
-        'Invalid Vault',
+        'invalid_vault'.tr,
         'You can only restore an encrypted <vault>.$kVaultExtension file',
       );
     }

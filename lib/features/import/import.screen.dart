@@ -1,4 +1,3 @@
-import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -8,7 +7,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-
 import 'package:liso/core/hive/models/group.hive.dart';
 import 'package:liso/features/general/widget_refresher.widget.dart';
 import 'package:liso/features/groups/groups.controller.dart';
@@ -34,13 +32,13 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
           children: [
             Icon(Iconsax.import_1_outline, size: 100, color: themeColor),
             const SizedBox(height: 20),
-            const Text(
-              'Import Items',
+            Text(
+              'import_items'.tr,
               style: TextStyle(fontSize: 20),
             ),
             const SizedBox(height: 5),
             Text(
-              "Import items from external sources to ${config.name}",
+              "import_items_from_external_sources".tr,
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
@@ -53,8 +51,8 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                   controller: dropdownRefresher,
                   child: DropdownButtonFormField<String>(
                     initialValue: controller.destinationGroupId.value,
-                    decoration: const InputDecoration(
-                      labelText: 'Destination Vault',
+                    decoration: InputDecoration(
+                      labelText: 'destination_vault'.tr,
                     ),
                     onChanged: (value) async {
                       if (value == 'new-vault') {
@@ -74,12 +72,12 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                       ...GroupsController.to.combined,
                       HiveLisoGroup(
                         id: kSmartGroupId,
-                        name: 'Smart - assign/create automatically',
+                        name: 'smart_assign_create_automatically'.tr,
                         metadata: null,
                       ),
                       HiveLisoGroup(
                         id: 'new-vault',
-                        name: 'New Vault',
+                        name: 'new_vault'.tr,
                         metadata: null,
                       ),
                     }
@@ -117,12 +115,12 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                   child: TextFormField(
                     controller: controller.filePathController,
                     validator: (text) => text!.isEmpty
-                        ? 'Choose the exported file to import'
+                        ? 'choose_the_exported_file_to_import'.tr
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    decoration: const InputDecoration(
-                      hintText: 'Path to your exported file',
-                      label: Text('Exported File Path'),
+                    decoration: InputDecoration(
+                      hintText: 'path_to_your_exported_file'.tr,
+                      label: Text('exported_file_path'.tr),
                     ),
                   ),
                 ),
@@ -136,7 +134,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             Obx(
               () => CheckboxListTile(
                 title: Text(
-                  'Automatically tag items with (${controller.sourceFormat.value.id})',
+                  '${'automatically_tag_items_with'.tr} (${controller.sourceFormat.value.id})',
                 ),
                 value: controller.autoTag.value,
                 onChanged: (value) => controller.autoTag.value = value!,
@@ -164,7 +162,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
         actions: [
           TextButton(
             onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-            child: const Text('Need Help ?'),
+            child: Text('need_help'.tr),
           ),
         ],
       ),

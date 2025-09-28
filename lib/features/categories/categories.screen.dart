@@ -42,7 +42,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
         );
 
         Get.dialog(AlertDialog(
-          title: const Text('Delete Category'),
+          title: Text('delete_category'.tr),
           content: isSmallScreen
               ? dialogContent
               : SizedBox(width: 450, child: dialogContent),
@@ -113,7 +113,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
       actions: [
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: const Text('Help ?'),
+          child: Text('need_help'.tr),
         ),
       ],
     );

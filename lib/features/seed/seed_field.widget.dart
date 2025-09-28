@@ -49,9 +49,9 @@ class SeedField extends StatelessWidget with ConsoleMixin {
 
   String? _validateSeed(String seed) {
     if (required && seed.isEmpty) {
-      return 'Required';
+      return 'required'.tr;
     } else if (seed.isNotEmpty && !bip39.validateMnemonic(seed.trim())) {
-      return 'Invalid seed phrase';
+      return 'invalid_seed_phrase'.tr;
     } else {
       return null;
     }
@@ -60,39 +60,40 @@ class SeedField extends StatelessWidget with ConsoleMixin {
   List<ContextMenuItem> get menuItems {
     return [
       ContextMenuItem(
-        title: 'Hide',
+        title: 'hide'.tr,
         onSelected: () => blur.value = true,
         leading: Icon(Iconsax.eye_slash_outline, size: popupIconSize),
       ),
       if (showGenerate && !readOnly) ...[
         ContextMenuItem(
-          title: 'Generate',
+          title: 'generate'.tr,
           leading: Icon(Iconsax.password_check_outline, size: popupIconSize),
           onSelected: _generate,
         ),
       ],
       ContextMenuItem(
-        title: 'QR Code',
+        title: 'qr_code'.tr,
         leading: Icon(Iconsax.barcode_outline, size: popupIconSize),
         onSelected: () {
           if (fieldController!.text.isEmpty) return;
 
           AppUtils.showQR(
             fieldController!.text,
-            title: 'Your Seed QR Code',
+            title: 'your_seed_qr_code'.tr,
             subTitle:
-                "Make sure you're in a safe location and free from prying eyes",
+                "make_sure_youre_in_a_safe_location_and_free_from_prying_eyes"
+                    .tr,
           );
         },
       ),
       ContextMenuItem(
-        title: 'Copy',
+        title: 'copy'.tr,
         leading: Icon(Iconsax.copy_outline, size: popupIconSize),
         onSelected: () => Utils.copyToClipboard(fieldController!.text),
       ),
       if (!readOnly) ...[
         ContextMenuItem(
-          title: 'Clear',
+          title: 'clear'.tr,
           leading: Icon(LineAwesome.times_solid, size: popupIconSize),
           onSelected: fieldController!.clear,
         ),
@@ -118,7 +119,7 @@ class SeedField extends StatelessWidget with ConsoleMixin {
         FilteringTextInputFormatter.deny(RegExp(r'\n')),
       ],
       decoration: InputDecoration(
-        labelText: 'Mnemonic Seed Phrase',
+        labelText: 'mnemonic_seed_phrase'.tr,
         suffixIcon: ContextMenuButton(
           menuItems,
           child: const Icon(LineAwesome.ellipsis_v_solid),

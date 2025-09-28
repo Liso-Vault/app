@@ -53,10 +53,10 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
         if (controller.data.isEmpty) {
           return CenteredPlaceholder(
             iconData: Iconsax.attach_square_outline,
-            message: 'No Attachments',
+            message: 'no_attachments'.tr,
             child: TextButton(
               onPressed: controller.pick,
-              child: const Text('Attach a File'),
+              child: Text('attach_a_file'.tr),
             ),
           );
         } else {
@@ -72,13 +72,13 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
     );
 
     final appBar = AppBar(
-      title: const Text('Attachments'),
+      title: Text('attachments'.tr),
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [
         TextButton(
           onPressed: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
-          child: const Text('Help ?'),
+          child: Text('help'.tr),
         ),
         IconButton(
           onPressed: () => Get.backLegacy(result: controller.data),

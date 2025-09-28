@@ -4,6 +4,7 @@ import 'package:console_mixin/console_mixin.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
+import 'package:get/get.dart';
 
 import '../../../core/hive/models/item.hive.dart';
 import '../../../core/hive/models/metadata/metadata.hive.dart';
@@ -37,8 +38,8 @@ class AppleImporter {
       console.error('$columns -> $validColumns');
 
       await UIUtils.showSimpleDialog(
-        'Invalid CSV Columns',
-        'Please import a valid ${sourceFormat.title} exported file',
+        'invalid_csv_columns'.tr,
+        '${'please_import_a_valid_exported_file'.tr} (${sourceFormat.title})',
       );
 
       return false;
@@ -118,7 +119,7 @@ class AppleImporter {
     MainScreenController.to.importedItemIds.addAll(itemIds);
 
     NotificationsService.to.notify(
-      title: 'Import Successful',
+      title: 'import_successful'.tr,
       body: 'Imported ${items.length} items via ${sourceFormat.title}',
     );
 
