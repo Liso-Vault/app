@@ -34,7 +34,7 @@ class ContextMenuSheet extends StatelessWidget with ConsoleMixin {
         trailing: item.trailing,
         selected: item == initialItem,
         onTap: () {
-          Get.back();
+          Get.backLegacy();
           item.onSelected?.call();
         },
       );

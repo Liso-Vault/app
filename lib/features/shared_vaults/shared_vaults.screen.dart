@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -114,11 +113,11 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
         );
 
         void send() {
-          Get.back();
+          Get.backLegacy();
 
           UIUtils.showSimpleDialog(
             'E2EE Messenger',
-            "A built-in end to end encryption messenger is coming for ${appConfig.name} where you can safely send & receive private information",
+            "A built-in end to end encryption messenger is coming for ${config.name} where you can safely send & receive private information",
           );
         }
 

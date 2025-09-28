@@ -39,8 +39,8 @@ class S3ExplorerScreenController extends GetxController
 
   // GETTERS
   bool get isRoot => currentPrefix.value == rootPrefix;
-  bool get isTimeMachine => Get.parameters['type'] == 'time_machine';
-  bool get isPicker => Get.parameters['type'] == 'picker';
+  bool get isTimeMachine => gParameters['type'] == 'time_machine';
+  bool get isPicker => gParameters['type'] == 'picker';
   String get rootFolderName => isTimeMachine ? kDirBackups : kDirFiles;
 
   // INIT
@@ -53,15 +53,15 @@ class S3ExplorerScreenController extends GetxController
   }
 
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS
 
   Future<void> load({bool pulled = false}) async {
-    if (!pulled) change(true, status: RxStatus.loading());
+    if (!pulled) change(GetStatus.loading());
     await storage.load();
     navigate(prefix: currentPrefix.value);
   }
@@ -85,8 +85,7 @@ class S3ExplorerScreenController extends GetxController
     currentPrefix.value = prefix;
 
     change(
-      null,
-      status: data.isEmpty ? RxStatus.empty() : RxStatus.success(),
+      data.isEmpty ? GetStatus.empty() : GetStatus.success(null),
     );
   }
 
@@ -98,7 +97,7 @@ class S3ExplorerScreenController extends GetxController
   }
 
   void pickFile() async {
-    change(true, status: RxStatus.loading());
+    change(GetStatus.loading());
     timeLockEnabled = false; // disable
     FilePickerResult? result;
 
@@ -109,14 +108,14 @@ class S3ExplorerScreenController extends GetxController
     } catch (e) {
       timeLockEnabled = true; // re-enable
       console.error('FilePicker error: $e');
-      change(false, status: RxStatus.success());
+      change(GetStatus.success(null));
       return;
     }
 
     if (result == null || result.files.isEmpty) {
       timeLockEnabled = true; // re-enable
       console.warning("canceled file picker");
-      change(false, status: RxStatus.success());
+      change(GetStatus.success(null));
       return;
     }
 
@@ -129,7 +128,7 @@ class S3ExplorerScreenController extends GetxController
     try {
       fileSize = await file.length();
     } catch (e) {
-      change(false, status: RxStatus.success());
+      change(GetStatus.success(null));
 
       return UIUtils.showSimpleDialog(
         'File Size Error',
@@ -138,7 +137,7 @@ class S3ExplorerScreenController extends GetxController
     }
 
     if (fileSize > limits.uploadSize) {
-      change(false, status: RxStatus.success());
+      change(GetStatus.success(null));
 
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
@@ -150,7 +149,7 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    change(false, status: RxStatus.success());
+    change(GetStatus.success(null));
     _upload(file);
   }
 
@@ -168,7 +167,7 @@ class S3ExplorerScreenController extends GetxController
       );
     }
 
-    change(true, status: RxStatus.loading());
+    change(GetStatus.loading());
     final encryptedBytes = CipherService.to.encrypt(await file.readAsBytes());
     final fileName = basename(file.path) + kEncryptedExtensionExtra;
 
@@ -178,7 +177,7 @@ class S3ExplorerScreenController extends GetxController
     );
 
     if (result.isLeft) {
-      change(false, status: RxStatus.success());
+      change(GetStatus.success(null));
 
       return UIUtils.showSimpleDialog(
         'Upload Failed',
@@ -191,7 +190,7 @@ class S3ExplorerScreenController extends GetxController
       body: fileName,
     );
 
-    change(false, status: RxStatus.success());
+    change(GetStatus.success(null));
     await load();
   }
 
@@ -201,7 +200,7 @@ class S3ExplorerScreenController extends GetxController
 
     void createDirectory(String name) async {
       if (!formKey.currentState!.validate()) return;
-      change(true, status: RxStatus.loading());
+      change(GetStatus.loading());
 
       // TODO: check if folder already exists
       final result = await storage.upload(
@@ -210,7 +209,7 @@ class S3ExplorerScreenController extends GetxController
       );
 
       if (result.isLeft) {
-        change(false, status: RxStatus.success());
+        change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
           'Create Folder Failed',
@@ -223,7 +222,7 @@ class S3ExplorerScreenController extends GetxController
         body: folderController.text,
       );
 
-      change(false, status: RxStatus.success());
+      change(GetStatus.success(null));
       await load();
     }
 
@@ -259,7 +258,7 @@ class S3ExplorerScreenController extends GetxController
                 .isNotEmpty;
 
             if (!exists) {
-              Get.back();
+              Get.backLegacy();
               createDirectory(folderController.text);
             } else {
               UIUtils.showSimpleDialog(

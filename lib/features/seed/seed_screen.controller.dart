@@ -49,7 +49,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
   final chkBackedUpSeed = false.obs;
   final chkWrittenSeed = false.obs;
   final passphraseIndexedStack = 0.obs;
-  final isDisplayMode = Get.parameters['mode'] == 'display';
+  final isDisplayMode = gParameters['mode'] == 'display';
 
   // GETTERS
   bool get canProceed => chkBackedUpSeed.value && chkWrittenSeed.value;
@@ -86,7 +86,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
 
   void continuePressed() async {
     AppPersistence.to.backedUpSeed.val = true;
-    if (isDisplayMode) return Get.back();
+    if (isDisplayMode) return Get.backLegacy();
     generatedSeed = seed.value;
 
     Utils.adaptiveRouteOpen(name: AppRoutes.createPassword);
@@ -117,7 +117,7 @@ class SeedScreenController extends GetxController with ConsoleMixin {
     void use() {
       if (!formKey.currentState!.validate()) return;
       seed.value = controller.text;
-      Get.back();
+      Get.backLegacy();
     }
 
     final dialogContent = Form(

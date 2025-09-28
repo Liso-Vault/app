@@ -49,8 +49,8 @@ class ItemScreenController extends GetxController
 
   final formKey = GlobalKey<FormState>();
   final menuKey = GlobalKey<FormState>();
-  final mode = Get.parameters['mode'];
-  final joinedVaultItem = Get.parameters['joinedVaultItem'] == 'true';
+  final mode = gParameters['mode'];
+  final joinedVaultItem = gParameters['joinedVaultItem'] == 'true';
   final titleController = TextEditingController();
   final tagsController = Get.put(TagsInputController());
 
@@ -75,10 +75,10 @@ class ItemScreenController extends GetxController
   final protected = false.obs;
   final reserved = false.obs;
   final groupId = DrawerMenuController.to.filterGroupId.value.obs;
-  final category = Get.parameters['category']!.obs;
+  final category = gParameters['category']!.obs;
   final attachments = <String>[].obs;
   final sharedVaultIds = <String>[].obs;
-  final editMode = (Get.parameters['mode'] != 'view').obs;
+  final editMode = (gParameters['mode'] != 'view').obs;
   final reorderMode = false.obs;
   final otpCode = ''.obs;
   final otpRemainingSeconds = 0.obs;
@@ -590,7 +590,7 @@ class ItemScreenController extends GetxController
 
     originalItem = HiveLisoItem.fromJson(item!.toJson());
     _populateItem();
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     // re-populate widgets
     editMode.listen((value) => _populateItem());
     if (category.value == LisoItemCategory.otp.name) generateOTP();
@@ -672,7 +672,7 @@ class ItemScreenController extends GetxController
   Future<void> _populateSavedAutofillItem() async {
     var fields = categoryObject.fields;
 
-    final paramDomain = Get.parameters['app_domain']!;
+    final paramDomain = gParameters['app_domain']!;
     final appDomain = HiveAppDomain.fromJson(jsonDecode(paramDomain));
 
     appIds.value = appDomain.appIds;
@@ -684,9 +684,9 @@ class ItemScreenController extends GetxController
           e.data.value = appDomain.uris.first.toString();
         }
       } else if (e.identifier == 'username') {
-        e.data.value = Get.parameters['username'];
+        e.data.value = gParameters['username'];
       } else if (e.identifier == 'password') {
-        e.data.value = Get.parameters['password'];
+        e.data.value = gParameters['password'];
       }
 
       return e;
@@ -696,7 +696,7 @@ class ItemScreenController extends GetxController
       identifier: const Uuid().v4(),
       category: category.value,
       iconUrl: appDomain.iconUrl,
-      title: Get.parameters['title']!,
+      title: gParameters['title']!,
       fields: fields,
       tags: ['saved'],
       favorite: false,
@@ -709,7 +709,7 @@ class ItemScreenController extends GetxController
   }
 
   Future<void> _populateGeneratedItem() async {
-    final value = Get.parameters['value'];
+    final value = gParameters['value'];
     String identifier = '';
 
     if (category.value == LisoItemCategory.password.name) {
@@ -739,10 +739,10 @@ class ItemScreenController extends GetxController
 
   void _loadItem() {
     if (!joinedVaultItem) {
-      final hiveKey = Get.parameters['hiveKey'].toString();
+      final hiveKey = gParameters['hiveKey'].toString();
       item = ItemsService.to.box!.get(int.parse(hiveKey))!;
     } else {
-      final identifier = Get.parameters['identifier'].toString();
+      final identifier = gParameters['identifier'].toString();
       item = VaultExplorerScreenController.to.data.firstWhere(
         (e) => e.identifier == identifier,
       );
@@ -1043,7 +1043,7 @@ class ItemScreenController extends GetxController
     ItemsController.to.load();
     DrawerMenuController.to.update();
     UIUtils.requestReview();
-    Get.back();
+    Get.backLegacy();
 
     // if (isAutofill) {
     //   AutofillService().onSaveComplete();
@@ -1075,7 +1075,7 @@ class ItemScreenController extends GetxController
     ItemsController.to.load();
     DrawerMenuController.to.update();
     UIUtils.requestReview();
-    Get.back();
+    Get.backLegacy();
   }
 
   void onProtectedChanged(bool? value) {
@@ -1124,7 +1124,7 @@ class ItemScreenController extends GetxController
     void save() async {
       if (!formKey.currentState!.validate()) return;
       iconUrl.value = iconController.text;
-      Get.back();
+      Get.backLegacy();
     }
 
     final content = TextFormField(
@@ -1195,7 +1195,7 @@ class ItemScreenController extends GetxController
           TextButton(
             onPressed: () {
               hasChanges = false;
-              Get.back();
+              Get.backLegacy();
             },
             child: const Text('Discard'),
           ),
@@ -1226,7 +1226,7 @@ class ItemScreenController extends GetxController
       if (!formKey.currentState!.validate()) return;
       field.data.label = labelController.text;
       field.data.hint = hintController.text;
-      Get.back();
+      Get.backLegacy();
     }
 
     final content = Column(

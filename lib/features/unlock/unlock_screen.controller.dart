@@ -17,8 +17,8 @@ class UnlockScreenController extends GetxController
     with StateMixin, ConsoleMixin {
   // VARIABLES
   final passwordController = TextEditingController();
-  final canPop = Get.parameters['mode'] == 'poppable';
-  final reason = Get.parameters['reason'];
+  final canPop = gParameters['mode'] == 'poppable';
+  final reason = gParameters['reason'];
 
   // PROPERTIES
   int attemptsLeft = Persistence.to.maxUnlockAttempts.val;
@@ -31,7 +31,7 @@ class UnlockScreenController extends GetxController
   @override
   void onInit() {
     // AuthenticationMiddleware.signedIn = false;
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
@@ -65,22 +65,22 @@ class UnlockScreenController extends GetxController
   }
 
   void unlock() async {
-    if (status == RxStatus.loading()) return console.error('still busy');
+    if (status == GetStatus.loading()) return console.error('still busy');
     // await UIUtils.showConsent();
     await Get.closeCurrentSnackbar();
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
     final password = passwordController.text.trim();
 
     if (password != SecretPersistence.to.walletPassword.val) {
       return _wrongPassword();
     }
 
-    change(null, status: RxStatus.success());
-    return Get.back(result: true);
+    change(GetStatus.success(null));
+    return Get.backLegacy(result: true);
   }
 
   void _wrongPassword() async {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     passwordController.clear();
     canProceed.value = false;
     String message = 'Please enter your master password';

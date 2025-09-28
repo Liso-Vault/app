@@ -63,7 +63,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
         body: nameController.text,
       );
 
-      Get.back();
+      Get.backLegacy();
     }
 
     void create() async {
@@ -74,7 +74,7 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
           .isNotEmpty;
 
       if (exists) {
-        Get.back();
+        Get.backLegacy();
 
         return UIUtils.showSimpleDialog(
           'Custom Vault Already Exists',

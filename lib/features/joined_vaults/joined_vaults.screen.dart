@@ -89,7 +89,7 @@ class JoinedVaultsScreen extends StatelessWidget with ConsoleMixin {
           // }
 
           // // close dialog
-          // Get.back();
+          // Get.backLegacy();
         }
 
         final dialogContent = Text(

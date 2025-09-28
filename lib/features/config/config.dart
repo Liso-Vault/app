@@ -1,0 +1,46 @@
+const kConfigJson = {
+  "id": "liso",
+  "dev": "Stackwares",
+  "name": "Liso",
+  "url": "https://liso.globeapp.dev/",
+  "build": {
+    "min": 1,
+    "beta": [0],
+    "latest": 1,
+    "disabled": [0]
+  },
+  "links": {
+    "faqs": "",
+    "store": {
+      "huawei": "",
+      "amazon": "",
+      "gumroad": "",
+      "samsung": "",
+      "apple": "https://apps.apple.com/us/app/nextran/id1621225567",
+      "google": "https://play.google.com/store/apps/details?id=com.liso.app",
+    },
+    "reddit": "",
+    "discord": "",
+    "roadmap": "",
+    "twitter": "",
+    "website": "",
+    "facebook": "",
+    "giveaway": "",
+    "instagram": "",
+    "tutorials": "",
+    "affiliates": "",
+    "contributors": "",
+    "productHunt": "",
+    "translations": "",
+    "facebookGroup": "",
+    "terms": "tps://liso.super.site/terms",
+    "privacy": "https://liso.super.site/privacy",
+  },
+  "emails": {
+    "issues": "stackwares+liso@gmail.com",
+    "premium": "stackwares+liso@gmail.com",
+    "support": "stackwares+liso@gmail.com",
+    "translations": "stackwares+liso@gmail.com"
+  },
+  "extra": {},
+};

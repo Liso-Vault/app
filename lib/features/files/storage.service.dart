@@ -37,7 +37,11 @@ class FileService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   Future<void> load() async {
-    if (!AppPersistence.to.sync.val) return console.warning('offline');
+    console.info('loading storage...');
+    if (!AppPersistence.to.sync.val) {
+      return console.warning('not syncing when offline mode');
+    }
+
     final result = await functions.listObjects();
     if (result.isLeft) return console.error('failed to list objects');
     rootInfo.value = result.right;

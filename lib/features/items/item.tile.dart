@@ -127,7 +127,7 @@ class ItemTile extends StatelessWidget with ConsoleMixin {
         ),
         TextButton(
           onPressed: () {
-            Get.back();
+            Get.backLegacy();
 
             if (!item.deleted) {
               _delete();

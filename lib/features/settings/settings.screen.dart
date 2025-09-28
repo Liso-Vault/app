@@ -1,4 +1,3 @@
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
@@ -12,11 +11,10 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:launch_at_startup/src/launch_at_startup.dart';
+// import 'package:launch_at_startup/src/launch_at_startup.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/autofill/autofill.service.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../menu/menu.item.dart';
@@ -157,7 +155,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     if (!AppPersistence.to.sync.val) {
                       return UIUtils.showSimpleDialog(
                         'Sync Required',
-                        'Please turn on ${appConfig.name} Cloud Sync to use this feature',
+                        'Please turn on ${config.name} Cloud Sync to use this feature',
                       );
                     }
 
@@ -232,57 +230,57 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ],
           );
         }),
-        Obx(
-          () => Visibility(
-            visible: LisoAutofillService.to.supported.value,
-            child: ExpansionTile(
-              title: const Text('Autofill Settings'),
-              subtitle: Text(
-                '${appConfig.name} autofill service settings',
-              ),
-              leading: const Icon(Iconsax.rulerpen_outline),
-              childrenPadding: const EdgeInsets.only(left: 20),
-              children: [
-                ListTile(
-                  leading: const Icon(Iconsax.setting_2_outline),
-                  title: Text('${appConfig.name} Autofill Service'),
-                  onTap: LisoAutofillService.to.set,
-                  subtitle: Obx(
-                    () => Text(
-                      LisoAutofillService.to.enabled.value
-                          ? 'Enabled'
-                          : 'Set ${appConfig.name} as your autofill service',
-                    ),
-                  ),
-                ),
-                Visibility(
-                  visible: LisoAutofillService.to.enabled.value,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
-                    child: SwitchListTile(
-                      title: const Text('Auto Save'),
-                      subtitle: Text(
-                        'Automatically save passwords to ${appConfig.name}',
-                      ),
-                      secondary: const Icon(Iconsax.setting_2_outline),
-                      value: LisoAutofillService.to.saving.value,
-                      onChanged: (value) =>
-                          LisoAutofillService.to.toggleSaving(value),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+        // Obx(
+        //   () => Visibility(
+        //     visible: LisoAutofillService.to.supported.value,
+        //     child: ExpansionTile(
+        //       title: const Text('Autofill Settings'),
+        //       subtitle: Text(
+        //         '${config.name} autofill service settings',
+        //       ),
+        //       leading: const Icon(Iconsax.rulerpen_outline),
+        //       childrenPadding: const EdgeInsets.only(left: 20),
+        //       children: [
+        //         ListTile(
+        //           leading: const Icon(Iconsax.setting_2_outline),
+        //           title: Text('${config.name} Autofill Service'),
+        //           onTap: LisoAutofillService.to.set,
+        //           subtitle: Obx(
+        //             () => Text(
+        //               LisoAutofillService.to.enabled.value
+        //                   ? 'Enabled'
+        //                   : 'Set ${config.name} as your autofill service',
+        //             ),
+        //           ),
+        //         ),
+        //         Visibility(
+        //           visible: LisoAutofillService.to.enabled.value,
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(left: 15),
+        //             child: SwitchListTile(
+        //               title: const Text('Auto Save'),
+        //               subtitle: Text(
+        //                 'Automatically save passwords to ${config.name}',
+        //               ),
+        //               secondary: const Icon(Iconsax.setting_2_outline),
+        //               value: LisoAutofillService.to.saving.value,
+        //               onChanged: (value) =>
+        //                   LisoAutofillService.to.toggleSaving(value),
+        //               contentPadding: EdgeInsets.zero,
+        //             ),
+        //           ),
+        //         ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
         PersistenceBuilder(builder: (p, context) {
           return ExpansionTile(
             title: const Text('Other Settings'),
             subtitle: const Text('A few other settings'),
             leading: const Icon(Iconsax.chart_2_outline),
             childrenPadding: const EdgeInsets.only(left: 20),
-            initiallyExpanded: Get.parameters['expand'] == 'account',
+            initiallyExpanded: gParameters['expand'] == 'account',
             children: [
               if (!isApple || kDebugMode) ...[
                 ListTile(
@@ -295,21 +293,21 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                 ),
               ],
               if (isDesktop) ...[
-                SwitchListTile(
-                  title: Text('launch_startup'.tr),
-                  secondary: const Icon(Iconsax.keyboard_open_outline),
-                  value: p.launchAtStartup.val,
-                  subtitle: const Text("Automatically launch on startup"),
-                  onChanged: (value) {
-                    p.launchAtStartup.val = value;
+                // SwitchListTile(
+                //   title: Text('launch_startup'.tr),
+                //   secondary: const Icon(Iconsax.keyboard_open_outline),
+                //   value: p.launchAtStartup.val,
+                //   subtitle: const Text("Automatically launch on startup"),
+                //   onChanged: (value) {
+                //     p.launchAtStartup.val = value;
 
-                    if (value) {
-                      launchAtStartup.enable();
-                    } else {
-                      launchAtStartup.disable();
-                    }
-                  },
-                ),
+                //     if (value) {
+                //       launchAtStartup.enable();
+                //     } else {
+                //       launchAtStartup.disable();
+                //     }
+                //   },
+                // ),
                 SwitchListTile(
                   title: Text('Minimize to ${isMac ? 'dock' : 'tray'}'),
                   secondary: const Icon(Iconsax.align_bottom_outline),
@@ -343,7 +341,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
         }),
         ListTile(
           leading: const Icon(Iconsax.lock_outline),
-          title: Text('${'lock'.tr} ${appConfig.name}'),
+          title: Text('${'lock'.tr} ${config.name}'),
           subtitle: const Text('Exit and lock the app'),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
@@ -363,7 +361,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ListTile(
               iconColor: const Color(0xFFFF7300),
               leading: const Icon(Iconsax.refresh_outline),
-              title: Text('${'reset'.tr} ${appConfig.name}'),
+              title: Text('${'reset'.tr} ${config.name}'),
               subtitle: const Text('Delete local vault and logout'),
               onTap: controller.reset,
               onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),

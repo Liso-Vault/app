@@ -23,9 +23,9 @@ class SharedVaultsController extends GetxController
   // INIT
 
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS

@@ -64,7 +64,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
         body: nameController.text,
       );
 
-      Get.back();
+      Get.backLegacy();
     }
 
     void create() async {
@@ -75,7 +75,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
           .isNotEmpty;
 
       if (exists) {
-        Get.back();
+        Get.backLegacy();
 
         return UIUtils.showSimpleDialog(
           'Category Already Exists',
@@ -172,7 +172,7 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
       content: isSmallScreen ? content : SizedBox(width: 450, child: content),
       actions: [
         TextButton(
-          onPressed: Get.back,
+          onPressed: Get.close,
           child: Text('cancel'.tr),
         ),
         TextButton(

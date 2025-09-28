@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
@@ -46,14 +45,14 @@ class RestoreScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS
@@ -66,7 +65,7 @@ class RestoreScreenController extends GetxController
 
     if (statResult.isLeft || statResult.right.status != 200) {
       return Left(
-        "If you're new to ${appConfig.name}, consider creating a vault first.",
+        "If you're new to ${config.name}, consider creating a vault first.",
       );
     }
 
@@ -95,13 +94,15 @@ class RestoreScreenController extends GetxController
   }
 
   Future<void> continuePressed() async {
-    if (status == RxStatus.loading()) return console.error('still busy');
+    if (status == GetStatus.loading()) return console.error('still busy');
     if (!formKey.currentState!.validate()) return;
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
 
     final seed = seedController.text.trim();
     final credentials = WalletService.to.mnemonicToPrivateKey(seed);
-    final address = credentials.address.hexEip55;
+    // TODO: make sure this works
+    // final address = credentials.address.hexEip55;
+    final address = credentials.address.eip55With0x;
 
     Uint8List bytes;
 
@@ -110,7 +111,7 @@ class RestoreScreenController extends GetxController
       final result = await _downloadVault(address);
 
       if (result.isLeft) {
-        change(null, status: RxStatus.success());
+        change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
           'Failed Restoring Vault',
@@ -133,7 +134,7 @@ class RestoreScreenController extends GetxController
     );
 
     if (!canDecrypt) {
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
 
       return UIUtils.showSimpleDialog(
         'Failed Decrypting Vault',
@@ -162,15 +163,15 @@ class RestoreScreenController extends GetxController
           body: 'Authenticate to verify and approve this action',
         );
 
-        if (!authenticated) return change(null, status: RxStatus.success());
-        Get.back(); // close dialog
+        if (!authenticated) return change(GetStatus.success(null));
+        Get.backLegacy(); // close dialog
         // AuthenticationMiddleware.signedIn = true;
         final password = AppUtils.generatePassword();
         await WalletService.to.create(seed, password, false);
         AppPersistence.to.backedUpSeed.val = true;
 
         NotificationsService.to.notify(
-          title: 'Welcome back to ${appConfig.name}',
+          title: 'Welcome back to ${config.name}',
           body: 'Your vault has been restored',
         );
 
@@ -181,7 +182,7 @@ class RestoreScreenController extends GetxController
         Utils.adaptiveRouteOpen(name: AppRoutes.createPassword);
       }
 
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
     }
 
     await UIUtils.showImageDialog(
@@ -196,13 +197,13 @@ class RestoreScreenController extends GetxController
       onClose: Get.back,
     );
 
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
   }
 
   void importFile() async {
-    if (status == RxStatus.loading()) return console.error('still busy');
+    if (status == GetStatus.loading()) return console.error('still busy');
     if (GetPlatform.isAndroid) FilePicker.platform.clearTemporaryFiles();
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
 
     timeLockEnabled = false; // disable
     FilePickerResult? result;
@@ -217,7 +218,7 @@ class RestoreScreenController extends GetxController
       return;
     }
 
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
 
     if (result == null || result.files.isEmpty) {
       timeLockEnabled = true; // re-enable

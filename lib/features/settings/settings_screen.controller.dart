@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
@@ -70,13 +69,13 @@ class SettingsScreenController extends GetxController
   // INIT
   @override
   void onInit() async {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
   @override
   void onReady() {
-    if (Get.parameters['expand'] == 'account') {
+    if (gParameters['expand'] == 'account') {
       updateLicenseKey();
     }
 
@@ -84,9 +83,9 @@ class SettingsScreenController extends GetxController
   }
 
   @override
-  void change(newState, {RxStatus? status}) {
-    if (newState != null) busyMessage.value = newState;
-    super.change(newState, status: status);
+  void change(status) {
+    busyMessage.value = status.isLoading ? 'Exporting...' : '';
+    super.change(status);
   }
 
   // FUNCTIONS
@@ -106,7 +105,7 @@ class SettingsScreenController extends GetxController
       );
     }
 
-    if (!isSmallScreen) Get.back();
+    if (!isSmallScreen) Get.backLegacy();
   }
 
   void exportWallet() async {
@@ -120,9 +119,9 @@ class SettingsScreenController extends GetxController
         ) ??
         false;
 
-    if (!unlocked) return;
-    if (status == RxStatus.loading()) return console.error('still busy');
-    change('Exporting...', status: RxStatus.loading());
+    if (!unlocked) return console.error('unlock failed');
+    if (status == GetStatus.loading()) return console.error('still busy');
+    change(GetStatus.loading());
 
     final exportFileName =
         '${SecretPersistence.to.walletAddress.val}.wallet.$kWalletExtension';
@@ -146,10 +145,10 @@ class SettingsScreenController extends GetxController
         body: exportFileName,
       );
 
-      return change(null, status: RxStatus.success());
+      return change(GetStatus.success(null));
     }
 
-    change('Choose export path...', status: RxStatus.loading());
+    change(GetStatus.loading());
     timeLockEnabled = false; // temporarily disable
     // choose directory and export file
     final exportPath = await FilePicker.platform.getDirectoryPath(
@@ -159,14 +158,15 @@ class SettingsScreenController extends GetxController
     timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
-      return change(null, status: RxStatus.success());
+      console.warning('user cancelled picker');
+      return change(GetStatus.success(null));
     }
 
     console.info('export path: $exportPath');
-    change('Exporting to: $exportPath', status: RxStatus.loading());
+    change(GetStatus.loading());
     await Future.delayed(1.seconds); // just for style
     FileUtils.move(tempFile, join(exportPath, exportFileName));
-    change('Exporting to: $exportPath', status: RxStatus.success());
+    change(GetStatus.success(null));
 
     NotificationsService.to.notify(
       title: 'Exported Wallet File',
@@ -187,8 +187,8 @@ class SettingsScreenController extends GetxController
           false;
 
       if (!unlocked) return;
-      if (status == RxStatus.loading()) return console.error('still busy');
-      change('Exporting...', status: RxStatus.loading());
+      if (status == GetStatus.loading()) return console.error('still busy');
+      change(GetStatus.loading());
 
       // File Name
       final dateFormat = DateFormat('MMM-dd-yyyy_hh-mm_aaa');
@@ -219,7 +219,7 @@ class SettingsScreenController extends GetxController
         await Share.shareXFiles(
           [XFile(vaultFile.path)],
           subject: exportFileName,
-          text: GetPlatform.isIOS ? null : '${appConfig.name} Vault',
+          text: GetPlatform.isIOS ? null : '${config.name} Vault',
         );
 
         NotificationsService.to.notify(
@@ -227,11 +227,11 @@ class SettingsScreenController extends GetxController
           body: exportFileName,
         );
 
-        Get.back(); // close dialog
-        return change(null, status: RxStatus.success());
+        Get.backLegacy(); // close dialog
+        return change(GetStatus.success(null));
       }
 
-      change('Choose export path...', status: RxStatus.loading());
+      change(GetStatus.loading());
       timeLockEnabled = false; // temporarily disable
       // choose directory and export file
       final exportPath = await FilePicker.platform.getDirectoryPath(
@@ -241,21 +241,21 @@ class SettingsScreenController extends GetxController
       timeLockEnabled = true; // re-enable
       // user cancelled picker
       if (exportPath == null) {
-        return change(null, status: RxStatus.success());
+        return change(GetStatus.success(null));
       }
 
       console.info('export path: $exportPath');
-      change('Exporting to: $exportPath', status: RxStatus.loading());
+      change(GetStatus.loading());
       await Future.delayed(1.seconds); // just for style
       await FileUtils.move(vaultFile, join(exportPath, exportFileName));
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
 
       NotificationsService.to.notify(
         title: 'Exported Vault',
         body: exportFileName,
       );
 
-      Get.back();
+      Get.backLegacy();
     }
 
     UIUtils.showImageDialog(
@@ -317,7 +317,7 @@ class SettingsScreenController extends GetxController
         body: 'Your vault has been purged',
       );
 
-      Get.back();
+      Get.backLegacy();
     }
 
     UIUtils.showImageDialog(
@@ -364,7 +364,7 @@ class SettingsScreenController extends GetxController
         body: 'Your remote vault has been deleted',
       );
 
-      Get.back();
+      Get.backLegacy();
     }
 
     UIUtils.showImageDialog(
@@ -406,7 +406,7 @@ class SettingsScreenController extends GetxController
 
     UIUtils.showImageDialog(
       const Icon(Iconsax.warning_2_outline, size: 100, color: Colors.red),
-      title: 'Reset ${appConfig.name}?',
+      title: 'Reset ${config.name}?',
       subTitle:
           'Your local <vault>.$kVaultExtension will be deleted and you will be logged out.',
       body:
@@ -443,7 +443,7 @@ class SettingsScreenController extends GetxController
           ),
         ),
         // ListTile(
-        //   title: Text('${appConfig.name} Pro'),
+        //   title: Text('${config.name} Pro'),
         //   subtitle: Text(PurchasesService.to.isPremium.toString()),
         //   dense: true,
         // ),

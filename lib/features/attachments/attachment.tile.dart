@@ -55,7 +55,7 @@ class AttachmentTile extends StatelessWidget with ConsoleMixin {
       subtitle: subTitle,
       iconColor: themeColor,
       leading: AppUtils.s3ContentIcon(object),
-      // onTap: () => Get.back(result: content.object!.eTag),
+      // onTap: () => Get.backLegacy(result: content.object!.eTag),
       trailing: ContextMenuButton(
         menuItems,
         child: const Icon(LineAwesome.ellipsis_v_solid),

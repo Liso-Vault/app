@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -23,9 +24,9 @@ class AttachmentsScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    final filesParam = Get.parameters['attachments']!;
+    final filesParam = gParameters['attachments']!;
     if (filesParam.isNotEmpty) data.value = filesParam.split(',');
-    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+    change(data.isEmpty ? GetStatus.empty() : GetStatus.success(null));
     super.onInit();
   }
 
@@ -52,6 +53,6 @@ class AttachmentsScreenController extends GetxController
     }
 
     data.add(eTag);
-    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+    change(data.isEmpty ? GetStatus.empty() : GetStatus.success(null));
   }
 }

@@ -1,4 +1,4 @@
-import 'package:app_core/config/app.model.dart';
+import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -52,7 +52,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                 onValueChanged: (value) => controller.restoreMode.value = value,
                 children: {
                   RestoreMode.cloud: SegmentedControlItem(
-                    text: '${appConfig.name} Cloud',
+                    text: '${config.name} Cloud',
                     iconData: Iconsax.cloud_outline,
                   ),
                   RestoreMode.file: const SegmentedControlItem(

@@ -24,7 +24,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
 
   @override
   Widget build(BuildContext context) {
-    final isPicker = Get.parameters['type'] == 'picker';
+    final isPicker = gParameters['type'] == 'picker';
     final explorerController = Get.find<S3ExplorerScreenController>();
 
     final menuItems = [
@@ -86,7 +86,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
         return explorerController.navigate(prefix: object.key);
       }
 
-      if (isPicker) return Get.back(result: object.etag);
+      if (isPicker) return Get.backLegacy(result: object.etag);
 
       if (object.isVaultFile) {
         controller.confirmSwitch(object);

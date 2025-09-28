@@ -112,14 +112,14 @@ class VaultExplorerScreenController extends GetxController
   }
 
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS
   void init() async {
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
     // download vault file
 
     final result = await FileService.to.download(
@@ -129,7 +129,7 @@ class VaultExplorerScreenController extends GetxController
     if (result.isLeft) {
       final message =
           'The shared vault file with ID: ${vault.docId} cannot be found';
-      change(null, status: RxStatus.error(message));
+      change(GetStatus.error(message));
 
       return UIUtils.showSimpleDialog(
         'Shared Vault File Not Found',
@@ -143,7 +143,7 @@ class VaultExplorerScreenController extends GetxController
 
     if (items_.isEmpty) {
       const message = 'Missing cipher key from vault';
-      change(null, status: RxStatus.error(message));
+      change(GetStatus.error(message));
 
       return UIUtils.showSimpleDialog(
         'Cipher Key Not Found',
@@ -156,7 +156,7 @@ class VaultExplorerScreenController extends GetxController
 
     if (fields_.isEmpty) {
       const message = 'Missing cipher key from item field';
-      change(null, status: RxStatus.error(message));
+      change(GetStatus.error(message));
 
       return UIUtils.showSimpleDialog(
         'Cipher Key Not Found',
@@ -171,7 +171,7 @@ class VaultExplorerScreenController extends GetxController
       cipherKey = base64Decode(fields_.first.data.value!);
     } catch (e) {
       const message = 'Cipher key is broken or tampered';
-      change(null, status: RxStatus.error(message));
+      change(GetStatus.error(message));
 
       return UIUtils.showSimpleDialog(
         'Cipher Key Is Broken',
@@ -186,7 +186,7 @@ class VaultExplorerScreenController extends GetxController
 
     if (!correctCipherKey) {
       const message = 'Cipher key is incorrect';
-      change(null, status: RxStatus.error(message));
+      change(GetStatus.error(message));
 
       return UIUtils.showSimpleDialog(
         'Failed To Decrypt',
@@ -286,7 +286,7 @@ class VaultExplorerScreenController extends GetxController
     }
 
     data.value = List.from(items);
-    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+    change(data.isEmpty ? GetStatus.empty() : GetStatus.success(null));
     // reload SearchDelegate to reflect
     searchDelegate?.reload(Get.context!);
   }

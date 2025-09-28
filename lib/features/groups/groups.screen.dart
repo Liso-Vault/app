@@ -72,7 +72,7 @@ class GroupsScreen extends StatelessWidget with ConsoleMixin {
             TextButton(
               onPressed: () {
                 delete(items);
-                Get.back();
+                Get.backLegacy();
               },
               child: Text('confirm_delete'.tr),
             ),

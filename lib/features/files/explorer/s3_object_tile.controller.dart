@@ -36,21 +36,21 @@ class S3ObjectTileController extends GetxController
 
   // INIT
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS
   void share(S3Object object) async {
-    change('Sharing...', status: RxStatus.loading());
+    change(GetStatus.loading());
 
     final result = await AppFunctionsService.to.presignUrl(
       object: object.key,
       expirySeconds: 1.hours.inSeconds,
     );
 
-    change('', status: RxStatus.success());
+    change(GetStatus.success(null));
 
     if (result.isLeft || result.right.status != 200) {
       return UIUtils.showSimpleDialog(
@@ -77,7 +77,7 @@ class S3ObjectTileController extends GetxController
           TextButton(
             child: const Text('Share URL'),
             onPressed: () {
-              Get.back();
+              Get.backLegacy();
               Share.share(result.right.data.url);
             },
           ),
@@ -85,7 +85,7 @@ class S3ObjectTileController extends GetxController
           TextButton(
             child: const Text('Copy URL'),
             onPressed: () {
-              Get.back();
+              Get.backLegacy();
               Utils.copyToClipboard(result.right.data.url);
             },
           ),
@@ -96,7 +96,7 @@ class S3ObjectTileController extends GetxController
 
   void confirmSwitch(S3Object object) {
     void proceed() async {
-      change('Switching...', status: RxStatus.loading());
+      change(GetStatus.loading());
       // purge all items
       await HiveService.to.purge();
       // download chosen vault file
@@ -105,7 +105,7 @@ class S3ObjectTileController extends GetxController
       );
 
       if (downloadResult.isLeft) {
-        change('Failed to download', status: RxStatus.success());
+        change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
           'Failed To Download',
@@ -120,7 +120,7 @@ class S3ObjectTileController extends GetxController
       );
 
       if (uploadResult.isLeft) {
-        change('Failed to upload', status: RxStatus.success());
+        change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
           'Upload Failed',
@@ -167,7 +167,7 @@ class S3ObjectTileController extends GetxController
         TextButton(
           child: const Text('Switch'),
           onPressed: () {
-            Get.back();
+            Get.backLegacy();
             proceed();
           },
         ),
@@ -183,12 +183,12 @@ class S3ObjectTileController extends GetxController
     }
 
     void delete() async {
-      Get.back();
-      change('Deleting...', status: RxStatus.loading());
+      Get.backLegacy();
+      change(GetStatus.loading());
       final result = await FileService.to.remove(object.key);
 
       if (result.isLeft) {
-        change(false, status: RxStatus.success());
+        change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
           'Delete Failed',
@@ -201,7 +201,7 @@ class S3ObjectTileController extends GetxController
         body: object.name,
       );
 
-      change('false', status: RxStatus.success());
+      change(GetStatus.success(null));
       await S3ExplorerScreenController.to.load();
     }
 
@@ -232,12 +232,12 @@ class S3ObjectTileController extends GetxController
 
   void confirmDownload(S3Object object) {
     void proceed() async {
-      change('Downloading...', status: RxStatus.loading());
+      change(GetStatus.loading());
       final downloadPath = join(LisoPaths.temp!.path, object.maskedName);
       final result = await FileService.to.download(object: object.key);
 
       if (result.isLeft) {
-        change('', status: RxStatus.success());
+        change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
           'Failed To Download',
@@ -264,7 +264,7 @@ class S3ObjectTileController extends GetxController
         );
 
         timeLockEnabled = true; // re-enable
-        return change('', status: RxStatus.success());
+        return change(GetStatus.success(null));
       }
 
       // choose directory and export file
@@ -275,7 +275,7 @@ class S3ObjectTileController extends GetxController
       timeLockEnabled = true; // re-enable
       // user cancelled picker
       if (exportPath == null) {
-        return change(null, status: RxStatus.success());
+        return change(GetStatus.success(null));
       }
 
       console.info('export path: $exportPath');
@@ -287,7 +287,7 @@ class S3ObjectTileController extends GetxController
         body: fileName,
       );
 
-      change('', status: RxStatus.success());
+      change(GetStatus.success(null));
     }
 
     final dialogContent = Text('Save "${object.maskedName}" to local disk?');
@@ -305,7 +305,7 @@ class S3ObjectTileController extends GetxController
         TextButton(
           child: const Text('Download'),
           onPressed: () {
-            Get.back();
+            Get.backLegacy();
             proceed();
           },
         ),

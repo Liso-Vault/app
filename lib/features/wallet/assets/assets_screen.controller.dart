@@ -1,27 +1,27 @@
-import 'package:console_mixin/console_mixin.dart';
-import 'package:get/get.dart';
-import 'package:liso/core/services/alchemy.service.dart';
+// import 'package:console_mixin/console_mixin.dart';
+// import 'package:get/get.dart';
+// import 'package:liso/core/services/alchemy.service.dart';
 
-class AssetsScreenController extends GetxController
-    with ConsoleMixin, StateMixin {
-  static AssetsScreenController get to => Get.find();
+// class AssetsScreenController extends GetxController
+//     with ConsoleMixin, StateMixin {
+//   static AssetsScreenController get to => Get.find();
 
-  // VARIABLES
+//   // VARIABLES
 
-  // PROPERTIES
+//   // PROPERTIES
 
-  // GETTERS
+//   // GETTERS
 
-  // INIT
-  @override
-  void onReady() {
-    load();
-    super.onReady();
-  }
+//   // INIT
+//   @override
+//   void onReady() {
+//     load();
+//     super.onReady();
+//   }
 
-  void load() async {
-    change(null, status: RxStatus.loading());
-    await AlchemyService.to.load();
-    change(null, status: RxStatus.success());
-  }
-}
+//   void load() async {
+//     change(GetStatus.loading());
+//     await AlchemyService.to.load();
+//     change(GetStatus.success(null));
+//   }
+// }

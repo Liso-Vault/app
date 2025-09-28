@@ -28,7 +28,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(ItemScreenController());
-    final mode = Get.parameters['mode'].toString();
+    final mode = gParameters['mode'].toString();
 
     final items = [
       Row(
@@ -260,7 +260,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
             controller: dropdownRefresher,
             child: DropdownButtonFormField<String>(
               isExpanded: true,
-              value: groupId,
+              initialValue: groupId,
               onChanged: controller.reserved.value || !controller.editMode.value
                   ? null
                   : (value) async {
@@ -301,7 +301,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       Obx(
         () => DropdownButtonFormField<HiveLisoCategory>(
           isExpanded: true,
-          value: controller.categoryObject,
+          initialValue: controller.categoryObject,
           onChanged: controller.reserved.value || !controller.editMode.value
               ? null
               : (value) => controller.category.value = value!.id,
@@ -366,7 +366,7 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
       title: Text(titleString),
       leading: IconButton(
         onPressed: () async {
-          if (await controller.canPop()) Get.back();
+          if (await controller.canPop()) Get.backLegacy();
         },
         icon: Icon(
           isSmallScreen

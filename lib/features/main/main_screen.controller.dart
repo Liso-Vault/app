@@ -286,7 +286,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
   void emptyTrash() {
     void empty() async {
-      Get.back();
+      Get.backLegacy();
       final items = ItemsService.to.data.where((e) => e.trashed);
       await ItemsService.to.hideleteItems(items);
       load();
@@ -321,7 +321,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
   void emptyDeleted() {
     void empty() async {
-      Get.back();
+      Get.backLegacy();
       final items = ItemsService.to.data.where((e) => e.deleted);
       await ItemsService.to.deleteItems(items);
       load();
@@ -364,11 +364,11 @@ class MainScreenController extends GetxController with ConsoleMixin {
       importedItemIds.clear();
       // delete local backup as it's no longer needed
       backupFile.delete();
-      Get.back();
+      Get.backLegacy();
     }
 
     void undo() async {
-      Get.back();
+      Get.backLegacy();
 
       // delete imported items permanently
       for (var e in importedItemIds) {

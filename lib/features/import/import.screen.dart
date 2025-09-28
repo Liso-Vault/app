@@ -1,4 +1,4 @@
-import 'package:app_core/config/app.model.dart';
+import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -40,7 +40,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             ),
             const SizedBox(height: 5),
             Text(
-              "Import items from external sources to ${appConfig.name}",
+              "Import items from external sources to ${config.name}",
               textAlign: TextAlign.center,
               style: const TextStyle(color: Colors.grey),
             ),
@@ -52,7 +52,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
                 return WidgetRefresher(
                   controller: dropdownRefresher,
                   child: DropdownButtonFormField<String>(
-                    value: controller.destinationGroupId.value,
+                    initialValue: controller.destinationGroupId.value,
                     decoration: const InputDecoration(
                       labelText: 'Destination Vault',
                     ),
@@ -97,7 +97,7 @@ class ImportScreen extends StatelessWidget with ConsoleMixin {
             const SizedBox(height: 10),
             Obx(
               () => DropdownButtonFormField<ExportedSourceFormat>(
-                value: controller.sourceFormat.value,
+                initialValue: controller.sourceFormat.value,
                 onChanged: (value) => controller.sourceFormat.value = value!,
                 decoration: const InputDecoration(labelText: 'Source & Format'),
                 items: sourceFormats

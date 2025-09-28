@@ -32,7 +32,7 @@ class AutofillPickerDialogController extends GetxController with ConsoleMixin {
       if (passwordFields.length == 1) {
         password = passwordFields.first.data.value!;
 
-        // return Get.back(result: [
+        // return Get.backLegacy(result: [
         //   PwDataset(
         //     label: item.title,
         //     username: username,

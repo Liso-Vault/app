@@ -68,7 +68,7 @@ class AppUtils {
             ),
       actions: [
         TextButton(
-          onPressed: Get.back,
+          onPressed: Get.close,
           child: Text('okay'.tr),
         ),
       ],

@@ -23,7 +23,7 @@ class CustomDropDownFormField extends StatelessWidget {
 
     return DropdownButtonFormField<dynamic>(
       isExpanded: true, // fix for renderflex overflowed
-      value: value,
+      initialValue: value,
       items: items,
       onChanged: field.readOnly ? null : (newValue) => value = newValue,
       decoration: InputDecoration(

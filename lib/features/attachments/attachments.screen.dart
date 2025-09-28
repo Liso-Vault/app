@@ -81,7 +81,7 @@ class AttachmentsScreen extends StatelessWidget with ConsoleMixin {
           child: const Text('Help ?'),
         ),
         IconButton(
-          onPressed: () => Get.back(result: controller.data),
+          onPressed: () => Get.backLegacy(result: controller.data),
           icon: const Icon(Icons.check),
         ),
         const SizedBox(width: 10),

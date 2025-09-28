@@ -51,7 +51,7 @@ class CategoriesScreen extends StatelessWidget with ConsoleMixin {
             TextButton(
               onPressed: () {
                 delete();
-                Get.back();
+                Get.backLegacy();
               },
               child: Text('confirm_delete'.tr),
             ),

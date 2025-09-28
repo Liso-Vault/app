@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:app_core/config/app.model.dart';
-
 import 'package:app_core/globals.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
@@ -37,14 +35,14 @@ class CipherScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS
@@ -76,12 +74,12 @@ class CipherScreenController extends GetxController
         parameters: {
           'title': 'Encryption Tool',
           'body':
-              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${appConfig.name} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
+              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${config.name} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
         },
       );
     }
 
-    change(false, status: RxStatus.loading());
+    change(GetStatus.loading());
     final stopwatch = Stopwatch()..start();
 
     final path = result.files.single.path!;
@@ -90,7 +88,7 @@ class CipherScreenController extends GetxController
 
     if (name.contains(kEncryptedExtensionExtra)) {
       timeLockEnabled = true; // re-enable
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
       return UIUtils.showSimpleDialog(
         'Already Encrypted',
         'It looks like the file $name is already encrypted.',
@@ -114,7 +112,7 @@ class CipherScreenController extends GetxController
       );
 
       timeLockEnabled = true; // re-enable
-      return change(false, status: RxStatus.success());
+      return change(GetStatus.success(null));
     }
 
     // choose directory and export file
@@ -125,7 +123,7 @@ class CipherScreenController extends GetxController
     timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
-      return change(null, status: RxStatus.success());
+      return change(GetStatus.success(null));
     }
 
     console.info('export path: $exportPath');
@@ -141,7 +139,7 @@ class CipherScreenController extends GetxController
       body: name,
     );
 
-    change(false, status: RxStatus.success());
+    change(GetStatus.success(null));
   }
 
   void decrypt() async {
@@ -166,7 +164,7 @@ class CipherScreenController extends GetxController
       return;
     }
 
-    change(false, status: RxStatus.loading());
+    change(GetStatus.loading());
     final stopwatch = Stopwatch()..start();
 
     final path = result.files.single.path!;
@@ -176,10 +174,10 @@ class CipherScreenController extends GetxController
     if (!name.contains('.$kVaultExtension') &&
         !name.contains(kEncryptedExtensionExtra)) {
       timeLockEnabled = true; // re-enable
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
       return UIUtils.showSimpleDialog(
-        'Invalid ${appConfig.name} Encrypted File',
-        'It looks like the file $name is not a ${appConfig.name} Encrypted File which should have an extension of $kEncryptedExtensionExtra',
+        'Invalid ${config.name} Encrypted File',
+        'It looks like the file $name is not a ${config.name} Encrypted File which should have an extension of $kEncryptedExtensionExtra',
       );
     }
 
@@ -200,7 +198,7 @@ class CipherScreenController extends GetxController
       );
 
       timeLockEnabled = true; // re-enable
-      return change(false, status: RxStatus.success());
+      return change(GetStatus.success(null));
     }
 
     // choose directory and export file
@@ -211,7 +209,7 @@ class CipherScreenController extends GetxController
     timeLockEnabled = true; // re-enable
     // user cancelled picker
     if (exportPath == null) {
-      return change(null, status: RxStatus.success());
+      return change(GetStatus.success(null));
     }
 
     console.info('export path: $exportPath');
@@ -227,7 +225,7 @@ class CipherScreenController extends GetxController
       body: name,
     );
 
-    change(false, status: RxStatus.success());
+    change(GetStatus.success(null));
   }
 
   void encryptText() async {

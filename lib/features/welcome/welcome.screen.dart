@@ -1,5 +1,5 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/config/app.model.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/onboarding/laurel.widget.dart';
 import 'package:app_core/pages/upgrade/review_card.dart';
@@ -111,7 +111,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
     //       children: [
     //         TextButton(
     //           onPressed: () => Utils.openUrl(
-    //             appConfig.links.terms,
+    //             config.links.terms,
     //           ),
     //           child: const Text(
     //             'Terms of Use',
@@ -124,7 +124,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
     //         ),
     //         TextButton(
     //           onPressed: () => Utils.openUrl(
-    //             appConfig.links.privacy,
+    //             config.links.privacy,
     //           ),
     //           child: const Text(
     //             'Privacy Policy',
@@ -175,7 +175,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             textStyle: const TextStyle(fontSize: 10),
             minimumSize: Size.zero,
           ),
-          onPressed: () => Utils.openUrl(appConfig.links.terms),
+          onPressed: () => Utils.openUrl(config.links.terms),
           child: Text('terms_of_use'.tr),
         ),
         versionText,
@@ -185,7 +185,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             textStyle: const TextStyle(fontSize: 10),
             minimumSize: Size.zero,
           ),
-          onPressed: () => Utils.openUrl(appConfig.links.privacy),
+          onPressed: () => Utils.openUrl(config.links.privacy),
           child: Text('privacy_policy'.tr),
         ),
       ],

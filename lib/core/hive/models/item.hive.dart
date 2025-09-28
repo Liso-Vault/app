@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'dart:convert';
 
 import 'package:app_core/utils/utils.dart';
@@ -232,7 +234,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       if (e.data.value!.isEmpty) return false;
       if (e.type != LisoFieldType.textField.name &&
           e.type != LisoFieldType.phone.name &&
-          e.type != LisoFieldType.email.name) return false;
+          e.type != LisoFieldType.email.name) {
+        return false;
+      }
 
       final isUsername = (e.type == LisoFieldType.textField.name &&
           (e.identifier == 'username' ||
@@ -245,7 +249,9 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
       }
 
       if (GetUtils.isEmail(e.data.value!) ||
-          GetUtils.isPhoneNumber(e.data.value!)) return true;
+          GetUtils.isPhoneNumber(e.data.value!)) {
+        return true;
+      }
 
       return false;
     }).toList();
@@ -330,7 +336,7 @@ class HiveLisoItem extends HiveObject with EquatableMixin, ConsoleMixin {
 
     return {
       identifier: value,
-      'name': GetUtils.capitalize(identifier.replaceAll('_', ' '))!,
+      'name': GetUtils.capitalize(identifier.replaceAll('_', ' ')),
     };
   }
 }

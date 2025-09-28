@@ -214,7 +214,7 @@ class LisoAutofillService extends GetxService with ConsoleMixin {
     // console.warning('resultWithDatasets: $response');
   }
 
-  Future<void> _refresh() async {
+  Future<void> refresh() async {
     // pref = await autofill.preferences;
     // metadata = await autofill.autofillMetadata;
     // status = await autofill.status;

@@ -20,7 +20,7 @@ class AutofillPickerDialog extends StatelessWidget {
       final field = controller.data[index];
 
       void done() {
-        // Get.back(
+        // Get.backLegacy(
         //   result: [
         //     PwDataset(
         //       label: item.title,
@@ -83,7 +83,7 @@ class AutofillPickerDialog extends StatelessWidget {
             ),
       actions: [
         TextButton(
-          onPressed: Get.back,
+          onPressed: Get.close,
           child: Text('cancel'.tr),
         ),
       ],

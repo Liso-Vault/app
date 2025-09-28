@@ -201,7 +201,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
-              const PremiumCard(),
               PersistenceBuilder(
                 builder: (p, context) => AppPersistence.to.sync.val
                     ? ListTile(
@@ -247,21 +246,21 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                       )
                     : const SizedBox.shrink(),
               ),
-              PersistenceBuilder(builder: (p, context) {
-                if (!isCryptoSupported) {
-                  return const SizedBox.shrink();
-                }
+              // PersistenceBuilder(builder: (p, context) {
+              //   if (!isCryptoSupported) {
+              //     return const SizedBox.shrink();
+              //   }
 
-                return ListTile(
-                  dense: isSmallScreen,
-                  title: Text('wallet'.tr),
-                  leading: const Icon(Iconsax.wallet_1_outline),
-                  onTap: () => Utils.adaptiveRouteOpen(
-                    name: AppRoutes.wallet,
-                    method: 'offAndToNamed',
-                  ),
-                );
-              }),
+              //   return ListTile(
+              //     dense: isSmallScreen,
+              //     title: Text('wallet'.tr),
+              //     leading: const Icon(Iconsax.wallet_1_outline),
+              //     onTap: () => Utils.adaptiveRouteOpen(
+              //       name: AppRoutes.wallet,
+              //       method: 'offAndToNamed',
+              //     ),
+              //   );
+              // }),
               ListTile(
                 dense: isSmallScreen,
                 title: Text('settings'.tr),
@@ -347,6 +346,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
             ),
           ),
+          const PremiumCard(),
         ];
 
         return Drawer(

@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -219,10 +220,10 @@ class PasswordGeneratorScreen extends StatelessWidget with ConsoleMixin {
       title: Text('password_generator'.tr),
       leading: const AppBarLeadingButton(),
       actions: [
-        if (Get.parameters['return'] != null) ...[
+        if (gParameters['return'] != null) ...[
           IconButton(
             icon: const Icon(Icons.check),
-            onPressed: () => Get.back(
+            onPressed: () => Get.backLegacy(
               result: controller.password.value,
             ),
           ),

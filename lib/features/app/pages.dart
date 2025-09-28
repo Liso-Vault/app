@@ -31,7 +31,6 @@ import '../otp/otp.screen.dart';
 import '../password_generator/password_generator.screen.dart';
 import '../seed/generator/seed_generator.screen.dart';
 import '../statistics/statistics.screen.dart';
-import '../wallet/wallet.screen.dart';
 
 class Pages {
   static const initial = Routes.main;
@@ -102,10 +101,10 @@ class Pages {
       name: AppRoutes.attachments,
       page: () => const AttachmentsScreen(),
     ),
-    GetPage(
-      name: AppRoutes.wallet,
-      page: () => const WalletScreen(),
-    ),
+    // GetPage(
+    //   name: AppRoutes.wallet,
+    //   page: () => const WalletScreen(),
+    // ),
     GetPage(
       name: AppRoutes.cipher,
       page: () => const CipherScreen(),

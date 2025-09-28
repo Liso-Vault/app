@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
   void _join() async {
     // TODO: temporary
     // if (!formKey.currentState!.validate()) return;
-    // Get.back(); // close dialog
+    // Get.backLegacy(); // close dialog
 
     // // check if already a member of the vault
     // final alreadyJoined = JoinedVaultsController.to.data
@@ -273,7 +272,7 @@ class JoinedVaultsScreenController extends GetxController with ConsoleMixin {
             labelText: 'Cipher Key',
             hintText: 'Enter the provided 32 Bit Base64 Cipher Key',
             helperText:
-                'Cipher Key will be automatically be saved as a ${appConfig.name} Item',
+                'Cipher Key will be automatically be saved as a ${config.name} Item',
           ),
         )
       ],

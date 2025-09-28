@@ -51,50 +51,28 @@ class RichTextFormField extends StatelessWidget with ConsoleMixin {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (!readOnly) ...[
-          // QuillToolbar.basic(
-          //   controller: _fieldController!,
-          //   multiRowsDisplay: false,
-          // ),
-          // const QuillToolbar(
-          //   configurations: QuillToolbarConfigurations(
-          //     multiRowsDisplay: false,
-          //   ),
-          // ),
-          QuillToolbar.simple(
-            configurations: QuillSimpleToolbarConfigurations(
-              controller: _fieldController!,
-              // multiRowsDisplay: false,
-              // showFontFamily: false,
-              // showFontSize: false,
-              // showSearchButton: false,
-              // showUnderLineButton: false,
-              // showColorButton: false,
-              // showBackgroundColorButton: false,
-              // showStrikeThrough: false,
-              // showListCheck: false,
-              sharedConfigurations: const QuillSharedConfigurations(),
+          QuillSimpleToolbar(
+            controller: _fieldController!,
+            config: QuillSimpleToolbarConfig(
+              multiRowsDisplay: false,
+              showFontFamily: false,
+              showFontSize: false,
+              showSearchButton: false,
+              showUnderLineButton: false,
+              showColorButton: false,
+              showBackgroundColorButton: false,
+              showStrikeThrough: false,
+              showListCheck: false,
             ),
           ),
           const Divider(),
         ],
         SizedBox(
           height: 300,
-          // child: QuillEditor.basic(
-          //   configurations: QuillEditorConfigurations(readOnly: readOnly),
-          // ),
           child: QuillEditor(
+            controller: _fieldController!,
             scrollController: ScrollController(),
             focusNode: FocusNode(),
-            configurations: QuillEditorConfigurations(
-              controller: _fieldController!,
-              // readOnly: false,
-              // scrollable: true,
-              // expands: false,
-              // autoFocus: false,
-              // placeholder: 'quill_placeholder'.tr,
-              // enableInteractiveSelection: true,
-              // padding: EdgeInsets.zero,
-            ),
           ),
         ),
         const Divider(),

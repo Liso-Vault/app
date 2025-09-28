@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -145,9 +146,9 @@ class SeedGeneratorScreen extends StatelessWidget with ConsoleMixin {
       centerTitle: false,
       leading: const AppBarLeadingButton(),
       actions: [
-        if (Get.parameters['return'] != null) ...[
+        if (gParameters['return'] != null) ...[
           IconButton(
-            onPressed: () => Get.back(result: controller.seed.value),
+            onPressed: () => Get.backLegacy(result: controller.seed.value),
             icon: const Icon(Icons.check),
           ),
         ],

@@ -70,14 +70,14 @@ class ImportScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
   @override
-  void change(newState, {RxStatus? status}) {
-    busy.value = status?.isLoading ?? false;
-    super.change(newState, status: status);
+  void change(status) {
+    busy.value = status.isLoading;
+    super.change(status);
   }
 
   // FUNCTIONS
@@ -108,7 +108,7 @@ class ImportScreenController extends GetxController
     }
 
     console.info('success csv import: $success');
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
 
     if (success) {
       DrawerMenuController.to.clearFilters();
@@ -121,20 +121,20 @@ class ImportScreenController extends GetxController
   void _importJSON(String contents) {
     //
 
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
   }
 
   void _importXML(String contents) {
     //
 
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
   }
 
   Future<void> _proceed() async {
     final file = File(filePathController.text);
 
     if (!(await file.exists())) {
-      Get.back();
+      Get.backLegacy();
 
       return UIUtils.showSimpleDialog(
         'File Not Found',
@@ -145,7 +145,7 @@ class ImportScreenController extends GetxController
     final fileExtension = extension(file.path);
 
     if (fileExtension != '.${sourceFormat.value.extension}') {
-      Get.back();
+      Get.backLegacy();
 
       return UIUtils.showSimpleDialog(
         'Incorrect File Format',
@@ -153,7 +153,7 @@ class ImportScreenController extends GetxController
       );
     }
 
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
     // create a backup
     await LisoManager.createBackup();
     // if recently imported and trying to import again, cancel previous chance to undo
@@ -162,7 +162,7 @@ class ImportScreenController extends GetxController
     final contents = await file.readAsString();
     // catch empty exported file
     if (contents.isEmpty) {
-      Get.back();
+      Get.backLegacy();
 
       return UIUtils.showSimpleDialog(
         'Empty File',
@@ -171,7 +171,7 @@ class ImportScreenController extends GetxController
     }
 
     // close confirm dialog
-    Get.back();
+    Get.backLegacy();
 
     if (extension(file.path) == '.json') {
       _importJSON(contents);
@@ -183,7 +183,7 @@ class ImportScreenController extends GetxController
   }
 
   Future<void> continuePressed() async {
-    if (status == RxStatus.loading()) return console.error('still busy');
+    if (status == GetStatus.loading()) return console.error('still busy');
     if (!formKey.currentState!.validate()) return;
 
     String body = "";
@@ -208,16 +208,16 @@ class ImportScreenController extends GetxController
       actionText: 'Import',
       closeText: 'Cancel',
       onClose: () {
-        change(null, status: RxStatus.success());
-        Get.back();
+        change(GetStatus.success(null));
+        Get.backLegacy();
       },
     );
   }
 
   void importFile() async {
-    if (status == RxStatus.loading()) return console.error('still busy');
+    if (status == GetStatus.loading()) return console.error('still busy');
     if (GetPlatform.isAndroid) FilePicker.platform.clearTemporaryFiles();
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
 
     timeLockEnabled = false; // disable
     FilePickerResult? result;
@@ -233,7 +233,7 @@ class ImportScreenController extends GetxController
       return;
     }
 
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
 
     if (result == null || result.files.isEmpty) {
       timeLockEnabled = true; // re-enable

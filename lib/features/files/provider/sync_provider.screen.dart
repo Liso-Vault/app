@@ -43,7 +43,7 @@
 //         closeText: 'Cancel',
 //         actionText: 'Switch',
 //         action: () {
-//           Get.back(); // close dialog
+//           Get.backLegacy(); // close dialog
 //           confirm();
 //         },
 //       );

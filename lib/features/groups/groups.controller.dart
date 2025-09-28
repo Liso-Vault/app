@@ -38,6 +38,6 @@ class GroupsController extends GetxController with ConsoleMixin, StateMixin {
         )
         .toList();
 
-    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+    change(data.isEmpty ? GetStatus.empty() : GetStatus.success(null));
   }
 }

@@ -1,5 +1,5 @@
 import 'package:app_core/config.dart';
-import 'package:app_core/config/app.model.dart';
+
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/services/local_auth.service.dart';
@@ -24,7 +24,7 @@ class WelcomeScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
@@ -36,10 +36,10 @@ class WelcomeScreenController extends GetxController
       parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
     );
 
-    change(null, status: RxStatus.loading());
+    change(GetStatus.loading());
 
     if (!isLocalAuthSupported) {
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
       return Utils.adaptiveRouteOpen(name: AppRoutes.seed);
     }
 
@@ -49,14 +49,14 @@ class WelcomeScreenController extends GetxController
       body: 'Authenticate to verify and approve this action',
     );
 
-    if (!authenticated) return change(null, status: RxStatus.success());
+    if (!authenticated) return change(GetStatus.success(null));
     final seed = bip39.generateMnemonic(strength: 256);
     final password = AppUtils.generatePassword();
     await WalletService.to.create(seed, password, true);
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
 
     NotificationsService.to.notify(
-      title: 'Welcome to ${appConfig.name}',
+      title: 'Welcome to ${config.name}',
       body: 'Your vault has been created',
     );
   }

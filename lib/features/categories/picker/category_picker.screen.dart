@@ -20,7 +20,7 @@ class CategoryPickerScreen extends StatelessWidget with ConsoleMixin {
       final category = controller.data[index];
 
       void open() async {
-        Get.back();
+        Get.backLegacy();
 
         Utils.adaptiveRouteOpen(
           name: AppRoutes.item,

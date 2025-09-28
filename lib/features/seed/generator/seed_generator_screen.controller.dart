@@ -1,3 +1,4 @@
+import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:bip39/bip39.dart' as bip39;
 import 'package:console_mixin/console_mixin.dart';
@@ -10,7 +11,7 @@ class SeedGeneratorScreenController extends GetxController with ConsoleMixin {
   static SeedGeneratorScreenController get to => Get.find();
 
   // VARIABLES
-  final isFromDrawer = Get.parameters['from'] == 'drawer';
+  final isFromDrawer = gParameters['from'] == 'drawer';
 
   // PROPERTIES
 

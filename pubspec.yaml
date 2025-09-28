@@ -14,20 +14,24 @@ dependencies:
   app_core:
     path: ../../Stackwares/app-core
 
+  # Server Core Client
+  core_client:
+    path: ../../core-serverpod/core_client
+
   # CRYTPOGRAPHY + SECURITY
   secrets:
     path: ../secrets
-  alchemy_web3:
-    git:
-      url: https://github.com/oliverbytes/alchemy_web3.git
-      ref: 3adc07eba84dd1a4ab58dc09ea6baa803576dee7
-  web3dart: ^2.6.1 # Ethereum
+  # alchemy_web3:
+  #   git:
+  #     url: https://github.com/oliverbytes/alchemy_web3.git
+  #     ref: 3adc07eba84dd1a4ab58dc09ea6baa803576dee7
+  web3dart: ^3.0.1 # Ethereum
   eth_sig_util: ^0.0.9 # Ethereum signature
   bip39: ^1.0.6 # Mnemonic Seed Phrases
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
-  encrypt: 5.0.1
-  otp: ^3.1.4
+  encrypt: 5.0.1 # important to keep at 5.0.1 to avoid "Invalid or corrupted pad block"
+  otp: ^3.2.0
 
   # IO
   filesize: ^2.0.1 # file size calculator
@@ -35,46 +39,36 @@ dependencies:
   share_plus: ^10.0.2
 
   # API
-  coingecko_api:
-    git:
-      url: https://github.com/oliverbytes/coingecko_api.git
-      ref: 5f9cf89c215e0a8e9710f9ffcf24074666df8e78
-
+  coingecko_api: ^2.0.2
+  
   # UI
-  blur: ^4.0.0 # blurring of seed phrases
+  blur: ^4.0.2 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer
-  flutter_swipe_action_cell: ^3.1.4
-  # flutter_quill: ^9.3.11
-  flutter_quill:
-    git:
-      url: https://github.com/monoforest/flutter-quill.git
-      ref: 62b19ee2bf510b566c1330a7f177d3dfe1142a32
+  flutter_swipe_action_cell: ^3.1.6
+  flutter_quill: ^11.4.2
   badges: ^3.1.2 # pending changes indicator
   qr_flutter: ^4.1.0 # generate QR Codes
   icons_plus: ^5.0.0
 
   # TOOLS
-  equatable: ^2.0.5
+  equatable: ^2.0.7
   random_string_generator: ^2.0.0
-  worker_manager: ^4.4.6 # multi threading
+  worker_manager: ^7.2.6 # multi threading
   csv: ^6.0.0 # csv parsing tool
-  # flutter_autofill_service: ^0.14.0 # android autofill plugun
-  # flutter_autofill_service: 
-  #   git:
-  #     url: https://github.com/kee-org/flutter_autofill_service.git
 
 dependency_overrides:
+  pointycastle: ^4.0.0
   either_dart: ^1.0.0
-  web: ^1.0.0 # make file_picker work
+  web: ^1.1.1 # make file_picker work
   # fix pointer_interceptor error https://github.com/FlutterFlow/flutterflow-issues/issues/3601
-  pointer_interceptor: ^0.10.1+1 
+  # pointer_interceptor: ^0.10.1+2
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
-  icons_launcher: ^2.1.7
-  flutter_native_splash: ^2.4.1
-  build_runner: ^2.4.12
-  dependency_validator: ^4.1.0
+  flutter_lints: ^6.0.0
+  # icons_launcher: ^3.0.3
+  # flutter_native_splash: ^2.4.1
+  build_runner: ^2.8.0
+  # dependency_validator: ^4.1.0
 
 flutter:
   uses-material-design: true

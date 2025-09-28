@@ -284,9 +284,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               //       selectedTileColor: themeColor.withOpacity(0.05),
               //       // TODO: localize
               //       title: Text(
-              //           "Rate & review ${appConfig.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
+              //           "Rate & review ${config.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}"),
               //       subtitle: Text(
-              //         "Help spread awareness on why people should consider using ${appConfig.name} as their secure vault.",
+              //         "Help spread awareness on why people should consider using ${config.name} as their secure vault.",
               //       ),
               //       // leading: const Icon(Iconsax.key),
               //       trailing: OutlinedButton(
@@ -318,9 +318,9 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               //         selectedTileColor: themeColor.withOpacity(0.05),
               //         // TODO: localize
               //         title: Text(
-              //             "Enable ${appConfig.name} Autofill Service"),
+              //             "Enable ${config.name} Autofill Service"),
               //         subtitle: Text(
-              //           "Automatically fill and save forms with ${appConfig.name} Autofill Service",
+              //           "Automatically fill and save forms with ${config.name} Autofill Service",
               //         ),
               //         // leading: const Icon(Iconsax.key),
               //         trailing: OutlinedButton(

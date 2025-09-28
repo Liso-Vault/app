@@ -35,6 +35,6 @@ class CategoriesController extends GetxController
   void load() {
     data.value =
         CategoriesService.to.data.where((e) => !(e.deleted ?? false)).toList();
-    change(null, status: data.isEmpty ? RxStatus.empty() : RxStatus.success());
+    change(data.isEmpty ? GetStatus.empty() : GetStatus.success(null));
   }
 }

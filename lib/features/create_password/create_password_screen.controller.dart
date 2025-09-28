@@ -1,4 +1,4 @@
-import 'package:app_core/config/app.model.dart';
+import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/notifications.service.dart';
@@ -30,7 +30,7 @@ class CreatePasswordScreenController extends GetxController
   // INIT
   @override
   void onInit() {
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     super.onInit();
   }
 
@@ -54,13 +54,13 @@ class CreatePasswordScreenController extends GetxController
 
   void confirm() async {
     if (!formKey.currentState!.validate()) return;
-    if (status == RxStatus.loading()) return console.error('still busy');
-    change(null, status: RxStatus.loading());
+    if (status == GetStatus.loading()) return console.error('still busy');
+    change(GetStatus.loading());
 
     // TODO: improve password validation
     if (passwordController.text.trim() !=
         passwordConfirmController.text.trim()) {
-      change(null, status: RxStatus.success());
+      change(GetStatus.success(null));
 
       // TODO: localize
       UIUtils.showSnackBar(
@@ -84,11 +84,11 @@ class CreatePasswordScreenController extends GetxController
     );
 
     NotificationsService.to.notify(
-      title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${appConfig.name}',
+      title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${config.name}',
       body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
     );
 
-    change(null, status: RxStatus.success());
+    change(GetStatus.success(null));
     Persistence.to.onboarded.val = true;
     Get.offNamedUntil(Routes.main, (route) => false);
   }

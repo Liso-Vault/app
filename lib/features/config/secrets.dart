@@ -1,58 +1,5 @@
 import 'package:secrets/secrets.dart';
 
-const kExtraJson = {
-  "secrets": {
-    "s3": {"key": "", "secret": "", "bucket": "", "endpoint": ""},
-    "alchemy": {"apiKey": ""}
-  },
-  "web3": Secrets.web3,
-  "appDomains": Secrets.appDomains
-};
-
-const kAppJson = {
-  "name": "Liso",
-  "dev": "Stackwares",
-  "build": {
-    "min": 1,
-    "latest": 1,
-    "beta": [1, 2, 3],
-    "disabled": [0]
-  },
-  "emails": {
-    "support": "dev@liso.dev",
-    "issues": "dev@liso.dev",
-    "translations": "dev@liso.dev",
-    "premium": "dev@liso.dev"
-  },
-  "links": {
-    "website": "https://liso.dev",
-    "twitter": "https://twitter.com/liso_vault",
-    "facebook": "https://facebook.com/nextranapp",
-    "facebook_group": "https://www.facebook.com/groups/433497115508547/",
-    "instagram": "https://instagram.com/nextranapp",
-    "discord": "https://liso.dev",
-    "faqs": "https://liso.super.site/faqs",
-    "roadmap": "https://liso.super.site/roadmap",
-    "reddit": "xxx",
-    "product_hunt": "",
-    "tutorials": "https://liso.super.site/tutorials",
-    "contributors": "https://liso.super.site/contributors",
-    "privacy": "https://liso.super.site/privacy",
-    "terms": "https://liso.super.site/terms",
-    "giveaway": "https://liso.super.site/giveaway",
-    "translations": "https://localazy.com/p/nextran",
-    "affiliates": "https://oliverbytes.gumroad.com/affiliates",
-    "store": {
-      "google": "https://play.google.com/store/apps/details?id=com.liso.app",
-      "apple": "https://apps.apple.com/us/app/nextran/id1621225567",
-      "amazon": "https://stackwares.com",
-      "samsung": "https://stackwares.com",
-      "huawei": "https://stackwares.com",
-      "gumroad": "https://oliverbytes.gumroad.com/l/liso-pro"
-    }
-  }
-};
-
 const kSecretJson = Secrets.secrets;
 
 const kLicenseJson = {

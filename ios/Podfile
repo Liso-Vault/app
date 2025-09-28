@@ -1,11 +1,8 @@
 # Uncomment this line to define a global platform for your project
- platform :ios, '13.0'
+platform :ios, '15.5.0'
 
 # CocoaPods analytics sends network stats synchronously affecting flutter build latency.
 ENV['COCOAPODS_DISABLE_STATS'] = 'true'
-
-# Disable IDFA Tracking
-$FirebaseAnalyticsWithoutAdIdSupport = true
 
 project 'Runner', {
   'Debug' => :debug,
@@ -42,22 +39,8 @@ post_install do |installer|
     flutter_additional_ios_build_settings(target)
     # Start of the permission_handler configuration
     target.build_configurations.each do |config|
-      #  Preprocessor definitions can be found at: https://github.com/Baseflow/flutter-permission-handler/blob/master/permission_handler_apple/ios/Classes/PermissionHandlerEnums.h
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
         '$(inherited)',
-
-        ## dart: [PermissionGroup.calendarWriteOnly, PermissionGroup.calendar (iOS 16 and below)]
-        # 'PERMISSION_EVENTS=1',
-   
-        ## dart: [PermissionGroup.calendarFullAccess, PermissionGroup.calendar (iOS 17 and above)]
-        # 'PERMISSION_EVENTS_FULL_ACCESS=1',
-  
-        ## dart: PermissionGroup.reminders
-        # 'PERMISSION_REMINDERS=1',
-
-        ## dart: PermissionGroup.contacts
-        # 'PERMISSION_CONTACTS=1',
-
         ## dart: PermissionGroup.camera
         # 'PERMISSION_CAMERA=1',
 
@@ -67,49 +50,22 @@ post_install do |installer|
         ## dart: PermissionGroup.speech
         # 'PERMISSION_SPEECH_RECOGNIZER=1',
 
-        ## dart: PermissionGroup.photos
-        # 'PERMISSION_PHOTOS=1',
+        # dart: PermissionGroup.photos
+        'PERMISSION_PHOTOS=1',
 
         ## dart: [PermissionGroup.location, PermissionGroup.locationAlways, PermissionGroup.locationWhenInUse]
         # 'PERMISSION_LOCATION=1',
 
         ## dart: PermissionGroup.notification
-        # 'PERMISSION_NOTIFICATIONS=1',
+        'PERMISSION_NOTIFICATIONS=1',
 
         ## dart: PermissionGroup.mediaLibrary
         # 'PERMISSION_MEDIA_LIBRARY=1',
 
-        ## dart: PermissionGroup.sensors
-        # 'PERMISSION_SENSORS=1',
-
-        ## dart: PermissionGroup.bluetooth
-        # 'PERMISSION_BLUETOOTH=1',
-
         # dart: PermissionGroup.appTrackingTransparency
-        # 'PERMISSION_APP_TRACKING_TRANSPARENCY=1',
-
-        ## dart: PermissionGroup.criticalAlerts
-        # 'PERMISSION_CRITICAL_ALERTS=1'
+        'PERMISSION_APP_TRACKING_TRANSPARENCY=1',
       ]
-
     end
     # End of the permission_handler configuration
   end
-
-  # strip bitcode of OMSDK_Appodeal
-  bitcode_strip_path = `xcrun --find bitcode_strip`.chop!
-   def strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-     framework_path = File.join(Dir.pwd, framework_relative_path)
-     command = "#{bitcode_strip_path} #{framework_path} -r -o #{framework_path}"
-     puts "Stripping bitcode: #{command}"
-     system(command)
-   end
-
-   framework_paths = [
-     "Pods/OMSDK_Appodeal/OMSDK_Appodeal.xcframework/ios-arm64/OMSDK_Appodeal.framework/OMSDK_Appodeal",
-   ]
-
-   framework_paths.each do |framework_relative_path|
-     strip_bitcode_from_framework(bitcode_strip_path, framework_relative_path)
-   end
 end

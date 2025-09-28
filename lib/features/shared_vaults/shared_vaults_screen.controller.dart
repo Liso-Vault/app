@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
@@ -74,7 +73,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
     //     body: nameController.text,
     //   );
 
-    //   Get.back();
+    //   Get.backLegacy();
     // }
 
     void edit() async {
@@ -253,7 +252,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
               labelText: 'Cipher Key',
               hintText: '32 Bit Base64 Cipher Key',
               helperText:
-                  'The Cipher Key will be automatically be saved as a ${appConfig.name} Item',
+                  'The Cipher Key will be automatically be saved as a ${config.name} Item',
               suffixIcon: IconButton(
                 icon: const Icon(Iconsax.key_outline),
                 onPressed: () {
@@ -290,7 +289,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
   void delete(SharedVault object_) {
     void confirm() async {
       // TODO: temporary
-      // Get.back();
+      // Get.backLegacy();
 
       // final batch = FirestoreService.to.instance.batch();
       // final doc = FirestoreService.to.sharedVaults.doc(object_.docId);

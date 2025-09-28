@@ -42,7 +42,7 @@ class WalletService extends GetxService with ConsoleMixin {
 
   bool get isSaved => SecretPersistence.to.wallet.val.isNotEmpty;
 
-  EthereumAddress get address => wallet!.privateKey.address;
+  String get address => wallet!.privateKey.address.eip55With0x;
 
   double get totalUsdBalance => maticUsdBalance + lisoUsdBalance;
 
@@ -155,10 +155,17 @@ class WalletService extends GetxService with ConsoleMixin {
     Wallet? wallet_;
 
     try {
-      await Executor().execute(
-        arg1: {'data': data, 'password': password},
-        fun1: walletFromJson,
-      ).then((value) => wallet_ = value);
+      // await Executor().execute(
+      //   arg1: {'data': data, 'password': password},
+      //   fun1: walletFromJson,
+      // ).then((value) => wallet_ = value);
+
+      Cancelable<Wallet> cancelable = workerManager.execute<Wallet>(
+        () => Wallet.fromJson(data, password),
+        priority: WorkPriority.immediately,
+      );
+
+      wallet_ = await cancelable.future;
     } catch (e) {
       console.error('error: $e');
       return null;
@@ -176,8 +183,8 @@ class WalletService extends GetxService with ConsoleMixin {
     );
 
     // save to persistence
-    SecretPersistence.to.walletAddress.val = address.hexEip55;
-    console.info('init! address: ${address.hexEip55}');
+    SecretPersistence.to.walletAddress.val = address;
+    console.info('init! address: $address');
 
     SecretPersistence.to.wallet.val = await compute(
       walletToJsonString,
@@ -264,10 +271,6 @@ class WalletService extends GetxService with ConsoleMixin {
 }
 
 // ISOLATE FUNCTIONS
-
-Future<Wallet> walletFromJson(Map<String, dynamic> arg, TypeSendPort port) {
-  return Future.value(Wallet.fromJson(arg['data'], arg['password']));
-}
 
 String walletToJsonString(Wallet arg) {
   return arg.toJson();

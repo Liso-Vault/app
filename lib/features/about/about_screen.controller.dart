@@ -1,4 +1,3 @@
-import 'package:app_core/config/app.model.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
@@ -18,7 +17,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
   // GETTERS
 
   List<ContextMenuItem> get communityMenuItems {
-    final links = appConfig.links;
+    final links = config.links;
 
     return [
       ContextMenuItem(
@@ -128,7 +127,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
       applicationName: metadataApp.appName,
       applicationVersion: metadataApp.formattedVersion,
       applicationLegalese:
-          'Copyright © 2022 ${appConfig.dev}\nAll rights reserved.',
+          'Copyright © 2022 ${config.dev}\nAll rights reserved.',
     );
   }
 }

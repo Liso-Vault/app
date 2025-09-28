@@ -1,107 +1,107 @@
-import 'package:alchemy_web3/alchemy_web3.dart';
-import 'package:app_core/connectivity/connectivity.service.dart';
-import 'package:console_mixin/console_mixin.dart';
-import 'package:get/get.dart';
-import 'package:liso/features/config/extra.model.dart';
-import 'package:web3dart/web3dart.dart';
+// import 'package:alchemy_web3/alchemy_web3.dart';
+// import 'package:app_core/connectivity/connectivity.service.dart';
+// import 'package:console_mixin/console_mixin.dart';
+// import 'package:get/get.dart';
+// import 'package:liso/features/config/extra.model.dart';
+// import 'package:web3dart/web3dart.dart';
 
-import '../../contracts/liso.dart';
-import '../../features/wallet/wallet.service.dart';
-import '../persistence/persistence.dart';
-import '../persistence/persistence.secret.dart';
+// import '../../contracts/liso.dart';
+// import '../../features/wallet/wallet.service.dart';
+// import '../persistence/persistence.dart';
+// import '../persistence/persistence.secret.dart';
 
-class AlchemyService extends GetxService with ConsoleMixin {
-  static AlchemyService get to => Get.find();
+// class AlchemyService extends GetxService with ConsoleMixin {
+//   static AlchemyService get to => Get.find();
 
-  // VARIABLES
-  final alchemy = Alchemy();
-  final wallet = Get.find<WalletService>();
+//   // VARIABLES
+//   final alchemy = Alchemy();
+//   final wallet = Get.find<WalletService>();
 
-  // GETTERS
-  ExtraConfigChain get polygonChain => extraConfig.web3.chains.first;
+//   // GETTERS
+//   ExtraConfigChain get polygonChain => extraConfig.web3.chains.first;
 
-  // INIT
+//   // INIT
 
-  // FUNCTIONS
-  Future<void> reInit() async {
-    await alchemy.stop();
-    init();
-  }
+//   // FUNCTIONS
+//   Future<void> reInit() async {
+//     await alchemy.stop();
+//     init();
+//   }
 
-  void init() {
-    final http = wallet.network.value == 'Polygon Testnet'
-        ? polygonChain.test.http
-        : polygonChain.main.http;
+//   void init() {
+//     final http = wallet.network.value == 'Polygon Testnet'
+//         ? polygonChain.test.http
+//         : polygonChain.main.http;
 
-    final ws = wallet.network.value == 'Polygon Testnet'
-        ? polygonChain.test.ws
-        : polygonChain.main.ws;
+//     final ws = wallet.network.value == 'Polygon Testnet'
+//         ? polygonChain.test.ws
+//         : polygonChain.main.ws;
 
-    // Configuration
-    alchemy.init(
-      httpRpcUrl: http,
-      wsRpcUrl: ws,
-      verbose: false,
-    );
+//     // Configuration
+//     alchemy.init(
+//       httpRpcUrl: http,
+//       wsRpcUrl: ws,
+//       verbose: false,
+//     );
 
-    // console.info('init');
-  }
+//     // console.info('init');
+//   }
 
-  Future<void> load() async {
-    if (!WalletService.to.isSaved) return;
+//   Future<void> load() async {
+//     if (!WalletService.to.isSaved) return;
 
-    if (!ConnectivityService.to.connected.value) {
-      // return console.warning('offline');
-    }
+//     if (!ConnectivityService.to.connected.value) {
+//       // return console.warning('offline');
+//     }
 
-    await loadLisoBalance();
-    await loadMaticBalance();
-    // console.info('load');
-  }
+//     await loadLisoBalance();
+//     await loadMaticBalance();
+//     // console.info('load');
+//   }
 
-  Future<void> loadLisoBalance() async {
-    if (!ConnectivityService.to.connected.value) {
-      return console.warning('offline');
-    }
+//   Future<void> loadLisoBalance() async {
+//     if (!ConnectivityService.to.connected.value) {
+//       return console.warning('offline');
+//     }
 
-    final lisoToken = LisoToken();
+//     final lisoToken = LisoToken();
 
-    final result = await alchemy.erc20.balanceOf(
-      address: EthereumAddress.fromHex(SecretPersistence.to.walletAddress.val),
-      contract: lisoToken.polygonMumbaiContract,
-    );
+//     final result = await alchemy.erc20.balanceOf(
+//       address: EthereumAddress.fromHex(SecretPersistence.to.walletAddress.val),
+//       contract: lisoToken.polygonMumbaiContract,
+//     );
 
-    result.fold(
-      (error) => console.error(
-        'Error: ${error.code} : ${error.message}',
-      ),
-      (response) {
-        AppPersistence.to.lastLisoBalance.val =
-            response.getValueInUnit(EtherUnit.ether);
-        console.info('liso balance: ${AppPersistence.to.lastLisoBalance.val}');
-      },
-    );
-  }
+//     result.fold(
+//       (error) => console.error(
+//         'Error: ${error.code} : ${error.message}',
+//       ),
+//       (response) {
+//         AppPersistence.to.lastLisoBalance.val =
+//             response.getValueInUnit(EtherUnit.ether);
+//         console.info('liso balance: ${AppPersistence.to.lastLisoBalance.val}');
+//       },
+//     );
+//   }
 
-  Future<void> loadMaticBalance() async {
-    if (!ConnectivityService.to.connected.value) {
-      // return console.warning('offline');
-    }
+//   Future<void> loadMaticBalance() async {
+//     if (!ConnectivityService.to.connected.value) {
+//       // return console.warning('offline');
+//     }
 
-    final result = await alchemy.polygon.getBalance(
-      address: SecretPersistence.to.walletAddress.val,
-    );
+//     final result = await alchemy.polygon.getBalance(
+//       address: SecretPersistence.to.walletAddress.val,
+//     );
 
-    result.fold(
-      (error) => console.error(
-        'Error: ${error.code} : ${error.message}',
-      ),
-      (response) {
-        AppPersistence.to.lastMaticBalance.val =
-            response.getValueInUnit(EtherUnit.ether);
-        console
-            .info('matic balance: ${AppPersistence.to.lastMaticBalance.val}');
-      },
-    );
-  }
-}
+//     result.fold(
+//       (error) => console.error(
+//         'Error: ${error.code} : ${error.message}',
+//       ),
+//       (response) {
+//         AppPersistence.to.lastMaticBalance.val =
+//             response.getValueInUnit(EtherUnit.ether);
+//         console
+//             .info('matic balance: ${AppPersistence.to.lastMaticBalance.val}');
+//       },
+//     );
+//   }
+// }

@@ -12,7 +12,7 @@ class DevicesScreenController extends GetxController
 
   // VARIABLES
   StreamSubscription? _stream;
-  final enforce = Get.parameters['enforce'] == 'true';
+  final enforce = gParameters['enforce'] == 'true';
 
   // PROPERTIES
   final data = <HiveMetadataDevice>[].obs;
@@ -89,10 +89,10 @@ class DevicesScreenController extends GetxController
       // TODO: temporary
       // await FirestoreService.to.userDevices.doc(device.docId).delete();
       // data.remove(device);
-      // Get.back(); // close dialog
+      // Get.backLegacy(); // close dialog
 
       // if (enforce && data.length <= limits.devices) {
-      //   Get.back(); // close screen
+      //   Get.backLegacy(); // close screen
       // }
     }
 
