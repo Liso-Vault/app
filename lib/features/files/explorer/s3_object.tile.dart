@@ -30,7 +30,7 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
     final menuItems = [
       if (object.isVaultFile && !isPicker) ...[
         ContextMenuItem(
-          title: 'Switch',
+          title: 'switch'.tr,
           leading: Icon(Iconsax.import_1_outline, size: popupIconSize),
           onSelected: () => controller.confirmSwitch(object),
         ),
@@ -44,18 +44,18 @@ class S3ObjectTile extends GetWidget<S3ObjectTileController> with ConsoleMixin {
       ] else ...[
         if (object.isFile && !isPicker) ...[
           ContextMenuItem(
-            title: 'Download',
+            title: 'download'.tr,
             leading: Icon(Iconsax.import_1_outline, size: popupIconSize),
             onSelected: () => controller.confirmDownload(object),
           ),
           ContextMenuItem(
-            title: 'Share',
+            title: 'share'.tr,
             leading: Icon(Iconsax.share_outline, size: popupIconSize),
             onSelected: () => controller.share(object),
           ),
         ],
         ContextMenuItem(
-          title: 'Delete',
+          title: 'delete'.tr,
           leading: Icon(Iconsax.trash_outline, size: popupIconSize),
           onSelected: () => controller.confirmDelete(object),
         ),

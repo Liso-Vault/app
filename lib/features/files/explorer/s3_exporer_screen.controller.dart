@@ -131,7 +131,7 @@ class S3ExplorerScreenController extends GetxController
       change(GetStatus.success(null));
 
       return UIUtils.showSimpleDialog(
-        'File Size Error',
+        'file_size_error'.tr,
         'Cannot retrieve file size: $e',
       );
     }
@@ -142,7 +142,7 @@ class S3ExplorerScreenController extends GetxController
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Upload Large Files',
+          'title': 'upload_large_files'.tr,
           'body':
               'Upload size limit: ${filesize(limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(licenseConfig.pro.uploadSize)} per file.',
         },
@@ -160,7 +160,7 @@ class S3ExplorerScreenController extends GetxController
       return Utils.adaptiveRouteOpen(
         name: Routes.upgrade,
         parameters: {
-          'title': 'Add More Storage',
+          'title': 'add_more_storage'.tr,
           'body':
               'Upgrade to Pro to store up to ${filesize(licenseConfig.pro.storageSize)} of files.',
         },
@@ -180,13 +180,13 @@ class S3ExplorerScreenController extends GetxController
       change(GetStatus.success(null));
 
       return UIUtils.showSimpleDialog(
-        'Upload Failed',
+        'upload_failed'.tr,
         'Error: ${result.left}',
       );
     }
 
     NotificationsService.to.notify(
-      title: 'Successfully Uploaded',
+      title: 'successfully_uploaded'.tr,
       body: fileName,
     );
 
@@ -212,13 +212,13 @@ class S3ExplorerScreenController extends GetxController
         change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
-          'Create Folder Failed',
+          'create_folder_failed'.tr,
           'Error: ${result.left}',
         );
       }
 
       NotificationsService.to.notify(
-        title: 'Folder Created',
+        title: 'folder_created'.tr,
         body: folderController.text,
       );
 
@@ -233,9 +233,9 @@ class S3ExplorerScreenController extends GetxController
       maxLength: 100,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (data) => AppUtils.validateFolderName(data!),
-      decoration: const InputDecoration(
-        labelText: 'Name',
-        hintText: 'Folder Name',
+      decoration: InputDecoration(
+        labelText: 'name'.tr,
+        hintText: 'folder_name'.tr,
       ),
     );
 
@@ -262,7 +262,7 @@ class S3ExplorerScreenController extends GetxController
               createDirectory(folderController.text);
             } else {
               UIUtils.showSimpleDialog(
-                'Folder Already Exists',
+                'folder_already_exists'.tr,
                 '"${folderController.text}" already exists.',
               );
             }

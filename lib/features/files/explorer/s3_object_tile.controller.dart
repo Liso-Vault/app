@@ -54,17 +54,17 @@ class S3ObjectTileController extends GetxController
 
     if (result.isLeft || result.right.status != 200) {
       return UIUtils.showSimpleDialog(
-        'Sharing Failed',
-        'Please try again later',
+        'sharing_failed'.tr,
+        'please_try_again_later'.tr,
       );
     }
 
     final dialogContent = Text(
-      '${object.name} will only be available to download for 1 hour from now.',
+      '${object.name} ${'will_only_be_available_to_download_for_1_hour_from_now'.tr}',
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Share Securely'),
+      title: Text('share_securely'.tr),
       content: isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
@@ -75,15 +75,20 @@ class S3ObjectTileController extends GetxController
         ),
         if (GetPlatform.isMobile) ...[
           TextButton(
-            child: const Text('Share URL'),
+            child: Text('share_url'.tr),
             onPressed: () {
               Get.backLegacy();
-              Share.share(result.right.data.url);
+
+              SharePlus.instance.share(
+                ShareParams(
+                  text: result.right.data.url,
+                ),
+              );
             },
           ),
         ] else ...[
           TextButton(
-            child: const Text('Copy URL'),
+            child: Text('copy_url'.tr),
             onPressed: () {
               Get.backLegacy();
               Utils.copyToClipboard(result.right.data.url);
@@ -108,7 +113,7 @@ class S3ObjectTileController extends GetxController
         change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
-          'Failed To Download',
+          'failed_to_download'.tr,
           '${downloadResult.left} -> download()',
         );
       }
@@ -123,7 +128,7 @@ class S3ObjectTileController extends GetxController
         change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
-          'Upload Failed',
+          'upload_failed'.tr,
           'Error: ${uploadResult.left}',
         );
       }
@@ -143,7 +148,7 @@ class S3ObjectTileController extends GetxController
       MainScreenController.to.load();
 
       NotificationsService.to.notify(
-        title: 'Successfully Switched',
+        title: 'successfully_switched'.tr,
         body: 'Successfully switched to vault: ${object.name}',
       );
 
@@ -155,7 +160,7 @@ class S3ObjectTileController extends GetxController
     );
 
     Get.dialog(AlertDialog(
-      title: const Text('Switch Vault'),
+      title: Text('switch_vault'.tr),
       content: isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
@@ -165,7 +170,7 @@ class S3ObjectTileController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          child: const Text('Switch'),
+          child: Text('switch'.tr),
           onPressed: () {
             Get.backLegacy();
             proceed();
@@ -191,13 +196,13 @@ class S3ObjectTileController extends GetxController
         change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
-          'Delete Failed',
+          'delete_failed'.tr,
           'Error: ${result.left}',
         );
       }
 
       NotificationsService.to.notify(
-        title: 'Deleted',
+        title: 'deleted'.tr,
         body: object.name,
       );
 
@@ -240,7 +245,7 @@ class S3ObjectTileController extends GetxController
         change(GetStatus.success(null));
 
         return UIUtils.showSimpleDialog(
-          'Failed To Download',
+          'failed_to_download'.tr,
           '${result.left} -> download()',
         );
       }
@@ -269,7 +274,7 @@ class S3ObjectTileController extends GetxController
 
       // choose directory and export file
       final exportPath = await FilePicker.platform.getDirectoryPath(
-        dialogTitle: 'Choose Export Path',
+        dialogTitle: 'choose_export_path'.tr,
       );
 
       timeLockEnabled = true; // re-enable
@@ -283,7 +288,7 @@ class S3ObjectTileController extends GetxController
       await FileUtils.move(file, join(exportPath, fileName));
 
       NotificationsService.to.notify(
-        title: 'Downloaded',
+        title: 'downloaded'.tr,
         body: fileName,
       );
 
@@ -293,7 +298,7 @@ class S3ObjectTileController extends GetxController
     final dialogContent = Text('Save "${object.maskedName}" to local disk?');
 
     Get.dialog(AlertDialog(
-      title: const Text('Download'),
+      title: Text('download'.tr),
       content: isSmallScreen
           ? dialogContent
           : SizedBox(width: 450, child: dialogContent),
@@ -303,7 +308,7 @@ class S3ObjectTileController extends GetxController
           child: Text('cancel'.tr),
         ),
         TextButton(
-          child: const Text('Download'),
+          child: Text('download'.tr),
           onPressed: () {
             Get.backLegacy();
             proceed();

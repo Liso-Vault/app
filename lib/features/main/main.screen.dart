@@ -350,6 +350,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
 
     final appBarActions = [
       IconButton(
+        tooltip: 'search_items'.tr,
         icon: const Icon(Iconsax.search_normal_outline),
         onPressed: controller.search,
       ),
@@ -376,6 +377,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
               position: badges.BadgePosition.topEnd(top: -1, end: -5),
               child: Obx(
                 () => IconButton(
+                  tooltip: 'sync'.tr,
                   icon: const Icon(Iconsax.cloud_change_outline),
                   onPressed: SyncService.to.syncing.value
                       ? null

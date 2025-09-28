@@ -1,9 +1,39 @@
 import 'en.dart';
 import 'ja.dart';
 import 'ko.dart';
+import 'es.dart';
+import 'vi.dart';
+import 'ar.dart';
+import 'ca.dart';
+import 'zh-Hans-CN.dart';
+import 'zh-Hans-TW.dart';
+import 'hr.dart';
+import 'cs.dart';
+import 'da.dart';
+import 'nl.dart';
+import 'fi.dart';
+import 'fr.dart';
+import 'de.dart';
+import 'el.dart';
+import 'he.dart';
 
 final translationKeys = {
   "en": en,
   "ja": ja,
   "ko": ko,
+  "es": es,
+  "vi": vi,
+  "ar": ar,
+  "ca": ca,
+  "zh_CN": zhHans,
+  "zh_TW": zhHant,
+  "hr": hr,
+  "cs": cs,
+  "da": da,
+  "nl": nl,
+  "fi": fi,
+  "fr": fr,
+  "de": de,
+  "el": el,
+  "he": he,
 };

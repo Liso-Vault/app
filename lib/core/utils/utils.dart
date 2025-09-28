@@ -251,14 +251,14 @@ class AppUtils {
   }
 
   static String strengthName(PasswordStrength strength) {
-    String name = 'Very Weak'; // VERY WEAK
+    String name = 'very_weak'.tr; // VERY WEAK
 
     if (strength == PasswordStrength.WEAK) {
-      name = 'Weak';
+      name = 'weak'.tr;
     } else if (strength == PasswordStrength.GOOD) {
-      name = 'Good';
+      name = 'good'.tr;
     } else if (strength == PasswordStrength.STRONG) {
-      name = 'Strong';
+      name = 'strong'.tr;
     }
 
     return name;
