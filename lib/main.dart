@@ -88,11 +88,15 @@ void init(Flavor flavor, {bool autofill = false}) async {
       adsEnabled: false,
       showUpgradeAppOpen: false,
       // purchasesEnabled: false,
+      fcmVapidKey: Secrets.fcmVapidKey,
+      // androidGoogleClientId: '',
+      appleGoogleClientId:
+          '848138515356-79apc9n4ji9ahcruielpkt0k7dnab2r5.apps.googleusercontent.com',
+      // webGoogleClientId: '',
       upgradeConfig: UpgradeConfig(
         pricing: AppPricing.data,
         featureTileFontSize: 14,
       ),
-      fcmVapidKey: Secrets.fcmVapidKey,
       gradientColors: const [
         Color.fromARGB(255, 0, 171, 105),
         Color.fromARGB(255, 0, 255, 213),
@@ -137,10 +141,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
     await SecretPersistence.open();
     await SecretPersistence.migrate();
     HiveService.init();
-
-    // initializations
-    initUpgradeConfig();
-    Future.delayed(5.seconds).then((value) => initUpgradeConfig());
 
     runApp(const App()); // run
   }, (Object exception, StackTrace stackTrace) {

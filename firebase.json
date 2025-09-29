@@ -1,16 +1,1 @@
-{
-  "hosting": {
-    "public": "build/web",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "rewrites": [
-      {
-        "source": "**",
-        "destination": "/index.html"
-      }
-    ]
-  }
-}
+{"hosting":{"public":"build/web","ignore":["firebase.json","**/.*","**/node_modules/**"],"rewrites":[{"source":"**","destination":"/index.html"}]},"flutter":{"platforms":{"android":{"default":{"projectId":"liso-vault","appId":"1:848138515356:android:bad2bc3ff2fea8b23b0e59","fileOutput":"android/app/google-services.json"}},"ios":{"default":{"projectId":"liso-vault","appId":"1:848138515356:ios:f16e4b05f31f2c8f3b0e59","uploadDebugSymbols":true,"fileOutput":"ios/Runner/GoogleService-Info.plist"}},"macos":{"default":{"projectId":"liso-vault","appId":"1:848138515356:ios:f16e4b05f31f2c8f3b0e59","uploadDebugSymbols":true,"fileOutput":"macos/Runner/GoogleService-Info.plist"}},"dart":{"lib/firebase_options.dart":{"projectId":"liso-vault","configurations":{"android":"1:848138515356:android:bad2bc3ff2fea8b23b0e59","ios":"1:848138515356:ios:f16e4b05f31f2c8f3b0e59","macos":"1:848138515356:ios:f16e4b05f31f2c8f3b0e59","web":"1:848138515356:web:73516ecf34ad19993b0e59"}}}}}}
