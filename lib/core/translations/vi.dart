@@ -347,7 +347,7 @@ final vi = {
   "faqs": "Câu hỏi thường gặp",
   //
   "get_full_access": "Nhận quyền truy cập đầy đủ",
-  "benefit_main": "Được xây dựng trên ChatGPT & GPT-5",
+  "benefit_main": "Bắt đầu bảo vệ thông tin nhạy cảm của bạn ngay hôm nay.",
   "see_all_features": "Xem tất cả tính năng của @w1",
   "try_for_free": "Thử miễn phí",
   "no_payment_now": "Không thanh toán ngay",

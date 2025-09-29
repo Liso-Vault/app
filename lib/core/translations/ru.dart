@@ -343,7 +343,7 @@ final ru = {
   "upgrade_to_pro": "Обновить до Pro",
   "faqs": "Часто Задаваемые Вопросы",
   "get_full_access": "Получите Полный Доступ",
-  "benefit_main": "Построено на ChatGPT и GPT-5",
+  "benefit_main": "Начните защищать свою конфиденциальную информацию сегодня.",
   "see_all_features": "Посмотрите все функции @w1",
   "try_for_free": "Попробуйте Бесплатно",
   "no_payment_now": "Нет оплаты сейчас",
@@ -528,4 +528,3 @@ final ru = {
   "path_to_your_file": "Путь к вашему файлу",
   "vault_file_path": "Путь к Файлу Сейфа"
 };
-

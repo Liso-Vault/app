@@ -341,7 +341,7 @@ final zhHant = {
   "faqs": "常見問題",
   //
   "get_full_access": "獲得完全存取權限",
-  "benefit_main": "基於ChatGPT和GPT-5建構",
+  "benefit_main": "今天就開始保護您的敏感資訊。",
   "see_all_features": "檢視所有@w1功能",
   "try_for_free": "免費試用",
   "no_payment_now": "現在無需付費",

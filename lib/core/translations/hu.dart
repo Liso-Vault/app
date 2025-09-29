@@ -344,7 +344,7 @@ final hu = {
   "upgrade_to_pro": "Frissítés Pro-ra",
   "faqs": "Gyakran ismételt kérdések",
   "get_full_access": "Teljes hozzáférés megszerzése",
-  "benefit_main": "ChatGPT & GPT-5 alapú",
+  "benefit_main": "Kezdje el ma védeni érzékeny adatait.",
   "see_all_features": "Tekintse meg az összes @w1 funkciót",
   "try_for_free": "Próbálja ki ingyen",
   "no_payment_now": "Nincs fizetés most",

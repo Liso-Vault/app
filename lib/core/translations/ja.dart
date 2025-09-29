@@ -341,7 +341,7 @@ final ja = {
   "faqs": "よくある質問",
   //
   "get_full_access": "フルアクセスを取得",
-  "benefit_main": "ChatGPT & GPT-5で構築",
+  "benefit_main": "今日から機密情報の保護を始めましょう。",
   "see_all_features": "@w1のすべての機能を見る",
   "try_for_free": "無料で試す",
   "no_payment_now": "今すぐ支払いなし",

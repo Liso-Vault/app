@@ -346,7 +346,7 @@ final hr = {
   "faqs": "Često postavljana pitanja",
   //
   "get_full_access": "Dobij potpuni pristup",
-  "benefit_main": "Izgrađeno na ChatGPT i GPT-5",
+  "benefit_main": "Počnite štititi svoje osjetljive informacije danas.",
   "see_all_features": "Vidi sve @w1 značajke",
   "try_for_free": "Probaj besplatno",
   "no_payment_now": "Nema plaćanja sada",

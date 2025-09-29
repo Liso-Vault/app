@@ -343,7 +343,7 @@ final pt = {
   "upgrade_to_pro": "Atualize para Pro",
   "faqs": "Perguntas Frequentes",
   "get_full_access": "Obtenha Acesso Completo",
-  "benefit_main": "Construído sobre ChatGPT & GPT-5",
+  "benefit_main": "Comece a proteger suas informações sensíveis hoje.",
   "see_all_features": "Veja todos os recursos do @w1",
   "try_for_free": "Experimente Gratuitamente",
   "no_payment_now": "Sem pagamento agora",
@@ -600,4 +600,3 @@ final pt = {
   "folder_name": "Nome da Pasta",
   "send": "Enviar",
 };
-

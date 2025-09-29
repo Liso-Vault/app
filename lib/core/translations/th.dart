@@ -342,7 +342,7 @@ final th = {
   "upgrade_to_pro": "อัปเกรดเป็น Pro",
   "faqs": "คำถามที่พบบ่อย",
   "get_full_access": "รับการเข้าถึงทั้งหมด",
-  "benefit_main": "สร้างบน ChatGPT & GPT-5",
+  "benefit_main": "เริ่มปกป้องข้อมูลสำคัญของคุณวันนี้",
   "see_all_features": "ดูคุณสมบัติทั้งหมดของ @w1",
   "try_for_free": "ลองฟรี",
   "no_payment_now": "ไม่มีการชำระเงินตอนนี้",

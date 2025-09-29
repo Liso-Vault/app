@@ -347,7 +347,7 @@ final ca = {
   "faqs": "Preguntes Freqüents",
   //
   "get_full_access": "Obtenir Accés Complet",
-  "benefit_main": "Construït en ChatGPT i GPT-5",
+  "benefit_main": "Comença a protegir la teva informació sensible avui.",
   "see_all_features": "Veure totes les característiques de @w1",
   "try_for_free": "Provar Gratis",
   "no_payment_now": "Sense pagament ara",

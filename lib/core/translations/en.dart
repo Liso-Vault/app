@@ -346,7 +346,7 @@ final en = {
   "faqs": "Frequently Asked Questions",
   //
   "get_full_access": "Get Full Access",
-  "benefit_main": "Built on ChatGPT & GPT-5",
+  "benefit_main": "Start protecting your sensitive information today.",
   "see_all_features": "See all @w1 features",
   "try_for_free": "Try For Free",
   "no_payment_now": "No payment now",
@@ -598,4 +598,7 @@ final en = {
   "download": "Download",
   "folder_name": "Folder Name",
   "send": "Send",
+  "clear_all_items_and_start_over": "Clear all items and start over",
+  "delete_local_vault_and_logout": "Delete local vault and logout",
+  "delete_remote_vault_and_files": "Delete remote vault and files",
 };

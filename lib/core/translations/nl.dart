@@ -346,7 +346,8 @@ final nl = {
   "faqs": "Veelgestelde vragen",
   //
   "get_full_access": "Volledige toegang krijgen",
-  "benefit_main": "Gebouwd op ChatGPT en GPT-5",
+  "benefit_main":
+      "Begin vandaag met het beschermen van uw gevoelige informatie.",
   "see_all_features": "Bekijk alle @w1 functies",
   "try_for_free": "Probeer gratis",
   "no_payment_now": "Geen betaling nu",
@@ -397,8 +398,7 @@ final nl = {
       "Zorg ervoor dat je op een veilige locatie bent",
   "change_password": "Wachtwoord wijzigen",
   "change_your_wallet_password": "Wijzig je portemonnee wachtwoord",
-  "export_wallet_to_external_source":
-      "Bewaar <wallet>.json naar externe bron",
+  "export_wallet_to_external_source": "Bewaar <wallet>.json naar externe bron",
   "backed_up_vaults": "Backup kluizen",
   "delete_remote_data_desc": "Externe kluis en bestanden verwijderen",
   "delete_local_data": "Lokale gegevens verwijderen",
@@ -445,7 +445,8 @@ final nl = {
   "upgrade_for_better_experience":
       "Upgrade voor een betere algehele ervaring en meer beveiliging",
   "invalid_csv_columns": "Ongeldige CSV kolommen",
-  "please_import_a_valid_exported_file": "Importeer een geldig geëxporteerd bestand",
+  "please_import_a_valid_exported_file":
+      "Importeer een geldig geëxporteerd bestand",
   "import_successful": "Import succesvol",
   "file_not_found": "Bestand niet gevonden",
   "incorrect_file_format": "Onjuist bestandsformaat",
@@ -454,7 +455,8 @@ final nl = {
   "automatically_tag_items_with": "Tag automatisch items met",
   "destination_vault": "Bestemmingskluis",
   "smart_assign_create_automatically": "Slim - toewijzen/aanmaken automatisch",
-  "choose_the_exported_file_to_import": "Kies het geëxporteerde bestand om te importeren",
+  "choose_the_exported_file_to_import":
+      "Kies het geëxporteerde bestand om te importeren",
   "path_to_your_exported_file": "Pad naar je geëxporteerde bestand",
   "exported_file_path": "Geëxporteerd bestand pad",
   "street_1": "Straat 1",

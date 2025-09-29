@@ -346,7 +346,7 @@ final he = {
   "faqs": "שאלות נפוצות",
   //
   "get_full_access": "קבל גישה מלאה",
-  "benefit_main": "בנוי על ChatGPT ו-GPT-5",
+  "benefit_main": "התחל להגן על המידע הרגיש שלך היום.",
   "see_all_features": "ראה את כל התכונות של @w1",
   "try_for_free": "נסה בחינם",
   "no_payment_now": "אין תשלום עכשיו",
@@ -393,12 +393,10 @@ final he = {
   "wallet_settings": "הגדרות ארנק",
   "manage_your_wallet": "נהל את הארנק שלך",
   "show_seed_phrase": "הצג ביטוי זרע",
-  "make_sure_you_are_in_a_safe_location":
-      "וודא שאתה במקום בטוח",
+  "make_sure_you_are_in_a_safe_location": "וודא שאתה במקום בטוח",
   "change_password": "שנה סיסמה",
   "change_your_wallet_password": "שנה את סיסמת הארנק שלך",
-  "export_wallet_to_external_source":
-      "שמור <wallet>.json למקור חיצוני",
+  "export_wallet_to_external_source": "שמור <wallet>.json למקור חיצוני",
   "backed_up_vaults": "כספות מגובות",
   "delete_remote_data_desc": "מחק כספת וקבצים מרוחקים",
   "delete_local_data": "מחק נתונים מקומיים",
@@ -424,8 +422,7 @@ final he = {
       "האם אתה מרוצה מהייבוא האחרון? אם לא, אתה יכול לבטל את השינויים שלך.",
   "decide": "החלט",
   "no_internet_connection": "אין חיבור לאינטרנט",
-  "no_internet_connection_desc":
-      "אנא בדוק את החיבור לאינטרנט שלך ונסה שוב",
+  "no_internet_connection_desc": "אנא בדוק את החיבור לאינטרנט שלך ונסה שוב",
   "empty_trash": "רוקן אשפה",
   "empty_deleted": "רוקן נמחקים",
   "a_few_other_settings": "כמה הגדרות אחרות",
@@ -438,12 +435,10 @@ final he = {
   "decrypt_a_file_file": "פענח קובץ",
   "encrypt_texts": "הצפן טקסטים",
   "decrypt_texts": "פענח טקסטים",
-  "master_password_desc":
-      "זו תהיה הסיסמה לפתיחת הארנק שגם מאבטחת את הכספת",
+  "master_password_desc": "זו תהיה הסיסמה לפתיחת הארנק שגם מאבטחת את הכספת",
   "unsync_device_desc":
       "בטל סנכרון של מכשיר שסונכרן קודם כדי לאפשר למכשיר החדש הזה להסתנכרן. או שדרג ל-Pro לעוד הגבלות סנכרון מכשירים.",
-  "upgrade_for_better_experience":
-      "שדרג לחוויה כללית טובה יותר ויותר אבטחה",
+  "upgrade_for_better_experience": "שדרג לחוויה כללית טובה יותר ויותר אבטחה",
   "invalid_csv_columns": "עמודות CSV לא תקינות",
   "please_import_a_valid_exported_file": "אנא יבא קובץ מיוצא תקין",
   "import_successful": "ייבוא מוצלח",
@@ -497,8 +492,7 @@ final he = {
   "please_decide_to_keep_or_undo_your_changes":
       "אנא החלט לשמור או לבטל את השינויים שלך.",
   "imported_items": "פריטים מיובאים",
-  "recently_imported_items_were_reverted":
-      "פריטים שיובאו לאחרונה בוטלו.",
+  "recently_imported_items_were_reverted": "פריטים שיובאו לאחרונה בוטלו.",
   "reverted_items": "פריטים שבוטלו",
   "keep": "שמור",
   "undo": "בטל",
@@ -569,8 +563,7 @@ final he = {
   "name": "שם",
   "delete_category": "מחק קטגוריה",
   "protected_items": "פריטים מוגנים",
-  "protected_items_desc":
-      "פריטים מוגנים מוצפנים ונשמרים בכספת שלך.",
+  "protected_items_desc": "פריטים מוגנים מוצפנים ונשמרים בכספת שלך.",
   "protected_items_limit_reached": "הגעת למגבלת פריטים מוגנים",
   "force_close": "סגירה כפויה",
   "folder_created": "תיקייה נוצרה",

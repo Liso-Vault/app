@@ -344,7 +344,7 @@ final tr = {
   "upgrade_to_pro": "Pro'ya Yükselt",
   "faqs": "Sıkça Sorulan Sorular",
   "get_full_access": "Tam Erişim Alın",
-  "benefit_main": "ChatGPT & GPT-5 Üzerine Kurulu",
+  "benefit_main": "Hassas bilgilerinizi bugün korumaya başlayın.",
   "see_all_features": "@w1 tüm özelliklerini görün",
   "try_for_free": "Ücretsiz Deneyin",
   "no_payment_now": "Şimdi ödeme yok",
@@ -599,4 +599,3 @@ final tr = {
   "folder_name": "Klasör Adı",
   "send": "Gönder",
 };
-

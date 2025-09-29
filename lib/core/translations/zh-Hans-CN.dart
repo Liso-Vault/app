@@ -341,7 +341,7 @@ final zhHans = {
   "faqs": "常见问题",
   //
   "get_full_access": "获得完全访问权限",
-  "benefit_main": "基于ChatGPT和GPT-5构建",
+  "benefit_main": "今天就开始保护您的敏感信息。",
   "see_all_features": "查看所有@w1功能",
   "try_for_free": "免费试用",
   "no_payment_now": "现在无需付费",

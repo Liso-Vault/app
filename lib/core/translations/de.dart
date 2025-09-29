@@ -74,7 +74,8 @@ final de = {
   "hide": "Ausblenden",
   "show": "Anzeigen",
   "help_question": "Hilfe?",
-  "pro_postfix": "Probieren Sie @w1 Pro KOSTENLOS aus, um diese Funktion freizuschalten.",
+  "pro_postfix":
+      "Probieren Sie @w1 Pro KOSTENLOS aus, um diese Funktion freizuschalten.",
   "pro_activated": "Pro aktiviert",
   "pro_restored": "Pro wiederhergestellt",
   "no_purchases": "Keine Käufe",
@@ -346,7 +347,8 @@ final de = {
   "faqs": "Häufig gestellte Fragen",
   //
   "get_full_access": "Vollzugriff erhalten",
-  "benefit_main": "Auf ChatGPT und GPT-5 aufgebaut",
+  "benefit_main":
+      "Beginnen Sie heute mit dem Schutz Ihrer sensiblen Informationen.",
   "see_all_features": "Alle @w1-Funktionen anzeigen",
   "try_for_free": "Kostenlos testen",
   "no_payment_now": "Keine Zahlung jetzt",
@@ -379,14 +381,16 @@ final de = {
   "keep_multiple_devices_in_sync": "Mehrere Geräte synchronisiert halten",
   "enabled": "Aktiviert",
   "manage_your_vaults": "Verwalten Sie Ihre Tresore",
-  "manage_your_custom_categories": "Verwalten Sie Ihre benutzerdefinierten Kategorien",
+  "manage_your_custom_categories":
+      "Verwalten Sie Ihre benutzerdefinierten Kategorien",
   "manage_your_custom_vaults": "Verwalten Sie Ihre benutzerdefinierten Tresore",
   "manage_your_shared_vaults": "Verwalten Sie Ihre geteilten Tresore",
   "manage_your_joined_vaults": "Verwalten Sie Ihre beigetretenen Tresore",
   "go_back_in_time_to_undo_your_changes":
       "Gehen Sie in der Zeit zurück, um Ihre Änderungen rückgängig zu machen",
   "import_items": "Elemente importieren",
-  "import_items_from_external_sources": "Elemente aus externen Quellen importieren",
+  "import_items_from_external_sources":
+      "Elemente aus externen Quellen importieren",
   "encrypted": "Verschlüsselt",
   "unencrypted": "Nicht verschlüsselt",
   "save_vault_to_external_source": "<vault>.liso in externe Quelle speichern",
@@ -429,7 +433,8 @@ final de = {
   "empty_trash": "Papierkorb leeren",
   "empty_deleted": "Gelöschte leeren",
   "a_few_other_settings": "Ein paar andere Einstellungen",
-  "delete_purge_or_reset_your_data": "Löschen, bereinigen oder Ihre Daten zurücksetzen",
+  "delete_purge_or_reset_your_data":
+      "Löschen, bereinigen oder Ihre Daten zurücksetzen",
   "strength": "Stärke",
   "already_exists": "Existiert bereits",
   "attach_a_file": "Datei anhängen",
@@ -445,7 +450,8 @@ final de = {
   "upgrade_for_better_experience":
       "Upgraden Sie für eine bessere Gesamterfahrung und mehr Sicherheit",
   "invalid_csv_columns": "Ungültige CSV-Spalten",
-  "please_import_a_valid_exported_file": "Bitte importieren Sie eine gültige exportierte Datei",
+  "please_import_a_valid_exported_file":
+      "Bitte importieren Sie eine gültige exportierte Datei",
   "import_successful": "Import erfolgreich",
   "file_not_found": "Datei nicht gefunden",
   "incorrect_file_format": "Falsches Dateiformat",
@@ -453,8 +459,10 @@ final de = {
   "invalid_file_extension": "Ungültige Dateierweiterung",
   "automatically_tag_items_with": "Elemente automatisch mit taggen",
   "destination_vault": "Ziel-Tresor",
-  "smart_assign_create_automatically": "Intelligent - automatisch zuweisen/erstellen",
-  "choose_the_exported_file_to_import": "Wählen Sie die exportierte Datei zum Importieren",
+  "smart_assign_create_automatically":
+      "Intelligent - automatisch zuweisen/erstellen",
+  "choose_the_exported_file_to_import":
+      "Wählen Sie die exportierte Datei zum Importieren",
   "path_to_your_exported_file": "Pfad zu Ihrer exportierten Datei",
   "exported_file_path": "Exportierte Datei-Pfad",
   "street_1": "Straße 1",
@@ -548,7 +556,8 @@ final de = {
   "add_a_tag": "Tag hinzufügen",
   "add_or_query_some_tags": "Tags hinzufügen oder abfragen",
   "suggestions": "Vorschläge",
-  "must_be_at_least_3_letter_word": "Muss mindestens ein 3-Buchstaben-Wort sein",
+  "must_be_at_least_3_letter_word":
+      "Muss mindestens ein 3-Buchstaben-Wort sein",
   "until_your_vault_resets": "bis Ihr Tresor zurückgesetzt wird",
   "incorrect_master_password": "Falsches Hauptpasswort",
   "please_enter_your_master_password": "Bitte geben Sie Ihr Hauptpasswort ein",

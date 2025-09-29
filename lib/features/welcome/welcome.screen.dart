@@ -156,7 +156,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
           image: DecorationImage(
             image: NetworkImage(onboardingBGUri),
             fit: BoxFit.cover,
-            opacity: 0.2,
+            opacity: 0.1,
           ),
         ),
         child: Center(

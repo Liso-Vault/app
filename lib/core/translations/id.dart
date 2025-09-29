@@ -343,7 +343,7 @@ final id = {
   "upgrade_to_pro": "Tingkatkan ke Pro",
   "faqs": "Pertanyaan yang Sering Diajukan",
   "get_full_access": "Dapatkan Akses Penuh",
-  "benefit_main": "Dibangun di atas ChatGPT & GPT-5",
+  "benefit_main": "Mulai lindungi informasi sensitif Anda hari ini.",
   "see_all_features": "Lihat semua fitur @w1",
   "try_for_free": "Coba Gratis",
   "no_payment_now": "Tidak ada pembayaran sekarang",
@@ -600,4 +600,3 @@ final id = {
   "folder_name": "Nama Folder",
   "send": "Kirim",
 };
-

@@ -342,7 +342,7 @@ final sv = {
   "upgrade_to_pro": "Uppgradera Till Pro",
   "faqs": "Vanliga Frågor",
   "get_full_access": "Få Full Tillgång",
-  "benefit_main": "Byggt på ChatGPT & GPT-5",
+  "benefit_main": "Börja skydda din känsliga information idag.",
   "see_all_features": "Se alla @w1 funktioner",
   "try_for_free": "Prova Gratis",
   "no_payment_now": "Ingen betalning nu",
@@ -596,4 +596,3 @@ final sv = {
   "folder_name": "Mappnamn",
   "send": "Skicka",
 };
-

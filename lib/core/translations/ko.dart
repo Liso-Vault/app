@@ -341,7 +341,7 @@ final ko = {
   "faqs": "자주 묻는 질문",
   //
   "get_full_access": "전체 액세스 받기",
-  "benefit_main": "ChatGPT & GPT-5로 구축",
+  "benefit_main": "오늘부터 민감한 정보를 보호하세요.",
   "see_all_features": "@w1의 모든 기능 보기",
   "try_for_free": "무료로 체험",
   "no_payment_now": "지금 결제 없음",

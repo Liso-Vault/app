@@ -342,7 +342,7 @@ final esMX = {
   "upgrade_to_pro": "Actualizar a Pro",
   "faqs": "Preguntas Frecuentes",
   "get_full_access": "Obtén Acceso Completo",
-  "benefit_main": "Construido sobre ChatGPT & GPT-5",
+  "benefit_main": "Comienza a proteger tu información sensible hoy.",
   "see_all_features": "Ver todas las funciones de @w1",
   "try_for_free": "Prueba Gratis",
   "no_payment_now": "No hay pago ahora",
@@ -603,4 +603,3 @@ final esMX = {
   "folder_name": "Nombre de la Carpeta",
   "send": "Enviar",
 };
-

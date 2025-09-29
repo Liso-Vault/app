@@ -346,7 +346,7 @@ final cs = {
   "faqs": "Často kladené otázky",
   //
   "get_full_access": "Získat plný přístup",
-  "benefit_main": "Postaveno na ChatGPT a GPT-5",
+  "benefit_main": "Začněte chránit své citlivé informace dnes.",
   "see_all_features": "Zobrazit všechny @w1 funkce",
   "try_for_free": "Vyzkoušet zdarma",
   "no_payment_now": "Žádná platba nyní",

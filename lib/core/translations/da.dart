@@ -346,7 +346,7 @@ final da = {
   "faqs": "Ofte stillede spørgsmål",
   //
   "get_full_access": "Få fuld adgang",
-  "benefit_main": "Bygget på ChatGPT og GPT-5",
+  "benefit_main": "Begynd at beskytte dine følsomme oplysninger i dag.",
   "see_all_features": "Se alle @w1 funktioner",
   "try_for_free": "Prøv gratis",
   "no_payment_now": "Ingen betaling nu",

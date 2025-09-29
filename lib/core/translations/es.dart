@@ -346,7 +346,7 @@ final es = {
   "faqs": "Preguntas Frecuentes",
   //
   "get_full_access": "Obtener Acceso Completo",
-  "benefit_main": "Construido en ChatGPT y GPT-5",
+  "benefit_main": "Comienza a proteger tu información sensible hoy.",
   "see_all_features": "Ver todas las características de @w1",
   "try_for_free": "Probar Gratis",
   "no_payment_now": "Sin pago ahora",

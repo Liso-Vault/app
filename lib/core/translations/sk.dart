@@ -343,7 +343,7 @@ final sk = {
   "upgrade_to_pro": "Aktualizovať na Pro",
   "faqs": "Často Kladené Otázky",
   "get_full_access": "Získať Plný Prístup",
-  "benefit_main": "Postavené na ChatGPT a GPT-5",
+  "benefit_main": "Začnite chrániť svoje citlivé informácie dnes.",
   "see_all_features": "Pozrite si všetky funkcie @w1",
   "try_for_free": "Vyskúšať Zadarmo",
   "no_payment_now": "Žiadna platba teraz",
@@ -601,4 +601,3 @@ final sk = {
   "folder_name": "Názov Zložky",
   "send": "Odoslať",
 };
-

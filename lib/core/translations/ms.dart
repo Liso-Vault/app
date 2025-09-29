@@ -343,7 +343,7 @@ final ms = {
   "upgrade_to_pro": "Tingkatkan ke Pro",
   "faqs": "Soalan Lazim",
   "get_full_access": "Dapatkan Akses Penuh",
-  "benefit_main": "Dibina di atas ChatGPT & GPT-5",
+  "benefit_main": "Mula melindungi maklumat sensitif anda hari ini.",
   "see_all_features": "Lihat semua ciri @w1",
   "try_for_free": "Cuba Percuma",
   "no_payment_now": "Tiada pembayaran sekarang",
@@ -600,4 +600,3 @@ final ms = {
   "folder_name": "Nama Folder",
   "send": "Hantar",
 };
-

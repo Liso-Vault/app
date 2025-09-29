@@ -345,7 +345,7 @@ final ar = {
   "faqs": "الأسئلة الشائعة",
   //
   "get_full_access": "احصل على وصول كامل",
-  "benefit_main": "مبني على ChatGPT و GPT-5",
+  "benefit_main": "ابدأ في حماية معلوماتك الحساسة اليوم.",
   "see_all_features": "شاهد جميع ميزات @w1",
   "try_for_free": "جرب مجاناً",
   "no_payment_now": "لا دفع الآن",

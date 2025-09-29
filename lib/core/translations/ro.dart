@@ -345,7 +345,7 @@ final ro = {
   "faqs": "Întrebări frecvente",
   //
   "get_full_access": "Obține acces complet",
-  "benefit_main": "Bazat pe ChatGPT & GPT-5",
+  "benefit_main": "Începe să îți protejezi informațiile sensibile astăzi.",
   "see_all_features": "Vezi toate funcțiile @w1",
   "try_for_free": "Încearcă gratuit",
   "no_payment_now": "Fără plată acum",

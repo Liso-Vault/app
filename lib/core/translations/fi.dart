@@ -346,7 +346,7 @@ final fi = {
   "faqs": "Usein kysytyt kysymykset",
   //
   "get_full_access": "Hae täysi pääsy",
-  "benefit_main": "Rakennettu ChatGPT:llä ja GPT-5:llä",
+  "benefit_main": "Aloita arkaluonteisten tietojesi suojaaminen tänään.",
   "see_all_features": "Katso kaikki @w1 ominaisuudet",
   "try_for_free": "Kokeile ilmaiseksi",
   "no_payment_now": "Ei maksua nyt",

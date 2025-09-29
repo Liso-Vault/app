@@ -74,7 +74,8 @@ final fr = {
   "hide": "Masquer",
   "show": "Afficher",
   "help_question": "Aide ?",
-  "pro_postfix": "Essayez @w1 Pro GRATUITEMENT pour débloquer cette fonctionnalité.",
+  "pro_postfix":
+      "Essayez @w1 Pro GRATUITEMENT pour débloquer cette fonctionnalité.",
   "pro_activated": "Pro activé",
   "pro_restored": "Pro restauré",
   "no_purchases": "Aucun achat",
@@ -104,7 +105,8 @@ final fr = {
   "proceed_agreement": "En continuant, vous acceptez nos",
   "follow": "Suivre",
   "newsletter": "Newsletter",
-  "newsletter_promise": "Nous promettons de ne pas spammer votre boîte de réception",
+  "newsletter_promise":
+      "Nous promettons de ne pas spammer votre boîte de réception",
   "visibility": "Visibilité",
   "no_internet": "Pas de connexion Internet",
   "consent": "Consentement",
@@ -346,7 +348,8 @@ final fr = {
   "faqs": "Questions fréquemment posées",
   //
   "get_full_access": "Obtenir un accès complet",
-  "benefit_main": "Construit sur ChatGPT et GPT-5",
+  "benefit_main":
+      "Commencez à protéger vos informations sensibles dès aujourd'hui.",
   "see_all_features": "Voir toutes les fonctionnalités @w1",
   "try_for_free": "Essayer gratuitement",
   "no_payment_now": "Aucun paiement maintenant",
@@ -386,17 +389,20 @@ final fr = {
   "go_back_in_time_to_undo_your_changes":
       "Remontez dans le temps pour annuler vos modifications",
   "import_items": "Importer des éléments",
-  "import_items_from_external_sources": "Importer des éléments de sources externes",
+  "import_items_from_external_sources":
+      "Importer des éléments de sources externes",
   "encrypted": "Chiffré",
   "unencrypted": "Non chiffré",
-  "save_vault_to_external_source": "Sauvegarder <vault>.liso vers une source externe",
+  "save_vault_to_external_source":
+      "Sauvegarder <vault>.liso vers une source externe",
   "wallet_settings": "Paramètres du portefeuille",
   "manage_your_wallet": "Gérer votre portefeuille",
   "show_seed_phrase": "Afficher la phrase de graines",
   "make_sure_you_are_in_a_safe_location":
       "Assurez-vous d'être dans un endroit sûr",
   "change_password": "Changer le mot de passe",
-  "change_your_wallet_password": "Changer le mot de passe de votre portefeuille",
+  "change_your_wallet_password":
+      "Changer le mot de passe de votre portefeuille",
   "export_wallet_to_external_source":
       "Sauvegarder <wallet>.json vers une source externe",
   "backed_up_vaults": "Coffres sauvegardés",
@@ -429,7 +435,8 @@ final fr = {
   "empty_trash": "Vider la corbeille",
   "empty_deleted": "Vider les supprimés",
   "a_few_other_settings": "Quelques autres paramètres",
-  "delete_purge_or_reset_your_data": "Supprimer, purger ou réinitialiser vos données",
+  "delete_purge_or_reset_your_data":
+      "Supprimer, purger ou réinitialiser vos données",
   "strength": "Force",
   "already_exists": "Existe déjà",
   "attach_a_file": "Joindre un fichier",
@@ -445,7 +452,8 @@ final fr = {
   "upgrade_for_better_experience":
       "Passez à Pro pour une meilleure expérience globale et plus de sécurité",
   "invalid_csv_columns": "Colonnes CSV invalides",
-  "please_import_a_valid_exported_file": "Veuillez importer un fichier exporté valide",
+  "please_import_a_valid_exported_file":
+      "Veuillez importer un fichier exporté valide",
   "import_successful": "Importation réussie",
   "file_not_found": "Fichier non trouvé",
   "incorrect_file_format": "Format de fichier incorrect",
@@ -453,7 +461,8 @@ final fr = {
   "invalid_file_extension": "Extension de fichier invalide",
   "automatically_tag_items_with": "Étiqueter automatiquement les éléments avec",
   "destination_vault": "Coffre de destination",
-  "smart_assign_create_automatically": "Intelligent - assigner/créer automatiquement",
+  "smart_assign_create_automatically":
+      "Intelligent - assigner/créer automatiquement",
   "choose_the_exported_file_to_import": "Choisir le fichier exporté à importer",
   "path_to_your_exported_file": "Chemin vers votre fichier exporté",
   "exported_file_path": "Chemin du fichier exporté",
@@ -493,7 +502,8 @@ final fr = {
   "are_you_sure_you_want_to_permanently_empty_the_deleted_items":
       "Êtes-vous sûr de vouloir vider définitivement les éléments supprimés ?",
   "deleted_items_emptied": "Éléments supprimés vidés",
-  "your_deleted_items_is_now_empty": "Vos éléments supprimés sont maintenant vides",
+  "your_deleted_items_is_now_empty":
+      "Vos éléments supprimés sont maintenant vides",
   "please_decide_to_keep_or_undo_your_changes":
       "Veuillez décider de garder ou d'annuler vos modifications.",
   "imported_items": "Éléments importés",
@@ -543,7 +553,8 @@ final fr = {
       "C'est la seule clé pour accéder et déchiffrer votre coffre, alors veuillez l'écrire soigneusement et la stocker dans un endroit sûr",
   "master_seed_phrase": "Phrase de graines principale",
   "seed_not_found": "Graines non trouvées",
-  "cannot_find_your_saved_seed": "Impossible de trouver vos graines sauvegardées",
+  "cannot_find_your_saved_seed":
+      "Impossible de trouver vos graines sauvegardées",
   "enter_your_seed": "Entrez vos graines",
   "add_a_tag": "Ajouter une étiquette",
   "add_or_query_some_tags": "Ajouter ou interroger des étiquettes",
@@ -551,7 +562,8 @@ final fr = {
   "must_be_at_least_3_letter_word": "Doit être un mot d'au moins 3 lettres",
   "until_your_vault_resets": "jusqu'à ce que votre coffre soit réinitialisé",
   "incorrect_master_password": "Mot de passe principal incorrect",
-  "please_enter_your_master_password": "Veuillez entrer votre mot de passe principal",
+  "please_enter_your_master_password":
+      "Veuillez entrer votre mot de passe principal",
   "unlock_your_vault": "Déverrouiller votre coffre",
   "liso_master_seed_phrase": "Phrase de graines principale Liso",
   "liso_master_seed_phrase_desc":

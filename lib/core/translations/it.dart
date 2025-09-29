@@ -343,7 +343,7 @@ final it = {
   "upgrade_to_pro": "Aggiorna a Pro",
   "faqs": "Domande Frequenti",
   "get_full_access": "Ottieni Accesso Completo",
-  "benefit_main": "Basato su ChatGPT & GPT-5",
+  "benefit_main": "Inizia a proteggere le tue informazioni sensibili oggi.",
   "see_all_features": "Vedi tutte le funzionalità di @w1",
   "try_for_free": "Prova Gratis",
   "no_payment_now": "Nessun pagamento ora",
@@ -598,4 +598,3 @@ final it = {
   "folder_name": "Nome Cartella",
   "send": "Invia",
 };
-
