@@ -1,39 +1,71 @@
-import 'en.dart';
-import 'ja.dart';
-import 'ko.dart';
-import 'es.dart';
-import 'vi.dart';
 import 'ar.dart';
 import 'ca.dart';
-import 'zh-Hans-CN.dart';
-import 'zh-Hans-TW.dart';
-import 'hr.dart';
 import 'cs.dart';
 import 'da.dart';
-import 'nl.dart';
-import 'fi.dart';
-import 'fr.dart';
 import 'de.dart';
 import 'el.dart';
+import 'en.dart';
+import 'es.dart';
+import 'es-MX.dart';
+import 'fi.dart';
+import 'fr.dart';
 import 'he.dart';
+import 'hr.dart';
+import 'hu.dart';
+import 'id.dart';
+import 'ja.dart';
+import 'it.dart';
+import 'ko.dart';
+import 'ms.dart';
+import 'nl.dart';
+import 'no.dart';
+import 'pl.dart';
+import 'pt.dart';
+import 'pt-BR.dart';
+import 'ro.dart';
+import 'ru.dart';
+import 'sk.dart';
+import 'sv.dart';
+import 'th.dart';
+import 'tr.dart';
+import 'uk.dart';
+import 'vi.dart';
+import 'zh-Hans-CN.dart';
+import 'zh-Hans-TW.dart';
 
 final translationKeys = {
-  "en": en,
-  "ja": ja,
-  "ko": ko,
-  "es": es,
-  "vi": vi,
   "ar": ar,
   "ca": ca,
-  "zh_CN": zhHans,
-  "zh_TW": zhHant,
-  "hr": hr,
   "cs": cs,
   "da": da,
-  "nl": nl,
-  "fi": fi,
-  "fr": fr,
   "de": de,
   "el": el,
+  "en": en,
+  "es-MX": esMX,
+  "es": es,
+  "fi": fi,
+  "fr": fr,
   "he": he,
+  "hr": hr,
+  "hu": hu,
+  "id": id,
+  "it": it,
+  "ja": ja,
+  "ko": ko,
+  "ms": ms,
+  "nl": nl,
+  "no": no,
+  "pl": pl,
+  "pt": pt,
+  "pt-BR": ptBR,
+  "ro": ro,
+  "ru": ru,
+  "sk": sk,
+  "sv": sv,
+  "th": th,
+  "tr": tr,
+  "uk": uk,
+  "vi": vi,
+  "zh_CN": zhHans,
+  "zh_TW": zhHant,
 };
