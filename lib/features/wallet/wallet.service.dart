@@ -6,9 +6,9 @@ import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:bip32/bip32.dart' as bip32;
 import 'package:bip39/bip39.dart' as bip39;
-import 'package:coingecko_api/coingecko_api.dart';
-import 'package:coingecko_api/coingecko_result.dart';
-import 'package:coingecko_api/data/price_info.dart';
+// import 'package:coingecko_api/coingecko_api.dart';
+// import 'package:coingecko_api/coingecko_result.dart';
+// import 'package:coingecko_api/data/price_info.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:eth_sig_util/eth_sig_util.dart';
 import 'package:flutter/foundation.dart';
@@ -30,7 +30,7 @@ class WalletService extends GetxService with ConsoleMixin {
   static WalletService get to => Get.find();
 
   // VARIABLES
-  final gecko = CoinGeckoApi();
+  // final gecko = CoinGeckoApi();
 
   // PROPERTIES
   final network = 'Polygon Testnet'.obs;
@@ -63,25 +63,25 @@ class WalletService extends GetxService with ConsoleMixin {
   // FUNCTIONS
 
   void loadPrices() async {
-    CoinGeckoResult<List<PriceInfo>>? result;
+    // CoinGeckoResult<List<PriceInfo>>? result;
 
-    try {
-      result = await gecko.simple.listPrices(
-        ids: ['matic-network'],
-        vsCurrencies: ['usd'],
-      );
-    } catch (e) {
-      return console.error('Gecko Error: ${e.runtimeType}');
-    }
+    // try {
+    //   result = await gecko.simple.listPrices(
+    //     ids: ['matic-network'],
+    //     vsCurrencies: ['usd'],
+    //   );
+    // } catch (e) {
+    //   return console.error('Gecko Error: ${e.runtimeType}');
+    // }
 
-    if (result.isError) {
-      return console.error(
-        'code: ${result.errorCode}, message: ${result.errorMessage}',
-      );
-    }
+    // if (result.isError) {
+    //   return console.error(
+    //     'code: ${result.errorCode}, message: ${result.errorMessage}',
+    //   );
+    // }
 
-    AppPersistence.to.lastMaticUsdPrice.val =
-        result.data.first.getPriceIn('usd')!;
+    // AppPersistence.to.lastMaticUsdPrice.val =
+    //     result.data.first.getPriceIn('usd')!;
   }
 
   Wallet mnemonicToWallet(
