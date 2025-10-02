@@ -30,6 +30,8 @@
 		<string>This is used for biometric authentication</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This is used for uploading photos</string>
+		<key>NSUserTrackingUsageDescription</key>
+		<string>This is used for tracking user activity</string>
 		<key>UISupportsDocumentBrowser</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>
