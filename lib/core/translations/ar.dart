@@ -205,7 +205,7 @@ final ar = {
   "socialSecurity": "الضمان الاجتماعي",
   "wirelessRouter": "الموجه اللاسلكي",
   "encryption": "التشفير",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "مخصص",
   "category": "الفئة",
   "categories": "الفئات",

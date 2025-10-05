@@ -206,7 +206,7 @@ final cs = {
   "socialSecurity": "Sociální zabezpečení",
   "wirelessRouter": "Bezdrátový router",
   "encryption": "Šifrování",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Vlastní",
   "category": "Kategorie",
   "categories": "Kategorie",

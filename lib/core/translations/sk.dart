@@ -205,7 +205,7 @@ final sk = {
   "socialSecurity": "Sociálne Zabezpečenie",
   "wirelessRouter": "Bezdrôtový Router",
   "encryption": "Šifrovanie",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Vlastný",
   "category": "Kategória",
   "categories": "Kategórie",

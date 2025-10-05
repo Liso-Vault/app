@@ -14,6 +14,7 @@ import 'package:liso/features/groups/groups.controller.dart';
 import 'package:liso/features/menu/menu.button.dart';
 import 'package:liso/features/shared_vaults/shared_vault.controller.dart';
 import 'package:liso/features/tags/tags_input.widget.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../core/hive/models/category.hive.dart';
 import '../../core/hive/models/group.hive.dart';
@@ -128,6 +129,15 @@ class ItemScreen extends StatelessWidget with ConsoleMixin {
                     ],
                   ),
                 ],
+              ),
+              const SizedBox(height: 10),
+              Obx(
+                () => QrImageView(
+                  data: controller.otpURI.value,
+                  version: QrVersions.auto,
+                  size: 250.0,
+                  backgroundColor: Colors.white,
+                ),
               ),
               const Divider(),
             ],

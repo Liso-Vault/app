@@ -205,7 +205,7 @@ final pt = {
   "socialSecurity": "Segurança Social",
   "wirelessRouter": "Roteador Sem Fio",
   "encryption": "Criptografia",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Personalizado",
   "category": "Categoria",
   "categories": "Categorias",

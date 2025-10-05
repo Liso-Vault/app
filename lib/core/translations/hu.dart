@@ -206,7 +206,7 @@ final hu = {
   "socialSecurity": "Társadalombiztosítás",
   "wirelessRouter": "Vezeték nélküli router",
   "encryption": "Titkosítás",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Egyedi",
   "category": "Kategória",
   "categories": "Kategóriák",

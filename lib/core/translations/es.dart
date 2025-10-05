@@ -206,7 +206,7 @@ final es = {
   "socialSecurity": "Seguridad Social",
   "wirelessRouter": "Router Inalámbrico",
   "encryption": "Cifrado",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Personalizado",
   "category": "Categoría",
   "categories": "Categorías",

@@ -204,7 +204,7 @@ final sv = {
   "socialSecurity": "Socialförsäkring",
   "wirelessRouter": "Trådlös Router",
   "encryption": "Kryptering",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Anpassad",
   "category": "Kategori",
   "categories": "Kategorier",

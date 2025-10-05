@@ -205,7 +205,7 @@ final ru = {
   "socialSecurity": "Социальное Обеспечение",
   "wirelessRouter": "Беспроводной Маршрутизатор",
   "encryption": "Шифрование",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Пользовательский",
   "category": "Категория",
   "categories": "Категории",

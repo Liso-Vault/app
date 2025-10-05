@@ -207,7 +207,7 @@ final vi = {
   "socialSecurity": "An sinh xã hội",
   "wirelessRouter": "Bộ định tuyến không dây",
   "encryption": "Mã hóa",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Tùy chỉnh",
   "category": "Danh mục",
   "categories": "Danh mục",

@@ -206,7 +206,7 @@ final en = {
   "socialSecurity": "Social Security",
   "wirelessRouter": "Wireless Router",
   "encryption": "Encryption",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Custom",
   "category": "Category",
   "categories": "Categories",

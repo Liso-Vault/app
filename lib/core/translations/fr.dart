@@ -208,7 +208,7 @@ final fr = {
   "socialSecurity": "Sécurité sociale",
   "wirelessRouter": "Routeur sans fil",
   "encryption": "Chiffrement",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Personnalisé",
   "category": "Catégorie",
   "categories": "Catégories",

@@ -206,7 +206,7 @@ final fi = {
   "socialSecurity": "Sosiaaliturva",
   "wirelessRouter": "Langaton reititin",
   "encryption": "Salaaminen",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Mukautettu",
   "category": "Kategoria",
   "categories": "Kategoriat",

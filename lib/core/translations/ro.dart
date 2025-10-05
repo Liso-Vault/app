@@ -205,7 +205,7 @@ final ro = {
   "socialSecurity": "Securitate Socială",
   "wirelessRouter": "Router Wireless",
   "encryption": "Criptare",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Personalizat",
   "category": "Categorie",
   "categories": "Categorii",

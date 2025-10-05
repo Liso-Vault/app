@@ -206,7 +206,7 @@ final he = {
   "socialSecurity": "ביטוח לאומי",
   "wirelessRouter": "נתב אלחוטי",
   "encryption": "הצפנה",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "מותאם אישית",
   "category": "קטגוריה",
   "categories": "קטגוריות",

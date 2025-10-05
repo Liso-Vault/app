@@ -204,7 +204,7 @@ final th = {
   "socialSecurity": "ประกันสังคม",
   "wirelessRouter": "เราเตอร์ไร้สาย",
   "encryption": "การเข้ารหัส",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "กำหนดเอง",
   "category": "หมวดหมู่",
   "categories": "หมวดหมู่",

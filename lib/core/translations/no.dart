@@ -205,7 +205,7 @@ final no = {
   "socialSecurity": "Personnummer",
   "wirelessRouter": "Trådløs ruter",
   "encryption": "Kryptering",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Egendefinert",
   "category": "Kategori",
   "categories": "Kategorier",

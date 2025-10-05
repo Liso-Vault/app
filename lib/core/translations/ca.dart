@@ -207,7 +207,7 @@ final ca = {
   "socialSecurity": "Seguretat Social",
   "wirelessRouter": "Router Sense Fils",
   "encryption": "Xifratge",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Personalitzat",
   "category": "Categoria",
   "categories": "Categories",

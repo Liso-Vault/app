@@ -205,7 +205,7 @@ final ms = {
   "socialSecurity": "Keselamatan Sosial",
   "wirelessRouter": "Penghala Tanpa Wayar",
   "encryption": "Penyulitan",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Kustom",
   "category": "Kategori",
   "categories": "Kategori",

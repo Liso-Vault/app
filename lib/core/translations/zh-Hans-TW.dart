@@ -201,7 +201,7 @@ final zhHant = {
   "socialSecurity": "社會安全",
   "wirelessRouter": "無線路由器",
   "encryption": "加密",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "自訂",
   "category": "類別",
   "categories": "類別",

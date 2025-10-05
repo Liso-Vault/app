@@ -27,7 +27,6 @@ import '../groups/groups.screen.dart';
 import '../items/item.screen.dart';
 import '../joined_vaults/explorer/vault_explorer.screen.dart';
 import '../joined_vaults/joined_vaults.screen.dart';
-import '../otp/otp.screen.dart';
 import '../password_generator/password_generator.screen.dart';
 import '../seed/generator/seed_generator.screen.dart';
 import '../statistics/statistics.screen.dart';
@@ -112,10 +111,6 @@ class Pages {
     GetPage(
       name: Routes.upgrade,
       page: () => const UpgradeScreen(),
-    ),
-    GetPage(
-      name: AppRoutes.otp,
-      page: () => const OTPScreen(),
     ),
     GetPage(
       name: AppRoutes.categories,

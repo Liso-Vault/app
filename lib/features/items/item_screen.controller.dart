@@ -22,8 +22,9 @@ import 'package:liso/features/files/storage.service.dart';
 import 'package:liso/features/general/section.widget.dart';
 import 'package:liso/features/joined_vaults/explorer/vault_explorer_screen.controller.dart';
 import 'package:liso/features/tags/tags_input.controller.dart';
-import 'package:otp/otp.dart';
+// import 'package:otp/otp.dart';
 import 'package:random_string_generator/random_string_generator.dart';
+import 'package:simple_totp_auth/simple_totp_auth.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/hive/models/metadata/metadata.hive.dart';
@@ -82,6 +83,7 @@ class ItemScreenController extends GetxController
   final reorderMode = false.obs;
   final otpCode = ''.obs;
   final otpRemainingSeconds = 0.obs;
+  final otpURI = ''.obs;
   final uris = <String>[].obs;
   final appIds = <String>[].obs;
 
@@ -601,68 +603,24 @@ class ItemScreenController extends GetxController
 
   // FUNCTIONS
   void generateOTP() async {
-    final interval =
-        item!.fields.firstWhere((e) => e.identifier == 'interval').data.value!;
-
-    final intervalInt = double.parse(interval).toInt();
-
     final secret =
         item!.fields.firstWhere((e) => e.identifier == 'secret').data.value!;
 
-    final length =
-        item!.fields.firstWhere((e) => e.identifier == 'length').data.value!;
-
-    final isGoogle =
-        item!.fields.firstWhere((e) => e.identifier == 'google').data.value!;
-
-    final algorithmValue =
-        item!.fields.firstWhere((e) => e.identifier == 'algorithm').data.value!;
-
-    var algorithm = Algorithm.SHA1;
-
-    if (algorithmValue == 'sha256') {
-      algorithm = Algorithm.SHA256;
-    } else if (algorithmValue == 'sha512') {
-      algorithm = Algorithm.SHA512;
-    }
-
-    void generate() {
+    void updateOTP() {
       if (editMode.value) return;
-
-      final totpString = OTP.generateTOTPCodeString(
-        secret,
-        DateTime.now().millisecondsSinceEpoch,
-        algorithm: algorithm,
-        interval: intervalInt,
-        length: double.parse(length).toInt(),
-        isGoogle: isGoogle == 'true',
-      );
-
-      otpCode.value = totpString;
+      final totp = TOTP(secret: secret);
+      final currentTime = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+      otpRemainingSeconds.value = totp.interval - (currentTime % totp.interval);
+      otpCode.value = totp.now();
+      otpURI.value =
+          totp.generateOTPAuthURI(issuer: config.name, account: item!.title);
     }
 
-    generate();
+    updateOTP();
 
-    otpRemainingSeconds.value = OTP.remainingSeconds(interval: intervalInt);
-
-    Timer.periodic(
-      1.seconds,
-      (_) {
-        otpRemainingSeconds.value--;
-        if (otpRemainingSeconds.value <= 0) {
-          otpRemainingSeconds.value = intervalInt;
-          generate();
-
-          otpTimer = Timer.periodic(
-            Duration(seconds: intervalInt),
-            (_) {
-              otpRemainingSeconds.value = intervalInt;
-              generate();
-            },
-          );
-        }
-      },
-    );
+    otpTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      updateOTP();
+    });
   }
 
   Future<void> _populateSavedAutofillItem() async {
@@ -779,6 +737,14 @@ class ItemScreenController extends GetxController
   }
 
   void _buildFieldWidgets() {
+    // remove complicated OTP fields
+    if (item!.category == LisoItemCategory.otp.name) {
+      item!.fields.removeWhere(
+        (e) => ['interval', 'length', 'algorithm', 'google']
+            .contains(e.identifier),
+      );
+    }
+
     // filter empty fields
     List<Widget> widgets_ = item!.widgets;
 

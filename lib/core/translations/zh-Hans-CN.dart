@@ -201,7 +201,7 @@ final zhHans = {
   "socialSecurity": "社会保障",
   "wirelessRouter": "无线路由器",
   "encryption": "加密",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "自定义",
   "category": "类别",
   "categories": "类别",

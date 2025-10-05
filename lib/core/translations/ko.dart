@@ -201,7 +201,7 @@ final ko = {
   "socialSecurity": "사회보장",
   "wirelessRouter": "무선 라우터",
   "encryption": "암호화",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "사용자 정의",
   "category": "카테고리",
   "categories": "카테고리",

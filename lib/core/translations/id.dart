@@ -205,7 +205,7 @@ final id = {
   "socialSecurity": "Jaminan Sosial",
   "wirelessRouter": "Router Nirkabel",
   "encryption": "Enkripsi",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Kustom",
   "category": "Kategori",
   "categories": "Kategori",

@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 1.3.2+65
+version: 1.3.3+66
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -31,7 +31,8 @@ dependencies:
   bip32: ^2.0.0 # Derive Path
   hex: ^0.2.0 # Hex encoding & decoding
   encrypt: 5.0.1 # important to keep at 5.0.1 to avoid "Invalid or corrupted pad block"
-  otp: ^3.2.0
+  # otp: ^3.2.0
+  simple_totp_auth: ^0.0.2
 
   # IO
   filesize: ^2.0.1 # file size calculator

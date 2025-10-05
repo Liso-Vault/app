@@ -206,7 +206,7 @@ final da = {
   "socialSecurity": "Social sikring",
   "wirelessRouter": "Trådløs router",
   "encryption": "Kryptering",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Tilpasset",
   "category": "Kategori",
   "categories": "Kategorier",

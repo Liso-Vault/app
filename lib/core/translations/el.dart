@@ -208,7 +208,7 @@ final el = {
   "socialSecurity": "Κοινωνική ασφάλιση",
   "wirelessRouter": "Ασύρματος δρομολογητής",
   "encryption": "Κρυπτογράφηση",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Προσαρμοσμένο",
   "category": "Κατηγορία",
   "categories": "Κατηγορίες",

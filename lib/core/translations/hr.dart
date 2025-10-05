@@ -206,7 +206,7 @@ final hr = {
   "socialSecurity": "Socijalna sigurnost",
   "wirelessRouter": "Bežični router",
   "encryption": "Šifriranje",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Prilagođeno",
   "category": "Kategorija",
   "categories": "Kategorije",

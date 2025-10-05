@@ -205,7 +205,7 @@ final pl = {
   "socialSecurity": "Zabezpieczenie Społeczne",
   "wirelessRouter": "Router Bezprzewodowy",
   "encryption": "Szyfrowanie",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Niestandardowy",
   "category": "Kategoria",
   "categories": "Kategorie",

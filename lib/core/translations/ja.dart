@@ -201,7 +201,7 @@ final ja = {
   "socialSecurity": "社会保障",
   "wirelessRouter": "無線ルーター",
   "encryption": "暗号化",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "カスタム",
   "category": "カテゴリ",
   "categories": "カテゴリ",

@@ -204,7 +204,7 @@ final uk = {
   "socialSecurity": "Соціальне Забезпечення",
   "wirelessRouter": "Бездротовий Маршрутизатор",
   "encryption": "Шифрування",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Користувацький",
   "category": "Категорія",
   "categories": "Категорії",

@@ -206,7 +206,7 @@ final nl = {
   "socialSecurity": "Sociale zekerheid",
   "wirelessRouter": "Draadloze router",
   "encryption": "Versleuteling",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Aangepast",
   "category": "Categorie",
   "categories": "Categorieën",

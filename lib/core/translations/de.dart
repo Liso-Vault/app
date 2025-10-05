@@ -207,7 +207,7 @@ final de = {
   "socialSecurity": "Sozialversicherung",
   "wirelessRouter": "WLAN-Router",
   "encryption": "Verschlüsselung",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Benutzerdefiniert",
   "category": "Kategorie",
   "categories": "Kategorien",

@@ -206,7 +206,7 @@ final tr = {
   "socialSecurity": "Sosyal Güvenlik",
   "wirelessRouter": "Kablosuz Yönlendirici",
   "encryption": "Şifreleme",
-  "otp": "OTP",
+  "otp": "OTP/2FA",
   "custom": "Özel",
   "category": "Kategori",
   "categories": "Kategoriler",
