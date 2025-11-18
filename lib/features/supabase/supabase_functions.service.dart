@@ -6,7 +6,7 @@ import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/liso/liso.manager.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:secrets/secrets.dart';
+import 'package:secrets/secrets_old.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../core/persistence/persistence.dart';

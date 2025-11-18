@@ -1,11 +1,12 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import 'package:liso/features/shared_vaults/model/shared_vault.model.dart';
@@ -252,7 +253,7 @@ class SharedVaultsScreenController extends GetxController with ConsoleMixin {
               labelText: 'Cipher Key',
               hintText: '32 Bit Base64 Cipher Key',
               helperText:
-                  'The Cipher Key will be automatically be saved as a ${config.name} Item',
+                  'The Cipher Key will be automatically be saved as a ${general.name} Item',
               suffixIcon: IconButton(
                 icon: const Icon(Iconsax.key_outline),
                 onPressed: () {

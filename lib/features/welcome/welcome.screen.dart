@@ -1,4 +1,5 @@
 import 'package:app_core/config.dart';
+import 'package:app_core/firebase/config.service.dart';
 
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/onboarding/laurel.widget.dart';
@@ -114,7 +115,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             textStyle: const TextStyle(fontSize: 10),
             minimumSize: Size.zero,
           ),
-          onPressed: () => Utils.openUrl(config.links.terms),
+          onPressed: () => Utils.openUrl(links.legal.terms),
           child: Text('terms_of_use'.tr),
         ),
         versionText,
@@ -124,7 +125,7 @@ class WelcomeScreen extends StatelessWidget with ConsoleMixin {
             textStyle: const TextStyle(fontSize: 10),
             minimumSize: Size.zero,
           ),
-          onPressed: () => Utils.openUrl(config.links.privacy),
+          onPressed: () => Utils.openUrl(links.legal.privacy),
           child: Text('privacy_policy'.tr),
         ),
       ],

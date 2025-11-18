@@ -3,7 +3,7 @@ import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 
 import '../utils/globals.dart';
 

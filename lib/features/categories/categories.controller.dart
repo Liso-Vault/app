@@ -1,7 +1,7 @@
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
-import 'package:secrets/secrets.dart';
+import 'package:secrets/secrets_old.dart';
 
 import 'categories.service.dart';
 

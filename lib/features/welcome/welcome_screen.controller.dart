@@ -1,7 +1,6 @@
 import 'package:app_core/config.dart';
-
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/services/local_auth.service.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/utils.dart';
@@ -31,10 +30,8 @@ class WelcomeScreenController extends GetxController
   // FUNCTIONS
 
   void create() async {
-    await Utils.adaptiveRouteOpen(
-      name: Routes.upgrade,
-      parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
-    );
+    await PurchasesService.to
+        .show(cooldown: CoreConfig().premiumScreenCooldown);
 
     change(GetStatus.loading());
 

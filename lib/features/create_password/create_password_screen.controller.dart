@@ -1,4 +1,4 @@
-import 'package:app_core/globals.dart';
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/notifications.service.dart';
@@ -83,13 +83,13 @@ class CreatePasswordScreenController extends GetxController
       isNewVault,
     );
 
-    NotificationsService.to.notify(
-      title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${config.name}',
-      body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
-    );
-
     change(GetStatus.success(null));
     Persistence.to.onboarded.val = true;
     Get.offNamedUntil(Routes.main, (route) => false);
+
+    NotificationsService.to.notify(
+      title: 'Welcome ${isNewVault ? ' ' : 'back '}to ${general.name}',
+      body: 'Your vault has been ${isNewVault ? 'created' : 'restored'}',
+    );
   }
 }

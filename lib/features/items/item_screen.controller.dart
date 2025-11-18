@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -613,7 +614,7 @@ class ItemScreenController extends GetxController
       otpRemainingSeconds.value = totp.interval - (currentTime % totp.interval);
       otpCode.value = totp.now();
       otpURI.value =
-          totp.generateOTPAuthURI(issuer: config.name, account: item!.title);
+          totp.generateOTPAuthURI(issuer: general.name, account: item!.title);
     }
 
     updateOTP();

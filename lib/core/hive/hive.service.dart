@@ -2,7 +2,7 @@ import 'package:app_core/hive/models/app.hive.dart';
 import 'package:app_core/hive/models/device.hive.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:liso/core/hive/models/app_domain.hive.dart';
 import 'package:liso/core/hive/models/category.hive.dart';
 import 'package:liso/core/hive/models/group.hive.dart';

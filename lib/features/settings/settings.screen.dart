@@ -1,3 +1,4 @@
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
@@ -157,7 +158,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
                     if (!AppPersistence.to.sync.val) {
                       return UIUtils.showSimpleDialog(
                         'Sync Required',
-                        'Please turn on ${config.name} Cloud Sync to use this feature',
+                        'Please turn on ${general.name} Cloud Sync to use this feature',
                       );
                     }
 
@@ -368,7 +369,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
         }),
         ListTile(
           leading: const Icon(Iconsax.lock_outline),
-          title: Text('${'lock'.tr} ${config.name}'),
+          title: Text('${'lock'.tr} ${general.name}'),
           subtitle: Text('exit_and_lock_app'.tr),
           onTap: () => Get.offAndToNamed(Routes.unlock),
         ),
@@ -388,7 +389,7 @@ class SettingsScreen extends StatelessWidget with ConsoleMixin {
             ListTile(
               iconColor: const Color(0xFFFF7300),
               leading: const Icon(Iconsax.refresh_outline),
-              title: Text('${'reset'.tr} ${config.name}'),
+              title: Text('${'reset'.tr} ${general.name}'),
               subtitle: Text('delete_local_vault_and_logout'.tr),
               onTap: controller.reset,
               onLongPress: () => Utils.adaptiveRouteOpen(name: Routes.debug),

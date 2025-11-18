@@ -1,6 +1,6 @@
-import 'package:secrets/secrets.dart';
+// import 'package:secrets/secrets.dart';
 
-const kSecretJson = Secrets.secrets;
+// const kSecretJson = Secrets.secrets;
 
 const kLicenseJson = {
   "pro": {

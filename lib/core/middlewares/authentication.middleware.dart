@@ -8,6 +8,14 @@
 // class AuthenticationMiddleware extends GetMiddleware with ConsoleMixin {
 //   @override
 //   RouteSettings? redirect(String? route) {
+//     console.wtf('AuthenticationMiddleware redirect: $route');
+//     console.wtf(
+//         'AuthenticationMiddleware WalletService.to.isSaved: ${WalletService.to.isSaved}');
+//     console.wtf(
+//         'AuthenticationMiddleware WalletService.to.isReady: ${WalletService.to.isReady}');
+//     console
+//         .wtf('AuthenticationMiddleware Get.currentRoute: ${Get.currentRoute}');
+
 //     // if no vault is locally stored
 //     if (!WalletService.to.isSaved) {
 //       return const RouteSettings(name: Routes.welcome);

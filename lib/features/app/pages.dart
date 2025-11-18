@@ -1,4 +1,3 @@
-import 'package:app_core/middlewares/onboarding.middleware.dart';
 import 'package:app_core/pages/feedback/feedback.screen.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/pages/update/update.screen.dart';
@@ -38,7 +37,8 @@ class Pages {
     GetPage(
       name: Routes.main,
       page: () => MainScreen(),
-      middlewares: [OnboardingMiddleware()],
+      // middlewares: [AuthenticationMiddleware()],
+      // middlewares: [OnboardingMiddleware()],
     ),
     GetPage(
       name: Routes.welcome,

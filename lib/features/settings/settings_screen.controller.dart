@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app_core/firebase/analytics.service.dart';
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
@@ -252,7 +253,7 @@ class SettingsScreenController extends GetxController
         await Share.shareXFiles(
           [XFile(vaultFile.path)],
           subject: exportFileName,
-          text: GetPlatform.isIOS ? null : '${config.name} Vault',
+          text: GetPlatform.isIOS ? null : '${general.name} Vault',
         );
 
         NotificationsService.to.notify(
@@ -429,17 +430,12 @@ class SettingsScreenController extends GetxController
           false;
 
       if (!unlocked) return;
-      await LisoManager.reset();
-
-      NotificationsService.to.notify(
-        title: 'Vault Reset',
-        body: 'Your local vault has been successfully reset',
-      );
+      AuthService.to.auth.signOut();
     }
 
     UIUtils.showImageDialog(
       const Icon(Iconsax.warning_2_outline, size: 100, color: Colors.red),
-      title: 'Reset ${config.name}?',
+      title: 'Reset ${general.name}?',
       subTitle:
           'Your local <vault>.$kVaultExtension will be deleted and you will be logged out.',
       body:

@@ -1,3 +1,4 @@
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -16,7 +17,6 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(AboutScreenController());
-    final links = config.links;
 
     final content = ListView(
       shrinkWrap: true,
@@ -31,7 +31,7 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
               color: themeColor,
             ),
             title: Text(
-                '${config.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
+                '${general.name} on ${GetPlatform.isIOS || GetPlatform.isMacOS ? 'the App Store' : 'Google Play'}'),
             onTap: () {
               if (GetPlatform.isAndroid) {
                 Utils.openUrl(links.store.google);
@@ -43,10 +43,10 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         ],
         ListTile(
           leading: Icon(Iconsax.chrome_outline, color: themeColor),
-          title: Text('${config.name} ${'website'.tr}'),
-          subtitle: Text(links.website),
+          title: Text('${general.name} ${'website'.tr}'),
+          subtitle: Text(links.socials.website),
           onTap: () => Utils.openUrl(
-            links.website,
+            links.socials.website,
           ),
         ),
         // ContextMenuButton(
@@ -61,23 +61,23 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         // ),
         ListTile(
           leading: Icon(LineAwesome.github, color: themeColor),
-          title: Text('${config.name} GitHub'),
+          title: Text('${general.name} GitHub'),
           onTap: () => Utils.openUrl('https://github.com/Liso-Vault/app'),
         ),
         ListTile(
           leading: Icon(Iconsax.security_user_outline, color: themeColor),
-          title: Text('${config.name} ${'privacy'.tr}'),
-          onTap: () => Utils.openUrl(links.privacy),
+          title: Text('${general.name} ${'privacy'.tr}'),
+          onTap: () => Utils.openUrl(links.legal.privacy),
         ),
         ListTile(
           leading: Icon(Iconsax.book_1_outline, color: themeColor),
-          title: Text('${config.name} ${'terms'.tr}'),
-          onTap: () => Utils.openUrl(links.terms),
+          title: Text('${general.name} ${'terms'.tr}'),
+          onTap: () => Utils.openUrl(links.legal.terms),
         ),
         ListTile(
           leading: Icon(Icons.help_outline, color: themeColor),
           title: Text('faqs'.tr),
-          onTap: () => Utils.openUrl(links.faqs),
+          onTap: () => Utils.openUrl(links.others.faqs),
         ),
         // ListTile(
         //   leading: Icon(Iconsax.dollar_circle_outline, color: themeColor),
@@ -91,22 +91,22 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         if (!GetPlatform.isMobile) ...[
           ListTile(
             leading: Icon(Iconsax.forward_square_outline, color: themeColor),
-            title: Text('Share ${config.name} to a friend'),
+            title: Text('Share ${general.name} to a friend'),
             onTap: () => Share.share(
-              '${config.name} - ${'slogan'.tr}',
-              subject: config.name,
+              '${general.name} - ${'slogan'.tr}',
+              subject: general.name,
             ),
           ),
         ],
         ListTile(
           leading: Icon(LineAwesome.twitter, color: themeColor),
           title: Text('${'follow'.tr} @Liso_Vault'),
-          onTap: () => Utils.openUrl(links.twitter),
+          onTap: () => Utils.openUrl(links.socials.twitter),
         ),
         ListTile(
           leading: Icon(LineAwesome.twitter, color: themeColor),
           title: Text('${'follow'.tr} @oliverbytes'),
-          subtitle: Text('Indie Developer of ${config.name}'),
+          subtitle: Text('Indie Developer of ${general.name}'),
           onTap: () => Utils.openUrl(kOliverTwitterUrl),
         ),
         // ContextMenuButton(
@@ -164,12 +164,12 @@ class AboutScreen extends StatelessWidget with ConsoleMixin {
         //   title: Text('help_translate'.tr),
         //   onTap: () => Utils.openUrl(links.translations),
         // ),
-        ListTile(
-          leading: Icon(Iconsax.people_outline, color: themeColor),
-          title: const Text('Contributors'),
-          subtitle: const Text('Thanks to these people'),
-          onTap: () => Utils.openUrl(links.contributors),
-        ),
+        // ListTile(
+        //   leading: Icon(Iconsax.people_outline, color: themeColor),
+        //   title: const Text('Contributors'),
+        //   subtitle: const Text('Thanks to these people'),
+        //   onTap: () => Utils.openUrl(links.others.contributors),
+        // ),
         ListTile(
           leading: Icon(Iconsax.code_1_outline, color: themeColor),
           title: Text('licenses'.tr),

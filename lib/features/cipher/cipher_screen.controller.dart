@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/pages/routes.dart';
@@ -74,7 +75,7 @@ class CipherScreenController extends GetxController
         parameters: {
           'title': 'Encryption Tool',
           'body':
-              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${config.name} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
+              'Encrypt your ${GetPlatform.isDesktop ? 'computer' : 'precious'} files to protect them from hackers and unwanted access. Using the same military-grade encryption ${general.name} uses to protect your vault. Upgrade to Pro to take advantage of this powerful feature.',
         },
       );
     }
@@ -176,8 +177,8 @@ class CipherScreenController extends GetxController
       timeLockEnabled = true; // re-enable
       change(GetStatus.success(null));
       return UIUtils.showSimpleDialog(
-        'Invalid ${config.name} Encrypted File',
-        'It looks like the file $name is not a ${config.name} Encrypted File which should have an extension of $kEncryptedExtensionExtra',
+        'Invalid ${general.name} Encrypted File',
+        'It looks like the file $name is not a ${general.name} Encrypted File which should have an extension of $kEncryptedExtensionExtra',
       );
     }
 

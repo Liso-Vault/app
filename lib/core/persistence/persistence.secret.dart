@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:app_core/persistence/mutable_value.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:secrets/secrets.dart';
 
@@ -61,7 +61,7 @@ class SecretPersistence extends GetxController with ConsoleMixin {
     box = await Hive.openBox(
       kHiveBoxSecretPersistence,
       encryptionCipher: HiveAesCipher(
-        base64Decode(Secrets.secretPersistenceKey),
+        base64Decode(kENV['HIVE_SECRET_SECRET_KEY']),
       ),
       path: LisoPaths.hivePath,
     );

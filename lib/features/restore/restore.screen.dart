@@ -1,4 +1,4 @@
-import 'package:app_core/globals.dart';
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-
 import 'package:liso/features/seed/seed_field.widget.dart';
 
 import '../../core/utils/globals.dart';
@@ -53,7 +52,7 @@ class RestoreScreen extends StatelessWidget with ConsoleMixin {
                 onValueChanged: (value) => controller.restoreMode.value = value,
                 children: {
                   RestoreMode.cloud: SegmentedControlItem(
-                    text: '${config.name} Cloud',
+                    text: '${general.name} Cloud',
                     iconData: Iconsax.cloud_outline,
                   ),
                   RestoreMode.file: SegmentedControlItem(

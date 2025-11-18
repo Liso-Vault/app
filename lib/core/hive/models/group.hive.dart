@@ -2,7 +2,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:liso/features/groups/groups.controller.dart';
 
 import 'metadata/metadata.hive.dart';

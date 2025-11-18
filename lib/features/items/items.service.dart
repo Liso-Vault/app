@@ -5,7 +5,7 @@ import 'dart:typed_data';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:either_dart/either.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:path/path.dart';
 
@@ -52,7 +52,8 @@ class ItemsService extends GetxService with ConsoleMixin {
     if (box?.isOpen == false) return;
 
     if (!boxInitialized) {
-      await File(join(LisoPaths.hivePath, '$kHiveBoxItems.hive')).delete();
+      final file = File(join(LisoPaths.hivePath, '$kHiveBoxItems.hive'));
+      if (await file.exists()) await file.delete();
       return;
     }
 

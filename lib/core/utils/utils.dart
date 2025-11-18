@@ -2,12 +2,23 @@ import 'package:app_core/firebase/analytics.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/purchases/purchases.services.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:liso/core/hive/hive.service.dart';
+import 'package:liso/core/liso/liso_paths.dart';
+import 'package:liso/core/persistence/persistence.secret.dart';
+import 'package:liso/core/services/global.service.dart';
+import 'package:liso/features/drawer/drawer_widget.controller.dart';
+import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/main/main_screen.controller.dart';
+import 'package:liso/features/supabase/model/status.model.dart';
+import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:random_string_generator/random_string_generator.dart';
 
@@ -15,7 +26,6 @@ import '../../features/files/storage.service.dart';
 import '../../features/supabase/model/object.model.dart';
 import '../../features/supabase/supabase_functions.service.dart';
 import '../../resources/resources.dart';
-import '../services/app.service.dart';
 import 'globals.dart';
 
 class AppUtils {
@@ -295,10 +305,42 @@ class AppUtils {
 
   static void onSignedOut() async {
     console.wtf('onSignedOut');
+    Get.closeAllDialogs();
+    // clear filters
+    DrawerMenuController.to.filterGroupId.value = 'personal';
+    DrawerMenuController.to.clearFilters();
+    // reset variables
+    SyncService.to.backedUp = false;
     authenticated.value = false;
     Persistence.to.onboarded.val = false;
-    Get.offNamedUntil(Routes.main, (route) => false);
-    AppService.to.reset();
+    GlobalService.to.userStatus.value = const Status();
+    // clear hives
+    await HiveService.to.clear();
+    // reset persistence
+    await Persistence.reset();
+    await SecretPersistence.reset();
+    // TODO: self-hosting
+    // // reset s3 minio client
+    // SyncService.to.init();
+    // reset wallet
+    WalletService.to.reset();
+    // delete FilePicker caches
+    if (GetPlatform.isMobile) {
+      FilePicker.platform.clearTemporaryFiles();
+    }
+    // clean temp folder
+    LisoPaths.cleanTemp();
+    // invalidate purchases
+    PurchasesService.to.invalidate();
+    PurchasesService.to.logout();
+    // console.info('reset!');
+
+    Get.offNamedUntil(Routes.welcome, (route) => false);
+
+    NotificationsService.to.notify(
+      title: 'Vault Reset',
+      body: 'Your local vault has been successfully reset',
+    );
   }
 
   static void onSuccessfulUpgrade() async {

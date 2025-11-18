@@ -1,3 +1,4 @@
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/remote_image.widget.dart';
@@ -17,13 +18,11 @@ class AboutScreenController extends GetxController with ConsoleMixin {
   // GETTERS
 
   List<ContextMenuItem> get communityMenuItems {
-    final links = config.links;
-
     return [
       ContextMenuItem(
         title: 'Discord',
         leading: Icon(LineAwesome.discord, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.discord),
+        onSelected: () => Utils.openUrl(links.socials.discord),
       ),
       // ContextMenuItem(
       //   title: 'Telegram',
@@ -33,7 +32,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
       ContextMenuItem(
         title: 'Twitter',
         leading: Icon(LineAwesome.twitter, size: popupIconSize),
-        onSelected: () => Utils.openUrl(links.twitter),
+        onSelected: () => Utils.openUrl(links.socials.twitter),
       ),
       // ContextMenuItem(
       //   title: 'Facebook',
@@ -127,7 +126,7 @@ class AboutScreenController extends GetxController with ConsoleMixin {
       applicationName: metadataApp.appName,
       applicationVersion: metadataApp.formattedVersion,
       applicationLegalese:
-          'Copyright © 2022 ${config.dev}\nAll rights reserved.',
+          'Copyright © 2022 ${general.developer}\nAll rights reserved.',
     );
   }
 }

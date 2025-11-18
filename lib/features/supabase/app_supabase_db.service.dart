@@ -1,3 +1,4 @@
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/supabase/supabase_database.service.dart';
@@ -37,11 +38,11 @@ class AppDatabaseService extends DatabaseService {
         //   AlchemyService.to.load();
         // });
 
-        final disabled = config.build.disabled.contains(
+        final disabled = versions.disabled.contains(
           metadataApp.buildNumberInt,
         );
 
-        final updateRequired = config.build.min > metadataApp.buildNumberInt;
+        final updateRequired = versions.min > metadataApp.buildNumberInt;
 
         if (disabled || updateRequired) {
           Get.toNamed(Routes.update);

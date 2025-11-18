@@ -1,4 +1,5 @@
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -30,11 +31,8 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
         ),
         ListTile(
           title: const Text('Upgrade Screen'),
-          onTap: () async {
-            Utils.adaptiveRouteOpen(
-              name: Routes.upgrade,
-              ignoreUpgradeGuard: false,
-            );
+          onTap: () {
+            PurchasesService.to.show();
           },
         ),
         ListTile(

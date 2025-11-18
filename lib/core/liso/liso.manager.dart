@@ -3,18 +3,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:app_core/persistence/persistence.dart';
-import 'package:app_core/purchases/purchases.services.dart';
-import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:console_mixin/console_mixin.dart';
-import 'package:file_picker/file_picker.dart';
-import 'package:get/get.dart';
-import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/liso/vault.model.dart';
-import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/categories/categories.service.dart';
-import 'package:liso/features/drawer/drawer_widget.controller.dart';
-import 'package:liso/features/files/sync.service.dart';
-import 'package:liso/features/wallet/wallet.service.dart';
 import 'package:path/path.dart';
 
 import '../../features/groups/groups.service.dart';
@@ -31,37 +22,6 @@ class LisoManager {
   // GETTERS
 
   // FUNCTIONS
-
-  static Future<void> reset() async {
-    // sign out
-    AuthService.to.auth.signOut();
-    // console.info('resetting...');
-    // clear filters
-    DrawerMenuController.to.filterGroupId.value = 'personal';
-    DrawerMenuController.to.clearFilters();
-    // reset persistence
-    await Persistence.reset();
-    await SecretPersistence.reset();
-    // TODO: self-hosting
-    // // reset s3 minio client
-    // SyncService.to.init();
-    // reset wallet
-    WalletService.to.reset();
-    // delete FilePicker caches
-    if (GetPlatform.isMobile) {
-      await FilePicker.platform.clearTemporaryFiles();
-    }
-    // clear hives
-    await HiveService.to.clear();
-    // clean temp folder
-    await LisoPaths.cleanTemp();
-    // reset variables
-    SyncService.to.backedUp = false;
-    // // invalidate purchases
-    PurchasesService.to.invalidate();
-    PurchasesService.to.logout();
-    // console.info('reset!');
-  }
 
   static Future<String> compactJson() async {
     final persistenceMap = Persistence.box!.toMap();

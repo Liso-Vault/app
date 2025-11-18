@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:console_mixin/console_mixin.dart';
 import 'package:get/get.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_ce/hive.dart';
 import 'package:path/path.dart';
 
 import '../../core/hive/models/category.hive.dart';

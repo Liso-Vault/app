@@ -5,6 +5,7 @@ import 'package:app_core/config.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
@@ -176,6 +177,7 @@ class MainScreenController extends GetxController with ConsoleMixin {
   @override
   void onInit() {
     initWallet();
+    PurchasesService.to.load();
     super.onInit();
   }
 
@@ -188,13 +190,13 @@ class MainScreenController extends GetxController with ConsoleMixin {
 
   // FUNCTIONS
   void showFirstScreens() {
-    if (!WalletService.to.isSaved) return;
+    if (!WalletService.to.isSaved) {
+      Get.toNamed(Routes.welcome);
+      return;
+    }
 
     Get.toNamed(Routes.unlock)?.then((value) {
-      Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {'cooldown': CoreConfig().premiumScreenCooldown.toString()},
-      );
+      PurchasesService.to.show(cooldown: CoreConfig().premiumScreenCooldown);
     });
   }
 

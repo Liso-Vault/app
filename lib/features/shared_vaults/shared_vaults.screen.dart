@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
@@ -117,7 +118,7 @@ class SharedVaultsScreen extends StatelessWidget with ConsoleMixin {
 
           UIUtils.showSimpleDialog(
             'E2EE Messenger',
-            "A built-in end to end encryption messenger is coming for ${config.name} where you can safely send & receive private information",
+            "A built-in end to end encryption messenger is coming for ${general.name} where you can safely send & receive private information",
           );
         }
 

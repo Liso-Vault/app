@@ -1,15 +1,14 @@
 import 'dart:async';
 
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/services/local_auth.service.dart';
+import 'package:app_core/supabase/supabase_auth.service.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:liso/core/liso/liso.manager.dart';
 
 import '../../core/persistence/persistence.secret.dart';
 
@@ -89,8 +88,7 @@ class UnlockScreenController extends GetxController
       attemptsLeft--;
 
       if (attemptsLeft <= 0) {
-        await LisoManager.reset();
-        return Get.offNamedUntil(Routes.main, (route) => false);
+        return AuthService.to.auth.signOut();
       }
 
       if (attemptsLeft < 3) {
