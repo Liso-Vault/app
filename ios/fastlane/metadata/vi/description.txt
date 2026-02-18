@@ -1,0 +1,34 @@
+Bảo vệ dữ liệu quý giá của bạn khỏi ánh mắt tò mò với sự tự tin tuyệt đối. Khám phá kho dữ liệu an toàn của Liso, giải pháp xuất sắc để bảo vệ mật khẩu, ghi chú, ảnh, video, tài liệu và thông tin cá nhân khỏi kẻ xâm nhập, hacker và rò rỉ dữ liệu. Bộ công cụ bảo mật toàn diện của Liso mang lại an ninh vô song, sự đơn giản đáng kinh ngạc và trải nghiệm hoàn toàn không quảng cáo.
+
+Sử dụng kho dữ liệu an toàn của Liso để lưu trữ nhiều loại dữ liệu quan trọng, bao gồm thông tin đăng nhập, mật khẩu, tài khoản email, ví tiền điện tử, cụm từ khởi tạo, mã 2FA/MFA, ghi chú bảo mật, thẻ ghi nợ/tín dụng, tài khoản ngân hàng, hồ sơ y tế, giấy phép lái xe, giấy phép phần mềm, số an sinh xã hội và nhiều hơn nữa.
+
+Ngoài việc là một kho an toàn, Liso còn xuất sắc như một trình quản lý mật khẩu và xác thực 2FA mạnh mẽ kết hợp trong một nền tảng.
+
+Tính năng chính:
+◆ Bảo mật chống hack hoàn hảo: Yên tâm rằng kho của Liso không thể bị truy cập trái phép.
+◆ Mã hóa AES-256 cấp quân sự: Dữ liệu của bạn được bảo vệ bởi mã hóa tiên tiến, đảm bảo an ninh tối đa.
+◆ Chế độ Offline/Air-Gapped: Truy cập dữ liệu ngay cả khi không kết nối internet.
+◆ Đồng bộ đa thiết bị liền mạch: Dễ dàng đồng bộ dữ liệu trên nhiều thiết bị để truy cập không gián đoạn.
+◆ Xác thực sinh trắc học vân tay/khuôn mặt: Tăng cường bảo mật với xác thực sinh trắc học tiện lợi.
+◆ Xác thực 2FA/MFA: Tăng cường bảo mật tài khoản với khả năng xác thực hai yếu tố/đa yếu tố mạnh mẽ của Liso.
+◆ Phát hiện mật khẩu yếu: Xác định và khắc phục mật khẩu dễ bị tấn công để củng cố an ninh trực tuyến.
+◆ Bảo vệ mật khẩu: Bảo vệ từng mục trong kho với lớp bảo mật mật khẩu bổ sung.
+◆ Mã hóa tệp: Bảo vệ tệp của bạn với công cụ mã hóa mạnh mẽ, đảm bảo tính bảo mật.
+◆ Tạo mật khẩu mạnh và độc đáo: Sử dụng trình tạo mật khẩu tích hợp của Liso để tạo mật khẩu an toàn và độc đáo dễ dàng.
+◆ Lưu trữ đám mây mã hóa miễn phí: Tận hưởng lợi ích của lưu trữ đám mây mã hóa mà không ảnh hưởng đến quyền riêng tư.
+◆ Khóa ảnh và video an toàn: Lưu trữ và bảo vệ ảnh và video cá nhân trong kho của Liso.
+◆ Khả dụng đa nền tảng: Truy cập tính năng của Liso trên máy tính, máy tính bảng và thiết bị di động trên nhiều nền tảng.
+◆ Di chuyển mượt mà: Dễ dàng chuyển từ Bitwarden, LastPass, Chrome, Safari và các trình duyệt khác sang môi trường an toàn của Liso.
+◆ Công nghệ Web3 hiện đại và an toàn: Liso sử dụng công nghệ tiên tiến để đảm bảo dữ liệu của bạn luôn an toàn và riêng tư.
+◆ Công nghệ Zero-Knowledge 100%: Yên tâm rằng Liso không truy cập dữ liệu của bạn, duy trì tính bảo mật tuyệt đối.
+◆ Cách tiếp cận đăng ký sáng tạo: Liso cách mạng hóa quy trình đăng ký bằng cách cung cấp các lựa chọn thay thế cho đăng ký email và mật khẩu truyền thống.
+
+Về bảo mật, Liso vượt trội hơn 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform và NordPass, trở thành lựa chọn ưu việt và đáng tin cậy hơn.
+
+Tìm hiểu thêm: https://liso.dev
+
+Mã nguồn mở: https://github.com/Liso-Vault/app
+
+Chính sách bảo mật: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Điều khoản sử dụng: https://github.com/Liso-Vault/app/blob/master/TERMS.md

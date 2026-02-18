@@ -1,0 +1,34 @@
+Chroń swoje cenne dane przed wścibskimi oczami z pełnym zaufaniem. Odkryj bezpieczny sejf danych Liso, wyjątkowe rozwiązanie zaprojektowane do ochrony haseł, notatek, zdjęć, filmów, dokumentów i wszelkich innych prywatnych informacji przed niepożądanymi osobami, hakerami i wyciekami danych. Wszechstronne narzędzie prywatności Liso oferuje niezrównane bezpieczeństwo, niezwykłą prostotę i całkowicie wolne od reklam doświadczenie.
+
+Wykorzystaj bezpieczny sejf danych Liso do przechowywania szerokiego zakresu kluczowych danych, w tym danych logowania, haseł, kont e-mail, portfeli kryptowalut, fraz seed, kodów 2FA/MFA, bezpiecznych notatek, kart debetowych/kredytowych, kont bankowych, dokumentacji medycznej, praw jazdy, licencji oprogramowania, numerów ubezpieczenia społecznego i wiele więcej.
+
+Liso to nie tylko bezpieczny sejf, ale także wyjątkowy menedżer haseł i uwierzytelniacz 2FA w jednym potężnym narzędziu.
+
+Kluczowe funkcje:
+◆ Nienaganne bezpieczeństwo: Bądź spokojny, wiedząc, że sejf Liso jest odporny na nieautoryzowany dostęp.
+◆ Szyfrowanie AES-256 klasy wojskowej: Twoje dane są chronione najnowocześniejszym szyfrowaniem, zapewniając najwyższy poziom bezpieczeństwa.
+◆ Tryb offline: Korzystaj z danych nawet bez połączenia z internetem.
+◆ Synchronizacja na wielu urządzeniach: Bezproblemowo synchronizuj dane na różnych urządzeniach dla nieprzerwanego dostępu.
+◆ Biometryczne uwierzytelnianie: Zwiększ bezpieczeństwo dzięki wygodzie uwierzytelniania biometrycznego.
+◆ Uwierzytelnianie 2FA/MFA: Wzmocnij bezpieczeństwo kont, korzystając z solidnych możliwości uwierzytelniania dwuskładnikowego/wieloskładnikowego Liso.
+◆ Wykrywanie słabych haseł: Identyfikuj i poprawiaj słabe hasła, aby wzmocnić swoją ochronę online.
+◆ Ochrona haseł: Chroń poszczególne elementy w sejfie dodatkową warstwą ochrony hasłem.
+◆ Szyfrowanie plików: Chroń swoje pliki za pomocą naszego potężnego narzędzia szyfrującego, zapewniając ich poufność.
+◆ Generowanie silnych haseł: Korzystaj z wbudowanego generatora haseł Liso, aby tworzyć bezpieczne i unikalne hasła z łatwością.
+◆ Darmowa zaszyfrowana chmura: Korzystaj z zaszyfrowanej chmury bez kompromisów dla prywatności.
+◆ Bezpieczne przechowywanie zdjęć i filmów: Bezpiecznie przechowuj i chroń swoje osobiste zdjęcia i filmy w sejfie Liso.
+◆ Dostępność na różnych platformach: Korzystaj z funkcji Liso na komputerach, tabletach i urządzeniach mobilnych na różnych platformach.
+◆ Płynna migracja: Łatwo przejdź z Bitwarden, LastPass, Chrome, Safari i innych przeglądarek do bezpiecznego środowiska Liso.
+◆ Nowoczesne technologie Web3: Liso wykorzystuje najnowsze technologie, aby zapewnić bezpieczeństwo i prywatność danych.
+◆ Technologia Zero-Knowledge: Liso nie ma dostępu do Twoich danych, zapewniając absolutną poufność.
+◆ Innowacyjne podejście do rejestracji: Liso rewolucjonizuje proces rejestracji, oferując alternatywy dla tradycyjnych e-maili i haseł.
+
+Pod względem bezpieczeństwa Liso przewyższa 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform i NordPass, czyniąc go lepszym i bardziej niezawodnym wyborem.
+
+Dowiedz się więcej: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Polityka prywatności: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Warunki użytkowania: https://github.com/Liso-Vault/app/blob/master/TERMS.md

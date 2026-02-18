@@ -1,0 +1,34 @@
+Protect your important data with confidence using Liso's secure vault. This exceptional solution safeguards your passwords, notes, photos, videos, documents, and other private information from unauthorized access, hackers, and data breaches. Liso offers unmatched security, simplicity, and an ad-free experience.
+
+Store a variety of critical data in Liso's vault, including login credentials, passwords, email accounts, crypto wallets, seed phrases, 2FA/MFA codes, secure notes, debit/credit cards, bank accounts, medical records, driver's licenses, software licenses, social security numbers, and more.
+
+Liso is not just a secure vault; it's also a powerful password manager and 2FA authenticator.
+
+Key Features:
+◆ Impeccable Security: Liso's vault is hackproof, ensuring your data is safe.
+◆ AES-256 Bit Encryption: State-of-the-art encryption protects your data.
+◆ Offline Mode: Access your data without internet connection.
+◆ Multi-Device Sync: Sync data across devices seamlessly.
+◆ Biometric Authentication: Use fingerprint or face ID for added security.
+◆ 2FA/MFA Authenticator: Enhance account security with two-factor authentication.
+◆ Weak Password Detection: Identify and fix weak passwords.
+◆ Password Protection: Add extra password protection to vault items.
+◆ File Encryption: Encrypt files to keep them confidential.
+◆ Strong Password Generator: Create secure, unique passwords easily.
+◆ Free Encrypted Cloud Storage: Secure cloud storage without privacy compromise.
+◆ Secure Photo and Video Lock: Protect personal photos and videos in the vault.
+◆ Cross-Platform Availability: Access Liso on desktops, tablets, and mobiles.
+◆ Smooth Migration: Transition easily from other password managers to Liso.
+◆ Web3 Technologies: Modern tech ensures data security and privacy.
+◆ Zero-Knowledge Technology: Liso cannot access your data, ensuring confidentiality.
+◆ Innovative Sign-Up: Offers alternatives to traditional email and password registration.
+
+Liso outperforms 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, and NordPass, making it the superior choice for security.
+
+Learn more: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Privacy Policy: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Terms of Use: https://github.com/Liso-Vault/app/blob/master/TERMS.md

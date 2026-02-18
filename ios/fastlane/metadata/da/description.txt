@@ -1,0 +1,34 @@
+Beskyt dine værdifulde data mod nysgerrige blikke med fuld tillid. Oplev Liso's sikre datavalv, en fremragende løsning designet til at beskytte dine adgangskoder, noter, fotos, videoer, dokumenter og al anden privat information mod uønskede personer, hackere og datalæk. Liso's omfattende privatlivsværktøjskasse tilbyder enestående sikkerhed, bemærkelsesværdig enkelhed og en helt reklamefri oplevelse.
+
+Brug Liso's sikre datavalv til at gemme en bred vifte af kritiske data, herunder loginoplysninger, adgangskoder, e-mailkonti, kryptovaluta-wallets, seed-fraser, 2FA/MFA-koder, sikre noter, debet/kreditkort, bankkonti, medicinske journaler, kørekort, softwarelicenser, CPR-numre og meget mere.
+
+Udover at være et sikkert valv, udmærker Liso sig som en bemærkelsesværdig adgangskodehåndtering og 2FA-godkender kombineret i én kraftfuld platform.
+
+Nøglefunktioner:
+◆ Ufejlbarlig Hack-sikkerhed: Vær tryg ved at vide, at Liso's valv er uigennemtrængelig for uautoriseret adgang.
+◆ Militær-Grade AES-256 Bit Kryptering: Dine data er beskyttet af avanceret kryptering, der sikrer topniveau sikkerhed.
+◆ Offline/Air-Gapped Tilstand: Nyd fleksibiliteten ved at få adgang til dine data, selv når du er offline.
+◆ Problemfri Multi-Enhed Synkronisering: Synkroniser dine data ubesværet på tværs af flere enheder for uafbrudt tilgængelighed.
+◆ Fingeraftryk/Ansigts Biometrisk Godkendelse: Forbedr din sikkerhed med bekvemmeligheden ved biometrisk godkendelse.
+◆ 2FA/MFA Godkender: Styrk dine konti's sikkerhed ved at bruge Liso's robuste to-faktor/multi-faktor godkendelsesfunktioner.
+◆ Svag Adgangskode Detektion: Identificer og ret sårbare adgangskoder for at styrke din online sikkerhed.
+◆ Adgangskodebeskyttelse: Beskyt individuelle elementer i valvet med et ekstra lag af adgangskodebeskyttelse.
+◆ Filkryptering: Beskyt dine filer med vores kraftfulde krypteringsværktøj, der sikrer deres fortrolighed.
+◆ Generer Stærke og Unikke Adgangskoder: Brug Liso's indbyggede adgangskodegenerator til nemt at skabe sikre og unikke adgangskoder.
+◆ Gratis Krypteret & Privat Cloud-lagring: Nyd fordelene ved krypteret cloud-lagring uden at gå på kompromis med din privatliv.
+◆ Sikker Foto- og Videolås: Gem og beskyt dine personlige fotos og videoer sikkert i Liso's valv.
+◆ Platform-uafhængig Tilgængelighed: Få adgang til Liso's funktioner problemfrit på tværs af desktops, tablets og mobile enheder på forskellige platforme.
+◆ Glat Migration: Overfør nemt fra Bitwarden, LastPass, Chrome, Safari og andre browsere til Liso's sikre miljø.
+◆ Drevet af Moderne & Sikker Web3 Teknologier: Liso udnytter banebrydende teknologier for at sikre, at dine data forbliver sikre og private.
+◆ 100% Zero-Knowledge Teknologi: Vær sikker på, at Liso ikke har adgang til dine data, hvilket opretholder absolut fortrolighed.
+◆ Innovativ Tilmeldingsmetode: Liso revolutionerer registreringsprocessen ved at tilbyde alternativer til traditionelle e-mail og adgangskode tilmeldinger.
+
+Når det kommer til sikkerhed, overgår Liso 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform og NordPass, hvilket gør det til det overlegne og mere pålidelige valg.
+
+Lær mere: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Privatlivspolitik: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Brugsbetingelser: https://github.com/Liso-Vault/app/blob/master/TERMS.md

@@ -1,0 +1,34 @@
+Chráňte svoje cenné dáta pred zvedavými očami s maximálnou istotou. Objavte bezpečný dátový trezor Liso, výnimočné riešenie navrhnuté na ochranu vašich hesiel, poznámok, fotografií, videí, dokumentov a všetkých ostatných súkromných informácií pred neželanými osobami, hackermi a únikmi dát. Liso ponúka komplexnú súpravu nástrojov na ochranu súkromia s bezkonkurenčnou bezpečnosťou, pozoruhodnou jednoduchosťou a úplne bez reklám.
+
+Využite bezpečný dátový trezor Liso na uloženie širokej škály kritických dát, vrátane prihlasovacích údajov, hesiel, emailových účtov, kryptopeňaženiek, seed fráz, 2FA/MFA kódov, bezpečných poznámok, debetných/kreditných kariet, bankových účtov, zdravotných záznamov, vodičských preukazov, softvérových licencií, čísel sociálneho zabezpečenia a oveľa viac.
+
+Okrem toho, že je bezpečným trezorom, Liso vyniká ako výnimočný správca hesiel a 2FA autentifikátor v jednom výkonnom riešení.
+
+Kľúčové vlastnosti:
+◆ Bezchybná bezpečnosť proti hackingu: Buďte pokojní, Liso trezor je nepreniknuteľný.
+◆ Vojenské šifrovanie AES-256 Bit: Vaše dáta sú chránené najmodernejším šifrovaním.
+◆ Offline/Air-Gapped režim: Prístup k dátam aj bez pripojenia na internet.
+◆ Bezproblémová synchronizácia na viacerých zariadeniach: Synchronizujte dáta bez prerušenia.
+◆ Biometrická autentifikácia odtlačkom/priznaním tváre: Zvýšte bezpečnosť pohodlnou autentifikáciou.
+◆ 2FA/MFA autentifikátor: Posilnite bezpečnosť účtov robustnou autentifikáciou.
+◆ Detekcia slabých hesiel: Identifikujte a opravte slabé heslá.
+◆ Ochrana heslom: Chráňte jednotlivé položky v trezore ďalšou vrstvou hesla.
+◆ Šifrovanie súborov: Chráňte súbory silným šifrovacím nástrojom.
+◆ Generovanie silných a jedinečných hesiel: Vytvárajte bezpečné heslá pomocou generátora.
+◆ Bezplatné šifrované a súkromné cloudové úložisko: Využite šifrované úložisko bez kompromisov.
+◆ Bezpečné uzamknutie fotografií a videí: Bezpečne ukladajte a chráňte osobné fotografie a videá.
+◆ Dostupnosť na viacerých platformách: Prístup k funkciám Liso na rôznych zariadeniach a platformách.
+◆ Hladká migrácia: Jednoducho prejdite z Bitwarden, LastPass, Chrome, Safari a ďalších prehliadačov.
+◆ Moderné a bezpečné Web3 technológie: Liso využíva najnovšie technológie na zabezpečenie dát.
+◆ 100% technológia nulových znalostí: Liso nemá prístup k vašim dátam, zachováva absolútnu dôvernosť.
+◆ Inovatívny prístup k registrácii: Liso mení proces registrácie alternatívami k tradičným emailom a heslám.
+
+Pokiaľ ide o bezpečnosť, Liso prekonáva 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform a NordPass, čím sa stáva lepšou a spoľahlivejšou voľbou.
+
+Viac informácií: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Zásady ochrany osobných údajov: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Podmienky používania: https://github.com/Liso-Vault/app/blob/master/TERMS.md

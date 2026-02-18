@@ -1,0 +1,34 @@
+Protégez vos données précieuses des regards indiscrets avec une confiance totale. Découvrez le coffre-fort sécurisé de Liso, une solution exceptionnelle conçue pour protéger vos mots de passe, notes, photos, vidéos, documents et toutes autres informations privées des intrus, hackers et fuites de données. La boîte à outils de confidentialité de Liso offre une sécurité inégalée, une simplicité remarquable et une expérience sans publicité.
+
+Utilisez le coffre-fort sécurisé de Liso pour stocker une vaste gamme de données critiques, y compris les identifiants de connexion, mots de passe, comptes de messagerie, portefeuilles crypto, phrases de récupération, codes 2FA/MFA, notes sécurisées, cartes de débit/crédit, comptes bancaires, dossiers médicaux, permis de conduire, licences logicielles, numéros de sécurité sociale, et bien plus encore.
+
+Au-delà d'un coffre-fort sécurisé, Liso excelle en tant que gestionnaire de mots de passe et authentificateur 2FA combinés en une plateforme puissante.
+
+Caractéristiques principales :
+◆ Sécurité Impeccable : Soyez tranquille, le coffre-fort de Liso est à l'épreuve des accès non autorisés.
+◆ Cryptage AES-256 de Niveau Militaire : Vos données sont protégées par un cryptage de pointe, garantissant une sécurité maximale.
+◆ Mode Hors Ligne : Accédez à vos données même sans connexion internet.
+◆ Synchronisation Multi-Appareils : Synchronisez facilement vos données sur plusieurs appareils pour une accessibilité continue.
+◆ Authentification Biométrique : Renforcez votre sécurité avec l'authentification par empreinte digitale ou reconnaissance faciale.
+◆ Authentificateur 2FA/MFA : Renforcez la sécurité de vos comptes avec l'authentification à deux facteurs/multi-facteurs de Liso.
+◆ Détection de Mots de Passe Faibles : Identifiez et corrigez les mots de passe vulnérables pour renforcer votre sécurité en ligne.
+◆ Protection par Mot de Passe : Protégez chaque élément du coffre-fort avec une couche supplémentaire de sécurité.
+◆ Cryptage de Fichiers : Protégez vos fichiers grâce à notre outil de cryptage puissant, assurant leur confidentialité.
+◆ Générateur de Mots de Passe : Créez des mots de passe sécurisés et uniques avec le générateur intégré de Liso.
+◆ Stockage Cloud Chiffré Gratuit : Profitez d'un stockage cloud chiffré sans compromettre votre confidentialité.
+◆ Verrouillage de Photos et Vidéos : Stockez et protégez vos photos et vidéos personnelles dans le coffre-fort de Liso.
+◆ Disponibilité Multi-Plateforme : Accédez aux fonctionnalités de Liso sur ordinateurs, tablettes et mobiles sur diverses plateformes.
+◆ Migration Facile : Passez facilement de Bitwarden, LastPass, Chrome, Safari et autres navigateurs à l'environnement sécurisé de Liso.
+◆ Technologies Web3 Modernes : Liso utilise des technologies de pointe pour garantir la sécurité et la confidentialité de vos données.
+◆ Technologie Zéro Connaissance : Liso n'a aucun accès à vos données, assurant une confidentialité absolue.
+◆ Approche Innovante d'Inscription : Liso révolutionne le processus d'inscription avec des alternatives aux inscriptions traditionnelles par email et mot de passe.
+
+En matière de sécurité, Liso dépasse 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform et NordPass, en faisant le choix supérieur et plus fiable.
+
+En savoir plus : https://liso.dev
+
+Code source ouvert : https://github.com/Liso-Vault/app
+
+Politique de confidentialité : https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Conditions d'utilisation : https://github.com/Liso-Vault/app/blob/master/TERMS.md

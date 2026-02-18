@@ -1,0 +1,34 @@
+Lindungi data berharga Anda dari mata-mata dengan percaya diri penuh. Temukan brankas data aman Liso, solusi luar biasa yang dirancang untuk melindungi kata sandi, catatan, foto, video, dokumen, dan semua informasi pribadi Anda dari orang yang tidak diinginkan, peretas, dan kebocoran data. Alat privasi lengkap Liso menawarkan keamanan tak tertandingi, kesederhanaan luar biasa, dan pengalaman bebas iklan sepenuhnya.
+
+Manfaatkan brankas data aman Liso untuk menyimpan berbagai data penting, termasuk kredensial login, kata sandi, akun email, dompet kripto, frasa benih, kode 2FA/MFA, catatan aman, kartu debit/kredit, rekening bank, catatan medis, SIM, lisensi perangkat lunak, nomor jaminan sosial, dan banyak lagi.
+
+Selain menjadi brankas aman, Liso unggul sebagai pengelola kata sandi dan autentikator 2FA yang luar biasa dalam satu platform yang kuat.
+
+Fitur Utama:
+◆ Keamanan Tahan Retas: Tenanglah mengetahui bahwa brankas Liso kebal terhadap akses tidak sah.
+◆ Enkripsi AES-256 Bit Kelas Militer: Data Anda dilindungi oleh enkripsi mutakhir, memastikan keamanan tingkat tinggi.
+◆ Mode Offline/Air-Gapped: Nikmati fleksibilitas mengakses data Anda bahkan saat terputus dari internet.
+◆ Sinkronisasi Multi-Perangkat Tanpa Hambatan: Sinkronkan data Anda dengan mudah di berbagai perangkat untuk akses tanpa gangguan.
+◆ Autentikasi Biometrik Sidik Jari/Wajah: Tingkatkan keamanan Anda dengan kenyamanan autentikasi biometrik.
+◆ Autentikator 2FA/MFA: Perkuat keamanan akun Anda dengan memanfaatkan kemampuan autentikasi dua faktor/multi-faktor Liso.
+◆ Deteksi Kata Sandi Lemah: Identifikasi dan perbaiki kata sandi yang rentan untuk memperkuat keamanan online Anda.
+◆ Perlindungan Kata Sandi: Lindungi item individu dalam brankas dengan lapisan perlindungan kata sandi tambahan.
+◆ Enkripsi File: Lindungi file Anda dengan alat enkripsi kami yang kuat, memastikan kerahasiaannya.
+◆ Hasilkan Kata Sandi Kuat dan Unik: Gunakan generator kata sandi bawaan Liso untuk membuat kata sandi yang aman dan unik dengan mudah.
+◆ Penyimpanan Cloud Terenkripsi & Pribadi Gratis: Nikmati manfaat penyimpanan cloud terenkripsi tanpa mengorbankan privasi Anda.
+◆ Kunci Foto dan Video Aman: Simpan dan lindungi foto dan video pribadi Anda dengan aman dalam brankas Liso.
+◆ Ketersediaan Lintas Platform: Akses fitur Liso dengan lancar di desktop, tablet, dan perangkat seluler di berbagai platform.
+◆ Migrasi Lancar: Beralih dengan mudah dari Bitwarden, LastPass, Chrome, Safari, dan browser lainnya ke lingkungan aman Liso.
+◆ Didukung oleh Teknologi Web3 Modern & Aman: Liso memanfaatkan teknologi mutakhir untuk memastikan data Anda tetap aman dan pribadi.
+◆ Teknologi Zero-Knowledge 100%: Yakinlah bahwa Liso tidak memiliki akses ke data Anda, menjaga kerahasiaan sepenuhnya.
+◆ Pendekatan Pendaftaran Inovatif: Liso merevolusi proses pendaftaran dengan menawarkan alternatif untuk pendaftaran email dan kata sandi tradisional.
+
+Dalam hal keamanan, Liso melampaui 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, dan NordPass, menjadikannya pilihan yang lebih unggul dan dapat diandalkan.
+
+Pelajari lebih lanjut: https://liso.dev
+
+Sumber terbuka: https://github.com/Liso-Vault/app
+
+Kebijakan Privasi: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Ketentuan Penggunaan: https://github.com/Liso-Vault/app/blob/master/TERMS.md

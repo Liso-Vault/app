@@ -1,0 +1,34 @@
+Proteggi i tuoi dati preziosi da occhi indiscreti con la massima fiducia. Scopri il vault sicuro di Liso, una soluzione eccezionale progettata per proteggere password, note, foto, video, documenti e tutte le altre informazioni private da individui indesiderati, hacker e violazioni dei dati. La cassetta degli attrezzi per la privacy di Liso offre sicurezza senza pari, semplicità straordinaria e un'esperienza completamente priva di pubblicità.
+
+Utilizza il vault sicuro di Liso per conservare una vasta gamma di dati critici, inclusi credenziali di accesso, password, account email, portafogli crypto, frasi seed, codici 2FA/MFA, note sicure, carte di debito/credito, conti bancari, cartelle cliniche, patenti di guida, licenze software, numeri di previdenza sociale e molto altro.
+
+Oltre a essere un vault sicuro, Liso eccelle come straordinario gestore di password e autenticatore 2FA combinati in un'unica potente piattaforma.
+
+Caratteristiche principali:
+◆ Sicurezza impeccabile: Rilassati sapendo che il vault di Liso è inaccessibile a qualsiasi accesso non autorizzato.
+◆ Crittografia AES-256 di livello militare: I tuoi dati sono protetti da crittografia all'avanguardia, garantendo la massima sicurezza.
+◆ Modalità offline: Accedi ai tuoi dati anche quando sei disconnesso da internet.
+◆ Sincronizzazione multi-dispositivo: Sincronizza facilmente i tuoi dati su più dispositivi per un'accessibilità continua.
+◆ Autenticazione biometrica: Migliora la tua sicurezza con l'autenticazione biometrica.
+◆ Autenticatore 2FA/MFA: Rafforza la sicurezza dei tuoi account utilizzando le robuste capacità di autenticazione a due/multi fattori di Liso.
+◆ Rilevamento password deboli: Identifica e correggi le password vulnerabili per rafforzare la tua sicurezza online.
+◆ Protezione password: Proteggi singoli elementi nel vault con un ulteriore livello di protezione.
+◆ Crittografia file: Proteggi i tuoi file con il nostro potente strumento di crittografia, garantendo la loro riservatezza.
+◆ Genera password forti e uniche: Utilizza il generatore di password integrato di Liso per creare password sicure e distintive senza sforzo.
+◆ Archiviazione cloud crittografata gratuita: Godi dei vantaggi dell'archiviazione cloud crittografata senza compromettere la tua privacy.
+◆ Blocco foto e video sicuro: Conserva e proteggi in sicurezza le tue foto e video personali nel vault di Liso.
+◆ Disponibilità multipiattaforma: Accedi alle funzionalità di Liso senza problemi su desktop, tablet e dispositivi mobili su varie piattaforme.
+◆ Migrazione fluida: Passa facilmente da Bitwarden, LastPass, Chrome, Safari e altri browser all'ambiente sicuro di Liso.
+◆ Tecnologie Web3 moderne e sicure: Liso sfrutta tecnologie all'avanguardia per garantire che i tuoi dati rimangano sicuri e privati.
+◆ Tecnologia zero-knowledge al 100%: Sii certo che Liso non ha accesso ai tuoi dati, mantenendo la massima riservatezza.
+◆ Approccio innovativo alla registrazione: Liso rivoluziona il processo di registrazione offrendo alternative alle tradizionali iscrizioni con email e password.
+
+Quando si tratta di sicurezza, Liso supera 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform e NordPass, rendendolo la scelta superiore e più affidabile.
+
+Scopri di più: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Privacy Policy: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Termini di utilizzo: https://github.com/Liso-Vault/app/blob/master/TERMS.md

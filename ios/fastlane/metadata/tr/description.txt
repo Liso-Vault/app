@@ -1,0 +1,34 @@
+Değerli verilerinizi meraklı gözlerden güvenle koruyun. Liso'nun güvenli veri kasasını keşfedin; şifrelerinizi, notlarınızı, fotoğraflarınızı, videolarınızı, belgelerinizi ve diğer özel bilgilerinizi istenmeyen kişilerden, hackerlardan ve veri ihlallerinden korumak için tasarlanmış benzersiz bir çözüm. Liso'nun kapsamlı gizlilik araçları, eşsiz güvenlik, olağanüstü sadelik ve tamamen reklamsız bir deneyim sunar.
+
+Liso'nun güvenli veri kasasını, giriş bilgileri, şifreler, e-posta hesapları, kripto cüzdanlar, seed kelimeleri, 2FA/MFA kodları, güvenli notlar, banka kartları, banka hesapları, tıbbi kayıtlar, ehliyetler, yazılım lisansları, sosyal güvenlik numaraları ve daha fazlasını saklamak için kullanın.
+
+Liso, güvenli bir kasa olmanın ötesinde, olağanüstü bir şifre yöneticisi ve 2FA doğrulayıcı olarak güçlü bir platformda birleşir.
+
+Ana Özellikler:
+◆ Kusursuz Hack Koruması: Liso'nun kasasının yetkisiz erişimlere karşı dayanıklı olduğunu bilerek rahatlayın.
+◆ Askeri Düzeyde AES-256 Bit Şifreleme: Verileriniz, en üst düzey güvenliği sağlayan ileri teknoloji şifreleme ile korunur.
+◆ Çevrimdışı/Hava Boşluğu Modu: İnternete bağlı olmadığınızda bile verilerinize erişmenin esnekliğini yaşayın.
+◆ Sorunsuz Çoklu Cihaz Senkronizasyonu: Verilerinizi birden fazla cihazda kesintisiz erişim için zahmetsizce senkronize edin.
+◆ Parmak İzi/Yüz Biyometrik Doğrulama: Biyometrik doğrulamanın rahatlığı ile güvenliğinizi artırın.
+◆ 2FA/MFA Doğrulayıcı: Liso'nun sağlam iki faktörlü/çok faktörlü doğrulama yeteneklerini kullanarak hesaplarınızın güvenliğini güçlendirin.
+◆ Zayıf Şifre Tespiti: Çevrimiçi güvenliğinizi güçlendirmek için zayıf şifreleri belirleyin ve düzeltin.
+◆ Şifre Koruması: Kasadaki bireysel öğeleri ek bir şifre koruması ile güvence altına alın.
+◆ Dosya Şifreleme: Dosyalarınızı güçlü şifreleme aracımızla koruyarak gizliliklerini sağlayın.
+◆ Güçlü ve Benzersiz Şifreler Üretin: Liso'nun yerleşik şifre üreticisini kullanarak güvenli ve benzersiz şifreler kolayca oluşturun.
+◆ Ücretsiz Şifreli ve Özel Bulut Depolama: Gizliliğinizden ödün vermeden şifreli bulut depolamanın avantajlarından yararlanın.
+◆ Güvenli Fotoğraf ve Video Kilidi: Kişisel fotoğraf ve videolarınızı Liso'nun kasasında güvenle saklayın ve koruyun.
+◆ Platformlar Arası Uygunluk: Liso'nun özelliklerine masaüstü, tablet ve mobil cihazlarda sorunsuzca erişin.
+◆ Kolay Geçiş: Bitwarden, LastPass, Chrome, Safari ve diğer tarayıcılardan Liso'nun güvenli ortamına kolayca geçiş yapın.
+◆ Modern ve Güvenli Web3 Teknolojileri ile Güçlendirilmiş: Liso, verilerinizin güvenli ve özel kalmasını sağlamak için en son teknolojileri kullanır.
+◆ %100 Sıfır Bilgi Teknolojisi: Liso'nun verilerinize erişimi olmadığını bilerek tam gizliliği koruyun.
+◆ Yenilikçi Kayıt Yaklaşımı: Liso, geleneksel e-posta ve şifre kayıtlarına alternatifler sunarak kayıt sürecini devrim niteliğinde değiştirir.
+
+Güvenlik söz konusu olduğunda, Liso; 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform ve NordPass'i geride bırakarak üstün ve daha güvenilir bir seçimdir.
+
+Daha fazla bilgi edinin: https://liso.dev
+
+Açık kaynak: https://github.com/Liso-Vault/app
+
+Gizlilik Politikası: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Kullanım Koşulları: https://github.com/Liso-Vault/app/blob/master/TERMS.md

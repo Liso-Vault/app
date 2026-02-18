@@ -1,0 +1,34 @@
+Protect your valuable data with complete confidence. Explore Liso's secure vault, a top-tier solution for safeguarding your passwords, notes, photos, videos, documents, and other private information from unwanted access, hackers, and data breaches. Liso's privacy toolkit offers unmatched security, simplicity, and an ad-free experience.
+
+Use Liso's vault to store essential data like login details, passwords, email accounts, crypto wallets, seed phrases, 2FA/MFA codes, secure notes, bank cards, accounts, medical records, driving licences, software licences, social security numbers, and more.
+
+Liso is not just a vault; it's an outstanding password manager and 2FA authenticator in one.
+
+Key Features:
+◆ Unbreakable Security: Liso's vault is secure against any unauthorised access.
+◆ Military-Grade Encryption: Your data is protected with AES-256 encryption for top security.
+◆ Offline Mode: Access your data even without internet.
+◆ Multi-Device Sync: Sync your data across devices effortlessly.
+◆ Biometric Authentication: Use fingerprint or face ID for added security.
+◆ 2FA/MFA Authenticator: Enhance account security with robust two-factor/multi-factor authentication.
+◆ Weak Password Alerts: Detect and fix weak passwords to boost security.
+◆ Password Protection: Add extra password protection to vault items.
+◆ File Encryption: Protect your files with powerful encryption.
+◆ Strong Password Generator: Create secure, unique passwords with ease.
+◆ Free Encrypted Cloud Storage: Enjoy encrypted cloud storage while keeping your privacy intact.
+◆ Secure Photo and Video Lock: Store and protect personal photos and videos securely.
+◆ Cross-Platform Access: Use Liso across desktops, tablets, and mobiles on various platforms.
+◆ Easy Migration: Switch from Bitwarden, LastPass, Chrome, Safari, and others to Liso easily.
+◆ Modern Web3 Technologies: Liso uses advanced tech to keep your data secure and private.
+◆ Zero-Knowledge Technology: Liso cannot access your data, ensuring full confidentiality.
+◆ Innovative Sign-Up: Liso offers alternatives to traditional email and password registration.
+
+Liso outperforms 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, and NordPass, making it the superior choice.
+
+Learn more: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Privacy Policy: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Terms of Use: https://github.com/Liso-Vault/app/blob/master/TERMS.md

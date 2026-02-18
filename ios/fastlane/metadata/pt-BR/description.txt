@@ -1,0 +1,34 @@
+Proteja seus dados valiosos de olhares curiosos com total confiança. Descubra o cofre seguro de dados do Liso, uma solução excepcional projetada para proteger suas senhas, notas, fotos, vídeos, documentos e todas as outras informações privadas de indivíduos indesejados, hackers e violações de dados. A caixa de ferramentas de privacidade do Liso oferece segurança incomparável, simplicidade notável e uma experiência totalmente livre de anúncios.
+
+Aproveite o cofre seguro do Liso para armazenar uma ampla gama de dados críticos, incluindo credenciais de login, senhas, contas de e-mail, carteiras de criptomoedas, frases-semente, códigos 2FA/MFA, notas seguras, cartões de débito/crédito, contas bancárias, registros médicos, carteiras de motorista, licenças de software, números de segurança social e muito mais.
+
+Além de ser um cofre seguro, o Liso se destaca como um gerenciador de senhas notável e autenticador 2FA em uma plataforma poderosa.
+
+Principais Recursos:
+◆ Segurança à Prova de Hackers: Tenha tranquilidade sabendo que o cofre do Liso é impenetrável a acessos não autorizados.
+◆ Criptografia AES-256 de Grau Militar: Seus dados são protegidos por criptografia de ponta, garantindo segurança máxima.
+◆ Modo Offline/Air-Gapped: Acesse seus dados mesmo quando estiver desconectado da internet.
+◆ Sincronização Multi-Dispositivo: Sincronize seus dados em vários dispositivos para acessibilidade contínua.
+◆ Autenticação Biométrica por Impressão Digital/Face: Aumente sua segurança com a conveniência da autenticação biométrica.
+◆ Autenticador 2FA/MFA: Fortaleça a segurança de suas contas utilizando as robustas capacidades de autenticação de dois/múltiplos fatores do Liso.
+◆ Detecção de Senhas Fracas: Identifique e corrija senhas vulneráveis para reforçar sua segurança online.
+◆ Proteção de Senhas: Proteja itens individuais dentro do cofre com uma camada adicional de proteção por senha.
+◆ Criptografia de Arquivos: Proteja seus arquivos com nossa poderosa ferramenta de criptografia, garantindo sua confidencialidade.
+◆ Gerador de Senhas Fortes e Únicas: Utilize o gerador de senhas embutido do Liso para criar senhas seguras e distintas sem esforço.
+◆ Armazenamento em Nuvem Criptografado e Privado Gratuito: Aproveite os benefícios do armazenamento em nuvem criptografado sem comprometer sua privacidade.
+◆ Bloqueio Seguro de Fotos e Vídeos: Armazene e proteja suas fotos e vídeos pessoais com segurança no cofre do Liso.
+◆ Disponibilidade Multi-Plataforma: Acesse os recursos do Liso em desktops, tablets e dispositivos móveis em várias plataformas.
+◆ Migração Suave: Transicione facilmente do Bitwarden, LastPass, Chrome, Safari e outros navegadores para o ambiente seguro do Liso.
+◆ Alimentado por Tecnologias Web3 Modernas e Seguras: O Liso utiliza tecnologias de ponta para garantir que seus dados permaneçam seguros e privados.
+◆ Tecnologia 100% Zero-Knowledge: Tenha certeza de que o Liso não tem acesso aos seus dados, mantendo absoluta confidencialidade.
+◆ Abordagem Inovadora de Cadastro: O Liso revoluciona o processo de registro oferecendo alternativas ao cadastro tradicional por e-mail e senha.
+
+Quando se trata de segurança, o Liso supera 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform e NordPass, tornando-se a escolha superior e mais confiável.
+
+Saiba mais: https://liso.dev
+
+Código aberto: https://github.com/Liso-Vault/app
+
+Política de Privacidade: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Termos de Uso: https://github.com/Liso-Vault/app/blob/master/TERMS.md

@@ -1,0 +1,34 @@
+Protege tus datos valiosos de miradas indiscretas con total confianza. Descubre la bóveda segura de Liso, una solución excepcional diseñada para proteger tus contraseñas, notas, fotos, videos, documentos y toda tu información privada de personas no deseadas, hackers y brechas de datos. La completa caja de herramientas de privacidad de Liso ofrece seguridad inigualable, simplicidad notable y una experiencia completamente libre de anuncios.
+
+Aprovecha la bóveda segura de Liso para almacenar una amplia gama de datos críticos, incluyendo credenciales de inicio de sesión, contraseñas, cuentas de correo, monederos de criptomonedas, frases semilla, códigos 2FA/MFA, notas seguras, tarjetas de débito/crédito, cuentas bancarias, historiales médicos, licencias de conducir, licencias de software, números de seguridad social y mucho más.
+
+Más allá de ser una bóveda segura, Liso destaca como un gestor de contraseñas excepcional y autenticador 2FA combinado en una potente plataforma.
+
+Características Clave:
+◆ Seguridad Impecable a Prueba de Hackeos: Descansa tranquilo sabiendo que la bóveda de Liso es impenetrable a accesos no autorizados.
+◆ Cifrado AES-256 de Grado Militar: Tus datos están protegidos por un cifrado de última generación, asegurando máxima seguridad.
+◆ Modo Offline/Air-Gapped: Disfruta de la flexibilidad de acceder a tus datos incluso sin conexión a internet.
+◆ Sincronización Multidispositivo: Sincroniza tus datos fácilmente en múltiples dispositivos para una accesibilidad ininterrumpida.
+◆ Autenticación Biométrica de Huella/Rostro: Mejora tu seguridad con la comodidad de la autenticación biométrica.
+◆ Autenticador 2FA/MFA: Refuerza la seguridad de tus cuentas utilizando las robustas capacidades de autenticación de Liso.
+◆ Detección de Contraseñas Débiles: Identifica y corrige contraseñas vulnerables para fortalecer tu seguridad en línea.
+◆ Protección de Contraseñas: Protege elementos individuales dentro de la bóveda con una capa adicional de protección.
+◆ Cifrado de Archivos: Protege tus archivos con nuestra potente herramienta de cifrado, asegurando su confidencialidad.
+◆ Generación de Contraseñas Fuertes y Únicas: Utiliza el generador de contraseñas integrado de Liso para crear contraseñas seguras y distintivas sin esfuerzo.
+◆ Almacenamiento en la Nube Encriptado y Privado Gratis: Disfruta de los beneficios del almacenamiento en la nube encriptado sin comprometer tu privacidad.
+◆ Bloqueo Seguro de Fotos y Videos: Almacena y protege de manera segura tus fotos y videos personales dentro de la bóveda de Liso.
+◆ Disponibilidad Multiplataforma: Accede a las funciones de Liso sin problemas en escritorios, tabletas y dispositivos móviles en varias plataformas.
+◆ Migración Suave: Transición fácilmente desde Bitwarden, LastPass, Chrome, Safari y otros navegadores al entorno seguro de Liso.
+◆ Impulsado por Tecnologías Web3 Modernas y Seguras: Liso aprovecha tecnologías de vanguardia para asegurar que tus datos permanezcan seguros y privados.
+◆ Tecnología de Conocimiento Cero al 100%: Ten la certeza de que Liso no tiene acceso a tus datos, manteniendo absoluta confidencialidad.
+◆ Enfoque Innovador de Registro: Liso revoluciona el proceso de registro ofreciendo alternativas a los registros tradicionales con correo y contraseña.
+
+En cuanto a seguridad, Liso supera a 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform y NordPass, convirtiéndose en la opción superior y más confiable.
+
+Más información: https://liso.dev
+
+Código abierto: https://github.com/Liso-Vault/app
+
+Política de Privacidad: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Términos de Uso: https://github.com/Liso-Vault/app/blob/master/TERMS.md

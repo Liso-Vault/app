@@ -1,0 +1,34 @@
+Lindungi data berharga anda daripada mata yang tidak diingini dengan keyakinan penuh. Temui peti besi data selamat Liso, penyelesaian luar biasa untuk melindungi kata laluan, nota, foto, video, dokumen, dan semua maklumat peribadi anda daripada individu yang tidak diingini, penggodam, dan kebocoran data. Kotak alat privasi Liso yang menyeluruh menawarkan keselamatan tiada tandingan, kesederhanaan yang luar biasa, dan pengalaman bebas iklan sepenuhnya.
+
+Manfaatkan peti besi data selamat Liso untuk menyimpan pelbagai data penting, termasuk kelayakan log masuk, kata laluan, akaun e-mel, dompet kripto, frasa benih, kod 2FA/MFA, nota selamat, kad debit/kredit, akaun bank, rekod perubatan, lesen memandu, lesen perisian, nombor keselamatan sosial, dan banyak lagi.
+
+Selain menjadi peti besi selamat, Liso cemerlang sebagai pengurus kata laluan dan pengesah 2FA yang digabungkan dalam satu platform yang berkuasa.
+
+Ciri Utama:
+◆ Keselamatan Tahan Godaman: Tenanglah mengetahui bahawa peti besi Liso tidak dapat diakses tanpa kebenaran.
+◆ Penyulitan AES-256 Bit Gred Tentera: Data anda dilindungi oleh penyulitan canggih, memastikan keselamatan tertinggi.
+◆ Mod Luar Talian: Nikmati fleksibiliti mengakses data anda walaupun tanpa sambungan internet.
+◆ Penyelarasan Berbilang Peranti: Selaraskan data anda dengan mudah di pelbagai peranti untuk akses tanpa gangguan.
+◆ Pengesahan Biometrik Cap Jari/Muka: Tingkatkan keselamatan anda dengan kemudahan pengesahan biometrik.
+◆ Pengesah 2FA/MFA: Kuatkan keselamatan akaun anda dengan pengesahan dua faktor/multi-faktor Liso.
+◆ Pengesanan Kata Laluan Lemah: Kenal pasti dan betulkan kata laluan yang lemah untuk memperkukuh keselamatan dalam talian anda.
+◆ Perlindungan Kata Laluan: Lindungi item individu dalam peti besi dengan lapisan perlindungan kata laluan tambahan.
+◆ Penyulitan Fail: Lindungi fail anda dengan alat penyulitan kami yang berkuasa, memastikan kerahasiaannya.
+◆ Hasilkan Kata Laluan Kuat dan Unik: Gunakan penjana kata laluan terbina dalam Liso untuk mencipta kata laluan yang selamat dan berbeza dengan mudah.
+◆ Penyimpanan Awan Terenkripsi Percuma: Nikmati manfaat penyimpanan awan terenkripsi tanpa menjejaskan privasi anda.
+◆ Kunci Foto dan Video Selamat: Simpan dan lindungi foto dan video peribadi anda dengan selamat dalam peti besi Liso.
+◆ Ketersediaan Merentas Platform: Akses ciri Liso dengan lancar di desktop, tablet, dan peranti mudah alih di pelbagai platform.
+◆ Migrasi Lancar: Beralih dengan mudah dari Bitwarden, LastPass, Chrome, Safari, dan pelayar lain ke persekitaran selamat Liso.
+◆ Dikuasakan oleh Teknologi Web3 Moden & Selamat: Liso memanfaatkan teknologi terkini untuk memastikan data anda kekal selamat dan peribadi.
+◆ Teknologi Zero-Knowledge 100%: Yakinlah bahawa Liso tidak mempunyai akses kepada data anda, mengekalkan kerahsiaan mutlak.
+◆ Pendekatan Pendaftaran Inovatif: Liso merevolusikan proses pendaftaran dengan menawarkan alternatif kepada pendaftaran e-mel dan kata laluan tradisional.
+
+Apabila berkaitan dengan keselamatan, Liso mengatasi 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, dan NordPass, menjadikannya pilihan yang lebih unggul dan boleh dipercayai.
+
+Ketahui lebih lanjut: https://liso.dev
+
+Sumber terbuka: https://github.com/Liso-Vault/app
+
+Dasar Privasi: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Terma Penggunaan: https://github.com/Liso-Vault/app/blob/master/TERMS.md
