@@ -1,1 +1,0 @@
-FreeOTP Authenticator TOTP 2FA

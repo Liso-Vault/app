@@ -1,1 +1,0 @@
-Gestor de contraseñas cripto y caja fuerte ultra segura para todos tus datos

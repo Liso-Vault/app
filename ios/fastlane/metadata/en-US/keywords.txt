@@ -1,1 +1,0 @@
-1password,lastpass,bitwarden,dashlane,pass,nordpass,passkey,one,norton,generator,manager,aegis

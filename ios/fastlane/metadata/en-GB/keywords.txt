@@ -1,1 +1,0 @@
-pass,google,apple,manage,passphrase,secure,vault,pasword,kt,saver,storage,save,bitwarden,lastpass
