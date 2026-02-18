@@ -2,6 +2,8 @@
 *.temp.dart
 *.notes.txt
 .fvm/fvm_config.json
+# fastlane – ignore all fastlane dirs and contents (ios/fastlane, android/fastlane, etc.)
+**/fastlane/
 # firebase
 ios/firebase_app_id_file.json
 lib/firebase_options.dart
