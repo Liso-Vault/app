@@ -31,14 +31,13 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             maintainState: true,
             title: Text(
               'items'.tr.toUpperCase(),
-              style: const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
             initiallyExpanded: true,
             // childrenPadding: EdgeInsets.zero,
             children: [
               Obx(
                 () => ListTile(
-                  dense: isSmallScreen,
                   leading: const Icon(Iconsax.document_outline),
                   onTap: controller.filterAllItems,
                   selected: controller.filterAll,
@@ -60,7 +59,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               Obx(
                 () => ListTile(
-                  dense: isSmallScreen,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -82,7 +80,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               Obx(
                 () => ListTile(
-                  dense: isSmallScreen,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -104,7 +101,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               Obx(
                 () => ListTile(
-                  dense: isSmallScreen,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -127,7 +123,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               Obx(
                 () => ListTile(
-                  dense: isSmallScreen,
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -153,7 +148,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
 
               //   return Obx(
               //     () => ListTile(
-              //dense: isSmallScreen,
+              //
               //       selected: controller.filterDeleted(),
               //       selectedColor: Colors.red,
               //       leading: const Icon(Iconsax.slash),
@@ -172,40 +167,43 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               // }),
             ],
           ),
-          ExpansionTile(
-            initiallyExpanded: controller.categoriesExpanded,
-            title: Text(
-              'categories'.tr.toUpperCase(),
-              style: const TextStyle(fontSize: 13),
+          if (controller.categoryTiles.isNotEmpty)
+            ExpansionTile(
+              initiallyExpanded: controller.categoriesExpanded,
+              title: Text(
+                'categories'.tr.toUpperCase(),
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              ),
+              children: controller.categoryTiles,
+              onExpansionChanged: (expanded) =>
+                  controller.categoriesExpanded = expanded,
             ),
-            children: controller.categoryTiles,
-            onExpansionChanged: (expanded) =>
-                controller.categoriesExpanded = expanded,
-          ),
-          ExpansionTile(
-            maintainState: true,
-            title: Text(
-              'tags'.tr.toUpperCase(),
-              style: const TextStyle(fontSize: 13),
+          if (controller.tagTiles.isNotEmpty)
+            ExpansionTile(
+              maintainState: true,
+              title: Text(
+                'tags'.tr.toUpperCase(),
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+              ),
+              initiallyExpanded: controller.tagsExpanded,
+              onExpansionChanged: (expanded) =>
+                  controller.tagsExpanded = expanded,
+              children: controller.tagTiles,
             ),
-            initiallyExpanded: controller.tagsExpanded,
-            onExpansionChanged: (expanded) =>
-                controller.tagsExpanded = expanded,
-            children: controller.tagTiles,
-          ),
           ExpansionTile(
             maintainState: true,
             initiallyExpanded: true,
             title: Text(
               'app'.tr.toUpperCase(),
-              style: const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
             children: [
               const PremiumCard(),
               PersistenceBuilder(
                 builder: (p, context) => AppPersistence.to.sync.val
                     ? ListTile(
-                        dense: isSmallScreen,
                         leading: const Icon(Iconsax.document_cloud_outline),
                         onTap: () => Utils.adaptiveRouteOpen(
                           name: AppRoutes.s3Explorer,
@@ -253,7 +251,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               //   }
 
               //   return ListTile(
-              //     dense: isSmallScreen,
+              //
               //     title: Text('wallet'.tr),
               //     leading: const Icon(Iconsax.wallet_1_outline),
               //     onTap: () => Utils.adaptiveRouteOpen(
@@ -263,7 +261,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               //   );
               // }),
               ListTile(
-                dense: isSmallScreen,
                 title: Text('settings'.tr),
                 leading: const Icon(Iconsax.setting_2_outline),
                 onTap: () {
@@ -272,7 +269,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 },
               ),
               ListTile(
-                dense: isSmallScreen,
                 title: Text('about'.tr),
                 leading: const Icon(Iconsax.info_circle_outline),
                 onTap: () {
@@ -282,7 +278,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
               const Divider(),
               ListTile(
-                dense: isSmallScreen,
                 title: Text('need_help'.tr),
                 leading: const Icon(Iconsax.message_question_outline),
                 onTap: () {
@@ -299,11 +294,10 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 controller.toolsExpanded = expanded,
             title: Text(
               'tools'.tr.toUpperCase(),
-              style: const TextStyle(fontSize: 13),
+              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
             children: [
               ListTile(
-                dense: isSmallScreen,
                 title: Text('encryption_tool'.tr),
                 leading: const Icon(Iconsax.convert_3d_cube_outline),
                 onTap: () {
@@ -312,7 +306,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 },
               ),
               ListTile(
-                dense: isSmallScreen,
                 title: Text('password_generator'.tr),
                 leading: const Icon(Iconsax.password_check_outline),
                 onTap: () {
@@ -324,7 +317,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 },
               ),
               ListTile(
-                dense: isSmallScreen,
                 title: Text('seed_generator'.tr),
                 leading: const Icon(Iconsax.key_outline),
                 onTap: () {
@@ -347,7 +339,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
             () => Visibility(
               visible: !controller.filterAll,
               child: ListTile(
-                dense: isSmallScreen,
                 title: Text('clear_filters'.tr),
                 leading: const Icon(Iconsax.slash_outline),
                 onTap: controller.clearFilters,
