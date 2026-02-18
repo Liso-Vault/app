@@ -24,7 +24,7 @@ platform :android do
 
     upload_to_play_store(
       track: "production",
-      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      aab: "../build/app/outputs/bundle/productionRelease/app-production-release.aab",
       rollout: "1.0",
       skip_upload_apk: true,
       skip_upload_screenshots: true,

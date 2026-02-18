@@ -8,9 +8,9 @@ void initConfigDefaults() {
   final generalMap = {"name": "Liso", "developer": "Stackwares"};
 
   final versionsMap = {
-    "min": 61,
+    "min": 68,
     "beta": [0],
-    "latest": 61,
+    "latest": 68,
     "disabled": [0],
   };
 
