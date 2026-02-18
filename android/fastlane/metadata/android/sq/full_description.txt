@@ -1,0 +1,34 @@
+Mbrojni të dhënat e vlefshme me brezin e ardhshëm të sigurisë. Liso është një depo e të dhënave kripto-së pari, e fuqizuar nga Web3, e ndërtuar për të shfrytëzuar sigurinë e nivelit blockchain dhe teknologjinë e decentralizuar. Mbrojni fjalëkalimet, shënimet, fotot, videot, dokumentet dhe të gjitha informacionet e ndjeshme me kriptografi të avancuar, protokolle të decentralizuara dhe standarde të forta të privatësisë. Me Liso, të dhënat tuaja mbeten tuajat—të sigurta, private dhe nën kontrollin tuaj, pa reklama dhe ndjekje.
+
+Liso përdor teknika moderne kriptografike dhe korniza Web3—duke përfshirë enkriptimin skaj-më-skaj, provat zero-knowledge dhe integrimet e portofolit të sigurt—për të mbrojtur jetën tuaj dixhitale. Ruani kredencialet e hyrjes, fjalëkalimet, portofolët kripto, frazat farë, kodet 2FA/MFA, shënimet e sigurta, kartat, llogaritë bankare, dokumentet e identitetit dhe më shumë në një depo të decentralizuar dhe të pathyeshme.
+
+Liso është një menaxher i fjalëkalimeve kripto gjithë-në-një, depo ndër-pajisje dhe autentifikues i brezit të ardhshëm, që bashkon Web3 dhe sigurinë klasike për mbrojtje të paparë.
+
+Veçori kryesore:
+◆ Siguria kripto e brezit të ardhshëm: Teknologjitë blockchain dhe Web3 eliminojnë pikat e vetme të dështimit dhe maksimizojnë mbrojtjen e të dhënave.
+◆ Enkriptimi AES-256 i shkallës ushtarake + skaj-më-skaj: Kriptografia tradicionale dhe e decentralizuar për siguri të paparë.
+◆ Identitet i decentralizuar: Autentifikohu me portofolë të sigurta ose hyrje të decentralizuar—pa lidhje me identitetin tuaj të vërtetë.
+◆ Mënyra offline/air-gap: Aksesoni depon tuaj të enkriptuar pa internet—të dhënat tuaja nuk largohen kurrë nga pajisja juaj përveçse nëse zgjidhni.
+◆ Njëkohësim i mbështetur nga blockchain: Njëkohësoni të dhënat në pajisje me ruajtje të decentralizuar dhe të enkriptuar në cloud.
+◆ Biometrika gisht/fytyrë: Autentifikim multi-faktor me nënshkrues kriptografikë.
+◆ Autentifikues 2FA/MFA: Gjeneroni dhe ruani kodet dy-faktorë në mënyrë të sigurt në depon tuaj të enkriptuar.
+◆ Zbulimi i fjalëkalimeve të dobëta: Gjeni dhe forconi fjalëkalime të cenueshme.
+◆ Enkriptimi në nivel fjalëkalimi dhe artikulli: Enkriptim shtesë për artikujt tuaj më të ndjeshëm.
+◆ Enkriptimi i skedarëve Web3: Enkriptoni skedarët me metoda të forta kripto.
+◆ Gjenerues i fuqishëm i fjalëkalimeve: Fjalëkalime unike ultra të forta me rastësi të sigurt kriptografikisht.
+◆ Ruajtje falas e enkriptuar dhe e decentralizuar në cloud: Vetëm ju mbani çelësat.
+◆ Depo e sigurt e fotove dhe videove: Kyçni jetën tuaj dixhitale me enkriptim të decentralizuar.
+◆ Akses ndër-platformë: Përdorni Liso në desktop, tablet dhe celular.
+◆ Migrim i lehtë: Importoni nga Bitwarden, LastPass, Chrome dhe të tjerët—pastaj enkriptoni me standardet më të fundit kripto.
+◆ 100% zero-knowledge: Vetëm ju mund të aksesoni të dhënat tuaja—askush tjetër, as edhe Liso.
+◆ Regjistrohuni me portofolë kripto: Filloni menjëherë me verifikim portofoli—pa email ose fjalëkalim.
+
+Liso e kalon menaxherët tradicionalë të fjalëkalimeve (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass) me siguri, privatësi dhe liri dixhitale superiore.
+
+Mëso më shumë: https://liso.dev
+
+Burim i hapur: https://github.com/Liso-Vault/app
+
+Politika e privatësisë: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Kushtet e përdorimit: https://github.com/Liso-Vault/app/blob/master/TERMS.md

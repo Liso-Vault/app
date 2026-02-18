@@ -1,8 +1,7 @@
 import 'package:app_core/globals.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/services/notifications.service.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,14 +82,8 @@ class GroupsScreenController extends GetxController with ConsoleMixin {
       }
 
       if (GroupsController.to.data.length >= limits.customVaults) {
-        return Utils.adaptiveRouteOpen(
-          name: Routes.upgrade,
-          parameters: {
-            'title': 'Custom Vaults',
-            'body':
-                'Maximum custom vaults of ${limits.customVaults} limit reached. Upgrade to Pro to unlock unlimited custom vaults feature.',
-          },
-        );
+        PurchasesService.to.show();
+        return;
       }
 
       await GroupsService.to.box!.add(HiveLisoGroup(

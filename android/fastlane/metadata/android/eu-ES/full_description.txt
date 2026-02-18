@@ -1,0 +1,34 @@
+Babestu zure datu baliotsuak segurtasunaren hurrengo belaunaldiarekin. Liso crypto-lehena, Web3 bidezko datu-gordailu bat da, bloke-kate mailako segurtasuna eta teknologia deszentralizatua aprobetxatzeko eraikia. Babestu pasahitzak, oharrak, argazkiak, bideoak, dokumentuak eta informazio sentikor guztia kriptografia aurreratu, protokolo deszentralizatu eta pribatutasun estandar indartsuekin. Lisorekin zure datuak zureak izaten jarraitzen dute—seguru, pribatu eta zure kontrolpean, iragarkirik eta jarraipenik gabe.
+
+Liso teknika kriptografiko modernoak eta Web3 esparruak erabiltzen ditu—amaieratik-amairera enkriptatzea, zero-ezagutza froga eta zorro seguru integrazioak barne—zure bizitza digitala babesteko. Gorde sarbide-kredentzialak, pasahitzak, crypto zorroak, hazteko esaldiak, 2FA/MFA kodeak, ohar seguruak, txartelak, banku-kontuak, nortasun-agiriak eta gehiago gordailu deszentralizatu eta zeharkaezinean.
+
+Liso crypto pasahitz kudeatzaile guztiak-batetan, gailu-arteko gordailu eta hurrengo belaunaldiko autentifikatzailea da, Web3 eta segurtasun klasikoa paregabe babeserako batuz.
+
+Ezaugarri nagusiak:
+◆ Crypto segurtasun hurrengo belaunaldia: Bloke-kate eta Web3 teknologiek porrot-puntu bakarrak ezabatzen dituzte eta datuen babesa maximizatzen dute.
+◆ AES-256 maila militar + amaieratik-amairera enkriptatzea: Kriptografia tradizional eta deszentralizatua segurtasun paregaberako.
+◆ Nortasun deszentralizatua: Egiaztatu zorro seguruekin edo sarbide deszentralizatuarekin—zure nortasun errealarekin loturarik ez.
+◆ Lineaz-kanpo/aire-huts modua: Sarbide zure gordailu enkriptatura internetik gabe—zure datuak ez dira inoiz zure gailutik ateratzen hautatzen ez baduzu.
+◆ Bloke-kate bidezko sinkronizazioa: Sinkronizatu datuak gailuetan biltegiratze hodei deszentralizatu eta enkriptatuarekin.
+◆ Hatz-marka/aurpegi biometria: Autentifikazio anizkoitz kriptografiko sinatzaileekin.
+◆ 2FA/MFA autentifikatzailea: Sortu eta gorde bi-faktore kodeak zure gordailu enkriptaturan seguruki.
+◆ Pasahitz ahul detektatzea: Aurkitu eta indartu pasahitz ahulak.
+◆ Pasahitz eta elementu-mailako enkriptatzea: Enkriptatze gehigarria zure elementu sentikorrenetarako.
+◆ Web3 fitxategi enkriptatzea: Enkriptatu fitxategiak kripto metodo sendoekin.
+◆ Pasahitz sortzaile indartsua: Pasahitz bakar eta ultra-indartsuak ausazkotasun kriptografikoki seguruarekin.
+◆ Biltegiratze hodei enkriptatu eta deszentralizatu doan: Zu bakarrik gordetzen duzu gakoak.
+◆ Argazki eta bideo gordailu segurua: Blokeatu zure bizitza digitala enkriptatze deszentralizatuarekin.
+◆ Plataforma-arteko sarbidea: Erabili Liso mahaigain, tablet eta mugikorrean.
+◆ Migrazio erraza: Inportatu Bitwarden, LastPass, Chrome eta besteetatik—ondoren enkriptatu crypto estandar berrienekin.
+◆ %100 zero-ezagutza: Zu bakarrik sar zaitezke zure datuetara—inor beste ez, Lisorik ere ez.
+◆ Erregistratu crypto zorroekin: Hasi berehala zorro autentifikazioarekin—e-mail edo pasahitzik behar ez.
+
+Kriptografia aurreratu eta teknologia deszentralizatuaren oinarrian, Lisok gainditzen ditu pasahitz kudeatzaile tradizionalak (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—segurtasun, pribatutasun eta askatasun digital benetako gaindikoekin.
+
+Gehiago ikasi: https://liso.dev
+
+Kode irekia: https://github.com/Liso-Vault/app
+
+Pribatutasun politika: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Erabilera-baldintzak: https://github.com/Liso-Vault/app/blob/master/TERMS.md

@@ -1,0 +1,34 @@
+Schützen Sie Ihre wertvollen Daten mit der nächsten Generation von Sicherheit. Liso ist ein krypto-first, Web3-gestütztes Datentresor, entwickelt, um Blockchain-Sicherheit und dezentrale Technologie zu nutzen. Schützen Sie Passwörter, Notizen, Fotos, Videos, Dokumente und alle sensiblen Informationen mit moderner Kryptografie, dezentralen Protokollen und hohen Datenschutzstandards. Mit Liso bleiben Ihre Daten Ihre—sicher, privat und unter Ihrer Kontrolle, ohne Werbung und Tracking.
+
+Liso nutzt moderne kryptografische Verfahren und Web3-Frameworks—Ende-zu-Ende-Verschlüsselung, Zero-Knowledge-Beweise und sichere Wallet-Integrationen—um Ihr digitales Leben zu schützen. Speichern Sie Anmeldedaten, Passwörter, Krypto-Wallets, Seed-Phrasen, 2FA/MFA-Codes, sichere Notizen, Karten, Bankkonten, Ausweisdokumente und mehr in einem dezentralen, undurchdringlichen Tresor.
+
+Liso ist ein All-in-One-Krypto-Passwortmanager, geräteübergreifender Tresor und Authenticator der nächsten Generation, der Web3 und klassische Sicherheit für unübertroffenen Schutz vereint.
+
+Hauptfunktionen:
+◆ Krypto-Sicherheit der nächsten Generation: Blockchain und Web3 eliminieren Single Points of Failure und maximieren Datenschutz.
+◆ Militärische AES-256- und Ende-zu-Ende-Verschlüsselung: Traditionelle und dezentrale Kryptografie für unübertroffene Sicherheit.
+◆ Dezentrale Identität: Authentifizierung mit sicheren Wallets oder dezentraler Anmeldung—ohne Verknüpfung zu Ihrer realen Identität.
+◆ Offline-/Air-Gapped-Modus: Zugriff auf Ihren verschlüsselten Tresor ohne Internet—Ihre Daten verlassen Ihr Gerät nie, es sei denn, Sie wählen es.
+◆ Blockchain-gestützte Sync: Daten sicher über mehrere Geräte mit dezentralem, verschlüsseltem Cloud-Speicher synchronisieren.
+◆ Fingerabdruck-/Gesichts-Biometrie: Multi-Faktor-Authentifizierung mit kryptografischen Signern.
+◆ 2FA/MFA-Authenticator: Zwei-Faktor-Codes sicher in Ihrem verschlüsselten Tresor erzeugen und speichern.
+◆ Schwache-Passwort-Erkennung: Anfällige Passwörter finden und stärken.
+◆ Passwort- und Elementverschlüsselung: Zusätzliche Verschlüsselung für Ihre sensibelsten Tresor-Einträge.
+◆ Web3-Dateiverschlüsselung: Dateien mit robusten Krypto-Methoden verschlüsseln.
+◆ Leistungsstarker Passwort-Generator: Ultra-starke, einzigartige Passwörter mit kryptografisch sicherem Zufall.
+◆ Kostenloser verschlüsselter und dezentraler Cloud-Speicher: Nur Sie halten die Schlüssel.
+◆ Sicherer Foto- und Video-Tresor: Ihr digitales Leben mit dezentraler Verschlüsselung schützen.
+◆ Plattformübergreifender Zugriff: Liso auf Desktop, Tablet und Mobilgerät nutzen.
+◆ Einfache Migration: Daten aus Bitwarden, LastPass, Chrome und anderen Managern importieren—dann mit neuesten Krypto-Standards verschlüsseln.
+◆ 100% Zero-Knowledge: Nur Sie können auf Ihre Daten zugreifen—niemand sonst, nicht einmal Liso.
+◆ Sign-Up mit Krypto-Wallets: Sofort starten mit Wallet-Authentifizierung—keine E-Mail oder Passwort nötig.
+
+Mit fortgeschrittener Kryptografie und dezentraler Technologie übertrifft Liso Legacy-Passwortmanager (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—mit überlegener Sicherheit, Privatsphäre und echter digitaler Freiheit.
+
+Mehr erfahren: https://liso.dev
+
+Open Source: https://github.com/Liso-Vault/app
+
+Datenschutz: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Nutzungsbedingungen: https://github.com/Liso-Vault/app/blob/master/TERMS.md

@@ -1,4 +1,5 @@
 import 'package:app_core/pages/feedback/feedback.screen.dart';
+import 'package:app_core/pages/onboarding/onboarding.screen.dart';
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/pages/update/update.screen.dart';
 import 'package:app_core/pages/upgrade/upgrade.screen.dart';
@@ -14,7 +15,6 @@ import 'package:liso/features/seed/seed.screen.dart';
 import 'package:liso/features/settings/settings.screen.dart';
 import 'package:liso/features/shared_vaults/shared_vaults.screen.dart';
 import 'package:liso/features/unlock/unlock.screen.dart';
-import 'package:liso/features/welcome/welcome.screen.dart';
 
 import '../attachments/attachments.screen.dart';
 import '../categories/categories.screen.dart';
@@ -42,7 +42,8 @@ class Pages {
     ),
     GetPage(
       name: Routes.welcome,
-      page: () => const WelcomeScreen(),
+      transition: Transition.noTransition,
+      page: () => const OnboardingScreen(),
     ),
     GetPage(
       name: Routes.unlock,
@@ -110,6 +111,7 @@ class Pages {
     ),
     GetPage(
       name: Routes.upgrade,
+      transition: Transition.noTransition,
       page: () => const UpgradeScreen(),
     ),
     GetPage(

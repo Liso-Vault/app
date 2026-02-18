@@ -1,5 +1,6 @@
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:app_core/widgets/busy_indicator.widget.dart';
@@ -115,9 +116,7 @@ class DevicesScreen extends StatelessWidget with ConsoleMixin {
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton.icon(
-                  onPressed: () => Utils.adaptiveRouteOpen(
-                    name: Routes.upgrade,
-                  ),
+                  onPressed: () => PurchasesService.to.show(),
                   label: Text('upgrade_to_pro'.tr),
                   icon: const Icon(LineAwesome.rocket_solid),
                 ),

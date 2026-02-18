@@ -30,7 +30,7 @@ final nl = {
   "day": "Dag",
   "help_translate": "Help vertalen",
   "join_affiliates": "Word lid van het affiliate programma",
-  "join_over_users": "Vertrouwd door meer dan 100,000 gebruikers",
+  "join_over_users": "Vertrouwd door meer dan 1,000,000 gebruikers",
   "nextran_desc": "App Store lijst vertaler voor ontwikkelaars",
   "slogan": "Begin met het beveiligen van je gegevens",
   "slogan_sub":
@@ -600,4 +600,46 @@ final nl = {
   "download": "Downloaden",
   "folder_name": "Map naam",
   "send": "Versturen",
+
+  // String Reviews
+  "review_string_0":
+      "Liso is absoluut fantastisch! Het heeft volledig veranderd hoe ik mijn gevoelige gegevens beveilig. Topaanbeveling voor echte bescherming!",
+  "review_string_1":
+      "Ik gebruik Liso elke dag. Het ontwerp is zo gebruiksvriendelijk en ik vertrouw erop dat al mijn wachtwoorden super veilig zijn met blockchain-tech.",
+  "review_string_2":
+      "Elke functie in Liso maakt het beheren van mijn crypto-wallets en logins zoveel makkelijker en veiliger. Ik hou van de sterke versleuteling!",
+  "review_string_3":
+      "Liso overtrof al mijn verwachtingen. Ik vertrouw het al mijn geheimen toe en de gemoedsrust is onbetaalbaar!",
+  "review_string_4":
+      "Mijn productiviteit en veiligheid zijn allebei omhooggeschoten sinds ik overstapte op Liso. Het is nu mijn vaste kluis voor alles wat privé is.",
+  "review_string_5":
+      "Lisos regelmatige updates maken het steeds veiliger en beter. De verbeteringen zijn constant en mijn gegevens blijven volledig beschermd.",
+  "review_string_6":
+      "Liso is echt een redder in nood! Ik bewaar mijn wachtwoorden, crypto-seedzinnen en persoonlijke notities met vol vertrouwen.",
+  "review_string_7":
+      "Lisos klantenservice is geweldig! Snel en deskundig, en ze geven echt om gebruikersveiligheid en feedback.",
+  "review_string_8":
+      "Beveel Liso warm aan bij vrienden en collega's. Het zit vol met beveiligingsfuncties die privacy moeiteloos maken.",
+  "review_string_9":
+      "Lisos mooie interface maakt het beheren van mijn kluis plezierig en stressvrij. Beveiliging zag er nog nooit zo goed uit.",
+  "review_string_10":
+      "Ik ben meer georganiseerd en veiliger dan ooit met Liso. Ik kan me niet voorstellen mijn digitale leven aan een andere app toe te vertrouwen.",
+  "review_string_11":
+      "Liso presteert perfect — soepel, betrouwbaar en volledig foutloos. Het geeft me vertrouwen dat mijn gegevens veilig zijn.",
+  "review_string_12":
+      "Liso komt alle beveiligingsbeloftes na. Mijn workflow is verbeterd en mijn gegevens voelen ondoordringbaar!",
+  "review_string_13":
+      "Gefocust en veilig blijven is makkelijk met Liso. Zo dankbaar voor de privacyfuncties en eenvoud.",
+  "review_string_14":
+      "Liso is een schatkist vol geweldige beveiligingsfuncties. Elke keer als ik het gebruik ontdek ik nieuwe manieren om beschermd te blijven.",
+  "review_string_15":
+      "Het doordachte ontwerp van Liso maakt navigatie makkelijk. Alles — wallets, wachtwoorden, 2FA — is altijd binnen handbereik.",
+  "review_string_16":
+      "Liso heeft alles wat ik nodig heb: één app om al mijn digitale bezittingen te beheren, versleutelen en openen.",
+  "review_string_17":
+      "Onder de indruk van hoe Liso evolueert! De ontwikkelaars luisteren echt naar feedback en verbeteren voortdurend veiligheid en bruikbaarheid.",
+  "review_string_18":
+      "Liso gebruiken is een genot — geweldige privacycontroles en krachtige crypto-beveiliging in een app die er goed uitziet en aanvoelt.",
+  "review_string_19":
+      "Ik beveel Liso altijd aan! Het is simpelweg de veiligste en meest georganiseerde manier om crypto, wachtwoorden en privé-info op te slaan.",
 };

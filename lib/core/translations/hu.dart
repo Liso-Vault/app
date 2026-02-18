@@ -29,7 +29,7 @@ final hu = {
   "day": "Nap",
   "help_translate": "Segítsen fordítani",
   "join_affiliates": "Csatlakozzon a partnerprogramhoz",
-  "join_over_users": "Több mint 100,000 felhasználó által megbízható",
+  "join_over_users": "Több mint 1,000,000 felhasználó által megbízható",
   "nextran_desc": "App Store listázási fordító fejlesztőknek",
   "slogan": "Kezdje el az adatai védelmét",
   "slogan_sub":
@@ -601,4 +601,46 @@ final hu = {
   "download": "Letöltés",
   "folder_name": "Mappa neve",
   "send": "Küldés",
+
+  // String Reviews
+  "review_string_0":
+      "A Liso abszolút fantasztikus! Teljesen megváltoztatta, hogyan védem az érzékeny adataimat. Top ajánlás valódi védelmért!",
+  "review_string_1":
+      "Minden nap használom a Lisot. A design nagyon felhasználóbarát, és biztos vagyok benne, hogy minden jelszavam szuper biztonságos a blockchain technológiával.",
+  "review_string_2":
+      "A Liso minden funkciója sokkal könnyebbé és biztonságosabbá teszi a krypto pénztárcák és bejelentkezések kezelését. Imádom az erős titkosítást!",
+  "review_string_3":
+      "A Liso minden várakozásomat felülmúlta. Minden titkomat rábízom, és a megnyugvás megfizethetetlen!",
+  "review_string_4":
+      "A termelékenységem és biztonságom mindkettő az egekbe szökött, mióta a Lisora váltottam. Most már ez a fő tárolóm minden privát dologhoz.",
+  "review_string_5":
+      "A Liso rendszeres frissítései egyre biztonságosabbá és jobbá teszik. A fejlesztések állandóak, és az adataim teljesen védettek maradnak.",
+  "review_string_6":
+      "A Liso igazán életmentő! Jelszavakat, krypto seed kifejezéseket és személyes jegyzeteket tárolok teljes bizalommal.",
+  "review_string_7":
+      "A Liso ügyfélszolgálata csodálatos! Gyors és hozzáértő, és tényleg törődnek a felhasználói biztonsággal és visszajelzésekkel.",
+  "review_string_8":
+      "Nagyon ajánlom a Lisot barátoknak és kollégáknak. Tele van biztonsági funkciókkal, amelyek a magánéletet könnyűvé teszik.",
+  "review_string_9":
+      "A Liso gyönyörű felülete kellemessé és stresszmentessé teszi a tárolóm kezelését. A biztonság még soha nem nézett ki ilyen jól.",
+  "review_string_10":
+      "A Lisoval szervezettebb és biztonságosabb vagyok, mint valaha. Nem tudom elképzelni, hogy digitális életemet másik alkalmazásra bíznám.",
+  "review_string_11":
+      "A Liso tökéletesen teljesít — zökkenőmentesen, megbízhatóan és teljesen hibamentesen. Bizalmat ad, hogy az információim biztonságban vannak.",
+  "review_string_12":
+      "A Liso minden biztonsági ígéretét teljesíti. A munkafolyamatom javult és az adataim áthatolhatatlannak tűnnek!",
+  "review_string_13":
+      "A fókuszált és biztonságos maradás könnyű a Lisoval. Nagyon hálás vagyok az adatvédelmi funkcióiért és az egyszerűségéért.",
+  "review_string_14":
+      "A Liso egy kincsesláda tele hihetetlen biztonsági funkciókkal. Minden használatkor új módokat találok a védelmezésre.",
+  "review_string_15":
+      "A Liso átgondolt designja megkönnyíti a navigációt. Minden — pénztárcák, jelszavak, 2FA — mindig kéznél van.",
+  "review_string_16":
+      "A Lisoban minden megvan, amire szükségem van: egy alkalmazás az összes digitális értékem kezeléséhez, titkosításához és eléréséhez.",
+  "review_string_17":
+      "Lenyűgöz, ahogy a Liso fejlődik! A fejlesztők tényleg hallgatnak a visszajelzésekre és folyamatosan növelik a biztonságot és a használhatóságot.",
+  "review_string_18":
+      "A Liso használata gyönyörűség — fantasztikus adatvédelmi vezérlők és erős kripto-biztonság egy jól kinéző és jól működő alkalmazásban.",
+  "review_string_19":
+      "Mindig a Lisot ajánlom! Egyszerűen a legbiztonságosabb és legszervezettebb módja a kripto, jelszavak és privát információk tárolásának.",
 };

@@ -30,7 +30,7 @@ final vi = {
   "day": "Ngày",
   "help_translate": "Giúp dịch thuật",
   "join_affiliates": "Tham gia chương trình đối tác",
-  "join_over_users": "Được tin tưởng bởi hơn 100,000 người dùng",
+  "join_over_users": "Được tin tưởng bởi hơn 1,000,000 người dùng",
   "nextran_desc": "Công cụ dịch danh sách App Store cho nhà phát triển",
   "slogan": "Bắt đầu bảo mật dữ liệu của bạn",
   "slogan_sub":
@@ -599,4 +599,46 @@ final vi = {
   "download": "Tải xuống",
   "folder_name": "Tên thư mục",
   "send": "Gửi",
+
+  // String Reviews
+  "review_string_0":
+      "Liso thực sự tuyệt vời! Nó đã thay đổi hoàn toàn cách tôi bảo vệ dữ liệu nhạy cảm. Đề xuất hàng đầu cho bảo vệ thật sự!",
+  "review_string_1":
+      "Tôi dùng Liso mỗi ngày. Giao diện rất thân thiện và tôi tin tưởng mọi mật khẩu đều siêu an toàn với công nghệ blockchain.",
+  "review_string_2":
+      "Mọi tính năng trong Liso giúp quản lý ví crypto và đăng nhập dễ dàng và an toàn hơn nhiều. Tôi thích mã hóa mạnh!",
+  "review_string_3":
+      "Liso vượt mọi kỳ vọng của tôi. Tôi giao phó mọi bí mật và sự yên tâm vô giá!",
+  "review_string_4":
+      "Năng suất và bảo mật của tôi tăng vọt kể từ khi chuyển sang Liso. Giờ đây là kho bảo mật chính cho mọi thứ riêng tư.",
+  "review_string_5":
+      "Cập nhật thường xuyên của Liso khiến nó ngày càng an toàn và tốt hơn. Cải tiến liên tục và dữ liệu của tôi luôn được bảo vệ đầy đủ.",
+  "review_string_6":
+      "Liso thực sự là cứu tinh! Tôi lưu mật khẩu, cụm seed crypto và ghi chú cá nhân với sự tin tưởng tuyệt đối.",
+  "review_string_7":
+      "Hỗ trợ khách hàng của Liso tuyệt vời! Nhanh và am hiểu, họ thực sự quan tâm đến bảo mật và phản hồi người dùng.",
+  "review_string_8":
+      "Rất khuyên dùng Liso cho bạn bè và đồng nghiệp. Đầy tính năng bảo mật khiến quyền riêng tư trở nên dễ dàng.",
+  "review_string_9":
+      "Giao diện đẹp của Liso khiến việc quản lý kho bảo mật thú vị và không căng thẳng. Bảo mật chưa bao giờ đẹp đến thế.",
+  "review_string_10":
+      "Tôi có tổ chức và an toàn hơn bao giờ hết với Liso. Không tưởng tượng nổi việc giao phó đời sống số cho app khác.",
+  "review_string_11":
+      "Liso hoạt động hoàn hảo — mượt, đáng tin và hoàn toàn không lỗi. Cho tôi tin tưởng thông tin của tôi an toàn.",
+  "review_string_12":
+      "Liso giữ trọn mọi lời hứa bảo mật. Quy trình làm việc của tôi cải thiện và dữ liệu cảm giác không thể xuyên thủng!",
+  "review_string_13":
+      "Giữ tập trung và an toàn thật dễ với Liso. Rất biết ơn các tính năng quyền riêng tư và sự đơn giản.",
+  "review_string_14":
+      "Liso là rương châu báu đầy tính năng bảo mật tuyệt vời. Mỗi lần dùng tôi lại tìm cách mới để được bảo vệ.",
+  "review_string_15":
+      "Thiết kế chu đáo của Liso khiến điều hướng dễ dàng. Ví, mật khẩu, 2FA — luôn sẵn sàng.",
+  "review_string_16":
+      "Liso có mọi thứ tôi cần: một app để quản lý, mã hóa và truy cập mọi tài sản số của tôi.",
+  "review_string_17":
+      "Ấn tượng với cách Liso phát triển! Dev thực sự lắng nghe phản hồi và không ngừng nâng bảo mật và khả năng sử dụng.",
+  "review_string_18":
+      "Dùng Liso là niềm vui — điều khiển quyền riêng tư tuyệt và bảo mật crypto mạnh trong app đẹp và dùng sướng.",
+  "review_string_19":
+      "Tôi luôn giới thiệu Liso! Đơn giản là cách an toàn và có tổ chức nhất để lưu crypto, mật khẩu và thông tin riêng tư.",
 };

@@ -1,5 +1,5 @@
 final zhHant = {
-  "locale_string": "zh_TW",
+  "locale_string": "zh-Hant-TW",
   "language": "語言",
   // ---
   "get_started": "開始使用",
@@ -30,7 +30,7 @@ final zhHant = {
   "day": "天",
   "help_translate": "幫助翻譯",
   "join_affiliates": "加入聯盟計劃",
-  "join_over_users": "受到100,000+用戶信賴",
+  "join_over_users": "受到1,000,000+用戶信賴",
   "nextran_desc": "面向開發者的應用程式商店列表翻譯器",
   "slogan": "開始保護您的資料",
   "slogan_sub": "Liso：您堅不可摧的堡壘，用於保護機密資料、密碼和檔案。",
@@ -573,4 +573,46 @@ final zhHant = {
   "download": "下載",
   "folder_name": "資料夾名稱",
   "send": "傳送",
+
+  // String Reviews
+  "review_string_0":
+      "Liso 真的太棒了！它完全改變了我保護敏感資料的方式。真正防護的首選推薦！",
+  "review_string_1":
+      "我每天使用 Liso。介面非常友善，我相信在區塊鏈技術下所有密碼都超級安全。",
+  "review_string_2":
+      "Liso 的每項功能都讓管理加密錢包和登入更簡單、更安全。超愛強加密！",
+  "review_string_3":
+      "Liso 超出我所有預期。我把所有秘密都託付給它，安心無價！",
+  "review_string_4":
+      "改用 Liso 後，我的效率與安全性都大幅提升。現在它是我存放一切私密內容的首選保險庫。",
+  "review_string_5":
+      "Liso 的定期更新讓它越來越安全、越來越好。改進不斷，我的資料始終受到完整保護。",
+  "review_string_6":
+      "Liso 真是救星！我放心地儲存密碼、加密助記詞和個人筆記。",
+  "review_string_7":
+      "Liso 的客戶支援很棒！回應快、專業，真心在乎使用者安全與回饋。",
+  "review_string_8":
+      "強烈向朋友和同事推薦 Liso。安全功能豐富，讓隱私保護毫不費力。",
+  "review_string_9":
+      "Liso 的介面美觀，管理保險庫輕鬆無壓力。安全從未如此好看。",
+  "review_string_10":
+      "有了 Liso 我更井然有序、更安心。無法想像把數位生活交給其他應用。",
+  "review_string_11":
+      "Liso 運作完美——流暢、可靠、毫無故障。讓我確信我的資訊是安全的。",
+  "review_string_12":
+      "Liso 兌現每一項安全承諾。工作流程改善了，資料感覺堅不可摧！",
+  "review_string_13":
+      "用 Liso 保持專注與安全很容易。非常感激它的隱私功能與簡潔。",
+  "review_string_14":
+      "Liso 是裝滿出色安全功能的寶庫。每次使用都能發現新的保護方式。",
+  "review_string_15":
+      "Liso 的貼心設計讓導覽很簡單。錢包、密碼、2FA——一切觸手可及。",
+  "review_string_16":
+      "Liso 應有盡有：一個應用即可管理、加密與存取所有數位資產。",
+  "review_string_17":
+      "對 Liso 的進化印象深刻！開發者真的會聽回饋，不斷強化安全與易用性。",
+  "review_string_18":
+      "使用 Liso 是一種享受——出色的隱私控制與強大的加密安全，介面好看又好用。",
+  "review_string_19":
+      "我一直推薦 Liso！它就是儲存加密資產、密碼與私密資訊最安全、最有序的方式。",
 };

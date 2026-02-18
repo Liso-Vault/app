@@ -1,0 +1,34 @@
+Zastitite svoje vredne podatke bezbednoscu sledece generacije. Liso je kripto-prvi, sef podataka pokretan Web3-om, izgradjen da iskoristi bezbednost nivoa blokcejna i decentralizovanu tehnologiju. Zastitite lozinke, beleske, fotografije, videozapise, dokumente i sve osetljive informacije naprednom kriptografijom, decentralizovanim protokolima i strogim standardima privatnosti. Sa Liso-om vasi podaci ostaju vasi - sigurni, privatni i pod vasom kontrolom, bez reklama i pracenja.
+
+Liso koristi savremene kriptografske tehnike i Web3 okvire - ukljucujuci sifrovanje od kraja do kraja, dokaze nultog znanja i integracije sigurnih novcanika - za zastitu vaseg digitalnog zivota. Cuvajte podatke za prijavu, lozinke, kripto novcanike, seed fraze, 2FA/MFA kodove, sigurne beleske, kartice, bankovne racune, dokumente identiteta i vise u decentralizovanom, neprobivom sefu.
+
+Liso je sve-u-jednom kripto menadzer lozinki, sef preko uredjaja i autentifikator sledece generacije, spajajuci Web3 i klasicnu bezbednost za nezamenjivu zastitu.
+
+Kljucne karakteristike:
+- Kripto bezbednost sledece generacije: Blokcejn i Web3 tehnologije uklanjaju jedine tacke kvara i maksimiziraju zastitu podataka.
+- AES-256 vojnog nivoa + sifrovanje od kraja do kraja: Tradicionalna i decentralizovana kriptografija za nezamenjivu bezbednost.
+- Decentralizovani identitet: Autentikujte se sigurnim novcanicima ili decentralizovanom prijavom - bez veze sa vasim stvarnim identitetom.
+- Offlajn/vazdusno odvojen rezim: Pristupite svom sifrovanom sefu bez interneta - vasi podaci nikada ne napustaju uredjaj osim ako ne izaberete.
+- Sinhronizacija podrzana blokcejnom: Sinhronizujte podatke izmedju uredjaja sa decentralizovanim, sifrovanim oblacnim skladistenjem.
+- Biometrija prsta/lica: Visefaktorska autentifikacija sa kriptografskim potpisnicima.
+- 2FA/MFA autentifikator: Generisite i cuvajte dvfaktorske kodove u svom sifrovanom sefu.
+- Otkrivanje slabe lozinke: Pronadjite i ojacajte ranjive lozinke.
+- Sifrovanje na nivou lozinke i stavke: Dodatno sifrovanje za vase najosetljivije stavke.
+- Web3 sifrovanje datoteka: Sifrujte datoteke robustnim kripto metodama.
+- Mocan generator lozinki: Ultra-jake, jedinstvene lozinke sa kriptografski sigurnom slucajnoscu.
+- Besplatno sifrovano i decentralizovano oblacno skladiste: Samo vi drzite kljuceve.
+- Siguran sef za fotografije i videozapise: Zakljucajte digitalni zivot decentralizovanim sifrovanjem.
+- Pristup preko platformi: Koristite Liso na desktopu, tabletu i mobilnom.
+- Laka migracija: Uvoz iz Bitwarden, LastPass, Chrome i drugih - zatim sifrovanje najnovijim kripto standardima.
+- 100% nulto znanje: Samo vi mozete pristupiti svojim podacima - niko drugi, cak ni Liso.
+- Prijava kripto novcanicima: Pocnite odmah sa autentifikacijom novcanika - nije potrebna e-posta ni lozinka.
+
+Liso nadmasuje stare menadzere lozinki (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass) superiornom bezbednoscu, privatnoscu i digitalnom slobodom.
+
+Saznajte vise: https://liso.dev
+
+Otvoreni kod: https://github.com/Liso-Vault/app
+
+Politika privatnosti: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Uslovi koriscenja: https://github.com/Liso-Vault/app/blob/master/TERMS.md

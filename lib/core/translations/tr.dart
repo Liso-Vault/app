@@ -29,7 +29,7 @@ final tr = {
   "day": "Gün",
   "help_translate": "Çeviriye Yardım Edin",
   "join_affiliates": "Ortaklık Programına Katılın",
-  "join_over_users": "100,000'den fazla kullanıcı tarafından güveniliyor",
+  "join_over_users": "1,000,000'den fazla kullanıcı tarafından güveniliyor",
   "nextran_desc": "Geliştiriciler için App Store Liste Çevirmeni",
   "slogan": "Verilerinizi Korumaya Başlayın",
   "slogan_sub":
@@ -598,4 +598,46 @@ final tr = {
   "download": "İndir",
   "folder_name": "Klasör Adı",
   "send": "Gönder",
+
+  // String Reviews
+  "review_string_0":
+      "Liso kesinlikle harika! Hassas verilerimi nasıl güvence altına aldığımı tamamen değiştirdi. Gerçek koruma için en iyi öneri!",
+  "review_string_1":
+      "Liso'yu her gün kullanıyorum. Tasarım çok kullanıcı dostu ve tüm şifrelerimin blockchain teknolojisiyle süper güvende olduğundan eminim.",
+  "review_string_2":
+      "Liso'daki her özellik kripto cüzdanlarımı ve girişlerimi yönetmeyi çok daha kolay ve güvenli yapıyor. Güçlü şifrelemeyi seviyorum!",
+  "review_string_3":
+      "Liso tüm beklentilerimi aştı. Tüm sırlarımı ona emanet ediyorum ve iç huzur paha biçilmez!",
+  "review_string_4":
+      "Liso'ya geçtiğimden beri hem verimliliğim hem güvenliğim fırladı. Artık her şey özel için ana kasanım.",
+  "review_string_5":
+      "Liso'nun düzenli güncellemeleri onu daha güvenli ve daha iyi yapıyor. İyileştirmeler sürekli ve verilerim tam korunuyor.",
+  "review_string_6":
+      "Liso gerçek bir cankurtaran! Şifrelerimi, kripto seed ifadelerimi ve kişisel notlarımı tam güvenle saklıyorum.",
+  "review_string_7":
+      "Liso'nun müşteri desteği harika! Hızlı ve bilgili, kullanıcı güvenliği ve geri bildirime gerçekten önem veriyorlar.",
+  "review_string_8":
+      "Liso'yu arkadaşlara ve iş arkadaşlarına şiddetle tavsiye ediyorum. Gizliliği kolaylaştıran güvenlik özellikleriyle dolu.",
+  "review_string_9":
+      "Liso'nun güzel arayüzü kasamı yönetmeyi keyifli ve stressiz yapıyor. Güvenlik hiç bu kadar iyi görünmemişti.",
+  "review_string_10":
+      "Liso ile her zamankinden daha düzenli ve güvendeyim. Dijital hayatımı başka bir uygulamaya emanet etmeyi hayal edemiyorum.",
+  "review_string_11":
+      "Liso kusursuz çalışıyor — akıcı, güvenilir ve tamamen hatasız. Bilgilerimin güvende olduğuna dair güven veriyor.",
+  "review_string_12":
+      "Liso her güvenlik sözünü tutuyor. İş akışım iyileşti ve verilerim aşılamaz hissediyor!",
+  "review_string_13":
+      "Odaklı ve güvende kalmak Liso ile kolay. Gizlilik özellikleri ve sadeliği için çok minnettarım.",
+  "review_string_14":
+      "Liso inanılmaz güvenlik özellikleriyle dolu bir hazine sandığı. Her kullandığımda korunmanın yeni yollarını buluyorum.",
+  "review_string_15":
+      "Liso'nun düşünülmüş tasarımı gezinmeyi kolaylaştırıyor. Cüzdanlar, şifreler, 2FA — hepsi her zaman orada.",
+  "review_string_16":
+      "Liso'da ihtiyacım olan her şey var: tüm dijital değerlerimi yönetmek, şifrelemek ve erişmek için tek uygulama.",
+  "review_string_17":
+      "Liso'nun nasıl evrildiğinden etkilendim! Geliştiriciler geri bildirimi gerçekten dinliyor ve güvenlik ile kullanılabilirliği artırıyor.",
+  "review_string_18":
+      "Liso kullanmak bir zevk — harika gizlilik kontrolleri ve güçlü kripto güvenliği, harika görünen ve hissettiren bir uygulamada.",
+  "review_string_19":
+      "Liso'yu her zaman tavsiye ederim! Kripto, şifre ve özel bilgileri saklamanın en güvenli ve düzenli yolu.",
 };

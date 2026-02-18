@@ -1,0 +1,34 @@
+Protegia tes datas preziusas cun la segirezza da la proxima generaziun. Liso è in vault da datas crypto-prim, manà da Web3, construì per utilisar segirezza da qualitad blockchain e tecnologia decentralisada. Protegia passwords, annotaziuns, fotos, videos, documents e tut las infurmaziuns sensiblas cun criptografia avanzada, protocols decentralisads e standards da sfera privata ferms. Cun Liso tus datas restan tias - segiras, privatas e sut tia controlla, libra da reclamas e da fastizar.
+
+Liso utilisescha techniques criptograficas modernas e structuras Web3 - inclus criptografia da fin a fin, provas da zero-cognoscenza e integraziuns da portafegl segirs - per proteger tia vita digitala. Memorisar credenzials d'access, passwords, portafegls crypto, frasas da sems, codes 2FA/MFA, annotaziuns segiras, chartas, contos da banca, documents d'identitad e dapli en in vault decentralisà e impenetraivel.
+
+Liso è in manager da passwords crypto tut-en-in, in vault trans-apparats e in autentificatur da la proxima generaziun, unind Web3 e segirezza classica per protecziun inigualada.
+
+Funcziuns principalas:
+- Segirezza crypto da la proxima generaziun: Tecnologias blockchain e Web3 elimineschan puncts singuls da defect e maximiseschan la protecziun da datas.
+- AES-256 da qualitad militara + criptografia da fin a fin: Criptografia tradiziunala e decentralisada per segirezza inigualada.
+- Identitad decentralisada: Autentifitgar cun portafegls segirs u s'annunzia decentralisada - nagina colliaziun cun tia identitad reala.
+- Modus offline/separà da l'aria: Acceder a tes vault criptà senza internet - tus datas na bandunan mai tes apparat senza che ti tschertgas.
+- Sincronisaziun sustegnida da blockchain: Sincronisar datas tranter apparats cun memorisaziun en nivel decentralisada e criptada.
+- Biometria da det/visatta: Autentificaziun multifactura cun signaturs criptografics.
+- Autentificatur 2FA/MFA: Generar e memorisar codes da dus facturs en tes vault criptà.
+- Deteziun da passwords flaivs: Chattar e rinforzar passwords vulnerablas.
+- Criptografia a nivel da password e da element: Criptografia supplementara per tes elements il pli sensibels.
+- Criptografia da datotecas Web3: Criptar datotecas cun metodus crypto ferms.
+- Generatur da passwords potent: Passwords ultra-fermas e unicas cun casualitad criptograficamain segira.
+- Memorisaziun en nivel gratuita criptada e decentralisada: Be ti has las clavs.
+- Vault segir da fotos e videos: Serrar tia vita digitala cun criptografia decentralisada.
+- Access trans-plattafurma: Utilisar Liso sin desktop, tablet e mobil.
+- Migraziun simpla: Importar da Bitwarden, LastPass, Chrome e auters - lura criptar cun las pli novas standardas crypto.
+- 100% zero-cognoscenza: Be ti po acceder a tus datas - nagin auter, ni er Liso.
+- S'annunziar cun portafegls crypto: Cumenzar immediat cun autentificaziun da portafegl - nagin e-mail u password necessari.
+
+Liso surpassa managers da passwords vegls (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass) cun segirezza, sfera privata e libertad digitala superiura.
+
+Ulteriuras infurmaziuns: https://liso.dev
+
+Code avert: https://github.com/Liso-Vault/app
+
+Politica da sfera privata: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Cundiziuns d'utilisaziun: https://github.com/Liso-Vault/app/blob/master/TERMS.md

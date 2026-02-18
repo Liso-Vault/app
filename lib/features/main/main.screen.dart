@@ -2,8 +2,8 @@ import 'package:app_core/config.dart';
 import 'package:app_core/connectivity/connectivity.service.dart';
 import 'package:app_core/connectivity/connectivity_bar.widget.dart';
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/persistence/persistence_builder.widget.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/premium_card.widget.dart';
@@ -49,17 +49,26 @@ class MainScreen extends GetResponsiveView<MainScreenController>
     final itemsController = Get.find<ItemsController>();
     final drawerController = Get.find<DrawerMenuController>();
 
-    final addItemButton = ContextMenuButton(
-      controller.menuItemsCategory,
-      sheetForSmallScreen: true,
-      gridForLargeScreen: true,
-      padding: EdgeInsets.zero,
-      child: OutlinedButton.icon(
-        icon: const Icon(Iconsax.add_circle_outline),
-        onPressed: () {},
-        label: Text(
-          'add_item'.tr,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+    final addItemButton = SizedBox(
+      width: 300,
+      child: ContextMenuButton(
+        controller.menuItemsCategory,
+        sheetForSmallScreen: true,
+        gridForLargeScreen: true,
+        padding: EdgeInsets.zero,
+        child: FilledButton.icon(
+          icon: const Icon(Iconsax.add_circle_outline),
+          style: FilledButton.styleFrom(
+            padding: EdgeInsets.symmetric(vertical: 15),
+          ),
+          onPressed: () {},
+          label: Text(
+            'add_item'.tr,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
+            ),
+          ),
         ),
       ),
     );
@@ -100,13 +109,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
           OutlinedButton.icon(
             icon: const Icon(Iconsax.search_status_outline),
             label: Text('identify'.tr),
-            onPressed: () => Utils.adaptiveRouteOpen(
-              name: Routes.upgrade,
-              parameters: {
-                'title': 'password_health'.tr,
-                'body': 'password_health_desc'.tr,
-              },
-            ),
+            onPressed: () => PurchasesService.to.show(),
           ),
         ],
       ),

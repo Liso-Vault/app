@@ -30,7 +30,7 @@ final hr = {
   "day": "Dan",
   "help_translate": "Pomozi prevesti",
   "join_affiliates": "Pridruži se partnerskom programu",
-  "join_over_users": "Pouzdano od preko 100,000 korisnika",
+  "join_over_users": "Pouzdano od preko 1,000,000 korisnika",
   "nextran_desc": "Prevoditelj App Store listinga za programere",
   "slogan": "Počni osiguravati svoje podatke",
   "slogan_sub":
@@ -598,4 +598,46 @@ final hr = {
   "download": "Preuzmi",
   "folder_name": "Naziv mape",
   "send": "Pošalji",
+
+  // String Reviews
+  "review_string_0":
+      "Liso je apsolutno fantastičan! Potpuno je promijenio način na koji štitim svoje osjetljive podatke. Top preporuka za pravu zaštitu!",
+  "review_string_1":
+      "Koristim Liso svaki dan. Dizajn je tako jednostavan i uvjeren sam da su sve moje lozinke super sigurne s blockchain tehnologijom.",
+  "review_string_2":
+      "Svaka funkcija u Lisu olakšava i osigurava upravljanje mojim kripto novčanicima i prijavama. Obožavam jaku enkripciju!",
+  "review_string_3":
+      "Liso je nadmašio sva moja očekivanja. Povjeravam mu sve svoje tajne i mir uma je neprocjenjiv!",
+  "review_string_4":
+      "Moja produktivnost i sigurnost su skočile otkad sam prešao na Liso. Sada je to moj glavni trezor za sve privatno.",
+  "review_string_5":
+      "Redovita ažuriranja Lisa ga čine sve sigurnijim i boljim. Poboljšanja su konstantna i moji podaci ostaju potpuno zaštićeni.",
+  "review_string_6":
+      "Liso je doista spasioc! Spremam lozinke, kripto seed fraze i osobne bilješke s punim povjerenjem.",
+  "review_string_7":
+      "Lisoova korisnička podrška je nevjerojatna! Brza i stručna, i stvarno im je stalo do sigurnosti korisnika i povratnih informacija.",
+  "review_string_8":
+      "Toplo preporučujem Liso prijateljima i kolegama. Prepun je sigurnosnih značajki koje privatnost čine jednostavnom.",
+  "review_string_9":
+      "Lisoovo lijepo sučelje čini upravljanje mojim trezorom ugodnim i bez stresa. Sigurnost nikad nije izgledala tako dobro.",
+  "review_string_10":
+      "Organiziraniji sam i sigurniji nego ikad s Lisom. Ne mogu zamisliti povjeriti svoj digitalni život bilo kojoj drugoj aplikaciji.",
+  "review_string_11":
+      "Liso radi savršeno — glatko, pouzdano i potpuno bez grešaka. Daje mi povjerenje da su moje informacije sigurne.",
+  "review_string_12":
+      "Liso ispunjava sve sigurnosne obećanja. Moj tijek rada se poboljšao i moji podaci djeluju neprobojno!",
+  "review_string_13":
+      "Ostati usredotočen i siguran lako je s Lisom. Toliko sam zahvalan na značajkama privatnosti i jednostavnosti.",
+  "review_string_14":
+      "Liso je škrinja s blagom puna nevjerojatnih sigurnosnih značajki. Svaki put kad ga koristim pronalazim nove načine da ostanem zaštićen.",
+  "review_string_15":
+      "Promišljeni dizajn Lisa olakšava navigaciju. Sve — novčanici, lozinke, 2FA — uvijek je pri ruci.",
+  "review_string_16":
+      "Liso ima sve što mi treba: jedna aplikacija za upravljanje, enkripciju i pristup svim mojim digitalnim vrijednostima.",
+  "review_string_17":
+      "Impresioniran time kako se Liso razvija! Programeri stvarno slušaju povratne informacije i stalno poboljšavaju sigurnost i upotrebljivost.",
+  "review_string_18":
+      "Korištenje Lisa je užitak — odlične kontrole privatnosti i moćna kripto-sigurnost u aplikaciji koja izgleda i osjeća se odlično.",
+  "review_string_19":
+      "Uvijek preporučujem Liso! To je jednostavno najsigurniji i najorganiziraniji način pohrane kripta, lozinki i privatnih informacija.",
 };

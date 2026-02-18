@@ -597,4 +597,46 @@ final it = {
   "download": "Scarica",
   "folder_name": "Nome Cartella",
   "send": "Invia",
+
+  // String Reviews
+  "review_string_0":
+      "Liso è assolutamente fantastico! Ha trasformato completamente il modo in cui proteggo i miei dati sensibili. Raccomandazione top per una protezione reale!",
+  "review_string_1":
+      "Uso Liso ogni giorno. Il design è così intuitivo e mi sento sicuro che tutte le mie password siano super protette con la tecnologia blockchain.",
+  "review_string_2":
+      "Ogni funzione di Liso rende la gestione dei miei portafogli crypto e accessi molto più facile e sicura. Adoro la crittografia robusta!",
+  "review_string_3":
+      "Liso ha superato tutte le mie aspettative. Mi fido per tutti i miei segreti e la tranquillità non ha prezzo!",
+  "review_string_4":
+      "Produttività e sicurezza sono schizzate in alto da quando uso Liso. È ora il mio vault di riferimento per tutto ciò che è privato.",
+  "review_string_5":
+      "Gli aggiornamenti regolari di Liso lo rendono sempre più sicuro e migliore. I miglioramenti sono costanti e i miei dati restano protetti.",
+  "review_string_6":
+      "Liso è davvero un salva-vita! Conservo password, frasi seed crypto e note personali con piena fiducia.",
+  "review_string_7":
+      "Il supporto clienti di Liso è fantastico! Veloce e competente, e tengono davvero alla sicurezza e al feedback degli utenti.",
+  "review_string_8":
+      "Consiglio vivamente Liso ad amici e colleghi. È ricco di funzioni di sicurezza che rendono la privacy effortless.",
+  "review_string_9":
+      "La bella interfaccia di Liso rende la gestione del vault piacevole e senza stress. La sicurezza non è mai stata così bella.",
+  "review_string_10":
+      "Sono più organizzato e sicuro che mai con Liso. Non riesco a immaginare di affidare la mia vita digitale a un'altra app.",
+  "review_string_11":
+      "Liso funziona perfettamente: fluido, affidabile e senza bug. Mi dà fiducia che le mie informazioni siano al sicuro.",
+  "review_string_12":
+      "Liso mantiene ogni promessa sulla sicurezza. Il mio workflow è migliorato e i miei dati sembrano impenetrabili!",
+  "review_string_13":
+      "Restare focalizzato e sicuro è facile con Liso. Molto grato per le sue funzioni di privacy e semplicità.",
+  "review_string_14":
+      "Liso è un forziere pieno di incredibili funzioni di sicurezza. Ogni volta che lo uso trovo nuovi modi per restare protetto.",
+  "review_string_15":
+      "Il design curato di Liso rende la navigazione facile. Tutto—portafogli, password, 2FA—è sempre a portata di mano.",
+  "review_string_16":
+      "Liso ha tutto ciò che mi serve: un'app per gestire, cifrare e accedere a tutti i miei beni digitali.",
+  "review_string_17":
+      "Colpito da come evolve Liso! Gli sviluppatori ascoltano davvero il feedback e continuano a potenziare sicurezza e usabilità.",
+  "review_string_18":
+      "Usare Liso è un piacere: controlli della privacy fantastici e crypto-sicurezza potente in un'app bella e piacevole da usare.",
+  "review_string_19":
+      "Consiglio sempre Liso! È semplicemente il modo più sicuro e ordinato per conservare crypto, password e informazioni private.",
 };

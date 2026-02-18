@@ -1,0 +1,34 @@
+Protektahan ang iyong mahalagang data sa susunod na henerasyon ng seguridad. Ang Liso ay isang crypto-first, Web3-powered na data vault, itinayo para samantalahin ang blockchain-grade na seguridad at desentralisadong teknolohiya. Protektahan ang mga password, tala, larawan, video, dokumento at lahat ng sensitibong impormasyon gamit ang advanced na cryptography, desentralisadong mga protocol at malakas na mga pamantayan sa privacy. Sa Liso, ang iyong data ay nananatiling sa iyo—secure, pribado at nasa ilalim ng iyong kontrol, malaya sa mga ad at tracking.
+
+Gumagamit ang Liso ng modernong mga kriptograpikong pamamaraan at Web3 framework—kabilang ang end-to-end encryption, zero-knowledge proofs at secure na mga pagsasama ng wallet—para protektahan ang iyong digital na buhay. Itago ang mga credential sa pag-login, password, crypto wallet, seed phrase, 2FA/MFA code, secure na tala, card, bank account, identity document at marami pa sa isang desentralisado, hindi mapasok na vault.
+
+Ang Liso ay all-in-one crypto password manager, cross-device vault at next-gen authenticator, pinagsasama ang Web3 at klasikong seguridad para sa walang kapantay na proteksyon.
+
+Mga pangunahing tampok:
+◆ Next-gen crypto security: Inaalis ng blockchain at Web3 technologies ang mga single point of failure at pinapakinabangan ang proteksyon ng data.
+◆ Military-grade AES-256 + end-to-end encryption: Tradisyonal at desentralisadong cryptography para sa walang kapantay na seguridad.
+◆ Desentralisadong identity: Mag-authenticate gamit ang secure na wallet o desentralisadong sign-in—walang koneksyon sa iyong tunay na identity.
+◆ Offline/air-gap mode: I-access ang iyong encrypted vault nang walang internet—hindi kailanman umaalis ang iyong data sa iyong device maliban kung pipiliin mo.
+◆ Blockchain-backed sync: I-sync ang data sa mga device gamit ang desentralisado, encrypted na cloud storage.
+◆ Fingerprint/face biometrics: Multi-factor authentication gamit ang cryptographic signers.
+◆ 2FA/MFA authenticator: Bumuo at mag-imbak ng two-factor code nang secure sa iyong encrypted vault.
+◆ Weak password detection: Hanapin at palakasin ang mga bulnerableng password.
+◆ Password at item-level encryption: Dagdag na encryption para sa iyong pinaka-sensitibong mga item.
+◆ Web3 file encryption: I-encrypt ang mga file gamit ang matatag na crypto method.
+◆ Malakas na password generator: Ultra-strong, natatanging mga password na may cryptographically secure na randomness.
+◆ Libreng encrypted at desentralisadong cloud storage: Ikaw lang ang may hawak ng mga susi.
+◆ Secure na photo at video vault: I-lock ang iyong digital na buhay gamit ang desentralisadong encryption.
+◆ Cross-platform access: Gamitin ang Liso sa desktop, tablet at mobile.
+◆ Madaling migration: Mag-import mula sa Bitwarden, LastPass, Chrome at iba pa—pagkatapos i-encrypt gamit ang pinakabagong crypto standards.
+◆ 100% zero-knowledge: Ikaw lang ang maaaring mag-access sa iyong data—walang sinuman, kahit ang Liso.
+◆ Mag-sign up gamit ang crypto wallet: Magsimula kaagad gamit ang wallet authentication—hindi kailangan ng email o password.
+
+Sa pundasyon ng advanced na cryptography at desentralisadong teknolohiya, nalalampasan ng Liso ang mga legacy password manager (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—nag-aalok ng mas mataas na seguridad, privacy at tunay na kalayaan sa digital.
+
+Matuto pa: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Patakaran sa privacy: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Mga tuntunin ng paggamit: https://github.com/Liso-Vault/app/blob/master/TERMS.md

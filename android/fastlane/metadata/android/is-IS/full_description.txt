@@ -1,0 +1,34 @@
+Verjðu verðmætum gögnum þínum með öðru kynslóðar öryggi. Liso er crypto-fyrst, Web3 knúið gagnahólf, byggt til að nýta blockchain-stigs öryggi og dreifðar tækni. Verndðu lykilorð, minnisblöð, myndir, myndbönd, skjöl og öll viðkvæm gögn með háþróaðri dulmálsfræði, dreifðum samskiptareglum og sterkum einkalífsstaðli. Með Liso halda gögnin þín áfram að vera þín—örugg, einkamál og undir þínu eftirliti, laus við auglýsingar og rekja.
+
+Liso notar nútíma dulmálsaðferðir og Web3 ramma—þar á meðal enda-til-enda dulkóðun, núll-þekkingar sönnun og örugg innflutning veski—til að vernda stafræna líf þitt. Geymdu innskráningarauðkenni, lykilorð, crypto veski, seed setningar, 2FA/MFA kóða, örugg minnisblöð, kort, bankareikninga, skilríki og meira í dreifðu, óyfirstíganlegu hólfi.
+
+Liso er allt-í-einu crypto lykilorðastjóri, hólf yfir tæki og næstu kynslóðar auðkenningar, sameinar Web3 og klassísk öryggi fyrir óviðjafnanlega vernd.
+
+Helstu eiginleikar:
+◆ Næsta kynslóðar crypto öryggi: Blockchain og Web3 tækni útrýma einstökum bilunarpunktum og hámarka gagnavernd.
+◆ Herstigs AES-256 + enda-til-enda dulkóðun: Hefðbundin og dreifð dulmálsfræði fyrir óviðjafnanlegt öryggi.
+◆ Dreifð auðkenni: Auðkenndu þig með öruggum veski eða dreifðri innskráningu—engin tengsl við raunverulegt auðkenni þitt.
+◆ Offline/loftbil stilling: Fáðu aðgang að dulkóðaða hólfinu þínu án internets—gögnin þín yfirgefa aldrei tækið nema þú veljir.
+◆ Blockchain studd samstillir: Stilltu gögn á tæki með dreifðri, dulkóðuðu skýgeymslu.
+◆ Fingrafar/andlit líffræðileg mæling: Margþætt auðkenning með dulmálsundirritun.
+◆ 2FA/MFA auðkenningar: Búðu til og geymdu tveggja þátta kóða örugglega í dulkóðaða hólfinu þínu.
+◆ Veikt lykilorð uppgötvun: Finndu og styrkju viðkvæm lykilorð.
+◆ Lykilorð og atriðis stigs dulkóðun: Viðbótar dulkóðun fyrir viðkvæmustu atriðin þín.
+◆ Web3 skrá dulkóðun: Dulkóðaðu skrár með sterkum crypto aðferðum.
+◆ Öflugur lykilorðagenerátor: Ofur sterk, einstök lykilorð með dulmálslega öruggum slembni.
+◆ Ókeypis dulkóðuð og dreifð skýgeymsla: Aðeins þú heldur lyklunum.
+◆ Öruggt mynda- og myndbands hólf: Læstu stafræna líf þitt með dreifðri dulkóðun.
+◆ Millipall aðgangur: Notaðu Liso á skjáborði, spjaldtölvu og farsíma.
+◆ Auðveld flutningur: Flyttu inn frá Bitwarden, LastPass, Chrome og öðrum—dulkóðaðu síðan með nýjustu crypto staðli.
+◆ 100% núll-þekking: Aðeins þú getur nálgast gögnin þín—enginn annar, ekki einu sinni Liso.
+◆ Skráning með crypto veski: Byrjaðu strax með veski auðkenningu—engin tölvupóstur eða lykilorð þarf.
+
+Með grunni í háþróaðri dulmálsfræði og dreifðri tækni fer Liso fram úr arfleifð lykilorðastjórum (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—býður upp á æðri öryggi, einkalíf og sanna stafræna frelsi.
+
+Lærðu meira: https://liso.dev
+
+Opinn uppspretta: https://github.com/Liso-Vault/app
+
+Einkalífsstefna: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Notkunarskilmálar: https://github.com/Liso-Vault/app/blob/master/TERMS.md

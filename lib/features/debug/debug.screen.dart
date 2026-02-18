@@ -1,5 +1,6 @@
 import 'package:app_core/pages/routes.dart';
 import 'package:app_core/purchases/purchases.services.dart';
+import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -33,6 +34,15 @@ class DebugScreen extends StatelessWidget with ConsoleMixin {
           title: const Text('Upgrade Screen'),
           onTap: () {
             PurchasesService.to.show();
+          },
+        ),
+        ListTile(
+          title: const Text('Test Notifications'),
+          onTap: () {
+            NotificationsService.to.notify(
+              title: 'Test Notification',
+              body: 'This is a test notification',
+            );
           },
         ),
         ListTile(

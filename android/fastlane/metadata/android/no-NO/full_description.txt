@@ -1,0 +1,34 @@
+Beskytt dine verdifulle data med neste generasjons sikkerhet. Liso er en krypto-først, Web3-drevet databoks, bygget for å utnytte blockchain-nivå sikkerhet og desentralisert teknologi. Beskytt passord, notater, bilder, videoer, dokumenter og all sensitiv informasjon med avansert kryptografi, desentraliserte protokoller og sterke personvernstandarder. Med Liso forblir dataene dine—sikre, private og under din kontroll, fri fra reklame og sporing.
+
+Liso bruker moderne kryptografiske teknikker og Web3-rammeverk—inkludert end-til-end kryptering, zero-knowledge bevis og sikre lommebokintegrasjoner—for å beskytte ditt digitale liv. Lagre påloggingsdata, passord, krypto-lommebøker, seed-fraser, 2FA/MFA-koder, sikre notater, kort, bankkontoer, identitetsdokumenter og mer i en desentralisert, uigjennomtrengelig boks.
+
+Liso er en alt-i-ett krypto-passordbehandler, tverrenhetsboks og neste generasjons godkjenner, som fusionerer Web3 og klassisk sikkerhet for uovertruffen beskyttelse.
+
+Nøkkelfunksjoner:
+◆ Neste generasjons krypto-sikkerhet: Blockchain- og Web3-teknologier eliminerer enkeltfeilpunkter og maksimerer databeskyttelse.
+◆ Militær AES-256 + end-til-end kryptering: Tradisjonell og desentralisert kryptografi for uovertruffen sikkerhet.
+◆ Desentralisert identitet: Godkjenn med sikre lommebøker eller desentralisert innlogging—ingen kobling til din virkelige identitet.
+◆ Frakoblet/air-gap modus: Få tilgang til din krypterte boks uten internett—dataene dine forlater aldri enheten med mindre du velger det.
+◆ Blockchain-støttet synkronisering: Synkroniser data på tvers av enheter med desentralisert, kryptert sky lagring.
+◆ Fingeravtrykk/ansikt biometri: Multi-faktor godkjenning med kryptografiske signaturer.
+◆ 2FA/MFA godkjenner: Generer og lagre to-faktor koder sikkert i din krypterte boks.
+◆ Svakt passord oppdagelse: Finn og styrk sårbare passord.
+◆ Passord- og elementnivå kryptering: Ekstra kryptering for dine mest sensitive elementer.
+◆ Web3 filkryptering: Krypter filer med robuste krypto-metoder.
+◆ Kraftig passordgenerator: Ultra-sterke, unike passord med kryptografisk sikker tilfeldighet.
+◆ Gratis kryptert og desentralisert sky lagring: Bare du har nøklene.
+◆ Sikker foto- og videoboks: Lås ditt digitale liv med desentralisert kryptering.
+◆ Tverrplattform tilgang: Bruk Liso på desktop, nettbrett og mobil.
+◆ Enkel migrering: Importer fra Bitwarden, LastPass, Chrome og andre—krypter deretter med nyeste krypto-standarder.
+◆ 100% zero-knowledge: Bare du kan få tilgang til dataene dine—ingen andre, ikke engang Liso.
+◆ Registrering med krypto-lommebøker: Start umiddelbart med lommebokgodkjenning—ingen e-post eller passord nødvendig.
+
+Med et fundament i avansert kryptografi og desentralisert teknologi overgår Liso tradisjonelle passordbehandlere (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—med overlegen sikkerhet, personvern og ekte digital frihet.
+
+Lær mer: https://liso.dev
+
+Åpen kildekode: https://github.com/Liso-Vault/app
+
+Personvernerklæring: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Bruksvilkår: https://github.com/Liso-Vault/app/blob/master/TERMS.md

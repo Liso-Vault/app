@@ -1,5 +1,5 @@
 final zhHans = {
-  "locale_string": "zh",
+  "locale_string": "zh-Hans-CN",
   "language": "语言",
   // ---
   "get_started": "开始使用",
@@ -30,7 +30,7 @@ final zhHans = {
   "day": "天",
   "help_translate": "帮助翻译",
   "join_affiliates": "加入联盟计划",
-  "join_over_users": "受到100,000+用户信赖",
+  "join_over_users": "受到1,000,000+用户信赖",
   "nextran_desc": "面向开发者的应用商店列表翻译器",
   "slogan": "开始保护您的数据",
   "slogan_sub": "Liso：您坚不可摧的堡垒，用于保护机密数据、密码和文件。",
@@ -573,4 +573,46 @@ final zhHans = {
   "download": "下载",
   "folder_name": "文件夹名称",
   "send": "发送",
+
+  // String Reviews
+  "review_string_0":
+      "Liso 太棒了！它彻底改变了我保护敏感数据的方式。真正保护的首选推荐！",
+  "review_string_1":
+      "我每天使用 Liso。设计非常友好，我相信在区块链技术下所有密码都非常安全。",
+  "review_string_2":
+      "Liso 的每一项功能都让管理加密钱包和登录更简单、更安全。超爱强加密！",
+  "review_string_3":
+      "Liso 超出了我所有预期。我把所有秘密都托付给它，安心无价！",
+  "review_string_4":
+      "改用 Liso 后，我的效率和安全性都大幅提升。现在它是我存放一切私密内容的首选保险库。",
+  "review_string_5":
+      "Liso 的定期更新让它越来越安全、越来越好。改进不断，我的数据始终得到充分保护。",
+  "review_string_6":
+      "Liso 真是救星！我放心地存储密码、加密助记词和个人笔记。",
+  "review_string_7":
+      "Liso 的客户支持很棒！响应快、专业，真心在乎用户安全和反馈。",
+  "review_string_8":
+      "强烈向朋友和同事推荐 Liso。安全功能丰富，让隐私保护毫不费力。",
+  "review_string_9":
+      "Liso 的界面美观，管理保险库轻松无压力。安全从未如此好看。",
+  "review_string_10":
+      "有了 Liso 我更井井有条、更安心。无法想象把数字生活交给别的应用。",
+  "review_string_11":
+      "Liso 运行完美——流畅、可靠、毫无故障。让我确信我的信息是安全的。",
+  "review_string_12":
+      "Liso 兑现了每一项安全承诺。工作流改善了，数据感觉坚不可摧！",
+  "review_string_13":
+      "用 Liso 保持专注和安全很容易。非常感激它的隐私功能和简洁。",
+  "review_string_14":
+      "Liso 是装满出色安全功能的宝库。每次使用都能发现新的保护方式。",
+  "review_string_15":
+      "Liso 的贴心设计让导航很简单。钱包、密码、2FA——一切触手可及。",
+  "review_string_16":
+      "Liso 应有尽有：一个应用即可管理、加密和访问所有数字资产。",
+  "review_string_17":
+      "对 Liso 的进化印象深刻！开发者真的会听反馈，不断强化安全和易用性。",
+  "review_string_18":
+      "使用 Liso 是一种享受——出色的隐私控制和强大的加密安全，界面好看又好用。",
+  "review_string_19":
+      "我一直推荐 Liso！它就是存储加密资产、密码和私密信息最安全、最有序的方式。",
 };

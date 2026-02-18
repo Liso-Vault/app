@@ -1,7 +1,7 @@
 name: liso
 description: Liso
 publish_to: "none"
-version: 1.3.4+67
+version: 1.3.4+61
 
 environment:
   sdk: ">=3.0.0 <4.0.0"
@@ -13,10 +13,6 @@ dependencies:
   # CORE FRAMEWORK
   app_core:
     path: ../../Stackwares/app-core
-
-  # Server Core Client
-  core_client:
-    path: ../../core-serverpod/core_client
 
   # CRYTPOGRAPHY + SECURITY
   secrets:
@@ -41,7 +37,7 @@ dependencies:
 
   # # API
   # coingecko_api: ^2.0.2
-  
+
   # UI
   blur: ^4.0.2 # blurring of seed phrases
   flutter_json_viewer: ^1.0.1 #json viewer

@@ -599,4 +599,46 @@ final ro = {
   "download": "Descarcă",
   "folder_name": "Nume folder",
   "send": "Trimite",
+
+  // String Reviews
+  "review_string_0":
+      "Liso este absolut fantastic! A transformat complet modul în care îmi securizez datele sensibile. Recomandare top pentru protecție reală!",
+  "review_string_1":
+      "Folosesc Liso zilnic. Designul e atât de prietenos și am încredere că toate parolele mele sunt super sigure cu tehnologia blockchain.",
+  "review_string_2":
+      "Fiecare funcție din Liso face gestionarea portofelelor crypto și a autentificărilor mult mai ușoară și sigură. Ador criptarea puternică!",
+  "review_string_3":
+      "Liso mi-a depășit toate așteptările. Îi încredințez toate secretele și liniștea e de neprețuit!",
+  "review_string_4":
+      "Productivitatea și securitatea mele au explodat de când am trecut la Liso. E acum seiful meu principal pentru tot ce e privat.",
+  "review_string_5":
+      "Actualizările regulate ale Liso îl fac tot mai sigur și mai bun. Îmbunătățirile sunt constante și datele mele rămân protejate.",
+  "review_string_6":
+      "Liso e cu adevărat un salvator! Îmi păstrez parolele, frazele seed crypto și notele personale cu totală încredere.",
+  "review_string_7":
+      "Suportul clienți Liso e minunat! Rapid și competent, și chiar le pasă de securitatea utilizatorilor și feedback.",
+  "review_string_8":
+      "Recomand Liso cu căldură prietenilor și colegilor. E plin de funcții de securitate care fac confidențialitatea ușoară.",
+  "review_string_9":
+      "Interfața frumoasă a Liso face gestionarea seifului plăcută și fără stres. Securitatea nu arăta niciodată atât de bine.",
+  "review_string_10":
+      "Sunt mai organizat și mai sigur ca niciodată cu Liso. Nu îmi imaginez să îmi încredințez viața digitală altei aplicații.",
+  "review_string_11":
+      "Liso funcționează perfect — fluid, fiabil și complet fără erori. Îmi dă încredere că informațiile mele sunt în siguranță.",
+  "review_string_12":
+      "Liso ține toate promisiunile de securitate. Fluxul meu de lucru s-a îmbunătățit și datele mele par impenetrabile!",
+  "review_string_13":
+      "Să rămân concentrat și sigur e ușor cu Liso. Atât de recunoscător pentru funcțiile de confidențialitate și simplitate.",
+  "review_string_14":
+      "Liso e o comoară plină de funcții de securitate incredibile. De fiecare dată când îl folosesc găsesc noi moduri de a rămâne protejat.",
+  "review_string_15":
+      "Designul gândit al Liso face navigarea ușoară. Totul — portofele, parole, 2FA — e mereu la îndemână.",
+  "review_string_16":
+      "Liso are tot ce am nevoie: o aplicație pentru a gestiona, cripta și accesa toate valorile mele digitale.",
+  "review_string_17":
+      "Impresionat de cum evoluează Liso! Dezvoltatorii chiar ascultă feedback-ul și îmbunătățesc constant securitatea și utilizabilitatea.",
+  "review_string_18":
+      "Folosirea Liso e o plăcere — controale de confidențialitate minunate și securitate crypto puternică într-o aplicație care arată și se simte grozav.",
+  "review_string_19":
+      "Recomand mereu Liso! E pur și simplu cel mai sigur și organizat mod de a stoca crypto, parole și informații private.",
 };

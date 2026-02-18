@@ -1,0 +1,34 @@
+Protexe os teus datos máis valiosos coa seguinte xeración de seguridade. Liso é un cofre de datos crypto-first impulsado por Web3, construído para aproveitar a seguridade de nivel blockchain e a tecnoloxía descentralizada. Protexe contrasinais, notas, fotos, vídeos, documentos e toda a información sensible con criptografía avanzada, protocolos descentralizados e estándares de privacidade fortes. Con Liso, os teus datos seguen a ser teus—seguros, privados e baixo o teu control, libres de anuncios e rastrexo.
+
+Liso usa técnicas criptográficas modernas e frameworks Web3—incluíndo cifrado de extremo a extremo, probas de coñecemento cero e integracións de moedeiros seguros—para protexer a túa vida dixital. Almacena credenciais de acceso, contrasinais, moedeiros cripto, frases semente, códigos 2FA/MFA, notas seguras, tarxetas, contas bancarias, documentos de identidade e máis nun cofre descentralizado e impenetrable.
+
+Liso é un xestor de contrasinais cripto todo-en-un, cofre entre dispositivos e autenticador de nova xeración, fusionando Web3 e seguridade clásica para unha protección inigualable.
+
+Características principais:
+◆ Seguridade cripto de nova xeración: As tecnoloxías blockchain e Web3 eliminan puntos únicos de fallo e maximizan a protección de datos.
+◆ Cifrado AES-256 de grao militar e de extremo a extremo: Criptografía tradicional e descentralizada para seguridade inigualable.
+◆ Identidade descentralizada: Autentícate con moedeiros seguros ou inicio de sesión descentralizado—sen vínculo coa túa identidade real.
+◆ Modo sen conexión/air-gap: Accede ao teu cofre cifrado sen internet—os teus datos nunca saen do teu dispositivo a menos que elixas.
+◆ Sincronización con soporte blockchain: Sincroniza datos entre dispositivos con almacenamento na nube descentralizado e cifrado.
+◆ Biometría de pegada/cara: Autenticación multifactor con asinantes criptográficos.
+◆ Autenticador 2FA/MFA: Xerar e almacenar códigos de dous factores de forma segura no teu cofre cifrado.
+◆ Detección de contrasinais febles: Atopa e reforza contrasinais vulnerables.
+◆ Cifrado a nivel de contrasinal e elemento: Cifrado adicional para os teus elementos máis sensibles.
+◆ Cifrado de ficheiros Web3: Cifra ficheiros con métodos cripto robustos.
+◆ Xerador de contrasinais potente: Contrasinais únicos ultra fortes con aleatoriedade criptograficamente segura.
+◆ Almacenamento na nube cifrado e descentralizado gratuíto: Só ti tes as chaves.
+◆ Cofre seguro de fotos e vídeos: Bloquea a túa vida dixital con cifrado descentralizado.
+◆ Acceso multiplataforma: Usa Liso en escritorio, tablet e móbil.
+◆ Migración doada: Importa desde Bitwarden, LastPass, Chrome e outros—despois cifra cos últimos estándares cripto.
+◆ 100% zero-knowledge: Só ti podes acceder aos teus datos—ninguén máis, nin Liso.
+◆ Rexistro con moedeiros cripto: Comeza instantaneamente con autenticación por moedeiro—sen correo nin contrasinal.
+
+Con base en criptografía avanzada e tecnoloxía descentralizada, Liso supera a xestores de contrasinais herdados (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—ofrecendo seguridade, privacidade e liberdade dixital superiores.
+
+Máis información: https://liso.dev
+
+Código aberto: https://github.com/Liso-Vault/app
+
+Política de privacidade: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Termos de uso: https://github.com/Liso-Vault/app/blob/master/TERMS.md

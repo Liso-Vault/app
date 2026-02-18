@@ -30,7 +30,7 @@ final fi = {
   "day": "Päivä",
   "help_translate": "Auta kääntämään",
   "join_affiliates": "Liity kumppanuusohjelmaan",
-  "join_over_users": "Luotettu yli 100,000 käyttäjältä",
+  "join_over_users": "Luotettu yli 1,000,000 käyttäjältä",
   "nextran_desc": "App Store listaus kääntäjä kehittäjille",
   "slogan": "Aloita tietojesi suojaaminen",
   "slogan_sub":
@@ -598,4 +598,46 @@ final fi = {
   "download": "Lataa",
   "folder_name": "Kansion nimi",
   "send": "Lähetä",
+
+  // String Reviews
+  "review_string_0":
+      "Liso on aivan fantastinen! Se on täysin muuttanut tavan, jolla suojaan arkaluonteisia tietojani. Paras suositus oikealle suojaukselle!",
+  "review_string_1":
+      "Käytän Lisoa joka päivä. Suunnittelu on niin käyttäjäystävällinen, ja olen varma, että kaikki salasanani ovat erittäin turvallisia blockchain-teknologialla.",
+  "review_string_2":
+      "Jokainen Lison ominaisuus tekee kryptolompakoiden ja kirjautumisten hallinnasta paljon helpompaa ja turvallisempaa. Rakastan vahvaa salaus!",
+  "review_string_3":
+      "Liso ylitti kaikki odotukseni. Luotan siihen kaikkien salaisuuksieni kanssa, ja mielenrauha on korvaamatonta!",
+  "review_string_4":
+      "Tuottavuuteni ja turvallisuuteni ovat nousseet pilviin Lison käyttöönoton jälkeen. Se on nyt ensisijainen holvini kaikelle yksityiselle.",
+  "review_string_5":
+      "Lison säännölliset päivitykset tekevät siitä jatkuvasti turvallisemman ja paremman. Parannukset ovat jatkuvia ja tietoni pysyvät täysin suojattuina.",
+  "review_string_6":
+      "Liso on todellinen pelastus! Säilytän salasanani, kryptosiemenlauseet ja henkilökohtaiset muistiinpanoni täydellä luottamuksella.",
+  "review_string_7":
+      "Lison asiakastuki on mahtava! Nopea ja asiantunteva, ja he välittävät aidosti käyttäjien turvallisuudesta ja palautteesta.",
+  "review_string_8":
+      "Suosittelen Lisoa lämpimästi ystäville ja kollegoille. Siinä on paljon turvaominaisuuksia, jotka tekevät yksityisyydestä vaivatonta.",
+  "review_string_9":
+      "Lison kaunis käyttöliittymä tekee holvini hallinnasta miellyttävää ja stressitöntä. Turvallisuus ei ole koskaan näyttänyt näin hyvältä.",
+  "review_string_10":
+      "Olen järjestelmällisempi ja turvallisempi kuin koskaan Lisolla. En voi kuvitella luovuttavani digitaalista elämääni millekään toiselle sovellukselle.",
+  "review_string_11":
+      "Liso toimii täydellisesti — sujuvasti, luotettavasti ja täysin virheettä. Se antaa minulle luottamusta siihen, että tietoni ovat turvassa.",
+  "review_string_12":
+      "Liso pitää jokaisen turvallisuuslupauksen. Työnkulkuuni on parantunut ja tietoni tuntuvat läpäisemättömiltä!",
+  "review_string_13":
+      "Keskittyminen ja turvallisuus on helppoa Lisolla. Niin kiitollinen sen yksityisyysominaisuuksista ja yksinkertaisuudesta.",
+  "review_string_14":
+      "Liso on aarrekirstu täynnä uskomattomia turvaominaisuuksia. Joka kerta kun käytän sitä, löydän uusia tapoja pysyä suojattuna.",
+  "review_string_15":
+      "Lison harkittu suunnittelu tekee navigoinnista helppoa. Kaikki — lompakot, salasanat, 2FA — on aina käsillä.",
+  "review_string_16":
+      "Lisolla on kaikki mitä tarvitsen: yksi sovellus kaikkien digitaalisten arvojen hallintaan, salaamiseen ja käyttöön.",
+  "review_string_17":
+      "Vaikuttunut siitä, miten Liso kehittyy! Kehittäjät todella kuuntelevat palautetta ja parantavat jatkuvasti turvallisuutta ja käytettävyyttä.",
+  "review_string_18":
+      "Lison käyttö on nautintoa — mahtavat yksityisyysvalvontatoimet ja tehokkaat kryptoturvatoimet sovelluksessa, joka näyttää ja tuntuu hyvältä.",
+  "review_string_19":
+      "Suosittelen aina Lisoa! Se on yksinkertaisesti turvallisin ja järjestelmällisin tapa säilyttää kryptoa, salasanoja ja yksityistä tietoa.",
 };

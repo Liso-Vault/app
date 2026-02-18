@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:app_core/firebase/config.service.dart';
 import 'package:app_core/globals.dart';
 import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -951,26 +952,14 @@ class ItemScreenController extends GetxController
 
     // items limit
     if (ItemsController.to.itemLimitReached) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Items Limit Reached',
-          'body':
-              'Maximum items of ${limits.items} limit reached. Upgrade to Pro to unlock unlimited items features',
-        },
-      );
+      PurchasesService.to.show();
+      return;
     }
 
     // protected items limit
     if (protected.value && ItemsController.to.protectedItemLimitReached) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Protected Items',
-          'body':
-              'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-        },
-      );
+      PurchasesService.to.show();
+      return;
     }
 
     final newItem = HiveLisoItem(
@@ -1033,15 +1022,7 @@ class ItemScreenController extends GetxController
   void onProtectedChanged(bool? value) {
     // protected items limit
     if (value! && ItemsController.to.protectedItemLimitReached) {
-      Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'Protected Items',
-          'body':
-              'Maximum protected items of ${limits.protectedItems} limit reached. Upgrade to Pro to unlock unlimited protected items feature.',
-        },
-      );
-
+      PurchasesService.to.show();
       return;
     }
 

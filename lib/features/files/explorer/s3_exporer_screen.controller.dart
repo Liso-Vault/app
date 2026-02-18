@@ -1,13 +1,11 @@
 import 'dart:io';
 
 import 'package:app_core/globals.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/services/notifications.service.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:filesize/filesize.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -19,7 +17,6 @@ import 'package:path/path.dart';
 import '../../../core/services/cipher.service.dart';
 import '../../../core/utils/globals.dart';
 import '../../../core/utils/utils.dart';
-import '../../config/license.model.dart';
 import '../../supabase/model/object.model.dart';
 
 class S3ExplorerScreenController extends GetxController
@@ -138,15 +135,8 @@ class S3ExplorerScreenController extends GetxController
 
     if (fileSize > limits.uploadSize) {
       change(GetStatus.success(null));
-
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'upload_large_files'.tr,
-          'body':
-              'Upload size limit: ${filesize(limits.uploadSize)} reached. Upgrade to Pro to upload up to ${filesize(licenseConfig.pro.uploadSize)} per file.',
-        },
-      );
+      PurchasesService.to.show();
+      return;
     }
 
     change(GetStatus.success(null));
@@ -157,14 +147,8 @@ class S3ExplorerScreenController extends GetxController
     final assumedTotal = storage.rootInfo.value.data.size + await file.length();
 
     if (assumedTotal >= limits.uploadSize) {
-      return Utils.adaptiveRouteOpen(
-        name: Routes.upgrade,
-        parameters: {
-          'title': 'add_more_storage'.tr,
-          'body':
-              'Upgrade to Pro to store up to ${filesize(licenseConfig.pro.storageSize)} of files.',
-        },
-      );
+      PurchasesService.to.show();
+      return;
     }
 
     change(GetStatus.loading());

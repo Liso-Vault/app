@@ -12,7 +12,7 @@ import 'package:liso/core/hive/hive.service.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/core/services/cipher.service.dart';
 import 'package:liso/features/autofill/autofill.service.dart';
-import 'package:liso/features/config/app_config.service.dart';
+import 'package:liso/features/config/config.dart';
 import 'package:liso/features/config/license.model.dart';
 import 'package:liso/features/config/secrets.dart';
 import 'package:liso/features/groups/groups.service.dart';
@@ -58,16 +58,17 @@ void init(Flavor flavor, {bool autofill = false}) async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    // init sentry
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
+    initConfigDefaults();
 
     Future.delayed(1.seconds, () => CrashlyticsService.isReady = true);
 
     gENV = kENV; // set global environment variables
     licenseConfig = LicenseConfig.fromJson(kLicenseJson);
-    // secretConfig = SecretConfig.fromJson(kSecretJson);
+    getOnboard = () => AppService.to.onboard();
 
     onboardingBGUri =
         'https://images.unsplash.com/photo-1683849817745-46aa662aad13?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D';
@@ -86,7 +87,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
       onSignedIn: AppUtils.onSignedIn,
       logoDarkPath: Images.logo,
       logoLightPath: Images.logoLight,
-      onRemoteConfigFetched: AppConfigService.onRemoteConfigFetched,
       upgradeConfig: UpgradeConfig(
         pricing: AppPricing.data,
         featureTileFontSize: 14,
@@ -110,9 +110,6 @@ void init(Flavor flavor, {bool autofill = false}) async {
     Get.lazyPut(() => ItemsService());
     Get.lazyPut(() => GroupsService());
     Get.lazyPut(() => CategoriesService());
-
-    // firebase
-    Get.put(AppConfigService());
 
     Get.put(AppPersistence());
     Get.put(SecretPersistence());

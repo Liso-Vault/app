@@ -1,0 +1,34 @@
+Bescherm je waardevolle gegevens met de volgende generatie beveiliging. Liso is een crypto-first, Web3-gedreven datakluis, van de grond af ontworpen om blockchain-niveau beveiliging en gedecentraliseerde technologie te benutten. Bescherm je wachtwoorden, notities, foto's, video's, documenten en alle gevoelige informatie met geavanceerde cryptografie, gedecentraliseerde protocollen en de strengste privacystandaarden. Met Liso blijven je gegevens echt van jou—veilig, privé en altijd onder je volledige controle, zonder advertenties en opdringerige tracking.
+
+Liso gebruikt moderne cryptografische technieken en Web3-frameworks—end-to-end encryptie, zero-knowledge bewijzen en veilige wallet-integraties—om je digitale leven te beschermen. Bewaar: inloggegevens, wachtwoorden, crypto-wallets, seed-zinnen, 2FA/MFA-codes, beveiligde notities, pin-/creditcards, bankrekeningen, identiteitsdocumenten, softwarelicenties, sofi-nummers en meer, allemaal in een gedecentraliseerde, ondoordringbare kluis.
+
+Liso is niet zomaar een veilige kluis—het is een alles-in-één crypto wachtwoordbeheerder, kluis voor alle apparaten en authenticator van de volgende generatie, die Web3 en klassieke beveiliging combineert voor ongeëvenaarde bescherming.
+
+Belangrijkste functies:
+◆ Crypto-beveiliging van de volgende generatie: Liso is gebouwd met blockchain- en Web3-technologieën om single points of failure te elimineren en gegevensbescherming te maximaliseren.
+◆ Militaire AES-256-bit + end-to-end encryptie: traditionele en gedecentraliseerde cryptografie voor ongeëvenaarde beveiliging.
+◆ Gedecentraliseerde identiteit: authenticatie via veilige wallets of gedecentraliseerde aanmelding.
+◆ Offline/air-gap modus: toegang tot je versleutelde kluis zonder internetverbinding—je gegevens verlaten nooit je apparaat tenzij jij het kiest.
+◆ Naadloze blockchain-ondersteunde sync: synchroniseer je gegevens veilig over meerdere apparaten met gedecentraliseerde, versleutelde cloudopslag.
+◆ Vingerafdruk/gezichts biometrische authenticatie: combineer biometrie met cryptografische ondertekenaars voor echte multi-factor authenticatie.
+◆ 2FA/MFA authenticator: genereer en bewaar tweefactorcodes veilig in je crypto-versleutelde kluis.
+◆ Detectie van zwakke wachtwoorden: identificeer en versterk kwetsbare wachtwoorden.
+◆ Wachtwoord- en itemniveau encryptie: extra versleutelingslagen voor je meest gevoelige kluisitems.
+◆ Bestandsversleuteling met Web3-protocollen: versleutel bestanden met robuuste crypto-methoden.
+◆ Krachtige wachtwoordgenerator: maak ultra-sterke, unieke wachtwoorden met cryptografisch veilige willekeur.
+◆ Gratis versleutelde en gedecentraliseerde cloudopslag: alleen jij hebt de sleutels.
+◆ Veilige foto- en videokluis: vergrendel je hele digitale leven, inclusief media, met gedecentraliseerde encryptie.
+◆ Cross-platform crypto-toegang: gebruik Liso moeiteloos op desktop, tablet en mobiel.
+◆ Moeiteloze migratie: importeer naadloos gegevens uit Bitwarden, LastPass, Chrome en andere beheerders—versleutel daarna met de nieuwste crypto-standaarden.
+◆ 100% zero-knowledge architectuur: alleen jij kunt je gegevens openen—niemand anders, zelfs Liso niet.
+◆ Aanmelding met crypto-wallets: begin direct met wallet-gebaseerde authenticatie—geen e-mail of wachtwoord nodig.
+
+Met een fundament in geavanceerde cryptografie en gedecentraliseerde technologie overtreft Liso legacy wachtwoordbeheerders zoals 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform en NordPass—met superieure beveiliging, privacy en echte digitale vrijheid.
+
+Meer informatie: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Privacybeleid: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Gebruiksvoorwaarden: https://github.com/Liso-Vault/app/blob/master/TERMS.md

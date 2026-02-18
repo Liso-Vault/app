@@ -7,17 +7,16 @@ import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:app_core/widgets/appbar_leading.widget.dart';
 import 'package:app_core/widgets/busy_indicator.widget.dart';
+import 'package:app_core/locales.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:dash_flags/dash_flags.dart';
-// import 'package:launch_at_startup/src/launch_at_startup.dart';
 import 'package:liso/core/persistence/persistence.dart';
 import 'package:liso/core/persistence/persistence.secret.dart';
 import 'package:liso/features/app/routes.dart';
-import 'package:liso/features/config/locales.dart';
 import 'package:liso/features/menu/menu.button.dart';
 
 import '../menu/menu.item.dart';

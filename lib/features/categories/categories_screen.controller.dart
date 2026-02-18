@@ -1,8 +1,7 @@
 import 'package:app_core/globals.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/services/notifications.service.dart';
-import 'package:app_core/pages/routes.dart';
 import 'package:app_core/utils/ui_utils.dart';
-import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -84,14 +83,8 @@ class CategoriesScreenController extends GetxController with ConsoleMixin {
       }
 
       if (CategoriesController.to.data.length >= limits.customCategories) {
-        return Utils.adaptiveRouteOpen(
-          name: Routes.upgrade,
-          parameters: {
-            'title': 'custom_categories'.tr,
-            'body':
-                'Maximum custom categories of ${limits.customCategories} limit reached. Upgrade to Pro to unlock unlimited custom categories feature.',
-          },
-        );
+        PurchasesService.to.show();
+        return;
       }
 
       await CategoriesService.to.box!.add(HiveLisoCategory(

@@ -603,4 +603,46 @@ final no = {
   "clear_all_items_and_start_over": "Fjern alle elementer og start på nytt",
   "delete_local_vault_and_logout": "Slett lokalt hvelv og logg ut",
   "delete_remote_vault_and_files": "Slett eksternt hvelv og filer",
+
+  // String Reviews
+  "review_string_0":
+      "Liso er helt fantastisk! Det har fullstendig forandret hvordan jeg sikrer mine sensitive data. Anbefaling for ekte beskyttelse!",
+  "review_string_1":
+      "Jeg bruker Liso hver dag. Designet er så brukervenlig, og jeg føler meg trygg på at alle passordene mine er super sikre med blockchain-teknologi.",
+  "review_string_2":
+      "Hver funksjon i Liso gjør det mye enklere og tryggere å administrere kryptolommebøkene og innloggingene mine. Jeg elsker den sterke krypteringen!",
+  "review_string_3":
+      "Liso overgikk alle forventningene mine. Jeg stoler på det med alle hemmelighetene mine, og sinnsroen er uvurderlig!",
+  "review_string_4":
+      "Produktiviteten og sikkerheten min har begge eksplodert siden jeg byttet til Liso. Det er nå min go-to hvelv for alt privat.",
+  "review_string_5":
+      "Lisos jevnlige oppdateringer gjør det stadig tryggere og bedre. Forbedringene er konstante, og dataene mine forblir fullt beskyttet.",
+  "review_string_6":
+      "Liso er virkelig en livredder! Jeg lagrer passordene mine, krypto-seed-setninger og personlige notater med full tillit.",
+  "review_string_7":
+      "Lisos kundeservice er fantastisk! Rask og kunnskapsrik, og de bryr seg virkelig om brukersikkerhet og tilbakemeldinger.",
+  "review_string_8":
+      "Anbefaler Liso varmt til venner og kolleger. Det er fullt av sikkerhetsfunksjoner som gjør personvern enkelt.",
+  "review_string_9":
+      "Lisos vakre grensesnitt gjør administrasjon av hvelvet mitt behagelig og stressfritt. Sikkerhet har aldri sett så bra ut.",
+  "review_string_10":
+      "Jeg er mer organisert og tryggere enn noen gang med Liso. Jeg kan ikke forestille meg å betro mitt digitale liv til noen annen app.",
+  "review_string_11":
+      "Liso presterer perfekt — smidig, pålitelig og helt feilfri. Det gir meg tillit til at informasjonen min er trygg.",
+  "review_string_12":
+      "Liso lever opp til alle sikkerhetsløfter. Arbeidsflyten min er forbedret og dataene mine føles uigjennomtrengelige!",
+  "review_string_13":
+      "Å holde fokus og sikkerhet er enkelt med Liso. Så takknemlig for personvernfunksjonene og enkelheten.",
+  "review_string_14":
+      "Liso er en skattekiste full av utrolige sikkerhetsfunksjoner. Hver gang jeg bruker den finner jeg nye måter å være beskyttet på.",
+  "review_string_15":
+      "Lisos gjennomtenkte design gjør navigasjon enkelt. Alt — lommebøker, passord, 2FA — er alltid rett der.",
+  "review_string_16":
+      "Liso har alt jeg trenger: én app for å administrere, kryptere og få tilgang til alle mine digitale verdier.",
+  "review_string_17":
+      "Imponert over hvordan Liso utvikler seg! Utviklerne lytter virkelig til tilbakemeldinger og forbedrer sikkerhet og brukervennlighet.",
+  "review_string_18":
+      "Å bruke Liso er en glede — fantastiske personvernkontroller og kraftig krypto-sikkerhet i en app som ser og føles bra ut.",
+  "review_string_19":
+      "Jeg anbefaler alltid Liso! Det er ganske enkelt den tryggeste og mest organiserte måten å lagre krypto, passord og privat info.",
 };

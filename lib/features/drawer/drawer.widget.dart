@@ -201,6 +201,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               style: const TextStyle(fontSize: 13),
             ),
             children: [
+              const PremiumCard(),
               PersistenceBuilder(
                 builder: (p, context) => AppPersistence.to.sync.val
                     ? ListTile(
@@ -265,26 +266,29 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 dense: isSmallScreen,
                 title: Text('settings'.tr),
                 leading: const Icon(Iconsax.setting_2_outline),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.settings,
-                  method: 'offAndToNamed',
-                ),
+                onTap: () {
+                  Get.closeOverlay();
+                  Utils.adaptiveRouteOpen(name: Routes.settings);
+                },
               ),
               ListTile(
                 dense: isSmallScreen,
                 title: Text('about'.tr),
                 leading: const Icon(Iconsax.info_circle_outline),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: Routes.about,
-                  method: 'offAndToNamed',
-                ),
+                onTap: () {
+                  Get.closeOverlay();
+                  Utils.adaptiveRouteOpen(name: Routes.about);
+                },
               ),
               const Divider(),
               ListTile(
                 dense: isSmallScreen,
                 title: Text('need_help'.tr),
                 leading: const Icon(Iconsax.message_question_outline),
-                onTap: () => Utils.adaptiveRouteOpen(name: Routes.feedback),
+                onTap: () {
+                  Get.closeOverlay();
+                  Utils.adaptiveRouteOpen(name: Routes.feedback);
+                },
               ),
             ],
           ),
@@ -302,30 +306,34 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 dense: isSmallScreen,
                 title: Text('encryption_tool'.tr),
                 leading: const Icon(Iconsax.convert_3d_cube_outline),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: AppRoutes.cipher,
-                  method: 'offAndToNamed',
-                ),
+                onTap: () {
+                  Get.closeOverlay();
+                  Utils.adaptiveRouteOpen(name: AppRoutes.cipher);
+                },
               ),
               ListTile(
                 dense: isSmallScreen,
                 title: Text('password_generator'.tr),
                 leading: const Icon(Iconsax.password_check_outline),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: AppRoutes.passwordGenerator,
-                  method: 'offAndToNamed',
-                  parameters: {'from': 'drawer'},
-                ),
+                onTap: () {
+                  Get.closeOverlay();
+                  Utils.adaptiveRouteOpen(
+                    name: AppRoutes.passwordGenerator,
+                    parameters: {'from': 'drawer'},
+                  );
+                },
               ),
               ListTile(
                 dense: isSmallScreen,
                 title: Text('seed_generator'.tr),
                 leading: const Icon(Iconsax.key_outline),
-                onTap: () => Utils.adaptiveRouteOpen(
-                  name: AppRoutes.seedGenerator,
-                  method: 'offAndToNamed',
-                  parameters: {'from': 'drawer'},
-                ),
+                onTap: () {
+                  Get.closeOverlay();
+                  Utils.adaptiveRouteOpen(
+                    name: AppRoutes.seedGenerator,
+                    parameters: {'from': 'drawer'},
+                  );
+                },
               ),
               // ListTile(
               //   title: Text('breach_scanner'.tr),
@@ -346,7 +354,6 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
               ),
             ),
           ),
-          const PremiumCard(),
         ];
 
         return Drawer(

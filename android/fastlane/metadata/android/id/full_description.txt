@@ -1,0 +1,34 @@
+Lindungi data berharga Anda dengan keamanan generasi berikutnya. Liso adalah brankas data crypto-first yang didukung Web3, dirancang dari awal untuk memanfaatkan keamanan tingkat blockchain dan teknologi terdesentralisasi. Lindungi kata sandi, catatan, foto, video, dokumen, dan semua informasi sensitif dengan kriptografi canggih, protokol terdesentralisasi, dan standar privasi terkuat. Dengan Liso, data tetap benar-benar milik Anda—aman, pribadi, dan selalu di bawah kendali penuh Anda, bebas dari iklan dan pelacakan intrusif.
+
+Platform canggih Liso memanfaatkan teknik kriptografi modern dan framework Web3—termasuk enkripsi ujung-ke-ujung, bukti zero-knowledge, dan integrasi dompet aman—untuk melindungi kehidupan digital Anda. Simpan data paling kritis: kredensial login, kata sandi, dompet kripto, frasa seed, kode 2FA/MFA, catatan aman, kartu debit/kredit, rekening bank, dokumen identitas, lisensi perangkat lunak, nomor jaminan sosial, dan lainnya—semua dalam brankas terdesentralisasi yang tak tertembus.
+
+Liso bukan sekadar brankas aman—ini pengelola kata sandi kripto all-in-one, brankas lintas perangkat, dan autentikator generasi baru yang menggabungkan Web3 dan keamanan klasik untuk perlindungan tak tertandingi.
+
+Fitur utama:
+◆ Keamanan berbasis kripto generasi baru: Liso dirancang dengan teknologi blockchain dan Web3 untuk menghilangkan titik kegagalan tunggal dan memaksimalkan perlindungan data.
+◆ Enkripsi AES-256 tingkat militer + ujung-ke-ujung: kriptografi tradisional dan terdesentralisasi bekerja sama untuk keamanan tak tertandingi.
+◆ Manajemen identitas terdesentralisasi: autentikasi tanpa kredensial tradisional menggunakan dompet aman atau metode masuk terdesentralisasi.
+◆ Mode offline/air-gap: akses brankas terenkripsi Anda bahkan tanpa koneksi internet—data tidak pernah meninggalkan perangkat kecuali Anda memilih.
+◆ Sinkronisasi didukung blockchain: sinkronkan data dengan aman di banyak perangkat menggunakan penyimpanan cloud terdesentralisasi dan terenkripsi.
+◆ Autentikasi biometrik sidik jari/wajah: gabungkan biometrik dengan penanda kriptografi untuk autentikasi multi-faktor sejati.
+◆ Autentikator 2FA/MFA: hasilkan dan simpan kode dua faktor dengan aman di brankas terenkripsi kripto Anda.
+◆ Deteksi kata sandi lemah: identifikasi dan perkuat kata sandi rentan secara proaktif.
+◆ Enkripsi tingkat kata sandi dan item: terapkan lapisan enkripsi tambahan untuk item brankas paling sensitif.
+◆ Enkripsi file dengan protokol Web3: enkripsi file dengan metode kripto yang tangguh.
+◆ Pembuat kata sandi andal: buat kata sandi unik dan sangat kuat dengan keacakan yang aman secara kriptografis.
+◆ Penyimpanan cloud terenkripsi dan terdesentralisasi gratis: hanya Anda yang memegang kunci—terlindungi, pribadi, dan dapat diverifikasi.
+◆ Brankas foto dan video aman: kunci seluruh kehidupan digital Anda, termasuk media, dengan enkripsi terdesentralisasi.
+◆ Akses kripto lintas platform: gunakan Liso dengan mudah di desktop, tablet, dan ponsel.
+◆ Migrasi tanpa repot: impor data dari Bitwarden, LastPass, Chrome, dan pengelola lainnya—lalu enkripsi dengan standar kripto terbaru.
+◆ Arsitektur zero-knowledge 100%: hanya Anda yang dapat mengakses data—tidak ada orang lain, bahkan Liso, yang dapat membaca rahasia Anda.
+◆ Pendaftaran inovatif dengan dompet kripto: mulai instan dengan autentikasi berbasis dompet—tanpa email atau kata sandi.
+
+Dengan fondasi kriptografi canggih dan teknologi terdesentralisasi, Liso mengungguli pengelola kata sandi warisan seperti 1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, dan NordPass—menawarkan keamanan, privasi, dan kebebasan digital sejati yang unggul.
+
+Pelajari lebih lanjut: https://liso.dev
+
+Sumber terbuka: https://github.com/Liso-Vault/app
+
+Kebijakan privasi: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Ketentuan penggunaan: https://github.com/Liso-Vault/app/blob/master/TERMS.md

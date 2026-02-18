@@ -1,0 +1,34 @@
+Apsaugokite savus vertingus duomenis su kito kartos saugumu. Liso yra kripto-pirmasis, Web3 varomas duomenų saugykla, sukurta naudoti blokų grandinės lygio saugumą ir decentralizuotą technologiją. Saugokite slaptažodžius, užrašus, nuotraukas, vaizdo įrašus, dokumentus ir visą jautrią informaciją su pažangia kriptografija, decentralizuotais protokolais ir griežtais privatumo standartais. Su Liso jūsų duomenys lieka jūsų - saugūs, privataus ir jūsų kontrolėje, be reklamų ir stebėjimo.
+
+Liso naudoja šiuolaikines kriptografines technikas ir Web3 sistemas - galą į galą šifravimą, nulio žinių įrodymus ir saugius piniginės integracijas - jūsų skaitmeninio gyvenimo apsaugai. Laikykite prisijungimo duomenis, slaptažodžius, kripto pinigines, sėklų frazes, 2FA/MFA kodus, saugius užrašus, korteles, banko sąskaitas, tapatybės dokumentus ir daugiau decentralizuotoje, neįveikiamoje saugykloje.
+
+Liso yra viskas-viename kripto slaptažodžių tvarkyklė, įrenginių saugykla ir kito kartos autentifikatorius, jungiantis Web3 ir klasikinį saugumą neprilygstamai apsaugai.
+
+Pagrindinės funkcijos:
+- Kito kartos kripto saugumas: Blokų grandinės ir Web3 technologijos pašalina vieno taško gedimus ir maksimaliai didina duomenų apsaugą.
+- Karinio lygio AES-256 ir galas į galą šifravimas: Tradicinė ir decentralizuota kriptografija neprilygstamam saugumui.
+- Decentralizuota tapatybė: Autentikuokitės su saugiomis piniginėmis arba decentralizuotu prisijungimu - jokio ryšio su tikra tapatybe.
+- Nėra interneto / oro atskirtas režimas: Pasiekite šifruotą saugyklą be interneto - jūsų duomenys niekada nepalieka įrenginio, nebent pasirinksite.
+- Blokų grandinėje pagrįsta sinchronizacija: Sinchronizuokite duomenis tarp įrenginių su decentralizuota, šifruota debesų saugykla.
+- Piršto / veido biometrija: Daugiafaktorinė autentifikacija su kriptografiniais pasirašytojais.
+- 2FA/MFA autentifikatorius: Generuokite ir laikykite dviejų faktorių kodus savo šifruotoje saugykloje.
+- Silpnų slaptažodžių aptikimas: Raskite ir sustiprinkite pažeidžiamus slaptažodžius.
+- Slaptažodžio ir elemento lygio šifravimas: Papildomas šifravimas jautriausiems elementams.
+- Web3 failų šifravimas: Šifruokite failus robustiomis kripto metodėmis.
+- Galingas slaptažodžių generatorius: Ultra stiprūs, unikalūs slaptažodžiai su kriptografiškai saugiu atsitiktinumui.
+- Nemokama šifruota ir decentralizuota debesų saugykla: Tik jūs laikote raktus.
+- Saugi nuotraukų ir vaizdo įrašų saugykla: Apsaugokite skaitmeninį gyvenimą decentralizuotu šifravimu.
+- Kelių platformų prieiga: Naudokite Liso darbalaukyje, planšetėje ir mobiliajame.
+- Lengva migracija: Importas iš Bitwarden, LastPass, Chrome ir kitų - tada šifravimas naujausiais kripto standartais.
+- 100% nulio žinių: Tik jūs galite pasiekti savo duomenis - niekas kitas, net Liso.
+- Registruokitės su kripto piniginėmis: Pradėkite akimirksniu su piniginės autentifikacija - nereikia el. pašto ar slaptažodžio.
+
+Liso pranoksta senus slaptažodžių tvarkyklės (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass) su pranašesniu saugumu, privatumu ir skaitmenine laisve.
+
+Sužinokite daugiau: https://liso.dev
+
+Atviro kodo: https://github.com/Liso-Vault/app
+
+Privatumo politika: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Naudojimo sąlygos: https://github.com/Liso-Vault/app/blob/master/TERMS.md

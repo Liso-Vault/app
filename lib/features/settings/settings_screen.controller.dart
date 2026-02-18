@@ -9,6 +9,7 @@ import 'package:app_core/persistence/persistence.dart';
 import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/services/notifications.service.dart';
 import 'package:app_core/supabase/supabase_auth.service.dart';
+import 'package:app_core/locales.dart';
 import 'package:app_core/utils/ui_utils.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:console_mixin/console_mixin.dart';
@@ -23,7 +24,6 @@ import 'package:liso/core/translations/data.dart';
 import 'package:liso/core/utils/file.util.dart';
 import 'package:liso/core/utils/globals.dart';
 import 'package:liso/features/categories/categories.service.dart';
-import 'package:liso/features/config/locales.dart';
 import 'package:liso/features/files/sync.service.dart';
 import 'package:liso/features/items/items.controller.dart';
 import 'package:liso/features/items/items.service.dart';
@@ -48,9 +48,7 @@ class SettingsScreenController extends GetxController
         (e) {
           final languageCode = Get.locale?.languageCode ?? '';
           String localeString = e.value['locale_string']!;
-
           final language = e.value['language']!;
-
           var localeForIcon = localeString;
           final splitted = localeString.split('-');
           if (splitted.length > 1) localeForIcon = splitted.first;
@@ -64,9 +62,6 @@ class SettingsScreenController extends GetxController
               language: Language.fromCode(localeForIcon),
             ),
             onTap: () async {
-              localeString = localeString.replaceAll('-Hans', '');
-              localeString = localeString.replaceAll('-Hant', '');
-              localeString = localeString.replaceAll('-', '_');
               await Get.updateLocale(Locale(localeString));
               Persistence.to.localeCode.val = localeString;
             },

@@ -1,0 +1,34 @@
+Zaščitite svoje dragocene podatke z naslednjo generacijo varnosti. Liso je kripto-prvi, s Web3 poganjan trezor podatkov, zgrajen za izkoriščanje varnosti na ravni blockchaina in decentralizirane tehnologije. Zaščitite gesla, opombe, fotografije, videoposnetke, dokumente in vse občutljive informacije z napredno kriptografijo, decentraliziranimi protokoli in strogiemi standardi zasebnosti. Z Lisom vaši podatki ostanejo vaši—varni, zasebni in pod vašim nadzorom, brez oglasov in sledenja.
+
+Liso uporablja sodobne kriptografske tehnike in Web3 okvire—vključno s šifriranjem end-to-end, zero-knowledge dokazi in integracijami varnih denarnic—za zaščito vašega digitalnega življenja. Shranjujte prijavne podatke, gesla, kripto denarnice, seed fraze, 2FA/MFA kode, varne opombe, kartice, bančne račune, osebne dokumente in več v decentraliziranem, neprebojnem trezorju.
+
+Liso je vse-v-enem upravitelj kripto gesel, trezor med napravami in avtentikator naslednje generacije, ki združuje Web3 in klasično varnost za neprimerljivo zaščito.
+
+Ključne funkcije:
+◆ Kripto varnost naslednje generacije: Blockchain in Web3 tehnologije odpravljajo posamezne točke odpovedi in maksimizirajo zaščito podatkov.
+◆ Vojaška raven AES-256 + end-to-end šifriranje: Tradicionalna in decentralizirana kriptografija za neprimerljivo varnost.
+◆ Decentralizirana identiteta: Overite se z varnimi denarnicami ali decentralizirano prijavo—brez povezave z vašo resnično identiteto.
+◆ Način brez povezave/air-gap: Dostop do šifriranega trezorja brez interneta—vaši podatki nikoli ne zapustijo naprave, razen če izberete.
+◆ Sinhronizacija s podporo blockchaina: Sinhronizirajte podatke med napravami z decentraliziranim, šifriranim oblačnim shranjevanjem.
+◆ Biometrija prstnega odtisa/obraza: Večfaktorska avtentikacija s kriptografskimi podpisovalci.
+◆ Avtentikator 2FA/MFA: Ustvarite in varno shranjujte dvofaktorske kode v svojem šifriranem trezorju.
+◆ Odkrivanje šibkih gesel: Poiščite in okrepite ranljiva gesla.
+◆ Šifriranje na ravni gesla in elementa: Dodatno šifriranje za vaše najbolj občutljive elemente.
+◆ Web3 šifriranje datotek: Šifrirajte datoteke z robustnimi kripto metodami.
+◆ Zmogljiv generator gesel: Ultra močna, edinstvena gesla s kriptografsko varno naključnostjo.
+◆ Brezplačno šifrirano in decentralizirano oblačno shranjevanje: Samo vi imate ključe.
+◆ Varen trezor za fotografije in videoposnetke: Zaklenite svoje digitalno življenje z decentraliziranim šifriranjem.
+◆ Dostop med platformami: Uporabljajte Liso na namizju, tabličnem računalniku in mobilnem telefonu.
+◆ Enostavna migracija: Uvažajte iz Bitwarden, LastPass, Chrome in drugih—nato šifrirajte z najnovejšimi kripto standardi.
+◆ 100% zero-knowledge: Samo vi lahko dostopate do svojih podatkov—nihče drug, tudi ne Liso.
+◆ Registracija s kripto denarnicami: Začnite takoj z overitvijo denarnice—e-pošta ali geslo ni potrebno.
+
+Z osnovo v napredni kriptografiji in decentralizirani tehnologiji Liso prekaša tradicionalne upravitelje gesel (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—z superiorno varnostjo, zasebnostjo in resnično digitalno svobodo.
+
+Izvedite več: https://liso.dev
+
+Odprta koda: https://github.com/Liso-Vault/app
+
+Pravilnik o zasebnosti: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Pogoji uporabe: https://github.com/Liso-Vault/app/blob/master/TERMS.md

@@ -1,0 +1,34 @@
+Suojaa arvokkaita tietojasi seuraavan sukupolven turvallisuudella. Liso on krypto-ensiksi, Web3-vetoinen datakassakontti, rakennettu hyödyntämään lohkoketjutason turvallisuutta ja hajautettua teknologiaa. Suojaa salasanat, muistiinpanot, kuvat, videot, asiakirjat ja kaikki arkaluonteinen tieto edistyksellisellä kryptografialla, hajautetuilla protokollilla ja vahvoilla tietosuojastandardeilla. Lisolla tietosi pysyvät sinun—turvallisina, yksityisinä ja hallinnassasi, ilman mainoksia ja seurantaa.
+
+Liso käyttää nykyaikaisia kryptografisia tekniikoita ja Web3-kehyksiä—mukaan lukien päästä päähän -salauksen, nollatiedon todisteet ja turvalliset lompakkointagraatiot—digitaalisen elämäsi suojaamiseen. Tallenna kirjautumistiedot, salasanat, kryptolompakot, siemenlauseet, 2FA/MFA-koodit, turvalliset muistiinpanot, kortit, pankkitilit, henkilöllisyystodistukset ja muut hajautettuun, läpäisemättömään kassakonttiin.
+
+Liso on kaikki-yhdessä -kryptosalasananhallinta, laitteiden välinen kassakontti ja seuraavan sukupolven todentaja, yhdistäen Web3:n ja klassisen turvallisuuden vertaansa vailla olevaan suojaukseen.
+
+Keskeiset ominaisuudet:
+◆ Seuraavan sukupolven kryptoturvallisuus: Lohkoketju- ja Web3-teknologiat eliminoivat yksittäiset vikapisteet ja maksimoivat tietosuojan.
+◆ Sotilaallinen AES-256 + päästä päähän -salaus: Perinteinen ja hajautettu kryptografia vertaansa vailla olevaan turvallisuuteen.
+◆ Hajautettu identiteetti: Todennus turvallisilla lompakoilla tai hajautetulla kirjautumisella—ei yhteyttä todelliseen identiteettiisi.
+◆ Offline/ilmarako-tila: Käytä salattua kassakonttiasi ilman internetiä—tietosi eivät koskaan poistu laitteeltasi, ellet valitse.
+◆ Lohkoketjupohjainen synkronointi: Synkronoi tietoja laitteiden välillä hajautetulla, salatulla pilvitallennuksella.
+◆ Sormenjälki/kasvobiometria: Monivaiheinen todennus kryptografisilla allekirjoittajilla.
+◆ 2FA/MFA-todentaja: Luo ja tallenna kaksivaiheiset koodit turvallisesti salattuun kassakonttiisi.
+◆ Heikkojen salasanojen tunnistus: Etsi ja vahvista haavoittuvia salasanoja.
+◆ Salasanan ja kohdetason salaus: Lisäsalaus herkimmille kohteillesi.
+◆ Web3-tiedostosalaus: Salaa tiedostot vankilla kryptomenetelmillä.
+◆ Tehokas salasanageneraattori: Ultra-vahvoja, ainutlaatuisia salasanoja kryptografisesti turvallisella satunnaisuudella.
+◆ Ilmainen salattu ja hajautettu pilvitallennus: Vain sinulla on avaimet.
+◆ Turvallinen kuva- ja videokassakontti: Lukitse digitaalinen elämäsi hajautetulla salauksella.
+◆ Alustojen välinen käyttö: Käytä Lisoa työpöydällä, tabletilla ja mobiilissa.
+◆ Helppo migraatio: Tuo Bitwardenista, LastPassista, Chromesta ja muista—salaa sitten uusimmilla kryptostandardeilla.
+◆ 100 % nollatietous: Vain sinä voit käyttää tietojasi—kukaan muu, ei edes Liso.
+◆ Rekisteröidy kryptolompakoilla: Aloita heti lompakkotodennuksella—sähköpostia tai salasanaa ei tarvita.
+
+Edistyksellisen kryptografian ja hajautetun teknologian pohjalla Liso ylittää perinteiset salasananhallinnat (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—tarjoten ylivertaista turvallisuutta, yksityisyyttä ja aidon digitaalisen vapauden.
+
+Lue lisää: https://liso.dev
+
+Avoimen lähdekoodin: https://github.com/Liso-Vault/app
+
+Tietosuojakäytäntö: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Käyttöehdot: https://github.com/Liso-Vault/app/blob/master/TERMS.md

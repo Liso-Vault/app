@@ -30,7 +30,7 @@ final ca = {
   "day": "Dia",
   "help_translate": "Ajudar a Traduir",
   "join_affiliates": "Unir-se al Programa d'Afiliats",
-  "join_over_users": "Confiat per més de 100,000 usuaris",
+  "join_over_users": "Confiat per més de 1,000,000 usuaris",
   "nextran_desc": "Traductor de Llistats d'App Store per Desenvolupadors",
   "slogan": "Comença a Assegurar Les Teves Dades",
   "slogan_sub":
@@ -606,4 +606,46 @@ final ca = {
   "download": "Descarregar",
   "folder_name": "Nom de Carpeta",
   "send": "Enviar",
+
+  // String Reviews
+  "review_string_0":
+      "Liso és absolutament fantàstic! Ha transformat completament com protegeixo les meves dades sensibles. La millor recomanació per a una protecció real!",
+  "review_string_1":
+      "Uso Liso cada dia. El disseny és molt fàcil d'usar i tinc confiança que totes les meves contrasenyes són super segures amb la tecnologia blockchain.",
+  "review_string_2":
+      "Cada funció de Liso fa que gestionar les meves carteres cripto i accessos sigui molt més fàcil i segur. M'encanta el xifratge fort!",
+  "review_string_3":
+      "Liso ha superat totes les meves expectatives. Li confio tots els meus secrets i la tranquil·litat no té preu!",
+  "review_string_4":
+      "La meva productivitat i seguretat han disparat des que vaig canviar a Liso. Ara és la meva caixa forta principal per a tot el privat.",
+  "review_string_5":
+      "Les actualitzacions regulars de Liso el fan més segur i millor. Les millores són constants i les meves dades queden protegides.",
+  "review_string_6":
+      "Liso és un veritable salvavides! Guardo contrasenyes, frases llavor cripto i notes personals amb total confiança.",
+  "review_string_7":
+      "El suport al client de Liso és increïble! Ràpid i coneixedor, i realment els importa la seguretat i el feedback dels usuaris.",
+  "review_string_8":
+      "Recomano Liso als amics i col·legues. Està ple de funcions de seguretat que fan la privacitat fàcil.",
+  "review_string_9":
+      "La bonica interfície de Liso fa que gestionar la meva caixa forta sigui agradable i sense estrès. La seguretat mai havia quedat tan bé.",
+  "review_string_10":
+      "Estic més organitzat i segur que mai amb Liso. No puc imaginar confiar la meva vida digital a cap altra app.",
+  "review_string_11":
+      "Liso funciona perfectament — fluid, fiable i completament sense errors. Em dóna confiança que la meva informació és segura.",
+  "review_string_12":
+      "Liso compleix totes les promeses de seguretat. El meu flux de treball ha millorat i les meves dades es senten impenetrables!",
+  "review_string_13":
+      "Mantenir el focus i la seguretat és fàcil amb Liso. Molt agraït per les seves funcions de privacitat i simplicitat.",
+  "review_string_14":
+      "Liso és un cofre del tresor ple de funcions de seguretat increïbles. Cada vegada que el faig servir trobo noves maneres d'estar protegit.",
+  "review_string_15":
+      "El disseny cuidat de Liso facilita la navegació. Tot — carteres, contrasenyes, 2FA — sempre a la mà.",
+  "review_string_16":
+      "Liso té tot el que necessito: una app per gestionar, xifrar i accedir a tots els meus béns digitals.",
+  "review_string_17":
+      "Impressionat amb com evoluciona Liso! Els desenvolupadors realment escolten el feedback i milloren constantment seguretat i usabilitat.",
+  "review_string_18":
+      "Usar Liso és un plaer — controls de privacitat genials i seguretat cripto potent en una app que es veu i es sent genial.",
+  "review_string_19":
+      "Sempre recomano Liso! És simplement la manera més segura i organitzada d'emmagatzemar cripto, contrasenyes i informació privada.",
 };

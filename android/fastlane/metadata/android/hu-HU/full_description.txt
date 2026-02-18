@@ -1,0 +1,34 @@
+Védje értékes adatait a következő generációs biztonsággal. A Liso egy kriptó-first, Web3-alapú adattár, amelyet arra terveztek, hogy kihasználja a blokklánc szintű biztonságot és a decentralizált technológiát. Védje jelszavait, jegyzeteit, fényképeit, videóit, dokumentumait és minden érzékeny adatát fejlett kriptográfiával, decentralizált protokollokkal és szigorú adatvédelmi szabványokkal. A Lisoval adatai önökéi maradnak—biztonságosak, privátok és ön kontrollja alatt, reklámok és nyomon követés nélkül.
+
+A Liso modern kriptográfiai technikákat és Web3 keretrendszereket használ—beleértve a végpontok közötti titkosítást, zero-knowledge bizonyítékokat és biztonságos pénztárca integrációkat—a digitális élete védelmére. Tárolja bejelentkezési adatait, jelszavait, kriptó pénztárcáit, seed kifejezéseit, 2FA/MFA kódjait, biztonságos jegyzeteit, kártyáit, bankszámláit, személyazonosító okiratait és egyebeket egy decentralizált, bevehetetlen tárban.
+
+A Liso egy mindent-megoldó kriptó jelszókezelő, eszközök közötti tár és új generációs hitelesítő, amely a Web3-ot és a klasszikus biztonságot párosítja példátlan védelmet nyújtva.
+
+Főbb jellemzők:
+◆ Új generációs kriptó biztonság: A blokklánc és Web3 technológiák kiküszöbölik az egyetlen meghibásodási pontokat és maximalizálják az adatvédelmet.
+◆ Katonai szintű AES-256 + végpontok közötti titkosítás: A hagyományos és decentralizált kriptográfia példátlan biztonságot nyújt.
+◆ Decentralizált identitás: Hitelesítés biztonságos pénztárcákkal vagy decentralizált bejelentkezéssel—nincs kapcsolat a valódi identitásával.
+◆ Offline/air-gap mód: Hozzáfér titkosított tárához internet nélkül—adatai soha nem hagyják el eszközét, hacsak ön nem választja.
+◆ Blokklánc által támogatott szinkronizálás: Szinkronizálja adatait eszközök között decentralizált, titkosított felhőtárolással.
+◆ Ujjnyomat/arc biometria: Többtényezős hitelesítés kriptográfiai aláírókkal.
+◆ 2FA/MFA hitelesítő: Kétfaktoros kódok biztonságos generálása és tárolása a titkosított tárában.
+◆ Gyenge jelszó észlelés: Keresse meg és erősítse a sebezhető jelszavakat.
+◆ Jelszó- és elem szintű titkosítás: További titkosítás a legérzékenyebb elemeihez.
+◆ Web3 fájltitkosítás: Titkosítsa fájljait robusztus kriptó módszerekkel.
+◆ Erős jelszógenerátor: Ultra erős, egyedi jelszavak kriptográfiailag biztonságos véletlenszerűséggel.
+◆ Ingyenes titkosított és decentralizált felhőtárolás: Csak ön tartja a kulcsokat.
+◆ Biztonságos foto- és videotár: Zárja le digitális életét decentralizált titkosítással.
+◆ Többplatformos hozzáférés: Használja a Lisot asztali számítógépen, táblagépen és mobilon.
+◆ Könnyű migráció: Importáljon a Bitwarden, LastPass, Chrome és másokból—majd titkosítson a legújabb kriptó szabványokkal.
+◆ 100% zero-knowledge: Csak ön férhet hozzá adataihoz—más senki, még a Liso sem.
+◆ Regisztráció kriptó pénztárcákkal: Azonnal induljon pénztárca hitelesítéssel—e-mail vagy jelszó nem szükséges.
+
+A fejlett kriptográfia és decentralizált technológia alapján a Liso felülmúlja a hagyományos jelszókezelőket (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—felülmúló biztonságot, adatvédelmet és valódi digitális szabadságot kínálva.
+
+Tudjon meg többet: https://liso.dev
+
+Nyílt forráskód: https://github.com/Liso-Vault/app
+
+Adatvédelmi irányelvek: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Felhasználási feltételek: https://github.com/Liso-Vault/app/blob/master/TERMS.md

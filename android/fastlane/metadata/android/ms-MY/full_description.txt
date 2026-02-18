@@ -1,0 +1,34 @@
+Lindungi data berharga anda dengan keselamatan generasi seterusnya. Liso ialah peti besi data didorong Web3 crypto-pertama, dibina untuk memanfaatkan keselamatan gred blockchain dan teknologi terdesentralisasi. Lindungi kata laluan, nota, foto, video, dokumen dan semua maklumat sensitif dengan kriptografi termaju, protokol terdesentralisasi dan piawaian privasi yang ketat. Dengan Liso, data anda kekal milik anda - selamat, peribadi dan di bawah kawalan anda, bebas daripada iklan dan penjejakan.
+
+Liso menggunakan teknik kriptografi moden dan rangka kerja Web3 - termasuk penyulitan hujung-ke-hujung, bukti sifar pengetahuan dan integrasi dompet selamat - untuk melindungi kehidupan digital anda. Simpan kelayakan log masuk, kata laluan, dompet kripto, frasa benih, kod 2FA/MFA, nota selamat, kad, akaun bank, dokumen identiti dan lebih lagi dalam peti besi terdesentralisasi yang tidak dapat ditembusi.
+
+Liso ialah pengurus kata laluan kripto semua-dalam-satu, peti besi merentas peranti dan pengesah generasi seterusnya, menggabungkan Web3 dan keselamatan klasik untuk perlindungan tiada tandingan.
+
+Ciri utama:
+- Keselamatan kripto generasi seterusnya: Teknologi blockchain dan Web3 menghapuskan titik kegagalan tunggal dan memaksimumkan perlindungan data.
+- AES-256 gred tentera + penyulitan hujung-ke-hujung: Kriptografi tradisional dan terdesentralisasi untuk keselamatan tiada tandingan.
+- Identiti terdesentralisasi: Sahkan dengan dompet selamat atau log masuk terdesentralisasi - tiada pautan kepada identiti sebenar anda.
+- Mod luar talian/terputus udara: Akses peti besi disulitkan anda tanpa internet - data anda tidak pernah meninggalkan peranti melainkan anda pilih.
+- Sync disokong blockchain: Segerak data merentas peranti dengan penyimpanan awan terdesentralisasi yang disulitkan.
+- Biometrik cap jari/muka: Pengesahan pelbagai faktor dengan penandatangan kriptografi.
+- Pengesah 2FA/MFA: Jana dan simpan kod dua faktor dalam peti besi disulitkan anda.
+- Pengesanan kata laluan lemah: Cari dan perkukuh kata laluan terdedah.
+- Penyulitan peringkat kata laluan dan item: Penyulitan tambahan untuk item paling sensitif anda.
+- Penyulitan fail Web3: Sulitkan fail dengan kaedah kripto yang teguh.
+- Penjana kata laluan berkuasa: Kata laluan ultra-kuat, unik dengan rawak kriptografi selamat.
+- Penyimpanan awan disulitkan dan terdesentralisasi percuma: Hanya anda memegang kunci.
+- Peti besi foto dan video selamat: Kunci kehidupan digital anda dengan penyulitan terdesentralisasi.
+- Akses merentas platform: Gunakan Liso pada desktop, tablet dan mudah alih.
+- Migrasi mudah: Import dari Bitwarden, LastPass, Chrome dan lain-lain - kemudian sulitkan dengan piawaian kripto terkini.
+- 100% sifar pengetahuan: Hanya anda boleh mengakses data anda - tiada orang lain, walaupun Liso.
+- Daftar dengan dompet kripto: Mulakan serta-merta dengan pengesahan dompet - tiada e-mel atau kata laluan diperlukan.
+
+Liso mengatasi pengurus kata laluan warisan (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass) dengan keselamatan, privasi dan kebebasan digital yang unggul.
+
+Ketahui lebih lanjut: https://liso.dev
+
+Sumber terbuka: https://github.com/Liso-Vault/app
+
+Dasar privasi: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Syarat penggunaan: https://github.com/Liso-Vault/app/blob/master/TERMS.md

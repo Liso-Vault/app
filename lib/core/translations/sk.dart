@@ -29,7 +29,7 @@ final sk = {
   "day": "Deň",
   "help_translate": "Pomôžte Preložiť",
   "join_affiliates": "Pripojte sa k Partnerskému Programu",
-  "join_over_users": "Dôveruje viac ako 100,000 používateľov",
+  "join_over_users": "Dôveruje viac ako 1,000,000 používateľov",
   "nextran_desc": "Prekladač Zoznamov App Store pre Vývojárov",
   "slogan": "Začnite Chrániť Svoje Dáta",
   "slogan_sub":
@@ -600,4 +600,46 @@ final sk = {
   "download": "Stiahnuť",
   "folder_name": "Názov Zložky",
   "send": "Odoslať",
+
+  // String Reviews
+  "review_string_0":
+      "Liso je absolútne fantastické! Úplne zmenilo spôsob, akým chránim svoje citlivé údaje. Top odporúčanie pre skutočnú ochranu!",
+  "review_string_1":
+      "Liso používam každý deň. Dizajn je tak užívateľsky prívetivý a mám istotu, že všetky heslá sú s blockchain technológiou super zabezpečené.",
+  "review_string_2":
+      "Každá funkcia v Liso uľahčuje a zabezpečuje správu mojich krypto peňaženiek a prihlásení. Milujem silné šifrovanie!",
+  "review_string_3":
+      "Liso predčilo všetky moje očakávania. Zverujem mu všetky svoje tajomstvá a pokoj duše je nezaplatiteľný!",
+  "review_string_4":
+      "Moja produktivita aj bezpečnosť vzrástli od prechodu na Liso. Je to teraz moje hlavné úložisko pre všetko súkromné.",
+  "review_string_5":
+      "Pravidelné aktualizácie Liso ho neustále vylepšujú. Vylepšenia sú konštantné a moje údaje zostávajú plne chránené.",
+  "review_string_6":
+      "Liso je naozaj záchrana! Ukladám heslá, krypto seed frázy a osobné poznámky s naprostou dôverou.",
+  "review_string_7":
+      "Zákaznícka podpora Liso je skvelá! Rýchla a znalá, naozaj im záleží na bezpečnosti a spätnej väzbe používateľov.",
+  "review_string_8":
+      "Liso vrelo odporúčam priateľom a kolegom. Je plné bezpečnostných funkcií, ktoré robia súkromie ľahkým.",
+  "review_string_9":
+      "Krásne rozhranie Liso robí správu môjho trezoru príjemnou a bez stresu. Bezpečnosť nikdy nevyzerala tak dobre.",
+  "review_string_10":
+      "S Liso som organizovanejší a v bezpečí viac než kedykoľvek. Nedokážem si predstaviť zveriť svoj digitálny život inej aplikácii.",
+  "review_string_11":
+      "Liso funguje perfektne — plynule, spoľahlivo a úplne bez chýb. Dáva mi istotu, že sú moje informácie v bezpečí.",
+  "review_string_12":
+      "Liso plní každý bezpečnostný sľub. Môj pracovný postup sa zlepšil a moje údaje pôsobia nepriepustne!",
+  "review_string_13":
+      "Zostať sústredený a v bezpečí je s Liso ľahké. Tak vďačný za funkcie súkromia a jednoduchosť.",
+  "review_string_14":
+      "Liso je pokladnica plná úžasných bezpečnostných funkcií. Pri každom použití objavujem nové spôsoby, ako zostať chránený.",
+  "review_string_15":
+      "Premyslený dizajn Liso uľahčuje navigáciu. Všetko — peňaženky, heslá, 2FA — je vždy po ruke.",
+  "review_string_16":
+      "Liso má všetko, čo potrebujem: jedna aplikácia na správu, šifrovanie a prístup ku všetkým digitálnym hodnotám.",
+  "review_string_17":
+      "Dojatý tým, ako sa Liso vyvíja! Vývojári naozaj počúvajú spätnú väzbu a neustále zlepšujú bezpečnosť a použiteľnosť.",
+  "review_string_18":
+      "Používanie Liso je potešenie — skvelé ovládanie súkromia a silná krypto-bezpečnosť v aplikácii, ktorá vyzerá aj funguje skvele.",
+  "review_string_19":
+      "Liso vždy odporúčam! Je to jednoducho najbezpečnejší a najorganizovanejší spôsob ukladania krypta, hesiel a súkromných informácií.",
 };

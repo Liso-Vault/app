@@ -1,0 +1,34 @@
+Chraňte svá cenná data další generací zabezpečení. Liso je krypto-first, Web3 poháněné úložiště dat, postavené tak, aby využilo zabezpečení na úrovni blockchainu a decentralizované technologie. Chraňte hesla, poznámky, fotky, videa, dokumenty a všechny citlivé informace pokročilou kryptografií, decentralizovanými protokoly a přísnými standardy soukromí. S Liso vaše data zůstávají vaše—zabezpečená, soukromá a pod vaší kontrolou, bez reklam a sledování.
+
+Liso používá moderní kryptografické techniky a frameworky Web3—včetně end-to-end šifrování, zero-knowledge důkazů a integrací bezpečných peněženek—k ochraně vašeho digitálního života. Ukládejte přihlašovací údaje, hesla, krypto peněženky, seed fráze, 2FA/MFA kódy, bezpečné poznámky, karty, bankovní účty, průkazy totožnosti a další do decentralizovaného, neproniknutelného úložiště.
+
+Liso je vše-v-jednom krypto správce hesel, úložiště napříč zařízeními a autentizátor nové generace, spojující Web3 a klasické zabezpečení pro nepřekonatelnou ochranu.
+
+Klíčové funkce:
+◆ Krypto zabezpečení nové generace: Blockchain a Web3 technologie eliminují jediné body selhání a maximalizují ochranu dat.
+◆ Vojenská úroveň AES-256 + end-to-end šifrování: Tradiční a decentralizovaná kryptografie pro nepřekonatelné zabezpečení.
+◆ Decentralizovaná identita: Ověřujte se bezpečnými peněženkami nebo decentralizovaným přihlášením—bez vazby na vaši reálnou identitu.
+◆ Režim offline/air-gap: Přístup k šifrovanému úložišti bez internetu—vaše data nikdy neopustí zařízení, pokud si nevyberete.
+◆ Synchronizace založená na blockchainu: Synchronizujte data napříč zařízeními s decentralizovaným, šifrovaným cloudovým úložištěm.
+◆ Biometrie otisku/obličeje: Vícefaktorová autentizace s kryptografickými podepisovači.
+◆ Autentizátor 2FA/MFA: Generujte a ukládejte dvoufaktorové kódy bezpečně ve svém šifrovaném úložišti.
+◆ Detekce slabých hesel: Najděte a posilněte zranitelná hesla.
+◆ Šifrování na úrovni hesla a položky: Dodatečné šifrování pro vaše nejcitlivější položky.
+◆ Web3 šifrování souborů: Šifrujte soubory robustními krypto metodami.
+◆ Výkonný generátor hesel: Ultra silná, jedinečná hesla s kryptograficky bezpečnou náhodností.
+◆ Bezplatné šifrované a decentralizované cloudové úložiště: Pouze vy držíte klíče.
+◆ Bezpečné úložiště fotek a videa: Zamkněte svůj digitální život decentralizovaným šifrováním.
+◆ Přístup napříč platformami: Používejte Liso na počítači, tabletu a mobilu.
+◆ Snadná migrace: Importujte z Bitwarden, LastPass, Chrome a dalších—poté šifrujte nejnovějšími krypto standardy.
+◆ 100% zero-knowledge: Pouze vy můžete přistupovat ke svým datům—nikdo jiný, ani Liso.
+◆ Registrace s krypto peněženkami: Začněte okamžitě s ověřením peněženky—e-mail ani heslo nejsou potřeba.
+
+S základem v pokročilé kryptografii a decentralizované technologii Liso předčí tradiční správce hesel (1Password, LastPass, Bitwarden, Enpass, Keeper, Dashlane, Roboform, NordPass)—nabízející nadřazené zabezpečení, soukromí a skutečnou digitální svobodu.
+
+Zjistěte více: https://liso.dev
+
+Open source: https://github.com/Liso-Vault/app
+
+Zásady ochrany osobních údajů: https://github.com/Liso-Vault/app/blob/master/PRIVACY.md
+
+Podmínky použití: https://github.com/Liso-Vault/app/blob/master/TERMS.md

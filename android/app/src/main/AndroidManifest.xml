@@ -1,4 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.liso.app" xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.liso.app"
+	xmlns:tools="http://schemas.android.com/tools">
 	<!-- SERVICE -->
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<!-- STORAGE -->
@@ -10,9 +11,16 @@
 	<!-- INTERNET -->
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<application android:label="@string/app_name" android:icon="@mipmap/ic_launcher" android:hasFragileUserData="true">
-		<activity android:name=".MainActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize" android:exported="true">
-			<meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
+	<!-- APPLICATION -->
+	<application android:label="@string/app_name" android:icon="@mipmap/ic_launcher"
+		android:hasFragileUserData="true">
+		<activity android:name=".MainActivity" android:launchMode="singleTop"
+			android:theme="@style/LaunchTheme"
+			android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+			android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize"
+			android:exported="true">
+			<meta-data android:name="io.flutter.embedding.android.NormalTheme"
+				android:resource="@style/NormalTheme" />
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -21,20 +29,35 @@
 		<!-- Flutter Embedding -->
 		<meta-data android:name="flutterEmbedding" android:value="2" />
 		<!-- Autofill Service -->
-		<activity android:name=".AutofillActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize" android:exported="true">
-			<meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable" android:resource="@drawable/launch_background" />
-			<meta-data android:name="io.flutter.embedding.android.NormalTheme" android:resource="@style/NormalTheme" />
-			<meta-data android:name="flutterEmbedding" android:value="2" />
-		</activity>
-		<meta-data android:name="com.keevault.flutter_autofill_service.ACTIVITY_NAME" android:value="com.liso.app.AutofillActivity" />
-		<meta-data android:name="com.keevault.flutter_autofill_service.SAVE_ACTIVITY_NAME" android:value="com.liso.app.AutofillActivity" />
-		<meta-data android:name="com.keevault.flutter_autofill_service.service_short_name" android:value="Liso" />
-		<meta-data android:name="com.keevault.flutter_autofill_service.match_header_drawable_name" android:value="ic_notification" />
-		<!-- <meta-data android:name="com.keevault.flutter_autofill_service.select_another_entry_drawable_name" android:value="ic_notification" /> -->
-		<meta-data android:name="com.keevault.flutter_autofill_service.select_another_entry" android:value="Pick again" />
-		<service android:name="com.keevault.flutter_autofill_service.FlutterAutofillService" tools:replace="label" android:label="Liso Password Manager">
-			<meta-data android:name="com.keevault.flutter_autofill_service.unlock_label" android:value="Autofill with Liso" />
-			<meta-data android:name="com.keevault.flutter_autofill_service.unlock_drawable_name" android:value="ic_notification" />
-		</service>
+		<!-- <activity android:name=".AutofillActivity" android:launchMode="singleTop"
+			android:theme="@style/LaunchTheme"
+			android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
+			android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize"
+			android:exported="true">
+			<meta-data android:name="io.flutter.embedding.android.SplashScreenDrawable"
+				android:resource="@drawable/launch_background" />
+			<meta-data android:name="io.flutter.embedding.android.NormalTheme"
+				android:resource="@style/NormalTheme" />
+		</activity> -->
+		<!-- <meta-data android:name="com.keevault.flutter_autofill_service.ACTIVITY_NAME"
+			android:value="com.liso.app.AutofillActivity" />
+		<meta-data android:name="com.keevault.flutter_autofill_service.SAVE_ACTIVITY_NAME"
+			android:value="com.liso.app.AutofillActivity" />
+		<meta-data android:name="com.keevault.flutter_autofill_service.service_short_name"
+			android:value="Liso" />
+		<meta-data android:name="com.keevault.flutter_autofill_service.match_header_drawable_name"
+			android:value="ic_notification" /> -->
+		<!-- <meta-data
+		android:name="com.keevault.flutter_autofill_service.select_another_entry_drawable_name"
+		android:value="ic_notification" /> -->
+		<!-- <meta-data android:name="com.keevault.flutter_autofill_service.select_another_entry"
+			android:value="Pick again" />
+		<service android:name="com.keevault.flutter_autofill_service.FlutterAutofillService"
+			tools:replace="label" android:label="Liso Password Manager">
+			<meta-data android:name="com.keevault.flutter_autofill_service.unlock_label"
+				android:value="Autofill with Liso" />
+			<meta-data android:name="com.keevault.flutter_autofill_service.unlock_drawable_name"
+				android:value="ic_notification" />
+		</service> -->
 	</application>
 </manifest>

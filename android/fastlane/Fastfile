@@ -1,0 +1,54 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+require "yaml"
+
+default_platform(:android)
+
+platform :android do
+  desc "Deploy to Production"
+  lane :deploy do
+    sh "flutter build appbundle -t lib/core/flavors/main_prod.dart --flavor production"
+
+    upload_to_play_store(
+      track: "production",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      rollout: "1.0",
+      skip_upload_apk: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+    )
+  end
+
+  desc "Upload Store Listings Only"
+  lane :metadata do
+    # Read version code from pubspec.yaml
+    pubspec = YAML.load_file("../../pubspec.yaml")
+    version = pubspec["version"]          # e.g. "1.0.0+21"
+    version_code = version.split("+").last.to_i  # extracts 21
+
+    upload_to_play_store(
+      track: "production",
+      skip_upload_aab: true,
+      skip_upload_apk: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true,
+      version_code: version_code
+    )
+  end
+end

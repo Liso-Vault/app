@@ -1,8 +1,7 @@
 import 'package:app_core/globals.dart';
-import 'package:app_core/pages/routes.dart';
+import 'package:app_core/purchases/purchases.services.dart';
 import 'package:app_core/utils/utils.dart';
 import 'package:flutter/material.dart';
-
 import 'package:icons_plus/icons_plus.dart';
 import 'package:liso/core/hive/models/field.hive.dart';
 import 'package:random_string_generator/random_string_generator.dart';
@@ -79,14 +78,7 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
         ContextMenuItem(
           title: 'Password Health',
           leading: Icon(Iconsax.health_outline, size: popupIconSize),
-          onSelected: () => Utils.adaptiveRouteOpen(
-            name: Routes.upgrade,
-            parameters: {
-              'title': 'Password Health',
-              'body':
-                  'Monitor the health of your passwords. Upgrade to Pro to take advantage of this powerful feature.',
-            },
-          ),
+          onSelected: () => PurchasesService.to.show(),
         ),
       ],
       if (!widget.field.readOnly) ...[

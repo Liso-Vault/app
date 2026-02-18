@@ -1,5 +1,5 @@
 final esMX = {
-  "locale_string": "es_MX",
+  "locale_string": "es-MX",
   "language": "Idioma",
   "get_started": "Comenzar",
   "pay_yearly": "Pagar Anualmente",
@@ -29,7 +29,7 @@ final esMX = {
   "day": "Día",
   "help_translate": "Ayuda a Traducir",
   "join_affiliates": "Únete al Programa de Afiliados",
-  "join_over_users": "Confiado por más de 100,000 usuarios",
+  "join_over_users": "Confiado por más de 1,000,000 usuarios",
   "nextran_desc": "Traductor de Listados de App Store para Desarrolladores",
   "slogan": "Comienza a Proteger tus Datos",
   "slogan_sub":
@@ -602,4 +602,46 @@ final esMX = {
   "download": "Descargar",
   "folder_name": "Nombre de la Carpeta",
   "send": "Enviar",
+
+  // String Reviews
+  "review_string_0":
+      "¡Liso es absolutamente fantástico! Transformó por completo cómo protejo mis datos sensibles. ¡Mi principal recomendación para protección real!",
+  "review_string_1":
+      "Uso Liso todos los días. El diseño es muy amigable y me siento seguro de que todas mis contraseñas están súper protegidas con tecnología blockchain.",
+  "review_string_2":
+      "Cada función de Liso hace que administrar mis billeteras de cripto e inicios de sesión sea mucho más fácil y seguro. ¡Me encanta el cifrado fuerte!",
+  "review_string_3":
+      "Liso superó todas mis expectativas. Le confío todos mis secretos y ¡la tranquilidad no tiene precio!",
+  "review_string_4":
+      "Mi productividad y seguridad se dispararon desde que cambié a Liso. Ahora es mi bóveda favorita para todo lo privado.",
+  "review_string_5":
+      "Las actualizaciones constantes de Liso lo hacen más seguro y mejor. Las mejoras no paran y mis datos siguen totalmente protegidos.",
+  "review_string_6":
+      "¡Liso es un verdadero salvavidas! Guardo mis contraseñas, frases semilla de cripto y notas personales con total confianza.",
+  "review_string_7":
+      "¡El soporte de Liso es increíble! Rápido y conocedor, y realmente les importa la seguridad y la opinión del usuario.",
+  "review_string_8":
+      "Recomiendo Liso a amigos y colegas. Tiene muchas funciones de seguridad que hacen la privacidad muy fácil.",
+  "review_string_9":
+      "La interfaz de Liso hace que administrar mi bóveda sea agradable y sin estrés. La seguridad nunca se vio tan bien.",
+  "review_string_10":
+      "Estoy más organizado y seguro que nunca con Liso. No imagino confiar mi vida digital a otra app.",
+  "review_string_11":
+      "Liso funciona perfecto: fluido, confiable y sin errores. Me da confianza de que mi información está segura.",
+  "review_string_12":
+      "Liso cumple cada promesa de seguridad. ¡Mi flujo mejoró y mis datos se sienten impenetrables!",
+  "review_string_13":
+      "Mantenerme enfocado y seguro es fácil con Liso. Muy agradecido por sus funciones de privacidad y simplicidad.",
+  "review_string_14":
+      "Liso es un cofre del tesoro lleno de funciones de seguridad increíbles. Cada que lo uso encuentro nuevas formas de estar protegido.",
+  "review_string_15":
+      "El diseño bien pensado de Liso hace la navegación fácil. Todo—billeteras, contraseñas, 2FA—siempre está a la mano.",
+  "review_string_16":
+      "Liso tiene todo lo que necesito: una app para administrar, cifrar y acceder a todos mis bienes digitales.",
+  "review_string_17":
+      "¡Impresionado con cómo evoluciona Liso! Los devs sí escuchan y siguen mejorando seguridad y usabilidad.",
+  "review_string_18":
+      "Usar Liso es un gusto: controles de privacidad geniales y criptoseguridad potente en una app que se ve y se siente muy bien.",
+  "review_string_19":
+      "¡Siempre recomiendo Liso! Es la forma más segura y ordenada de guardar cripto, contraseñas e información privada.",
 };

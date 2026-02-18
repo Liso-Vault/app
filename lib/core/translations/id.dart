@@ -599,4 +599,46 @@ final id = {
   "download": "Unduh",
   "folder_name": "Nama Folder",
   "send": "Kirim",
+
+  // String Reviews
+  "review_string_0":
+      "Liso benar-benar fantastis! Ini benar-benar mengubah cara saya mengamankan data sensitif. Rekomendasi terbaik untuk perlindungan nyata!",
+  "review_string_1":
+      "Saya menggunakan Liso setiap hari. Desainnya sangat ramah pengguna dan saya yakin semua kata sandi super aman dengan teknologi blockchain.",
+  "review_string_2":
+      "Setiap fitur di Liso membuat mengelola dompet kripto dan login jauh lebih mudah dan aman. Saya suka enkripsi kuatnya!",
+  "review_string_3":
+      "Liso melampaui semua harapan saya. Saya mempercayakannya semua rahasia saya, dan ketenangan pikiran tak ternilai!",
+  "review_string_4":
+      "Produktivitas dan keamanan saya melonjak sejak beralih ke Liso. Sekarang jadi brankas andalan untuk segala yang pribadi.",
+  "review_string_5":
+      "Pembaruan rutin Liso terus membuatnya lebih aman dan lebih baik. Peningkatan konstan dan data saya tetap terlindungi penuh.",
+  "review_string_6":
+      "Liso benar-benar penyelamat! Saya menyimpan kata sandi, frasa seed kripto, dan catatan pribadi dengan keyakinan penuh.",
+  "review_string_7":
+      "Dukungan pelanggan Liso luar biasa! Cepat dan berpengetahuan, dan mereka benar-benar peduli keamanan dan masukan pengguna.",
+  "review_string_8":
+      "Sangat merekomendasikan Liso ke teman dan rekan. Penuh fitur keamanan yang membuat privasi mudah.",
+  "review_string_9":
+      "Antarmuka Liso yang cantik membuat mengelola brankas saya menyenangkan dan bebas stres. Keamanan belum pernah terlihat sebaik ini.",
+  "review_string_10":
+      "Saya lebih terorganisir dan aman dari sebelumnya dengan Liso. Tidak bisa bayangkan mempercayakan kehidupan digital ke app lain.",
+  "review_string_11":
+      "Liso berjalan sempurna — lancar, andal, dan bebas bug. Memberi saya keyakinan informasi saya aman.",
+  "review_string_12":
+      "Liso menepati setiap janji keamanan. Alur kerja saya membaik dan data saya terasa tak tertembus!",
+  "review_string_13":
+      "Tetap fokus dan aman mudah dengan Liso. Sangat berterima kasih atas fitur privasi dan kesederhanaannya.",
+  "review_string_14":
+      "Liso adalah peti harta penuh fitur keamanan luar biasa. Setiap kali dipakai saya temukan cara baru tetap terlindungi.",
+  "review_string_15":
+      "Desain Liso yang tertata membuat navigasi mudah. Semua — dompet, kata sandi, 2FA — selalu ada.",
+  "review_string_16":
+      "Liso punya semua yang saya butuhkan: satu app untuk mengelola, mengenkripsi, dan mengakses semua aset digital saya.",
+  "review_string_17":
+      "Terkesan dengan evolusi Liso! Dev benar-benar mendengarkan masukan dan terus meningkatkan keamanan dan kegunaan.",
+  "review_string_18":
+      "Menggunakan Liso menyenangkan — kontrol privasi hebat dan keamanan kripto kuat dalam app yang tampak dan terasa bagus.",
+  "review_string_19":
+      "Saya selalu merekomendasikan Liso! Ini cara paling aman dan terorganisir menyimpan kripto, kata sandi, dan info pribadi.",
 };
