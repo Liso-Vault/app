@@ -1,5 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// The [AppTheme] defines light and dark themes for the app.
@@ -21,62 +21,80 @@ sealed class AppTheme {
   // The defined light theme.
   static final scheme = FlexScheme.jungle;
 
-  static ThemeData light = FlexThemeData.light(
-    scheme: scheme,
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-    subThemesData: const FlexSubThemesData(
-      interactionEffects: true,
-      tintedDisabledControls: true,
-      useM2StyleDividerInM3: true,
-      inputDecoratorSchemeColor: SchemeColor.primary,
-      inputDecoratorIsFilled: true,
-      inputDecoratorIsDense: true,
-      inputDecoratorBackgroundAlpha: 14,
-      inputDecoratorBorderSchemeColor: SchemeColor.primary,
-      inputDecoratorBorderType: FlexInputBorderType.outline,
-      inputDecoratorRadius: 10.0,
-      inputDecoratorUnfocusedHasBorder: false,
-      inputDecoratorFocusedBorderWidth: 1.0,
-      inputDecoratorPrefixIconSchemeColor: SchemeColor.onPrimaryFixedVariant,
-      alignedDropdown: true,
-      navigationRailUseIndicator: true,
-      navigationRailLabelType: NavigationRailLabelType.all,
-      appBarTitleTextStyle: TextStyle(
-        fontSize: 17,
-        fontWeight: FontWeight.bold,
-        color: Colors.black,
-      ),
-    ),
-  );
+  // static ThemeData light = FlexThemeData.light(
+  //   scheme: scheme,
+  //   visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  //   cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+  //   subThemesData: const FlexSubThemesData(
+  //     interactionEffects: true,
+  //     tintedDisabledControls: true,
+  //     useM2StyleDividerInM3: true,
+  //     inputDecoratorSchemeColor: SchemeColor.primary,
+  //     inputDecoratorIsFilled: true,
+  //     inputDecoratorIsDense: true,
+  //     inputDecoratorBackgroundAlpha: 14,
+  //     inputDecoratorBorderSchemeColor: SchemeColor.primary,
+  //     inputDecoratorBorderType: FlexInputBorderType.outline,
+  //     inputDecoratorRadius: 10.0,
+  //     inputDecoratorUnfocusedHasBorder: false,
+  //     inputDecoratorFocusedBorderWidth: 1.0,
+  //     inputDecoratorPrefixIconSchemeColor: SchemeColor.onPrimaryFixedVariant,
+  //     alignedDropdown: true,
+  //     navigationRailUseIndicator: true,
+  //     navigationRailLabelType: NavigationRailLabelType.all,
+  //     appBarTitleTextStyle: TextStyle(
+  //       fontSize: 17,
+  //       fontWeight: FontWeight.bold,
+  //       color: Colors.black,
+  //     ),
+  //   ),
+  // );
+
   // The defined dark theme.
+  // static ThemeData dark = FlexThemeData.dark(
+  //   scheme: scheme,
+  //   visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  //   cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+  //   subThemesData: FlexSubThemesData(
+  //     interactionEffects: true,
+  //     tintedDisabledControls: true,
+  //     blendOnColors: true,
+  //     useM2StyleDividerInM3: true,
+  //     inputDecoratorSchemeColor: SchemeColor.primary,
+  //     inputDecoratorIsFilled: true,
+  //     inputDecoratorIsDense: true,
+  //     inputDecoratorBackgroundAlpha: 45,
+  //     inputDecoratorBorderSchemeColor: SchemeColor.primary,
+  //     inputDecoratorBorderType: FlexInputBorderType.outline,
+  //     inputDecoratorRadius: 10.0,
+  //     inputDecoratorUnfocusedHasBorder: false,
+  //     inputDecoratorFocusedBorderWidth: 1.0,
+  //     inputDecoratorPrefixIconSchemeColor: SchemeColor.primaryFixed,
+  //     alignedDropdown: true,
+  //     navigationRailUseIndicator: true,
+  //     navigationRailLabelType: NavigationRailLabelType.all,
+  //     appBarTitleTextStyle: TextStyle(
+  //       fontSize: 17,
+  //       fontWeight: FontWeight.bold,
+  //       color: Colors.white,
+  //     ),
+  //   ),
+  // );
+
   static ThemeData dark = FlexThemeData.dark(
     scheme: scheme,
-    visualDensity: FlexColorScheme.comfortablePlatformDensity,
-    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
-    subThemesData: FlexSubThemesData(
-      interactionEffects: true,
-      tintedDisabledControls: true,
-      blendOnColors: true,
-      useM2StyleDividerInM3: true,
-      inputDecoratorSchemeColor: SchemeColor.primary,
-      inputDecoratorIsFilled: true,
-      inputDecoratorIsDense: true,
-      inputDecoratorBackgroundAlpha: 45,
-      inputDecoratorBorderSchemeColor: SchemeColor.primary,
-      inputDecoratorBorderType: FlexInputBorderType.outline,
-      inputDecoratorRadius: 10.0,
-      inputDecoratorUnfocusedHasBorder: false,
-      inputDecoratorFocusedBorderWidth: 1.0,
-      inputDecoratorPrefixIconSchemeColor: SchemeColor.primaryFixed,
-      alignedDropdown: true,
-      navigationRailUseIndicator: true,
-      navigationRailLabelType: NavigationRailLabelType.all,
-      appBarTitleTextStyle: TextStyle(
-        fontSize: 17,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-      ),
-    ),
+    // Use a bit more themed elevated app bar in dark mode.
+    appBarElevation: 2.0,
+    // We use the nicer Material-3 Typography in both M2 and M3 mode.
+    typography: Typography.material2021(platform: defaultTargetPlatform),
+    scaffoldBackground: const Color.fromARGB(255, 20, 20, 20),
+  );
+
+  static ThemeData light = FlexThemeData.light(
+    scheme: scheme,
+    // Use very subtly themed app bar elevation in light mode.
+    appBarElevation: 0.5,
+    // We use the nicer Material-3 Typography in both M2 and M3 mode.
+    typography: Typography.material2021(platform: defaultTargetPlatform),
   );
 }

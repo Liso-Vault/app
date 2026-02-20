@@ -337,9 +337,7 @@ class MainScreen extends GetResponsiveView<MainScreenController>
             ],
           ),
         ),
-        if (isSmallScreen) ...[
-          const PremiumCard(),
-        ],
+        if (isSmallScreen) const PremiumCard(),
         Expanded(child: childContent),
         Align(
           alignment: Alignment.centerLeft,

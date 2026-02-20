@@ -22,8 +22,8 @@ void initConfigDefaults() {
 
   final linksMap = {
     "legal": {
-      "terms": "https://github.com/Liso-Vault/app/blob/master/TERMS.md",
-      "privacy": "https://github.com/Liso-Vault/app/blob/master/PRIVACY.md"
+      "terms": "https://liso.dev/terms",
+      "privacy": "https://liso.dev/privacy"
     },
     "store": {
       "huawei": "",

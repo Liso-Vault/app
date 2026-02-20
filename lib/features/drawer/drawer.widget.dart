@@ -264,7 +264,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('settings'.tr),
                 leading: const Icon(Iconsax.setting_2_outline),
                 onTap: () {
-                  Get.closeOverlay();
+                  if (isSmallScreen) Get.closeOverlay();
                   Utils.adaptiveRouteOpen(name: Routes.settings);
                 },
               ),
@@ -272,7 +272,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('about'.tr),
                 leading: const Icon(Iconsax.info_circle_outline),
                 onTap: () {
-                  Get.closeOverlay();
+                  if (isSmallScreen) Get.closeOverlay();
                   Utils.adaptiveRouteOpen(name: Routes.about);
                 },
               ),
@@ -281,7 +281,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('need_help'.tr),
                 leading: const Icon(Iconsax.message_question_outline),
                 onTap: () {
-                  Get.closeOverlay();
+                  if (isSmallScreen) Get.closeOverlay();
                   Utils.adaptiveRouteOpen(name: Routes.feedback);
                 },
               ),
@@ -301,7 +301,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('encryption_tool'.tr),
                 leading: const Icon(Iconsax.convert_3d_cube_outline),
                 onTap: () {
-                  Get.closeOverlay();
+                  if (isSmallScreen) Get.closeOverlay();
                   Utils.adaptiveRouteOpen(name: AppRoutes.cipher);
                 },
               ),
@@ -309,7 +309,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('password_generator'.tr),
                 leading: const Icon(Iconsax.password_check_outline),
                 onTap: () {
-                  Get.closeOverlay();
+                  if (isSmallScreen) Get.closeOverlay();
                   Utils.adaptiveRouteOpen(
                     name: AppRoutes.passwordGenerator,
                     parameters: {'from': 'drawer'},
@@ -320,7 +320,7 @@ class DrawerMenu extends StatelessWidget with ConsoleMixin {
                 title: Text('seed_generator'.tr),
                 leading: const Icon(Iconsax.key_outline),
                 onTap: () {
-                  Get.closeOverlay();
+                  if (isSmallScreen) Get.closeOverlay();
                   Utils.adaptiveRouteOpen(
                     name: AppRoutes.seedGenerator,
                     parameters: {'from': 'drawer'},
